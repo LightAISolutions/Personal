@@ -808,12 +808,12 @@ jobs:
           else
             echo "have-token=true" >> "$GITHUB_OUTPUT"
           fi
-      - name: Checkout Sales main
+      - name: Checkout Personal main
         if: steps.token.outputs.have-token == 'true'
         uses: actions/checkout@v5
         with:
           ref: main
-          path: sales
+          path: personal
       - name: Checkout bess-aidc-library
         if: steps.token.outputs.have-token == 'true'
         uses: actions/checkout@v5
@@ -825,22 +825,22 @@ jobs:
         if: steps.token.outputs.have-token == 'true'
         run: |
           set -euo pipefail
-          SRC=sales/live-site-pages/profiler-data
+          SRC=personal/live-site-pages/profiler-data
           mkdir -p library/dossiers library/archive library/study
           cp "$SRC"/*.profile.json library/dossiers/ 2>/dev/null || true
           cp "$SRC/profiler-companies.json" library/dossiers/
           rsync -a "$SRC/archive/" library/archive/
           cp "$SRC"/*.study.json library/study/ 2>/dev/null || true
-          if [ -d sales/repository-information/study-prep ]; then
+          if [ -d personal/repository-information/study-prep ]; then
             mkdir -p library/study/study-prep
-            rsync -a --delete sales/repository-information/study-prep/ library/study/study-prep/
+            rsync -a --delete personal/repository-information/study-prep/ library/study/study-prep/
           fi
           # Field notes and note files are NOT mirrored — they moved to Drive in
           # the M3 migration precisely so they never land in a git repo. Mirroring
           # them here would recreate the exposure in a second repository.
-          if [ -d sales/live-site-pages/scraper-data/digests ]; then
+          if [ -d personal/live-site-pages/scraper-data/digests ]; then
             mkdir -p library/digests
-            rsync -a --delete sales/live-site-pages/scraper-data/digests/ library/digests/
+            rsync -a --delete personal/live-site-pages/scraper-data/digests/ library/digests/
           fi
           # reports/ and receipts/ are written by sessions directly — never touched here.
           # README is created once (not per-run) so no-change syncs stay commit-free.
@@ -848,7 +848,7 @@ jobs:
             {
               echo "# BESS-AIDC Library — Centralized Knowledge Pool"
               echo
-              echo "Auto-mirrored from LightAISolutions/Sales on every merge to its main branch."
+              echo "Auto-mirrored from LightAISolutions/Personal on every merge to its main branch."
               echo
               echo "- dossiers/ — current company profiles + registry (Profiler)"
               echo "- archive/ — superseded dossier versions + index"
@@ -865,15 +865,15 @@ jobs:
         if: steps.token.outputs.have-token == 'true'
         run: |
           set -euo pipefail
-          MAIN_SHA=$(git -C sales rev-parse --short HEAD)
+          MAIN_SHA=$(git -C personal rev-parse --short HEAD)
           cd library
-          git config user.name "sales-library-mirror[bot]"
+          git config user.name "personal-library-mirror[bot]"
           git config user.email "actions@github.com"
           git add -A
           if git diff --cached --quiet; then
             echo "Library already up to date — nothing to mirror."
           else
-            git commit -m "Mirror from Sales@${MAIN_SHA}"
+            git commit -m "Mirror from Personal@${MAIN_SHA}"
             git push
           fi
 

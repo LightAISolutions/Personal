@@ -3,11 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 93/100`
+`Sections: 94/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v03.84r] — 2026-08-30 01:37:44 AM EST
+
+> **Prompt:** "This is a new repo that I copied from my Sales repo, but repurposed for my personal life instead of my work. To that end, I want this to be a skeleton of what Sales is in order to flesh it out with Personal-repo-specific apps. However, I want it to keep all of Sales' rules and workflow (including but not limited to the auto-merge/deploy workflow, page templates, versioning system, changelogs, and all the Claude rules). Recommend an action plan to clean this repo and prepare it for new apps under a new scope: Personal." — followed mid-response by: "Also, I want you to fix the auto-merge-claude.yml and clasp-deploy.yml to match the new repo name."
+
+### Fixed
+- `.github/workflows/auto-merge-claude.yml` — library-mirror job's repo-identity strings updated from the Sales repo to this Personal repo: checkout step name ("Checkout Sales main" → "Checkout Personal main"), internal checkout path `sales` → `personal` (all path references in the sync step), seeded library README origin line (`LightAISolutions/Sales` → `LightAISolutions/Personal`), mirror bot name (`sales-library-mirror[bot]` → `personal-library-mirror[bot]`), and mirror commit message (`Mirror from Sales@` → `Mirror from Personal@`). No behavior change — the job still self-skips while the `LIBRARY_SYNC_TOKEN` secret is unset
+- `.github/workflows/clasp-deploy-pilot.yml` — audited for repo-name references: none found (the workflow is fully repo-agnostic — it targets Apps Script via repo secrets and uses only relative paths), so no changes were needed
 
 ## [v03.83r] — 2026-08-29 10:28:50 PM EST
 
