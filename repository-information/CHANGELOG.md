@@ -3,11 +3,18 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 1/100`
+`Sections: 2/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.02r] — 2026-08-30 03:02:03 AM EST
+
+> **Prompt:** "deployment branches updated — verify the auto-deploy"
+
+### Changed
+- `live-site-pages/.deploy-trigger` — touched to force a Pages redeploy and exercise the full automatic chain (push to `claude/*` → auto-merge → deploy) end-to-end, verifying that the `github-pages` environment's deployment-branch policy now admits `claude/*` refs. The prior run's `deploy` job was rejected at job level (zero steps, no logs) because enabling Pages created the environment with its default default-branch-only policy, which made the merge succeed while publishing silently failed
 
 ## [v01.01r] — 2026-08-30 02:55:41 AM EST
 
