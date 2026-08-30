@@ -1,0 +1,404 @@
+{
+ "schemaVersion": 6,
+ "slug": "liteon",
+ "name": "LITEON",
+ "legalName": "LITEON Technology Corporation",
+ "categories": [
+  "supplier"
+ ],
+ "hq": "Taipei, Taiwan",
+ "ticker": "TWSE: 2301",
+ "founded": "1975",
+ "ownership": "public",
+ "employees": "~40,000+ (group)",
+ "website": "https://www.liteon.com",
+ "summary": "BOTTOM LINE UP FRONT: LITEON is the #2 supplier in AI server power (~30% share versus Delta's 60%+ per brokerage estimates) with the sector's strongest position in battery backup units — 2025 BBU shipments ran roughly 30x the prior year, and BBUs turn from optional (GB200) to standard (GB300/Rubin) — and Q2 2026 delivered an all-time record: EPS NT$3.14 (+126%), record gross margin 27.2%, with AI products expected to exceed 30% of 2026 revenue. BACKGROUND: Founded 1975, the first electronics company listed on the Taiwan exchange; chairman Tom Soong, president Anson Chiu ('no longer an ODM/OEM — a solution provider'); three segments with Cloud & AIoT now 54% of sales (from 32% in 2022). A member of NVIDIA's 800 VDC power-components tier alongside Delta, Megmeet, Flex, and BizLink. Committed US$919M to a McKinney, Texas plant for HVDC power racks; 2026 capex raised to NT$18B; non-China capacity heading to 70% by 2027.",
+ "ecosystemRole": "We assess LITEON as the leading second source in NVIDIA-class rack power and the direct competitive triangulation point for Megmeet — the three names share the power-components tier, and the sidecar power-rack fight among them decides who captures the fastest-growing hardware segment in the AIDC chain. Basis: NVIDIA's own 800V partner roster; KGI-attributed platform data placing LITEON as the lead second source (strongest at a US CSP with an aggressive ASIC timeline); and Chinese-press reporting that Megmeet displaced LITEON at #2 on NVL72 power shelves — contested, high-stakes, and unresolved. LITEON's differentiated asset is the BBU franchise (investing since 2010, first large cloud adoption 2017) plus PSU-BBU firmware co-design; its 800V power rack reaches mass production Q1 2027, about a step behind Delta, with ASIC customers first and GPU clients potentially Q2 2027.",
+ "productsAndServices": [
+  {
+   "name": "AI rack power (power shelves, PSUs, 800 VDC Power Rack)",
+   "description": "Shipping: 33 kW power shelves, 5.5 kW PSUs, 8.5 kW PSU+BBU pairs (volume production), 110 kW power shelves for NVIDIA Vera Rubin NVL72 (three-phase input, intelligent load balancing, transient-surge handling; 18.3 kW PSUs), and an 800 VDC 660 kW power rack — scaling to >1.5 MW racks in 2H 2026 with a 2.5 kW 50V→12V DC-DC brick. PSU/shelf specs: >100 W/in³ power density, >97.5% efficiency, 40-70°C operating range.",
+   "positioning": "Lead second source behind Delta; the liquid-cooled 800 VDC rack debuted at Computex 2026. Mass production Q1 2027 after a 13-week qualification from August 2026 sampling — ASIC customers onboard first.",
+   "soldThrough": "B2B direct to hyperscalers/CSPs/ODMs (CIPS business group); QCT joint Vera Rubin demo at GTC 2026.",
+   "targetSegments": [
+    "NVIDIA MGX/ORV3 racks",
+    "Hyperscaler custom-ASIC programs (two new North American CSPs entered the approved-vendor list this year)"
+   ],
+   "roadmap": "Management targets US$1B revenue per key account within two years; Texas plant localizes HVDC power-rack output for North America."
+  },
+  {
+   "name": "Battery backup units & supercapacitor shelves (the BBU franchise)",
+   "description": "Rack-level DC-coupled BBUs replacing centralized UPS: 12 kW/2U 50V BBU shelf (45 s full-power backup), 22 kW/3U 800V supercapacitor shelf (60 s), designs targeting 2-minute ride-through (keeping CDU coolant flowing — 'power resilience firewall'); ~5x power density versus five years ago; microsecond 'Always Backup' switching via PSU-BBU firmware integration (LITEON builds both sides); UL 9540A-type fire validation; backup ratios configurable above 1:0.7.",
+   "positioning": "LITEON's clearest lead: investing since 2010, first large cloud adoption 2017, 2025 shipments ~30x prior year — and the architecture shift makes BBUs standard equipment on GB300/Rubin racks. BBU is ~20-25% of the cloud segment and has been capacity-constrained.",
+   "soldThrough": "Direct CSP deployments with long-term B2B history.",
+   "targetSegments": [
+    "GB300/Rubin-class racks",
+    "800V power racks (embedded BBU + supercap)"
+   ],
+   "roadmap": "The GB300 NVL72 collaboration with NVIDIA (energy storage + power capping + GPU load management) cut grid peak load ~30% — the productized version of the power-smoothing problem."
+  },
+  {
+   "name": "Liquid cooling (CDUs, cold plates, sidecars)",
+   "description": "2.1 MW in-row CDU, 280 kW and 120 kW in-rack CDUs, 140 kW liquid-to-air sidecar, 600 kW in-row L2L, GB300 NVL72 cold plates, fanless 5,600 W cold-plate titanium PSU; MGX and ORV3 racks rated beyond 3,000 kg with <2 mm tolerance.",
+   "positioning": "A credible fast-follower thermal line that lets LITEON quote power+cooling rack integration — the same bundling logic as Delta, a tier smaller.",
+   "soldThrough": "Same CIPS rack-integration channel (assembly 'up to level 9').",
+   "targetSegments": [
+    "Liquid-cooled NVL72-class deployments"
+   ],
+   "roadmap": "Liquid-cooled 800 VDC rack (cold-plate cooled power components) debuted June 2026."
+  },
+  {
+   "name": "Legacy & diversification (opto, IT/consumer, LEO power, optics bet)",
+   "description": "Optoelectronics (16% of 1H26 sales): opto-semis, automotive lighting, IR sensing. IT & Consumer (30%): PC/gaming power, adapters — guided softer in H2. Growth options: LEO satellite user-terminal power (guided to multiple-fold growth), 5G/AI-RAN (MWC 2026, U-MEDIA tender), and a US$34.3M / ~21% stake in Singapore InP laser IDM DenseLight for rack-scale optical interconnect (no material revenue before late 2027).",
+   "positioning": "The legacy mix funds the pivot; DenseLight is the CPO-era optionality play against a cited US$35B optical-interconnect TAM by 2030.",
+   "soldThrough": "OEM/ODM and distribution.",
+   "targetSegments": [
+    "Consumer/IT (declining share)",
+    "LEO satellite operators",
+    "Telecom"
+   ],
+   "roadmap": "Segment mix continues shifting toward Cloud & AIoT (54% and rising)."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-07-31",
+   "category": "financial",
+   "headline": "Q2 2026 all-time records: revenue NT$52.7B (+30%), EPS NT$3.14 (+126%), gross margin 27.2%, operating margin 15.6%; 2026 capex raised NT$13B → NT$18B; DenseLight optical stake announced",
+   "read": "The record quarter carried two one-offs (deferred Q1 orders, semi-knockdown recognition) — the CFO redirected to H1's 24.7% as the margin baseline. Cloud-related revenue (AI server power + energy storage) grew >100%.",
+   "source": "https://www.liteon.com/en/news/press-center/content/quarterly-second-eps-2026"
+  },
+  {
+   "date": "2026-07-13",
+   "category": "capacity",
+   "headline": "US$919M McKinney, Texas advanced-manufacturing site — >650,000 sq ft, 600+ jobs, focused on HVDC power racks",
+   "read": "Tariff localization plus proximity to North American CSP demand; non-China capacity heads to 60% of total by end-2026 and 70% by 2027 (+162% non-China capacity 2025→26).",
+   "source": "https://www.liteon.com/en/news/press-center/content/liteon-mckinney-investment"
+  },
+  {
+   "date": "2026-06-02",
+   "category": "product-launch",
+   "headline": "Computex 2026: liquid-cooled 800 VDC Power Rack debut; 280 kW in-rack CDU; 110 kW power shelf",
+   "read": "Cold-plate cooling of the power components themselves — power and thermal re-architected together, per the CIPS GM's framing.",
+   "source": "https://www.liteon.com/en/news/press-center/content/liteon-computex-2026"
+  },
+  {
+   "date": "2026-03-17",
+   "category": "product-launch",
+   "headline": "GTC 2026: 800 VDC Power Rack, 110 kW Vera Rubin NVL72 power shelf, 2.1 MW in-row CDU; joint Vera Rubin demo with QCT",
+   "read": "The Vera Rubin generation is where LITEON's shelf content steps up (18.3 kW PSUs); the QCT pairing shows the ODM route to volume.",
+   "source": "https://www.liteon.com/en/news/press-center/content/liteon-nvidia-gtc-2026"
+  },
+  {
+   "date": "2026-04-29",
+   "category": "financial",
+   "headline": "Q1 2026: revenue NT$43.4B (+19%) but a consensus miss; board approved the US$919M US investment, US$149M Vietnam increase, and a GDR/private placement authorization up to 200M shares",
+   "read": "The last miss before the Q2 blowout — and the financing authorization that signals how capital-hungry the capacity race is.",
+   "source": "https://www.liteon.com/en/news/press-center/content/quarterly-first-eps-2026"
+  },
+  {
+   "date": "2026-02-25",
+   "category": "financial",
+   "headline": "FY2025 results: record EPS NT$6.64 (+27%); revenue NT$166.1B (+21%); 50 VDC power rack in mass production, 800 VDC rack in testing",
+   "read": "The inflection year — AI revenue passed 20% of sales and the beat-miss pattern of 2024 flipped as the H2 AI ramp overwhelmed consensus.",
+   "source": "https://www.liteon.com/en/news/press-center/content/quarterly-fourth-eps-2025"
+  },
+  {
+   "date": "2025-10-13",
+   "category": "partnership",
+   "headline": "OCP 2025: 800 VDC portfolio; GB300 NVL72 collaboration with NVIDIA — energy storage + power capping + GPU load management cutting grid peak load ~30%",
+   "read": "LITEON's version of the power-smoothing story NVIDIA published for GB300 — BBU-side engineering as a first-class NVIDIA collaboration.",
+   "source": "https://www.liteon.com/en/news/press-center/content/liteon-ocp-2025"
+  },
+  {
+   "date": "2025-05-20",
+   "category": "leadership",
+   "headline": "AGM 2026 framing: 50th anniversary passed, chairman declares 2026 'Year One' with a zero-based mindset; three priorities — high-value mix, component-to-system transition, operational efficiency",
+   "read": "The strategic identity shift ('no longer ODM/OEM — a solution provider') formalized at board level.",
+   "source": "https://www.liteon.com/en/news/press-center/content/annual-general-meeting-2026"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess the BBU franchise is LITEON's structural edge and the architecture shift amplifies it. Basis: BBUs move from optional (GB200) to standard (GB300/Rubin); 2025 BBU shipments ~30x prior year against acknowledged capacity constraints; and the 800V power rack embeds BBU and supercap shelves — LITEON's strongest products become non-discretionary content.",
+  "(High confidence) We assess LITEON is a step behind Delta on the 800V GPU-side ramp and is routing around it via ASIC customers. Basis: its own disclosed timeline (sampling August 2026 → mass production Q1 2027, ASIC first, GPU clients 'potentially Q2 2027') versus Delta demoing at GTC with an NVIDIA DC-DC exclusive; KGI-attributed data has LITEON strongest at a US CSP with an aggressive ASIC deployment timeline.",
+  "(Moderate confidence) We assess the Megmeet threat is real but not yet resolved against LITEON. Basis: Chinese-press reports of Megmeet displacing LITEON at #2 on NVL72 shelves conflict with LITEON's record shipments and AVL additions (two new North American CSPs this year); both can be true if the market is growing faster than share shifts — but the sidecar power-rack segment LITEON is tooling Texas for is the same one Megmeet claims first-mover position in, and independent analysis projects that TAM peaking around 2028.",
+  "(Moderate confidence) We assess the balance sheet is carrying the ramp visibly. Basis: short-term loans +132% to NT$31.4B, inventory +25%, cash-conversion cycle out 17 days to 64, net cash down NT$11.8B — plus a 200M-share GDR/placement authorization; customer-subsidized component stockpiling mitigates but does not remove the working-capital strain.",
+  "(Low confidence) We assess consensus sees the stock near fully valued into the ramp. Basis: price target ~NT$253.5 versus ~NT$247 (~2.6% upside) at ~20.5x forward earnings — a sharp contrast with Delta's wide bull-bear spread; the market is paying for execution already promised. Pre-2026 the company missed estimates four times across the trailing window — the AI narrative only overwhelmed the miss pattern from Q2 2026."
+ ],
+ "relationships": [
+  {
+   "slug": "nvidia",
+   "type": "partner",
+   "note": "800 VDC power-components-tier member; 110 kW power shelves for Vera Rubin NVL72 and GB300 collaboration.",
+   "context": "LITEON sits on NVIDIA's own 800V partner roster (power-components tier with Delta, Megmeet, Flex, BizLink), shipping 33 kW power shelves, 8.5 kW PSU+BBU pairs, 110 kW shelves for Vera Rubin NVL72 and an 800 VDC 660 kW power rack scaling to >1.5 MW racks in 2H 2026. At OCP 2025 it showed a GB300 NVL72 collaboration combining energy storage, power capping and GPU load management to cut grid peak load ~30% — BBU-side engineering as a first-class NVIDIA collaboration.",
+   "source": "https://developer.nvidia.com/blog/nvidia-800-v-hvdc-architecture-will-power-the-next-generation-of-a",
+   "status": "active",
+   "since": "2025"
+  },
+  {
+   "slug": "megmeet",
+   "type": "competitor",
+   "note": "Contested #2 fight on NVL72 power shelves — the sidecar power-rack segment both are tooling for.",
+   "context": "Chinese-press reporting has Megmeet displacing LITEON at #2 on NVL72 power shelves, conflicting with LITEON's record shipments and two new North American CSP qualifications this year — both can be true in a fast-growing market. The sidecar power-rack segment LITEON is tooling Texas capacity for is the same one Megmeet claims first-mover position in, with independent analysis projecting that TAM peaking around 2028.",
+   "source": "Dossier competitive assessment — NVIDIA 800 VDC component tier",
+   "status": "active"
+  },
+  {
+   "slug": "delta-electronics",
+   "type": "competitor",
+   "note": "Power-components-tier leader holding an NVIDIA DC-DC exclusive LITEON second-sources against.",
+   "context": "Delta shares NVIDIA's 800 VDC power-components tier with LITEON and holds the incumbent position (GTC demos, an NVIDIA DC-DC exclusive per the dossier's basis). KGI-attributed data places LITEON as the lead second source — strongest at a US CSP with an aggressive ASIC timeline — sampling August 2026 toward mass production Q1 2027.",
+   "source": "Dossier competitive assessment — NVIDIA 800 VDC component tier",
+   "status": "active"
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "110 kW Power Shelf (Vera Rubin NVL72)",
+   "specs": [
+    {
+     "band": "Conversion",
+     "label": "PSUs",
+     "value": "18.3 kW PSUs; three-phase input, intelligent load balancing / auto phase distribution"
+    },
+    {
+     "band": "Load handling",
+     "label": "Transients",
+     "value": "Transient-surge handling for GPU load dynamics"
+    },
+    {
+     "band": "Performance",
+     "label": "Efficiency & density",
+     "value": ">97.5% efficiency, >100 W/in³ power density class"
+    }
+   ]
+  },
+  {
+   "product": "800 VDC Power Rack",
+   "specs": [
+    {
+     "band": "Capacity",
+     "label": "Roadmap",
+     "value": "660 kW shipping 1H 2026 → >1.5 MW configuration 2H 2026; liquid-cooled variant (Computex 2026)"
+    },
+    {
+     "band": "Backup",
+     "label": "BBU shelf",
+     "value": "12 kW/2U, 50 V, 45 s full-power backup"
+    },
+    {
+     "band": "Backup",
+     "label": "Supercap shelf",
+     "value": "22 kW/3U, 800 V, 60 s full-power backup"
+    },
+    {
+     "band": "Mechanical",
+     "label": "Rack & distribution",
+     "value": "Hot-swap PDU; mechanical rack >3,000 kg, <2 mm tolerance; PMC controller"
+    }
+   ]
+  },
+  {
+   "product": "BBU architecture",
+   "specs": [
+    {
+     "band": "Ride-through",
+     "label": "Design target",
+     "value": "2-minute ride-through design target (CDU coolant flow maintained)"
+    },
+    {
+     "band": "Density",
+     "label": "Progression",
+     "value": "~5x power density vs 5-6 years ago (1U)"
+    },
+    {
+     "band": "Switching & safety",
+     "label": "Firmware co-design",
+     "value": "Microsecond 'Always Backup' switching via PSU-BBU firmware co-design; UL 9540A-type fire validation"
+    }
+   ]
+  },
+  {
+   "product": "Liquid cooling line",
+   "specs": [
+    {
+     "band": "CDUs",
+     "label": "Range",
+     "value": "2.1 MW in-row CDU; 600 kW in-row; 280 kW / 120 kW in-rack; 140 kW L2A sidecar"
+    },
+    {
+     "band": "Cold plates & PSUs",
+     "label": "Platform support",
+     "value": "GB300 NVL72 cold plates; fanless 5,600 W titanium cold-plate PSU"
+    }
+   ]
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Tom Soong",
+   "title": "Chairman (& Chief Sustainability Officer)",
+   "background": [
+    "20+ years at LITEON across networking, mechanical, and smart-life businesses; ex-US semiconductor and VC background",
+    "Declared 2026 the company's 'Year One' with a zero-based mindset"
+   ]
+  },
+  {
+   "name": "Anson Chiu",
+   "title": "President",
+   "background": [
+    "Joined 1987; ran the cloud-computing business serving top US clients; led the Power Conversion group before the presidency (2020)",
+    "Owns the 'solution provider, not ODM/OEM' repositioning"
+   ]
+  },
+  {
+   "name": "John Chang",
+   "title": "GM, Cloud Infrastructure Platform & Solution SBG",
+   "background": [
+    "Runs the AI data-center power business (CIPS)",
+    "Technical framing: 'power and thermal systems must be re-architected together'"
+   ]
+  },
+  {
+   "name": "KT Lim",
+   "title": "Chief Financial Officer",
+   "background": [
+    "Publicly disciplined on margins: redirected Q2's record 27.2% GM to the 24.7% H1 baseline and a 24-25% long-term target",
+    "Managing the NT$18B capex year and the GDR/placement authorization"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "NT$ (TWD)",
+  "type": "fiscal-year (calendar)",
+  "periods": [
+   {
+    "period": "FY2024",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "NT$137.1B",
+      "expected": "in line (consensus NT$137B)",
+      "verdict": "inline",
+      "result": "EPS NT$5.21 missed by ~3%; Q1 and Q3 2024 both missed (EPS -9.4% and -13%)"
+     }
+    ],
+    "commentary": "A miss-prone year that kept the price target anchored — the pre-AI baseline against which the 2025-26 re-rating happened."
+   },
+   {
+    "period": "FY2025",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "NT$166.1B (+21%)",
+      "expected": "NT$153.2B (March 2025 consensus)",
+      "verdict": "beat",
+      "result": "~8.4% beat, H2-loaded as AI power ramped; gross margin 22.9% (+1.3pp)",
+      "kpi": "revenue",
+      "usdMillions": 5328.7,
+      "fxBasis": "NT$ converted at 31.171 TWD/USD (2025 calendar-year average, exchange-rates.org / x-rates.com)"
+     },
+     {
+      "name": "EPS",
+      "actual": "NT$6.64 (record, +27%)",
+      "expected": "NT$6.68",
+      "verdict": "inline",
+      "result": "-0.6%, essentially in line; net profit NT$15.1B (+27%)"
+     }
+    ],
+    "commentary": "The inflection: cloud & AIoT grew past 50% of the mix and AI revenue passed 20% of sales.",
+    "periodType": "annual",
+    "periodEnd": "2025-12-31"
+   },
+   {
+    "period": "Q2 2026 (latest interim)",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "NT$52.7B (+30% YoY, +21% QoQ)",
+      "expected": "no clean published consensus",
+      "verdict": "beat",
+      "result": "Described as a clear operational beat; H1 revenue NT$96.1B (+25%)"
+     },
+     {
+      "name": "EPS",
+      "actual": "NT$3.14 (+126%, all-time record)",
+      "expected": "—",
+      "verdict": "beat",
+      "result": "Gross margin 27.2% record (+5.1pp) — partly one-off; operating margin 15.6% record"
+     }
+    ],
+    "commentary": "Records across the board with management itself talking margins down to the 24.7% baseline. Q1 2026 had missed consensus — the quarter-to-quarter volatility reflects lumpy AI program timing. Forward consensus: FY2026 revenue ~NT$214.7B, target ~NT$253.5 vs ~NT$247 close — priced near full."
+   }
+  ]
+ },
+ "sources": [
+  {
+   "label": "LITEON Q2 2026 results",
+   "url": "https://www.liteon.com/en/news/press-center/content/quarterly-second-eps-2026",
+   "date": "2026-07-31"
+  },
+  {
+   "label": "LITEON Q2 2026 analyst meeting deck",
+   "url": "https://www.liteon.com/upload/media/ir/conference/2026/Presentation/2026%202Q%20Analyst%20Meeting%20-%20EN.pdf",
+   "date": "2026-07-31"
+  },
+  {
+   "label": "Investing.com — Q2 2026 earnings call coverage",
+   "url": "https://www.investing.com/news/transcripts/earnings-call-transcript-liteon-posts-record-q2-2026-as-ai-demand-lifts-margins-93CH-4829014",
+   "date": "2026-07-31"
+  },
+  {
+   "label": "McKinney, Texas investment",
+   "url": "https://www.liteon.com/en/news/press-center/content/liteon-mckinney-investment",
+   "date": "2026-07-13"
+  },
+  {
+   "label": "Computex 2026 (liquid-cooled 800V rack)",
+   "url": "https://www.liteon.com/en/news/press-center/content/liteon-computex-2026",
+   "date": "2026-06-02"
+  },
+  {
+   "label": "GTC 2026 announcements",
+   "url": "https://www.liteon.com/en/news/press-center/content/liteon-nvidia-gtc-2026",
+   "date": "2026-03-17"
+  },
+  {
+   "label": "FY2025 results",
+   "url": "https://www.liteon.com/en/news/press-center/content/quarterly-fourth-eps-2025",
+   "date": "2026-02-25"
+  },
+  {
+   "label": "OCP 2025 (GB300 grid-peak reduction)",
+   "url": "https://www.liteon.com/en/news/press-center/content/liteon-ocp-2025",
+   "date": "2025-10-13"
+  },
+  {
+   "label": "NVIDIA — 800 VDC ecosystem partner roster",
+   "url": "https://developer.nvidia.com/blog/nvidia-800-v-hvdc-architecture-will-power-the-next-generation-of-ai-factories/",
+   "date": "2025-05"
+  },
+  {
+   "label": "Rack BBU tech insight",
+   "url": "https://www.liteon.com/en/news/press-center/content/power-continuity-rack-bbu-ai-data-center"
+  },
+  {
+   "label": "fiisual — Delta/LITEON share estimates & BBU standardization",
+   "url": "https://fiisual.com/blog/post/2025/delta-electronics-introduction"
+  },
+  {
+   "label": "CommonWealth — LITEON BBU lead",
+   "url": "https://english.cw.com.tw/article/article.action?id=4427"
+  },
+  {
+   "label": "SemiAnalysis — 800 VDC market analysis (power-rack TAM)",
+   "url": "https://newsletter.semianalysis.com/p/inside-the-800vdc-revolution-part"
+  },
+  {
+   "label": "Simply Wall St — FY2024 miss record",
+   "url": "https://simplywall.st/stocks/tw/tech/twse-2301/lite-on-technology-shares/news/analyst-estimates-heres-what-brokers-think-of-lite-on-techno"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 3
+}

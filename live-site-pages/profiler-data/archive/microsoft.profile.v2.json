@@ -1,0 +1,380 @@
+{
+  "schemaVersion": 4,
+  "slug": "microsoft",
+  "name": "Microsoft Corporation",
+  "shortName": "Microsoft",
+  "categories": [
+    "hyperscaler"
+  ],
+  "website": "https://www.microsoft.com",
+  "headquarters": "Redmond, WA, USA",
+  "founded": 1975,
+  "employees": "~228,000 (June 2025 10-K vintage)",
+  "ownership": {
+    "type": "public",
+    "ticker": "NASDAQ: MSFT"
+  },
+  "summary": "BOTTOM LINE UP FRONT: Microsoft crossed $100B of Azure revenue (FY2026, +41%) with a $678B commercial backlog (+84%) underwriting a ~$190B calendar-2026 capex plan (~$175B after an accounting reclassification) — and its marquee energy bets are nuclear-shaped: the ~835 MW Three Mile Island restart (accelerating toward 2027 with a $1B federal loan) and the world's first fusion PPA (Helion, ≥50 MW targeting 2028). Notably, no major 2025–26 standalone battery-storage procurement has surfaced. BACKGROUND: Founded 1975; fiscal years end June 30. FY2026 revenue $331.8B (+18%), net income $133.7B; Microsoft Cloud >$214B; M365 Copilot passed 30M paid seats. The OpenAI relationship was restructured October 2025: ~27% stake (~$135B), an incremental $250B Azure purchase commitment from OpenAI, right-of-first-refusal dropped, IP rights through 2032.",
+  "ecosystemRole": "We assess Microsoft as the ecosystem's grid-firmness buyer par excellence — and its most conspicuous BESS gap. The Fairwater Atlanta design deliberately runs on resilient grid power with no on-site generators or UPS (4x9 availability at 3x9 cost), meaning Microsoft buys firmness upstream: TMI/Crane nuclear (835 MW), the record 10.5 GW Brookfield renewables framework, a ~40 GW clean-energy portfolio, and fusion options. Its known storage work is older grid-interactive UPS pilots (Dublin, with Eaton) it said it would replicate worldwide — a stated intent BESS suppliers can still sell into.",
+  "productsAndServices": [
+    {
+      "name": "Azure & AI Infrastructure (Fairwater)",
+      "category": "Cloud · the growth engine",
+      "description": "Azure surpassed $100B revenue in FY2026 (+41%; Q4 +43%, accelerating). Fairwater campuses: Wisconsin (Mount Pleasant — 'world's most powerful AI datacenter,' hundreds of thousands of NVIDIA Blackwell GPUs, closed-loop liquid cooling) and Atlanta (live October 2025; ~140 kW racks, 1,360 kW rows, GB200/GB300, grid-only power design) linked by a dedicated AI-WAN (120,000 new fiber miles) into the first 'planet-scale AI superfactory' (~2 GW multi-site cluster per trade press); international Fairwater-class builds with nScale in Norway (Narvik) and the UK (Loughton). Maia 200 in-house inference accelerator launched January 2026 (delayed from 2025; Microsoft explicitly says it 'will not replace Nvidia or AMD').",
+      "highlights": [
+        "Commercial RPO $678B (+84%) — the demand backlog that answers the oversupply debate as far as Microsoft is concerned",
+        "Calendar-2026 capex ~$190B announced April 2026 (vs $154.6B consensus — a ~$35B shock, ~$25B of it memory-price inflation); later restated to ~$175B via a 25-year useful-life/lease-treatment change, not a real cut",
+        "The TD Cowen lease-cancellation story (up to ~2 GW walked, early 2025) resolved as pacing, not retreat — capex re-accelerated through FY2026",
+        "Azure decelerations (39% in Q2 FY2026) drew a −5% selloff; Q4's 43% re-acceleration drove +8% — Azure growth is the single number the stock trades on"
+      ],
+      "positioning": "The #2 cloud by revenue with the deepest enterprise franchise; the OpenAI restructuring trades exclusivity for $250B of committed Azure purchases plus freedom to pursue AGI independently",
+      "soldThrough": "Cloud consumption, enterprise agreements, Copilot seats (30M+ paid)",
+      "targetSegments": "Enterprises, OpenAI (anchor), governments, consumers via Copilot",
+      "roadmap": "Additional identical Fairwater sites under construction; FY2027 capex guided higher (sell-side chatter of $255–260B is not company guidance)"
+    },
+    {
+      "name": "Energy Procurement (Nuclear-Weighted)",
+      "category": "Power portfolio",
+      "description": "20-year PPA for the full ~835 MW output of Three Mile Island Unit 1, restarting as the Crane Clean Energy Center — originally 2028, accelerated toward 2027 with a $1B DOE loan, NRC waiver, and FERC clearance (restart pending as of mid-2026). Helion fusion PPA (≥50 MW, targeting 2028; Helion raised $465M at $15.5B valuation to build the plant, cleared first US fusion regulatory licenses; Scientific American and others remain skeptical of the timeline). Brookfield global framework: 10.5+ GW of new renewables 2026–2030 (the largest corporate clean-power framework). ~40 GW clean-energy portfolio; 100% of FY2025 consumption renewable-matched; 20-year Chevron power deal for a Texas data center (June 2026). Grid posture: MISO grid-modernization partnership; signatory of the White House/EPA Ratepayer Protection Pledge.",
+      "highlights": [
+        "The TMI restart is the sector's marquee nuclear-restart transaction — its 2027 delivery is a watch item for the whole nuclear-for-AI thesis",
+        "Storage gap: no major 2025–26 standalone BESS procurement found by either research pass; known work is the 2022 Dublin grid-interactive UPS pilot (with Eaton) that Microsoft called 'proven' and pledged to replicate worldwide, and a Swedish DC where BESS replaced diesel",
+        "The Atlanta no-UPS/no-genset design shifts resilience spend from facility equipment to grid procurement — a structural choice with direct BESS-market implications"
+      ],
+      "positioning": "Top-tier corporate clean-energy buyer (~40 GW, closing on Amazon's #1); uniquely fusion-forward; distinctly light on named battery storage relative to Amazon/Google",
+      "soldThrough": "PPAs, utility frameworks, federal-loan-supported restarts",
+      "targetSegments": "Counterparties: Constellation, Brookfield, Helion, Chevron, utilities",
+      "roadmap": "Crane restart ~2027; Helion ≥50 MW ~2028; Brookfield deliveries 2026–2030"
+    },
+    {
+      "name": "Productivity, Windows & Gaming",
+      "category": "Core franchises",
+      "description": "Productivity & Business Processes ($37.8B in Q4 FY2026, +14%), Windows/devices/gaming ($12.9B, −4%), and the Copilot layer across all of it. The cash engine that lets Microsoft outspend on infrastructure without Meta-style FCF collapse.",
+      "highlights": [
+        "M365 Copilot 30M+ paid seats (from 20M a quarter earlier) — the clearest enterprise AI monetization datapoint among the big four"
+      ],
+      "soldThrough": "Enterprise agreements, subscriptions",
+      "targetSegments": "Enterprises, consumers"
+    }
+  ],
+  "recentDevelopments": [
+    {
+      "date": "2026-07-29",
+      "category": "financial",
+      "headline": "FY2026 Q4: revenue $90.0B (+18%) and adj. EPS $4.74 beat; Azure +43% and >$100B FY; RPO $678B (+84%); capex held at plan — stock +8%",
+      "read": "The quarter that re-validated the buildout: backlog growth outpacing capex growth is Microsoft's core answer to the oversupply debate.",
+      "source": "https://www.microsoft.com/en-us/investor/earnings/fy-2026-q4/press-release-webcast"
+    },
+    {
+      "date": "2026-06-02",
+      "category": "regulatory",
+      "headline": "NRC waiver and FERC clearance advance the Three Mile Island (Crane) restart toward 2027",
+      "read": "Every regulatory gate passed so far on an accelerated timeline — the restart's success or slip calibrates the entire nuclear-restart pipeline hyperscalers are counting on.",
+      "source": "https://www.utilitydive.com/news/constellation-three-mile-island-nuclear-power-plant-microsoft-data-center-ppa/727652/"
+    },
+    {
+      "date": "2026-04-29",
+      "category": "financial",
+      "headline": "The $190B capex shock: calendar-2026 plan ~$190B vs $154.6B consensus (~$25B of the gap from memory-price inflation)",
+      "read": "Repriced AI capex expectations market-wide; later restated to ~$175B purely via accounting (25-year useful lives, lease treatment) — the real plan held.",
+      "source": "https://www.cnbc.com/2026/04/29/microsoft-msft-q3-earnings-report-2026.html"
+    },
+    {
+      "date": "2026-01-28",
+      "category": "financial",
+      "headline": "FY2026 Q2: beat on headline but Azure decelerated to 39% — ~5% selloff on capex-vs-growth anxiety",
+      "read": "The cycle's recurring pattern in miniature: Azure's growth rate, not absolute results, sets the market's tolerance for spending.",
+      "source": "https://fortune.com/2026/01/28/microsoft-stock-drops-azure-growth-slows-capex-spending-q2/"
+    },
+    {
+      "date": "2026-01-26",
+      "category": "product-launch",
+      "headline": "Maia 200 inference accelerator launched (delayed from 2025); Microsoft: it 'will not replace Nvidia or AMD'",
+      "read": "Custom silicon as cost-relief, not independence — Microsoft remains the most NVIDIA-committed hyperscaler at the frontier.",
+      "source": "https://blogs.microsoft.com/"
+    },
+    {
+      "date": "2025-11-12",
+      "category": "capacity",
+      "headline": "'AI superfactory': Fairwater Wisconsin + Atlanta linked by a dedicated AI-WAN (120,000 fiber miles) into one distributed training machine (~2 GW per trade press)",
+      "read": "Multi-site distributed training changes siting economics — grid diversity becomes a compute-architecture feature, and the Atlanta no-UPS design shows where resilience spend went.",
+      "source": "https://blogs.microsoft.com/blog/2025/11/12/infinite-scale-the-architecture-behind-the-azure-ai-superfactory/"
+    },
+    {
+      "date": "2025-10-28",
+      "category": "partnership",
+      "headline": "OpenAI restructuring: ~27%/$135B stake; OpenAI commits an incremental $250B of Azure purchases; ROFR dropped; IP through 2032; AGI claims independently verified",
+      "read": "Microsoft traded exclusivity for committed spend and optionality — the cleanest resolution available to the cycle's most-watched dependency.",
+      "source": "https://blogs.microsoft.com/blog/2025/10/28/the-next-chapter-of-the-microsoft-openai-partnership/"
+    },
+    {
+      "date": "2025-09-18",
+      "category": "capacity",
+      "headline": "Fairwater Wisconsin unveiled as 'the world's most powerful AI datacenter'; Norway and UK AI-DC partnerships announced",
+      "read": "The flagship of the ~$80B→$190B capex arc — closed-loop cooling with near-zero water use is the sustainability counter-argument in physical form.",
+      "source": "https://blogs.microsoft.com/blog/2025/09/18/inside-the-worlds-most-powerful-ai-datacenter/"
+    }
+  ],
+  "strategyRead": [
+    "(High confidence) We assess Microsoft's demand case is the best-documented of the big four: a $678B commercial backlog growing faster (+84%) than capex means its buildout is substantially pre-sold — the OpenAI $250B Azure commitment alone underwrites years of Fairwater capacity. Basis: FY2026 filings.",
+    "(High confidence) We assess Microsoft has structurally chosen grid procurement over on-site storage: the Atlanta Fairwater no-UPS/no-genset design plus nuclear/fusion/renewables frameworks put resilience spend upstream of the fence line. For BESS suppliers this makes Microsoft's utilities and grid partners the sales channel — and the pledged worldwide replication of the Dublin grid-interactive UPS concept the door still ajar.",
+    "(Moderate confidence) We assess the TMI/Crane restart is the single most consequential energy milestone in Microsoft's book: on-time 2027 delivery validates the restart playbook (and the $1B federal-loan model); slippage would push firming demand toward gas and storage across the sector.",
+    "(Moderate confidence) We assess the capex accounting restatement (~$190B → ~$175B via 25-year useful lives and lease treatment) is optics management, not retrenchment — the physical build plan held, and Amy Hood's steady-guidance posture at Q4 was rewarded with the +8% move.",
+    "(Low confidence) Sell-side chatter of $255–260B calendar-2027 capex and the reported Helion–OpenAI fusion negotiations are unconfirmed — the latter would dilute Microsoft's first-customer position in fusion if realized."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "Fairwater AI campuses",
+      "specs": [
+        {
+          "band": "Campuses",
+          "label": "Wisconsin (Mount Pleasant)",
+          "value": "315 acres · 3 buildings/1.2M sq ft · hundreds of thousands of Blackwell GPUs · closed-loop liquid cooling, near-zero water"
+        },
+        {
+          "band": "Campuses",
+          "label": "Atlanta",
+          "value": "Live Oct 2025 · ~140 kW racks, 1,360 kW rows · GB200/GB300 · grid-only power (no on-site generators or UPS) — 4x9 availability at 3x9 cost"
+        },
+        {
+          "band": "Interconnect",
+          "label": "AI-WAN",
+          "value": "120,000 new fiber miles in one year linking sites into a 'planet-scale AI superfactory' (~2 GW multi-site per trade press)"
+        },
+        {
+          "band": "International",
+          "label": "nScale partnerships",
+          "value": "Narvik, Norway + Loughton, UK ('UK's largest supercomputer')"
+        }
+      ]
+    },
+    {
+      "product": "Energy portfolio (firmness-weighted)",
+      "specs": [
+        {
+          "band": "Nuclear",
+          "label": "TMI Unit 1 / Crane",
+          "value": "~835 MW, 20-yr PPA, restart toward 2027 ($1B DOE loan, NRC waiver, FERC cleared)"
+        },
+        {
+          "band": "Fusion",
+          "label": "Helion",
+          "value": "≥50 MW PPA targeting 2028 — world's first fusion PPA; Helion licensed and funded ($465M at $15.5B valuation)"
+        },
+        {
+          "band": "Renewables",
+          "label": "Portfolio",
+          "value": "Brookfield framework 10.5+ GW (2026–2030); ~40 GW total clean portfolio; 100% FY2025 renewable-matched"
+        },
+        {
+          "band": "Storage",
+          "label": "Position",
+          "value": "No major recent standalone BESS deals found; Dublin grid-interactive UPS pilot (Eaton) pledged for worldwide replication; Swedish DC BESS-for-diesel swap"
+        }
+      ]
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Satya Nadella",
+      "photo": "images/execs/microsoft-nadella.jpg",
+      "photoCredit": "Brian Smale and Microsoft, CC BY-SA 4.0, via Wikimedia Commons",
+      "title": "Chairman & CEO (CEO since 2014)",
+      "background": [
+        "Drove the cloud-first, then AI-first transformation; at Microsoft since 1992"
+      ]
+    },
+    {
+      "name": "Amy Hood",
+      "photo": "images/execs/microsoft-hood.jpg",
+      "title": "EVP & CFO (since 2013)",
+      "background": [
+        "Sets the capex guidance cadence the whole sector trades on"
+      ]
+    },
+    {
+      "name": "Scott Guthrie",
+      "title": "EVP, Cloud + AI",
+      "background": [
+        "Owns Azure infrastructure; authored the Fairwater and AI-superfactory announcements"
+      ]
+    },
+    {
+      "name": "Brad Smith",
+      "photo": "images/execs/microsoft-smith.jpg",
+      "photoCredit": "Web Summit, CC BY 2.0, via Wikimedia Commons",
+      "title": "Vice Chair & President",
+      "background": [
+        "Policy/energy advocacy; authored the $80B FY2025 capex post; fronts grid and ratepayer commitments"
+      ]
+    },
+    {
+      "name": "Bobby Hollis",
+      "title": "VP of Energy",
+      "background": [
+        "Microsoft's named executive on the Constellation/TMI deal — the key contact point for power suppliers"
+      ]
+    },
+    {
+      "name": "Mustafa Suleyman",
+      "photo": "images/execs/microsoft-suleyman.jpg",
+      "photoCredit": "Christopher Wilson, CC BY-SA 4.0, via Wikimedia Commons",
+      "title": "CEO, Microsoft AI",
+      "background": [
+        "Consumer AI/Copilot; DeepMind and Inflection co-founder"
+      ]
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "type": "public",
+    "periods": [
+      {
+        "period": "FY2026 (Jul 2025–Jun 2026)",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "$331.8B (+18%)",
+            "expected": "Q4: $90.0B vs $87.6B consensus",
+            "verdict": "beat",
+            "result": "operating income $155.2B (+21%)",
+            "kpi": "revenue",
+            "usdMillions": 331800,
+            "fxBasis": "as reported"
+          },
+          {
+            "name": "Net income",
+            "actual": "$133.7B (+31%)",
+            "expected": "Q4 adj. EPS $4.74 vs $4.24",
+            "verdict": "beat",
+            "result": "includes ~$4.96B net OpenAI investment gains"
+          },
+          {
+            "name": "Azure",
+            "actual": ">$100B (+41%); Q4 +43%",
+            "expected": "Q2's 39% was the year's miss vs buyside",
+            "verdict": "beat",
+            "result": "RPO $678B (+84%)"
+          },
+          {
+            "name": "Capex",
+            "actual": "$115.9B (fiscal year, incl. finance leases per company basis)",
+            "expected": "Calendar-2026 plan ~$190B vs $154.6B consensus (Apr)",
+            "verdict": "miss",
+            "result": "restated to ~$175B via accounting change"
+          }
+        ],
+        "commentary": "Q1 FY2027 guide: Azure +45% cc, revenue $89.85–90.95B. Standardize on capex including finance leases — third-party trackers diverge on definitions.",
+        "periodType": "annual",
+        "periodEnd": "2026-06-30"
+      },
+      {
+        "period": "FY2025 (Jul 2024–Jun 2025)",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "$281.7B (+15%)",
+            "expected": "Q4: $76.4B vs ~$73.8B",
+            "verdict": "beat",
+            "result": "the print that pushed MSFT past $4T market cap"
+          },
+          {
+            "name": "Net income",
+            "actual": "$101.8B (+16%)",
+            "expected": "Q4 EPS $3.65 vs ~$3.37",
+            "verdict": "beat",
+            "result": "Azure disclosed standalone for the first time: >$75B (+34%)"
+          },
+          {
+            "name": "Capex",
+            "actual": "~$80B total spend incl. finance leases (cash capex $64.6B)",
+            "expected": "",
+            "verdict": "inline",
+            "result": ">50% in the US per Brad Smith"
+          }
+        ],
+        "commentary": "The TD Cowen lease-cancellation reports (Feb–Mar 2025, up to ~2 GW) resolved as strategic pacing — spending re-accelerated through FY2026."
+      }
+    ],
+    "commentary": "Fiscal years end June 30. The OpenAI equity-method line swings net income both ways across quarters (losses in Q1 FY2026, gains in FY2026 overall). Regulatory watch: EU DMA gatekeeper review of cloud units; FTC inquiry reporting. The bear case is utilization: ~$710B combined big-tech 2026 outlay against uncertain end-demand — Microsoft's RPO is the strongest counter-evidence in the set."
+  },
+  "sources": [
+    {
+      "label": "Microsoft — FY2026 Q4 results",
+      "url": "https://www.microsoft.com/en-us/investor/earnings/fy-2026-q4/press-release-webcast",
+      "date": "2026-07-29"
+    },
+    {
+      "label": "CNBC — FY2026 Q4 coverage",
+      "url": "https://www.cnbc.com/2026/07/29/microsoft-msft-q4-earnings-report-2026.html",
+      "date": "2026-07-29"
+    },
+    {
+      "label": "CFO Dive — capex accounting restatement",
+      "url": "https://www.cfodive.com/news/microsoft-holds-line-ai-spending-plans/826648/",
+      "date": "2026-07"
+    },
+    {
+      "label": "Utility Dive — TMI restart timeline",
+      "url": "https://www.utilitydive.com/news/constellation-three-mile-island-nuclear-power-plant-microsoft-data-center-ppa/727652/",
+      "date": "2026-06-02"
+    },
+    {
+      "label": "DCD — $11.1B quarterly DC leases",
+      "url": "https://www.datacenterdynamics.com/en/news/microsoft-spent-111bn-on-data-center-leases-alone-in-q1-2026/",
+      "date": "2026-05"
+    },
+    {
+      "label": "CNBC — Q3 FY2026 ($190B capex plan)",
+      "url": "https://www.cnbc.com/2026/04/29/microsoft-msft-q3-earnings-report-2026.html",
+      "date": "2026-04-29"
+    },
+    {
+      "label": "Fortune — Q2 FY2026 Azure deceleration selloff",
+      "url": "https://fortune.com/2026/01/28/microsoft-stock-drops-azure-growth-slows-capex-spending-q2/",
+      "date": "2026-01-28"
+    },
+    {
+      "label": "Microsoft — AI superfactory architecture (Atlanta, AI-WAN)",
+      "url": "https://blogs.microsoft.com/blog/2025/11/12/infinite-scale-the-architecture-behind-the-azure-ai-superfactory/",
+      "date": "2025-11-12"
+    },
+    {
+      "label": "Microsoft — OpenAI partnership restructuring",
+      "url": "https://blogs.microsoft.com/blog/2025/10/28/the-next-chapter-of-the-microsoft-openai-partnership/",
+      "date": "2025-10-28"
+    },
+    {
+      "label": "Microsoft — Fairwater Wisconsin ('world's most powerful AI datacenter')",
+      "url": "https://blogs.microsoft.com/blog/2025/09/18/inside-the-worlds-most-powerful-ai-datacenter/",
+      "date": "2025-09-18"
+    },
+    {
+      "label": "Microsoft — FY2025 Q4 results",
+      "url": "https://www.microsoft.com/en-us/investor/earnings/fy-2025-q4/press-release-webcast",
+      "date": "2025-07-30"
+    },
+    {
+      "label": "Microsoft — $80B AI-datacenter capex post (Brad Smith)",
+      "url": "https://blogs.microsoft.com/on-the-issues/2025/01/03/the-golden-opportunity-for-american-ai/",
+      "date": "2025-01-03"
+    },
+    {
+      "label": "Constellation — Crane Clean Energy Center announcement",
+      "url": "https://www.constellationenergy.com/news/2024/Constellation-to-Launch-Crane-Clean-Energy-Center-Restoring-Jobs-and-Carbon-Free-Power-to-The-Grid.html",
+      "date": "2024-09-20"
+    },
+    {
+      "label": "Brookfield — 10.5 GW renewable framework",
+      "url": "https://bep.brookfield.com/press-releases/bep/brookfield-and-microsoft-collaborating-deliver-over-105-gw-new-renewable-power",
+      "date": "2024-05-01"
+    },
+    {
+      "label": "Helion — world's first fusion PPA with Microsoft",
+      "url": "https://www.helionenergy.com/articles/helion-announces-worlds-first-fusion-ppa-with-microsoft/",
+      "date": "2023-05-10"
+    }
+  ],
+  "lastUpdated": "2026-08-22",
+  "profileVersion": 2
+}

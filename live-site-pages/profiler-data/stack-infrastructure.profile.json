@@ -1,0 +1,770 @@
+{
+ "schemaVersion": 6,
+ "slug": "stack-infrastructure",
+ "name": "STACK Infrastructure",
+ "categories": [
+  "developer"
+ ],
+ "hq": "Denver, CO, USA",
+ "founded": "January 2019 (Denver; launched by IPI Partners combining Infomart Data Centers' Ashburn, Portland and Silicon Valley facilities with IPI's Atlanta, Chicago and two Dallas/Fort Worth assets — 100MW+ across ~1.5M sq ft at launch)",
+ "ownership": "private (Blue Owl Capital-managed digital infrastructure funds — formerly IPI Partners, the ICONIQ Capital/Iron Point Partners joint venture that created STACK; Blue Owl acquired IPI's business for ~$1.0B, completed January 2025; 11 stabilized US assets recycled into Blue Owl Digital Infrastructure Trust, a perpetual-life non-traded REIT, December 2025)",
+ "employees": "~900 globally across ~20 markets (February 2025, per Blue Owl SEC filing — latest disclosed)",
+ "website": "https://www.stackinfra.com",
+ "summary": "BOTTOM LINE UP FRONT: STACK Infrastructure is the Blue Owl-managed wholesale developer-landlord executing two of the largest named-tenant data-center programs in the United States — developer and owner of all three campuses in Amazon's $18B northwest Louisiana buildout (raised from $12B on 18 August 2026) and of Project Jupiter, the 1GW+ Stargate campus in Santa Teresa, New Mexico serving Oracle/OpenAI — on a platform the company states at 13GW of current and pipeline capacity across three regionally financed businesses (December 2025). Ownership is in motion at both ends of the structure: Blue Owl acquired STACK's fund manager IPI Partners (~$1.0B, closed January 2025), carved the pan-European colocation business out to Apollo funds (April 2025), seeded a perpetual non-traded REIT with 11 stabilized STACK data centers at $3.3B gross value (December 2025), and — per Bloomberg-sourced reporting, June 2026 — is preparing a sale of the APAC portfolio that could exceed $30B. BACKGROUND: Denver-headquartered; formed January 2019 when IPI Partners (the ICONIQ Capital/Iron Point Partners JV) combined Infomart Data Centers with T5-operated assets — 100MW+ across six US markets at launch under founding CEO Brian Cox (ex-Infomart CEO, ex-Cologix CFO/COO). Today more than 90 US data centers in operation, under construction and under development (company statement, August 2026); Americas site capacity 3,200MW across 23 campuses — 2,400MW of it in Northern Virginia — plus EMEA at 743MW across 21 campuses post-carve-out and APAC campuses in Melbourne, Sydney, Tokyo, Osaka and Johor Bahru. Regional chief executives: Matt VanderZanden (Americas, since December 2025), Brian Cox (EMEA interim, since August 2025), Preet Gona (APAC). Repeat securitizer: ten ABS series under its master trust since 2019 (~$3.9B cumulative issuance), within $36.1B of global capital raised as of July 2025. No revenue or EBITDA figures are disclosed.",
+ "ecosystemRole": "We assess STACK as the Blue Owl complex's build engine and, alongside Vantage, one of the two most consequential private wholesale landlords in the current hyperscaler/Stargate buildout. Basis: company and partner releases — named developer-owner roles for Amazon (three Louisiana campuses, $18B) and for Oracle/OpenAI's Stargate program (Project Jupiter, one of five sites in the 4.5GW expansion), one of the sector's longest-running data-center securitization programs (ten series since 2019), and a three-region platform that its sponsor actively recycles (Apollo colocation carve-out, perpetual-REIT seeding, reported APAC sale process). For power-chain and construction vendors, STACK is a standardized procurement counterparty: a repeatable design — closed-loop cooling with potable-water use held to office-building levels, on-site substations, liquid-to-chip readiness — replicated across more than 90 US facilities and three continents.",
+ "productsAndServices": [
+  {
+   "name": "Americas hyperscale platform (core business)",
+   "category": "Data centers",
+   "description": "Build-own-operate wholesale campuses and build-to-suit programs across 23 Americas campuses totaling 3,200MW of site capacity on 1,360 acres (company site, August 2026). Northern Virginia is the anchor — 7 sites and 2,400MW, led by the Stafford Technology Campus (1+GW across ~500 acres, 19 data centers in four sub-campuses, Dominion Energy substations), the 200MW/62-acre NVA05 campus in Manassas ($900M green financing, January 2025) and a 144MW two-building Loudoun County campus (announced February 2025). Beyond Virginia: DFW02 in Lancaster, south Dallas (220MW initial across six 36MW buildings, expandable past 500MW, on-site Oncor substation), Phoenix (2 sites, 500MW), Portland (3 sites, 250MW), Silicon Valley (2 sites, 200MW), Atlanta (2 sites, 180MW), Chicago (2 sites, 76MW — CHI02, a 36MW two-story facility in Elk Grove Village, added March 2025), New Albany OH (60MW), Toronto (56MW) and Calgary. Two named-tenant mega-programs now dominate the pipeline: three campuses for Amazon across Caddo Parish, Bossier Parish and Shreveport, Louisiana ($18B program), and Project Jupiter, a 1GW+ Stargate campus in Santa Teresa, New Mexico developed with BorderPlex Digital Assets for Oracle/OpenAI.",
+   "highlights": [
+    "Developer and owner of all three campuses in Amazon's $18B northwest Louisiana program — up to 750 full-time and ~2,250 construction jobs (Amazon, August 2026)",
+    "Project Jupiter is one of five sites in Oracle/OpenAI's 4.5GW Stargate expansion — construction began September 2025, initial operations targeted Q4 2026",
+    "Company claims the position of largest private data center developer in Virginia, with $9B of Virginia financings since 2019 (March 2025 release)"
+   ],
+   "positioning": "One of the small set of private wholesale platforms delivering gigawatt-class named-tenant campuses — bigger US program wins than Aligned or QTS's disclosed AI deals, and a peer of Vantage in Stargate delivery, though at smaller total platform scale (13GW current + pipeline vs Vantage's ~9GW power capacity claim); unlike Equinix/Digital Realty it carries no public-REIT overhead and prices delivery credibility, not interconnection ecosystems.",
+   "soldThrough": "Long-term take-or-pay wholesale leases, build-to-suit development agreements and powered-shell leases direct with hyperscalers; project debt raised against leases via green loans and the master-trust ABS program.",
+   "targetSegments": [
+    "Amazon/AWS (Louisiana program)",
+    "Oracle (for OpenAI/Stargate, New Mexico)",
+    "Other hyperscalers and AI platforms",
+    "Enterprises on legacy sites (Plano since 2012, Silicon Valley, Portland)"
+   ],
+   "roadmap": "DFW02 first phase delivery from mid-2026; Project Jupiter initial operations Q4 2026; Louisiana three-campus buildout ramping to ~2,250 construction jobs; Stafford's 19-building program phased over multiple years."
+  },
+  {
+   "name": "Deployment tiers: powered shell, turnkey wholesale, build-to-suit",
+   "category": "Data centers",
+   "description": "STACK launched in 2019 selling an explicit product ladder — HYPER STACK (hyperscale campuses and build-to-suit), READY STACK (turnkey wholesale colocation) and POWER STACK (powered shell) — and still sells all three rungs, now framed as campus development, single-tenant purpose-built facilities and multi-tenant data halls. Powered shell delivers the building plus utility power with the tenant self-performing electrical/mechanical fit-out; turnkey delivers the complete environment. Campuses are engineered to accommodate both in one footprint (DFW02 explicitly supports shell and turnkey deployments), with cloud-density and AI/ML-density configurations and liquid-to-chip cooling options for high-density work.",
+   "highlights": [
+    "Land-and-power banking is the underlying asset: on-site substations at DFW02 (Oncor), NVA05 (NOVEC) and Stafford (Dominion) convert utility position into deliverable megawatts",
+    "First-megawatt speed plus long-term scalability is the stated campus design goal",
+    "Closed-loop cooling standard: zero potable water for cooling on new US designs, water use held to office-building levels at Project Jupiter"
+   ],
+   "positioning": "The retained shell-through-turnkey flexibility differentiates against turnkey-only wholesale peers (Vantage, CloudHQ) and appeals to hyperscalers that self-perform fit-out; against powered-shell specialists, STACK's operating track record (>90 US facilities) supports the full-service rung.",
+   "soldThrough": "Wholesale leases per tier — powered-shell leases, turnkey data-hall leases, and build-to-suit development agreements; no retail colocation or interconnection product remains after the 2025 Apollo carve-out of the European colo business.",
+   "targetSegments": [
+    "Hyperscalers choosing shell (self-perform) vs turnkey (speed)",
+    "AI platforms needing liquid-cooling-ready density",
+    "Large enterprises taking single data halls"
+   ],
+   "roadmap": "AI/ML-density configurations rolling into new campuses (DFW02, Jupiter, Louisiana); no dated public roadmap for tier-level product changes."
+  },
+  {
+   "name": "EMEA hyperscale platform (post-carve-out)",
+   "category": "Data centers",
+   "description": "743MW across 21 campuses on 322 acres (company site, August 2026): Milan is the largest market (11 sites, 399MW — the Supernap Italia legacy plus >100,000 sqm of expansion land in Siziano), followed by Frankfurt (96MW — market entry via an 80MW hyperscale campus in Liederbach), Zurich (3 sites, 76MW), Copenhagen (72MW), Geneva (3 sites, 42MW), Oslo (2 sites, 40MW) and Stockholm (18MW). The platform was assembled by acquisition — Supernap Italia (February 2021) and Nordic operator DigiPlex (August 2021) — and launched as STACK EMEA in February 2022 with 16 markets and 400MW+ under development. In April 2025 Apollo-managed funds agreed to acquire the pan-European colocation business (seven data centers across Stockholm, Oslo, Copenhagen, Milan and Geneva, serving carriers, IT firms and financial institutions), which is being rebranded away from the STACK name under CEO Sherif Rizkalla — leaving STACK EMEA focused on hyperscale wholesale under interim CEO Brian Cox (since August 2025).",
+   "highlights": [
+    "Colo carve-out to Apollo (April 2025) is a deliberate pruning to hyperscale-only in Europe",
+    "Milan's 399MW across 11 sites makes Italy the platform's European center of gravity",
+    "Nordic sites carry the DigiPlex 100%-renewable-power legacy"
+   ],
+   "positioning": "Sub-scale against Vantage EMEA (15 campuses incl. 148MW CWL1) and the FLAP incumbents; the hyperscale-only refocus positions EMEA as a build-to-suit partner in Milan/Frankfurt rather than an interconnection or retail player.",
+   "soldThrough": "Wholesale leases to hyperscale and cloud clients; the divested colo/interconnection business no longer sells under the STACK brand.",
+   "targetSegments": [
+    "Hyperscalers and cloud majors in Milan and Frankfurt",
+    "AI/HPC tenants on Nordic renewable power"
+   ],
+   "roadmap": "Frankfurt 80MW Liederbach campus buildout; Siziano land bank supports 80MW+ of additional Milan power; leadership transition beyond interim CEO unresolved."
+  },
+  {
+   "name": "APAC platform (reported sale process)",
+   "category": "Data centers",
+   "description": "Five markets built since 2022 by partnership and JV entry: Melbourne (2 sites, 432MW — MEL01 in Truganina delivered STACK's first APAC data center in August 2023 and drew an AUD $1.3B green financing in July 2025), Sydney (SYD01 in Erskine Park — a 450MW campus filing made April 2025: three-story, ~82,000 sqm, 156 generators), Tokyo (TKY01 in Inzai, 36MW — ¥39.7B green financing October 2025; first 18MW building delivering 2026, 18MW more in 2027), Osaka (KIX01, 72MW, an ESR joint venture — first 18MW building RFS Q2 2027, LEED Gold pre-certified) and Johor Bahru (JHB01, 216MW on 10.8 hectares — first 120MW building phase 1 delivering from Q4 2026). Australia entry came via a June 2022 partnership with builder Hickory (124MW initial pipeline); Japan via the ESR JV. Per Bloomberg-sourced reporting (June 2026), Blue Owl is preparing a sale of the APAC portfolio that could exceed $30B, with the BlackRock/Microsoft/MGX-backed AI Infrastructure Partnership, Brookfield, IFM, KKR and DigitalBridge among reported suitors.",
+   "highlights": [
+    "More than $2B of Australian financings executed since Q2 2024 (company, July 2025)",
+    "Johor's JHB01 sits in the Johor-Singapore corridor contested by Vantage, AirTrunk and ST Telemedia",
+    "A $30B+ APAC exit would be among the largest data-center transactions ever (reported, unconfirmed by the company)"
+   ],
+   "positioning": "A younger, smaller APAC platform than AirTrunk or Vantage APAC, differentiated by market picks (Johor, Inzai, Kansai) and local-currency green financing; the reported sale would convert five years of platform building into a sponsor-level exit.",
+   "soldThrough": "Wholesale leases; JV structures with ESR (Japan); local-currency project debt (AUD, JPY) from regional bank syndicates.",
+   "targetSegments": [
+    "Hyperscalers serving Singapore from Johor",
+    "Cloud and AI providers in Tokyo/Osaka, Melbourne and Sydney"
+   ],
+   "roadmap": "JHB01 phase 1 from Q4 2026; TKY01 18MW in 2026 + 18MW in 2027; KIX01A Q2 2027; SYD01 pending approvals; reported sale process starting as soon as July 2026 (Bloomberg via trade press)."
+  },
+  {
+   "name": "Capital-markets & securitization franchise",
+   "category": "Financing",
+   "description": "A repeat-issuance funding machine second only to Vantage's in tenure: the Stack Infrastructure Issuer, LLC master trust has issued ten series of Secured Data Center Revenue Notes since 2019 (2019-1, 2019-2, 2020-1, 2021-1, 2023-1, 2023-2, 2023-3, 2024-1, 2025-1, 2026-1). The company reported $2.83B of cumulative notes through the $240M green Series 2024-1 (March 2024, its 'lowest spread over treasuries for a data center issuer since October 2021'); Series 2025-1 added $345M at 5.00% (ARD May 2030, A-(sf) by S&P, closed 22 May 2025) and Series 2026-1 added $695M at 5.0% (ARD March 2031, closed 3 March 2026, partly refinancing existing ABS) — ~$3.9B cumulative. The green-loan stack runs region by region: $900M for NVA05 (January 2025), $4B for Stafford/Portland/Toronto (March 2025), $3B for Prince William/Phoenix/Atlanta covering 900MW (August 2024), $1.3B global (June 2024), AUD $1.3B for MEL01 (July 2025, five mandated lead arrangers) and ¥39.7B for TKY01 (October 2025). Cumulative disclosures: $15B+ total funding (August 2024) → $20B of debt capital (March 2025) → $36.1B of global capital raised (July 2025). At the sponsor level, Blue Owl seeded its perpetual non-traded REIT (Blue Owl Digital Infrastructure Trust) with 11 stabilized STACK-operated data centers — $3.3B gross enterprise value, $1.5B net of assumed debt, 163MW at 99.6% leased — on 1 December 2025.",
+   "highlights": [
+    "Ten ABS series since 2019 under one A-(sf)-rated master trust — build, lease, securitize, recycle",
+    "Local-currency green financings (AUD, JPY) match each regional platform to its own lender base",
+    "The ODIT seeding created a permanent-capital exit lane for stabilized assets that finite-life funds previously had to sell outright"
+   ],
+   "positioning": "Smaller cumulative program than Vantage's (which invented the asset class in 2018 and opened the sterling/euro markets) but among the sector's most consistent issuers — six-plus funding events across 2023-2026 through rate cycles; the Blue Owl relationship adds a perpetual-vehicle takeout no independent developer can replicate.",
+   "soldThrough": "144A/private-placement securitized notes off the master trust; syndicated green term loans per region; sponsor equity from Blue Owl-managed digital infrastructure funds (formerly IPI funds).",
+   "targetSegments": [
+    "ABS investors",
+    "Regional bank syndicates (US, Australia, Japan)",
+    "Blue Owl perpetual-capital vehicles and their wealth-channel investors"
+   ],
+   "roadmap": "Reported APAC portfolio sale (>$30B potential, process from ~July 2026 per Bloomberg-sourced reporting) would be the franchise's largest capital event; continued master-trust issuance implied by the 2026-1 refinancing pattern."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-08-18",
+   "category": "order-win",
+   "headline": "Amazon raises its northwest Louisiana commitment from $12B to $18B and adds a third campus in Shreveport — STACK is developer and owner of all three; Amazon pays 100% of SWEPCO energy-infrastructure costs plus up to $400M of water upgrades",
+   "read": "STACK's largest disclosed program is now an Amazon captive at state scale — anchor-tenant concentration is the growth engine and the defining exposure at once.",
+   "source": "https://www.aboutamazon.com/news/company-news/amazon-data-center-louisiana-new-jobs"
+  },
+  {
+   "date": "2026-08-10",
+   "category": "regulatory",
+   "headline": "STACK publicly backs Governor Abbott's responsible-data-center standards in Texas (grid reliability, ratepayer protection, transparency) — and discloses more than 90 US data centers in operation, construction and development",
+   "read": "Policy-alignment posture in ERCOT paired with a quiet scale disclosure — the 90+ facility count is the freshest company-stated US footprint number.",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-proudly-supports-governor-abbott-in-advancing-responsible-data-center-growth-in-texas/"
+  },
+  {
+   "date": "2026-06-25",
+   "category": "financial",
+   "headline": "Bloomberg-sourced reports: Blue Owl preparing a sale of STACK's APAC data-center portfolio (Tokyo, Osaka, Sydney, Melbourne, Johor) that could exceed $30B — the BlackRock/Microsoft/MGX-backed AIP, Brookfield, IFM, KKR and DigitalBridge among reported suitors, process as soon as July",
+   "read": "The sponsor is monetizing an entire region at AI-era marks — a whole-platform exit lane that reframes every regional buildout as inventory.",
+   "source": "https://www.thestar.com.my/business/business-news/2026/06/25/blackrock-backed-aip-eyes-stack-data-centres"
+  },
+  {
+   "date": "2026-05-05",
+   "category": "leadership",
+   "headline": "Bobby Hollis — Microsoft's VP of Energy, previously Meta and Rowan Digital — appointed Chief Development Officer, STACK Americas, owning end-to-end power strategy: interconnection, utility and ISO relationships, alternative energy",
+   "read": "Hiring the hyperscaler side's own power buyer — power procurement elevated to the top of the development org, matching the Vantage/Aligned pattern.",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-appoints-bobby-hollis-as-chief-development-officer/"
+  },
+  {
+   "date": "2026-03-31",
+   "category": "leadership",
+   "headline": "Americas management expansion: Mike Casey to COO (from CTO), Addam Friedl in as CTO (engineering + supply chain), Kevin Hughes to a newly created Chief External Affairs Officer role covering public affairs, government relations, security and community engagement",
+   "read": "External affairs raised to the C-suite — community consent and policy risk now treated as delivery-critical functions, not communications overhead.",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-announces-new-executive-appointments-expands-management-team/"
+  },
+  {
+   "date": "2026-03-03",
+   "category": "financial",
+   "headline": "Series 2026-1: $695M of Secured Data Center Revenue Term Notes (Class A-2, 5.0%, ARD March 2031) issued off the master trust — the program's largest series to date, proceeds partly refinancing existing ABS loans",
+   "read": "The securitization flywheel at full speed: tenth series since 2019, and now big enough to refinance earlier vintages rather than just fund growth.",
+   "source": "https://www.sec.gov/Archives/edgar/data/0002069692/000206969226000031/osnl-20260331.htm"
+  },
+  {
+   "date": "2026-02-23",
+   "category": "order-win",
+   "headline": "$12B multi-campus development across Caddo and Bossier Parishes, Louisiana announced with Amazon — 1,500+ construction jobs, 540+ permanent roles; STACK funds all water, wastewater and electrical system upgrades with water-positive commitments",
+   "read": "The anchor program that became $18B six months later — and the community-cost playbook (developer pays for infrastructure) deployed from day one.",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-announces-data-center-developments-supporting-economic-growth-in-louisiana/"
+  },
+  {
+   "date": "2025-12-12",
+   "category": "leadership",
+   "headline": "Matt VanderZanden appointed CEO of STACK Americas — joined 2019 as chief strategy officer after leading global data-center site selection at Facebook, promoted to President in February 2025; Brian Cox continues as interim CEO of STACK EMEA and joins the Americas board",
+   "read": "Customer-side DNA at the top: the executive who used to pick hyperscaler sites now runs the landlord selling to them.",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-appoints-matt-vanderzanden-as-chief-executive-officer-stack-americas/"
+  },
+  {
+   "date": "2025-12-04",
+   "category": "financial",
+   "headline": "Blue Owl launches Blue Owl Digital Infrastructure Trust, a perpetual non-traded REIT, with $1.7B raised — seeded 1 December 2025 with 11 stabilized STACK-operated data centers across seven US markets ($3.3B gross enterprise value; 163MW, 99.6% leased) bought from the BODI I funds",
+   "read": "Fund-to-permanent-capital recycling made explicit: finite-life fund assets roll into a perpetual vehicle instead of a third-party sale, keeping STACK as operator throughout.",
+   "source": "https://altswire.com/blue-owl-launches-digital-infrastructure-reit-with-1-7-billion-in-capital/"
+  },
+  {
+   "date": "2025-10-22",
+   "category": "financial",
+   "headline": "¥39.7B (~$260M) green financing closed for TKY01, the 36MW flagship campus in Inzai, Greater Tokyo — first 18MW building delivering 2026, further 18MW in 2027",
+   "read": "Yen debt for a Japanese campus — each regional platform is deliberately matched to its own currency and lender base, which also keeps each separable.",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-secures-%C2%A539-7-billion-in-green-financing-to-advance-development-of-tokyo-campus/"
+  },
+  {
+   "date": "2025-09-26",
+   "category": "order-win",
+   "headline": "STACK named developer of a 1GW+ AI campus in Doña Ana County, New Mexico (Project Jupiter, with BorderPlex Digital Assets) — part of Oracle's 4.5GW additional Stargate capacity; on-site microgrid, closed-loop cooling holding water use to office-building levels; Blue Owl funds the development",
+   "read": "STACK joins Vantage as a named Stargate landlord — and the microgrid-first design sidesteps the interconnection queue the same way Vantage's Frontier does.",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-delivers-digital-infrastructure-for-data-center-campus-in-new-mexico/"
+  },
+  {
+   "date": "2025-08-07",
+   "category": "leadership",
+   "headline": "Brian Cox appointed interim CEO of STACK EMEA (then still CEO of STACK Americas) as EMEA chief John Eland transitions out",
+   "read": "EMEA put under direct founder control months after the Apollo colo carve-out — a region being restructured, not just re-led.",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-appoints-brian-cox-interim-ceo-of-stack-emea/"
+  },
+  {
+   "date": "2025-07-23",
+   "category": "financial",
+   "headline": "AUD $1.3B green financing for the MEL01 hyperscale campus in West Melbourne (Deutsche Bank, MUFG, Natixis, OCBC, SocGen as MLAs) — taking Australian financings past $2B since Q2 2024 and global capital raised to $36.1B",
+   "read": "The $36.1B cumulative-capital disclosure is the best single measure of platform scale a company with no P&L disclosure provides.",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-secures-aud-1-3-billion-in-green-financing-to-accelerate-expansion-of-mel01-hyperscale-campus-in-melbourne/"
+  },
+  {
+   "date": "2025-05-22",
+   "category": "financial",
+   "headline": "Series 2025-1: $345M Class A-2 secured notes at 5.00% (ARD May 2030), rated A-(sf) by S&P — ninth series off the master trust",
+   "read": "Single-A securitization pricing held through the rate cycle — the stabilized-asset flywheel keeps repricing the portfolio cheaper than construction debt.",
+   "source": "https://www.sec.gov/Archives/edgar/data/2069692/000206969226000016/exhibit46-series2025x1supp.htm"
+  },
+  {
+   "date": "2025-04-29",
+   "category": "other",
+   "headline": "Apollo-managed funds agree to acquire STACK's pan-European colocation business — seven data centers across Stockholm, Oslo, Copenhagen, Milan and Geneva serving carriers, IT and financial-institution clients — to operate standalone under CEO Sherif Rizkalla and drop the STACK name",
+   "read": "Portfolio pruned to hyperscale: the enterprise/interconnection business Blue Owl inherited is sold to a rival sponsor rather than run as a second product line.",
+   "source": "https://www.apollo.com/insights-news/pressreleases/2025/04/apollo-funds-to-acquire-pan-european-highly-interconnected-colocation-data-center-business-from-stack-infrastructure-a-portfolio-company-of-blue-owl-digital-infrastructure-3069871"
+  },
+  {
+   "date": "2025-04-10",
+   "category": "capacity",
+   "headline": "SYD01 filed: a 450MW campus at 78 Lockwood Road, Erskine Park, Sydney — AU$650M first stage, three-story ~82,000 sqm facility with 156 backup generators",
+   "read": "A giga-scale bet in Australia's toughest power market, filed while the Melbourne campus was still leasing up — pipeline built ahead of the reported APAC sale.",
+   "source": "https://w.media/stack-infrastructure-plans-450mw-data-center-campus-at-erskine-park-sydney/"
+  },
+  {
+   "date": "2025-03-19",
+   "category": "financial",
+   "headline": "$4B in green financing across the 1+GW Stafford, Virginia campus plus Portland and Toronto expansions — total debt capital reaches $20B, Virginia financings reach $9B since 2019",
+   "read": "The largest single financing round in company history to that date — and the Stafford giga-campus formally funded.",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-secures-4-billion-in-green-financing-strengthening-its-position-as-the-largest-private-data-center-developer-in-virginia-and-beyond/"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess STACK is the Blue Owl complex's named-tenant build engine — the only private platform holding developer-owner roles in both an Amazon state-scale program and a Stargate site. Basis: developer and owner of all three campuses in Amazon's northwest Louisiana buildout, raised from $12B to $18B in six months (Aug 2026), plus Project Jupiter (1GW+, Santa Teresa, NM) in the Oracle/OpenAI Stargate expansion — disclosed program wins larger than anything named at Aligned or QTS.",
+  "(High confidence) We assess the sponsor is running a monetize-while-building barbell: sell stabilized and regional assets at AI-era marks while the development engine compounds. Basis: the Apollo carve-out of the pan-European colocation business (Apr 2025), the perpetual non-traded REIT seeded with 11 stabilized STACK data centers at $3.3B gross value (Dec 2025), and Bloomberg-reported preparation of an APAC portfolio sale that could exceed $30B (Jun 2026) — three monetization moves in fourteen months against a stated 13GW pipeline.",
+  "(Moderate confidence) We assess the Americas leadership rebuild treats power procurement and community consent as the binding constraints on delivery. Basis: Microsoft's VP of Energy (Bobby Hollis) hired as Chief Development Officer (May 2026), a hyperscaler site-selection veteran (Matt VanderZanden) installed as Americas CEO (Dec 2025), and external affairs elevated to the C-suite in the March 2026 management expansion.",
+  "(Moderate confidence) We assess regional ring-fencing is deliberate financial architecture, not an org chart: each platform carries its own currency-matched capital stack, which makes any region separately sellable. Basis: yen green financing for the Tokyo flagship (Oct 2025), AUD $1.3B for Melbourne (Jul 2025), a US master-trust ABS running ten series since 2019 (Series 2026-1, $695M) — and the fact that both the European carve-out and the reported APAC sale can execute without touching the Americas trust.",
+  "(Low confidence) We assess anchor concentration is quietly becoming STACK's version of Vantage's Stargate exposure. Basis: the Louisiana program's growth to $18B makes Amazon the platform's largest disclosed commitment, and outside ABS collateral the company publishes no tenant-diversification data. Collection gap: no revenue, EBITDA or tenant-mix disclosure anywhere in the public record."
+ ],
+ "relationships": [
+  {
+   "slug": "amazon",
+   "type": "customer",
+   "note": "Developer-owner of all three campuses in Amazon's $18B northwest Louisiana buildout.",
+   "context": "STACK is developer and owner of Amazon's three-campus program across Caddo Parish, Bossier Parish and Shreveport, Louisiana — announced at $12B in February 2026 and raised to $18B on August 18, 2026, with 1,500+ construction jobs and STACK funding all water, wastewater and electrical upgrades. The platform's largest disclosed commitment, and the anchor of its claim as the Blue Owl complex's named-tenant build engine.",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-announces-data-",
+   "status": "active",
+   "since": "2026-02",
+   "scale": "$18B, three campuses"
+  },
+  {
+   "slug": "oracle",
+   "type": "customer",
+   "note": "Developer of Project Jupiter — the 1GW+ Stargate campus in Santa Teresa, NM serving Oracle/OpenAI.",
+   "context": "September 2025: STACK was named developer of Project Jupiter (with BorderPlex Digital Assets) — a 1GW+ AI campus in Doña Ana County, New Mexico, part of Oracle's 4.5GW additional Stargate capacity, with an on-site microgrid and closed-loop cooling holding water use to office-building levels; Blue Owl funds the development. STACK joins Vantage as a named Stargate landlord.",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-delivers-digita",
+   "status": "active",
+   "since": "2025-09",
+   "scale": "1GW+ campus"
+  },
+  {
+   "slug": "openai",
+   "type": "customer",
+   "note": "End tenant of the Stargate capacity Project Jupiter delivers.",
+   "context": "Project Jupiter serves the Oracle/OpenAI Stargate program — Oracle holds the lease (18-year OCI term per trade reporting) with OpenAI as primary client, making STACK one of the small set of private wholesale platforms holding developer-owner roles in a Stargate site and a hyperscaler state-scale program simultaneously.",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-delivers-digita",
+   "status": "active",
+   "since": "2025-09"
+  },
+  {
+   "slug": "microsoft",
+   "type": "other",
+   "note": "Talent and capital touchpoints: ex-Microsoft VP of Energy as CDO Americas; Microsoft-backed AIP among reported APAC suitors.",
+   "context": "May 2026: Bobby Hollis — Microsoft's VP of Energy, previously Meta and Rowan Digital — became Chief Development Officer, STACK Americas, owning end-to-end power strategy. June 2026: Bloomberg-sourced reports put the BlackRock/Microsoft/MGX-backed AI Infrastructure Partnership among suitors for STACK's APAC portfolio (a sale that could exceed $30B).",
+   "source": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-appoints-bobby-",
+   "status": "active"
+  },
+  {
+   "slug": "vantage",
+   "type": "competitor",
+   "note": "Peer named-Stargate landlord at larger platform scale.",
+   "context": "STACK is a peer of Vantage in Stargate delivery (Project Jupiter vs Frontier/Lighthouse) though at smaller total platform scale — 13GW current + pipeline vs Vantage's ~9GW power-capacity claim — with the same microgrid-first design sidestepping the interconnection queue.",
+   "source": "Dossier competitive assessment — wholesale platforms",
+   "status": "active"
+  },
+  {
+   "slug": "aligned",
+   "type": "competitor",
+   "note": "Private wholesale peer with smaller disclosed named-tenant programs.",
+   "context": "The dossier's basis: STACK's disclosed program wins (Amazon $18B, Project Jupiter) are larger than anything named at Aligned or QTS — the differentiation among the private wholesale platforms delivering gigawatt-class named-tenant campuses.",
+   "source": "Dossier competitive assessment — wholesale platforms",
+   "status": "active"
+  },
+  {
+   "slug": "qts",
+   "type": "competitor",
+   "note": "Blackstone's wholesale platform against Blue Owl's — bigger pipeline claims, smaller named program wins.",
+   "context": "QTS competes in the same private-capital wholesale class; STACK's counter is named-tenant program scale (Amazon Louisiana, Stargate Jupiter) and one of the sector's longest-running securitization programs (ten series since 2019), while carrying no public-REIT overhead and pricing delivery credibility, not interconnection ecosystems.",
+   "source": "Dossier competitive assessment — wholesale platforms",
+   "status": "active"
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Project Jupiter — Santa Teresa, Doña Ana County, NM (Stargate)",
+   "specs": [
+    {
+     "band": "Campus",
+     "label": "Scale",
+     "value": "1GW+ campus; four buildings on ~1,400 acres along NM-136 near the Santa Teresa Port of Entry (per county and local press); one of five sites in Oracle/OpenAI's 4.5GW Stargate expansion"
+    },
+    {
+     "band": "Power",
+     "label": "Microgrid",
+     "value": "Dedicated on-site microgrid powering the campus independently of the regional grid — reported 700-900MW first phase, up to ~1GW, with battery energy storage"
+    },
+    {
+     "band": "Cooling",
+     "label": "Water",
+     "value": "Closed-loop cooling system limiting daily water consumption to office-building levels (company statement)"
+    },
+    {
+     "band": "Schedule & financing",
+     "label": "Programme",
+     "value": "Construction began September 2025; initial operations targeted Q4 2026; supported by a county-approved industrial revenue bond reported at $165B — the largest such issuance on record"
+    }
+   ],
+   "notes": "Developed by STACK with BorderPlex Digital Assets and funded by Blue Owl Capital funds; Oracle Cloud Infrastructure is the disclosed capacity counterparty. Campus-level MW beyond 'more than one gigawatt' is not company-stated."
+  },
+  {
+   "product": "Stafford Technology Campus (STC) — Stafford County, VA",
+   "specs": [
+    {
+     "band": "Campus",
+     "label": "Scale",
+     "value": "1+GW across ~500 acres; 19 data centers organized in four sub-campuses (per Data Center Frontier's February 2025 profile)"
+    },
+    {
+     "band": "Power & siting",
+     "label": "Utility",
+     "value": "Served by Dominion Energy substations; sited adjacent to landfill/light-industrial land, distanced from residential areas, with design/height/noise/tree-preservation controls"
+    },
+    {
+     "band": "Water & energy",
+     "label": "Systems",
+     "value": "Reclaimed-water system planned for permanent industrial cooling, protecting the potable supply; 100% clean-energy commitment"
+    },
+    {
+     "band": "Economics",
+     "label": "Local impact & funding",
+     "value": "Projected $80M+ in annual local tax revenue and 1,000+ skilled construction trades at peak; funded within the March 2025 $4B green financing"
+    }
+   ],
+   "notes": "The largest single campus in STACK's Virginia portfolio (2,400MW across 7 Northern Virginia sites) and the core of its 'largest private data center developer in Virginia' claim."
+  },
+  {
+   "product": "DFW02 — Lancaster (south Dallas), TX",
+   "specs": [
+    {
+     "band": "Campus",
+     "label": "Scale",
+     "value": "193-acre campus in south Dallas' power corridor; 220MW initial phase — six 36MW data centers totaling ~1.5M sq ft — expandable past 500MW"
+    },
+    {
+     "band": "Power",
+     "label": "Substation",
+     "value": "On-site Oncor substation; engineered for both powered-shell and turnkey deployments in one campus"
+    },
+    {
+     "band": "Cooling",
+     "label": "Density",
+     "value": "AI-ready: supports liquid-to-chip cooling for high-density compute"
+    },
+    {
+     "band": "Schedule",
+     "label": "Delivery",
+     "value": "First-phase delivery from mid-2026 (announced April 2024)"
+    }
+   ],
+   "notes": "Company-published campus brochure cites 500+MW ultimate capacity; the Dallas-Fort Worth market page lists 580MW across two sites including the legacy Plano facility (operating since 2012)."
+  },
+  {
+   "product": "APAC flagship campuses (company-published figures)",
+   "specs": [
+    {
+     "band": "Malaysia",
+     "label": "JHB01 Johor Bahru",
+     "value": "216MW on 10.8 hectares across two buildings (~1M sq ft); first 120MW two-story building phase 1 delivering from Q4 2026"
+    },
+    {
+     "band": "Japan",
+     "label": "KIX01 Osaka (ESR JV)",
+     "value": "72MW across three planned buildings; KIX01A (18MW) ready for service Q2 2027, LEED Gold pre-certified"
+    },
+    {
+     "band": "Japan",
+     "label": "TKY01 Inzai, Greater Tokyo",
+     "value": "36MW flagship; first 18MW building 2026, additional 18MW expansion 2027; funded by ¥39.7B green facility"
+    },
+    {
+     "band": "Australia",
+     "label": "SYD01 and MEL01",
+     "value": "SYD01 Erskine Park, Sydney: 450MW campus filing — three-story ~82,020 sqm building, 156 backup generators; MEL01 Truganina: first APAC facility delivered August 2023, Melbourne market now 432MW across two sites"
+    }
+   ],
+   "notes": "Regional figures mix operational, under-construction and planned capacity; STACK's APAC locations page states 470MW/4 campuses as a regional total while individual market pages sum higher — treat per-campus numbers as buildout targets."
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Matt VanderZanden",
+   "title": "Chief Executive Officer, STACK Americas (since December 2025)",
+   "photo": "images/execs/stack-infrastructure-vanderzanden.jpg",
+   "linkedin": "https://www.linkedin.com/in/matthewvanderzanden/",
+   "background": [
+    "President, STACK Americas (February 2025) after serving as chief commercial officer; joined STACK January 2019 as chief strategy officer",
+    "Led global data-center site selection at Facebook (now Meta) before STACK — the buy-side counterpart of the job he now sells into",
+    "Began his career practicing real estate law at Paul Hastings",
+    "Public face of the Louisiana/Amazon program and the Texas responsible-development posture"
+   ]
+  },
+  {
+   "name": "Brian Cox",
+   "title": "Interim Chief Executive Officer, STACK EMEA (since August 2025); member, STACK Americas Board of Directors",
+   "photo": "images/execs/stack-infrastructure-cox.jpg",
+   "background": [
+    "Founding CEO of STACK (joined October 2018, launched the company January 2019); CEO of STACK Americas through December 2025",
+    "CEO of Infomart Data Centers before the STACK combination",
+    "Seven years as CFO, then COO, of Cologix — through its growth from one to ~25 data centers",
+    "Fronted the New Mexico Stargate announcement as CEO in September 2025"
+   ]
+  },
+  {
+   "name": "Preet Gona",
+   "title": "Chief Executive Officer, STACK APAC (founded the region's business, 2022)",
+   "photo": "images/execs/stack-infrastructure-gona.jpg",
+   "background": [
+    "Founding member of Bridge Data Centres (merged into Chindata), where he served as President, CFO and chief investment officer",
+    "Former Managing Director in Blackstone's private equity business",
+    "25+ years across real estate, private equity, venture capital, investment banking and technology; oversees Japan, Australia, Malaysia and Singapore operations",
+    "MBA (Finance and Management), Wharton; B.E. Industrial Engineering, Osmania University"
+   ]
+  },
+  {
+   "name": "Bobby Hollis",
+   "title": "Chief Development Officer, STACK Americas (since May 2026)",
+   "photo": "images/execs/stack-infrastructure-hollis.jpg",
+   "background": [
+    "Vice President of Energy at Microsoft — led global power strategy for hyperscale infrastructure",
+    "Prior leadership roles at Meta and Rowan Digital Infrastructure across data-center development and energy strategy",
+    "At STACK owns the growth engine end to end: development, site selection, preconstruction, and power strategy including interconnection, utility/ISO relationships and alternative energy"
+   ]
+  },
+  {
+   "name": "Phil Koen",
+   "title": "Chairman, Board of Directors",
+   "photo": "images/execs/stack-infrastructure-koen.jpg",
+   "background": [
+    "CEO of Intermedia (2011-2017) and CEO of Savvis (2006-2010)",
+    "Seven years in Equinix leadership (1999-2006) including President & COO, and CFO at the time of its IPO",
+    "Director of Infomart Data Centers before the STACK combination; economics degree from Claremont McKenna, MBA from the University of Virginia",
+    "Announced both the VanderZanden CEO appointment and the Cox EMEA move — the board's continuity voice through the 2025-26 leadership transitions"
+   ]
+  },
+  {
+   "name": "Ty Miller",
+   "title": "Chief Commercial Officer, STACK Americas",
+   "photo": "images/execs/stack-infrastructure-miller.jpg",
+   "background": [
+    "Founding chief revenue officer at STACK's January 2019 launch; leads commercial strategy and hyperscaler relationships across the Americas platform",
+    "Career wholesale data-center commercial executive spanning the Infomart/T5-era assets through today's gigawatt campus programs"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "private",
+  "periods": [
+   {
+    "period": "Ownership & sponsor capital (2019–2026)",
+    "metrics": [
+     {
+      "name": "Formation",
+      "actual": "Created January 2019 by IPI Partners (ICONIQ Capital/Iron Point Partners JV) combining Infomart Data Centers' Ashburn, Portland and Silicon Valley facilities with IPI's Atlanta, Chicago and two Dallas/Fort Worth assets — 100MW+ across ~1.5M sq ft",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Founding CEO Brian Cox (ex-Infomart, ex-Cologix); equity value at formation not disclosed"
+     },
+     {
+      "name": "Manager change",
+      "actual": "Blue Owl Capital acquired IPI Partners' business for ~$1.0B (~80% Blue Owl equity / ~20% cash) — announced 7 October 2024, completed 6 January 2025; IPI had $11B+ AUM and 82 data centers / 2.2GW at announcement; IPI managing partner Matt A'Hearn became Head of Blue Owl Digital Infrastructure",
+      "expected": "",
+      "verdict": "inline",
+      "result": "STACK's controlling funds became Blue Owl-managed; ICONIQ affiliate retained a services agreement"
+     },
+     {
+      "name": "Perpetual-capital vehicle",
+      "actual": "Blue Owl Digital Infrastructure Trust (perpetual non-traded REIT, formed April 2025) raised $1.7B and on 1 December 2025 acquired 11 stabilized STACK-operated US data centers from the BODI I funds — $3.3B gross enterprise value, $1.5B net purchase price after assumed debt; 163MW, 99.6% leased",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Stabilized STACK assets now sit partly in permanent capital, with STACK retained as operator"
+     },
+     {
+      "name": "Reported APAC sale",
+      "actual": "Bloomberg-sourced reports (June 2026): Blue Owl preparing a sale of STACK's APAC portfolio that could exceed $30B; AIP (BlackRock/Microsoft/MGX), Brookfield, IFM, KKR and DigitalBridge among reported suitors; process as soon as July 2026",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Unconfirmed by the company; would be among the largest data-center transactions on record"
+     }
+    ],
+    "commentary": "Fund-level ownership percentages across BODI/IPI vehicles are not disclosed. The chain today: Blue Owl Capital (manager) → Blue Owl-managed digital infrastructure funds and ODIT (owners) → STACK regional operating platforms."
+   },
+   {
+    "period": "Debt & securitization program (2019–2026)",
+    "metrics": [
+     {
+      "name": "Master-trust securitizations",
+      "actual": "Ten series since 2019 (2019-1 through 2026-1): $2.83B cumulative through the $240M green Series 2024-1 (March 2024, 'lowest spread over treasuries for a data-center issuer since October 2021'); Series 2025-1 $345M at 5.00%, ARD May 2030, A-(sf) by S&P (May 2025); Series 2026-1 $695M at 5.0%, ARD March 2031 (March 2026, partly refinancing existing ABS) — ~$3.9B cumulative issuance",
+      "expected": "",
+      "verdict": "inline",
+      "result": "One of the sector's most consistent repeat issuers behind first-mover Vantage"
+     },
+     {
+      "name": "Green loans (Americas)",
+      "actual": "$900M for NVA05 Manassas (January 2025); $4B for Stafford 1+GW / Portland / Toronto (March 2025); $3B for Prince William, Phoenix and Atlanta campuses totaling 900MW (August 2024); $1.3B global development financing (June 2024)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "$9B of Virginia financings since 2019; company claims the largest-private-developer position in Virginia"
+     },
+     {
+      "name": "Green loans (APAC)",
+      "actual": "AUD $1.3B for MEL01 West Melbourne (July 2025; Deutsche Bank, MUFG, Natixis, OCBC, SocGen MLAs) — >$2B of Australian financings since Q2 2024; ¥39.7B (~$260M) for TKY01 Inzai (October 2025)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Local-currency financing per platform keeps each region separately bankable — and separable"
+     },
+     {
+      "name": "Cumulative capital",
+      "actual": "$15B+ total funding (August 2024) → $20B of debt capital across the global portfolio (March 2025) → $36.1B of global capital raised (July 2025)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "The company's own running counter; no later cumulative figure disclosed through August 2026"
+     }
+    ],
+    "commentary": "Collection gap: STACK discloses no consolidated leverage, interest coverage or notes-outstanding total; the ~$3.9B securitization figure is cumulative issuance, not current outstanding (Series 2026-1 partly refinanced earlier vintages)."
+   },
+   {
+    "period": "Operating scale (latest disclosed)",
+    "metrics": [
+     {
+      "name": "Platform",
+      "actual": "13GW of current and pipeline capacity across Americas, EMEA and APAC (company statement, December 2025); more than 90 US data centers in operation, under construction and under development (company statement, August 2026)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "The 13GW figure mixes operational and pipeline capacity; built IT load is materially lower"
+     },
+     {
+      "name": "Regional footprints",
+      "actual": "Americas: 3,200MW site capacity, 23 campuses, 1,360 acres (2,400MW across 7 Northern Virginia sites). EMEA: 743MW, 21 campuses, 322 acres (Milan 399MW across 11 sites). APAC: campuses in Melbourne (432MW/2 sites), Sydney (450MW filed), Johor (216MW), Osaka (72MW), Tokyo (36MW)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Company website figures, August 2026; per-market numbers are buildout capacity, not leased load"
+     },
+     {
+      "name": "Headcount",
+      "actual": "~900 employees globally across ~20 markets (February 2025, per Blue Owl Digital Infrastructure Trust SEC filing)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Latest disclosed figure; excludes the divested European colocation staff who transferred to the Apollo carve-out"
+     }
+    ],
+    "commentary": "Collection gap: STACK publishes no revenue, EBITDA, or consolidated balance-sheet figures — it is private with no public filings of its own, and no analyst consensus exists, so every 'expected' field is left empty. A second gap: leased-versus-built capacity is never broken out, and the APAC locations page's regional total (470MW/4 campuses) conflicts with its own per-market figures — capacity claims should be treated as pipeline-inclusive. A third gap: Louisiana program megawatts are not company-disclosed; only the $18B investment, jobs and parish locations are on the record (third-party trackers cite ~3GW, unverified)."
+   }
+  ],
+  "commentary": "Collection gap: STACK has never disclosed revenue, EBITDA, leverage or tenant-mix figures — the platform's scale must be read from capacity statements (13GW current + pipeline, Dec 2025), cumulative-capital disclosures ($36.1B through Jul 2025), securitization collateral data and sponsor (Blue Owl) reporting. Valuation marks for the reported APAC sale (>$30B) and the REIT seed ($3.3B gross, 11 assets) are press- and sponsor-attributed respectively. No analyst consensus exists for any period — every 'expected' field is left empty rather than reconstructed."
+ },
+ "sources": [
+  {
+   "label": "Amazon — $18B Louisiana investment, third campus in Shreveport; STACK developer-owner of all three",
+   "url": "https://www.aboutamazon.com/news/company-news/amazon-data-center-louisiana-new-jobs",
+   "date": "2026-08-18"
+  },
+  {
+   "label": "STACK — statement supporting Governor Abbott's responsible data center growth standards (90+ US data centers)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-proudly-supports-governor-abbott-in-advancing-responsible-data-center-growth-in-texas/",
+   "date": "2026-08-10"
+  },
+  {
+   "label": "The Star (Bloomberg) — BlackRock-backed AIP eyes Stack APAC data centres; sale could exceed $30B",
+   "url": "https://www.thestar.com.my/business/business-news/2026/06/25/blackrock-backed-aip-eyes-stack-data-centres",
+   "date": "2026-06-25"
+  },
+  {
+   "label": "STACK/Amazon — Northwest Louisiana Community Fund ($350K)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-partners-with-amazon-to-invest-in-northwest-louisiana-communities/",
+   "date": "2026-06-10"
+  },
+  {
+   "label": "STACK — Bobby Hollis appointed Chief Development Officer, STACK Americas",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-appoints-bobby-hollis-as-chief-development-officer/",
+   "date": "2026-05-05"
+  },
+  {
+   "label": "Blue Owl Digital Infrastructure Trust — Form 10-Q Q1 FY2026 (Series 2026-1 $695M; 11 assets, 163MW, 99.6% leased)",
+   "url": "https://www.sec.gov/Archives/edgar/data/0002069692/000206969226000031/osnl-20260331.htm",
+   "date": "2026-05"
+  },
+  {
+   "label": "STACK — executive appointments: Casey COO, Friedl CTO, Hughes Chief External Affairs Officer",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-announces-new-executive-appointments-expands-management-team/",
+   "date": "2026-03-31"
+  },
+  {
+   "label": "Blue Owl Digital Infrastructure Trust — Form 10-K FY2025 (initial portfolio $3.3B GEV; STACK securitization series exhibits)",
+   "url": "https://www.sec.gov/Archives/edgar/data/2069692/000206969226000016/osnl-20251231.htm",
+   "date": "2026-03"
+  },
+  {
+   "label": "STACK — $12B multi-campus data center developments in Caddo and Bossier Parishes, Louisiana (with Amazon)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-announces-data-center-developments-supporting-economic-growth-in-louisiana/",
+   "date": "2026-02-23"
+  },
+  {
+   "label": "STACK — statement on community support and emergency coordination ahead of DOE Section 202(c) order",
+   "url": "https://www.stackinfra.com/about/news-press/news/stack-infrastructure-statement-on-community-support-and-emergency-coordination-in-anticipation-of-doe-section-202c-order/",
+   "date": "2026-01-24"
+  },
+  {
+   "label": "STACK — Matt VanderZanden appointed CEO, STACK Americas; Cox continues as interim CEO EMEA (13GW current + pipeline)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-appoints-matt-vanderzanden-as-chief-executive-officer-stack-americas/",
+   "date": "2025-12-12"
+  },
+  {
+   "label": "AltsWire — Blue Owl launches digital infrastructure REIT (ODIT) with $1.7B in capital",
+   "url": "https://altswire.com/blue-owl-launches-digital-infrastructure-reit-with-1-7-billion-in-capital/",
+   "date": "2025-12"
+  },
+  {
+   "label": "STACK — ¥39.7B green financing for TKY01 Tokyo campus (Inzai, 36MW)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-secures-%C2%A539-7-billion-in-green-financing-to-advance-development-of-tokyo-campus/",
+   "date": "2025-10-22"
+  },
+  {
+   "label": "STACK — publishes 2025 Impact Report ('Built to Scale, Engineered for Impact')",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-publishes-2025-impact-report/",
+   "date": "2025-10-06"
+  },
+  {
+   "label": "STACK — delivers digital infrastructure for 1GW+ data center campus in Doña Ana County, New Mexico (Oracle Stargate)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-delivers-digital-infrastructure-for-data-center-campus-in-new-mexico/",
+   "date": "2025-09-26"
+  },
+  {
+   "label": "El Paso Matters — Project Jupiter part of Stargate; four buildings, 1,400 acres, microgrid details",
+   "url": "https://elpasomatters.org/2025/09/25/stargate-open-ai-oracle-project-jupiter-data-center-dona-ana-new-mexico-el-paso-texas/",
+   "date": "2025-09-25"
+  },
+  {
+   "label": "STACK — Brian Cox appointed interim CEO of STACK EMEA (John Eland transitions out)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-appoints-brian-cox-interim-ceo-of-stack-emea/",
+   "date": "2025-08-07"
+  },
+  {
+   "label": "STACK — AUD $1.3B green financing for MEL01 Melbourne ($36.1B global capital raised to date)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-secures-aud-1-3-billion-in-green-financing-to-accelerate-expansion-of-mel01-hyperscale-campus-in-melbourne/",
+   "date": "2025-07-23"
+  },
+  {
+   "label": "SEC — Stack Infrastructure Issuer LLC Series 2025-1 Supplement ($345M Class A-2, 5.00%, A-(sf))",
+   "url": "https://www.sec.gov/Archives/edgar/data/2069692/000206969226000016/exhibit46-series2025x1supp.htm",
+   "date": "2025-05-22"
+  },
+  {
+   "label": "Apollo — funds to acquire pan-European colocation business from STACK Infrastructure (7 data centers, 5 markets)",
+   "url": "https://www.apollo.com/insights-news/pressreleases/2025/04/apollo-funds-to-acquire-pan-european-highly-interconnected-colocation-data-center-business-from-stack-infrastructure-a-portfolio-company-of-blue-owl-digital-infrastructure-3069871",
+   "date": "2025-04-29"
+  },
+  {
+   "label": "w.media — Stack plans 450MW SYD01 campus at Erskine Park, Sydney",
+   "url": "https://w.media/stack-infrastructure-plans-450mw-data-center-campus-at-erskine-park-sydney/",
+   "date": "2025-04"
+  },
+  {
+   "label": "STACK — new 36MW data center in Chicago (CHI02, Elk Grove Village)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-announces-new-36mw-data-center-in-chicago/",
+   "date": "2025-03-25"
+  },
+  {
+   "label": "STACK — $4B green financing (Stafford 1+GW, Portland, Toronto; $20B total debt; $9B Virginia since 2019)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-secures-4-billion-in-green-financing-strengthening-its-position-as-the-largest-private-data-center-developer-in-virginia-and-beyond/",
+   "date": "2025-03-19"
+  },
+  {
+   "label": "Data Center Frontier — STACK pushes aggressive expansion and sustainability strategy into 2025 (Stafford, Loudoun, campus roster)",
+   "url": "https://www.datacenterfrontier.com/hyperscale/article/55267818/stack-infrastructure-pushes-aggressive-data-center-expansion-and-sustainability-strategy-into-2025",
+   "date": "2025-02-21"
+  },
+  {
+   "label": "STACK — $900M green financing for NVA05 (200MW, 62 acres, Manassas)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-secures-900-million-in-green-financing-in-northern-virginia/",
+   "date": "2025-01-14"
+  },
+  {
+   "label": "Blue Owl — completes acquisition of IPI Partners' business",
+   "url": "https://www.prnewswire.com/news-releases/blue-owl-capital-completes-acquisition-of-ipi-partners-business-302342714.html",
+   "date": "2025-01-06"
+  },
+  {
+   "label": "Blue Owl — to acquire IPI Partners (~$1.0B) and partner with ICONIQ ($11B+ AUM; 82 data centers / 2.2GW)",
+   "url": "https://www.prnewswire.com/news-releases/blue-owl-capital-to-acquire-ipi-partners-and-to-partner-with-iconiq-for-future-growth-302268473.html",
+   "date": "2024-10-07"
+  },
+  {
+   "label": "STACK — additional $3B green financing (Prince William, Phoenix, Atlanta — 900MW; $15B+ cumulative)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-announces-an-additional-3-billion-in-green-financing/",
+   "date": "2024-08-05"
+  },
+  {
+   "label": "STACK — expands Texas footprint with 220MW flagship south Dallas campus (DFW02, Lancaster)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-expands-texas-footprint-with-a-new-220mw-flagship-south-dallas-campus/",
+   "date": "2024-04-29"
+  },
+  {
+   "label": "STACK — closes $240M green structured debt (Series 2024-1; eighth securitization since 2019, $2.83B cumulative)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-closes-240m-in-latest-green-structured-debt-financing/",
+   "date": "2024-03-21"
+  },
+  {
+   "label": "STACK — delivers first data center in Australia (MEL01 Truganina, Melbourne)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-delivers-first-data-center-in-australia-launching-a-robust-apac-portfolio/",
+   "date": "2023-08-22"
+  },
+  {
+   "label": "STACK — expands APAC into Australia with 124MW across Melbourne, Canberra and Perth (Hickory partnership)",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-expands-apac-footprint-into-australia-with-124mw-of-capacity-across-melbourne-canberra-and-perth/",
+   "date": "2022-06"
+  },
+  {
+   "label": "Businesswire — STACK announces global expansion into EMEA (Supernap Italia + DigiPlex; 16 markets, 400MW+ under development)",
+   "url": "https://www.businesswire.com/news/home/20220228006224/en/STACK-Infrastructure-Announces-Global-Expansion-into-EMEA",
+   "date": "2022-02-28"
+  },
+  {
+   "label": "DCD — IPI launches Stack Infrastructure: wholesale provider with eight data centers (~100MW, six markets)",
+   "url": "https://www.datacenterdynamics.com/en/news/ipi-launches-stack-infrastructure-wholesale-provider-eight-data-centers/",
+   "date": "2019-01"
+  },
+  {
+   "label": "STACK — brand launch: combination of Infomart and IPI data center assets into a scaled national platform",
+   "url": "https://www.stackinfra.com/about/news-press/press-releases/stack-infrastructure-announces-combination-of-data-center-assets-to-create-scaled-national-platform-and-brand-launch/",
+   "date": "2019-01-15"
+  },
+  {
+   "label": "STACK — leadership page (regional executive teams and board)",
+   "url": "https://www.stackinfra.com/about/meet-the-team/"
+  },
+  {
+   "label": "STACK — Americas locations (3,200MW, 23 campuses, per-market capacity)",
+   "url": "https://www.stackinfra.com/locations/americas/"
+  },
+  {
+   "label": "STACK — EMEA locations (743MW, 21 campuses, per-market capacity)",
+   "url": "https://www.stackinfra.com/locations/emea/"
+  },
+  {
+   "label": "STACK — Asia Pacific locations (per-market capacity)",
+   "url": "https://www.stackinfra.com/locations/asia-pacific/"
+  },
+  {
+   "label": "STACK — solutions overview (campus development, single-tenant, multi-tenant; cloud vs AI/ML density)",
+   "url": "https://www.stackinfra.com/solutions/"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 3
+}

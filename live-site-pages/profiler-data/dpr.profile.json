@@ -1,0 +1,587 @@
+{
+ "schemaVersion": 6,
+ "slug": "dpr",
+ "name": "DPR Construction",
+ "legalName": "DPR Construction (privately held, employee-owned; reorganized as a C corporation in 2021)",
+ "categories": [
+  "gc"
+ ],
+ "hq": "Redwood City, CA, USA",
+ "founded": "1990 (Doug Woods, Peter Nosler, Ron Davidowski — 'the D, the P and the R' — with $750,000 of pooled resources)",
+ "ownership": "private",
+ "employees": "13,500+ across the Family of Companies (company, 2026), including ~6,000 self-perform craft workers",
+ "website": "https://www.dpr.com",
+ "summary": "BOTTOM LINE UP FRONT: DPR is the technical builder of the AI era's flagship site — lead contractor on the Crusoe/OpenAI-Oracle Stargate campus in Abilene, TX (8 buildings, ~4M sq ft, 1.2 GW, each 474,000 sq ft building delivered in under a year) and one of three GCs on Meta's $10B Richland Parish campus. A self-performing GC founded in 1990 and employee-owned since inception (broad-based real-equity program, C-corp since 2021), it hit $14.0B of 2025 revenue (ENR #7, up from #8) with a striking $26.1B of new contracts booked — bookings at ~1.9x revenue implying record backlog. ENR survey data puts 57% of 2025 revenue in the data-center category, ~90% CM-at-risk. Its structural differentiators are ~6,000 in-house craft workers ('a builder, not a broker'), prefabrication claimed on >90% of new work, and an integrated Family of Companies spanning structural engineering (GPLA), digital manufacturing (Digital Building Components), bathroom pods (SurePods), electrical (EIG), offshore VDC (vConstruct, Pune), and a venture arm (WND Ventures). Watch items: a June 2026 TIME investigation into worker injuries at Abilene (a $5,674 OSHA citation later withdrawn; a worker death DPR says was unrelated to site conditions; pending negligence litigation), and the active-but-narrowed CalSTRS lawsuit over its West Sacramento HQ expansion. Collection gap: no audited financials, margins, or backlog — standard for private GCs but notable at $14B scale.",
+ "ecosystemRole": "The self-performing technical builder of the AI buildout: the GC hyperscalers and neoclouds hire when schedule certainty matters most, converting prefabrication, in-house craft labor, and an integrated engineering/manufacturing family into record delivery speed on the largest AI campuses in the country.",
+ "productsAndServices": [
+  {
+   "name": "Mission Critical / Data Center Construction",
+   "category": "Hyperscale, neocloud & colocation general contracting",
+   "description": "Ground-up greenfield for 'traditional compute densities, cloud, neocloud, and AI infrastructure,' plus retrofit/power-and-cooling upgrades and live-environment work via the Special Services Group. In-house mechanical/electrical/controls expertise through commissioning. Company claims: 2,716 mission-critical projects since 1990, 575+ in the last five years, $12.1B of mission-critical work in the last ten years, >1.5 GW of critical load installed since 1997, 96% of recent mission-critical work with repeat customers.",
+   "highlights": [
+    "Stargate Abilene (Crusoe / OpenAI-Oracle): lead builder with prime partners Rosendin and Southland Brandt — each 474,000 sq ft building (four 25 MW data halls = 100 MW IT) delivered in under a year; campus grew 2 → 8 buildings, ~4M sq ft, 1.2 GW; DCD's 2025 North American Data Center Project of the Year",
+    "Meta Richland Parish, LA ('Hyperion', $10B): one of three GCs with Turner and Mortenson on Meta's largest-ever data center (~4M sq ft, >5,000 peak workers, completion ~2030); long Meta lineage back to Prineville OR and Luleå Sweden",
+    "Named colocation/wholesale roster: CoreSite, CyrusOne, DataBank, Digital Realty, Equinix, Flexential, Global Switch, NTT, QTS, Stream, Vantage — plus NVIDIA, Oracle, and Applied Materials among advanced-tech customers",
+    "Sector ranks: #3 data centers (BD+C 2025 Giants; top 5 since 2016), #4 data centers (ENR 2025 Sourcebook)"
+   ],
+   "positioning": "The 'schedule certainty' seller: ENR's Abilene reporting documents 672 prefabricated exterior panels per building installed at 15-20/day (enclosed in under 8 weeks), steel mill-orders designed in 2 weeks, and a 154-day potential delay re-planned down to 28 days. Versus Turner (pure CM at 2x the revenue), DPR self-performs; versus HITT/Holder (purer DC specialists), DPR carries five-market diversification.",
+   "soldThrough": "Repeat-relationship CM-at-risk and design-build contracts (~90% CM-at-risk per ENR 2026 data)",
+   "targetSegments": [
+    "Neocloud/AI-campus builders (Crusoe)",
+    "Hyperscalers (Meta, Oracle)",
+    "Colocation/wholesale operators",
+    "Enterprise"
+   ],
+   "roadmap": "Abilene energization completing mid-2026; Meta Richland Parish through ~2030; Gorthy-led mission-critical core market organized January 2026 for hyperscale account strategy"
+  },
+  {
+   "name": "Self-Perform Trades",
+   "category": "In-house craft construction",
+   "description": "One of DPR's founding differentiators: ~6,000 self-perform craft workers — nearly half the workforce — executing demolition, concrete, drywall/interiors, doors/frames/hardware, firesafing, electrical, waterproofing, and specialty scopes. 'Annually, DPR's self-performed revenue would rank among the larger specialty contractors in the markets we operate in' (company claim).",
+   "highlights": [
+    "At Abilene DPR self-performs concrete, drywall, doors/frames/hardware, struts, and low-voltage electrical while managing 60 subcontractors (30 more under prime partners)",
+    "Direct control of schedule-critical trades is the mechanism behind the speed claims — no waiting on a sub's mobilization for the critical path",
+    "Craft retention is the strategic point of employee ownership: profit sharing funds non-owner employees' 401(k)s, weighted toward lower salaries; PTO extended to non-union craft"
+   ],
+   "positioning": "'A builder, not a broker' — the deepest self-perform bench in the top-10 data-center cohort; both a differentiator against pure CMs and a fixed-cost exposure in a downturn",
+   "soldThrough": "Embedded in DPR project delivery",
+   "targetSegments": [
+    "All DPR markets"
+   ],
+   "roadmap": "Craft-training pipelines expanding with data-center scale (per Central Region leadership)"
+  },
+  {
+   "name": "Prefabrication & the Family of Companies",
+   "category": "Off-site manufacturing and integrated delivery platform",
+   "description": "Prefabrication claimed on >90% of new work, with schedule reductions of up to 50% versus field assembly, powered by an integrated Family of Companies: GPLA (structural engineers), Digital Building Components (digital manufacturing of exterior wall panels, load-bearing light-gauge structures, interior partitions direct from Revit models), SurePods (the largest US bathroom-pod manufacturer), EIG Electrical Systems (electrical procurement/prefab/installation incl. renewables and storage), OES Equipment (jobsite supply), vConstruct (Pune, India — scaled VDC, project controls, software, data), and VueOps (facility-operations/digital-twin software).",
+   "highlights": [
+    "Abilene: 672 prefabricated insulated-metal exterior panels per building, buildings enclosed in <8 weeks; prefabricated anchor-bolt template system; reverse-osmosis flushing projected to cut chilled-water flushing use 75%",
+    "Family of Companies employees participate in the same ownership and profit-sharing programs as the parent",
+    "70 patents; twice a Fast Company Best Workplace for Innovators"
+   ],
+   "positioning": "The most vertically integrated delivery platform among the DC specialists — engineering, manufacturing, and data capacity in-house where peers subcontract or buy",
+   "soldThrough": "Family-company services embedded in DPR jobs and sold externally (SurePods serves outside hospitality/healthcare clients)",
+   "targetSegments": [
+    "DPR projects",
+    "External pod/panel customers"
+   ],
+   "roadmap": "Digital-fabrication capacity scaling with the mission-critical book"
+  },
+  {
+   "name": "Life Sciences, Healthcare, Higher Ed & Commercial",
+   "category": "Diversified technical-building core markets",
+   "description": "The four non-tech core markets that made DPR's name in 'complex and technical' construction — anchored by the landmark Genentech Vacaville delivery (450,000 sq ft biotech plant in 16 months, 2005 — then the world's largest cell-culture facility, and CEO George Pfeffer's career-defining project). Advanced manufacturing (semiconductors, clean energy/battery, aerospace) was organized as its own led core market in January 2026 under Annette Allen.",
+   "highlights": [
+    "Advanced-tech customer roster beyond data centers: Applied Materials, Texas Instruments, NXP, STMicroelectronics, SpaceX, Rivian, BAE, Lockheed Martin, Gulfstream",
+    "32 offices including Amsterdam, Frankfurt, Zürich, and Seoul; $1.8B+ of active work in greater Philadelphia at the May 2026 office opening",
+    "~43% of 2025 revenue still comes from outside the data-center category — the widest diversification below Turner in the DC top tier"
+   ],
+   "positioning": "Cycle insulation the pure DC specialists lack: life-sciences and healthcare capex runs on different clocks than hyperscale AI",
+   "soldThrough": "CM-at-risk, design-build, and IPD contracts",
+   "targetSegments": [
+    "Biopharma",
+    "Health systems",
+    "Universities",
+    "Semiconductor/EV/aerospace manufacturers"
+   ],
+   "roadmap": "Advanced-manufacturing core market build-out under dedicated leadership"
+  },
+  {
+   "name": "WND Ventures & Construction Technology",
+   "category": "Corporate venture capital and VDC/innovation",
+   "description": "WND Ventures (named for founders Woods, Nosler, Davidowski) is DPR's innovation and investment arm: 15+ startups backed since 2015 (Dusty Robotics, ConstructivIQ, Rhumbix among them), relaunched in 2026 with an integrated model pairing investment with operational collaboration — project teams, R&D, and venture investing combined. DPR's VDC practice is a industry pioneer (Leadership Team member Atul Khanzode co-authored 'Integrating Project Delivery'); vConstruct provides scaled offshore VDC/data capacity.",
+   "highlights": [
+    "Named a top corporate VC at BuiltWorlds Venture West 2026",
+    "VDC toolset in production: 4-D modeling, BIM coordination, digital twins via VueOps",
+    "Quarterly Market Conditions Reports position DPR as an industry data voice (Q2 2026: schedule certainty driving owner decisions)"
+   ],
+   "positioning": "Venture investing wired directly into jobsite deployment — startups get DPR projects as proving grounds; DPR gets first access to tools that compound its speed franchise",
+   "soldThrough": "Investment + operational collaboration",
+   "targetSegments": [
+    "Construction-tech startups",
+    "DPR project teams"
+   ],
+   "roadmap": "Integrated invest-and-deploy model announced 2026; Khanzode/Pfeffer sponsorship"
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-06-24",
+   "category": "Risk",
+   "headline": "TIME publishes an investigation into worker injuries at Stargate Abilene, where DPR is lead contractor: three 2025 fracture incidents, 14 emergency calls since December 2024, an October 2025 worker death (DPR: unrelated to site conditions), and a $5,674 OSHA citation for excavator training (later withdrawn via settlement)",
+   "read": "The highest-profile AI construction site in the country now carries a national-media safety narrative. DPR denied systemic issues and declined to share internal safety data — consistent with its no-published-EMR/TRIR posture, but a transparency gap peers can exploit.",
+   "source": "TIME, 2026-06-24"
+  },
+  {
+   "date": "2026-05-27",
+   "category": "Financial",
+   "headline": "ENR 2026 Top 400: DPR rises to #7 on $14.0B of 2025 revenue with $26.1B of new contracts booked; ENR data shows 57% of revenue in the data-center category",
+   "read": "Bookings at ~1.9x revenue imply a record backlog entering 2026. The 57% telecom mix — against the company's 31%-of-2024 mission-critical claim — shows how fast the Stargate ramp tilted the book.",
+   "source": "The Job Walk ENR 2026 analysis, 2026-05-27"
+  },
+  {
+   "date": "2026-05-26",
+   "category": "Expansion",
+   "headline": "Opens a Philadelphia-area office (Radnor, PA) with more than $1.8B of active work in the greater Philadelphia region",
+   "read": "The 28th US office lands where the active book already justifies it — expansion following revenue, not chasing it.",
+   "source": "DPR press release, 2026-05-26"
+  },
+  {
+   "date": "2026-04-02",
+   "category": "Recognition",
+   "headline": "WND Ventures named a top corporate VC at BuiltWorlds Venture West; relaunched with an integrated investment-plus-operational-collaboration model",
+   "read": "The venture arm graduates from side project to structured platform — investing wired into jobsite deployment, presented by the CEO and the technology lead personally.",
+   "source": "DPR press room, 2026-04-02; BuiltWorlds"
+  },
+  {
+   "date": "2026-01-21",
+   "category": "Leadership",
+   "headline": "Names Advanced Technology core-market leaders: Christopher Gorthy (Mission Critical / data centers) and Annette Allen (Advanced Manufacturing — semiconductors, clean energy, aerospace)",
+   "read": "The org chart formalizes the two capex supercycles as separately-led businesses — hyperscale account strategy gets a dedicated national owner.",
+   "source": "DPR press release, 2026-01-21"
+  },
+  {
+   "date": "2025-11-18",
+   "category": "Project",
+   "headline": "Crusoe tops out the eighth and final Stargate Abilene building: ~4M sq ft, 1.2 GW campus; first two buildings (980,000 sq ft, 200+ MW IT) operational since September 2025; ~7,000 workers on site",
+   "read": "From groundbreaking to eight topped-out AI buildings in ~16 months — the delivery record the entire neocloud sector now benchmarks against.",
+   "source": "W.Media, 2025-11-18; DCD"
+  },
+  {
+   "date": "2025-11-14",
+   "category": "Risk",
+   "headline": "Sacramento court rulings 'cut back on claims' in CalSTRS' contracting-fraud lawsuit over DPR's West Sacramento HQ expansion — active but narrowed in DPR's favor",
+   "read": "The November 2024 tentative ruling already found no evidence of a price-inflation conspiracy; the case is trending DPR's way but remains open — final outcome pending.",
+   "source": "Sacramento Business Journal via Wikipedia, 2025-11-14"
+  },
+  {
+   "date": "2025-08-04",
+   "category": "Project",
+   "headline": "ENR feature documents the Abilene execution system: 474,000 sq ft buildings in under a year, data halls in ~10 months, 672 prefab panels per building enclosing structures in under 8 weeks, a 154-day potential delay compressed to 28 days",
+   "read": "The most detailed public documentation of any AI-campus delivery method — and effectively a public audit of DPR's prefab-plus-self-perform model working at record scale.",
+   "source": "ENR, 2025-08-04"
+  },
+  {
+   "date": "2025-07-02",
+   "category": "Company",
+   "headline": "35th anniversary: 12,000+ employees including ~6,000 craft workers, 70 patents, Mission 2030 strategic program",
+   "read": "The scale marker: from three founders and $750K to one of the largest employee-owned companies in the US.",
+   "source": "DPR press release, 2025-07-02"
+  },
+  {
+   "date": "2025-01",
+   "category": "M&A",
+   "headline": "GE Johnson Construction (Colorado Springs, acquired 2021) rebranded as DPR Construction",
+   "read": "The Mountain-region acquisition fully absorbed — DPR grows mostly organically; this remains its only major GC acquisition.",
+   "source": "Wikipedia (ENR-cited)"
+  },
+  {
+   "date": "2024-12-04",
+   "category": "Customer",
+   "headline": "Meta selects Turner, DPR, and Mortenson for the $10B Richland Parish, LA AI campus — Meta's largest data center (~4M sq ft, >5,000 peak workers, completion ~2030)",
+   "read": "Anchor position on the decade's flagship Meta program, alongside the two firms DPR is most often benchmarked against.",
+   "source": "Construction Dive, 2024-12-04; ENR"
+  },
+  {
+   "date": "2024-09-17",
+   "category": "Market",
+   "headline": "Central Region advanced-tech leader Andy Kirby: data-center scale has jumped 'from 30-40 MW years ago to 500 MW-1 GW now'; DPR leaning on offsite MEP prefab and craft-training pipelines",
+   "read": "The company's own framing of the gigawatt-era shift its Abilene system was built to serve.",
+   "source": "Construction Dive, 2024-09-17"
+  },
+  {
+   "date": "2024-07-01",
+   "category": "Risk",
+   "headline": "CalSTRS sues DPR over the ~$300M West Sacramento HQ expansion, alleging contract breach, licensure failures, unlicensed subcontractors, and false payment applications",
+   "read": "A rare public dispute for DPR, filed by the largest US teachers' pension fund the day it took possession of the building — subsequently narrowed by court rulings (see 2025-11-14).",
+   "source": "Law.com The Recorder, 2024-07-08"
+  }
+ ],
+ "strategyRead": [
+  "1. (High confidence) We assess DPR's competitive core is schedule certainty manufactured through vertical integration: ~6,000 self-perform craft workers plus prefabrication on >90% of new work plus in-house engineering/manufacturing (GPLA, Digital Building Components) let it compress AI-campus schedules in ways pure CMs cannot — documented independently at Abilene (buildings in <1 year, enclosure in <8 weeks, a 154-day delay re-planned to 28). This is the franchise hyperscalers are paying for.",
+  "2. (High confidence) We assess the Stargate Abilene program transformed DPR's risk profile along with its revenue: 2025 revenue +30% to $14.0B with $26.1B booked, but the same site now carries a national-media safety narrative (TIME), pending negligence litigation, and an NDA-bound workforce story. Execution and reputation risk are now concentrated in the exact asset that made the year.",
+  "3. (Moderate confidence) We assess DPR is the most cycle-insulated of the data-center specialists: 57% telecom mix versus HITT's 82%, with life sciences, healthcare, higher ed, and an organized advanced-manufacturing market (semis, batteries, aerospace) running on different capex clocks. In an AI-capex pause, DPR's book degrades more gracefully than HITT's or Holder's.",
+  "4. (Moderate confidence) We assess broad-based employee ownership is a genuine labor-market weapon in the craft-ceiling era: real equity plus profit sharing weighted toward lower-salaried employees directly targets retention of the scarcest resource (craft labor), and the 2021 C-corp conversion doubling the owner count shows management treats it as strategy, not culture decoration. The unquantified counterweight is the recurring buy-back obligation as owners age out (mandatory divestment at 60-65) — an internal capital call that would bite hardest in a downturn.",
+  "5. (Moderate confidence) We assess the Meta multi-GC model (Turner, DPR, Mortenson on one campus) caps any single builder's share of the largest programs by design — hyperscalers are deliberately maintaining a bench of substitutable top-tier GCs. DPR's counter is to dominate the neocloud tier (Crusoe/Stargate) where single-lead awards at gigawatt scale are still available.",
+  "6. (Low confidence) We assess DPR's implied 2025 data-center revenue at ~$8B (57% of $14.0B, ENR survey data) — far above trailing third-party estimates of $2-3B, reflecting both the Abilene ramp and definitional noise between 'telecom,' 'mission critical,' and 'advanced technology.' Treat sector-revenue precision as indicative."
+ ],
+ "relationships": [
+  {
+   "slug": "crusoe",
+   "type": "customer",
+   "note": "Lead contractor on Crusoe's Stargate Abilene campus — 8 buildings, ~4M sq ft, 1.2 GW, each 474,000 sq ft building delivered in under a year.",
+   "context": "The flagship technical build of the AI era, serving the OpenAI/Oracle Stargate program. The dossier's read: DPR dominates the neocloud tier where single-lead awards at gigawatt scale are still available, against the hyperscalers' deliberate multi-GC model.",
+   "status": "active",
+   "scale": "1.2 GW campus"
+  },
+  {
+   "slug": "meta",
+   "type": "customer",
+   "note": "One of three GCs (with Turner and Mortenson) on Meta's $10B Richland Parish, LA AI campus — Meta's largest data center.",
+   "context": "Selected December 2024 for the ~4M sq ft campus (>5,000 peak workers, completion ~2030). The dossier's judgment: Meta's multi-GC model caps any single builder's share of the largest programs by design — hyperscalers deliberately maintain a bench of substitutable top-tier GCs.",
+   "source": "Construction Dive, 2024-12-04; ENR",
+   "status": "active",
+   "since": "2024-12",
+   "scale": "$10B campus (3 GCs)"
+  },
+  {
+   "slug": "mortenson",
+   "type": "partner",
+   "note": "Co-GC on Meta Richland Parish — and the benchmark rival on every major data-center pursuit."
+  },
+  {
+   "slug": "openai",
+   "type": "other",
+   "note": "Indirect: DPR builds the Stargate Abilene campus OpenAI's workloads anchor — the contract runs through developer Crusoe, not OpenAI."
+  },
+  {
+   "slug": "oracle",
+   "type": "other",
+   "note": "Indirect: Oracle leases and operates the Abilene campus DPR builds for Crusoe — no direct DPR–Oracle award documented."
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Stargate Abilene delivery system (Crusoe / OpenAI-Oracle)",
+   "specs": [
+    {
+     "band": "Building",
+     "label": "Per building",
+     "value": "one central utility hall + four data halls, 35,000 sq ft white space, 500 racks and 25 MW IT per hall = 100 MW IT per building; operable with up to 100,000 GPUs / 50,000 NVIDIA GB200 NVL72 racks on one network fabric"
+    },
+    {
+     "band": "Campus",
+     "label": "Scale",
+     "value": "8 buildings, ~4M sq ft, 1.2 GW total power; expanded from 2 to 8 buildings within ~6 months of groundbreaking; energization completing mid-2026"
+    },
+    {
+     "band": "Schedule",
+     "label": "Speed",
+     "value": "each 474,000 sq ft building delivered in <1 year; each 106,000 sq ft data hall ~10 months start-to-energization; 672 prefabricated IMP exterior panels per building installed at 15-20/day — enclosed in <8 weeks"
+    },
+    {
+     "band": "Engineering",
+     "label": "Steel & water",
+     "value": "Structural steel mill-orders designed in 2 weeks, full fabrication models in <6 weeks; prefabricated anchor-bolt template system; reverse-osmosis flushing projected to cut chilled-water flushing use 75%"
+    },
+    {
+     "band": "Workforce",
+     "label": "Craft & subcontractors",
+     "value": "~2,000 rising toward ~5,000 daily (2,785 in July 2025; ~7,000 at final topping-out); ~2.75M workhours on the first two buildings through May 2025; DPR manages 60 subs (30 more under primes Rosendin and Southland Brandt)"
+    }
+   ],
+   "notes": "DCD's 2025 North American Data Center Project of the Year; the most-documented AI-campus delivery method in the public record (ENR feature, 2025-08-04)"
+  },
+  {
+   "product": "Mission-critical install base and delivery model",
+   "specs": [
+    {
+     "band": "Install base",
+     "label": "Critical load",
+     "value": ">1.5 GW of data-center critical load installed since 1997 (first DC project 1997)"
+    },
+    {
+     "band": "Install base",
+     "label": "Project count",
+     "value": "2,716 mission-critical projects since 1990; 575+ in the last five years; $12.1B of mission-critical work in ten years; 202 design-build mission-critical projects"
+    },
+    {
+     "band": "Client base",
+     "label": "Repeat work",
+     "value": "96% of mission-critical work in the past five years with repeat customers"
+    },
+    {
+     "band": "Delivery model",
+     "label": "Contracting",
+     "value": "~90% of revenue CM-at-risk (ENR 2026 survey); in-house mechanical/electrical/controls through commissioning; Special Services Group for live-environment retrofits"
+    },
+    {
+     "band": "Revenue mix",
+     "label": "Sector share",
+     "value": "31% of 2024 company revenue from mission-critical (company claim) vs 57% of 2025 revenue in ENR's telecom category — the Stargate ramp in one contrast"
+    }
+   ],
+   "notes": "The trailing 1.5 GW install-base figure understates current in-flight capacity: Abilene alone is a 1.2 GW campus"
+  },
+  {
+   "product": "Prefabrication & Family of Companies platform",
+   "specs": [
+    {
+     "band": "Prefabrication",
+     "label": "Coverage",
+     "value": ">90% of new work; schedule reductions up to 50% vs field assembly (company claims); two decades of engineered-to-order experience; Revit-model-to-digital-fabrication workflow"
+    },
+    {
+     "band": "Operating companies",
+     "label": "Digital Building Components (founded 2016)",
+     "value": "panelized exterior wall systems, load-bearing cold-formed metal framing, interior partitions manufactured direct from Revit models"
+    },
+    {
+     "band": "Operating companies",
+     "label": "SurePods",
+     "value": "largest US bathroom-pod manufacturer (healthcare, hospitality, multi-living; Marriott/Hilton/Hyatt lineage since 2006), consolidating eight trades per pod"
+    },
+    {
+     "band": "Operating companies",
+     "label": "vConstruct (Pune) & VueOps",
+     "value": "scaled VDC, project controls, software and data services; VueOps: facility-operations/digital-twin software; 70 patents company-wide"
+    }
+   ],
+   "notes": "Family-of-companies employees participate in the same ownership and profit-sharing programs as DPR proper — one labor market, one equity system"
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "George Pfeffer",
+   "title": "Chief Executive Officer, Leadership Team",
+   "photo": "images/execs/dpr-pfeffer.png",
+   "background": [
+    "CEO since around the 2021 C-corp reorganization; joined DPR 1992 as a project engineer; electrical-engineering degree from Brown University (played football)",
+    "Career-defining project: Genentech's 450,000 sq ft Vacaville biotech plant delivered in 16 months (2005) — then the world's largest cell-culture biotech facility",
+    "Champions the shared-leadership model — DPR 'eschews formal titles' internally; on the 2021 ownership reform: it 'has done everything we wanted'",
+    "Co-presented WND Ventures' 2026 relaunch"
+   ]
+  },
+  {
+   "name": "Mark Whitson",
+   "title": "President, Leadership Team",
+   "photo": "images/execs/dpr-whitson.png",
+   "background": [
+    "President since January 2023, leading alongside CEO Pfeffer; focused on integration across the Family of Companies",
+    "Joined DPR 2001 from Purdue's Construction Engineering & Management program — started as a laborer/carpenter on a self-perform crew",
+    "Project executive on one of DPR's largest data-center jobs (the $1.2B Utah Data Center); Raleigh-Durham Business Unit Leader from 2013; Southeast Regional Leader from 2015"
+   ]
+  },
+  {
+   "name": "Angela Floyd",
+   "title": "Chief Financial Officer, Leadership Team",
+   "photo": "images/execs/dpr-floyd.jpg",
+   "background": [
+    "Joined DPR 2017; entered construction 2005 after a Big Four accounting firm, a nonprofit, an airline, and a technology-services company",
+    "Leads financial services, reporting and analysis, tax, treasury, and internal audit for a $14B private company with no external shareholders"
+   ]
+  },
+  {
+   "name": "Atul Khanzode",
+   "title": "Leadership Team (technology, VDC, prefab & self-perform strategy)",
+   "photo": "images/execs/dpr-khanzode.png",
+   "background": [
+    "Joined DPR 1997 as a project engineer; drives strategy across VDC, data, prefabrication, and self-perform work",
+    "BIM/VDC/Lean construction pioneer; co-authored the book 'Integrating Project Delivery'; collaborates with academic and research groups",
+    "Co-leads the relaunched WND Ventures innovation-and-investment model"
+   ]
+  },
+  {
+   "name": "Christopher Gorthy",
+   "title": "Advanced Technology Core Market Leader — Mission Critical",
+   "photo": "images/execs/dpr-gorthy.png",
+   "background": [
+    "Named to the role January 2026; 22 years at DPR across preconstruction, estimating, and prefabrication; pre-professional architecture degree",
+    "Owns nationwide hyperscale account and pursuit strategy for the data-center business — the operating leader of DPR's largest revenue category"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "private (employee-owned C corporation; no audited public financials, margins, backlog, or debt figures — revenue self-reported to ENR or company-stated; share price set annually by an independent auditor for the ownership program)",
+  "periods": [
+   {
+    "period": "2025 (ENR 2026 list)",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "$14.04B (ENR); $14.1B (company)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "ENR Top 400 #7, up from #8 — +30% YoY as the AI cycle hit"
+     },
+     {
+      "name": "New contracts",
+      "actual": "$26.1B",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Bookings at ~1.9x revenue — implies record backlog entering 2026 (backlog undisclosed)"
+     },
+     {
+      "name": "Revenue mix",
+      "actual": "57% telecom (data centers); ~90% CM-at-risk",
+      "expected": "",
+      "verdict": "inline",
+      "result": "ENR 2026 survey — implies ~$8.0B of data-center revenue (derivation, unaudited)"
+     }
+    ],
+    "commentary": "The growth shape: +23% (2021→22), ~flat (2022→23), +15% (2023→24), then +30% (2024→25). The 2025 step-change and the $26.1B of bookings are overwhelmingly Stargate Abilene and Meta program effects."
+   },
+   {
+    "period": "2024 (ENR 2025 list)",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "$10.8B",
+      "expected": "",
+      "verdict": "inline",
+      "result": "ENR Top 400 #8; company claims 31% of this year's revenue was mission-critical"
+     }
+    ],
+    "commentary": "The pre-Stargate-recognition baseline — Abilene broke ground mid-2024 but the revenue recognition wave landed in 2025."
+   },
+   {
+    "period": "2021-2023 (ENR history)",
+    "metrics": [
+     {
+      "name": "Revenue trajectory",
+      "actual": "$7.5B (2021, #7) → $9.2B (2022, #6) → $9.4B (2023, #7)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Steady top-8 presence for a decade before the AI-cycle inflection"
+     }
+    ],
+    "commentary": "Ownership economics (independent Rutgers/CLEO study): real-equity Shareholder Ownership Program (stock-backed loans/payroll deductions/options; mandatory sell-down at 60-65; annual independent valuation), profit sharing into non-owners' 401(k)s weighted toward lower salaries, and a 2021 C-corp conversion that removed the 100-shareholder S-corp cap — employee-owner count has doubled since."
+   }
+  ]
+ },
+ "sources": [
+  {
+   "label": "TIME — Investigation into worker injuries at the Stargate Abilene AI data center (DPR lead contractor)",
+   "url": "https://time.com/article/2026/06/24/ai-data-center-stargate-abilene-texas-injuries/",
+   "date": "2026-06-24"
+  },
+  {
+   "label": "The Job Walk — ENR 2026 Top 400 top-10 data analysis (DPR #7, $14.0B, $26.1B bookings, 57% telecom, ~90% CM-at-risk)",
+   "url": "https://thejobwalk.com/p/enr-releases-2026-top-400-the-data-behind-every-move-in-the-top-10",
+   "date": "2026-05-27"
+  },
+  {
+   "label": "DPR — Expands Mid-Atlantic presence with new Philadelphia office ($1.8B+ active regional work)",
+   "url": "https://www.dpr.com/media/press-releases/dpr-construction-expands-mid-atlantic-presence-with-new-philadelphia-office",
+   "date": "2026-05-26"
+  },
+  {
+   "label": "Construction Dive — The top commercial contractors of 2026 (ENR)",
+   "url": "https://www.constructiondive.com/news/top-commercial-contractors-revenue-2026-enr/820930/",
+   "date": "2026-05-22"
+  },
+  {
+   "label": "Blackridge Research — Top data-center construction companies (DPR ~1,500 MW delivered)",
+   "url": "https://www.blackridgeresearch.com/blog/latest-top-largest-data-center-construction-epc-builders-firms-companies-in-the-world",
+   "date": "2026-05-04"
+  },
+  {
+   "label": "Buildermuse — Top 20 data-center construction contractors in 2026 (trailing DC-revenue estimates)",
+   "url": "https://buildermuse.com/commercial/the-top-20-data-center-construction-contractors/",
+   "date": "2026-04-10"
+  },
+  {
+   "label": "Construction Dive — Turner 2025 annual report / data-center context (peer comparison)",
+   "url": "https://www.constructiondive.com/news/turner-2025-annual-report-data-centers/813694/",
+   "date": "2026-03-03"
+  },
+  {
+   "label": "DPR — Advanced Technology leaders set pace for faster, smarter builds (Gorthy / Allen named)",
+   "url": "https://www.dpr.com/media/press-releases/dpr-constructions-advanced-tech-leaders-set-pace-for-faster-smarter-builds",
+   "date": "2026-01-21"
+  },
+  {
+   "label": "Data Center Frontier — Executive roundtable: Christopher Gorthy, DPR Construction",
+   "url": "https://www.datacenterfrontier.com/executive-roundtable/article/55367241/data-center-insights-christopher-gorthy-dpr-construction",
+   "date": "2026-01"
+  },
+  {
+   "label": "W.Media — Crusoe tops off final AI data center building in Abilene, Texas (8 buildings, 1.2 GW)",
+   "url": "https://w.media/crusoe-tops-off-final-ai-data-center-in-abilene-texas/",
+   "date": "2025-11-18"
+  },
+  {
+   "label": "BD+C Giants 400 — Top data center construction firms for 2025 (DPR #3)",
+   "url": "https://www.bdcnetwork.com/giants-400/news/55321777/top-data-center-construction-firms-for-2025",
+   "date": "2025-10-07"
+  },
+  {
+   "label": "ENR — Project team pushes limits on Abilene data center job (delivery-system detail)",
+   "url": "https://www.enr.com/articles/61133-project-team-pushes-limits-on-abilene-data-center-job",
+   "date": "2025-08-04"
+  },
+  {
+   "label": "DPR — Celebrates 35 years (12,000+ employees, ~6,000 craft, 70 patents, Mission 2030)",
+   "url": "https://www.dpr.com/media/press-releases/dpr-celebrates-35",
+   "date": "2025-07-02"
+  },
+  {
+   "label": "Crusoe — Wins North American Data Center Project of the Year at 2025 DCD Global Awards (DPR lead construction partner)",
+   "url": "https://www.crusoe.ai/resources/newsroom/crusoe-wins-north-american-data-center-project-of-the-year-at-2025-data-center-dynamics-global-awards",
+   "date": "2025"
+  },
+  {
+   "label": "Rutgers/CLEO — 'We the Owners': DPR Construction employee-ownership case study",
+   "url": "https://cleo.rutgers.edu/wp-content/uploads/2025/08/We_the_Owners_DPRConstruction_Case_Study_2025_for_CLEO_080625.pdf",
+   "date": "2025-01"
+  },
+  {
+   "label": "Construction Dive — Meta taps Turner, DPR, Mortenson for $10B Louisiana data center",
+   "url": "https://www.constructiondive.com/news/meta-data-center-louisiana-turner-dpr-mortenson/734640/",
+   "date": "2024-12-04"
+  },
+  {
+   "label": "Construction Dive — Data-center planning & prefab: Andy Kirby interview (30-40 MW → 500 MW-1 GW scale shift)",
+   "url": "https://www.constructiondive.com/news/data-center-planning-prefab-dpr-andy-kirby/727148/",
+   "date": "2024-09-17"
+  },
+  {
+   "label": "Law.com The Recorder — CalSTRS, repped by Pillsbury, sues DPR alleging contracting fraud (West Sacramento HQ)",
+   "url": "https://www.law.com/therecorder/2024/07/08/calif-teachers-retirement-fund-repped-by-pillsbury-sues-construction-company-alleging-contracting-fraud/",
+   "date": "2024-07-08"
+  },
+  {
+   "label": "PRNewswire — DPR announces Mark Whitson as President to lead alongside CEO George Pfeffer",
+   "url": "https://www.prnewswire.com/news-releases/dpr-construction-announces-mark-whitson-as-president-to-lead-alongside-ceo-george-pfeffer-301729770.html",
+   "date": "2023-01-25"
+  },
+  {
+   "label": "ENR — Innovator Doug Woods, the 'D' in DPR Construction, dies at age 70",
+   "url": "https://www.enr.com/articles/51798-innovator-doug-woods-the-d-in-dpr-construction-dies-at-age-70",
+   "date": "2021-05-25"
+  },
+  {
+   "label": "DPR — Press room / company fact panel ($14.1B 2025 revenue; 13,500+ employees; prefab >90%)",
+   "url": "https://www.dpr.com/press-room"
+  },
+  {
+   "label": "DPR — Advanced Technology market page (customer roster; mission-critical fact panel)",
+   "url": "https://www.dpr.com/company/advanced-technology"
+  },
+  {
+   "label": "DPR — Mission Critical page (delivery model; featured projects)",
+   "url": "https://www.dpr.com/construction/mission-critical"
+  },
+  {
+   "label": "DPR — Crusoe Abilene data center project page (building/campus specs)",
+   "url": "https://www.dpr.com/projects/crusoe-abilene-data-center"
+  },
+  {
+   "label": "DPR — Self-Perform Work",
+   "url": "https://www.dpr.com/construction/expertise/self-perform-work"
+  },
+  {
+   "label": "DPR — Prefabrication (schedule reductions up to 50%)",
+   "url": "https://www.dpr.com/construction/expertise/prefabrication"
+  },
+  {
+   "label": "DPR — Family of Companies (GPLA, vConstruct, OES, EIG, SurePods, DBC, WND, VueOps)",
+   "url": "https://www.dpr.com/company/family-of-companies"
+  },
+  {
+   "label": "DPR — WND Ventures relaunch (integrated invest-and-collaborate model)",
+   "url": "https://www.dpr.com/media/blog/wnd-ventures-unveils-evolved-approach-to-construction-innovation"
+  },
+  {
+   "label": "DPR — Leadership directory and bios (Pfeffer, Whitson, Floyd, Khanzode, Gorthy)",
+   "url": "https://www.dpr.com/company/leadership"
+  },
+  {
+   "label": "Wikipedia — DPR Construction (revenue history; CalSTRS case status)",
+   "url": "https://en.wikipedia.org/wiki/DPR_Construction"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 3
+}

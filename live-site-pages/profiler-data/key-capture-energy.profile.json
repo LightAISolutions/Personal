@@ -1,0 +1,317 @@
+{
+ "schemaVersion": 6,
+ "slug": "key-capture-energy",
+ "name": "Key Capture Energy (KCE)",
+ "shortName": "Key Capture",
+ "categories": [
+  "ipp"
+ ],
+ "website": "https://keycaptureenergy.com",
+ "headquarters": "Albany, New York, United States (offices: Houston, Salt Lake City)",
+ "founded": 2016,
+ "employees": "~85-100 (company site claims both '85+ in 25 states' and 'over 100' — internally inconsistent)",
+ "ownership": "SK-owned and in play: SK E&S took majority control Dec 2021 (with a >$1B investment pledge); after the SK E&S-SK Innovation merger (Nov 2024) KCE sits under PassKey Inc., SK Innovation E&S's US green-energy platform. Infralogic reported SK launched a sale process mid-April 2026 (Nomura Greentech advising; alternately framed as a ~$350M capital raise); PassKey's on-record line: 'exploring various strategic options to bring in a financial partner.' No outcome announced as of Aug 2026",
+ "summary": "BOTTOM LINE UP FRONT: Key Capture Energy is the NYISO first-mover (first grid-scale battery in NYISO wholesale, 2019; two LIPA contracts approved Dec 2024) with 623 MW operating (~580 MW ERCOT + ~43 MW NY) and an 8 GW claimed pipeline — and a striking procurement paradox: despite five years of Korean SK ownership, it has never bought a Korean cell. Its fleet is built on Sungrow (~450 MW cumulative — the incumbent primary supplier via a 390 MW framework from 2021) and Powin (~230 MW — whose Chapter 11 and Dec 2025 liquidation left ~40% of the fleet with orphaned-service risk). It has no public FEOC posture, no disclosed safe-harbored equipment, no Hithium history (whitespace, not a blocker), no new COD since January 2025, and an unresolved ownership process that freezes big procurement decisions. Its concentrated forward demand — LIPA's 79 MW/316 MWh + 50 MW/200 MWh BOOT-style contracts, NYSERDA bulk-storage bids (KCE NY 34, 100 MW/4-hr), and ~700 MW of Michigan MISO projects targeting early-2027 construction — is exactly the procurement window now open.",
+ "ecosystemRole": "We assess KCE as the most winnable account in Batch B for a price-competitive Chinese vendor on paper — a historically price/availability-driven buyer of Chinese systems with active procurement windows (LIPA, NYSERDA ISC, Michigan) and integrator-failure scar tissue that a well-capitalized OEM with strong warranty backstops can answer — and simultaneously one of the most conditional: the sale process could hand control to a sponsor with its own supplier preferences; a retained SK would have an obvious captive pivot to SK On's US LFP (a synergy trade press notes is publicly unexploited); and FEOC economics bind every ITC-claiming project it builds from 2026. In the relationship web, KCE is also the cautionary integrator-risk exhibit: Powin's bankruptcy turned a supplier choice into a fleet liability, which is why vendor viability now outranks price in its diligence.",
+ "productsAndServices": [
+  {
+   "name": "ERCOT operating fleet (~580 MW)",
+   "description": "Built in three procurement waves: (1) three 9.9 MW distribution-connected units, 29.7 MW total, COD 2020 — Powin; (2) KCE TX 11 (50 MW), TX 12 (100 MW), TX 23 (50 MW) — 200 MW, Powin systems with Mitsubishi Power as EPC/PCS, COD ~2021-22; (3) the Sungrow era — TX 13 (50 MW, Scurry Co.), TX 19 + TX 21 (100 MW combined, Williamson Co., in the Dec 2023 ITC transfer), TX 10 (100 MW/200 MWh, Denton Co.) and TX 15 (100 MW/200 MWh, Grimes Co.), both COD Jan 2025 with the 10% Energy Community ITC adder.",
+   "positioning": "An early ERCOT mover whose fleet now skews small/short-duration against the market's 4-hr shift; merchant revenue compression (mild weather, algorithmic competition) is the stated pressure.",
+   "soldThrough": "Merchant ERCOT with ITC-transfer monetization (two of the industry's earliest transfer deals: 120 MW to Enhanced Capital, Dec 2023; 200 MW in Jan 2025).",
+   "targetSegments": "ERCOT energy/AS markets.",
+   "roadmap": "No new COD since Jan 2025 — the visible stall the sale/recap process is meant to fix."
+  },
+  {
+   "name": "New York franchise (the regulatory moat)",
+   "description": "KCE NY 1 Stillwater (20 MW, NEC — the first grid-scale battery in NYISO wholesale, 2019, then NY's largest Li-ion); KCE NY 6 (20 MW/40 MWh, Erie Co. — Sungrow BESS, Black & McDonald EPC, union labor, $5.0M NYSERDA bridge incentive). Forward book: two LIPA contracts approved Dec 18, 2024 — 79 MW/316 MWh (Hauppauge/Islip) and 50 MW/200 MWh (Shoreham/Brookhaven), BOOT-style (7-yr initial term + LIPA buyout option or 13-yr extension), pay-for-performance, from a 78-bid/3.3 GW RFP; NYSERDA ISCRFP25-1 bids including KCE NY 34 (100 MW/4-hr, Saugerties, proposed in-service Dec 2030) — awards expected ~Q2 2026, results not yet public.",
+   "positioning": "First-mover regulatory equity in NYISO plus deep NYSERDA relationships — the moat peers can't quickly replicate; LIPA's municipal-utility procurement brings Chinese-content optics scrutiny.",
+   "soldThrough": "Utility BOOT contracts (LIPA), NYSERDA incentives, merchant NYISO.",
+   "targetSegments": "NYISO wholesale, Long Island reliability, state bulk-storage programs.",
+   "roadmap": "Supplier selection for the LIPA projects (LFP specified) and any ISC awards is unannounced — an active procurement window."
+  },
+  {
+   "name": "MISO/Midwest expansion",
+   "description": "~700 MW in Michigan alone (Pennfield Township — construction targeted early 2027; Ottawa County — KCE MI 1/MI 2), plus Indiana and Illinois positions; company cites electrification and data-center load growth as the demand driver for the Midwest push. Aug 18, 2026: $300M letter-of-credit facility from Standard Chartered (sole provider) to post development-phase credit support, with NYISO + MISO named as the near-term focus.",
+   "positioning": "The growth vector: Michigan's storage targets and MISO's data-center-driven load growth — pipeline claims of 8,000+ MW (site also shows 'over 10,000 MW'; use 8 GW).",
+   "soldThrough": "Development-stage; offtake structures TBD.",
+   "targetSegments": "MISO utilities and capacity needs.",
+   "roadmap": "Early-2027 Michigan construction implies equipment selection through 2026 — inside the FEOC-governed vintage, with no disclosed compliance pathway."
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Fleet & supplier history",
+   "specs": [
+    {
+     "band": "Suppliers",
+     "label": "Sungrow (incumbent)",
+     "value": "Oct 2021 framework for 390 MW of fully integrated 2-hr systems (ST2752UX liquid-cooled LFP); delivered TX 13, TX 19/21, TX 10/15 (Jan 2025 CODs) and NY 6 — cumulative ~450 MW operating (relationship verified; cumulative figure inferred)"
+    },
+    {
+     "band": "Suppliers",
+     "label": "Powin (distressed legacy)",
+     "value": "~230 MW ERCOT (29.7 MW 2020 fleet + 200 MW TX 11/12/23 with Mitsubishi Power EPC); Powin filed Ch. 11 Jun 10, 2025, liquidation plan effective Dec 5, 2025 — service continuity via spun-out Powin Project LLC; long-term warranty/O&M exposure on ~40% of KCE's fleet"
+    },
+    {
+     "band": "Suppliers",
+     "label": "NEC (heritage)",
+     "value": "KCE NY 1 (selected 2018); NEC exited the ESS business in 2020 — legacy only"
+    },
+    {
+     "band": "Suppliers",
+     "label": "Korean cells",
+     "value": "ZERO Korean-cell procurement found despite SK ownership since 2021 — no LG ES/Samsung SDI/SK On/Tesla/Fluence supply identified; trade press flags SK On's US LFP capacity as an unexploited FEOC-era synergy"
+    },
+    {
+     "band": "Forward book",
+     "label": "Open procurement",
+     "value": "LIPA 79 MW/316 MWh + 50 MW/200 MWh (LFP specified, suppliers unannounced); NYSERDA ISCRFP25-1 incl. KCE NY 34 100 MW/4-hr (awards ~Q2 2026, unpublished); Michigan ~700 MW (early-2027 construction); no disclosed safe-harbored equipment bank"
+    }
+   ],
+   "notes": "Total fleet MWh undisclosed (~1.15-1.25 GWh inferred). Hithium relationship: none found — whitespace. No public FEOC or domestic-content policy statements exist."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-08-18",
+   "category": "financial",
+   "headline": "$300M letter-of-credit facility closed with Standard Chartered (sole provider/arranger) — to post development-phase credit support, NYISO + MISO focus",
+   "read": "LC capacity, not construction cash — the facility keeps the pipeline's interconnection/permitting securities funded while the ownership question resolves.",
+   "source": "BusinessWire / ESN"
+  },
+  {
+   "date": "2026-05-04",
+   "category": "corporate",
+   "headline": "ESN analysis: the sale/financing process is driven by ERCOT revenue compression and capex needs; notes no new CODs in over a year; flags the unexploited SK On LFP/FEOC synergy",
+   "read": "The analyst read matches the fundamentals — a stalled builder with real regulatory assets seeking capital or a new owner.",
+   "source": "Energy-Storage.News"
+  },
+  {
+   "date": "2026-04-22",
+   "category": "corporate",
+   "headline": "PassKey confirms 'exploring various strategic options... to bring in a financial partner'; LinkedIn-sourced claims of a ~$350M raise via Nomura Greentech; Infralogic reported sale marketing materials distributed mid-April",
+   "read": "The account's decision rights are in escrow — expect procurement frameworks and major equipment awards to wait for the capital answer.",
+   "source": "ESN / Infralogic"
+  },
+  {
+   "date": "2026-01-29",
+   "category": "project",
+   "headline": "NYSERDA ISCRFP25-1 final bids due — KCE bid includes NY 34 (100 MW/4-hr, Saugerties); 46 projects/6 GW bid statewide; awards ~Q2 2026 (not yet public)",
+   "read": "New York's bulk-storage program is the pipeline's nearest revenue catalyst — and each award creates a supplier selection.",
+   "source": "NYSERDA"
+  },
+  {
+   "date": "2025-12-05",
+   "category": "supplier",
+   "headline": "Powin's liquidation plan becomes effective (Ch. 11 filed Jun 10); service continuity via spun-out Powin Project LLC",
+   "read": "~40% of KCE's fleet now depends on a post-bankruptcy service entity — vendor-viability diligence will be brutal on every future OEM, which cuts for a well-capitalized Hithium on financial strength and against it on geopolitical risk.",
+   "source": "ESN / TechCrunch / Verita"
+  },
+  {
+   "date": "2025-01-07",
+   "category": "project",
+   "headline": "KCE TX 10 + TX 15 (200 MW/400 MWh, Sungrow) reach COD with the second ITC transfer; fleet >620 MW",
+   "read": "The last completed construction — and the last Sungrow delivery; everything since is development, financing, and process.",
+   "source": "KCE PR / pv magazine USA"
+  },
+  {
+   "date": "2024-12-18",
+   "category": "project",
+   "headline": "LIPA board approves two KCE contracts: 79 MW/316 MWh (Hauppauge/Islip) + 50 MW/200 MWh (Shoreham), BOOT-style 7+13-yr structures with pay-for-performance, from a 78-bid RFP",
+   "read": "The marquee forward assets — municipal-utility contracts on Long Island with LFP specified and suppliers unpicked; procurement optics will weigh Chinese content carefully post-2023 NY fire incidents.",
+   "source": "APPA / ESN / RiverheadLocal"
+  },
+  {
+   "date": "2024-04-04",
+   "category": "leadership",
+   "headline": "New CEO Brian Hayes (ex-EDP Renewables, seated Jan 2024) outlines ERCOT/NYISO/MISO/SPP strategy and ~9 GW pipeline in ESN interview",
+   "read": "Post-founder professionalization under SK — Hayes inherited the fleet, the stall, and now the sale process.",
+   "source": "Energy-Storage.News"
+  },
+  {
+   "date": "2024-01-04",
+   "category": "financial",
+   "headline": "First ITC transferability deal: 120 MW (TX 19/21 + NY 6) credits sold to Enhanced Capital — among the industry's first IRA transfer transactions",
+   "read": "KCE was early to transferability — its capital model, like every peer's, now depends on FEOC-compliant equipment to keep the credits flowing.",
+   "source": "ESN / Enhanced Capital"
+  },
+  {
+   "date": "2021-12-09",
+   "category": "corporate",
+   "headline": "SK E&S completes majority acquisition of KCE (three SK executives join the board; 'over a billion dollars' investment pledge)",
+   "read": "The pledge that framed the growth story — how much was actually deployed is unverified, and the 2026 process suggests the answer disappointed.",
+   "source": "ESN / KCE PR"
+  },
+  {
+   "date": "2021-10-01",
+   "category": "supplier",
+   "headline": "KCE places a 390 MW BESS order with Sungrow (ST2752UX, 2-hr) — the framework that made Sungrow the incumbent",
+   "read": "The precedent that matters for Hithium: KCE demonstrably commits to Chinese-integrated systems at framework scale when price and availability win.",
+   "source": "ESN / pv magazine USA"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess KCE as the most procurement-open account in Batch B on revealed behavior: it built its fleet on Chinese systems (Sungrow framework) and US-integrator-with-Chinese-cells (Powin), never pivoted Korean despite SK ownership, and holds concentrated, dated procurement windows (LIPA, NYSERDA ISC, Michigan 2027 construction) with no announced suppliers and no disclosed FEOC pathway — the classic profile of a buyer that decides late and on terms.",
+  "(High confidence) We assess the ownership overhang as the gating condition: an active sale/recap since April 2026 freezes framework decisions, and the outcome forks the account — a financial sponsor likely preserves price-driven procurement (opportunity), while a retained/recommitted SK creates an obvious captive pivot to SK On's US LFP that would squeeze Chinese vendors out of exactly the NYISO/MISO builds Hithium would target (threat).",
+  "(Moderate confidence) We assess Powin scar tissue as reshaping vendor selection in Hithium's favor on one axis and against it on another: financial-strength and warranty-backstop diligence now dominates (a well-capitalized OEM with 25-yr warranty structures and a US service footprint scores well), while geopolitical/counterparty risk perception — amplified by LIPA's municipal procurement optics and NY's post-2023 fire-safety sensitivities — scores a §154-named supplier poorly.",
+  "(Moderate confidence) We assess the FEOC bind as decisive for ITC-claiming vintages: KCE's transfer-monetization model needs compliant equipment from 2026, and no safe-harbored bank is disclosed — so a Hithium pitch is realistic only for structures that don't claim the ITC or for content engineered under whatever compliant path Hithium can stand up; price alone no longer closes at ~55% effective tariff.",
+  "(Moderate confidence) For the Hithium lens: work the account as a timing play — track the sale outcome (Nomura process), the NYSERDA ISC award list (~Q2 2026, unpublished), and LIPA supplier selections as the three tells; engage early with commercial/technology leadership (Joel Vyduna) on the Michigan tranche where construction timing (2027) leaves the widest structuring room; and treat SK On's posture as the single variable most likely to close the door."
+ ],
+ "relationships": [
+  {
+   "slug": "sungrow",
+   "type": "supplier",
+   "note": "The incumbent primary supplier — a 390 MW framework (2021) built ~450 MW of the fleet.",
+   "context": "KCE placed a 390 MW BESS order with Sungrow (ST2752UX, 2-hour) in October 2021 — the framework that made Sungrow the incumbent across the Texas fleet (TX 13, TX 19/21, TX 10, TX 15) and the New York franchise (with Black & McDonald EPC and union labor). The last Sungrow delivery reached COD January 2025 (TX 10 + TX 15, 200 MW/400 MWh, with the second ITC transfer).\n\nThe precedent the dossier flags: KCE demonstrably commits to Chinese-integrated systems at framework scale when price and availability win — but its next procurement windows (LIPA, NYSERDA, Michigan 2027) have no announced suppliers, no disclosed FEOC pathway, and an unresolved SK ownership process freezing decisions.",
+   "source": "https://www.energy-storage.news/key-capture-energy-places-390mw-bess-order-with-sungrow/",
+   "status": "active",
+   "since": "2021-10",
+   "scale": "390 MW framework; ~450 MW cumulative"
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Brian Hayes",
+   "title": "CEO (announced Dec 2023, seated Jan 2024)",
+   "background": "18 years at EDP Renewables (ex-EVP Asset Operations); succeeded co-founder Jeff Bishop (departed Aug 2023; co-founder Dan Fitzgerald also gone)."
+  },
+  {
+   "name": "Seungyong Oh",
+   "title": "CFO",
+   "background": "The SK-affiliated seat — the Korean parent's finance control point and the named voice on the Standard Chartered facility."
+  },
+  {
+   "name": "Joel Vyduna",
+   "title": "EVP Commercial & Technology (promoted May 2024)",
+   "background": "The commercial/technology owner — the practical counterpart for supplier engagement."
+  },
+  {
+   "name": "Taylor Quarles",
+   "title": "EVP Development",
+   "background": "Owns the NYISO/MISO development book (LIPA, NYSERDA, Michigan)."
+  },
+  {
+   "name": "Rachel Goldwasser",
+   "title": "General Counsel & EVP Regulatory",
+   "background": "Runs the NYSERDA/LIPA regulatory relationships that constitute the company's moat."
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "private (SK/PassKey-owned) — no revenue/EBITDA disclosure",
+  "periods": [
+   {
+    "period": "Capital events",
+    "metrics": [
+     {
+      "name": "Financings",
+      "actual": "$93.3M debt for the 230 MW TX portfolio (CIT/Siemens FS/Rabobank, Feb 2021); SK E&S >$1B investment pledge (2021 — deployment unverified); two ITC-transfer monetizations (Dec 2023 ~120 MW to Enhanced Capital; Jan 2025 ~200 MW, buyer unnamed, values undisclosed); $300M Standard Chartered LC facility (Aug 2026); reported ~$350M capital-raise target via Nomura (2026, aggregator)",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "LC-financed development rather than construction capital — the visible constraint"
+     }
+    ]
+   }
+  ],
+  "commentary": "ERCOT merchant softness in 2025-26 (mild weather, algorithmic competition) is the stated revenue pressure; SK Innovation's own balance-sheet stress (battery losses drove the E&S merger) underlies the monetization push. NPM reported a 2022 minority-stake sale to 'Stella Investment' — single-source, unverified."
+ },
+ "sources": [
+  {
+   "label": "Energy-Storage.News — KCE raises $300M from Standard Chartered (NYISO/MISO focus)",
+   "url": "https://www.energy-storage.news/key-capture-energy-raises-us300-million-from-standard-chartered-with-ny-iso-and-miso-deployments-in-mind/",
+   "date": "2026-08-20"
+  },
+  {
+   "label": "BusinessWire — $300M LC facility close",
+   "url": "https://www.businesswire.com/news/home/20260818037115/en/",
+   "date": "2026-08-18"
+  },
+  {
+   "label": "Energy-Storage.News — why SK is exploring 'various options' for KCE",
+   "url": "https://www.energy-storage.news/why-sk-is-exploring-various-options-to-raise-financing-for-bess-developer-key-capture-energy/",
+   "date": "2026-05-04"
+  },
+  {
+   "label": "Energy-Storage.News — SK considers 'various strategic options' (PassKey statement; Nomura/$350M claims)",
+   "url": "https://www.energy-storage.news/sk-considers-various-strategic-options-to-raise-financing-for-bess-developer-key-capture-energy/",
+   "date": "2026-04-22"
+  },
+  {
+   "label": "Infralogic — SK Group launches sale for US batteries developer Key Capture",
+   "url": "https://ionanalytics.com/insights/infralogic/sk-group-launches-sale-for-us-batteries-developer-key-capture/",
+   "date": "2026-04"
+  },
+  {
+   "label": "NYSERDA — ISCRFP25-1 program (bids due Jan 29, 2026; 46 projects/6 GW; awards ~Q2 2026)",
+   "url": "https://www.nyserda.ny.gov/All-Programs/Energy-Storage-Program/Bulk-Storage-Incentives",
+   "date": "2026-01"
+  },
+  {
+   "label": "NYSERDA filing — KCE NY 34 public project summary (100 MW/4-hr, Saugerties)",
+   "url": "https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Energy-Storage/KCE-NY-34_Att_B_Public_Project_Summary.pdf",
+   "date": "2025-12"
+  },
+  {
+   "label": "Energy-Storage.News — Powin files Ch. 11, spins off project-services business",
+   "url": "https://www.energy-storage.news/powin-files-for-chapter-11-bankruptcy-protection-and-spins-off-project-services-business/",
+   "date": "2025-06-10"
+  },
+  {
+   "label": "KCE — TX 10/TX 15 COD + ITC transfer (200 MW/400 MWh)",
+   "url": "https://keycaptureenergy.com/key-capture-energy-completes-construction-and-itc-transfer-for-200mw-of-battery-energy-storage-in-texas/",
+   "date": "2025-01-07"
+  },
+  {
+   "label": "APPA Public Power — LIPA board approves two utility-scale battery contracts (79 MW + 50 MW)",
+   "url": "https://www.publicpower.org/periodical/article/lipa-board-trustees-approves-two-utility-scale-battery-energy-storage-contracts",
+   "date": "2024-12"
+  },
+  {
+   "label": "Energy-Storage.News — LIPA approves KCE BESS projects (BOOT terms)",
+   "url": "https://www.energy-storage.news/new-york-long-island-power-authority-approves-bess-projects-from-developer-key-capture-energy/",
+   "date": "2024-12-19"
+  },
+  {
+   "label": "Energy-Storage.News — new-CEO interview (Hayes; ERCOT/NYISO/MISO/SPP; ~9 GW pipeline)",
+   "url": "https://www.energy-storage.news/key-to-success-as-an-energy-storage-ipp-is-being-a-first-mover-says-new-key-capture-energy-ceo/",
+   "date": "2024-04-04"
+  },
+  {
+   "label": "Energy-Storage.News — KCE sells ITCs for 120 MW to Enhanced Capital",
+   "url": "https://www.energy-storage.news/key-capture-energy-sells-investment-tax-credits-for-120mw-of-new-york-and-texas-bess/",
+   "date": "2024-01"
+  },
+  {
+   "label": "Seoul Economic Daily — SK Innovation 'three mega projects' (power/ESS/AI-DC context)",
+   "url": "https://en.sedaily.com/finance/2026/07/09/sk-innovation-to-spread-its-wings-on-three-mega-projects",
+   "date": "2026-07-09"
+  },
+  {
+   "label": "Energy-Storage.News — KCE takeover by SK E&S complete ($1B pledge)",
+   "url": "https://www.energy-storage.news/us-battery-storage-developer-key-capture-energys-takeover-by-sk-es-complete/",
+   "date": "2021-12-09"
+  },
+  {
+   "label": "Energy-Storage.News — KCE places 390 MW BESS order with Sungrow (ST2752UX)",
+   "url": "https://www.energy-storage.news/key-capture-energy-places-390mw-bess-order-with-sungrow/",
+   "date": "2021-10-01"
+  },
+  {
+   "label": "BusinessWire — 200 MW TX (Powin LFP, Mitsubishi Power EPC)",
+   "url": "https://www.businesswire.com/news/home/20200819005142/en/",
+   "date": "2020-08-19"
+  },
+  {
+   "label": "NEC — selected for KCE NY 1, New York's largest Li-ion battery",
+   "url": "https://www.nec.com/en/press/201809/global_20180927_05.html",
+   "date": "2018-09-27"
+  },
+  {
+   "label": "KCE — homepage, projects, leadership",
+   "url": "https://keycaptureenergy.com/"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 2
+}

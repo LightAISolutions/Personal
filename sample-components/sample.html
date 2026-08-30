@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="build-version" content="v01.00w">
+  <title>YOUR_PROJECT_TITLE</title>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, sans-serif; background: #f7f7f9; color: #222; }
+    main { max-width: 720px; margin: 4em auto; padding: 0 1em; }
+    h1 { font-size: 22px; margin: 0 0 0.4em; }
+    p  { color: #444; line-height: 1.5; }
+    #version-indicator {
+      position: fixed; bottom: 8px; right: 22px; z-index: 9999;
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(0,0,0,0.55); color: #ccc; padding: 4px 10px;
+      border-radius: 12px; font: 11px/1 monospace;
+    }
+    #version-indicator .dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #888;
+      transition: background 0.3s ease;
+    }
+    #version-indicator .dot.checking { background: #ffa726; }
+    #version-indicator .dot.found    { background: #66bb6a; }
+    #version-indicator .dot.error    { background: #ef5350; }
+  </style>
+</head>
+<body>
+
+<main>
+  <h1>Sample auto-refresh page</h1>
+  <p>
+    This page polls its own version file every 10 seconds. When the version
+    in <code>html-versions/samplehtml.version.txt</code> changes, the page
+    reloads automatically. The pill in the bottom-right shows the current
+    version and the polling state.
+  </p>
+  <p>
+    Bump the version (e.g. <code>|v01.00w|</code> → <code>|v01.01w|</code>),
+    redeploy, and within ~10 seconds the open page will reload to pick up the
+    new build.
+  </p>
+</main>
+
+<script>
+// Auto-refresh: poll <pagename>html.version.txt and reload when the version changes.
+(function() {
+  var POLL_INTERVAL = 10000;
+
+  // Resolve the version-file URL relative to the current page.
+  // The `if (!pageName)` fallback is critical: when the page is served via a
+  // directory URL (e.g. https://example.github.io/myapp/), pageName is empty;
+  // without the fallback the poll fetches the wrong file and reloads forever.
+  var basePath = window.location.href.split('?')[0].split('#')[0];
+  var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
+  if (!pageName) pageName = 'sample';
+  var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1)
+                 + 'html-versions/' + pageName + 'html.version.txt';
+
+  var currentVersion = null;
+  var indicator = null;
+  var dot = null;
+
+  // Parse "|v01.00w|" — version is always the middle field.
+  function parseVersionTxt(raw) {
+    var parts = raw.split('|');
+    return { version: (parts[1] || '').replace(/^v/, '') };
+  }
+
+  function createIndicator(version) {
+    indicator = document.createElement('div');
+    indicator.id = 'version-indicator';
+    indicator.innerHTML = '<span class="dot"></span><span class="label">v' + version + '</span>';
+    document.body.appendChild(indicator);
+    dot = indicator.querySelector('.dot');
+  }
+
+  function checkForUpdate() {
+    if (dot) dot.className = 'dot checking';
+    fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })
+      .then(function(res) { return res.text(); })
+      .then(function(v) {
+        var parsed = parseVersionTxt(v.trim());
+        if (!currentVersion) {
+          // First fetch — establish baseline + create indicator.
+          currentVersion = parsed.version;
+          createIndicator(currentVersion);
+        } else if (parsed.version && parsed.version !== currentVersion) {
+          // Version changed — reload after a short delay so the indicator flashes.
+          if (dot) dot.className = 'dot found';
+          if (indicator) indicator.querySelector('.label').textContent = 'Updating...';
+          setTimeout(function() { window.location.reload(); }, 2000);
+          return;
+        }
+        if (dot) setTimeout(function() { dot.className = 'dot'; }, 600);
+        setTimeout(checkForUpdate, POLL_INTERVAL);
+      })
+      .catch(function() {
+        if (dot) {
+          dot.className = 'dot error';
+          setTimeout(function() { dot.className = 'dot'; }, 2000);
+        }
+        setTimeout(checkForUpdate, POLL_INTERVAL);
+      });
+  }
+
+  // Fire immediately on load to establish the baseline version.
+  checkForUpdate();
+})();
+</script>
+
+<!-- Developed by: LightAISolutions -->
+</body>
+</html>

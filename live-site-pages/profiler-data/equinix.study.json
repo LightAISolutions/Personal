@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "equinix",
+  "title": "Equinix — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Colocation economics: selling space, power, and cooling by the cabinet",
+      "bullets": [
+        "Retail colocation sells data-center capacity by the cabinet: the customer rents a locked rack or a caged group of racks, a committed power allowance, cooling, and physical security, and installs its own servers — the operator never touches the customer's computers",
+        "The business is recurring: customers pay monthly recurring revenue (MRR) under multi-year contracts, and the operator's health is read in MRR per cabinet (is pricing rising?) and churn (what fraction of recurring revenue cancels each quarter — a couple percent is normal)",
+        "Power is the real unit of sale: a cabinet is priced mostly by the kilowatts reserved for it, not its floor area — as racks densified, the same square footage began producing multiples of the revenue, which is why operators quote their capacity in megawatts",
+        "The economics compound with occupancy: a data hall's costs are mostly fixed, so each additional cabinet is nearly pure margin once the building breaks even — and because physically relocating racks is so painful for customers, price increases at renewal usually stick"
+      ]
+    },
+    {
+      "heading": "The interconnection ecosystem: proximity as the product",
+      "bullets": [
+        "A cross-connect is a physical cable run between two customers inside the same building — a network reaching a cloud, a bank reaching a market-data feed — cheaper, faster, and more secure than routing the same traffic out over the public internet",
+        "An internet exchange (IX) generalizes the idea: a shared switching fabric where hundreds of networks hand traffic directly to each other (called peering) instead of paying intermediary carriers to haul it — the plumbing that keeps internet transit cheap",
+        "Interconnection creates a network effect real estate rarely has: each new customer makes the building more valuable to every existing one, because there is now one more counterparty to connect to — density attracts density, and mature ecosystems become nearly immovable",
+        "It also changes what the landlord sells: cross-connect fees are high-margin recurring revenue on an inexpensive cable, and a customer wired into fifty counterparties cannot leave without renegotiating fifty relationships — interconnection is both the product and the switching cost"
+      ]
+    },
+    {
+      "heading": "Retail, wholesale, build-to-suit: the market's three layers",
+      "bullets": [
+        "The market stratifies by deal size: retail colocation sells cabinets and cages (kilowatts, thousands of customers), wholesale colocation leases whole data halls (single-digit megawatts, dozens of customers), and build-to-suit erects dedicated campuses of hundreds of megawatts for one hyperscaler",
+        "Margins run opposite to size: retail earns the highest revenue per kilowatt and layers interconnection fees on top, but fills slowly, customer by customer; a hyperscale deal fills an entire building with one signature at thin, real-estate-like returns",
+        "The customer defines the layer: an enterprise with a few racks buys retail; a company needing a private hall buys wholesale; hyperscalers with their own designs and operations teams want shells built to their spec — they are buying construction and power, not services",
+        "Operators mix the layers deliberately: retail ecosystems generate the premium margins, while hyperscale programs — often housed in joint ventures with pension and sovereign wealth funds — add scale and anchor tenancy without consuming the parent's balance sheet"
+      ]
+    },
+    {
+      "heading": "Data-center REITs: real-estate tax law meets digital infrastructure",
+      "bullets": [
+        "A real estate investment trust (REIT) is a tax structure: a company that earns mostly rent-like income, distributes at least 90% of taxable income as dividends, and in exchange pays no corporate income tax — profits are taxed once, at the shareholder level",
+        "Data centers qualify because the law sees a landlord: space, power, and cooling rented under multi-year contracts count as real-property income, which is how digital infrastructure ended up inside a structure invented for shopping malls and office towers",
+        "REITs report funds from operations (FFO) instead of net income because depreciation — a huge non-cash charge on buildings that may not be losing value — distorts earnings; adjusted FFO (AFFO) further subtracts recurring maintenance capex to approximate cash truly available for dividends",
+        "The structure carries a built-in tension: paying out most income leaves little retained cash, so growth must be funded with new debt and new shares — a constraint that bites hardest precisely when the business wants to spend billions a year on expansion"
+      ]
+    },
+    {
+      "heading": "Carrier neutrality: the Switzerland strategy",
+      "bullets": [
+        "Early data centers were 'carrier hotels' owned by telecom operators — and rival networks refused to house equipment inside a competitor's building, since the landlord could favor its own network on price, provisioning speed, or physical access",
+        "Carrier neutrality removed the conflict: an operator that owns no network and sells no connectivity treats all carriers alike, so fierce competitors will colocate side by side — neutrality is what makes buildings holding hundreds of networks possible at all",
+        "Neutrality is a discipline, not a slogan: uniform cross-connect pricing, no preferential access for any tenant, and staying out of businesses that would compete with the customers — the operator profits from hosting the meeting, never from picking sides in it",
+        "The strategic consequence: neutral meeting points concentrate a market's connectivity, and once a metro's networks, clouds, and exchanges settle into one campus, a rival building must convince the entire ecosystem to move at once — which almost never happens"
+      ]
+    },
+    {
+      "heading": "Enterprise hybrid: why the gear goes to colo, not cloud or basement",
+      "bullets": [
+        "Enterprises historically ran servers in on-premises rooms — expensive to power, cool, secure, and connect properly at small scale; a colocation cabinet delivers professional-grade infrastructure for a fraction of what building it in the basement costs",
+        "Public cloud did not settle the question: workloads with steady utilization, licensed software, regulatory constraints, or heavy data movement can cost several times more in cloud than on owned hardware — so most large enterprises run hybrid, splitting workloads by economics",
+        "Colocation is hybrid's natural home because of cloud on-ramps: private, dedicated links from a cabinet directly into the major clouds bypass the public internet — lower latency, predictable performance, and far cheaper data-transfer rates than internet egress",
+        "Data gravity holds the arrangement together: large datasets are slow and expensive to move, so enterprises park data in a neutral facility adjacent to many clouds and let applications from any of them come to the data — placement becomes a long-term architectural decision"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "What exactly does a retail colocation customer buy?",
+      "a": "A locked cabinet or cage, a committed power allowance, cooling, and physical security inside a professional data center — the customer installs and runs its own servers. The price is set mostly by the kilowatts reserved, not the floor space, which is why operators quote capacity in megawatts."
+    },
+    {
+      "q": "What are MRR and churn, and why do they define a colo operator's health?",
+      "a": "Monthly recurring revenue (MRR) is the contracted monthly payment stream; churn is the share of it that cancels each period. Rising MRR per cabinet means pricing power; low churn (around a couple percent per quarter) means the recurring base compounds — together they are the retail-colo scorecard."
+    },
+    {
+      "q": "What is a cross-connect?",
+      "a": "A physical cable run between two customers inside the same building — a network reaching a cloud, a bank reaching a market-data feed. It is faster, more secure, and cheaper than routing the same traffic across the public internet, and the operator collects a recurring fee on every one."
+    },
+    {
+      "q": "What is peering at an internet exchange?",
+      "a": "Networks handing traffic directly to each other across a shared switching fabric instead of paying intermediary carriers to haul it. An internet exchange (IX) is where hundreds of networks do this simultaneously — the plumbing that keeps moving data across the internet cheap."
+    },
+    {
+      "q": "Why does interconnection density create a moat that raw capacity cannot?",
+      "a": "Each new customer makes the building more valuable to every existing one — one more counterparty to connect to — so density attracts density. And a customer wired into fifty others cannot leave without renegotiating fifty relationships, meaning a rival building must move an entire ecosystem at once."
+    },
+    {
+      "q": "What are the three layers of the data-center market?",
+      "a": "Retail colocation sells cabinets by the kilowatt to thousands of customers; wholesale leases whole data halls at single-digit megawatts; build-to-suit erects dedicated campuses of hundreds of megawatts for a single hyperscaler. Revenue per kilowatt is highest in retail; deal size is largest in build-to-suit."
+    },
+    {
+      "q": "Why do hyperscalers buy powered shells instead of retail colocation services?",
+      "a": "They bring their own designs, operations teams, and security standards — what they need is land, construction, and power, not services. Returns on such deals are thin and real-estate-like, which is why operators often place them in joint ventures with pension and sovereign wealth funds instead of on their own balance sheet."
+    },
+    {
+      "q": "What is a REIT and what does the structure demand?",
+      "a": "A real estate investment trust earns mostly rent-like income, must pay out at least 90% of taxable income as dividends, and in exchange pays no corporate income tax — profits are taxed once, at the shareholder. Data centers qualify because space, power, and cooling under multi-year contracts count as real-property income."
+    },
+    {
+      "q": "What are FFO and AFFO, and why not just use net income?",
+      "a": "Funds from operations (FFO) adds depreciation — a large non-cash charge on buildings that may not be losing value — back to net income. Adjusted FFO (AFFO) then subtracts recurring maintenance capex, approximating cash actually available for dividends. REIT investors price AFFO per share the way stock investors price earnings."
+    },
+    {
+      "q": "Why did carrier neutrality have to be invented?",
+      "a": "Early facilities were carrier hotels owned by telecom operators, and rival networks refused to house equipment where the landlord could favor its own service on price or access. An operator that owns no network and sells no connectivity treats every carrier alike — which is what makes hundred-network buildings possible."
+    },
+    {
+      "q": "Why do enterprises put servers in colocation instead of the basement or the cloud?",
+      "a": "A basement server room cannot match professional power, cooling, security, and connectivity at small scale, while steady workloads, licensed software, and heavy data movement can cost several times more in public cloud. Most large enterprises land on hybrid — splitting workloads by economics — with colo as the owned half."
+    },
+    {
+      "q": "What are cloud on-ramps and data gravity?",
+      "a": "On-ramps are private, dedicated links from a colo cabinet directly into the major clouds — lower latency and far cheaper data transfer than public-internet egress. Data gravity is the observation that big datasets are costly to move, so applications migrate to the data; a neutral, cloud-adjacent facility exploits both."
+    }
+  ]
+}

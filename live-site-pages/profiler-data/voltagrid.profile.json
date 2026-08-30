@@ -1,0 +1,423 @@
+{
+ "schemaVersion": 6,
+ "slug": "voltagrid",
+ "name": "VoltaGrid",
+ "shortName": "VoltaGrid",
+ "categories": [
+  "supplier"
+ ],
+ "website": "https://voltagrid.com",
+ "headquarters": "Houston, Texas, United States",
+ "founded": 2020,
+ "employees": "900+ (Apr 2025); ~1,000 more with the Propell acquisition",
+ "ownership": "private — May 2026: $1.0B strategic equity from Blackstone Tactical Opportunities + Halliburton ($775M primary / $225M secondary; Halliburton takes 2 board seats); earlier backers CPP Investments, Longbow Capital, Carnelian, Pilot Company, Walter Ventures. Bloomberg (Feb 2026): exploring IPO or sale at >$10B valuation",
+ "summary": "BOTTOM LINE UP FRONT: VoltaGrid is the volume leader of behind-the-meter AI-campus power and the single biggest demand-shaper working AGAINST containerized BESS at off-grid AI sites. Grown from oilfield electric-frac power (Halliburton ZEUS alliance) into gigawatt-scale data-center prime power in ~24 months, it now holds 4.3+ GW fully contracted through 2028 and a 7.5 GW order book through 2030: Oracle 2,300 MW across Texas (Bloomberg-reported >$1B/year from a single OpenAI site), the Vantage 'Frontier' Stargate campus in Shackelford County (210 Jenbacher J624 engines, ~700 MW initial, first building H2 2026), a >1 GW Vantage portfolio partnership, and Halliburton-channel Middle East commitments. Its QPac product (20 MW high-inertia recip nodes, stackable to 200 MW under a single minor-source air permit) is explicitly marketed with 'zero reliance on battery storage' — transients handled by engine inertia plus ABB synchronous condensers/flywheels — a deliberate architectural substitution that designs BESS out of prime-power campuses. Capitalized with $5B of debt (Nov 2025) and the $1B equity round; targeting ~$1.1B EBITDA by 2028.",
+ "ecosystemRole": "We assess VoltaGrid as the defining adjacent competitor for the AIDC energy dollar: it monetizes exactly the speed premium (5-7 year interconnection queues vs weeks-to-months for trucked recips) that would otherwise fund grid+BESS architectures, and it has converted the industry's engine-supply scarcity into a moat by locking ≥3.8 GW of INNIO Jenbacher production (the two largest orders in INNIO's history) while GE Vernova heavy-duty slots quote into 2031. For the relationship web: it is FEOC-clean by construction (Austrian engines, Swiss electricals, Texas manufacturing), its growth shrinks the addressable BESS layer on the fastest-growing off-grid segment, and where batteries did attach at its sites (xAI Colossus, where VoltaGrid's 35 MW mobile fleet bridged the 122-day bring-up), the buyer precedent was Tesla Megapack. The one battery surface it retains — BESS on the legacy mobile-fleet switchgear bus for ride-through and transients — has an undisclosed supplier and has been actively de-emphasized in messaging.",
+ "productsAndServices": [
+  {
+   "name": "QPac prime-power platform (the AIDC product)",
+   "description": "Co-developed with INNIO Jenbacher, launched Jan 16, 2025: high-inertia reciprocating nodes up to 20 MW (Jenbacher J624/J620), packaged as 25 MW power packs, stackable to 200 MW of prime power under a single minor-source air permit — the core permitting strategy. 65 dBA at 33 ft; vertical heat rejection integrating with data-center HVAC; hydrogen-upgradeable to 100%; >99.9% projected reliability; full output at 122°F; claimed ~10 points more efficient than alternatives (>$300M/yr fuel savings across 2.3 GW). Transient response for 40-70% AI load swings handled by engine high-pressure injection + ABB synchronous condensers with flywheels (62 units ordered) + StabilAI controls (±5% voltage, ±2% frequency) — 'zero reliance on battery storage.'",
+   "positioning": "The anti-BESS architecture at prime-power scale: rotating inertia replaces batteries, minor-source stacking replaces Title V permitting, and 15-24-month recip deliveries replace 4-7-year turbine queues.",
+   "soldThrough": "Power Delivery Agreements (PDAs) — VoltaGrid owns/operates onsite generation, customer pays a rate over time; manufacturing ~50 MW/month at QPac launch scaling toward ~300 MW/month post-Propell.",
+   "targetSegments": "Hyperscale/neocloud AI campuses (Oracle/OpenAI, Vantage/Stargate), colocation developers.",
+   "roadmap": "7.5 GW order book through 2030; Propell acquisition (TYCROP-affiliated QPac manufacturer, ~1,000 staff) vertically integrates packaging; Halliburton channel opens Middle East (400 MW Eastern Hemisphere commitment, 2028 delivery)."
+  },
+  {
+   "name": "Mobile fleet (bridge, commissioning & oilfield heritage)",
+   "description": "Trailer-mounted 2.5 MWe natural-gas gensets — stopped-to-rated-load in 32.5 seconds; fuel-flexible (CNG, LNG, field gas, residue gas, RNG); black start at −10°F; paralleled via switchgear trailers (2,000 A @ 13.8 kV, accepts up to 10 MWe of grid/renewable input) into microgrid clusters to 38 MWe. BESS is integrated on the switchgear bus for backup, load-transient management, and under-voltage ride-through — sizing and battery supplier never disclosed. Emissions: SCR aftertreatment cutting criteria pollutants 85-97% below OEM spec; NOx as low as 0.155 lb/MWh. Proof point: 14 units (~35 MW) powered xAI Colossus's 122-day bring-up (Jun 2024) before grid + Tesla Megapacks arrived. Oilfield e-frac (Halliburton ZEUS: Chesapeake, Aethon, Diamondback ~200 MW) continues as the legacy book.",
+   "positioning": "The largest mobile natural-gas recip fleet in the US (~1.4 GW fielded, 7 GW target by 2030 per NGI) — the bridge/commissioning tier below QPac prime power.",
+   "soldThrough": "Short-term bridge and commissioning-power (L2-L5) contracts; oilfield service agreements via Halliburton.",
+   "targetSegments": "AI campus bring-ups, e-frac fleets, remote industrial.",
+   "roadmap": "Fleet migrating from oilfield to AIDC; the company's own 'Energy Storage' page now emphasizes gas storage, not batteries — messaging has actively de-batterified."
+  },
+  {
+   "name": "Fuel & supply-chain infrastructure",
+   "description": "Firm gas supply + storage from Energy Transfer (140k-mile network) for the Oracle fleet; owns CNG virtual-pipeline infrastructure — 5 terminals, 90,000 MMBtu/d including the largest Permian CNG terminal; claims 'nation's largest CNG provider.' Engine supply locked: Oct 2025 order of 2.3 GW / 92×25 MW packs (INNIO's largest ever) + Feb 2026 order of 1.5 GW / 300 J624-J620 engines (delivery by 2028). Electricals: ABB — 62 synchronous condensers with flywheels, eHouses, MV/LV distribution (first units operational Apr 2026).",
+   "positioning": "The moat is secured manufacturing slots in a supply-constrained market — ≥3.8 GW of Jenbacher capacity while heavy-duty turbine queues stretch to 2031.",
+   "soldThrough": "Internal supply for PDA fleets.",
+   "targetSegments": "Own deployments.",
+   "roadmap": "~300 MW/month combined engine+turbine capacity targeted post-Propell."
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Contracted AIDC book (named)",
+   "specs": [
+    {
+     "band": "Oracle / OpenAI",
+     "label": "2,300 MW",
+     "value": "Ultra-low-emissions modular generation across Texas (Oct 2025); Dallas + Houston manufacturing (400 mfg + 350 ops jobs); firm gas via Energy Transfer; Bloomberg-reported >$1B/yr from a single OpenAI site; likely substantially overlaps the INNIO 2.3 GW order and Stargate-linked campuses (inference)"
+    },
+    {
+     "band": "Vantage",
+     "label": "Frontier (Stargate) + portfolio",
+     "value": ">1 GW portfolio partnership (Feb 2025); flagship: Frontier mega-campus, Shackelford Co. TX — 1.4 GW IT load, 10 buildings; VoltaGrid built/operates the BtM microgrid: 210 Jenbacher J624 (197 prime + 13 backup) ≈ 700 MW initial, TCEQ-approved; SemiAnalysis models 2.3 GW of engine capacity for the 1.4 GW IT load (~64% overbuild)"
+    },
+    {
+     "band": "Halliburton channel",
+     "label": "Global collaboration",
+     "value": "Worldwide distributed power for data centers, Middle East first (Oct 2025); 400 MW Eastern Hemisphere hyperscale manufacturing commitment, 2028 delivery (Dec 2025)"
+    },
+    {
+     "band": "Fleet totals",
+     "label": "2026 state",
+     "value": "~1.4 GW fielded; 4.3+ GW fully contracted through 2028; 7.5 GW order book through 2030; $1.8-1.9B capital deployed to date"
+    }
+   ],
+   "notes": "xAI Colossus context: VoltaGrid's 14×2.5 MW units bridged the build; xAI's larger turbine fleet came from Solar Turbines (SMT130s), and the site's battery layer went to Tesla (150 MW Megapack)."
+  },
+  {
+   "product": "QPac node (Jenbacher-based)",
+   "specs": [
+    {
+     "band": "Ratings",
+     "label": "Node / pack / block",
+     "value": "Up to 20 MW per high-inertia node (J624 4.5 MW-class engines); 25 MW power packs; stackable to 200 MW prime power under a single minor-source air permit"
+    },
+    {
+     "band": "Performance",
+     "label": "Stability without BESS",
+     "value": "40-70% AI load swings via engine high-pressure injection + ABB synchronous condensers/flywheels + StabilAI (±5% voltage, ±2% frequency); >99.9% projected reliability; full output at 122°F"
+    },
+    {
+     "band": "Environment",
+     "label": "Emissions / noise",
+     "value": "SCR-equipped; NOx as low as 0.155 lb/MWh (mobile fleet figure); 65 dBA @ 33 ft; hydrogen-upgradeable to 100%"
+    },
+    {
+     "band": "Economics",
+     "label": "Claims",
+     "value": "~10 points higher efficiency than alternatives; >$300M/yr fuel savings across 2.3 GW (company-claimed); recips ~$1,700-2,000/kW installed per SemiAnalysis"
+    }
+   ],
+   "notes": "Legacy mobile units carry BESS on the switchgear bus (backup/UVRT/transients) — supplier, chemistry, and MWh never disclosed in any source; the AIDC product line advertises 'zero reliance on battery storage.'"
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-05-11",
+   "category": "financial",
+   "headline": "$1.0B strategic equity from Blackstone Tactical Opportunities + Halliburton ($775M primary); definitive agreement to acquire Propell Energy Technology (~1,000 staff, QPac manufacturer); 7.5 GW order book through 2030 cited",
+   "read": "The capital and manufacturing base for the order book lands in one announcement — and Halliburton converts from alliance partner to owner with board seats.",
+   "source": "VoltaGrid / Blackstone PR, DCD"
+  },
+  {
+   "date": "2026-03-26",
+   "category": "procurement",
+   "headline": "ABB order extension: +35 synchronous condensers with flywheels, eHouses, MV/LV distribution for global projects (62 condensers total)",
+   "read": "The no-battery stability architecture scales with the book — every condenser ordered is a BESS socket that will never exist.",
+   "source": "ABB / VoltaGrid"
+  },
+  {
+   "date": "2026-02-24",
+   "category": "corporate",
+   "headline": "Bloomberg: VoltaGrid exploring IPO or sale at >$10B valuation; EBITDA estimated to reach $1.1B by 2028 (5x+ vs 2024); Oracle paying >$1B/yr for a single OpenAI site",
+   "read": "A >$10B mark for a five-year-old gas-genset company is the market pricing the interconnection crisis itself.",
+   "source": "Bloomberg via investing.com"
+  },
+  {
+   "date": "2026-02-11",
+   "category": "procurement",
+   "headline": "Second INNIO mega-order: 1.5 GW / 300 Jenbacher J624+J620 engines in 25 MW packages, delivery by 2028",
+   "read": "≥3.8 GW of secured Jenbacher slots — the engine-supply moat deepens while turbine queues stretch to 2031.",
+   "source": "VoltaGrid / BusinessWire"
+  },
+  {
+   "date": "2025-11-10",
+   "category": "financial",
+   "headline": "$5.0B financing: $2.0B senior secured second-lien notes due 2030 + $3.0B ABL (JPMorgan admin agent, 10-bank syndicate); '4.3+ GW fully contracted through 2028'",
+   "read": "Institutional debt at scale against contracted PDAs — the financing template that makes gas-as-a-service investable at AI-campus size.",
+   "source": "VoltaGrid / GlobeNewswire"
+  },
+  {
+   "date": "2025-10-21",
+   "category": "procurement",
+   "headline": "INNIO's largest order in history: 2.3 GW / 92 × 25 MW QPac packs for 'one of the world's largest data centers'",
+   "read": "Almost certainly the Oracle/OpenAI fleet — the engine order that operationalizes the 2,300 MW contract.",
+   "source": "INNIO"
+  },
+  {
+   "date": "2025-10-15",
+   "category": "aidc",
+   "headline": "Oracle contract: 2,300 MW of ultra-low-emissions modular generation across Texas; firm gas via Energy Transfer; Texas manufacturing and operations jobs",
+   "read": "The largest disclosed BtM AI-power contract in the market — and it carries the 'zero reliance on battery storage' language verbatim.",
+   "source": "VoltaGrid PR / POWER"
+  },
+  {
+   "date": "2025-08-15",
+   "category": "aidc",
+   "headline": "Vantage unveils Frontier (Shackelford Co., TX) — 1.4 GW OpenAI/Stargate campus; VoltaGrid builds and operates the microgrid: 210 Jenbacher J624s, ~700 MW initial, first building H2 2026",
+   "read": "The flagship execution proof: a Stargate-scale campus running prime on VoltaGrid recips, TCEQ-permitted, with no battery layer.",
+   "source": "DCD / Baxtel / constructionowners"
+  },
+  {
+   "date": "2025-02-11",
+   "category": "aidc",
+   "headline": "Vantage Data Centers partnership: >1 GW of VoltaGrid natural-gas microgrids as primary power across Vantage's North America portfolio",
+   "read": "The deal that announced the oilfield-to-AIDC pivot had worked — prime power, not just bridge.",
+   "source": "VoltaGrid / Vantage / BusinessWire"
+  },
+  {
+   "date": "2025-01-16",
+   "category": "product",
+   "headline": "QPac launch with INNIO — 20 MW high-inertia nodes, 200 MW per minor-source permit, 50 MW/month manufacturing",
+   "read": "The productization of the thesis: permitting strategy + rotating inertia + packaged manufacturing as one offering.",
+   "source": "VoltaGrid / GlobeNewswire"
+  },
+  {
+   "date": "2024-06-15",
+   "category": "aidc",
+   "headline": "xAI Colossus bring-up: 14 VoltaGrid mobile units (~35 MW) power the 100k-GPU build that went live in 122 days",
+   "read": "The proof point that migrated the fleet from frac pads to AI — and the site where the battery layer went to Tesla, not a Chinese OEM.",
+   "source": "Aterio / NGI / The Register"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess VoltaGrid as the single biggest structural headwind to containerized BESS at off-grid AI campuses: its 'zero reliance on battery storage' architecture (engine inertia + synchronous condensers/flywheels) is winning the fastest-growing segment of AIDC power, and every QPac campus is a site where the BESS layer is designed out at the architecture stage, not lost in a bake-off.",
+  "(High confidence) We assess the moat as engine-supply logistics, not technology: ≥3.8 GW of locked Jenbacher production against 2031-quoting turbine queues, Energy Transfer firm gas, CNG virtual pipelines, and now in-house packaging via Propell. The corollary: the moat is time-limited — recip capacity is scaling industry-wide (Cat, Cummins, Wärtsilä) and interconnection reform would collapse the speed premium that justifies ~$1,700-2,000/kW gas at 55-65% overbuild.",
+  "(Moderate confidence) We assess the residual battery surfaces at VoltaGrid as real but closed to Hithium: the legacy mobile fleet carries undisclosed BESS on its switchgear bus (a small, incumbent-held socket), and bridge-power sites have paired with Tesla Megapacks (xAI precedent) — a §154-named supplier has no visible path into either, and VoltaGrid's FEOC-clean-by-construction stack is part of its customer pitch even if never stated as such.",
+  "(Moderate confidence) We assess the strategic read-through for Hithium's US thesis as double-edged: VoltaGrid's >$10B mark and $1B/yr single-site revenue validate the size of the AIDC energy budget Hithium is chasing, while proving that budget can be captured entirely without batteries. The BESS counter-argument — grid-tied campuses, post-bridge conversions ('permanent utility feeds supplemented by battery storage'), UPS-replacement, and ancillary stacking — is where containerized storage still attaches; track VoltaGrid's bridge sites approaching interconnection as the moment storage re-enters those campuses.",
+  "(Moderate confidence) For the Hithium lens: monitor three tells — the IPO/sale outcome (public filings would expose PDA economics and any battery content), EPA/state aggregation challenges to the minor-source stacking strategy (the regulatory risk that could re-open architecture choices), and whether OpenAI-linked counterparty risk ever cracks the contracted book (7.5 GW rests heavily on one demand ecosystem)."
+ ],
+ "relationships": [
+  {
+   "slug": "oracle",
+   "type": "customer",
+   "note": "2,300 MW of prime power across Texas — Bloomberg-reported >$1B/year from a single OpenAI site.",
+   "context": "Oracle is the anchor of VoltaGrid's 4.3+ GW fully contracted book (7.5 GW through 2030): 2,300 MW across Texas, with Bloomberg reporting Oracle paying >$1B/year for a single OpenAI site. The October 2025 INNIO order — 2.3 GW / 92 × 25 MW QPac packs, INNIO's largest ever — operationalizes the contract, with firm gas supply from Energy Transfer's 140k-mile network.",
+   "source": "https://www.innio.com/en/news-media",
+   "status": "active",
+   "scale": "2,300 MW; >$1B/yr single site"
+  },
+  {
+   "slug": "vantage",
+   "type": "customer",
+   "note": ">1 GW microgrid partnership — prime power across the North America portfolio, led by Frontier's 700 MW.",
+   "context": "The February 2025 Vantage partnership (>1 GW of natural-gas microgrids as primary power) announced the oilfield-to-AIDC pivot had worked — prime power, not just bridge. Frontier, Shackelford County (the 1.4 GW OpenAI/Stargate campus) runs on VoltaGrid's 210 Jenbacher J624s, ~700 MW initial, TCEQ-permitted, with no battery layer.",
+   "source": "https://vantage-dc.com/news/vantage-data-centers-and-voltagrid-establish-partnership-to-deploy-",
+   "status": "active",
+   "since": "2025-02",
+   "scale": ">1 GW; 700 MW at Frontier"
+  },
+  {
+   "slug": "abb",
+   "type": "supplier",
+   "note": "62 synchronous condensers with flywheels + eHouses + MV/LV distribution — the no-battery stability architecture.",
+   "context": "ABB supplies the QPac platform's transient-response layer: 62 synchronous condensers with flywheels ordered (27 in Nov 2025, +35 extension in Mar 2026; first units operational April 2026), plus eHouses and MV/LV distribution. Combined with engine inertia and StabilAI controls it handles 40-70% AI load swings with 'zero reliance on battery storage' — every condenser ordered is a BESS socket that will never exist.",
+   "source": "https://new.abb.com/news/detail/134418",
+   "status": "active",
+   "since": "2025-11",
+   "scale": "62 synchronous condensers"
+  },
+  {
+   "slug": "xai",
+   "type": "customer",
+   "note": "14 mobile units (~35 MW) powered the Colossus 122-day bring-up — the pivot's proof point.",
+   "context": "June 2024: 14 VoltaGrid mobile units (~35 MW) powered xAI Colossus's 122-day, 100k-GPU bring-up before grid power and Tesla Megapacks arrived — the deployment that migrated the fleet from frac pads to AI and seeded the AIDC franchise. Bridge-scope, superseded at the site by permanent power.",
+   "source": "xAI Colossus bring-up coverage (Jun 2024)",
+   "status": "historical",
+   "since": "2024-06",
+   "scale": "~35 MW bridge fleet"
+  },
+  {
+   "slug": "openai",
+   "type": "other",
+   "note": "The demand ecosystem behind the book: 7.5 GW rests heavily on OpenAI-linked sites.",
+   "context": "VoltaGrid's contracted book concentrates on the OpenAI complex — the Oracle Texas fleet serves an OpenAI site, and Frontier is a Stargate campus. The dossier flags OpenAI-linked counterparty risk as one of three tells to monitor: whether it ever cracks the 7.5 GW contracted book.",
+   "source": "Dossier counterparty-concentration assessment",
+   "status": "active"
+  },
+  {
+   "slug": "tesla",
+   "type": "other",
+   "note": "Where batteries did attach at VoltaGrid sites, the buyer precedent was Tesla Megapack.",
+   "context": "At xAI Colossus — the flagship bridge site — the battery layer went to Tesla Megapacks, not a Chinese OEM. The residual battery surfaces at VoltaGrid (undisclosed BESS on the mobile fleet's switchgear bus, bridge-site pairings) are real but incumbent-held.",
+   "source": "Dossier assessment — battery surfaces",
+   "status": "active"
+  },
+  {
+   "slug": "wartsila",
+   "type": "competitor",
+   "note": "Recip-capacity rival eroding the time-limited moat.",
+   "context": "VoltaGrid's moat — ≥3.8 GW of locked INNIO Jenbacher production while GE Vernova heavy-duty slots quote into 2031 — is time-limited: recip capacity is scaling industry-wide (Cat, Cummins, Wärtsilä), and interconnection reform would collapse the speed premium that justifies ~$1,700-2,000/kW gas at 55-65% overbuild.",
+   "source": "Dossier competitive assessment — recip supply",
+   "status": "active"
+  },
+  {
+   "slug": "hithium",
+   "type": "competitor",
+   "note": "The defining adjacent competitor for the AIDC energy dollar — capturing it entirely without batteries.",
+   "context": "VoltaGrid's QPac is explicitly marketed with 'zero reliance on battery storage', designing BESS out of prime-power campuses. For Hithium the read-through is double-edged: the >$10B valuation mark and $1B/yr single-site revenue validate the size of the AIDC energy budget — while proving that budget can be captured entirely without batteries, by a FEOC-clean-by-construction stack (Austrian engines, Swiss electricals, Texas manufacturing).",
+   "source": "Dossier competitive assessment — BESS displacement",
+   "status": "active"
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Nathan Ough",
+   "title": "Co-founder, President & CEO",
+   "background": "Ex-co-founder of Certarus (CNG virtual pipelines, sold to Superior Plus); started at Macquarie Capital energy IB; EY Entrepreneur of the Year Gulf South 2025."
+  },
+  {
+   "name": "Les Wise",
+   "title": "COO",
+   "background": "Runs fleet operations across oilfield and AIDC deployments."
+  },
+  {
+   "name": "Micah Foster",
+   "title": "CFO",
+   "background": "Structured the $5B debt package and the Blackstone/Halliburton equity round."
+  },
+  {
+   "name": "David Bell",
+   "title": "VP Data Center & Microgrid Development",
+   "background": "The AIDC business-development contact."
+  },
+  {
+   "name": "Eric Carre & Tim McKeon",
+   "title": "Board members (Halliburton EVP/CFO; SVP/Treasurer)",
+   "background": "Halliburton's governance presence following its equity investment — the channel to Middle East hyperscale deployments."
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "private — financing events and reported figures only",
+  "periods": [
+   {
+    "period": "Capital formation",
+    "metrics": [
+     {
+      "name": "Equity",
+      "actual": "$72.6M (Feb 2021) + $100M (Dec 2021) + $210M (Q3 2023) + $1.0B (May 2026, Blackstone + Halliburton; $225M of it secondary)",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "CPP Investments and Longbow are repeat backers across rounds"
+     },
+     {
+      "name": "Debt",
+      "actual": "$550M term loan (2024, since refinanced) → $2.0B second-lien notes due 2030 + $3.0B ABL (Nov 2025, JPMorgan-led 10-bank syndicate)",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "$5B of debt against ~$200M implied 2024 EBITDA — a bet on flawless 2026-28 deployment"
+     }
+    ]
+   },
+   {
+    "period": "Reported economics (Bloomberg, Feb 2026)",
+    "metrics": [
+     {
+      "name": "Trajectory",
+      "actual": "~$4B valuation (Apr 2025) → >$10B targeted in IPO/sale exploration; EBITDA path to ~$1.1B by 2028; Oracle >$1B/yr from a single OpenAI site; $1.8-1.9B capital deployed",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "No audited figures public"
+     }
+    ]
+   }
+  ],
+  "commentary": "SemiAnalysis economics framing: onsite gas at ~55-65% overbuild is structurally costlier than grid power, but the speed premium (~$10-12B per GW-year of AI revenue enabled) clears it — the same arithmetic that would fund grid+BESS if interconnection queues cleared."
+ },
+ "sources": [
+  {
+   "label": "VoltaGrid / Blackstone — $1.0B strategic investment + Propell acquisition",
+   "url": "https://voltagrid.com/news",
+   "date": "2026-05-11"
+  },
+  {
+   "label": "ABB — synchronous condenser order extension (+35 units)",
+   "url": "https://new.abb.com/news/detail/134418",
+   "date": "2026-03-26"
+  },
+  {
+   "label": "Bloomberg (via investing.com/energyconnects) — IPO/sale exploration at >$10B; Oracle >$1B/yr; EBITDA path",
+   "url": "https://www.investing.com/news/",
+   "date": "2026-02-24"
+  },
+  {
+   "label": "VoltaGrid / BusinessWire — 1.5 GW INNIO order (300 J624/J620)",
+   "url": "https://voltagrid.com/news",
+   "date": "2026-02-11"
+  },
+  {
+   "label": "VoltaGrid — Halliburton 400 MW Eastern Hemisphere commitment",
+   "url": "https://voltagrid.com/news",
+   "date": "2025-12-12"
+  },
+  {
+   "label": "VoltaGrid / GlobeNewswire — $5.0B financing ($2B notes + $3B ABL); 4.3+ GW contracted",
+   "url": "https://voltagrid.com/news",
+   "date": "2025-11-10"
+  },
+  {
+   "label": "INNIO — largest order in history: 2.3 GW / 92 packs",
+   "url": "https://www.innio.com/en/news-media",
+   "date": "2025-10-21"
+  },
+  {
+   "label": "VoltaGrid — Halliburton global data-center collaboration",
+   "url": "https://voltagrid.com/news",
+   "date": "2025-10-20"
+  },
+  {
+   "label": "VoltaGrid — Oracle 2,300 MW ultra-low-emissions contract (Energy Transfer firm gas)",
+   "url": "https://voltagrid.com/news",
+   "date": "2025-10-15"
+  },
+  {
+   "label": "POWER Magazine — Oracle 2.3 GW analysis",
+   "url": "https://www.powermag.com/",
+   "date": "2025-10"
+  },
+  {
+   "label": "DCD / Baxtel / constructionowners — Vantage Frontier (Shackelford Co.): 210 J624s, ~700 MW, Stargate",
+   "url": "https://www.datacenterdynamics.com/",
+   "date": "2025-08"
+  },
+  {
+   "label": "SemiAnalysis — 'How AI Labs Are Solving the Power Crisis' (Shackelford 2.3 GW model; recip economics; competitors)",
+   "url": "https://semianalysis.com/",
+   "date": "2025-2026"
+  },
+  {
+   "label": "NGI — 'No Turbine? No Problem' (1.4 GW fielded; 7 GW target; xAI 122 days)",
+   "url": "https://naturalgasintel.com/",
+   "date": "2026"
+  },
+  {
+   "label": "Vantage Data Centers / BusinessWire — >1 GW VoltaGrid partnership",
+   "url": "https://vantage-dc.com/news/vantage-data-centers-and-voltagrid-establish-partnership-to-deploy-more-than-one-gigawatt-of-power-generation/",
+   "date": "2025-02-11"
+  },
+  {
+   "label": "VoltaGrid / GlobeNewswire — QPac launch with INNIO",
+   "url": "https://voltagrid.com/news",
+   "date": "2025-01-16"
+  },
+  {
+   "label": "GlobeNewswire — Diamondback + Halliburton e-simul-frac (~200 MW)",
+   "url": "https://www.globenewswire.com/",
+   "date": "2024-12-13"
+  },
+  {
+   "label": "GlobeNewswire — $550M term loan + $210M equity (570 MW fleet)",
+   "url": "https://www.globenewswire.com/",
+   "date": "2024-03-04"
+  },
+  {
+   "label": "Aterio / The Register — xAI Colossus: 14 VoltaGrid units (~35 MW)",
+   "url": "https://www.aterio.io/",
+   "date": "2024-2025"
+  },
+  {
+   "label": "Thunder Said Energy — VoltaGrid patent/tech teardown (38 MWe clusters; BESS on switchgear bus; ~$4B Apr 2025)",
+   "url": "https://thundersaidenergy.com/",
+   "date": "2025"
+  },
+  {
+   "label": "VoltaGrid — fleet, data-centers, energy-storage, team, directors pages",
+   "url": "https://voltagrid.com/"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 2
+}

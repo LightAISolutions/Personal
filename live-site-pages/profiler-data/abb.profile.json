@@ -1,0 +1,579 @@
+{
+ "schemaVersion": 6,
+ "slug": "abb",
+ "name": "ABB",
+ "legalName": "ABB Ltd",
+ "categories": [
+  "supplier"
+ ],
+ "hq": "Zurich, Switzerland",
+ "ticker": "SIX: ABBN",
+ "founded": "1988 (ASEA-Brown Boveri merger; roots to 1883)",
+ "ownership": "public",
+ "employees": "~105,000 (continuing operations, ex-Robotics)",
+ "website": "https://global.abb",
+ "summary": "BOTTOM LINE UP FRONT: ABB's Electrification business is running the hottest data-center order book of any diversified electrical: Q2 2026 orders hit $7.2B (+60%, first quarter ever above $7B), data-center order growth was 'triple-digit', Americas Electrification orders rose +114%, and segment backlog swelled to $13.7B (+57%). Its differentiated AIDC weapons are HiPerGuard — the industry's first static medium-voltage UPS (2.5-25 MW, 98% efficiency, new 34.5 kV direct-grid-connect class) — and Motion's flywheel synchronous condensers, 62 of which VoltaGrid has ordered for behind-the-meter AI campuses. BACKGROUND: Under CEO Morten Wierod (since August 2024) the portfolio is being aggressively reshaped: Robotics sold to SoftBank for $5.375B (scrapping a planned spin-off), a $5.5B recommended offer for UK valve-actuator maker Rotork (ABB's biggest-ever deal, received as 'pricy' — shares fell 4%), a $2B buyback, and ~$14B of remaining M&A firepower. Context worth holding: ABB is a top-5 but not the leader in data-center power (Schneider leads; in UPS ABB ranks behind Schneider, Vertiv, Eaton, and Huawei), it sold its grid business to Hitachi before the grid supercycle, and it is a three-time US bribery settler (2004, 2010, and the 2022 $315M Kusile/Eskom FCPA resolution) — a standing counterparty-diligence flag.",
+ "ecosystemRole": "We assess ABB as the AIDC power chain's medium-voltage innovator — the vendor pushing the UPS and stability functions up to MV where gigawatt campuses actually need them, while competing as a strong #2-5 across the broader data-center electrical stack. Basis: HiPerGuard is the industry's first static MV UPS and the centerpiece of NVIDIA-ecosystem 800 VDC architecture work (with SACE Infinitus, the first IEC-certified solid-state breaker); the VoltaGrid orders (62 flywheel synchronous condensers) put ABB inside the fastest-moving behind-the-meter AI power deployments; and third-party rankings place the top five (Schneider, ABB, Eaton, Vertiv, Delta) at ~41-43% of the $35B data-center power market. ~40% of ABB's electrification research is aimed at next-generation data-center technologies. Its scope overlaps Eaton and Schneider on distribution/UPS, Vertiv on critical power, and increasingly Hitachi Energy at the grid interface.",
+ "productsAndServices": [
+  {
+   "name": "HiPerGuard MV UPS (flagship differentiator)",
+   "description": "Industry's first static medium-voltage UPS: solid-state ZISC architecture (isolating line reactor + coupling transformer at MV, converters and Li-ion storage at LV). 2.5 MW per unit, hard-parallel to 25 MW; voltage classes 6-24 kV plus a new 34.5 kV class (Q2 2026) allowing direct grid connection without voltage conversion; 98% efficiency; intrusive maintenance only at 10-year intervals; microgrid-ready (integrates BESS, gas turbines, renewables; grid support and peak shaving). Designed and largely produced in Napier, New Zealand.",
+   "positioning": "Category-creating product — moves UPS from LV to MV, cutting conversion stages for 100 MW+ AI campuses; deployed at Applied Digital's Polaris Forge campuses in 25 MW blocks.",
+   "soldThrough": "Direct to hyperscalers/neoclouds/colos and via EPC partners.",
+   "targetSegments": [
+    "Hyperscale/AI campuses",
+    "Neocloud developers",
+    "Colocation"
+   ],
+   "roadmap": "Core building block of ABB's 800 VDC architecture with NVIDIA (MV UPS feeding DC distribution via solid-state power electronics)."
+  },
+  {
+   "name": "LV UPS, switchgear & busway",
+   "description": "MegaFlex DPA UPS expanded March 2026 to 1,000-2,000 kW per system (97.6% VFI efficiency, Xtra VFI adaptive modules, 15-year design life); MNS LV switchgear with Emax 3 breakers (European capacity +120% across Brno/Rakovski for hyperscale demand); MV switchgear families (Advance, SafeGear, ZX GIS to 40.5 kV, SafePlus RMU to 38 kV); ReliaGear busway to 5,000 A and metal-enclosed bus to 34.5 kV/6,000 A.",
+   "positioning": "Top-5 global data-center power/UPS/PDU player per MarketsandMarkets — behind Schneider (category leader) and, in UPS, also behind Vertiv, Eaton, and Huawei; North American top-5 (with Schneider, Vertiv, Eaton, Mitsubishi Electric) holding ~62% collectively.",
+   "soldThrough": "Direct, distribution, and panel-builder/EPC channels.",
+   "targetSegments": [
+    "Data centers",
+    "Utilities",
+    "Buildings/infrastructure",
+    "Industrial"
+   ],
+   "roadmap": "US capacity: $110M package (Richmond VA power quality, Senatobia MS Emax 3, Pinetops NC grid components); $200M European MV expansion incl. SF6-free lines (Dalmine)."
+  },
+  {
+   "name": "Synchronous condensers with flywheels (Motion, High Power)",
+   "description": "High-inertia synchronous condensers with flywheel energy storage — instantaneous inertia ('shock absorbers for the grid'), short-circuit strength, and reactive-power voltage support for behind-the-meter AI campuses running on gensets/turbines. Delivered as integrated packages: excitation and automation in prefabricated eHouses with MV/LV panels, VFDs, and PLCs. VoltaGrid orders: 27 units (Nov 2025, first operational April 2026) + 35 more (CERAWeek, March 2026) = 62 total; a related ~$150M Motion order booked Q2 2026.",
+   "positioning": "The rotating-stability answer to AI load volatility — sits alongside (not inside) the BESS-buffering approach; directly relevant wherever behind-the-meter generation runs weak-grid islands.",
+   "soldThrough": "Direct to microgrid providers (VoltaGrid) and utilities; packaged with Automation's eHouses.",
+   "targetSegments": [
+    "Behind-the-meter AI power providers",
+    "Utilities",
+    "Weak-grid industrial"
+   ],
+   "roadmap": "VoltaGrid partnership positions ABB in the Permian-style distributed-generation fleet model scaling across US AI campuses; unit dollar values undisclosed."
+  },
+  {
+   "name": "800 VDC / solid-state DC portfolio (NVIDIA collaboration)",
+   "description": "October 2025 NVIDIA collaboration on 800 VDC power for gigawatt-scale AI data centers and 1 MW racks: HiPerGuard MV UPS + high-efficiency MVAC-to-LVDC converters + SACE Infinitus (world's first IEC-certified solid-state circuit breaker) + DC switchgear/busway + storage + monitoring. June 2026 phase 2: ABB power systems integrated as SimReady 3D assets into NVIDIA's Omniverse DSX blueprint for source-to-rack digital-twin power design.",
+   "positioning": "Puts ABB in the same NVIDIA 800 VDC ecosystem as Vertiv, Eaton, Delta, and Hitachi Energy; ABB's edge is the MV UPS + certified solid-state breaker combination. Claimed DC benefits: up to 20% better conductor utilization, reduced copper use.",
+   "soldThrough": "NVIDIA ecosystem co-design; direct to AI-factory developers.",
+   "targetSegments": [
+    "Gigawatt AI factories",
+    "1 MW rack deployments"
+   ],
+   "roadmap": "White-paper architecture (Purgat/Strassel; ODCA board seat) positions ABB for the 2027+ 800 VDC rack transition."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-07-16",
+   "category": "financial",
+   "headline": "Q2 2026: record orders $12.0B (+30%); Electrification orders $7.2B (+60%) with triple-digit data-center growth; $5.5B Rotork offer announced — shares fell 4%",
+   "read": "The operational story (Op. EBITA beat, backlog +27%, guidance raised to low-double-digit-to-low-teens growth) was overshadowed by deal-price concerns: analysts called Rotork 'pricy' and RBC floated counter-bid risk. GAAP EPS missed (~$0.66 vs ~$0.74) on discontinued-ops noise. Management insists the DC surge is 'real customer investment, not pre-buying' — while conceding quarterly lumpiness.",
+   "source": "https://resources.news.e.abb.com/attachments/published/137496/en-US/9123465FF532/ABB_Q2_2026_Press_release_English.pdf"
+  },
+  {
+   "date": "2026-06",
+   "category": "partnership",
+   "headline": "NVIDIA phase 2: ABB power systems integrated as SimReady 3D assets into the Omniverse DSX blueprint",
+   "read": "Digital-twin power design from source to rack — AI factories will be electrically designed in simulation with ABB equipment as native building blocks. A subtle but sticky form of design-in lock: specification wins happen in the twin before procurement opens.",
+   "source": "https://new.abb.com/news/detail/136274/abb-expands-collaboration-with-nvidia-through-integration-of-dsx-blueprint-for-ai-infrastructure"
+  },
+  {
+   "date": "2026-05-11",
+   "category": "capacity",
+   "headline": "$200M European MV investment over 3 years: Dalmine SF6-free AIS plus GIS/vacuum-interrupter/relay capacity across five countries",
+   "read": "Follows the +120% European LV switchgear expansion (Brno/Rakovski) and the $110M US package — ABB's capacity response is broad-based but smaller-ticket than Hitachi's or Siemens Energy's transformer programs, consistent with its distribution-not-transmission scope.",
+   "source": "https://new.abb.com/news/detail/135595/abb-invests-200-million-across-europe-to-accelerate-grid-transformation"
+  },
+  {
+   "date": "2026-03-25",
+   "category": "order-win",
+   "headline": "VoltaGrid extension at CERAWeek: 35 more flywheel synchronous condensers + eHouses (62 units total across both orders)",
+   "read": "Independently verified by trade press, dollar value undisclosed. VoltaGrid's distributed-generation fleet model (validated by the 900 MW Vantage/OpenAI campus win) makes ABB's rotating stability hardware a de facto standard in behind-the-meter AI power — the clearest evidence that AI load volatility is creating a new product category.",
+   "source": "https://www.engineering.com/abb-expands-voltagrid-deal-for-ai-data-center-power/"
+  },
+  {
+   "date": "2026-03-23",
+   "category": "product-launch",
+   "headline": "MegaFlex DPA UPS range expanded to 1,000-2,000 kW targeting hyperscale, colocation, and 'neocloud'",
+   "read": "The LV complement to HiPerGuard — ABB explicitly naming neoclouds as a segment confirms where the incremental UPS demand is. Q2 2026 also introduced the 34.5 kV HiPerGuard class for direct grid connection.",
+   "source": "https://new.abb.com/news/detail/134362/abb-expands-megaflex-dpa-ups-range-for-next-gen-data-centers"
+  },
+  {
+   "date": "2026-02-09",
+   "category": "financial",
+   "headline": "Up to $2B share buyback launched through January 2027; CFO transition to Christian Nilsson (ex-Electrification CFO) effective February 1",
+   "read": "Capital returns continue alongside the M&A program. FY2025 closed as a record year: orders $36.8B (+17%), Op. EBITA margin 19.0% (all-time high), Q4 the first quarter ever above $10B orders with ~$600M of individual >$100M data-center orders.",
+   "source": "https://new.abb.com/news/detail/132985/q4-2025-results"
+  },
+  {
+   "date": "2025-11-25",
+   "category": "order-win",
+   "headline": "Applied Digital Polaris Forge 2 (Harwood, ND): HiPerGuard MV UPS + MV/LV switchgear for 300 MW, scaling in 25 MW blocks",
+   "read": "The reference deployment for MV-UPS architecture at neocloud scale — initial 200 MW leased to a US hyperscaler. Extends the June 2025 Polaris Forge 1 (400 MW) collaboration; ABB is becoming the electrical standard for Applied Digital's buildout.",
+   "source": "https://new.abb.com/news/detail/131324/abb-expands-power-technology-partnership-with-applied-digital-for-ai-ready-data-centers"
+  },
+  {
+   "date": "2025-10-13",
+   "category": "partnership",
+   "headline": "NVIDIA collaboration on 800 VDC power for gigawatt AI factories: HiPerGuard + SACE Infinitus solid-state breaker",
+   "read": "ABB's entry ticket to the 1 MW rack era. Its 800 VDC white paper (~40% of electrification research now aimed at next-gen DC technologies) stakes the claim that the MV UPS + solid-state DC distribution chain is the winning architecture.",
+   "source": "https://new.abb.com/news/detail/129805/abb-to-develop-next-generation-ai-data-centers-with-nvidia"
+  },
+  {
+   "date": "2025-10-08",
+   "category": "other",
+   "headline": "Robotics divested to SoftBank for $5.375B — spin-off plan scrapped; ~$5.3B net cash funds the M&A pivot",
+   "read": "Wierod's defining portfolio move: exit a #2-global robotics franchise ('limited synergies') to double down on electrification and automation. The proceeds are already committed — ~$4.8B toward Rotork — with ~$14B of stated remaining firepower that the press flags as an 'M&A-risk discount' on the multiple.",
+   "source": "https://new.abb.com/news/detail/129685/abb-to-divest-robotics-division-to-softbank-group"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) ABB is winning the medium-voltage layer of AI power: HiPerGuard has no direct static-MV-UPS competitor at scale, the 34.5 kV class removes a conversion stage entirely, and reference deployments (Applied Digital, 25 MW blocks) plus the NVIDIA 800 VDC role make it the architecture incumbent for the next rack generation. Basis: company-published product specs and deployment announcements, corroborated by trade press; the 'no direct competitor' read is ours — Eaton/Schneider/Vertiv compete at LV.",
+  "(High confidence) The VoltaGrid synchronous-condenser franchise (62 units) is the strongest independent validation that AI load volatility — the problem Hitachi's CEO warned about and Bloomberg confirmed is damaging equipment — is now a purchasable product category. ABB's flywheel-condenser-plus-eHouse package is the de facto standard in US behind-the-meter AI microgrids. Basis: two verified orders across two years; dollar values undisclosed, so revenue materiality is unproven.",
+  "(Moderate confidence) ABB is a strong top-5, not the leader: Schneider leads data-center power overall, and in UPS ABB trails Schneider, Vertiv, Eaton, and Huawei. Its bet is that the MV/800 VDC transition resets the leaderboard in its favor — plausible but unproven, since hyperscaler electrical architectures change slowly and Vertiv/Eaton have deeper US hyperscale UPS incumbency. Basis: MarketsandMarkets/Mordor rankings; the reset thesis is our inference.",
+  "(Moderate confidence) Capital allocation is now the biggest swing factor in the equity story: Robotics proceeds recycled into Rotork at a price the market disliked, ~$14B of stated firepower creating deal-risk overhang, consensus Neutral with the average target below spot, P/E ~37. Operationally excellent, fully priced, and one more expensive deal from a de-rating. Basis: third-party analyst coverage and share-price reactions.",
+  "(High confidence) Two structural facts warrant standing awareness in any counterparty relationship: ABB sold its grid/transmission business to Hitachi before the supercycle (its AIDC story is distribution-side only — it cannot supply the transformers and HVDC its campuses' grid connections need), and it is a three-time US bribery settler (2004, 2010, 2022 Kusile/$315M) — procurement and compliance teams at large customers know this history. Basis: DOJ resolution documents and deal record."
+ ],
+ "relationships": [
+  {
+   "slug": "nvidia",
+   "type": "partner",
+   "note": "800 VDC architecture collaboration for gigawatt-scale AI factories and 1 MW racks.",
+   "context": "Announced October 2025: ABB develops next-generation AI data-center power with NVIDIA — HiPerGuard MV UPS, high-efficiency MVAC-to-LVDC converters, the SACE Infinitus solid-state breaker, DC switchgear and storage as building blocks of NVIDIA's 800 VDC reference architecture.\n\nPhase 2 (June 2026) integrated ABB power systems as SimReady 3D assets into NVIDIA's Omniverse DSX blueprint, so AI factories are electrically designed in simulation with ABB equipment as native components — a design-in lock that lands before procurement opens.",
+   "source": "https://new.abb.com/news/detail/129805/abb-to-develop-next-generation-ai-data-centers-with-nvidia",
+   "status": "active",
+   "since": "2025-10"
+  },
+  {
+   "slug": "voltagrid",
+   "type": "customer",
+   "note": "Ordered 62 Motion flywheel synchronous condensers for behind-the-meter AI campuses.",
+   "context": "Two orders — 27 units in November 2025 (first operational April 2026) and 35 more announced at CERAWeek in March 2026 — plus a related ~$150M Motion order booked in Q2 2026. VoltaGrid's distributed-generation fleet model makes ABB's rotating stability hardware a de facto standard in behind-the-meter AI power, the clearest evidence that AI load volatility has become a purchasable product category.",
+   "source": "https://www.engineering.com/abb-expands-voltagrid-deal-for-ai-data-center-power/",
+   "status": "active",
+   "since": "2025-11",
+   "scale": "62 synchronous condensers + ~$150M related order"
+  },
+  {
+   "slug": "applied-digital",
+   "type": "customer",
+   "note": "HiPerGuard MV UPS standard across the Polaris Forge campuses.",
+   "context": "The reference deployment for medium-voltage UPS at neocloud scale: Polaris Forge 1 (400 MW, June 2025 collaboration) extended in November 2025 to Polaris Forge 2 (Harwood, ND — 300 MW of HiPerGuard MV UPS plus MV/LV switchgear, scaling in 25 MW blocks). ABB is becoming the electrical standard for Applied Digital's buildout.",
+   "source": "https://new.abb.com/news/detail/131324/abb-expands-power-technology-partnership-with-applied-digital-for-ai-ready-data-centers",
+   "status": "active",
+   "since": "2025-06",
+   "scale": "700 MW across two campuses"
+  },
+  {
+   "slug": "eaton",
+   "type": "competitor",
+   "note": "Top-5 rival in data-center power; overlaps on distribution and UPS, with deeper US hyperscale UPS incumbency.",
+   "context": "Third-party rankings place the top five (Schneider, ABB, Eaton, Vertiv, Delta) at ~41–43% of the $35B data-center power market; in UPS specifically ABB trails Schneider, Vertiv, Eaton and Huawei. Both sit in the NVIDIA 800 VDC ecosystem — ABB's differentiation is the MV UPS + certified solid-state breaker combination, against Eaton's LV strength."
+  },
+  {
+   "slug": "vertiv",
+   "type": "competitor",
+   "note": "Critical-power rival with deeper US hyperscale UPS incumbency.",
+   "context": "Vertiv competes at low voltage across UPS and critical power and shares the NVIDIA 800 VDC ecosystem seat. ABB's bet is that the MV/800 VDC transition resets a leaderboard on which Vertiv currently sits ahead of it in UPS."
+  },
+  {
+   "slug": "hitachi-energy",
+   "type": "competitor",
+   "note": "Increasing overlap at the grid interface — the business ABB itself sold to Hitachi before the grid supercycle.",
+   "context": "ABB's scope increasingly meets Hitachi Energy where data-center campuses touch the grid, and both are named in the NVIDIA 800 VDC ecosystem. The irony the dossier flags: ABB divested its grid business to Hitachi before grid became the binding constraint of the AI buildout."
+  },
+  {
+   "slug": "siemens-energy",
+   "type": "competitor",
+   "note": "Capacity-race rival in grid equipment — ABB's European MV investments are broader-based but smaller-ticket than Siemens Energy's transformer programs.",
+   "source": "https://new.abb.com/news/detail/135595/abb-invests-200-million-across-europe-to-accelerate-grid-transformation"
+  },
+  {
+   "slug": "openai",
+   "type": "other",
+   "note": "Indirect exposure: ABB synchronous condensers ride VoltaGrid's 900 MW Vantage/OpenAI campus win.",
+   "context": "No direct ABB–OpenAI engagement is documented; the link runs through VoltaGrid's distributed-generation fleet serving the campus."
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "HiPerGuard MV UPS",
+   "specs": [
+    {
+     "band": "Power",
+     "label": "Unit capacity",
+     "value": "2.5 MW single unit"
+    },
+    {
+     "band": "Power",
+     "label": "Parallel capacity",
+     "value": "2.5-25 MW hard-parallel (up to 10 units)"
+    },
+    {
+     "band": "Power",
+     "label": "Efficiency",
+     "value": "98% efficiency"
+    },
+    {
+     "band": "Electrical",
+     "label": "Voltage classes",
+     "value": "7.2 kV IEC (6-6.6 kV), 12 kV IEC (10-11 kV), 15 kV ANSI (12.47-13.8 kV), 24 kV IEC (20-24 kV)"
+    },
+    {
+     "band": "Electrical",
+     "label": "Direct grid connection",
+     "value": "34.5 kV (Q2 2026) for direct grid connection"
+    },
+    {
+     "band": "Design",
+     "label": "Architecture",
+     "value": "solid-state ZISC architecture"
+    },
+    {
+     "band": "Design",
+     "label": "Energy storage",
+     "value": "Li-ion energy storage"
+    },
+    {
+     "band": "Design",
+     "label": "Maintenance",
+     "value": "10-year intrusive-maintenance interval"
+    },
+    {
+     "band": "Operating modes",
+     "label": "Microgrid",
+     "value": "BESS/gas-turbine/renewables integration, grid support, peak shaving"
+    },
+    {
+     "band": "Operating modes",
+     "label": "Claimed CO2 saving",
+     "value": "claimed ~1,245 t CO2 reduction over 15-year lifespan"
+    }
+   ]
+  },
+  {
+   "product": "MegaFlex DPA UPS",
+   "specs": [
+    {
+     "band": "Power",
+     "label": "Capacity",
+     "value": "1,000-2,000 kW per system"
+    },
+    {
+     "band": "Power",
+     "label": "Efficiency",
+     "value": "VFI efficiency up to 97.6%"
+    },
+    {
+     "band": "Power",
+     "label": "Adaptive mode",
+     "value": "Xtra VFI adaptive module mode"
+    },
+    {
+     "band": "Electrical",
+     "label": "Input",
+     "value": "380/400/415/440/460/480 V, 50/60 Hz, 3-/4-wire"
+    },
+    {
+     "band": "Electrical",
+     "label": "Bypass",
+     "value": "distributed-static or central-static bypass"
+    },
+    {
+     "band": "Design",
+     "label": "Serviceability",
+     "value": "True front access"
+    },
+    {
+     "band": "Design",
+     "label": "Design life",
+     "value": "15-year design life"
+    },
+    {
+     "band": "Design",
+     "label": "Monitoring",
+     "value": "SmartTracker remote monitoring/predictive maintenance"
+    }
+   ]
+  },
+  {
+   "product": "Switchgear, busway & DC portfolio",
+   "specs": [
+    {
+     "band": "Switchgear",
+     "label": "Primary GIS (ZX)",
+     "value": "ZX primary GIS to 40.5 kV / 3,150 A / 40 kA"
+    },
+    {
+     "band": "Switchgear",
+     "label": "RMU (SafePlus)",
+     "value": "SafePlus RMU to 38 kV / 25 kA"
+    },
+    {
+     "band": "Switchgear",
+     "label": "ANSI metal-clad",
+     "value": "SafeGear/Advance ANSI metal-clad families"
+    },
+    {
+     "band": "Switchgear",
+     "label": "SF6-free",
+     "value": "SF6-free European lines"
+    },
+    {
+     "band": "Busbar & distribution",
+     "label": "Busway (ReliaGear)",
+     "value": "ReliaGear busway to 5,000 A"
+    },
+    {
+     "band": "Busbar & distribution",
+     "label": "Metal-enclosed busway",
+     "value": "non-segregated metal-enclosed busway 600 V-34.5 kV / 1,200-6,000 A"
+    },
+    {
+     "band": "DC protection",
+     "label": "Solid-state breaker",
+     "value": "SACE Infinitus: world's first IEC-certified solid-state circuit breaker (DC distribution)"
+    },
+    {
+     "band": "DC protection",
+     "label": "Claimed 800 VDC gain",
+     "value": "claimed 800 VDC benefits: up to 20% better conductor utilization"
+    },
+    {
+     "band": "Grid stability",
+     "label": "Synchronous condensers",
+     "value": "flywheel high-inertia packages with integrated excitation/automation in prefab eHouses"
+    },
+    {
+     "band": "Grid stability",
+     "label": "Ratings",
+     "value": "MW/MVAr ratings undisclosed"
+    }
+   ]
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Morten Wierod",
+   "photo": "images/execs/abb-wierod.jpg",
+   "photoCredit": "Markus Bertschi / Severin Jakob https://jakobundbertschi.ch, CC BY-SA 4.0, via Wikimedia Commons",
+   "title": "CEO (since August 2024)",
+   "background": [
+    "ABB lifer — previously President of Motion and of Electrification; succeeded Björn Rosengren",
+    "First full year (2025) delivered record results; reversed the Robotics spin-off into the SoftBank sale and pivoted to large-scale M&A (Rotork, ~$14B stated remaining firepower)",
+    "Frames ABB as 'at the core of electrification and automation megatrends'"
+   ]
+  },
+  {
+   "name": "Christian Nilsson",
+   "title": "CFO (effective February 1, 2026)",
+   "background": [
+    "Internal promotion — joined ABB 2017, previously CFO of Electrification (the segment driving the story)",
+    "Inherits the buyback, Rotork funding, and the M&A-discount management problem"
+   ]
+  },
+  {
+   "name": "Giampiero Frisio",
+   "title": "President, Electrification",
+   "background": [
+    "Runs the growth engine: Q2 2026 orders $7.2B (+60%), margin 24.9%, backlog $13.7B (+57%)",
+    "Key deputies for AIDC: Massimiliano Cifalitti (President, Smart Power) and Sébastien Surply (Head of Critical Power)"
+   ]
+  },
+  {
+   "name": "Brandon Spencer",
+   "title": "President, Motion",
+   "background": [
+    "Owns the synchronous-condenser franchise (VoltaGrid orders; Kristina Carlquist heads the product line) and the global #1 drives/motors business",
+    "Motion Q2 2026: orders +23%, margin 18.5%"
+   ]
+  },
+  {
+   "name": "Peter Terwiesch",
+   "title": "President, Automation",
+   "background": [
+    "Formerly Process Automation; supplies the prefabricated eHouses packaged with Motion's condensers for AI-campus deployments",
+    "Automation Q2 2026 orders -13% against a large-order comparable — the portfolio's slower leg"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "public (continuing operations basis, ex-Robotics from Q4 2025)",
+  "periods": [
+   {
+    "period": "FY2024",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "$32.8B (+3% comparable)",
+      "expected": "Q3 missed both lines; Q4 revenue beat",
+      "verdict": "inline",
+      "result": "Soft H2 with China weakness and e-mobility losses; Electrification comparable orders +16% on data centers/utilities"
+     },
+     {
+      "name": "Operational EBITA",
+      "actual": "$5.96B (18.1% margin)",
+      "expected": "n/a",
+      "verdict": "beat",
+      "result": "Record margin at the time"
+     },
+     {
+      "name": "EPS",
+      "actual": "$2.13",
+      "expected": "Q3 $0.51 vs $0.567 (miss); Q4 $0.53 vs $0.54",
+      "verdict": "miss",
+      "result": "H2 consensus misses preceded the 2025 acceleration"
+     }
+    ],
+    "commentary": "Continuing-ops restatement (ex-Robotics): orders $31.5B, revenue $30.6B, Op. EBITA $5.57B (18.2%). The data-center growth story is real but recent — FY2024 still showed Robotics backlog adjustments and China drag.",
+    "periodType": "annual",
+    "periodEnd": "2024-12-31"
+   },
+   {
+    "period": "FY2025",
+    "metrics": [
+     {
+      "name": "Orders",
+      "actual": "$36.8B (+17%)",
+      "expected": "n/a",
+      "verdict": "beat",
+      "result": "Q4 first-ever >$10B quarter; ~$600M of individual >$100M data-center orders in Q4 alone"
+     },
+     {
+      "name": "Revenue",
+      "actual": "$33.2B (+9%)",
+      "expected": "Q3 $9.08B vs $8.91B; Q4 $9.05B vs $8.94B",
+      "verdict": "beat",
+      "result": "Both H2 quarters beat consensus on both lines",
+      "kpi": "revenue",
+      "usdMillions": 33200,
+      "fxBasis": "as reported"
+     },
+     {
+      "name": "Operational EBITA",
+      "actual": "$6.31B (19.0% margin)",
+      "expected": "n/a",
+      "verdict": "beat",
+      "result": "All-time-high margin; EPS $2.59 (+21%); FCF $4.57B; ROCE 25.3%"
+     }
+    ],
+    "commentary": "Record year. Electrification: orders $18.8B (+14%), Op. EBITA margin 23.5%, backlog +26%. Dividend raised to CHF 0.94; $2B buyback launched February 2026. CMD (Nov 2025) raised targets: Op. EBITA margin 18-22%, ROCE >20%, FCF conversion >95%.",
+    "periodType": "annual",
+    "periodEnd": "2025-12-31"
+   },
+   {
+    "period": "Q2 2026",
+    "metrics": [
+     {
+      "name": "Orders",
+      "actual": "$12,042M (+28% comparable)",
+      "expected": "n/a",
+      "verdict": "beat",
+      "result": "Record; book-to-bill 1.27; backlog $30.0B (+27%)"
+     },
+     {
+      "name": "Operational EBITA",
+      "actual": "$1,925M (20.2% margin)",
+      "expected": "$1.88B consensus",
+      "verdict": "beat",
+      "result": "Margin +90 bps"
+     },
+     {
+      "name": "EPS (GAAP)",
+      "actual": "$0.68",
+      "expected": "~$0.74 consensus",
+      "verdict": "miss",
+      "result": "Discontinued-ops noise; Q1 2026 EPS also missed ($0.73 vs $0.782)"
+     }
+    ],
+    "commentary": "Electrification Q2: orders $7.2B (+60%, first >$7B quarter), data-center orders triple-digit, Americas +114%, margin 24.9%. FY2026 guidance raised to low-double-digit-to-low-teens comparable growth. Shares fell ~4% on the day — Rotork price concerns, not operations. Net debt just $2.3B (0.3x EBITDA).",
+    "periodType": "quarter",
+    "periodEnd": "2026-06-30"
+   }
+  ]
+ },
+ "sources": [
+  {
+   "label": "ABB — Q2 2026 press release (record orders, Rotork offer, HiPerGuard 34.5 kV)",
+   "url": "https://resources.news.e.abb.com/attachments/published/137496/en-US/9123465FF532/ABB_Q2_2026_Press_release_English.pdf",
+   "date": "2026-07-16"
+  },
+  {
+   "label": "Reuters via Euronext — Rotork deal reception, Q2 EBITA beat, share reaction",
+   "url": "https://live.euronext.com/en/financial-news/abb-press-ahead-acquisitions-after-55-billion-rotork-deal",
+   "date": "2026-07"
+  },
+  {
+   "label": "ABB — NVIDIA Omniverse DSX blueprint integration",
+   "url": "https://new.abb.com/news/detail/136274/abb-expands-collaboration-with-nvidia-through-integration-of-dsx-blueprint-for-ai-infrastructure",
+   "date": "2026-06"
+  },
+  {
+   "label": "ABB — $200M European MV grid investment",
+   "url": "https://new.abb.com/news/detail/135595/abb-invests-200-million-across-europe-to-accelerate-grid-transformation",
+   "date": "2026-05-11"
+  },
+  {
+   "label": "Engineering.com — VoltaGrid extension order verification (35 units)",
+   "url": "https://www.engineering.com/abb-expands-voltagrid-deal-for-ai-data-center-power/",
+   "date": "2026-03-25"
+  },
+  {
+   "label": "ABB — MegaFlex DPA UPS range expansion",
+   "url": "https://new.abb.com/news/detail/134362/abb-expands-megaflex-dpa-ups-range-for-next-gen-data-centers",
+   "date": "2026-03-23"
+  },
+  {
+   "label": "ABB — Q4 2025 results (record year, buyback, CFO transition)",
+   "url": "https://new.abb.com/news/detail/132985/q4-2025-results",
+   "date": "2026-02-09"
+  },
+  {
+   "label": "ABB — Applied Digital Polaris Forge 2 order (HiPerGuard, 300 MW)",
+   "url": "https://new.abb.com/news/detail/131324/abb-expands-power-technology-partnership-with-applied-digital-for-ai-ready-data-centers",
+   "date": "2025-11-25"
+  },
+  {
+   "label": "ABB — VoltaGrid synchronous-condenser partnership (first order, 27 units)",
+   "url": "https://new.abb.com/news/detail/130817/abb-and-voltagrid-partner-to-deliver-stable-data-center-power-to-support-ai-growth",
+   "date": "2025-11"
+  },
+  {
+   "label": "ABB — NVIDIA 800 VDC collaboration announcement",
+   "url": "https://new.abb.com/news/detail/129805/abb-to-develop-next-generation-ai-data-centers-with-nvidia",
+   "date": "2025-10-13"
+  },
+  {
+   "label": "ABB — Robotics divestment to SoftBank ($5.375B)",
+   "url": "https://new.abb.com/news/detail/129685/abb-to-divest-robotics-division-to-softbank-group",
+   "date": "2025-10-08"
+  },
+  {
+   "label": "ABB — 800 VDC white paper (Purgat/Strassel)",
+   "url": "https://resources.news.e.abb.com/attachments/published/129788/en-US/3515A12A5C51/ABB_800_VDC_NVIDIA_white_paper.pdf",
+   "date": "2025-10"
+  },
+  {
+   "label": "DOJ — ABB $315M coordinated foreign-bribery resolution (Kusile/Eskom, 2022)",
+   "url": "https://www.justice.gov/opa/pr/abb-agrees-pay-over-315-million-resolve-coordinated-global-foreign-bribery-case",
+   "date": "2022-12-02"
+  },
+  {
+   "label": "ABB — HiPerGuard MV UPS product and technical data pages",
+   "url": "https://new.abb.com/ups/systems/medium-voltage-ups/hiperguard"
+  },
+  {
+   "label": "MarketsandMarkets — data center power market share (Schneider leads; top-5 rankings)",
+   "url": "https://www.marketsandmarkets.com/ResearchInsight/data-center-power-market.asp"
+  },
+  {
+   "label": "Investing.com — ABB earnings history (consensus beat/miss table)",
+   "url": "https://www.investing.com/equities/abb-ltd-earnings"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 3
+}

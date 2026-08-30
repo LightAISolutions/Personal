@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "abb",
+  "title": "ABB — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Medium voltage vs low voltage: why big campuses keep a middle tier",
+      "bullets": [
+        "Low voltage (under 1,000 V — the 400-480 V equipment actually uses) and medium voltage (roughly 1-35 kV) are different worlds: MV moves power around a site, LV delivers it the last hundred meters to the load",
+        "The reason MV exists inside a campus is current: at 480 V, a 50 MW load means over 60,000 amps — physically impossible copper. Distributing at 13.8 kV cuts the current thirtyfold, then local transformers step down close to each building",
+        "MV equipment is a distinct engineering tier: metal-clad switchgear with insulated compartments, arc-resistant enclosures, and operating procedures for trained specialists — a different safety regime from the panelboards an electrician opens every day",
+        "The AI-era shift: functions that always lived at LV, like the UPS, are migrating up to MV so a 100 MW campus can protect power once, before it splits into hundreds of LV feeds — deleting conversion layers instead of multiplying them"
+      ]
+    },
+    {
+      "heading": "Arc interruption: how a breaker stops ten thousand amps",
+      "bullets": [
+        "A circuit breaker's hard job is not carrying current but stopping it: fault current can be 10-50 times normal, and when the contacts separate, current keeps flowing through an arc of ionized gas at several thousand degrees",
+        "Interruption means killing that arc — stretching it, cooling it, and de-ionizing the gap fast enough that the arc cannot re-strike when voltage rebuilds across the freshly opened contacts",
+        "Low-voltage breakers drive the arc into arc chutes (stacks of steel plates that slice and cool it); medium-voltage breakers use vacuum interrupters (nothing to ionize, so the arc dies at the AC zero crossing) or SF6 — a superb insulating gas being phased out as a potent greenhouse gas",
+        "Solid-state breakers replace moving contacts with semiconductors that stop conducting in microseconds — no arc at all. That matters most for DC distribution, where current never crosses zero and a conventional arc has no natural moment to die"
+      ]
+    },
+    {
+      "heading": "Flywheel energy storage: electricity as spinning mass",
+      "bullets": [
+        "A flywheel stores energy as rotation: kinetic energy is half the moment of inertia times speed squared, so doubling speed quadruples storage — which is why modern units spin very fast in vacuum on magnetic bearings rather than being merely heavy",
+        "Its personality is the opposite of a battery: enormous power for seconds to a minute, essentially unlimited charge cycles, no chemical aging, and a state of charge you read directly from rpm",
+        "The kinetic-UPS use case: bridge a facility through the ten-or-so seconds standby generation needs to start and accept load — with no battery rooms, no replacement schedule, and no capacity fade in hot climates",
+        "Coupled to heavy rotating machines, the same spinning steel also lends real inertia and fault current to weak on-site grids — a mechanical stabilizer for campuses running on their own generation, delivered as packaged equipment"
+      ]
+    },
+    {
+      "heading": "Drives and motors: the cube law that pays for itself",
+      "bullets": [
+        "Electric motors are the world's largest electricity consumer, and most run at a single full speed behind a throttle, damper, or valve — the electrical equivalent of driving with the brakes on",
+        "A variable-frequency drive (VFD) adjusts motor speed by changing the frequency of the AC feeding it; for pumps and fans the affinity laws make this dramatic — power scales with the cube of speed, so running 20% slower cuts power roughly in half",
+        "Motor efficiency is regulated in classes (IE2 up through IE5): a motor runs near-continuously for decades, so a few efficiency points compound into enormous lifetime energy — codes keep raising the floor, and fleets replace motors that still work",
+        "Drives demand care in return: they draw current in pulses that pollute the supply with harmonics, so serious installations add filters or low-harmonic front ends — and regenerative drives return braking energy to the grid instead of burning it in resistors"
+      ]
+    },
+    {
+      "heading": "Protection relays and grid automation: reflexes for the network",
+      "bullets": [
+        "A protection relay is the brain to the breaker's muscle: it watches currents and voltages through instrument transformers and decides — within milliseconds — whether what it sees is a fault worth tripping for",
+        "Digital relays (intelligent electronic devices) replaced spinning electromechanical discs: one box now runs overcurrent, differential, and distance protection simultaneously, records the fault waveform for post-mortems, and self-tests continuously",
+        "Substation communications standardized on IEC 61850, letting relays from different vendors share measurements and trip commands over Ethernet — protection logic became a networked application, with the cybersecurity obligations that implies",
+        "Distribution automation extends the reflexes outdoors: reclosers test whether a fault was temporary (most are — a branch brushing a line), and FLISR schemes locate a fault, isolate the damaged section, and reroute the rest of the feeder in seconds without a human"
+      ]
+    },
+    {
+      "heading": "Installed-base economics: why electrical equipment is an annuity",
+      "bullets": [
+        "Electrical gear lives 30-40 years, so the installed base dwarfs any single year's new construction — and every installed panel, breaker, and drive generates decades of service, spares, and retrofit demand",
+        "Switching costs run deep: a facility standardizes on one vendor's breaker frames, spare inventory, and trained technicians, so the vendor specified at construction usually keeps the site for the equipment's whole life",
+        "Service attach is the margin engine: monitoring subscriptions, predictive maintenance, and retrofits — a modern breaker fitted into a decades-old cubicle — earn better margins than the original hardware sale",
+        "Electrification keeps enlarging the base itself: data centers, EV infrastructure, and heat pumps all add electrical content, which is why vendors fight to be designed in early — each installed megawatt is a small annuity, and the annuities compound"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "Why do large campuses distribute power at medium voltage instead of running everything at 480 V?",
+      "a": "Current. At 480 V a 50 MW load needs tens of thousands of amps — unmanageable copper and losses. Distributing at, say, 13.8 kV cuts current by an order of magnitude, then transformers step down near each load. MV moves power around the site; LV delivers the last stretch."
+    },
+    {
+      "q": "What actually happens when a breaker interrupts a short circuit?",
+      "a": "The contacts separate, but current keeps flowing through an arc of ionized gas at thousands of degrees. Interruption is arc-killing: stretch it, cool it, and de-ionize the gap fast enough that the arc cannot re-strike as voltage rebuilds across the freshly opened contacts."
+    },
+    {
+      "q": "Why do vacuum interrupters dominate medium-voltage breakers, and what is wrong with SF6?",
+      "a": "In a vacuum there is almost nothing to ionize, so the arc extinguishes naturally at the AC current's zero crossing and the gap recovers strength nearly instantly. SF6 insulates and quenches superbly but is an extremely potent greenhouse gas, so the industry is engineering SF6-free switchgear."
+    },
+    {
+      "q": "Why does DC distribution need solid-state breakers?",
+      "a": "AC current crosses zero 100-120 times a second, giving an arc a natural moment to die. DC never crosses zero, so a conventional breaker's arc just burns. Semiconductor breakers stop conducting in microseconds with no arc at all — a gating technology for DC power distribution."
+    },
+    {
+      "q": "Why do modern flywheels spin extremely fast in vacuum on magnetic bearings?",
+      "a": "Kinetic energy is half the moment of inertia times speed squared — it grows with the square of speed but only linearly with mass. High rpm stores far more energy per kilogram, and vacuum plus magnetic bearings remove the drag and friction that would bleed the stored energy away as heat."
+    },
+    {
+      "q": "When does a flywheel beat a battery for backup?",
+      "a": "When the event is short and frequent: flywheels deliver huge power for seconds, cycle essentially forever, don't age chemically, and shrug off heat. They bridge the gap until generators start. Batteries win when you need minutes to hours of energy — the two cover different timescales."
+    },
+    {
+      "q": "What are the affinity laws, and why do they make drives so lucrative on pumps and fans?",
+      "a": "For centrifugal pumps and fans, flow scales with speed, pressure with speed squared, and power with speed cubed. Slowing a fan 20% cuts its power roughly in half. Since most such motors run throttled at full speed, a drive that matches speed to demand often pays for itself within a year or two."
+    },
+    {
+      "q": "What do motor efficiency classes (IE ratings) exist to do?",
+      "a": "They set regulated minimum efficiencies, from IE2 up through IE5. A motor runs near-continuously for decades, so even a couple of efficiency points compounds into enormous lifetime energy — which is why codes keep raising the floor and operators replace motors that still work."
+    },
+    {
+      "q": "What is a protection relay, and how does it relate to the circuit breaker?",
+      "a": "The relay is the brain, the breaker the muscle: it monitors current and voltage through instrument transformers and decides within milliseconds whether a disturbance is a real fault. When it is, it commands the breaker to trip. Modern digital relays also record fault waveforms and self-test continuously."
+    },
+    {
+      "q": "What does FLISR do on a distribution feeder?",
+      "a": "Fault Location, Isolation, and Service Restoration: automated switches and reclosers locate a fault, isolate just the damaged section, and reroute power to everyone else in seconds — no truck roll, no waiting. It is the flagship application of distribution automation, turning outages into blinks."
+    },
+    {
+      "q": "Why is electrical equipment called an installed-base annuity business?",
+      "a": "Gear lives 30-40 years, and each installed unit generates decades of service, spares, monitoring, and retrofit revenue at better margins than the original sale. Facilities standardize on one vendor's frames and training, so the vendor designed in at construction usually keeps the site for life."
+    },
+    {
+      "q": "Why is the UPS migrating from low voltage up to medium voltage at AI campuses?",
+      "a": "At 100 MW scale, protecting power at LV means duplicating equipment across hundreds of feeds and stacking conversion losses. Protecting once at MV — before the power splits — deletes conversion stages and copper. It is the same current-versus-voltage logic that created the MV tier in the first place."
+    }
+  ]
+}

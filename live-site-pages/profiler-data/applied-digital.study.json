@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "applied-digital",
+  "title": "Applied Digital — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "The AI-factory landlord model",
+      "bullets": [
+        "The landlord builds and owns the building, power connection, and cooling plant; the tenant brings the GPUs. Rent is a 15-year take-or-pay lease — paid whether or not the tenant uses the capacity",
+        "Lease economics benchmark: roughly $1.6-1.8M of rent per critical-IT megawatt per year, against ~$10M+ per MW to build — a ~6-7 year payback before financing costs, with decades of contract left after",
+        "The 'franchise model' idea: standardize the design, the supplier contracts, and the construction playbook so each new campus is a copy, not a project — speed and cost-certainty become the product",
+        "Why tenants accept 15-year lock-ins: power and permitted land are the scarce inputs; a signed lease on an already-connected site beats years in an interconnection queue"
+      ]
+    },
+    {
+      "heading": "Why cold, windy nowhere wins: siting economics",
+      "bullets": [
+        "PUE (Power Usage Effectiveness) is total facility power ÷ IT power; every 0.1 of PUE on 100 MW is ~10 MW of pure overhead. A 1.18 design vs the ~1.5 global average is tens of millions of dollars a year",
+        "Free cooling: in a cold climate the outside air (or a dry cooler loop) removes heat 200+ days per year with no chillers running — the single biggest PUE lever",
+        "Waterless direct-to-chip cooling: a closed liquid loop touches cold plates on the chips, rejected to dry coolers — near-zero water use (WUE ~0) removes the community objection that kills permits elsewhere",
+        "Cheap rural power grids (like the northern plains) offer both low prices and available interconnection capacity — the two things AI campuses queue years for in Virginia or Texas"
+      ]
+    },
+    {
+      "heading": "Reading revenue quality: rent vs fit-out",
+      "bullets": [
+        "AI landlord revenue has two very different lines: base rent (recurring, high-margin, contract-backed — the valuable kind) and tenant fit-out (one-time construction/services revenue recognized while customizing space — lumpy and pass-through-like)",
+        "Fit-out can dwarf rent during buildout quarters: a single quarter can recognize $150M+ of fit-out against $45M of base rent — making 'revenue' triple without the recurring business tripling",
+        "This is why consensus beats can be meaningless here: analysts can't time fit-out recognition, so 50-150% 'beats' say more about accounting timing than about performance",
+        "The metric that cuts through: NOI (net operating income) — rent minus property operating costs — and its margin (~90% for a well-run AI campus). Track NOI run-rate, not revenue"
+      ]
+    },
+    {
+      "heading": "The capital stack of a building spree",
+      "bullets": [
+        "Project-level notes: bonds issued by a subsidiary that owns one campus, secured by that campus's lease — the debt is quarantined, and each new lease can be financed separately (coupons compress as the developer proves delivery: 9.25% → 6.75% in months)",
+        "Perpetual preferred equity: mezzanine capital with no maturity — pays a high dividend (12-13%, often PIK: paid in more preferred instead of cash), and can carry a minimum-return multiple (e.g., 1.80x MOIC) plus a slice of the business's common equity",
+        "PIK (payment-in-kind) means the obligation compounds instead of consuming cash today — friendly to construction cash flow, expensive to eventual equity value",
+        "The sequencing logic: expensive, flexible capital (preferred, bridges) starts construction; cheap, rigid capital (project notes at tighter coupons) takes it out once leases are signed and buildings deliver"
+      ]
+    },
+    {
+      "heading": "Concentration and the unnamed tenant problem",
+      "bullets": [
+        "Two counterparties can be 100% of a landlord's revenue — then credit analysis of the tenants matters more than analysis of the landlord",
+        "Hyperscalers often demand anonymity in leases ('a US-based investment-grade hyperscaler') — the market must underwrite billions of backlog against a counterparty it cannot name or verify",
+        "A neocloud anchor tenant (itself leveraged, itself dependent on its own customers) is a weaker credit than a hyperscaler — landlords manage this with restructured guarantees and letters of credit",
+        "ROFR (right of first refusal) clauses matter: a tenant holding ROFR on a campus's remaining capacity effectively controls its growth path without paying for it yet"
+      ]
+    },
+    {
+      "heading": "Separating businesses to clarify value",
+      "bullets": [
+        "A GPU cloud (short contracts, fast depreciation, tech risk) and a lease landlord (15-year contracts, real-estate risk) deserve different valuation multiples — housing both in one ticker muddies each",
+        "Spinning the cloud into its own listed company (while retaining most of the equity) gives the market a clean landlord to price and a separate mark for the cloud stake",
+        "Watch what stays behind: legacy bitcoin hosting can be kept purely as a cash yield on depreciated assets — not strategy, just funding",
+        "Adjacency investments (a stake in a gas-generation developer, a cooling-technology startup) are options on the landlord's own future constraints: power timing and rack density"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "In the AI-factory landlord model, who owns what?",
+      "a": "The landlord owns the building, grid connection, and cooling plant; the tenant installs and owns the GPUs. Rent is a multi-year take-or-pay lease on the critical-IT megawatts."
+    },
+    {
+      "q": "Rough landlord math: what does a megawatt earn vs cost?",
+      "a": "About $1.6-1.8M of lease revenue per critical-IT MW per year against ~$10M+ per MW to build — a 6-7 year pre-financing payback with a 15-year contract behind it."
+    },
+    {
+      "q": "Why does a 1.18 PUE beat a 1.5 PUE by tens of millions a year?",
+      "a": "PUE is facility power ÷ IT power. On a 100 MW IT load, 1.5 means 50 MW of overhead vs 18 MW at 1.18 — 32 MW of round-the-clock electricity saved, plus the capex for that equipment."
+    },
+    {
+      "q": "What is free cooling and where do you get it?",
+      "a": "Rejecting heat to cold outside air without running chillers. Cold-climate sites get 200+ free-cooling days a year — the biggest single lever on PUE."
+    },
+    {
+      "q": "What makes 'waterless' cooling a permitting weapon?",
+      "a": "Closed-loop direct-to-chip cooling rejected through dry coolers uses near-zero water (WUE ~0). Water draw is a top community objection to data centers — removing it removes a veto point."
+    },
+    {
+      "q": "Base rent vs tenant fit-out revenue — which matters?",
+      "a": "Base rent is recurring, ~90%-margin, contract-backed. Fit-out is one-time construction revenue recognized during customization — lumpy and low-quality. Value the rent; treat fit-out as noise."
+    },
+    {
+      "q": "Why are consensus beats a weak signal for AI landlords in buildout?",
+      "a": "Analysts can't time fit-out revenue recognition, so quarters 'beat' by 50-150% on accounting timing. NOI run-rate and MW energized on schedule are the real scorecard."
+    },
+    {
+      "q": "What is a project-level note and why quarantine debt per campus?",
+      "a": "A bond issued by the subsidiary owning one campus, secured by its lease. Each campus finances itself, default risk doesn't cross-contaminate, and coupons compress as the developer proves delivery."
+    },
+    {
+      "q": "Decode: perpetual preferred at 12.75% PIK with a 1.80x MOIC floor plus 15% of the equity.",
+      "a": "No-maturity mezzanine capital whose dividend compounds in kind (no cash out now), guarantees the investor at least 1.8x their money on exit, and takes 15% ownership on top — flexible construction capital at a very steep all-in price."
+    },
+    {
+      "q": "Why do expensive preferreds and bridges come first, cheap notes later?",
+      "a": "Before leases are signed, only flexible high-cost capital will fund construction. Once take-or-pay leases exist and buildings deliver, project notes at far tighter coupons refinance the expensive layer."
+    },
+    {
+      "q": "What does a tenant's ROFR on the rest of a campus do?",
+      "a": "A right of first refusal lets the anchor tenant match any future offer on the remaining capacity — it controls the campus's growth path without having leased or paid for it yet."
+    },
+    {
+      "q": "Why might a landlord demand a letter of credit from its own anchor tenant?",
+      "a": "When the tenant is a leveraged neocloud rather than an investment-grade hyperscaler, the landlord carries real counterparty risk. Restructured guarantees and an LC convert some of that promise into posted collateral."
+    }
+  ]
+}

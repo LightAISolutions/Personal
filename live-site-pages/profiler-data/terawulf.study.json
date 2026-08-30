@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "slug": "terawulf",
+  "title": "TeraWulf — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Why brownfields win the power race",
+      "bullets": [
+        "The scarce asset in AI buildout isn't land or GPUs — it's an energized grid connection; new interconnection requests can queue for 5+ years",
+        "A retired coal plant or aluminum smelter already has the substation, the high-voltage lines, and the utility relationship — a data center can plug into decades-old infrastructure in a fraction of the time",
+        "TeraWulf's whole platform is this play: Lake Mariner on a former 700 MW coal plant, its Kentucky campus on a smelter that drew ~480 MW continuously, plus two more coal-legacy sites",
+        "An aluminum smelter is the perfect donor: it consumed steady, massive power 24/7 — exactly the load profile a data center brings back"
+      ]
+    },
+    {
+      "heading": "Gross MW vs critical IT MW",
+      "bullets": [
+        "Gross (or facility) MW is everything the site draws from the grid; critical IT MW is what actually reaches the computers — the difference is cooling, power conversion losses, and building overhead",
+        "PUE (Power Usage Effectiveness) is the ratio: a PUE of 1.25 means 1.25 MW drawn per 1 MW of IT load — modern liquid-cooled builds target 1.2-1.3 vs ~1.5+ for older air-cooled facilities",
+        "Leases and build costs are quoted per critical-IT MW (~$9-12M per MW to build) because that's the unit tenants pay for",
+        "Converting a bitcoin-mining hall to AI hosting is a rebuild, not a retrofit: mining runs cheap air-cooled racks at ~30 kW with no redundancy; AI tenants need direct-to-chip liquid cooling at 130+ kW per rack, backup power, and Tier III-style concurrent maintainability"
+      ]
+    },
+    {
+      "heading": "How a thin-credit tenant signs a $6.7B lease: credit enhancement",
+      "bullets": [
+        "The problem: AI-cloud middlemen (like Fluidstack) want gigawatts but have small balance sheets — no lender will fund a $1B+ building against their promise alone",
+        "The fix: a third party with an investment-grade balance sheet 'backstops' the lease — guaranteeing payments (up to a cap) if the tenant defaults, sometimes agreeing to assume the lease outright",
+        "The backstopper gets paid in upside: penny warrants (rights to buy shares for ~$0.01) — insurance premium paid in equity; at TeraWulf, Google's ~$4.5B of backstops earned warrants worth ~14% of the company",
+        "Backstops typically amortize (shrink) as the project proves out, and carry escape triggers — the landlord keeps residual risk beyond the guarantee",
+        "Once the lease is credit-enhanced, project-level debt can fund construction: bonds secured by the lease payments themselves, issued by a subsidiary that owns just that project"
+      ]
+    },
+    {
+      "heading": "Reading a landlord's P&L without being fooled",
+      "bullets": [
+        "Warrants held by outsiders are a liability that gets re-measured every quarter: when the stock price RISES, the warrants become more valuable, and the company books a LOSS (and vice versa) — pure accounting, zero cash",
+        "This makes GAAP earnings anti-correlated with success: a landlord whose stock doubles on new leases will print enormous 'losses' from warrant marks — TeraWulf booked a $755.7M warrant charge in one quarter and the stock barely moved",
+        "The metrics that matter instead: contracted MW, energization schedule vs plan, $/MW build cost vs guidance, NOI margin per lease, and cash on hand vs remaining capex",
+        "Take-or-pay backlog converts to revenue only when buildings energize — the gap between 'contracted' and 'billing' MW is the execution risk, measured in transformer and switchgear lead times"
+      ]
+    },
+    {
+      "heading": "The tenant chain: who's really paying the rent",
+      "bullets": [
+        "AI capacity often arrives through layers: a frontier lab rents from a cloud middleman, who leases from a landlord, whose lender relies on a backstopper — four balance sheets in one building",
+        "Following the chain matters: TeraWulf's 'Fluidstack' leases were widely mapped to Anthropic as end user months before Anthropic signed a direct 20-year, 401 MW lease and made it explicit",
+        "Direct-lab leases beat middleman leases on credit quality; the trade-off is fewer, bigger counterparties — concentration risk in a different costume",
+        "A 'net generator' campus flips the grid relationship: build your own on-site generation plus batteries, sell surplus back — the utility becomes the customer, and the interconnection queue stops being the constraint"
+      ]
+    },
+    {
+      "heading": "Zero-carbon claims: how to evaluate them",
+      "bullets": [
+        "'Powered by ~90% zero-carbon energy' usually means the regional grid mix (upstate NY runs heavily on hydro and nuclear), not that the facility bought dedicated clean supply",
+        "The strict standard requires RECs (renewable energy certificates) or a direct PPA with a specific generator; grid-mix claims without them draw greenwashing critiques — TeraWulf took exactly this fire from short-sellers in 2024",
+        "Siting in a clean-grid zone is still economically real: power there is often cheap AND clean (hydro), and tenants' ESG reporting benefits from location-based accounting",
+        "Watch the definitions in any 'zero-carbon' marketing: location-based (grid mix) vs market-based (certificates purchased) accounting can tell opposite stories about the same building"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "Why is a dead coal plant or smelter worth hundreds of millions to a data-center developer?",
+      "a": "The energized substation and high-voltage interconnect. New grid connections queue for years; a brownfield inherits one that already carried hundreds of megawatts — the buyer is paying for the wire, not the land."
+    },
+    {
+      "q": "What's the difference between gross MW and critical IT MW?",
+      "a": "Gross is total site draw from the grid; critical IT is what reaches the computers. The ratio between them is PUE — a 1.25 PUE site needs 125 MW gross to deliver 100 MW of IT load."
+    },
+    {
+      "q": "Why can't a bitcoin-mining hall just be handed to an AI tenant?",
+      "a": "Mining runs cheap air-cooled racks (~30 kW) with no redundancy. AI hosting needs direct-to-chip liquid cooling at 130+ kW per rack, backup power, and concurrent maintainability — it's a rebuild on the same power, roughly $9-12M per critical-IT MW."
+    },
+    {
+      "q": "What is a lease backstop and what does the backstopper get?",
+      "a": "A guarantee by a strong balance sheet to cover (up to a cap) a weak tenant's lease payments if it defaults, making the lease bankable. The backstopper is typically paid in penny warrants — equity upside as the insurance premium."
+    },
+    {
+      "q": "Why do backstopped leases enable construction debt?",
+      "a": "Lenders fund against contracted cash flows. A thin-credit tenant's promise isn't lendable; the same promise wrapped in an investment-grade guarantee is — so a subsidiary can issue notes secured by the lease and build the building."
+    },
+    {
+      "q": "A landlord's stock doubles and it reports a $750M quarterly loss. What probably happened?",
+      "a": "Warrant mark-to-market. Outstanding warrants are a liability re-measured each quarter; when the stock rises the liability grows and the company books a non-cash loss. GAAP earnings become anti-correlated with success."
+    },
+    {
+      "q": "What metrics actually track an AI landlord's health, if not EPS?",
+      "a": "Contracted MW and its energization schedule vs plan, build cost per critical-IT MW vs guidance, NOI margin per lease, and cash vs remaining capex. Backlog converts to revenue only when buildings energize."
+    },
+    {
+      "q": "What is take-or-pay and why does it define this sector?",
+      "a": "The tenant owes rent whether or not it uses the capacity. It turns a lease into a bond-like cash stream — the foundation under every backstop, project note, and backlog number in AI hosting."
+    },
+    {
+      "q": "Why does the tenant chain (lab → cloud middleman → landlord) matter?",
+      "a": "Credit lives at the ends of the chain. A middleman's lease is only as good as who stands behind it — following the chain reveals the real counterparty and the real risk, and direct-lab leases remove a layer entirely."
+    },
+    {
+      "q": "What is a 'net generator' or BYOG campus?",
+      "a": "Bring Your Own Generation: on-site power plants plus batteries sized beyond the data-center load, selling surplus to the grid. It sidesteps the interconnection queue and turns the utility relationship from constraint into revenue."
+    },
+    {
+      "q": "When is a '90% zero-carbon' claim solid vs greenwash?",
+      "a": "Solid if backed by RECs or a direct PPA with a clean generator (market-based accounting). If it just cites the regional grid mix (location-based), the facility is riding hydro/nuclear averages it didn't contract for — cheap and cleaner, but not certified clean."
+    },
+    {
+      "q": "Why do long-lead electrical components set AI buildout schedules?",
+      "a": "Transformers, switchgear, and chillers run multi-year order books industry-wide. GPU racks arrive in months; the electrical gear feeding them is the bottleneck, so delivery promises live or die on procurement done years ahead."
+    }
+  ]
+}

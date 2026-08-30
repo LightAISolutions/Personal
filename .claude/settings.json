@@ -1,0 +1,20 @@
+{
+  "description": "Pre-allows Claude Code to run git commands without prompting for permission; wires the repo-tracked stop-hook so every session gets the git-check without per-machine setup",
+  "permissions": {
+    "allow": [
+      "Bash(git *)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/stop-hook-git-check.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

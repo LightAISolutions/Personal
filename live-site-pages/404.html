@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page Not Found | Light AI Solutions</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #fafafa; color: #1e293b; min-height: 100vh;
+  display: flex; flex-direction: column;
+}
+a { text-decoration: none; color: inherit; }
+
+.header {
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
+  border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 80px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo img { height: 48px; width: auto; }
+.logo span { font-weight: 700; font-size: 1.125rem; color: #0f172a; }
+
+.content {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 48px 24px; text-align: center;
+}
+.error-card {
+  max-width: 520px; width: 100%;
+  background: #fff; border-radius: 12px; padding: 56px 40px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+}
+.error-icon {
+  width: 64px; height: 64px; border-radius: 16px; margin: 0 auto 24px;
+  background: #f1f5f9; color: #b8860b;
+  display: flex; align-items: center; justify-content: center;
+}
+.error-code {
+  font-size: 3rem; font-weight: 700; color: #0f172a;
+  letter-spacing: -0.02em; line-height: 1; margin-bottom: 12px;
+}
+.error-title {
+  font-size: 1.25rem; font-weight: 600; color: #0f172a; margin-bottom: 12px;
+}
+.error-text {
+  font-size: 0.9375rem; color: #64748b; line-height: 1.7; margin-bottom: 32px;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px; font-size: 0.875rem; font-weight: 600;
+  color: #fff; background: #0f172a; border-radius: 100px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn:hover { background: #b8860b; transform: translateY(-1px); }
+
+.footer {
+  background: #0f172a; padding: 32px 24px; text-align: center;
+}
+.footer p {
+  font-size: 0.8125rem; color: rgba(255,255,255,0.5);
+}
+.footer .tagline {
+  font-size: 0.8125rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.12em; color: #b8860b; margin-bottom: 12px;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a href="/" class="logo">
+    <img src="/images/logo-placeholder.svg" alt="Light AI Solutions Logo">
+    <span>Light AI Solutions</span>
+  </a>
+</header>
+
+<main class="content">
+  <div class="error-card">
+    <div class="error-icon">
+      <i data-lucide="shield-alert" style="width:32px;height:32px"></i>
+    </div>
+    <div class="error-code">404</div>
+    <h1 class="error-title">Page Not Found</h1>
+    <p class="error-text">The page you're looking for doesn't exist or has been moved. Let's get you back on track.</p>
+    <a href="/" class="btn">
+      <i data-lucide="arrow-left" style="width:16px;height:16px"></i>
+      Back to Home
+    </a>
+  </div>
+</main>
+
+<footer class="footer">
+  <p class="tagline">"Protecting and Serving Those Who Protect and Serve Us"</p>
+  <p>Copyright &copy; Light AI Solutions, LLC / D.C. Police &amp; Fire Clinic. All rights reserved.</p>
+</footer>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

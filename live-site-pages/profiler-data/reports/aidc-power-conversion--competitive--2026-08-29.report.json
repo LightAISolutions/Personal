@@ -1,0 +1,185 @@
+{
+ "schemaVersion": 1,
+ "id": "aidc-power-conversion--competitive--2026-08-29",
+ "title": "AIDC Power Conversion — The 800 VDC Race",
+ "type": "competitive",
+ "topic": "Who is winning the AI data-center power-conversion transition — rack shelves, sidecars, and hall-edge blocks — across the covered peer family",
+ "generated": "2026-08-29",
+ "style": "intel-briefing",
+ "scope": {
+  "kind": "slugs",
+  "value": ["delta-electronics", "liteon", "megmeet", "zhonhen", "sinexcel", "vertiv", "eaton", "schneider-electric"],
+  "rationale": "The covered suppliers of AC-to-DC power conversion for AI data centers — the peer family contesting NVIDIA's 800 VDC slots: three Taiwan shelf/sidecar makers, two Chinese HVDC specialists, three Western infrastructure incumbents."
+ },
+ "coverage": {
+  "companies": [
+   {"slug": "delta-electronics", "name": "Delta Electronics", "profileVersion": 3, "lastUpdated": "2026-08-29", "srcTotal": 14, "srcFirstPct": 57, "kpiNorm": true},
+   {"slug": "liteon", "name": "LITEON", "profileVersion": 3, "lastUpdated": "2026-08-29", "srcTotal": 14, "srcFirstPct": 57, "kpiNorm": true},
+   {"slug": "megmeet", "name": "Megmeet", "profileVersion": 4, "lastUpdated": "2026-08-29", "srcTotal": 29, "srcFirstPct": 55, "kpiNorm": true},
+   {"slug": "zhonhen", "name": "Zhonhen Electric", "profileVersion": 5, "lastUpdated": "2026-08-29", "srcTotal": 43, "srcFirstPct": 42, "kpiNorm": true},
+   {"slug": "sinexcel", "name": "Sinexcel", "profileVersion": 5, "lastUpdated": "2026-08-29", "srcTotal": 42, "srcFirstPct": 64, "kpiNorm": true},
+   {"slug": "vertiv", "name": "Vertiv", "profileVersion": 3, "lastUpdated": "2026-08-29", "srcTotal": 12, "srcFirstPct": 67, "kpiNorm": true},
+   {"slug": "eaton", "name": "Eaton", "profileVersion": 3, "lastUpdated": "2026-08-29", "srcTotal": 13, "srcFirstPct": 69, "kpiNorm": true},
+   {"slug": "schneider-electric", "name": "Schneider Electric", "profileVersion": 3, "lastUpdated": "2026-08-29", "srcTotal": 13, "srcFirstPct": 69, "kpiNorm": true}
+  ],
+  "gaps": [
+   "Huawei Digital Power is covered but excluded from scope: sanctions place it outside the NVIDIA/US ecosystem this report assesses.",
+   "Flex and BizLink appear in NVIDIA's 800 VDC component tier alongside the covered names but carry no dossiers.",
+   "The Option A/B/C slot definitions and the TRU-now/SST-2029 timing frame come from internal research on NVIDIA's white papers (the Industry Guidance NVIDIA module), not from dossier citations — passages that lean on them are analysis-flagged.",
+   "No cross-company financial comparison is drawn: revenue bases mix NT$/¥/RMB/$/€ across very different segment mixes, and the normalized-KPI overlay is not used."
+  ],
+  "dataWindow": {"oldest": "2026-08-29", "newest": "2026-08-29"}
+ },
+ "bluf": "BOTTOM LINE UP FRONT: Delta enters the 800 VDC generation as the structural leader — volume #1 in AI server power with the deepest published portfolio and AI data-center revenue now over half the company. The live contests are the sidecar layer (Megmeet's architecture-timing wedge and LITEON's BBU franchise against Delta's qualification lead) and the hall-edge block, where Zhonhen holds the strongest architectural validation of the set — NVIDIA's own paper names the Panama architecture it co-developed — and the weakest Western position, a gap CATL's RMB 4.1B move on its holdco may be built to close.",
+ "keyJudgments": [
+  {
+   "confidence": "high",
+   "cites": ["c8", "c9", "c11", "c10"],
+   "text": "We assess Delta is the benchmark the rest of the family is measured against: #1 in AI server power per WAWT, AI data-center power plus cooling above 50% of revenue in a record Q2 2026, and the deepest published 800 VDC portfolio (660 kW in-row racks with embedded BBU, 98% PSUs, a 98.5% SST) — with TrendForce placing first 800V HVDC shipments as early as 3Q26, timing that favors the incumbent qualification leader."
+  },
+  {
+   "confidence": "moderate",
+   "cites": ["c13", "c12", "c14", "c15"],
+   "text": "We assess Megmeet's wedge is architecture timing, not price: the only mainland vendor in NVIDIA's 800 VDC alliance roster from the start, first to show the full sidecar/SST chain, now packaging itself for US procurement (Dallas test lab, Thailand capacity, HK listing) — but its own FY2025 filing shows AI orders were immaterial while profit fell two-thirds, so the position is bought, not yet earned."
+  },
+  {
+   "confidence": "high",
+   "cites": ["c16", "c18", "c17"],
+   "text": "We assess LITEON's BBU franchise is the strongest single product position in the challenger tier — BBUs turn from optional to standard as racks pass GB300, and its record Q2 2026 rests on that ramp — while its GPU-side 800V timeline (sampling before mass production in Q1 2027) trails Delta's, which is why it is committing $919M to a Texas HVDC plant and routing through ASIC customers in the interim."
+  },
+  {
+   "confidence": "high",
+   "cites": ["c1", "c2", "c5", "c7", "c3"],
+   "text": "We assess Zhonhen holds the set's widest gap between validation and access: NVIDIA's August 2026 white paper names the Panama Architecture it co-developed with Alibaba as a canonical TRU implementation, and it leads China's data-center HVDC market at 31% — yet it appears on none of NVIDIA's published partner rosters, reaches the West only through a young Singapore brand, and carries governance flags (the founder's market-manipulation conviction) that Western diligence will surface. CATL's RMB 4.1B for 49% of its controlling holdco re-rates the company as the equipment arm of a much larger balance sheet."
+  },
+  {
+   "confidence": "moderate",
+   "cites": ["c23", "c22", "c25", "c28", "c27", "c24", "c29"],
+   "text": "We assess the three Western incumbents face the same 800 VDC arithmetic — the architecture shrinks the centralized UPS franchise (SemiAnalysis's contraction call) — and are hedging differently: Vertiv with NVIDIA co-engineering and prefab blocks, Eaton with supercapacitor backup and an M&A-built grid-to-chip stack, Schneider with the design layer (the only incumbent holding NVIDIA co-authored gigawatt blueprints). Dell'Oro's shared #1 between Schneider and Vertiv frames a contest none of the three has yet won at 800 V."
+  },
+  {
+   "confidence": "moderate",
+   "cites": ["c19", "c20"],
+   "text": "We assess Sinexcel is optionality rather than a contender at this stage: a credible power-electronics base (BNEF Tier 1 inverter maker) and a new AIDC division working HVDC and SST, but pre-revenue in AI power per its own record — the family's reminder that the SST roster for the ~2029 slot is still forming."
+  }
+ ],
+ "sections": [
+  {
+   "id": "race",
+   "title": "The field, position by position",
+   "kind": "table",
+   "read": "5 min",
+   "intro": "Eight covered players against the 800 VDC transition. \"Slot\" uses the deployment-architecture frame from NVIDIA's papers (rack shelves and sidecar power racks near-term; hall-edge TRU/SST power blocks at data-hall scale).",
+   "cols": ["Company", "Slot contested", "Proof points", "The open question"],
+   "rows": [
+    ["Delta Electronics", "Every conversion layer — shelves, sidecar racks, SST", "#1 AI server power (WAWT) [c:c8]; AI DC >50% of revenue in record Q2 [c:c9]; 660 kW rack / 98% PSU / 98.5% SST published [c:c11]", "Whether share this high survives customers' deliberate second-sourcing"],
+    ["LITEON", "Shelves + the BBU layer", "Record Q2 on the BBU ramp [c:c16]; ~#2 in AI server power per trade estimates [c:c18]; $919M Texas HVDC plant [c:c17]", "GPU-side 800V mass production lands Q1 2027 — a step behind"],
+    ["Megmeet", "Sidecar / SST chain", "In NVIDIA's 800 VDC alliance from the first roster [c:c13]; full grid-to-GPU chain at OCP [c:c12]; Dallas test lab [c:c14]", "AI orders immaterial through FY2025 as profit fell two-thirds [c:c15]"],
+    ["Zhonhen Electric", "Hall-edge TRU (Panama) blocks", "Panama named in NVIDIA's Aug 2026 paper [c:c1]; #1 China DC HVDC at 31% (Kezhi) [c:c2]; CATL buying 49% of the holdco [c:c3]", "Absent from NVIDIA's partner rosters [c:c5]; no Western fleet; governance flags [c:c7]"],
+    ["Sinexcel", "HVDC / SST (forming)", "BNEF Tier 1 inverter maker [c:c20]; AIDC division working HVDC & SST [c:c19]", "Pre-revenue in AI power — optionality, not yet a position"],
+    ["Vertiv", "Facility power + prefab blocks", "800 VDC designs at engineering readiness with NVIDIA [c:c22]; $15B backlog era, Q2 2026 8-K [c:c21]", "Net content: the architecture shrinks the UPS franchise it leads [c:c23]"],
+    ["Eaton", "Facility power + backup", "OCP 800 VDC reference architecture with supercapacitor backup [c:c25]; Boyd Thermal closed — the M&A stack complete [c:c26]", "Whether replacement content outruns the UPS contraction [c:c23]"],
+    ["Schneider Electric", "The design layer + sidecar", "NVIDIA co-authored gigawatt AI-factory blueprints [c:c27]; 800 VDC sidecar to 1.2 MW racks [c:c28]; shared #1 DCPI (Dell'Oro) [c:c29]", "Blueprints steer spend — converting them into 800 V hardware share is unproven"]
+   ]
+  },
+  {
+   "id": "layers",
+   "title": "Three contests, not one",
+   "kind": "prose",
+   "read": "4 min",
+   "analysis": true,
+   "ps": [
+    "**Inside the rack (shelves and BBUs).** The near-term revenue is here and Taiwan owns it: Delta first-qualified across the GB200/GB300 shelf sets [c:c8], LITEON riding BBUs as they turn standard [c:c16] [c:c18], Megmeet buying its way in on architecture timing [c:c13]. TrendForce's 3Q26 first-shipment call [c:c10] makes this the layer where 2026-27 money changes hands.",
+    "**The sidecar / power-rack layer.** The bridge architecture — and the genuinely contested one: Delta's 660 kW in-row rack [c:c11], Schneider's 1.2 MW sidecar [c:c28], Megmeet's full chain [c:c12], LITEON's Texas build-out [c:c17]. *(Assessment note: the option framing here follows internal research on NVIDIA's deployment architectures — the Industry Guidance NVIDIA module carries the ratings and dates with page citations.)*",
+    "**The hall-edge block (TRU now, SST toward 2029).** The slot NVIDIA's August 2026 paper specifies as containerized ~4.8 MW blocks. This is where the pool widens beyond the shelf vendors: the paper's own naming of the Panama Architecture [c:c1] blesses the device class Zhonhen has productized domestically [c:c2], while the SST roster for the next generation is still forming — Delta's 98.5% SST is published [c:c11], Sinexcel's is in development [c:c19]. The competitive question for any sub-4.8 MW module lineup is composition into the standardized block — an engineering-story requirement, not a disqualifier."
+   ]
+  },
+  {
+   "id": "zhonhen",
+   "title": "The Zhonhen file",
+   "kind": "prose",
+   "read": "4 min",
+   "ps": [
+    "**Validation without access.** The Aug 2026 white paper names Panama — the architecture Zhonhen co-developed with Alibaba — as a canonical TRU implementation [c:c1], and Kezhi's 2025 count puts Zhonhen at 31% of China's data-center HVDC market, #1 with CR3 at 72% [c:c2]. Yet NVIDIA's published 800 VDC partner rosters do not include it [c:c5], and its Western vehicle is the young Singapore-based Enervell brand [c:c6]. The fifteen-year domestic franchise and the Western order book are, for now, different worlds.",
+    "**The CATL re-rating.** The definitive agreements signed 14-15 Aug 2026 — RMB 4.1B for 49% of the controlling holdco, with nomination rights reaching into listed-company management [c:c3] — convert Zhonhen from an independent vendor into the data-center power arm of the industry's largest balance sheet. For any counterparty, that cuts both ways: deeper pockets and manufacturing muscle behind the product line; a §154-listed parent one step up the ownership chain (the companion §154 risk report covers what that listing means in the US).",
+    "**The diligence file.** Founder and controller Zhu Guoding was convicted of securities-market manipulation in Dec 2025 (suspended sentence; his wife chairs) [c:c7]; the FY2025 annual report shows revenue RMB 2.137B (+8.9%) with net profit RMB 126M — a company two orders of magnitude smaller than the incumbents it would face in the West [c:c4]. The H1 2026 report, due by 31 Aug 2026, is the near-term checkpoint on whether the 800V/AI narrative is converting into orders."
+   ]
+  }
+ ],
+ "indicators": [
+  {"date": "by 2026-08-31", "text": "Zhonhen H1 2026 report (statutory deadline)", "confirms": "whether HVDC/AI orders are converting — the check on Judgment 4's narrative-vs-revenue gap"},
+  {"date": "~2026-08-27+", "text": "Megmeet H1 2026 report (its dossier flags this as the verification point for front-loaded expectations)", "confirms": "whether AI data-center revenue is finally material — Judgment 2's earn-vs-bought test"},
+  {"date": "3Q26", "text": "First 800V HVDC volume shipments (TrendForce's call)", "confirms": "whether the transition's timing favors Delta's qualification lead (Judgment 1) or gives challengers a later window"},
+  {"date": "Q1 2027", "text": "LITEON's GPU-side 800V mass production per its own timeline", "confirms": "whether the #2 catches the architecture within one product cycle (Judgment 3)"},
+  {"date": "2026-2027", "text": "Any covered name appearing on (or vanishing from) NVIDIA's next published 800 VDC partner roster", "confirms": "roster membership is the cleanest public signal of who holds the slots"},
+  {"date": "toward 2029", "text": "First 34.5 kV-class SST productization announcements from any of the eight", "confirms": "who is actually positioned for the next-generation slot the TRU window precedes"}
+ ],
+ "limitations": [
+  "The Option A/B/C slot definitions and TRU-now/SST-2029 timing are summarized from internal research on NVIDIA's white papers (the Industry Guidance NVIDIA module) — passages leaning on them are analysis-flagged; the two NVIDIA citations here carry the Panama naming and the partner rosters, not the full architecture mechanics.",
+  "Delta/LITEON share figures are trade and brokerage estimates (WAWT, fiisual, CommonWealth), not company disclosures; the Megmeet-displaces-LITEON report remains unresolved between the two dossiers and is not asserted here.",
+  "Zhonhen items (Kezhi share, verdict, CATL terms) rest substantially on Chinese-language sources carried in its dossier.",
+  "Flex and BizLink sit in NVIDIA's component tier but have no dossiers; Huawei Digital Power is covered but out of scope (sanctions-fenced from the ecosystem assessed).",
+  "No cross-company financial comparison: mixed currencies and segment structures; the normalized-KPI overlay is unused."
+ ],
+ "citations": [
+  {"id": "c1", "slug": "zhonhen", "company": "Zhonhen Electric", "label": "NVIDIA — 800 VDC Architecture: Industry Alignment & Execution (white paper, 36 pp.); registration-gated, hosted on NVIDIA's 800 VDC architecture hub", "url": "https://www.nvidia.com/en-us/data-center/technologies/800-vdc-architecture/", "date": "2026-08", "party": "independent"},
+  {"id": "c2", "slug": "zhonhen", "company": "Zhonhen Electric", "label": "Ajian Securities initiation — Kezhi 2025 HVDC share 31%/CR3 72%; SuperX JV detail; forecasts", "url": "https://pdf.dfcfw.com/pdf/H3_AP202512231806511647_1.pdf", "date": "2025-12-23", "party": "independent"},
+  {"id": "c3", "slug": "zhonhen", "company": "Zhonhen Electric", "label": "Announcement 2026-28 — CATL definitive agreements (capital increase, shareholders' & strategic-cooperation agreements)", "url": "http://static.cninfo.com.cn/finalpage/2026-08-15/1225474715.PDF", "date": "2026-08-15", "party": "disclosure"},
+  {"id": "c4", "slug": "zhonhen", "company": "Zhonhen Electric", "label": "FY2025 annual report (full text)", "url": "https://disc.static.szse.cn/download/disc/disk03/finalpage/2026-04-21/d0543cb8-6de6-4606-9add-49a587d32b30.PDF", "date": "2026-04-21", "party": "disclosure"},
+  {"id": "c5", "slug": "zhonhen", "company": "Zhonhen Electric", "label": "NVIDIA Technical Blog — Building the 800 VDC Ecosystem (expanded partner roster; no Hopewind, no Zhonhen)", "url": "https://developer.nvidia.com/blog/building-the-800-vdc-ecosystem-for-efficient-scalable-ai-factories/", "date": "2025-10-13", "party": "independent"},
+  {"id": "c6", "slug": "zhonhen", "company": "Zhonhen Electric", "label": "Company news — Data Centre World Asia, Singapore (Enervell debut)", "url": "https://www.hzzh.com/news/detail/id/204.html", "date": "2025-10-09", "party": "company"},
+  {"id": "c7", "slug": "zhonhen", "company": "Zhonhen Electric", "label": "The Paper — Zhu Guoding verdict (3y suspended 4, RMB 1M fine)", "url": "https://m.thepaper.cn/newsDetail_forward_32293580", "date": "2026-01-01", "party": "independent"},
+  {"id": "c8", "slug": "delta-electronics", "company": "Delta Electronics", "label": "WAWT — Delta #1 in NVIDIA AI server power", "url": "https://wawt.tech/2026/04/20/how-delta-electronics-built-a-competitive-edge-in-nvidias-ai-server-power-ecosystem/", "date": "2026-04-20", "party": "independent"},
+  {"id": "c9", "slug": "delta-electronics", "company": "Delta Electronics", "label": "Delta Q2 2026 results", "url": "https://www.deltaww.com/en-US/press/41046", "date": "2026-07-29", "party": "company"},
+  {"id": "c10", "slug": "delta-electronics", "company": "Delta Electronics", "label": "TrendForce — 800V HVDC adoption timeline", "url": "https://www.trendforce.com/news/2026/06/15/news-nvidia-google-may-be-first-to-adopt-800v-hvdc-initial-3q26-shipments-may-boost-delta-and-infrastructure-suppliers/", "date": "2026-06-15", "party": "independent"},
+  {"id": "c11", "slug": "delta-electronics", "company": "Delta Electronics", "label": "800 VDC architecture deep-dive", "url": "https://www.deltaww.com/en-US/press/40334", "date": "2026-05-28", "party": "company"},
+  {"id": "c12", "slug": "megmeet", "company": "Megmeet", "label": "NVIDIA 800VDC collaboration at OCP Summit (EN release, 2025-10-13)", "url": "https://en.megmeet.com/news/info/2336.html", "date": "2025-10-13", "party": "company"},
+  {"id": "c13", "slug": "megmeet", "company": "Megmeet", "label": "SmBom — NVIDIA 800V HVDC alliance members (2025-05-22)", "url": "https://www.smbom.com/news/38190", "date": "2025-05-22", "party": "independent"},
+  {"id": "c14", "slug": "megmeet", "company": "Megmeet", "label": "Dallas AI-DC power test lab (EN release, 2026-06-26)", "url": "https://en.megmeet.com/news/info/2343.html", "date": "2026-06-26", "party": "company"},
+  {"id": "c15", "slug": "megmeet", "company": "Megmeet", "label": "FY2025 Annual Report summary (SZSE filing, 2026-04-29)", "url": "https://disc.static.szse.cn/disc/disk03/finalpage/2026-04-29/f7cded82-0729-499d-b61a-6d41c3240658.PDF", "date": "2026-04-29", "party": "disclosure"},
+  {"id": "c16", "slug": "liteon", "company": "LITEON", "label": "LITEON Q2 2026 results", "url": "https://www.liteon.com/en/news/press-center/content/quarterly-second-eps-2026", "date": "2026-07-31", "party": "company"},
+  {"id": "c17", "slug": "liteon", "company": "LITEON", "label": "McKinney, Texas investment", "url": "https://www.liteon.com/en/news/press-center/content/liteon-mckinney-investment", "date": "2026-07-13", "party": "company"},
+  {"id": "c18", "slug": "liteon", "company": "LITEON", "label": "fiisual — Delta/LITEON share estimates & BBU standardization", "url": "https://fiisual.com/blog/post/2025/delta-electronics-introduction", "party": "independent"},
+  {"id": "c19", "slug": "sinexcel", "company": "Sinexcel", "label": "Sohu — Sinexcel AIDC division focus on HVDC & SST (盛弘股份AIDC事业部)", "url": "https://www.sohu.com/a/949181584_122362510", "date": "2025-10", "party": "independent"},
+  {"id": "c20", "slug": "sinexcel", "company": "Sinexcel", "label": "Sinexcel news — BloombergNEF Tier 1 inverter maker Q2 2026 (2026-06-16)", "url": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=406", "date": "2026-06-16", "party": "company"},
+  {"id": "c21", "slug": "vertiv", "company": "Vertiv", "label": "Vertiv Q2 2026 results (8-K exhibit)", "url": "https://www.sec.gov/Archives/edgar/data/0001674101/000162828026050323/q22026exhibit991vrt07292026.htm", "date": "2026-07-29", "party": "disclosure"},
+  {"id": "c22", "slug": "vertiv", "company": "Vertiv", "label": "800 VDC engineering readiness with NVIDIA", "url": "https://www.vertiv.com/en-us/about/news-and-events/corporate-news/from-vision-to-readiness-vertiv-collaborates-with-nvidia-to-advance-800-vdc-platform-designs-to-power-the-next-generation-of-ai-factories/", "date": "2025-10-13", "party": "company"},
+  {"id": "c23", "slug": "vertiv", "company": "Vertiv", "label": "SemiAnalysis — 800 VDC market analysis", "url": "https://newsletter.semianalysis.com/p/inside-the-800vdc-revolution-part", "date": "2025-10", "party": "independent"},
+  {"id": "c24", "slug": "vertiv", "company": "Vertiv", "label": "Dell'Oro — Schneider and Vertiv tied for DCPI #1", "url": "https://www.delloro.com/news/data-center-physical-infrastructure-grew-17-percent-y-y-in-1q-2025-driven-by-ai-buildout/", "date": "2025-06", "party": "independent"},
+  {"id": "c25", "slug": "eaton", "company": "Eaton", "label": "800 VDC reference architecture (OCP)", "url": "https://www.eaton.com/us/en-us/company/news-insights/news-releases/2025/eaton-unveils-next-generation-architecture.html", "date": "2025-10-13", "party": "company"},
+  {"id": "c26", "slug": "eaton", "company": "Eaton", "label": "Boyd Thermal close", "url": "https://www.eaton.com/us/en-us/company/news-insights/news-releases/2026/eaton-completes-acquisition-of-leading-liquid-cooling-solutions-provider-boyd-thermal.html", "date": "2026-03-12", "party": "company"},
+  {"id": "c27", "slug": "schneider-electric", "company": "Schneider Electric", "label": "Gigawatt AI-factory blueprints (GTC 2026)", "url": "https://www.globenewswire.com/news-release/2026/03/16/3256775/0/en/schneider-electric-teams-with-nvidia-to-develop-validated-blueprints-to-design-simulate-build-operate-and-maintain-gigawatt-scale-ai-factories.html", "date": "2026-03-16", "party": "disclosure"},
+  {"id": "c28", "slug": "schneider-electric", "company": "Schneider Electric", "label": "800 VDC sidecar announcement", "url": "https://www.se.com/ww/en/about-us/newsroom/news/press-releases/schneider-electric-highlights-innovation-in-800-vdc-power-systems-in-support-of-nvidia%E2%80%99s-next-generation-gpus-68ecb631098fd4ea49024353/", "date": "2025-10-13", "party": "company"},
+  {"id": "c29", "slug": "schneider-electric", "company": "Schneider Electric", "label": "Dell'Oro — DCPI market and shared #1", "url": "https://www.delloro.com/news/data-center-physical-infrastructure-market-expands-28-percent-y-y-in-1q-2026/", "date": "2026-06", "party": "independent"}
+ ],
+ "guidanceOverlays": [
+  {
+   "moduleId": "nvidia-800vdc-2026-08",
+   "sectionId": "options",
+   "title": "Who is building each option",
+   "ps": [
+    "Mapping the covered family onto the deployment options (Aug 2026): **Option A/B territory** — Delta's 660 kW in-row rack is the published benchmark, LITEON and Megmeet ship the 110 kW shelf class, Schneider disclosed a sidecar to 1.2 MW racks, Eaton's OCP reference architecture adds supercapacitor fast-cycle backup, Vertiv holds engineering-ready 800 VDC platform designs with NVIDIA. TrendForce puts first 800V HVDC volume shipments as early as 3Q26 — Option A/B money moves first.",
+    "**Option C territory** — the containerized TRU/SST block — is where **Zhonhen** lives: the Panama architecture it co-developed is now named in the paper itself, and its domestic fleet is the delivered precedent for the device class. The composition question (2.5-3.6 MW modules into standardized 4.8 MW blocks, 1250 A busways, tap-can interfaces) remains its engineering story to tell — no covered vendor has published a 4.8 MW-native block yet."
+   ]
+  },
+  {
+   "moduleId": "nvidia-800vdc-2026-08",
+   "sectionId": "trusst",
+   "title": "The Panama name-check is Zhonhen's",
+   "ps": [
+    "The architecture the paper names at p22 is the one Zhonhen co-developed with Alibaba and has productized domestically since 2019 — it leads China's data-center HVDC market at 31% (Kezhi 2025, CR3 72%) and lead-drafted the national 240V/336V DC standard. The 'simpler and highly familiar' phrase is, in practice, a description of Zhonhen's shipping product class — citable as NVIDIA's own words, remembering the paper names an architecture, not a company.",
+    "On the SST side of the table: Delta has a 98.5% SST published today, Megmeet showed the sidecar/SST chain first among mainland vendors, and Sinexcel's AIDC division is developing HVDC and SST — the ~2029 roster is forming now, and the TRU window is exactly as the module frames it: real, but tighter than 'nothing until 2029.'"
+   ]
+  },
+  {
+   "moduleId": "nvidia-800vdc-2026-08",
+   "sectionId": "suppliers",
+   "title": "The Zhonhen conversation, updated",
+   "ps": [
+    "**What changed since this module was written:** CATL signed definitive agreements (14-15 Aug 2026) for RMB 4.1B / 49% of Zhonhen's controlling holdco with nomination rights into listco management — the partnership calculus now includes the industry's largest balance sheet standing behind the Panama product line, and a §154-listed parent one step up the chain (see the companion §154 risk report for the US implications).",
+    "**The access gap is the sales problem, not the technology:** Zhonhen appears on none of NVIDIA's published 800 VDC partner rosters, and its Western vehicle is the young Enervell brand out of Singapore. The pitch that works with this module's material: the industry's reference document blesses the TRU class it ships today (point 2), the 4.8 MW composition story must be prepared before a buyer asks (point 3), and prefab delivery history is the differentiator (point 4).",
+    "**Diligence items a Western counterparty will raise first:** the founder's Dec 2025 market-manipulation conviction (suspended; his wife chairs), scale (FY2025 revenue RMB 2.1B against incumbents 20-100x larger), and the H1 2026 report due 31 Aug 2026 as the live check on whether the 800V/AI narrative is converting into orders."
+   ]
+  }
+ ]
+}

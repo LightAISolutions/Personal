@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "turner-construction",
+  "title": "Turner Construction — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Who actually builds an AI data center: the delivery chain",
+      "bullets": [
+        "The owner (hyperscaler/developer) hires a construction manager or general contractor (CM/GC) who runs the job; the GC hires specialty subcontractors — electrical, mechanical, concrete — who employ most of the workers",
+        "CM-at-risk, the dominant model, means the GC commits to a guaranteed maximum price and holds the subcontracts — it earns a fee of a few percent on enormous volume (a 3-4% pre-tax margin on $29B of revenue is a normal, healthy GC year)",
+        "Design-build folds the engineer into the builder's contract; EPC (engineer-procure-construct) goes further — one firm owns design, equipment purchasing, and construction, typical for power plants and increasingly for data-center electrical scope",
+        "On AI gigacampuses, owners split work among multiple GCs on one site (three builders on a single Meta campus is normal) — capacity, not loyalty, drives awards"
+      ]
+    },
+    {
+      "heading": "Why procurement became the product",
+      "bullets": [
+        "An AI campus's schedule is set by long-lead equipment — transformers, switchgear, generators, chillers — with multi-year order books, not by concrete or steel",
+        "GCs answered by building in-house procurement arms: dedicated buying desks with direct OEM relationships that reserve manufacturing slots during design, sometimes years before groundbreaking",
+        "'Open-book' procurement means the client sees the actual equipment prices and the GC charges a transparent fee — trading margin opacity for trust and repeat hyperscale business",
+        "The buying desk compounds: the more campuses a GC builds, the bigger its standing equipment volume, the better its OEM slots — scale in procurement is self-reinforcing in a way jobsite labor never is"
+      ]
+    },
+    {
+      "heading": "Reading a contractor's numbers",
+      "bullets": [
+        "Revenue is work-in-place (billed construction), not contract wins; backlog is signed-but-unbuilt work — the forward order book; book-to-bill above 1 means backlog still growing",
+        "Margins are thin by design: 2-4% pre-tax is normal because the GC passes most cost through; the profit lever is fee volume and risk discipline, not markup",
+        "Watch backlog mix, not just size: a backlog jumping from 0% to 40% data centers in three years is a different company wearing the same name",
+        "Sector rankings can point opposite directions at once: trailing-revenue tables (who billed the most DC work last year) vs forward order intake (who signed the most this year) — during a boom, the order-intake leader takes the crown a year or two later"
+      ]
+    },
+    {
+      "heading": "Six nines: what reliability engineering sells",
+      "bullets": [
+        "Uptime is graded in 'nines': 99.9999% (six nines) allows ~31 seconds of downtime per year; data-center owners specify their tolerance in these terms and design redundancy to meet it",
+        "Achieving nines is a commissioning discipline: every electrical path, transfer switch, and cooling loop is tested through failure scenarios before the tenant's hardware arrives",
+        "Concurrent maintainability (the Tier III concept) means any component can be serviced without shutting the facility — the design property most colocation leases legally require",
+        "GCs now sell this as an engineering service line: reliability engineers embedded from design through commissioning, because a facility that fails its nines tests doesn't get accepted — or paid for"
+      ]
+    },
+    {
+      "heading": "Offsite construction: factories fighting the labor ceiling",
+      "bullets": [
+        "The binding constraint on the AI buildout is skilled craft labor — primarily electricians — concentrated in a few hot markets; the industry literally calls it the 'craft ceiling'",
+        "Prefabrication moves work from scarce site labor to factory labor: skids, electrical rooms, and header assemblies built offsite and craned in, cutting onsite hours 10%+ per facility",
+        "Prefab also compresses schedule risk: factory work runs in parallel with sitework and isn't weather- or inspection-serialized",
+        "Self-perform capability (the GC directly employing trade crews, especially mechanical/electrical) is the other answer — owning the scarce labor instead of renting it from subs; acquiring specialty M&E firms buys that capability outright"
+      ]
+    },
+    {
+      "heading": "The subsidiary lens: reading a builder through its parent",
+      "bullets": [
+        "Many top US builders are subsidiaries of global groups; their real financials appear only in the parent's reports, often in euros and on different accounting bases than trade-press revenue lists",
+        "The parent's disclosures reveal what the press releases don't: profit margin, order intake by sector, and guidance — the difference between 'we won big projects' and 'those projects make money'",
+        "A subsidiary generating two-thirds of the parent's sales effectively sets the parent's stock story — its data-center order book becomes the group's investment thesis",
+        "Cross-border ownership chains (US builder → German parent → Spanish controller) matter for governance questions and for who ultimately funds bonding capacity and acquisitions"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "In CM-at-risk delivery, what does the construction manager actually commit to?",
+      "a": "A guaranteed maximum price (GMP): the CM holds the subcontracts and absorbs cost overruns above the GMP, earning a fee of a few percent on the total volume. The owner gets price certainty; the CM's profit depends on risk discipline, not markup."
+    },
+    {
+      "q": "Why is a 2-4% pre-tax margin considered a healthy year for a general contractor?",
+      "a": "Because most of a GC's revenue is pass-through — subcontractor and equipment costs billed onward at near-zero markup. The GC's actual product is management and risk absorption, priced as a thin fee on enormous volume. Profit grows by scaling fee volume, not by widening margin."
+    },
+    {
+      "q": "What is the difference between a contractor's revenue and its backlog?",
+      "a": "Revenue is work actually put in place (billed construction) during the period; backlog is signed contracts not yet built — the forward order book. Backlog growing faster than revenue (book-to-bill above 1) means the company is winning work faster than it can build it."
+    },
+    {
+      "q": "What is 'long-lead equipment' and why does it set an AI campus's schedule?",
+      "a": "Gear with multi-year factory order books — transformers, switchgear, generators, chillers. Concrete and steel can be bought anytime, but if the transformer slot wasn't reserved years ahead, the building sits finished and unpowered. Procurement timing, not construction speed, is the critical path."
+    },
+    {
+      "q": "What does 'open-book' procurement mean?",
+      "a": "The client sees the actual prices the contractor pays for equipment and materials, and the contractor charges a disclosed fee on top. It trades margin opacity for trust — the model hyperscalers demand for multi-billion-dollar repeat programs."
+    },
+    {
+      "q": "How much annual downtime does 'six nines' (99.9999%) availability allow?",
+      "a": "About 31 seconds per year. Each added nine cuts allowed downtime tenfold — five nines is ~5.3 minutes, four nines ~53 minutes. AI data-center owners specify reliability in nines and buy redundancy to match."
+    },
+    {
+      "q": "What is concurrent maintainability (the Tier III concept)?",
+      "a": "The facility can have any single component — a UPS, a chiller, a switchboard — taken offline for service without interrupting the IT load, because every path has a redundant alternate. It's the design property most colocation leases contractually require."
+    },
+    {
+      "q": "What is the 'craft ceiling' in data-center construction?",
+      "a": "The hard limit that skilled trade labor — especially licensed electricians — puts on how fast the industry can build. Capital and land are abundant; certified craft workers in the right metro are not. It's the binding constraint on the AI buildout."
+    },
+    {
+      "q": "How does prefabrication attack both the labor problem and schedule risk?",
+      "a": "It moves work from scarce site labor to factory labor (skids, electrical rooms, header assemblies built offsite and craned in), and the factory work runs in parallel with sitework — unserialized by weather or inspections — compressing the schedule."
+    },
+    {
+      "q": "What does it mean for a GC to 'self-perform' work, and why acquire specialty M&E firms?",
+      "a": "Self-perform means the GC's own employees do the trade work instead of subcontracting it. Acquiring mechanical/electrical specialty firms buys permanent control of the scarcest labor — owning the electricians rather than renting them from subs."
+    },
+    {
+      "q": "Why do hyperscalers split one campus among two or three general contractors?",
+      "a": "Capacity: a single multi-gigawatt campus can outstrip any one GC's labor pool, procurement pipeline, and bonding capacity. Splitting awards also keeps schedule leverage — builders are benchmarked against each other on the same site."
+    },
+    {
+      "q": "A top-10 US builder is a subsidiary of a foreign parent. Where do you find its real financials?",
+      "a": "In the parent's investor reports — often in euros, on different accounting bases than trade-press revenue rankings. The parent discloses what press releases won't: profit margin, order intake by sector, and guidance — whether the headline projects actually make money."
+    }
+  ]
+}

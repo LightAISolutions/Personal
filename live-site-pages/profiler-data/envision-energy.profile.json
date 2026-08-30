@@ -1,0 +1,490 @@
+{
+ "schemaVersion": 6,
+ "slug": "envision-energy",
+ "name": "Envision Energy (Envision Group / AESC)",
+ "shortName": "Envision",
+ "categories": [
+  "supplier",
+  "integrator"
+ ],
+ "website": "https://www.envision-group.com",
+ "headquarters": "Shanghai, China (founded in Jiangyin, Jiangsu; US offices: Burlington MA, California; AESC US plants in TN/KY/SC)",
+ "founded": 2007,
+ "employees": "Not published (company claims '50%+ international talents')",
+ "ownership": "private (Envision Group; no cap table published. Battery arm AESC's reported investors include Nissan, GIC, Keppel, HongShan, and Primavera; AESC explored a $1-2B Hong Kong IPO per Bloomberg, Apr 2026)",
+ "summary": "BOTTOM LINE UP FRONT: Envision is the capability-tier-1, volume-tier-2 giant of the field — Wood Mackenzie's 2026 global BESS integrator ranking puts it tied 5th with Trina (behind Sungrow, Tesla, CATL, BYD) on comprehensiveness, while InfoLink's 2025 volume top tier omits it entirely. It is the world's #2 wind OEM (BNEF 2025, 20.9 GW), owns its cells through AESC (790 Ah LFP in mass production from Apr 2026; >50 GWh BESS delivered across 400+ projects, company-claimed), and runs the strongest AI-data-center storyline of any Chinese storage player: Mission Gobi (5 GW of green AIDC by 2030), the GW-scale Galaxy Campus in Ulanqab, and the all-renewable Chifeng AIDC. But its US position is upstream, not systems: named in NDAA §154 (DoD battery ban from Oct 2027) alongside Hithium, it restructured by selling control of AESC's Smyrna TN cell plant to US-controlled Fixx Energy (Apr 2026) — whose cells now supply ~50% of Fluence's US project cells and a 10 GWh Prevalon deal. Envision arms the FEOC-compliant competition rather than competing in the US itself.",
+ "ecosystemRole": "We assess Envision as the closest strategic comparable to Hithium in the entire Batch A set — the other NDAA §154-named Chinese storage major — and as the author of the playbook Hithium would have to study for US access: the Fixx restructuring (sell control of the US plant to a US entity, retain a minority stake plus technology licensing, let the cells flow to US integrators as domestic content) is the only executed template for converting a statutorily-named Chinese battery maker's US assets into FEOC-tolerable supply. Whether that structure survives Treasury's final FEOC regulations is the single biggest open question in the US market's China policy stack. Outside the US, Envision is a direct heavyweight competitor in every geography Hithium targets — Europe (1.6 GWh Germany single project), South Africa, Central Asia, India — usually bundling wind, storage, localization, and vendor financing.",
+ "productsAndServices": [
+  {
+   "name": "Gen 8 Scalable Platform (flagship LDES BESS)",
+   "description": "Full rollout announced at Tech Day Beijing, Oct 27, 2025: 10-foot modular skid units on the 750+ Ah AESC cell; configurations 6/8/10/12 MWh (and larger) per unit; each unit <29 tons (road-transport friendly); supports >4-hour durations; installation/commissioning time cut up to 30%; 26% smaller footprint for typical 4-h systems; 12% lower auxiliary consumption; ~1% IRR uplift claimed for a 100 MW/4-h project vs a 5 MWh baseline. Sold with the GEN 8 AC TwinSkid MV System (10 MVA AC skid = four parallel 2.5 MW PCS) and EnOS-based SCADA/EMS/Hybrid Power Plant Controller. First deliveries: Germany with ju:niz Energy, 140.6 MWh grid-forming (Jul 2026).",
+   "positioning": "Modular-skid alternative to the 20-ft container orthodoxy — the 'and larger than 12 MWh' roadmap plus a separately trade-press-reported 12.5 MWh AI-native container (ESIE, Apr 2026: SiC PCS at 99.3% efficiency, grid-forming, minute-level black start) put Envision at the density frontier.",
+   "soldThrough": "Integrated BESS supply, full turnkey EPC (Kallista Saleux: EPC + ≥14-yr LTSA), supply agreements with LTSAs (Field: 15-yr), localization JVs (Kazakhstan Samruk-Kazyna; SUN Terra Indonesia incl. technology licensing), and a $500M BBVA vendor-financing wrap.",
+   "targetSegments": "Utility-scale standalone and renewables-paired storage; wind+storage hybrids via the proprietary HPPC; AI/data-center power ('Powering AI Infrastructure' is one of the storage page's three core scenarios).",
+   "roadmap": "Gen 8 configurations beyond 12 MWh; Mission Gobi AIDC build-out; sodium-ion option entering the mix (AESC >180 Ah Na-ion cell in production Mar 2026, pitched at AIDC backup)."
+  },
+  {
+   "name": "Gen 7 / EN 5 Pro + EN ACSkid-10000 (grid-forming stack)",
+   "description": "Gen 7: 5 MWh DC container + 5 MWh string PCS + TwinSkid MV (5500/6900 kVA) — deployed at e.g. Pulse Clean Energy UK (310 MWh, 2.4-h optimized). EN 5 Pro (Smarter E 2025): 2.5 MW/5 MWh all-in-one string-PCS container — DC+AC in one, pre-lithiated cells with zero degradation for the first 3 years, >99% PCS efficiency claim via SiC, grid-forming at SCR ≥1.0, seamless on/off-grid transitions, black start. EN ACSkid-10000 (Smarter E 2025): 5.05 MW grid-forming PCS, 4-20 s synthetic inertia, withstands 1.5× rated short-circuit current for 10 s.",
+   "positioning": "'Market Leader, Advancing Grid Forming Solution For Next-Gen Power System' — grid-forming is the through-line of the whole portfolio, from PCS to the AI Power System framing.",
+   "soldThrough": "Same channels as Gen 8; vertically integrated 'from R&D through MV connection' including delivery, installation, and long-term O&M.",
+   "targetSegments": "Frequency regulation, capacity markets, black start, weak-grid interconnections.",
+   "roadmap": "Gen 7 running alongside Gen 8 during transition; SST (solid-state transformer) + 800 V DC AIDC variants shown at The smarter E 2026."
+  },
+  {
+   "name": "AESC cells (the vertical-integration layer — and the US story)",
+   "description": "Envision's battery arm (acquired 2019; founded in Japan 2007 as Nissan's cell JV): 300+/500+/700+ Ah ESS cell ladder; 790 Ah LFP mass production from Apr 2026 at Cangzhou (claimed world's largest prismatic wound storage cell: >440 Wh/L, 15,000+ cycles, 30-yr calendar life, 96% RTE); >180 Ah sodium-ion in production Mar 2026 (−40 to 70 °C, 20,000 cycles). InfoLink: 4th in 2024 non-China-market storage cell shipments; >30 GWh of 300+ Ah cells delivered; supplies third-party integrators Fluence, Powin (now Flexgen assets), Nidec. 13 manufacturing sites across Japan, US, UK, France, Spain, China.",
+   "positioning": "The US access vehicle: Smyrna TN (ex-Nissan LEAF plant, retooled 2025 to ~3 GWh/yr LFP storage cells) was sold to US-controlled Fixx Energy (control from Apr 1, 2026; AESC retains minority + licensing) — its cells supply ~50% of Fluence's US project LFP and a 3-year 10 GWh Prevalon deal. Bowling Green KY ($2.0B, 30 GWh, Mercedes-linked) continues; Florence SC ($1.6B, 30 GWh, BMW-linked) had construction halted Jun 2025 with the base plant still targeting 2026 production.",
+   "soldThrough": "Merchant cell supply to US/global integrators; internal supply to Envision systems (all named EU/UK projects specify AESC LFP — Douai France 10 GWh plant supplies European projects).",
+   "targetSegments": "US domestic-content BESS (via Fixx), EV OEMs (Nissan, Mercedes, BMW), Envision's own systems.",
+   "roadmap": "Reported $1-2B AESC Hong Kong IPO (Bloomberg, Apr 2026); open legal question whether Envision's continuing license/IP role taints the FEOC status of Smyrna cells under Treasury's final regs (due late 2026)."
+  },
+  {
+   "name": "AI Power System / AIDC initiatives (Mission Gobi, Galaxy Campus, Chifeng)",
+   "description": "Mission Gobi (launched VivaTech, Jun 18, 2026): 5 GW of green AI-data-center capacity in desert/arid regions by 2030 — claims 1% of global desert could host terawatt-scale computing. Galaxy Campus, Ulanqab: billed as the world's only GW-scale AIDC powered by directly connected renewables (first building commissioned ~Aug 6, 2026; designed to scale beyond 2 GW, up to 1M AI accelerators). Chifeng Net Zero Industrial Park: 'world's first AIDC powered entirely by renewable electricity' — 2 GW renewable system, grid-forming storage, 1.5M t/yr green ammonia, Tencent computing-task scheduling. Product layer: 'AI Power System' — SST + 800 V DC battery (LFP or Na-ion), EnOS energy-IoT OS, Dubhe energy foundation model, AI trading loop (claimed +4-8% project IRR).",
+   "positioning": "The strongest AIDC narrative of any Chinese storage vendor — but demonstrated in China's deserts, not the US; no US data-center storage deal exists.",
+   "soldThrough": "Own-development showcases (Chifeng, Ulanqab) plus replication partnerships under the Mission Gobi banner.",
+   "targetSegments": "AI/cloud operators seeking off-grid or direct-renewable campuses; governments courting AIDC investment.",
+   "roadmap": "5 GW by 2030 target; positioning as blueprint exporter ('AI power systems' as the product)."
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Gen 8 Scalable Platform (10-ft modular skid, 750+ Ah)",
+   "specs": [
+    {
+     "band": "Ratings",
+     "label": "Per unit",
+     "value": "6 / 8 / 10 / 12 MWh (and larger) per 10-ft modular unit; <29 t/unit; >4-h durations"
+    },
+    {
+     "band": "Ratings",
+     "label": "AC block",
+     "value": "GEN 8 AC TwinSkid MV System — 10 MVA AC skid (four parallel 2.5 MW PCS)"
+    },
+    {
+     "band": "Battery",
+     "label": "Cells",
+     "value": "750+ Ah AESC LFP class (Gen 8); storage page lists 300+/500+/700+ Ah ESS cells"
+    },
+    {
+     "band": "Performance",
+     "label": "vs 5 MWh baseline",
+     "value": "26% footprint reduction (4-h); 12% lower auxiliary consumption; ~1% IRR uplift for a 100 MW/4-h project; install/commissioning −30% (all company-claimed)"
+    },
+    {
+     "band": "Controls",
+     "label": "Software",
+     "value": "EnOS-based SCADA/EMS/Hybrid Power Plant Controller; cloud fleet management"
+    }
+   ],
+   "notes": "First deliveries: ju:niz Energy Germany, 140.6 MWh grid-forming, Jul 2026. Trade press additionally reports a 12.5 MWh AI-native container (ESIE Apr 2026: AI-adaptive SiC PCS 99.3% efficiency, >92% system efficiency, 55 °C full-load, grid-forming, minute-level black start) on the 790 Ah cell — not yet in the company's own EN archive."
+  },
+  {
+   "product": "EN 5 Pro (5 MWh all-in-one string-PCS container)",
+   "specs": [
+    {
+     "band": "Ratings",
+     "label": "Per container",
+     "value": "2.5 MW / 5 MWh; DC + AC in one container"
+    },
+    {
+     "band": "Battery",
+     "label": "Cells",
+     "value": "Pre-lithiated cells with zero degradation for first 3 years (company-claimed)"
+    },
+    {
+     "band": "Performance",
+     "label": "Efficiency",
+     "value": ">99% PCS efficiency claim; ~1% RTE gain via SiC; dual liquid cooling"
+    },
+    {
+     "band": "Grid capability",
+     "label": "Grid-forming",
+     "value": "Grid-forming at SCR ≥ 1.0; seamless on-grid/off-grid/grid-following/grid-forming transitions; black start; FFR support"
+    },
+    {
+     "band": "Environment",
+     "label": "Envelope",
+     "value": "−40 to +55 °C; IP55, C5; triple-fuse cell protection"
+    }
+   ],
+   "notes": "EN ACSkid-10000 companion PCS: 5.05 MW per PCS ('industry-leading power density'); 4-20 s synthetic inertia; withstands 1.5× rated short-circuit current for 10 s; 56 dB(A); IP65, C5; liquid-cooled."
+  },
+  {
+   "product": "Fire-safety validation (CSA C800 large-scale burn)",
+   "specs": [
+    {
+     "band": "Test",
+     "label": "Configuration",
+     "value": "Four fully charged 5 MWh containers at 5 cm spacing (vs typical 3-5 m), CSA Group-supervised to CSA C800 (Jul 2025)"
+    },
+    {
+     "band": "Test",
+     "label": "Result",
+     "value": "Burn container reached 1,297 °C for 49 h 32 m with zero propagation — adjacent internal cell temperatures held 35-44 °C; ~3-h ignition delay; zero-emission gas capture"
+    },
+    {
+     "band": "Certification",
+     "label": "US stack",
+     "value": "UL 9540/9540A, UL 1973, and NFPA 855 are NOT named anywhere in accessible first-party web copy (datasheets not openly published) — a verification gap for US AHJ acceptance"
+    }
+   ],
+   "notes": "UK projects 'fully G99-compliant.' The 49-hour test at 5 cm spacing is the most aggressive publicly documented propagation test in the Batch A field."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-08-06",
+   "category": "aidc",
+   "headline": "Galaxy Campus (Ulanqab) first building commissioned — billed as world's largest AIDC building running on on-site renewables; campus designed to scale beyond 2 GW",
+   "read": "The AIDC story is becoming steel and silicon, not just strategy slides — but it is being proven in Inner Mongolia, on Envision's own wind/storage, with Chinese hyperscalers.",
+   "source": "TechTimes (headline; article 403) / company PR"
+  },
+  {
+   "date": "2026-07-28",
+   "category": "project",
+   "headline": "Kallista Energy France: 193 MW/386 MWh Neuilly-en-Thelle launched (construction started Jul 2026, COD spring 2028), AESC LFP cells from the 10 GWh Douai plant",
+   "read": "The Europe playbook in one deal: local cells (France-made), turnkey scope, RTE frequency-regulation revenue — a domestic-content story Chinese rivals without EU plants can't match.",
+   "source": "SolarQuarter / EnergyTrend"
+  },
+  {
+   "date": "2026-07-14",
+   "category": "market",
+   "headline": "Wood Mackenzie 2026 global BESS integrator ranking: Envision tied 5th with Trina (behind Sungrow, Tesla, CATL, BYD); 2024→2026 trajectory 4th → tied 5th",
+   "read": "Capability-ranked top-5, volume-ranked outside InfoLink's 2025 top tier — Envision wins on comprehensiveness scoring while CATL/BYD surge past on raw GWh.",
+   "source": "Wood Mackenzie press release"
+  },
+  {
+   "date": "2026-07-08",
+   "category": "project",
+   "headline": "First Gen 8 deliveries: ju:niz Energy, Germany — 140.6 MWh across two 4-hour grid-forming projects",
+   "read": "Gen 8 moves from launch to delivered product nine months after rollout — fast productization for a new 750+ Ah platform.",
+   "source": "Company PR"
+  },
+  {
+   "date": "2026-06-29",
+   "category": "project",
+   "headline": "Elements Green Stadtdorf, Germany: 400 MW/1,600 MWh Gen 8 supply agreement — among Germany's largest BESS in development",
+   "read": "The largest single European win in the Batch A field this cycle; Germany's merchant storage boom is where Chinese-integrator competition is fiercest.",
+   "source": "EnergyTrend"
+  },
+  {
+   "date": "2026-06-18",
+   "category": "aidc",
+   "headline": "Mission Gobi launched at VivaTech: 5 GW of green AIDC capacity in desert regions by 2030; Chifeng operating, Ulanqab under construction",
+   "read": "Envision is productizing the 'energy-first AIDC' thesis itself — competing not for BESS purchase orders but for the whole campus energy architecture.",
+   "source": "PR Newswire"
+  },
+  {
+   "date": "2026-06-16",
+   "category": "partnership",
+   "headline": "AESC signs 3-year, 10 GWh US domestic-content cell+module deal with integrator Prevalon, structured through the Fixx arrangement",
+   "read": "The Fixx structure's second big proof point after Fluence — Envision-developed cells reaching the US market through a US-controlled entity as domestic content.",
+   "source": "Energy-Storage.News"
+  },
+  {
+   "date": "2026-04-17",
+   "category": "financial",
+   "headline": "Bloomberg: AESC explores $1-2B Hong Kong IPO (banks: China Merchants, Deutsche, Huatai; investors incl. Nissan, GIC, Keppel, HongShan, Primavera)",
+   "read": "Monetizing the battery arm while its US-asset restructuring is fresh — an IPO would also force financial disclosure the private group has never made.",
+   "source": "Bloomberg / Caproasia"
+  },
+  {
+   "date": "2026-04-13",
+   "category": "financial",
+   "headline": "$500M vendor-financing agreement with BBVA CIB (a week after the AI Power System launch); follows a $600M sustainability-linked syndicated loan (Mar 2026) — $1.1B raised in 2026",
+   "read": "Vendor financing is a competitive weapon in merchant-storage markets — Envision can bring the money as well as the machine.",
+   "source": "ess-news"
+  },
+  {
+   "date": "2026-04-09",
+   "category": "product",
+   "headline": "12.5 MWh AI-native BESS launched at ESIE; 790 Ah LFP mass production starts at Cangzhou; >180 Ah sodium-ion cell in production",
+   "read": "Density frontier (12.5 MWh) plus chemistry breadth (Na-ion for AIDC backup) — the product engine is running ahead of the first-party English archive, which hasn't even posted the release.",
+   "source": "ess-news"
+  },
+  {
+   "date": "2026-04-01",
+   "category": "corporate",
+   "headline": "Fixx Energy (US entity founded by VC Brett Conrad) takes control of AESC's Smyrna TN cell plant; AESC/Envision retains minority stake + technology licensing",
+   "read": "The FEOC restructuring template: trade-press framing was that Chinese ownership had become a financeability problem — 'political recapitalization, not exit' (Cooley's Mona Dajani). Whether the license/IP tail survives final FEOC regs is the open question.",
+   "source": "Solar Power World / Energy-Storage.News / Nikkei"
+  },
+  {
+   "date": "2025-11-19",
+   "category": "project",
+   "headline": "Statera Carrington (UK): 680 MW/1,360 MWh reaches financial close; energization expected late 2026; grid-forming with AI trading loop",
+   "read": "UK-largest-class project anchoring the European reference fleet — and the showcase for the 'hardware assets to AI assets' pitch.",
+   "source": "Company PR"
+  },
+  {
+   "date": "2025-10-27",
+   "category": "product",
+   "headline": "Gen 8 Scalable Platform full rollout at Tech Day Beijing (750+ Ah, 6-12+ MWh 10-ft modular units, <29 t)",
+   "read": "A deliberate break from the 20-ft container form factor — modular skids trade peak density for road-transport and installation speed.",
+   "source": "Company PR"
+  },
+  {
+   "date": "2025-09-05",
+   "category": "partnership",
+   "headline": "Fluence's first US domestic-content BESS shipments — ~50% of its US project LFP cells from AESC's Smyrna plant",
+   "read": "Envision content already inside the #1-bankability US integrator's domestic-content story — the upstream US strategy working before the Fixx sale even closed.",
+   "source": "ess-news"
+  },
+  {
+   "date": "2025-06-05",
+   "category": "corporate",
+   "headline": "AESC halts Florence SC construction citing policy/market uncertainty; $1.5B second-phase expansion withdrawn, South Carolina pulls $111M in bonds; Bowling Green KY continues after halt reports",
+   "read": "The EV-side US manufacturing bet wobbling under tariff/credit-repeal uncertainty — the storage-cell path (Smyrna/Fixx) is the US thread that still runs clean.",
+   "source": "electrive / Manufacturing Dive / Bowling Green Daily News"
+  },
+  {
+   "date": "2025-07-03",
+   "category": "product",
+   "headline": "Record 49-hour CSA C800 large-scale fire test: four charged 5 MWh containers at 5 cm spacing, zero propagation",
+   "read": "The most aggressive public propagation test in the field — engineered for dense urban/AIDC siting arguments where NFPA 855 spacing is the binding constraint.",
+   "source": "Company PR"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess Envision as capability-tier-1 but volume-tier-2: Wood Mackenzie scores it tied 5th globally on its 10-criteria methodology while InfoLink's 2025 shipment top tier (Tesla, Sungrow, BYD, Huawei, CRRC) omits it — meaning Envision wins on vertical integration, grid-forming depth, and bankability attributes, not on raw GWh, and its rank slipped 4th → tied 5th as CATL/BYD surged.",
+  "(High confidence) We assess Envision's US strategy as 'arm the compliant competition': named in NDAA §154 (DoD ban from Oct 2027) and FEOC-walled from direct ITC-linked sales, it converted its US cell asset into influence — the Fixx-controlled Smyrna plant supplies ~50% of Fluence's US LFP and 10 GWh to Prevalon as domestic content, while Envision keeps a minority stake and licensing income. No Envision-branded system sells into the US.",
+  "(Moderate confidence) We assess the Fixx structure's survival under Treasury's final FEOC regulations (due late 2026) as the single biggest open question in this file: if continuing licensing/IP ties are ruled to taint effective-control status, the Smyrna cells lose their domestic-content halo and both Fluence's and Prevalon's supply narratives take damage — a systemic event for the US mid-tier, not just for Envision.",
+  "(High confidence) We assess the AIDC storyline as the strongest of any Chinese storage vendor — Mission Gobi, the GW-scale Galaxy Campus, all-renewable Chifeng, SST + 800 V DC products, and the EnOS/Dubhe software stack — but note it is entirely China-proven: zero US data-center storage deals, and its US AIDC exposure is indirect (cells into Fluence's pipeline).",
+  "(High confidence) For the Hithium lens: Envision is the closest strategic comparable — the other NDAA §154-named storage major — and its playbook defines Hithium's realistic US option space: (a) upstream domestic-content supply through a US-controlled manufacturing entity (the Fixx template), (b) capability-led differentiation (grid-forming, fire-test proof points, vendor financing) in Europe/MEA/Asia where both can still bid, and (c) an energy-first AIDC pitch. Everywhere outside the US, expect to meet Envision in the final round — usually bundling wind, localization, and financing that a pure-play battery maker cannot match."
+ ],
+ "relationships": [
+  {
+   "slug": "fluence",
+   "type": "customer",
+   "note": "AESC cells (via the US-controlled Fixx Energy structure at Smyrna, TN) supply ~50% of Fluence's US project LFP as domestic content.",
+   "context": "Named in NDAA §154 and FEOC-walled from direct ITC-linked sales, Envision sold control of AESC's Smyrna plant to Fixx Energy (control from 1 April 2026, AESC retaining a minority stake plus licensing) — the only executed template for converting a statutorily-named Chinese battery maker's US assets into FEOC-tolerable supply. The dossier's biggest open question: whether the structure survives Treasury's final FEOC regulations due late 2026 — if licensing ties taint effective control, both Fluence's and Prevalon's domestic-content narratives take damage.",
+   "status": "active",
+   "since": "2026-04"
+  },
+  {
+   "slug": "prevalon",
+   "type": "customer",
+   "note": "3-year, 10 GWh US domestic-content cell+module deal (June 2026) through the same Fixx-controlled Smyrna structure — the second proof point after Fluence.",
+   "source": "Energy-Storage.News",
+   "status": "active",
+   "since": "2026-06",
+   "scale": "10 GWh / 3 years"
+  },
+  {
+   "slug": "hithium",
+   "type": "competitor",
+   "note": "The closest strategic comparable — the other NDAA §154-named Chinese storage major — and a direct rival in Europe, South Africa, Central Asia and India.",
+   "context": "The dossier frames Envision's Fixx restructuring as the playbook Hithium would have to study for US access: upstream domestic-content supply through a US-controlled manufacturing entity, capability-led differentiation where both can still bid, and an energy-first AIDC pitch."
+  },
+  {
+   "slug": "sungrow",
+   "type": "competitor",
+   "note": "Ranked above Envision in Wood Mackenzie's 2026 comprehensive BESS integrator ranking (Envision tied 5th with Trina, behind Sungrow, Tesla, CATL, BYD).",
+   "source": "Wood Mackenzie press release"
+  },
+  {
+   "slug": "tesla",
+   "type": "competitor",
+   "note": "Volume-league contrast: Tesla sits in both WoodMac's top tier and InfoLink's 2025 shipment top tier, which omits Envision entirely — capability-tier-1, volume-tier-2."
+  },
+  {
+   "slug": "catl",
+   "type": "competitor",
+   "note": "Surged past Envision in the 2024→2026 WoodMac trajectory (4th → tied 5th) on raw GWh."
+  },
+  {
+   "slug": "byd",
+   "type": "competitor",
+   "note": "The other volume surger that pushed Envision down the comprehensive ranking; both bundle vertical integration, but BYD's is EV-funded."
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Lei Zhang",
+   "title": "Founder & CEO, Envision Group",
+   "background": "Founded Envision 2007; public face of Mission Gobi; first private-sector recipient of the Energy Institute President's Award (2026); TED speaker on desert energy."
+  },
+  {
+   "name": "Kevin Huang",
+   "title": "SVP & President, Energy Storage Product Line",
+   "background": "The storage-BU head (ACSkid-10000 launch); owns the Gen 7/Gen 8 platform line."
+  },
+  {
+   "name": "Kane Xu",
+   "title": "SVP & President, International Product Lines",
+   "background": "Fronts international storage deals (South Africa, Kazakhstan, Australia FERA); COP29 representative; Energy Storage Summit 2026 speaker."
+  },
+  {
+   "name": "Henry Peng",
+   "title": "SVP; President, Europe & Latin America",
+   "background": "Signed the $500M BBVA vendor-financing program; leads the European storage franchise (Germany, France, UK wins)."
+  },
+  {
+   "name": "Edward Hou",
+   "title": "SVP & President, Asia-Pacific",
+   "background": "Quoted on the AESC-Prevalon 10 GWh US deal and the Kazakhstan localization JDA."
+  },
+  {
+   "name": "David Wan",
+   "title": "Group CEO, AESC (from Sep 2025)",
+   "background": "Succeeded Shoichi Matsumoto; presides over the Fixx restructuring, the Douai ramp, and the reported HK IPO. US leadership: Knudt Flor (CEO US & Europe), Jeff Deaton (US MD)."
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "private — no audited public financials; order-book and financing events only",
+  "periods": [
+   {
+    "period": "2026 financing + order book",
+    "metrics": [
+     {
+      "name": "Capital raised",
+      "actual": "$600M sustainability-linked syndicated loan (HK, Mar 2026; upsized from $500M, 13 banks) + $500M BBVA CIB vendor-financing program (Apr 2026) = $1.1B for international expansion",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "Vendor financing doubles as a sales weapon in merchant-storage markets"
+     },
+     {
+      "name": "Storage order book",
+      "actual": ">50 GWh cumulative delivered orders, >90 GWh orders in hand, 400+ projects in operation, 100 GWh+ BESS cell shipments (all company-claimed site copy, 2026)",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "Scale claims are consistent across S&P Tier 1 releases and the site but are unverifiable without public accounts"
+     },
+     {
+      "name": "AESC monetization",
+      "actual": "Reported $1-2B Hong Kong IPO exploration (Bloomberg, Apr 2026); Smyrna TN control sold to Fixx Energy (Apr 2026, terms undisclosed)",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "An AESC listing would force the group's first meaningful financial disclosure"
+     }
+    ]
+   }
+  ],
+  "commentary": "No revenue/profit figures are published for the group. Aggregator financials (Tracxn '$461.7M revenue', martini.ai synthetic default probability 0.667) are unreliable and should not be cited. Wind context: BNEF 2025 #2 wind OEM at 20.9 GW installed (~25% ex-China — strongest international footprint among Chinese OEMs); company-cited Wood Mackenzie 30.6 GW turbine orders in 2024, No. 1 in order volume four consecutive years."
+ },
+ "sources": [
+  {
+   "label": "TechTimes — Galaxy Campus first building commissioned (headline; page 403)",
+   "url": "https://www.techtimes.com/articles/323410/20260806/envision-commissions-worlds-largest-ai-data-center-building-using-site-renewables.htm",
+   "date": "2026-08-06"
+  },
+  {
+   "label": "SolarQuarter — Kallista 193 MW/386 MWh France launch",
+   "url": "https://solarquarter.com/2026/08/03/envision-energy-kallista-energy-launch-193-mw-386-mwh-battery-storage-project-in-france/",
+   "date": "2026-08-03"
+  },
+  {
+   "label": "pv magazine — Envision at The smarter E 2026 (AI Power System, SST, 800V DC, Gen 8 LDES)",
+   "url": "https://www.pv-magazine.com/2026/07/20/envision-energy-showcases-next-generation-energy-storage-solutions-at-the-smarter-e-2026/",
+   "date": "2026-07-20"
+  },
+  {
+   "label": "Wood Mackenzie — global BESS integrator 2026 ranking (Envision tied 5th)",
+   "url": "https://www.woodmac.com/press-releases/global-bess-integrator-2026-ranking/",
+   "date": "2026-07-14"
+  },
+  {
+   "label": "Company PR — first Gen 8 deliveries, ju:niz Energy Germany 140.6 MWh",
+   "url": "https://www.envision-group.com/news-detail?id=6a6c73dba7d9a3002dfe204d&lang=en",
+   "date": "2026-07-08"
+  },
+  {
+   "label": "SolarQuarter — Naos-1 660 MWh BESS, South Africa's largest private hybrid",
+   "url": "https://solarquarter.com/2026/07/06/envision-energy-to-supply-660-mwh-bess-for-south-africas-largest-private-hybrid-renewable-project/",
+   "date": "2026-07-06"
+  },
+  {
+   "label": "EnergyTrend — Envision-Elements Green Stadtdorf 400 MW/1,600 MWh Germany",
+   "url": "https://www.energytrend.com/news/20260701-51688.html",
+   "date": "2026-07-01"
+  },
+  {
+   "label": "PR Newswire — Mission Gobi launch at VivaTech (5 GW AIDC by 2030)",
+   "url": "https://www.prnewswire.com/news-releases/as-ai-strains-the-grid-envision-launches-mission-gobi-at-vivatech-2026-302804250.html",
+   "date": "2026-06-18"
+  },
+  {
+   "label": "Energy-Storage.News — AESC-Prevalon 10 GWh US domestic-content deal via Fixx structure",
+   "url": "https://www.energy-storage.news/aesc-signs-10gwh-us-domestic-content-bess-cell-and-module-deal-with-system-integrator-prevalon/",
+   "date": "2026-06-16"
+  },
+  {
+   "label": "Energy-Storage.News — AESC/Jinko asset sales as US restructuring (Cooley analysis)",
+   "url": "https://www.energy-storage.news/aesc-jinkos-asset-sales-are-start-of-wider-us-clean-energy-manufacturing-industry-restructuring/",
+   "date": "2026-05-11"
+  },
+  {
+   "label": "Solar Power World — AESC sells Smyrna TN plant to Fixx Energy",
+   "url": "https://www.solarpowerworldonline.com/2026/05/aesc-sells-tennessee-lithium-battery-cell-manufacturing-plant-to-fixx-energy/",
+   "date": "2026-05"
+  },
+  {
+   "label": "Bloomberg — Envision AESC mulls up to $2B HK IPO",
+   "url": "https://www.bloomberg.com/news/articles/2026-04-17/gic-backed-envision-aesc-is-said-to-mull-up-to-2-billion-hk-ipo",
+   "date": "2026-04-17"
+  },
+  {
+   "label": "ess-news — $500M BBVA vendor financing following AI system launch",
+   "url": "https://www.ess-news.com/2026/04/13/envision-inks-500-million-finance-deal-following-ai-announcement/",
+   "date": "2026-04-13"
+  },
+  {
+   "label": "ess-news — 12.5 MWh AI BESS launch; 790 Ah LFP mass production; Na-ion cell",
+   "url": "https://www.ess-news.com/2026/04/09/envision-launches-12-5-mwh-ai-storage-system-starts-production-of-790-ah-lfp-cell/",
+   "date": "2026-04-09"
+  },
+  {
+   "label": "InfoLink — 2025 global ESS shipment rankings (421.16 GWh; Envision absent from top tier)",
+   "url": "https://www.infolink-group.com/energy-article/energy-storage-topic-2025-global-bess-integrator-shipments-ranking",
+   "date": "2026-02-13"
+  },
+  {
+   "label": "Company PR — Statera Carrington 680 MW/1,360 MWh financial close",
+   "url": "https://www.envision-group.com/news-detail?id=693a3f7c2a7e0c002fcd905f&lang=en",
+   "date": "2025-11-19"
+  },
+  {
+   "label": "Company PR — Gen 8 Scalable Platform full rollout (Tech Day Beijing)",
+   "url": "https://www.envision-group.com/news-detail?id=69048662f15e8b021c3ce2db&lang=en",
+   "date": "2025-10-27"
+  },
+  {
+   "label": "ess-news — Fluence first US domestic-content shipments (~50% of US cells from AESC Smyrna)",
+   "url": "https://www.ess-news.com/2025/09/05/fluence-announces-first-shipment-of-us-domestic-content-battery-storage-systems/",
+   "date": "2025-09-05"
+  },
+  {
+   "label": "Company PR — 49-hour CSA C800 fire test",
+   "url": "https://www.envision-group.com/news-detail?id=6881ec15d87b2000296da5d5&lang=en",
+   "date": "2025-07-03"
+  },
+  {
+   "label": "electrive — AESC halts Florence SC battery factory construction",
+   "url": "https://www.electrive.com/2025/06/06/aesc-halts-battery-factory-construction-in-south-carolina/",
+   "date": "2025-06-06"
+  },
+  {
+   "label": "TrendForce — NDAA FY24 §154 DoD battery ban naming six Chinese makers incl. Envision",
+   "url": "https://www.trendforce.com/news/2024/01/22/news-six-companies-including-byd-and-catl-are-included-in-the-u-s-procurement-ban-list/",
+   "date": "2024-01-22"
+  },
+  {
+   "label": "Foley Hoag — the prohibited-foreign-entity (FEOC) rules and battery storage",
+   "url": "https://foleyhoag.com/news-and-insights/blogs/energy-and-climate-counsel/2026/july/the-prohibited-foreign-entity-(or-feoc)-rules-and-battery-storage/",
+   "date": "2026-07-16"
+  },
+  {
+   "label": "Envision Group — energy storage system page",
+   "url": "https://www.envision-group.com/en/energy-storage-system"
+  },
+  {
+   "label": "AESC Group — newsroom / about (cells, US plants, integrator customers)",
+   "url": "https://www.aesc-group.com/"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 2
+}

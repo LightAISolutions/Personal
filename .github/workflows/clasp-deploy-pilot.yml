@@ -1,0 +1,52 @@
+# Clasp-push deployment PILOT — proof that GitHub Actions can deploy a Google
+# Apps Script project directly (PUSH model) instead of the script pulling its
+# own code from GitHub (the PULL model the rest of the repo uses).
+# Standalone — does NOT touch the existing auto-merge / webhook deploy flow.
+#
+# Required repo secrets (see repository-information/CLASP-PUSH-PILOT-SETUP.md):
+#   CLASPRC_JSON              — full contents of ~/.clasprc.json after `clasp login`
+#   CLASPDEPLOYTEST_SCRIPT_ID — target project's scriptId (from `clasp create`)
+# Optional:
+#   CLASPDEPLOYTEST_DEPLOYMENT_ID — pin a deployment so the web-app URL stays stable
+name: Clasp Deploy Pilot (claspdeploytest)
+
+on:
+  workflow_dispatch:        # manual "Run workflow" button — the reliable way to test
+  push:
+    branches: [main]
+    paths:
+      - 'googleAppsScripts/Claspdeploytest/**'
+      - '.github/workflows/clasp-deploy-pilot.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Write clasp credentials
+        run: printf '%s' '${{ secrets.CLASPRC_JSON }}' > "$HOME/.clasprc.json"
+
+      - name: Push + deploy to Apps Script
+        working-directory: googleAppsScripts/Claspdeploytest
+        env:
+          SCRIPT_ID: ${{ secrets.CLASPDEPLOYTEST_SCRIPT_ID }}
+          DEPLOYMENT_ID: ${{ secrets.CLASPDEPLOYTEST_DEPLOYMENT_ID }}
+        run: |
+          if [ -z "$SCRIPT_ID" ]; then
+            echo "::error::CLASPDEPLOYTEST_SCRIPT_ID secret is not set — see CLASP-PUSH-PILOT-SETUP.md"
+            exit 1
+          fi
+          # clasp reads .clasp.json for the target scriptId + source dir
+          printf '{"scriptId":"%s","rootDir":"."}\n' "$SCRIPT_ID" > .clasp.json
+          npx --yes @google/clasp@2 push --force
+          if [ -n "$DEPLOYMENT_ID" ]; then
+            npx --yes @google/clasp@2 deploy --deploymentId "$DEPLOYMENT_ID" --description "GitHub Actions ${GITHUB_SHA::7}"
+          else
+            npx --yes @google/clasp@2 deploy --description "GitHub Actions ${GITHUB_SHA::7}"
+          fi
+
+# Developed by: LightAISolutions

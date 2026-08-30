@@ -1,0 +1,213 @@
+{
+  "schemaVersion": 2,
+  "slug": "bloom-energy",
+  "name": "Bloom Energy",
+  "legalName": "Bloom Energy Corporation",
+  "categories": ["supplier"],
+  "hq": "San Jose, CA, USA",
+  "ticker": "NYSE: BE",
+  "founded": "2001",
+  "ownership": "public",
+  "employees": "~2,500+",
+  "website": "https://www.bloomenergy.com",
+  "summary": "BOTTOM LINE UP FRONT: Bloom Energy is the fastest workaround to the grid-interconnection queue — solid-oxide fuel cells delivering whole-data-center prime power in as little as 55 days against multi-year interconnect waits — and demand has repriced the company: revenue guidance for 2026 has been raised twice to $3.9-4.2B (~100% growth at midpoint), the Oracle master agreement reaches up to 2.8 GW (up to 2.45 GW earmarked for the Doña Ana 'Project Jupiter' campus, displacing planned gas turbines and diesel), AEP firmed a 1 GW / $2.65B order, and Brookfield expanded its financing framework fivefold to $25B. BACKGROUND: Founded 2001 (NASA Mars-program lineage); San Jose HQ; ~1.5 GW installed across 1,200+ sites, with the AI/data-center segment at ~250 MW across ~24 customers from nearly zero two years ago. Q2 2026 was the first $1B+ revenue quarter (+165.5%). Fremont factory capacity doubling from 1 GW to 2 GW by end-2026. A July 2026 Hunterbrook short report on scandium sourcing and a securities class action are the live controversies.",
+  "ecosystemRole": "We assess Bloom as the disruptor of the time-to-power bottleneck — the vendor whose product converts a 3-7 year interconnection problem into a sub-90-day deployment, which reshapes when and whether campuses need grid-tied BESS at all. Basis: the 55-day first Oracle deployment (beating its own 90-day commitment), the AEP utility-channel template (utility procures cells, recovers costs from the large customer via special contracts — bridge power while transmission catches up), and Project Jupiter explicitly replacing turbines and gensets with fuel cells. Every shipment is now '800V DC ready' for direct data-center integration, putting Bloom inside the same DC architecture conversation as the power-chain vendors in this file. The check on the story: gas-fed cells emit CO2 roughly on par with modern combined-cycle plants, unit economics at scale rest on a manufacturing ramp management itself says has only ~six months of demand visibility, and the valuation (~96x forward earnings at the July peak) prices flawless execution.",
+  "productsAndServices": [
+    {
+      "name": "Energy Server 6.5 (solid-oxide fuel cell platform)",
+      "description": "The flagship: 325 kW net AC per module, scaling in repeating blocks to hundreds of MW; 65-53% LHV electrical efficiency (beginning to end of life) — the highest of any commercial power technology; natural gas standard with biogas, hydrogen blends, or 100% H2 by arrangement; zero water consumption in normal operation; near-zero NOx/SOx (0.003 lbs/MWh NOx); ~100 MW per acre power density; grid-parallel or fully islanded microgrid operation, 24x7 base load.",
+      "positioning": "Sold against gensets, turbines, and the grid queue on three axes: speed (weeks not years), footprint/emissions permitting (non-combustion — avoids major-source air permitting battles), and 24x7 operation versus batteries' hours. CO2 (679-833 lbs/MWh on gas) is the acknowledged tradeoff versus its criteria-pollutant advantages.",
+      "soldThrough": "Direct equipment sale plus long-term service (100% attach rate claimed); utility channel (AEP procures for data-center customers); Brookfield-financed projects ($25B framework).",
+      "targetSegments": ["AI data centers (hyperscalers, neoclouds, colos)", "Utilities serving large loads", "C&I microgrids (Equinix 73 MW operational, JP Morgan, AT&T)"],
+      "roadmap": "All shipments now 800V DC-ready; Fremont capacity 1 GW → 2 GW by end-2026, with UBS assessing the site can reach 5 GW."
+    },
+    {
+      "name": "Heat capture, carbon capture & maritime variants",
+      "description": "Integrated heat-capture system in 325 kW blocks (>36% thermal efficiency on >350°C exhaust; >90% total efficiency); carbon-capture configuration exploiting the SOFC's pure CO2 exhaust stream; Maritime Server for ship decarbonization.",
+      "positioning": "Optionality lines — the heat-capture variant matters most for data-center campuses pursuing total-efficiency narratives.",
+      "soldThrough": "Same direct/service channels.",
+      "targetSegments": ["Industrial CHP", "Marine"],
+      "roadmap": "Niche today; no disclosed volume targets."
+    },
+    {
+      "name": "Bloom Electrolyzer (SOEC)",
+      "description": "High-temperature solid-oxide electrolyzer at 37.5 kWh/kg H2 system-level per Idaho National Laboratory testing — versus 52-54 kWh/kg for PEM/alkaline, a claimed 20-25% more hydrogen per MW. 4 MW NASA Ames demonstration built and operational in two months, producing 2.4+ tonnes H2/day.",
+      "positioning": "The most efficient electrolyzer chemistry publicly benchmarked; commercially subordinate to the fuel-cell business while hydrogen demand matures.",
+      "soldThrough": "Project sales.",
+      "targetSegments": ["Green hydrogen production", "Industrial decarbonization"],
+      "roadmap": "28% cost reduction per capacity doubling claimed; leverage comes if/when H2 economics turn."
+    }
+  ],
+  "recentDevelopments": [
+    {
+      "date": "2026-08-06",
+      "category": "order-win",
+      "headline": "MiTAC partnership expanded — islanded microgrid for MiTAC's Fremont AI-server campus; AI segment now ~250 MW across ~24 customers",
+      "read": "The AI book went from nearly zero to ~250 MW in two years; even AI-server factories now buy behind-the-fence fuel-cell power.",
+      "source": "https://www.bloomenergy.com/news/bloom-energy-continues-to-set-the-standard-for-ai-onsite-power-with-expanded-mitac-partnership/"
+    },
+    {
+      "date": "2026-07-31",
+      "category": "regulatory",
+      "headline": "Securities class action filed over scandium-sourcing disclosures, following the July 7 Hunterbrook short report; shares fell ~38% in the following month",
+      "read": "The Hunterbrook claims (China scandium dependence; supply ceiling near projected global output at 5 GW scale) were rebutted by management ('industrial tailings,' supply for '25 GW') but ~$44M of 90-day insider selling amplified the drawdown.",
+      "source": "https://finance.yahoo.com/markets/stocks/articles/bloom-energy-undervalued-following-lawsuit-101157679.html"
+    },
+    {
+      "date": "2026-07-28",
+      "category": "financial",
+      "headline": "Q2 2026: first $1B+ quarter — revenue $1.065B (+165.5%, beat consensus by ~31%), non-GAAP EPS $0.78 (beat by 100%); FY guidance raised again to $3.9-4.2B",
+      "read": "Fourth consecutive large double-beat; consensus keeps lagging the data-center ramp. Gross margin reached 34.3% non-GAAP.",
+      "source": "https://www.sec.gov/Archives/edgar/data/0001664703/000162828026050150/ex991_q226financialresults.htm"
+    },
+    {
+      "date": "2026-06-30",
+      "category": "partnership",
+      "headline": "Brookfield partnership expanded fivefold to $25B for 'AI factories,' tied to Brookfield's $100B AI Infrastructure Fund",
+      "read": "Third-party capital now finances Bloom-powered campuses at a scale the company's own balance sheet never could — but Q1 2026 included $373M of product revenue through related-party Brookfield JVs, a concentration flag.",
+      "source": "https://www.bloomenergy.com/news/brookfield-and-bloom-energy-expand-ai-infrastructure-partnership/"
+    },
+    {
+      "date": "2026-04-13",
+      "category": "order-win",
+      "headline": "Oracle master agreement expanded to up to 2.8 GW; first deployment delivered in 55 days (beating the 90-day commitment); up to 2.45 GW earmarked for Project Jupiter (Doña Ana, NM)",
+      "read": "The largest fuel-cell commitment in data-center history — and it replaced previously planned gas turbines and diesel gensets. The firm portion is ~1.2 GW contracted/deploying into 2027; the rest is framework.",
+      "source": "https://www.bloomenergy.com/news/bloom-energy-and-oracle-expand-strategic-partnership-to-deploy-up-to-2-8-gw-to-accelerate-ai-infrastructure-build-out/"
+    },
+    {
+      "date": "2026-03-26",
+      "category": "leadership",
+      "headline": "Simon Edwards appointed CFO",
+      "read": "Fresh finance leadership for the scale-up phase; the prior regime's $2.2B convertible raise (October 2025) funded the balance sheet to $2.45B cash.",
+      "source": "https://www.bloomenergy.com/news/bloom-energy-appoints-simon-edwards-as-chief-financial-officer/"
+    },
+    {
+      "date": "2026-01-15",
+      "category": "order-win",
+      "headline": "AEP gigawatt firmed: ~$2.65B for 1 GW, described by management as 'unconditional' (up from the 100 MW firm at the November 2024 signing)",
+      "read": "The utility-channel template validated at gigawatt scale — and the best public pricing benchmark for fuel-cell prime power (~$2.65/W).",
+      "source": "https://www.energycentral.com/energy-biz/post/bloom-energy-signed-a-2-65-billion-deal-with-aep-for-1gw-of-solid-oxide-8IkYU2sk03xhUGJ"
+    },
+    {
+      "date": "2025-10-13",
+      "category": "partnership",
+      "headline": "Brookfield $5B strategic AI infrastructure partnership announced (the framework later expanded to $25B)",
+      "read": "First-of-kind financing structure pairing an infrastructure investor with a fuel-cell OEM for AI campuses.",
+      "source": "https://www.bloomenergy.com/news/brookfield-and-bloom-energy-announce-5-billion-strategic-ai-infrastructure-partnership/"
+    },
+    {
+      "date": "2025-07-24",
+      "category": "partnership",
+      "headline": "Oracle OCI collaboration announced with a 90-day whole-data-center power commitment; >400 MW data-center installed base disclosed",
+      "read": "The deal that converted Bloom from C&I microgrid vendor to AI-infrastructure supplier in the market's eyes.",
+      "source": "https://www.bloomenergy.com/news/oracle-and-bloom-energy-collaborate-to-deliver-power-to-data-centers-at-the-speed-of-ai/"
+    }
+  ],
+  "strategyRead": [
+    "(High confidence) We assess Bloom's core sale is time, not electricity. Basis: 55-90 day deployments against grid-interconnect waits of up to ~7 years; AEP's framing of fuel cells as bridge prime power (6-9 months to deploy versus ~3 years for turbines) while transmission and 2030s nuclear catch up; Project Jupiter's turbine/genset displacement.",
+    "(High confidence) We assess the headline pipeline overstates firm demand and the distinction matters. Basis: Oracle's 2.8 GW is a master-agreement ceiling with ~1.2 GW contracted; AEP's 1 GW was only 100 MW firm for its first year (Jefferies publicly discounted the rest until the January 2026 firming); backlog ~$20B splits ~$6B product / ~$14B service, and management itself disclaims more than ~six months of demand visibility.",
+    "(Moderate confidence) We assess manufacturing ramp is the binding constraint, and the scandium question is unresolved. Basis: ~$4B guided 2026 revenue against a factory exiting the year at 2 GW run-rate; Hunterbrook's claim that 5 GW output would need ~220 t/yr of scandium oxide (near projected global supply) versus management's '25 GW supported from industrial tailings' rebuttal — neither side has published verifiable sourcing data; a class action now attaches litigation discovery to the question.",
+    "(Moderate confidence) We assess the service-margin inflection is the strongest evidence the historical bear case is aging out. Basis: service margins moved from -20.6% (FY2023) to +10% GAAP (FY2025), directly answering the Hindenburg-era degradation/replacement-economics critique; the 2019-vintage field-degradation data remains the canonical counterexample but predates two product generations.",
+    "(Low confidence) We assess natural-gas anchoring is a medium-term reputational and regulatory exposure rather than a demand constraint. Basis: cells at scale run on gas with CCGT-comparable CO2; company marketing leans on criteria pollutants and water; The Register's unanswered fuel-type questions at Oracle sites illustrate the opacity — but no customer loss or rule change has yet been tied to it."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "Energy Server 6.5",
+      "specs": ["325 kW net AC per module; scalable to hundreds of MW; ~100 MW/acre", "65-53% LHV electrical efficiency (BOL→EOL); >90% total with heat capture", "Zero water in normal operation; NOx 0.003 / CO 0.013 lbs/MWh; CO2 679-833 lbs/MWh on gas", "Natural gas / biogas / H2 blends / 100% H2; grid-parallel or islanded microgrid; 800V DC-ready shipments", "9 x 1.3 x 2.5 m skid, 13 mt; -20°C to 45°C; <65 dBA @ 10 ft"]
+    },
+    {
+      "product": "Time-to-power record",
+      "specs": ["90-day whole-data-center commitment (Oracle deal)", "55 days actual on first Oracle deployment", "100+ microgrids deployed since 2011 (Hartford 11-day outage ride-through)"]
+    },
+    {
+      "product": "Bloom Electrolyzer (SOEC)",
+      "specs": ["37.5 kWh/kg H2 system-level (INL-tested; range 37-44) vs 52-54 for PEM/alkaline", "4 MW NASA Ames demo: 2.4+ tonnes H2/day, operational in 2 months"]
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "KR Sridhar",
+      "title": "Founder, Chairman & CEO",
+      "photo": "images/execs/bloom-energy-sridhar.jpg",
+      "background": [
+        "Founded Bloom 2001 from NASA Mars oxygen-generator work; PhD",
+        "Public framing: 'bring-your-own-power has shifted from slogan to business necessity' — all major US hyperscalers plus a dozen neoclouds/AI labs have validated Bloom's solutions"
+      ]
+    },
+    {
+      "name": "Simon Edwards",
+      "title": "Chief Financial Officer",
+      "photo": "images/execs/bloom-energy-edwards.jpg",
+      "background": [
+        "Appointed March 2026 for the scale-up phase",
+        "Inherits $2.67B cash, the convertible stack, and the ramp-financing question"
+      ]
+    },
+    {
+      "name": "Aman Joshi",
+      "title": "Chief Commercial Officer",
+      "photo": "images/execs/bloom-energy-joshi.jpg",
+      "background": [
+        "Public face of the Oracle, Brookfield, and MiTAC deals",
+        "Quantified the AI ramp: ~250 MW across ~24 AI infrastructure customers 'from nearly zero two years ago'"
+      ]
+    },
+    {
+      "name": "Satish Chitoori",
+      "title": "Chief Operations Officer",
+      "photo": "images/execs/bloom-energy-chitoori.jpg",
+      "background": [
+        "Owns the Fremont 1→2 GW capacity doubling",
+        "Delivered the scandium rebuttal: sourced 'from industrial tailings,' supply supports '25 GW'"
+      ]
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "type": "fiscal-year (calendar)",
+    "periods": [
+      {
+        "period": "FY2024",
+        "metrics": [
+          {"name": "Revenue", "actual": "$1.47B", "expected": "Q4: beat (+80% EPS surprise)", "verdict": "beat", "result": "Q4 non-GAAP EPS $0.45 vs $0.25 consensus; Q4 revenue $572M (+60.4%)"},
+          {"name": "GAAP net loss", "actual": "-$29.2M / -$0.13 EPS", "expected": "—", "verdict": "inline", "result": "Non-GAAP EPS $0.28; cash $803M"}
+        ],
+        "commentary": "The pre-AI-ramp baseline: profitable on a non-GAAP basis, GAAP-negative, second year of positive free cash flow arriving in 2025."
+      },
+      {
+        "period": "FY2025",
+        "metrics": [
+          {"name": "Revenue", "actual": "$2.02B (+37.3%)", "expected": "Q4: $645M consensus", "verdict": "beat", "result": "Q4 revenue $778M beat by ~21%; Q4 non-GAAP EPS $0.45 vs $0.30 (+50%)"},
+          {"name": "Backlog", "actual": "~$20B total (~$6B product, up 2.5x)", "expected": "—", "verdict": "beat", "result": "Backlog spans 'half a dozen hyperscale and neo-cloud end customers' vs one a year earlier"}
+        ],
+        "commentary": "Still a GAAP loss year (-$88.4M) despite non-GAAP EPS $0.76 — and shares outstanding jumped ~17% within the year (240M weighted-average vs 280M year-end), the dilution cost of the $2.2B convertible raise that built the $2.45B cash position."
+      },
+      {
+        "period": "Q2 2026 (latest interim)",
+        "metrics": [
+          {"name": "Revenue", "actual": "$1.065B (+165.5%)", "expected": "$814M (Zacks consensus)", "verdict": "beat", "result": "+30.8% surprise; first $1B+ quarter; product revenue +215.4%"},
+          {"name": "Non-GAAP EPS", "actual": "$0.78 (+680%)", "expected": "$0.39 (consensus)", "verdict": "beat", "result": "+100% surprise; GAAP operating income $182.2M; cash $2.67B"}
+        ],
+        "commentary": "Guidance raised twice in 2026 — now $3.9-4.2B revenue (~100% growth at midpoint), $800-900M non-GAAP operating income. The tension: a stock that peaked at ~96x forward earnings and ~22-25x sales fell ~38% in a month on the short report, insider selling, and momentum unwind — even as fundamentals kept beating."
+      }
+    ]
+  },
+  "sources": [
+    {"label": "MiTAC expansion", "url": "https://www.bloomenergy.com/news/bloom-energy-continues-to-set-the-standard-for-ai-onsite-power-with-expanded-mitac-partnership/", "date": "2026-08-06"},
+    {"label": "Bloom Q2 2026 results (8-K exhibit)", "url": "https://www.sec.gov/Archives/edgar/data/0001664703/000162828026050150/ex991_q226financialresults.htm", "date": "2026-07-28"},
+    {"label": "24/7 Wall St — Hunterbrook short-report coverage", "url": "https://247wallst.com/investing/2026/07/09/the-market-rejects-bloom-energy-short-attack-but-should-you-ignore-it-too/", "date": "2026-07-09"},
+    {"label": "Brookfield $25B expansion", "url": "https://www.bloomenergy.com/news/brookfield-and-bloom-energy-expand-ai-infrastructure-partnership/", "date": "2026-06-30"},
+    {"label": "Oracle Project Jupiter fuel-cell announcement", "url": "https://www.oracle.com/news/announcement/oracle-borderplex-and-bloom-energy-to-power-project-jupiter-with-fuel-cell-technology-2026-04-27/", "date": "2026-04-27"},
+    {"label": "The Register — Oracle/Bloom analysis", "url": "https://www.theregister.com/2026/04/14/oracle_bloom_fuel_cells/", "date": "2026-04-14"},
+    {"label": "Oracle 2.8 GW expansion", "url": "https://www.bloomenergy.com/news/bloom-energy-and-oracle-expand-strategic-partnership-to-deploy-up-to-2-8-gw-to-accelerate-ai-infrastructure-build-out/", "date": "2026-04-13"},
+    {"label": "Bloom Q4/FY2025 results", "url": "https://www.bloomenergy.com/news/bloom-energy-reports-fourth-quarter-and-full-year-2025-financial-results-with-record-full-year-revenues/", "date": "2026-02-05"},
+    {"label": "Motley Fool — Q4 2025 earnings call transcript", "url": "https://www.fool.com/earnings/call-transcripts/2026/02/05/bloom-energy-be-q4-2025-earnings-call-transcript/", "date": "2026-02-05"},
+    {"label": "Energy Server 6.5 datasheet (Feb 2026)", "url": "https://www.bloomenergy.com/wp-content/uploads/bloom-energy-server-datasheet-feb-2026.pdf", "date": "2026-02"},
+    {"label": "AEP $2.65B firming (Energy Central)", "url": "https://www.energycentral.com/energy-biz/post/bloom-energy-signed-a-2-65-billion-deal-with-aep-for-1gw-of-solid-oxide-8IkYU2sk03xhUGJ", "date": "2026-01-15"},
+    {"label": "AEP gigawatt procurement agreement", "url": "https://www.bloomenergy.com/news/bloom-energy-announces-gigawatt-fuel-cell-procurement-agreement-with-aep-to-power-ai-data-centers/", "date": "2024-11-14"},
+    {"label": "Utility Dive — AEP structure analysis", "url": "https://www.utilitydive.com/news/aep-bloom-energy-fuel-cell-data-center/733150/", "date": "2024-11"},
+    {"label": "Hindenburg 2019 report (historical bear case)", "url": "https://hindenburgresearch.com/bloom/", "date": "2019-09-17"}
+  ],
+  "lastUpdated": "2026-08-09",
+  "profileVersion": 1
+}

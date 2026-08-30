@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "bloom-energy",
+  "title": "Bloom Energy — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Solid-oxide electrochemistry: power without flame",
+      "bullets": [
+        "A fuel cell converts fuel to electricity chemically, not thermally: fuel is oxidized at one electrode, oxygen reduced at the other, ions cross an electrolyte between them, and the electrons — forced around the outside — are the current. No combustion happens anywhere",
+        "The solid-oxide variety (SOFC) uses a ceramic electrolyte that conducts oxygen ions, but only at very high temperature — roughly 700-1,000°C — which sounds like a drawback and is actually the superpower",
+        "Heat enables internal reforming: at those temperatures natural gas breaks down into hydrogen and carbon monoxide right at the electrode, so an SOFC drinks pipeline gas directly — where low-temperature fuel cells demand purified hydrogen that mostly doesn't exist as infrastructure",
+        "Individual cells produce under a volt, so cells stack in series, stacks form modules, modules form systems. The ceramics dislike thermal cycling, so the machines run continuously at steady load — and gradual stack aging, with scheduled replacement, is the maintenance model"
+      ]
+    },
+    {
+      "heading": "Fuel cells versus engines and turbines: three ways to eat the same gas",
+      "bullets": [
+        "Engines and turbines are heat machines: burn fuel, make hot gas, convert some heat to motion, spin a generator. A fuel cell skips the detour — chemical energy to electrical energy in one electrochemical step, with no flame, pistons, or blades",
+        "The efficiency story is about scale: heat engines get efficient only when large, so small combustion plants perform poorly — while a fuel cell's efficiency is nearly scale-free, letting a building-sized installation match what combustion achieves only at power-plant size",
+        "Emissions split into two ledgers: flames fuse air's nitrogen and oxygen into NOx and throw off particulates — the pollutants that drive air permitting. No flame means near-zero criteria pollutants. The CO2 ledger is separate: carbon fuel still yields CO2, roughly comparable per kilowatt-hour to efficient combustion",
+        "Operationally they are different animals: fuel cells are quiet, vibration-free, and dense per acre but prefer steady output; engines start fast and load-follow well — which is why fuel-cell installations pair with batteries for transients rather than chasing swings themselves"
+      ]
+    },
+    {
+      "heading": "Onsite primary power: running the building on fuel cells",
+      "bullets": [
+        "Primary power inverts the backup mindset: the fuel cells are the always-on source carrying the full load around the clock, with the gas pipeline as the energy supply chain — effectively weeks of energy stored in the pipe network rather than in tanks or batteries",
+        "Two postures exist: grid-parallel, where fuel cells and grid share and back each other up, and islanded, where the facility runs electrically independent as its own microgrid. The choice sets protection design, permitting, and which failure modes matter",
+        "Reliability comes from granularity: hundreds of independent modules mean failures shave capacity instead of dropping the building — no single giant machine whose trip is an outage — and modules rotate through service while the rest carry the load",
+        "The architecture reshapes the electrical room: steady non-combustion generation pairs naturally with batteries for load swings, and a DC-native source suits the industry's drift toward DC distribution — the fuel cell becomes a component in the power chain, not an appliance behind it"
+      ]
+    },
+    {
+      "heading": "Reversibility: the same ceramic runs both directions",
+      "bullets": [
+        "An electrochemical cell is thermodynamically a two-way street: feed it fuel and it makes electricity; feed it electricity and steam, and the same ceramic runs backward as an electrolyzer — a solid-oxide electrolysis cell (SOEC) splitting water into hydrogen and oxygen",
+        "High temperature is an even bigger advantage in reverse: part of the energy of splitting water can be delivered as heat instead of electricity, and the electrochemistry itself gets easier when hot — so fewer kilowatt-hours per kilogram of hydrogen than low-temperature methods need",
+        "One platform, two products: the same stacks, manufacturing lines, and materials science serve both power generation and hydrogen production, so factory scale built for one amortizes across both — an unusual industrial hedge",
+        "Round trips are possible but lossy: electricity to hydrogen back to electricity wastes a large fraction in each direction, so reversibility's near-term value isn't storage arbitrage — it is optionality, running whichever direction the market pays for"
+      ]
+    },
+    {
+      "heading": "The gas bridge: decarbonization as a pathway, not a switch",
+      "bullets": [
+        "The bridge argument: extract more useful energy from each unit of gas today — higher conversion efficiency, near-zero criteria pollutants — while installing equipment that can migrate to cleaner fuels over its life: biogas blends now, hydrogen blends later, without replacement",
+        "Biogas changes the carbon math: methane captured from landfills and digesters was headed for the atmosphere anyway, so running equipment on it can score carbon-neutral or better under accounting rules — the same molecules, a different ledger",
+        "Non-combustion has a capture angle: exhaust from an electrochemical process isn't diluted by the huge volume of nitrogen that flame-and-air combustion drags along, leaving the CO2 more concentrated — which makes capture simpler in principle, though still costly in practice",
+        "Know the counterargument: hydrogen-ready is a promise about a fuel that may arrive late or never at scale, and critics call the bridge a lock-in of gas dependence. The honest framing is conditional — the bridge's climate value depends on whether the far side gets built"
+      ]
+    },
+    {
+      "heading": "Fleet economics: selling electricity instead of equipment",
+      "bullets": [
+        "Power-as-a-service flips the transaction: instead of buying machines, the customer signs a long-term agreement to buy the electricity they produce — capex becomes opex, and deployment stops being gated by the customer's capital budget",
+        "Third-party capital makes it scale: infrastructure investors finance fleets against the contracted revenue stream, since an equipment maker's balance sheet cannot carry gigawatts of deployed assets — the customer contract's credit quality effectively sets the financing cost",
+        "Service agreements are the second engine: multi-year contracts guaranteeing output and efficiency, with scheduled stack replacements priced in — recurring revenue that compounds with the installed fleet, the razor-and-blade structure of the fuel-cell business",
+        "A utility channel variant emerged: the utility procures the fleet and recovers costs from the large customer through special contracts — bridge power delivered inside the regulated relationship while permanent infrastructure catches up. Who owns the asset and who bears fuel-price risk define every deal"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "How does a fuel cell make electricity without combustion?",
+      "a": "Fuel is oxidized at one electrode and oxygen reduced at the other; ions migrate through an electrolyte between them while the electrons are forced around the external circuit — that electron flow is the current. Chemical energy converts to electrical energy directly, with no flame, pistons, or turbine."
+    },
+    {
+      "q": "Why is the SOFC's extreme operating temperature its superpower?",
+      "a": "At 700-1,000°C, natural gas reforms into hydrogen and carbon monoxide directly at the electrode — internal reforming — so the cell runs on pipeline gas that already reaches every building. Low-temperature fuel cells need purified hydrogen, an infrastructure that barely exists. The heat also makes the electrochemistry itself more efficient."
+    },
+    {
+      "q": "Why do fuel cells produce almost no NOx?",
+      "a": "NOx forms when flame temperatures fuse the nitrogen and oxygen in air — it is a combustion artifact. No flame, no NOx. That matters commercially: criteria pollutants drive air permitting, so non-combustion generation can be permitted where combustion equipment triggers long battles."
+    },
+    {
+      "q": "Why does a fuel cell match big-plant efficiency at building scale when combustion cannot?",
+      "a": "Heat engines obey scale rules — bigger machines waste proportionally less, so small combustion plants are inefficient. Electrochemical conversion is nearly scale-free: a single module's efficiency is about the same as a fleet's. You can put power-plant-grade efficiency behind one building, in modules."
+    },
+    {
+      "q": "What is the honest CO2 story for gas-fed fuel cells?",
+      "a": "Carbon fuel in, CO2 out — roughly comparable per kilowatt-hour to efficient combustion of the same gas. The genuine wins are criteria pollutants (near-zero NOx, no particulates), water use, footprint, and efficiency. The CO2 case improves only as cleaner fuels arrive: biogas now, hydrogen potentially later."
+    },
+    {
+      "q": "Grid-parallel versus islanded operation — what changes?",
+      "a": "Grid-parallel, the onsite fleet and the grid back each other up and power can flow both ways; islanded, the facility runs as an electrically independent microgrid. The posture determines protection design, permitting, failure modes, and how much the site still depends on utility timelines."
+    },
+    {
+      "q": "How does granularity create reliability in a fuel-cell installation?",
+      "a": "The plant is hundreds of independent modules rather than one big machine. Any failure shaves a sliver of capacity instead of dropping the building, and modules rotate through service while the rest carry the load. Reliability is engineered through statistics rather than through one machine's perfection."
+    },
+    {
+      "q": "Why do fuel-cell installations pair with batteries?",
+      "a": "Fuel cells prefer steady output — the ceramics dislike thermal cycling and respond slowly to swings — while modern loads spike violently. Batteries absorb the fast transients; the fuel cells carry the steady base. Each covers the other's weakness, the standard division of labor in onsite power."
+    },
+    {
+      "q": "What is an SOEC, and why does high-temperature electrolysis use less electricity?",
+      "a": "The same solid-oxide cell run in reverse: electricity plus steam splits into hydrogen and oxygen. At high temperature, part of the splitting energy can arrive as heat rather than electricity, and the reaction itself gets easier — so kilowatt-hours per kilogram of hydrogen drop meaningfully versus low-temperature methods."
+    },
+    {
+      "q": "Why does biogas change the carbon accounting of the same machine?",
+      "a": "The methane from landfills and digesters was escaping to the atmosphere anyway — itself a potent greenhouse gas. Capturing and using it can score carbon-neutral or better under accounting rules. Chemically identical operation, different ledger: the fuel's origin, not the machine, sets the carbon math."
+    },
+    {
+      "q": "What is power-as-a-service, and why does third-party capital matter?",
+      "a": "The customer buys electricity under a long-term contract instead of buying machines — capex becomes opex. Infrastructure investors finance the fleets against that contracted revenue, because no equipment maker's balance sheet can carry gigawatts of deployed assets. The contract's credit quality sets the cost of money."
+    },
+    {
+      "q": "Why are long-term service agreements central to fuel-cell economics?",
+      "a": "Stacks age and are replaced on schedule, so vendors sell multi-year agreements guaranteeing output and efficiency with replacements priced in. That recurring stream compounds with every fleet addition — the razor-and-blade structure that turns each installation into a decades-long relationship rather than a sale."
+    }
+  ]
+}

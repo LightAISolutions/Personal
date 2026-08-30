@@ -1,0 +1,750 @@
+{
+ "schemaVersion": 6,
+ "slug": "tesla",
+ "name": "Tesla, Inc.",
+ "shortName": "Tesla",
+ "categories": [
+  "supplier"
+ ],
+ "website": "https://www.tesla.com",
+ "headquarters": "Austin, Texas, USA",
+ "founded": 2003,
+ "employees": "134,785 (Dec 31, 2025, 10-K)",
+ "ownership": {
+  "type": "public",
+  "ticker": "NASDAQ: TSLA"
+ },
+ "summary": "BOTTOM LINE UP FRONT: Tesla Energy is the company's execution bright spot — record 46.7 GWh deployed in 2025 and the fastest factory ramp in company history at Brookshire — but Chinese integrators now hold roughly three-quarters of global share and Sungrow has taken the #1 ranking. BACKGROUND: Tesla is an EV, energy, and AI company whose energy storage division (Tesla Energy) has become its fastest-growing, highest-margin business line. The segment sells the utility-scale Megapack (and the new Megapack 3 / Megablock generation), the residential Powerwall 3, solar products, and the Autobidder trading/dispatch software. Energy generation & storage revenue reached $12.77B in 2025 (+27% YoY) on record deployments of 46.7 GWh (+49%), versus 31.4 GWh in 2024, while automotive remains the revenue core (1.64M vehicles delivered in 2025).",
+ "ecosystemRole": "The leading Western BESS integrator: #1 global storage-system integrator for 2024 (15% global share, 39% North America — Wood Mackenzie); #2 in the 2026 comprehensive ranking behind Sungrow as Chinese integrators captured ~76% of a >100 GW market. Megafactories: Lathrop, CA (~40 GWh/yr), Shanghai (producing since early 2025), and Brookshire, TX — 50 GWh/yr dedicated to Megapack 3, with production started August 2026, 16 months after groundbreaking.",
+ "productsAndServices": [
+  {
+   "name": "Megapack 2 / 2XL (current-generation utility-scale BESS)",
+   "category": "Energy storage systems — utility-scale",
+   "description": "Factory-assembled, AC-coupled containerized battery blocks with integrated bi-directional inverters, thermal management, and controls in a single enclosure. The flagship Megapack 2XL stores 3.916 MWh with a 1.927 MW power rating in the 2-hour configuration (a 4-hour configuration is offered), using LFP cells sourced primarily from CATL. Sold with optional Tesla EPC, long-term service agreements, and Autobidder market participation — the volume backbone of Tesla's grid business until the Megapack 3 ramp.",
+   "highlights": [
+    "15.3 GWh order from Intersect Power (2024) — among the largest single BESS orders on record",
+    "~25 GWh / ~$5B NatPower framework for Italy/UK reported as the largest European Megapack deal (June 2026, third-party reported; includes Autobidder trading)",
+    "Built at Lathrop, CA (40 GWh/yr installed) and Megafactory Shanghai (20 GWh/yr installed per Q2 2026 shareholder deck; ~40 GWh/yr designed) — Shanghai exported its first units to Australia in March 2025 and passed 1,000 units within ~6 months",
+    "First Megapacks with US-made LFP cells (from Tesla's new ~7 GWh Nevada cell plant, built with CATL equipment) shipped July 2026"
+   ],
+   "positioning": "The leading Western/non-Chinese BESS integrator: Wood Mackenzie ranked Tesla #1 global storage-system integrator for 2024 (15% global share, 39% North America); the 2026 comprehensive ranking put it #2 behind Sungrow as Chinese integrators reached ~76% of a >100 GW market. Chinese rivals now ship denser containers (Sungrow PowerTitan 3.0 up to 12.5 MWh, CATL TENER Stack 9 MWh, BYD MC Cube ~6 MWh-class vs 3.9 MWh for the 2XL) — Tesla competes on factory prefabrication, software (Autobidder), delivery speed, bankability, and non-China supply for tariff-sensitive Western buyers rather than on per-container density.",
+   "soldThrough": "Direct to utilities, IPPs, and developers (online configurator with published indicative pricing for smaller orders; negotiated frameworks for GWh-scale), with optional Tesla EPC and long-term O&M",
+   "targetSegments": "Utilities, independent power producers, storage developers, data-center/AI campus power, large C&I, off-grid microgrids",
+   "roadmap": "Being progressively superseded by Megapack 3/Megablock from H2 2026; 2XL production continues at Lathrop and Shanghai for the existing backlog"
+  },
+  {
+   "name": "Megapack 3 (next-generation unit)",
+   "category": "Energy storage systems — utility-scale",
+   "description": "Unveiled September 2025: ~5 MWh per unit (~28% more than the 2XL in the same footprint) built on a new Tesla-designed 2.8-liter LFP cell, with a silicon-carbide inverter, integrated fire protection, and a simplified thermal bay (78% fewer connection points). Ships as one ~39 t piece on a standard 7-axle trailer with no onsite assembly.",
+   "highlights": [
+    "Production started at the Brookshire, TX Megafactory on August 6, 2026 — 16 months from groundbreaking; customer deliveries from H2 2026",
+    "Brookshire designed capacity: 50 GWh/yr dedicated to Megapack 3 (listed as 'commissioning' in the Q2 2026 shareholder deck)",
+    "Cells multi-sourced from the US, Southeast Asia, and China to manage tariff and supply-chain exposure"
+   ],
+   "positioning": "Tesla's answer to Chinese 6–12.5 MWh containers: rather than maximizing per-container energy, it standardizes a mass-manufacturable ~5 MWh unit and captures density/cost at the site level via Megablock. The in-house 2.8 L LFP cell (first Tesla-designed storage-specific cell) reduces dependence on CATL for the next generation.",
+   "soldThrough": "Direct; GWh-scale framework agreements with utilities/IPPs; bundled EPC and Autobidder options",
+   "targetSegments": "Utility-scale storage, AI data-center power buffering, grid operators needing fast capacity additions",
+   "roadmap": "Brookshire ramp toward 50 GWh/yr through 2026–27; rising share of US-made LFP cells from the Nevada plant; Lathrop/Shanghai transition timing not yet announced"
+  },
+  {
+   "name": "Megablock (20 MWh medium-voltage site block)",
+   "category": "Energy storage systems — site-level architecture",
+   "description": "Pre-engineered medium-voltage AC block combining four Megapack 3 units with an integrated MV transformer and switchgear, connected by a flexible busbar assembly that eliminates above-ground cabling — the site 'lego brick' that turns BESS plant construction into plug-and-play deployment.",
+   "highlights": [
+    "20 MWh AC per block; 91% round-trip efficiency at medium voltage including auxiliary loads",
+    "Claims: 23% faster installation, up to 40% lower construction cost vs current build practice, 248 MWh AC per acre, 1 GWh deployable in ~20 business days",
+    "25-year design life; >10,000 cycles; -40°C to 60°C operating range"
+   ],
+   "positioning": "Competes at the site-architecture level against Sungrow's PowerTitan 3.0 platform (10/20/30-ft blocks to 12.5 MWh, 684 Ah cell, SiC PCS), Fluence's Smartstack (7 MWh, extended to 10 MWh in June 2026 with a claimed ~680 MWh/acre density), and CATL's TENER Stack (9 MWh) — each vendor now sells pre-integrated blocks rather than loose containers; density-per-acre claims are not directly comparable across vendors' measurement bases.",
+   "soldThrough": "Direct, as the standard building block of new Megapack 3-era projects; delivered with transformer/switchgear factory-integrated",
+   "targetSegments": "Utility-scale plants (100 MWh–multi-GWh), AI/data-center campuses, developers prioritizing schedule certainty",
+   "roadmap": "First deliveries H2 2026 from Brookshire alongside Megapack 3"
+  },
+  {
+   "name": "Powerwall 3 family (residential storage)",
+   "category": "Residential storage",
+   "description": "13.5 kWh home battery with a fully integrated 11.5 kW hybrid inverter (6 MPPTs, 20 kW PV input); expandable with stackable DC Expansion units (to 54 kWh per unit) and multi-unit installs. The Powerwall 3P variant (announced February 2026, German installs from late April 2026) packs a native three-phase inverter in one box — 15.4 kW continuous with solar, 21 kW one-second peak, 4 MPPTs / 20.3 kW PV, 98.4% solar-to-grid efficiency — replacing the up-to-three-unit workaround on Europe's three-phase homes.",
+   "highlights": [
+    "Tesla Home (July 2026): Opticaster-based AI energy management made standard on every Powerwall — forecasts solar/loads and auto-dispatches battery + EV charging against tariffs",
+    "Nevada Powerwall manufacturing capacity listed at >6 GWh/yr (Q2 2026 shareholder deck)",
+    "Drove record residential deployments alongside VPP programs in California, Texas, Puerto Rico, Australia, and the UK"
+   ],
+   "positioning": "Integrated inverter-plus-battery architecture vs component-based rivals (Enphase IQ Battery, SolarEdge, LG, BYD Battery-Box, Sungrow SBR): one box replaces separate PV inverter + battery inverter + battery, cutting install cost; the 3P closes the long-standing three-phase gap vs European incumbents on their home turf.",
+   "soldThrough": "Direct online ordering plus a certified-installer network; bundled with Tesla solar; monetized further via VPP enrollment and Tesla Electric retail plans",
+   "targetSegments": "Homeowners with solar, backup-driven buyers (Puerto Rico, Texas), VPP aggregations, three-phase European households (3P)",
+   "roadmap": "Powerwall 3P rollout beyond Germany across three-phase European markets; deeper Tesla Home / Opticaster feature integration"
+  },
+  {
+   "name": "Autobidder & Opticaster (energy software)",
+   "category": "Software — trading, dispatch & optimization",
+   "description": "Autobidder is Tesla's real-time trading and control platform that bids storage fleets into wholesale energy and ancillary-service markets; Opticaster is the underlying machine-learning forecasting/optimization engine (part of Tesla's 'Autonomous Control' suite) that also powers Powerwall VPP dispatch and the consumer-facing Tesla Home. Tesla claims over one hundred million hours of accumulated operational experience delivering opex savings and grid-service revenue.",
+   "highlights": [
+    "Bundled into flagship Megapack contracts — the reported NatPower framework includes Autobidder merchant trading",
+    "Same software stack scales from a single Powerwall to gigawatt-class Megapack portfolios (Hornsdale lineage)",
+    "Tesla Home (July 2026) pushed Opticaster to every Powerwall at no extra cost — an installed-base software moat"
+   ],
+   "positioning": "Differentiates Tesla as hardware-plus-market-software integrator vs pure hardware vendors; competes with Fluence's Mosaic bidding platform and third-party optimizers (Habitat Energy, GridBeyond, Flexitricity) — Tesla's edge is vertical integration with its own fleet telemetry and the option to buy hardware, EPC, and merchant optimization from one counterparty.",
+   "soldThrough": "Software/service agreements attached to Megapack projects (asset-management style) and embedded free in the Powerwall consumer stack; not sold standalone at retail",
+   "targetSegments": "Merchant storage owners/IPPs in ERCOT, CAISO, NEM (Australia), UK and other traded markets; utilities running VPPs; all Powerwall owners",
+   "roadmap": "Broader Tesla Home rollout and continued VPP market expansion; Tesla frames energy software as a recurring-revenue layer on the growing deployed base"
+  },
+  {
+   "name": "Virtual power plants & Tesla Electric (retail/aggregation)",
+   "category": "Grid services — distributed energy",
+   "description": "Tesla aggregates customer Powerwalls into dispatchable virtual power plants and, in Texas, operates Tesla Electric — a retail electricity provider whose Powerwall customers sell surplus power into ERCOT via two PUCT-approved aggregated DER pilots (Houston and Dallas areas). California VPPs (with PG&E/SCE demand-response programs) delivered a record >535 MW to the grid in July 2025, with Powerwall households providing nearly 500 MW.",
+   "highlights": [
+    "Programs live in California, Texas, Puerto Rico, Massachusetts, Australia, and the UK",
+    "Texas Powerwall incentive (from April 1, 2026): up to ~$5,922 upfront plus up to $862.50/yr in bill credits for VPP participation",
+    "VPP dispatch is Opticaster-orchestrated — the same engine as utility-scale Autobidder"
+   ],
+   "positioning": "The largest branded residential-fleet VPP operator in the US alongside aggregators like Sunrun (CalReady); Tesla's advantage is owning the hardware, the retail relationship (Tesla Electric), and the optimization software in one loop, letting it price storage partly as a grid asset rather than only as backup.",
+   "soldThrough": "Consumer opt-in via the Tesla app (VPP events / Tesla Electric plans); revenue via market sales and utility program payments shared with customers",
+   "targetSegments": "Powerwall owners in deregulated or DR-friendly markets; utilities and ERCOT/CAISO seeking fast-responding distributed capacity",
+   "roadmap": "Expansion of the ERCOT aggregated-DER pilots and additional utility partnerships; Tesla Home broadens the recruitable base to every Powerwall"
+  },
+  {
+   "name": "Supercharger network as an energy asset",
+   "category": "Charging infrastructure — grid integration",
+   "description": "Tesla increasingly pairs Superchargers with Megapacks and solar so charging sites act as storage-buffered or fully off-grid loads: the flagship 'Oasis' site at Lost Hills, CA (opened July 2025) runs 168 stalls entirely off-grid on an 11 MW solar array and 39 MWh of Megapacks (10 × 3.9 MWh units), demonstrating demand-charge avoidance and interconnection-queue bypass at scale.",
+   "highlights": [
+    "Oasis: world's largest Supercharger station and fully solar+storage powered; 84 stalls at opening, remainder plus lounge phased in",
+    "Storage-buffered sites reduce peak grid draw — a template for high-power charging in constrained grids"
+   ],
+   "positioning": "No other charging-network operator self-supplies utility-scale storage hardware; the network doubles as an internal Megapack customer and a showcase for off-grid C&I microgrid design.",
+   "soldThrough": "Internal deployment (Tesla-owned charging network); learnings productized in Megapack microgrid offerings",
+   "targetSegments": "Tesla/NACS EV drivers; indirectly, C&I microgrid buyers evaluating off-grid charging",
+   "roadmap": "More storage-backed Supercharger sites where interconnection is slow or demand charges are high"
+  },
+  {
+   "name": "Solar & adjacent businesses (context)",
+   "category": "Adjacent businesses",
+   "description": "Retrofit solar and Solar Roof feed the Powerwall attach rate; automotive remains the revenue core (1.64M vehicles delivered in 2025) and funds the energy ramp; 4680 cell production serves vehicles while storage runs on LFP (CATL + new in-house Nevada cells).",
+   "highlights": []
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-08-06",
+   "category": "capacity",
+   "headline": "Megapack 3 production started at Brookshire, TX Megafactory — 16 months from groundbreaking; 50 GWh/yr designed capacity",
+   "read": "Tesla's fastest factory bring-up shifts the Megapack 3/Megablock story from launch-deck claims to shipping product; H2 deliveries are now the execution watch item.",
+   "source": "https://electrek.co/2026/08/06/tesla-megapack-3-production-starts-texas/"
+  },
+  {
+   "date": "2026-07-31",
+   "category": "product-launch",
+   "headline": "First Megapacks with US-made LFP cells shipped, from Tesla's ~7 GWh Sparks, NV cell plant (built with CATL equipment)",
+   "read": "Onshored LFP cells hedge tariff exposure and start reducing the structural dependence on CATL for storage cells.",
+   "source": "https://teslanorth.com/2026/07/31/tesla-begins-shipping-first-megapacks-powered-by-american-made-lfp-cells/"
+  },
+  {
+   "date": "2026-07-08",
+   "category": "product-launch",
+   "headline": "Tesla Home launched — Opticaster AI energy management standard on every Powerwall",
+   "read": "Pushing the fleet-optimization engine free to the whole installed base deepens the software moat and grows the recruitable VPP fleet.",
+   "source": "https://electrek.co/2026/07/08/tesla-home-opticaster-ai-energy-platform/"
+  },
+  {
+   "date": "2026-06-15",
+   "category": "order-win",
+   "headline": "~25 GWh / ~$5B NatPower Megapack framework for Italy/UK reported — largest European deal; includes Autobidder trading",
+   "read": "Third-party reported, not company-confirmed — but if real it locks European volume for the Brookshire/Shanghai ramp and validates the hardware+trading bundle.",
+   "source": "https://electrek.co/2026/08/06/tesla-megapack-3-production-starts-texas/"
+  },
+  {
+   "date": "2026-04-24",
+   "category": "product-launch",
+   "headline": "Powerwall 3P (native three-phase) deliveries and installs began in Germany (announced Feb 2026)",
+   "read": "Closes Tesla's biggest residential product gap in Europe, where three-phase homes previously needed multi-unit workarounds against local incumbents.",
+   "source": "https://www.ess-news.com/2026/04/24/tesla-launches-three-phase-powerwall-3p/"
+  },
+  {
+   "date": "2025-09-08",
+   "category": "product-launch",
+   "headline": "Megapack 3 (~5 MWh) and Megablock (20 MWh MV block) unveiled; Houston-area Megafactory announced at 50 GWh/yr",
+   "read": "Tesla's counter to denser Chinese containers: standardize the unit, integrate transformer/switchgear, and win on site-level cost and schedule.",
+   "source": "https://www.ess-news.com/2025/09/09/tesla-unveils-new-generation-of-utility-scale-batteries-megapack-3-and-megablock/"
+  },
+  {
+   "date": "2025-07-31",
+   "category": "other",
+   "headline": "California VPPs delivered a record >535 MW during July 2025 events — Powerwall homes supplied nearly 500 MW",
+   "read": "Residential fleets are now utility-scale resources; every Powerwall sale compounds the grid-services position.",
+   "source": "https://electrek.co/guides/tesla-virtual-power-plant/"
+  },
+  {
+   "date": "2025-07-03",
+   "category": "other",
+   "headline": "'Oasis' Supercharger opened at Lost Hills, CA — 168 stalls, fully off-grid on 11 MW solar + 39 MWh of Megapacks",
+   "read": "A working showcase that storage can substitute for grid interconnection — sales collateral for microgrid-class Megapack deals.",
+   "source": "https://electrek.co/2025/07/03/tesla-launches-oasis-supercharger-with-solar-farm-off-grid-batteries/"
+  },
+  {
+   "date": "2025-03-21",
+   "category": "capacity",
+   "headline": "Megafactory Shanghai completed its first Megapack export shipment (Australia); 1,000th unit produced within ~6 months",
+   "read": "The China plant gives Tesla tariff-advantaged supply for APAC/EMEA and freed Lathrop for the Americas backlog.",
+   "source": "https://cnevpost.com/2025/03/21/tesla-china-ships-1st-megapacks-overseas/"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess Tesla Energy is the company's execution bright spot — record 46.7 GWh deployed in 2025 (+49%) at segment-leading margins, with the Brookshire bring-up (16 months from groundbreaking to production) the fastest in company history. Basis: shareholder updates and filings.",
+  "(Moderate confidence) We assess Tesla's response to Chinese density leadership is standardization plus software — integrated Megablock units winning on site-level cost and schedule, and the Autobidder/fleet-optimization layer deepening a software moat — rather than competing on container density alone.",
+  "(Moderate confidence) We assess onshored LFP cell production reduces but does not eliminate the structural dependence on CATL for storage cells; tariff hedging is the near-term driver of the onshoring sequence.",
+  "(Low confidence) The reported ~25 GWh NatPower agreement is third-party reporting the company has not confirmed — European volume should not be treated as locked."
+ ],
+ "relationships": [
+  {
+   "slug": "catl",
+   "type": "supplier",
+   "note": "Primary LFP cell source for Megapack — dependence now being reduced by in-house Nevada cells made on CATL equipment.",
+   "context": "Megapack 2XL runs primarily on CATL LFP cells, and Tesla's ~7 GWh Sparks, NV cell plant — which shipped its first US-made-cell Megapacks in July 2026 — was itself built with CATL equipment. The dossier's judgment: onshored LFP production reduces but does not eliminate structural dependence on CATL, with tariff hedging the near-term driver; the Megapack 3's in-house 2.8L cell is the next-generation reduction step.",
+   "source": "https://teslanorth.com/2026/07/31/tesla-begins-shipping-first-megapacks-powered-by-american-mad",
+   "status": "active",
+   "scale": "Primary storage-cell source"
+  },
+  {
+   "slug": "lg-energy-solution",
+   "type": "supplier",
+   "note": "Confirmed Megapack 3 LFP cell supplier — $4.3B, Lansing MI production from 2027.",
+   "context": "May 2026 confirmation (after eight months of 'mystery buyer' speculation): LG Energy Solution supplies Megapack 3 LFP cells under a $4.3B contract with Lansing, Michigan production from 2027 — Tesla onshoring Megapack cells to a Korean supplier, the FEOC thesis in action.",
+   "source": "Confirmed via LG Energy Solution disclosures (May 2026)",
+   "status": "active",
+   "since": "2026",
+   "scale": "$4.3B"
+  },
+  {
+   "slug": "panasonic",
+   "type": "supplier",
+   "note": "The 2170 cylindrical-cell anchor (first-party unnamed) for the vehicle business.",
+   "context": "Panasonic's Nevada 2170 output (~41 GWh/yr, >11B cells) anchors on Tesla — the widely understood but first-party-unnamed relationship whose demand curve drove (and then stranded) the Kansas De Soto ramp. Storage runs separately on LFP (CATL + in-house Nevada cells).",
+   "source": "Panasonic 2170 anchor (widely understood, first-party unnamed)",
+   "status": "active"
+  },
+  {
+   "slug": "samsung-sdi",
+   "type": "supplier",
+   "note": "Reported near-final talks for ~10 GWh/yr of LFP ESS cells — unconfirmed.",
+   "context": "November 2025 Korean-press reports put Tesla in near-final talks with Samsung SDI for ~10 GWh/yr of LFP ESS cells (~KRW 3T) from converted StarPlus Michigan lines; SDI confirmed talks but 'no details finalized'. Would extend the multi-supplier onshoring pattern the LGES deal set.",
+   "source": "Reported via Samsung SDI disclosures (Nov 2025)",
+   "status": "announced"
+  },
+  {
+   "slug": "sunwoda",
+   "type": "supplier",
+   "note": "Added as fifth global EV cell supplier (April 2026).",
+   "context": "Tesla added Sunwoda as its fifth EV battery supplier in April 2026 amid cost pressure — widening the vehicle-cell bench beyond Panasonic/LG/CATL/BYD-class incumbents.",
+   "source": "Reported via Sunwoda coverage (Apr 2026)",
+   "status": "active",
+   "since": "2026-04"
+  },
+  {
+   "slug": "eve-energy",
+   "type": "supplier",
+   "note": "Sixth cell supplier — ESS cells from Malaysia starting 2026.",
+   "context": "EVE Energy became Tesla's sixth cell supplier, with stationary-storage cells shipping from EVE's Malaysia plant beginning 2026 — a tariff-insulated ESS-cell source alongside the CATL and in-house Nevada chains.",
+   "source": "Reported via EVE Energy disclosures",
+   "status": "active",
+   "since": "2026"
+  },
+  {
+   "slug": "sungrow",
+   "type": "competitor",
+   "note": "Took Tesla's #1 global BESS integrator ranking as Chinese integrators reached ~76% share.",
+   "context": "Wood Mackenzie's 2026 comprehensive ranking put Tesla #2 behind Sungrow — the first time the integrator top spot changed hands — as Chinese integrators captured ~76% of a >100 GW market. Tesla's counters: factory prefabrication, Autobidder, delivery speed, bankability, and non-China supply for tariff-sensitive Western buyers (record 46.7 GWh deployed in 2025; Megapack 3/Megablock ramping at Brookshire).",
+   "source": "https://www.ess-news.com/2026/07/14/sungrow-leads-first-global-bess-integrator-ranking-as-marke",
+   "status": "active"
+  },
+  {
+   "slug": "byd",
+   "type": "competitor",
+   "note": "Denser-container Chinese rival (MC Cube) and residential Battery-Box competitor.",
+   "context": "BYD's MC Cube (~6 MWh-class) out-densifies the Megapack 2XL and its Battery-Box contests Powerwall in residential — part of the Chinese-integrator wave against which Tesla sells prefabrication, software and non-China supply rather than per-container density.",
+   "source": "Dossier competitive assessment — AC blocks",
+   "status": "active"
+  },
+  {
+   "slug": "fluence",
+   "type": "competitor",
+   "note": "Smartstack vs Megablock; Mosaic vs Autobidder — the Western-integrator rivalry.",
+   "context": "Fluence's Smartstack (7→10 MWh, ~680 MWh/acre claimed) competes with Megablock at the site-architecture level, and Mosaic contests Autobidder in market-bidding software. The two are the only at-scale Western integrators with US domestic-content paths — allies in policy, rivals in every bid.",
+   "source": "Dossier competitive assessment — AC blocks",
+   "status": "active"
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Megapack 2XL (current volume product)",
+   "specs": [
+    {
+     "band": "Ratings",
+     "label": "Energy / power",
+     "value": "3.916 MWh / 1.927 MW per unit (2-hour configuration); 4-hour configuration offered"
+    },
+    {
+     "band": "Architecture",
+     "label": "Integration",
+     "value": "AC-coupled: integrated bi-directional inverters, thermal management, and controls in one factory-assembled enclosure"
+    },
+    {
+     "band": "Performance",
+     "label": "Round-trip efficiency",
+     "value": "~85–92% depending on configuration (datasheet/third-party figures)"
+    },
+    {
+     "band": "Cells",
+     "label": "Chemistry & supply",
+     "value": "LFP, primarily CATL-supplied; first US-made cells (Tesla Nevada ~7 GWh plant) shipping from July 2026"
+    },
+    {
+     "band": "Manufacturing",
+     "label": "Factories",
+     "value": "Lathrop, CA 40 GWh/yr; Shanghai 20 GWh/yr installed (~40 GWh/yr designed)"
+    }
+   ],
+   "notes": "Unit-level figures per Tesla's Megapack 2 XL datasheet as filed in US siting-authority dockets."
+  },
+  {
+   "product": "Megapack 3 (September 2025 unveiling; production from August 2026)",
+   "specs": [
+    {
+     "band": "Ratings",
+     "label": "Usable energy",
+     "value": "~5 MWh AC per unit (~28% more than the 3.9 MWh Megapack 2XL, same footprint)"
+    },
+    {
+     "band": "Ratings",
+     "label": "Power rating",
+     "value": "Not disclosed at launch"
+    },
+    {
+     "band": "Cells",
+     "label": "Cell",
+     "value": "New 2.8-liter LFP cell designed by Tesla's internal cell team; cells sourced from the US, Southeast Asia, and China"
+    },
+    {
+     "band": "Design",
+     "label": "Electronics & safety",
+     "value": "Silicon-carbide inverter, integrated fire protection, 78% fewer thermal connection points"
+    },
+    {
+     "band": "Logistics",
+     "label": "Transport",
+     "value": "~39 t; ships on a standard 7-axle trailer with no onsite assembly"
+    },
+    {
+     "band": "Manufacturing",
+     "label": "Brookshire, TX Megafactory",
+     "value": "50 GWh/yr designed capacity; production started 2026-08-06"
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "product": "Megablock — 20 MWh medium-voltage AC block",
+   "specs": [
+    {
+     "band": "Ratings",
+     "label": "Energy",
+     "value": "20 MWh AC (4 × Megapack 3) at medium voltage with integrated transformer/switchgear"
+    },
+    {
+     "band": "Performance",
+     "label": "Round-trip efficiency",
+     "value": "91% at medium voltage including auxiliary loads"
+    },
+    {
+     "band": "Lifecycle",
+     "label": "Life",
+     "value": "25-year design life; >10,000 cycles"
+    },
+    {
+     "band": "Environment",
+     "label": "Range & density",
+     "value": "-40°C to 60°C; 248 MWh AC per acre site-level density"
+    },
+    {
+     "band": "Construction",
+     "label": "Claims",
+     "value": "23% faster installation; up to 40% lower construction cost; 1 GWh deployable in ~20 business days; flexible busbar, no above-ground cabling"
+    }
+   ],
+   "notes": "Competitor site blocks for context: Sungrow PowerTitan 3.0 (3.45/6.9/12.5 MWh; 684 Ah cell; 430 kVA SiC PCS; up to 93.6% RTE claim), Fluence Smartstack 10 MWh (June 2026; ~680 MWh/acre claim), CATL TENER Stack 9 MWh. Density claims use vendor-specific measurement bases — not directly comparable."
+  },
+  {
+   "product": "Powerwall 3 (official datasheet)",
+   "specs": [
+    {
+     "band": "Ratings",
+     "label": "Energy",
+     "value": "13.5 kWh nominal; expandable to 54 kWh per unit with stackable DC Expansion units"
+    },
+    {
+     "band": "Ratings",
+     "label": "Power",
+     "value": "5.8/7.6/10/11.5 kW continuous on-grid (configurable); up to 15.4 kW off-grid"
+    },
+    {
+     "band": "Solar interface",
+     "label": "Input",
+     "value": "20 kW max STC, 6 MPPTs, 60–550 V DC"
+    },
+    {
+     "band": "Performance",
+     "label": "Efficiency",
+     "value": "97.5% solar-to-grid (CEC); 89% round-trip solar-to-home"
+    },
+    {
+     "band": "Cells",
+     "label": "Chemistry",
+     "value": "LFP per third-party spec sheets (official datasheet omits chemistry)"
+    },
+    {
+     "band": "Physical",
+     "label": "Dimensions / weight",
+     "value": "1105 × 609 × 193 mm; 132 kg"
+    },
+    {
+     "band": "Compliance",
+     "label": "Certifications",
+     "value": "UL 1741:2021, UL 1973, UL 9540A, CSA 107.1, IEEE 1547:2018"
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "product": "Powerwall 3P (three-phase variant — Germany first, 2026)",
+   "specs": [
+    {
+     "band": "Ratings",
+     "label": "Energy",
+     "value": "13.5 kWh usable per unit"
+    },
+    {
+     "band": "Ratings",
+     "label": "Power",
+     "value": "15.4 kW continuous AC with solar (11.5 kW without solar / high temperature); 21 kW one-second backup peak"
+    },
+    {
+     "band": "Solar interface",
+     "label": "Input",
+     "value": "4 MPPTs; up to 20.3 kW connected PV"
+    },
+    {
+     "band": "Performance",
+     "label": "Efficiency",
+     "value": "98.4% solar-to-grid (company figure)"
+    },
+    {
+     "band": "Scaling",
+     "label": "Multi-unit",
+     "value": "Up to four 3P units combinable — 61.6 kW output; 94.5 kWh with expansions (company figures)"
+    }
+   ],
+   "notes": "Native three-phase inverter in a single unit — replaces the prior up-to-three-Powerwall workaround on European three-phase homes. Announced 2026-02-13; German installs from late April 2026."
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Elon Musk",
+   "photo": "images/execs/tesla-musk.jpg",
+   "photoCredit": "U.S. Air Force / Trevor Cokley, Public domain, via Wikimedia Commons",
+   "title": "Chief Executive Officer (since 2008; joined 2004 as chairman/lead investor)",
+   "background": [
+    "Co-founder of X.com/PayPal; CEO of SpaceX; founder of xAI",
+    "BA Physics + BS Economics, University of Pennsylvania"
+   ]
+  },
+  {
+   "name": "Vaibhav Taneja",
+   "title": "Chief Financial Officer (since August 2023)",
+   "background": [
+    "Joined Tesla 2017 via SolarCity; Chief Accounting Officer 2019–2023",
+    "~17 years at PwC (India and US); B.Com University of Delhi; Chartered Accountant (ICAI) and CPA"
+   ]
+  },
+  {
+   "name": "Mike Snyder",
+   "title": "VP, Energy & Charging (since October 2024) — head of Tesla Energy / Megapack",
+   "linkedin": "https://www.linkedin.com/in/michael-snyder-264a284/",
+   "background": [
+    "10+ years at Tesla; previously Senior Director, Megapack with end-to-end product and business accountability"
+   ]
+  },
+  {
+   "name": "Tom Zhu",
+   "title": "SVP, APAC (since January 2025; previously SVP Automotive 2023–24)",
+   "background": [
+    "Joined 2014 as China country manager; oversees Asia-Pacific including Megafactory Shanghai",
+    "Bachelor's, Auckland University of Technology; MBA, Duke (Fuqua)"
+   ]
+  },
+  {
+   "name": "Robyn Denholm",
+   "photo": "images/execs/tesla-denholm.jpg",
+   "photoCredit": "CeBIT Australia, CC BY 2.0, via Wikimedia Commons",
+   "title": "Board Chair (since November 2018; director since 2014)",
+   "background": [
+    "Former CFO / Head of Strategy at Telstra; CFO of Juniper Networks; earlier Sun Microsystems, Toyota Australia",
+    "BEc University of Sydney; MCom UNSW"
+   ]
+  },
+  {
+   "name": "JB Straubel",
+   "title": "Board member (since 2023); Tesla co-founder & former CTO (2004–2019)",
+   "background": [
+    "Founder/CEO of Redwood Materials (battery materials & recycling); BS/MS Stanford"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "public",
+  "periods": [
+   {
+    "period": "FY2024",
+    "metrics": [
+     {
+      "name": "Total revenue",
+      "actual": "$97.7B (+1%); Q4 $25.7B",
+      "expected": "Q4 ~$27.2B (consensus)",
+      "verdict": "miss",
+      "result": "Q4 revenue miss"
+     },
+     {
+      "name": "EPS (non-GAAP)",
+      "actual": "FY $2.42; Q4 $0.73",
+      "expected": "Q4 $0.75–0.77 (consensus)",
+      "verdict": "miss",
+      "result": "Stock rose post-report anyway on the 'return to growth' pledge"
+     },
+     {
+      "name": "Energy segment",
+      "actual": "Revenue $10.09B (+67%); deployments 31.4 GWh (+113%); record ~26% segment gross margin",
+      "expected": "",
+      "verdict": "beat",
+      "result": "Segment was the standout"
+     }
+    ],
+    "commentary": "",
+    "periodType": "annual",
+    "periodEnd": "2024-12-31"
+   },
+   {
+    "period": "FY2025",
+    "metrics": [
+     {
+      "name": "Total revenue",
+      "actual": "$94.83B (-3%); Q4 $24.90B",
+      "expected": "Q4 $24.74B (consensus)",
+      "verdict": "beat",
+      "result": "Q4 beat",
+      "kpi": "revenue",
+      "usdMillions": 94830,
+      "fxBasis": "as reported"
+     },
+     {
+      "name": "EPS (non-GAAP)",
+      "actual": "FY $1.66; Q4 $0.50",
+      "expected": "Q4 $0.45 (consensus)",
+      "verdict": "beat",
+      "result": "—"
+     },
+     {
+      "name": "Energy segment",
+      "actual": "Revenue $12.77B (+27%); deployments 46.7 GWh (+49%, incl. record 14.2 GWh in Q4); Q4 gross margin 28.7% (~$1.1B quarterly gross profit)",
+      "expected": "",
+      "verdict": "beat",
+      "result": "Energy became the profit engine as automotive shrank"
+     }
+    ],
+    "commentary": "",
+    "periodType": "annual",
+    "periodEnd": "2025-12-31"
+   },
+   {
+    "period": "Q1–Q2 2026 (latest quarters)",
+    "metrics": [
+     {
+      "name": "Q1 revenue / EPS",
+      "actual": "$22.39B; EPS $0.41",
+      "expected": "~$22.3B; EPS $0.37 (consensus)",
+      "verdict": "beat",
+      "result": "Flattered by one-time warranty/tariff benefits; energy gross margin spiked to 39.5%"
+     },
+     {
+      "name": "Q1 storage deployments",
+      "actual": "8.8 GWh (-38% QoQ)",
+      "expected": "12–14 GWh (consensus)",
+      "verdict": "miss",
+      "result": "Management maintained 2026 deployments will exceed 2025"
+     },
+     {
+      "name": "Q2 revenue / EPS",
+      "actual": "$28.24B on record 480,126 deliveries; EPS $0.33",
+      "expected": "~$26.4–26.7B; EPS ~$0.53 (consensus)",
+      "verdict": "miss",
+      "result": "Revenue beat but a large EPS miss (operating margin 1.4%; capex surge to $5.8B for AI/robotics); shares fell"
+     },
+     {
+      "name": "Q2 energy segment",
+      "actual": "Revenue $3.14B (+13%); deployments 13.5 GWh (+40% YoY); gross margin fell to 20.4% on a $240M warranty charge (legacy vendor cell issues) and lower pricing",
+      "expected": "",
+      "verdict": "inline",
+      "result": "H1 2026 deployments 22.3 GWh"
+     }
+    ],
+    "commentary": "No formal FY2026 guidance figures published; the watch items are H2 deployment guidance and the Megapack 3 / Brookshire ramp.",
+    "periodType": "other"
+   }
+  ],
+  "commentary": "Deployment GWh, segment revenue/margins, and EPS are company-reported (shareholder updates / SEC filings) as relayed by cited outlets; consensus figures are analyst estimates (LSEG/aggregators). The ~25 GWh NatPower deal is third-party reported, not company-confirmed."
+ },
+ "sources": [
+  {
+   "label": "Electrek — Megapack 3 production starts in Texas (Aug 2026)",
+   "url": "https://electrek.co/2026/08/06/tesla-megapack-3-production-starts-texas/",
+   "date": "2026-08-06"
+  },
+  {
+   "label": "TeslaNorth — first Megapacks with US-made LFP cells (2026-07-31)",
+   "url": "https://teslanorth.com/2026/07/31/tesla-begins-shipping-first-megapacks-powered-by-american-made-lfp-cells/",
+   "date": "2026-07-31"
+  },
+  {
+   "label": "Tesla — Q2 2026 shareholder update (SEC 8-K exhibit 99.1: deployments, factory capacity table, Powerwall 3P)",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001318605/000162828026049213/exhibit991.htm",
+   "date": "2026-07-22"
+  },
+  {
+   "label": "Electrek — Q2 2026 results",
+   "url": "https://electrek.co/2026/07/22/tesla-tsla-q2-2026-financial-results/",
+   "date": "2026-07-22"
+  },
+  {
+   "label": "ESS News — Sungrow leads first global BESS integrator ranking (2026)",
+   "url": "https://www.ess-news.com/2026/07/14/sungrow-leads-first-global-bess-integrator-ranking-as-market-tops-100-gw/",
+   "date": "2026-07-14"
+  },
+  {
+   "label": "Electrek — Tesla Home / Opticaster AI launch (2026-07-08)",
+   "url": "https://electrek.co/2026/07/08/tesla-home-opticaster-ai-energy-platform/",
+   "date": "2026-07-08"
+  },
+  {
+   "label": "Energy-Storage.News — energy margin decline + deployment rebound (Q2 2026)",
+   "url": "https://www.energy-storage.news/teslas-energy-division-gross-margin-declines-19-despite-battery-storage-deployment-rebound/",
+   "date": "2026-07"
+  },
+  {
+   "label": "Solar Power World — Fluence Smartstack 10 MWh (competitor context, 2026-06)",
+   "url": "https://www.solarpowerworldonline.com/2026/06/fluence-boosts-smartstack-bess-storage-capacity-to-10-mwh/",
+   "date": "2026-06"
+  },
+  {
+   "label": "ESS News — Powerwall 3P German launch (2026-04-24)",
+   "url": "https://www.ess-news.com/2026/04/24/tesla-launches-three-phase-powerwall-3p/",
+   "date": "2026-04-24"
+  },
+  {
+   "label": "Electrek — Q1 2026 results",
+   "url": "https://electrek.co/2026/04/22/tesla-tsla-q1-2026-financial-results/",
+   "date": "2026-04-22"
+  },
+  {
+   "label": "Electrek — Powerwall 3P announcement (2026-02-13)",
+   "url": "https://electrek.co/2026/02/13/tesla-announces-powerwall-3p-with-native-three-phase-inverter/",
+   "date": "2026-02-13"
+  },
+  {
+   "label": "EnergyTrend — Tesla 2025: storage as the growth driver",
+   "url": "https://www.energytrend.com/news/20260209-50928.html",
+   "date": "2026-02-09"
+  },
+  {
+   "label": "Teslarati — Q4 & FY2025 earnings results",
+   "url": "https://www.teslarati.com/tesla-tsla-q4-and-fy-2025-earnings-results/",
+   "date": "2026-01"
+  },
+  {
+   "label": "ESS News — Megapack 3 and Megablock unveiling",
+   "url": "https://www.ess-news.com/2025/09/09/tesla-unveils-new-generation-of-utility-scale-batteries-megapack-3-and-megablock/",
+   "date": "2025-09-09"
+  },
+  {
+   "label": "Solar Power World — Sungrow PowerTitan 3.0 specs (competitor context)",
+   "url": "https://www.solarpowerworldonline.com/2025/09/sungrow-powertitan-3-0-bess-reaches-6-9-mwh-in-20-ft-container/",
+   "date": "2025-09"
+  },
+  {
+   "label": "Wood Mackenzie — Tesla #1 BESS producer 2024, Sungrow narrowing",
+   "url": "https://www.woodmac.com/press-releases/tesla-remains-the-top-global-producer-of-battery-energy-storage-systems-in-2024-but-sungrow-narrows-the-gap/",
+   "date": "2025-09"
+  },
+  {
+   "label": "Electrek — Oasis off-grid Supercharger, Lost Hills (2025-07-03)",
+   "url": "https://electrek.co/2025/07/03/tesla-launches-oasis-supercharger-with-solar-farm-off-grid-batteries/",
+   "date": "2025-07-03"
+  },
+  {
+   "label": "CATL — TENER Stack 9 MWh launch (competitor context)",
+   "url": "https://www.catl.com/en/news/6410.html",
+   "date": "2025-05"
+  },
+  {
+   "label": "CnEVPost — Shanghai Megafactory first Megapack exports (2025-03-21)",
+   "url": "https://cnevpost.com/2025/03/21/tesla-china-ships-1st-megapacks-overseas/",
+   "date": "2025-03-21"
+  },
+  {
+   "label": "Teslarati — Nevada Megapack cell plant using CATL equipment",
+   "url": "https://www.teslarati.com/tesla-battery-plant-nevada-catl-equipment-report/",
+   "date": "2025-02"
+  },
+  {
+   "label": "CNBC — Q4 2024 earnings vs consensus",
+   "url": "https://www.cnbc.com/2025/01/29/tesla-tsla-2024-q4-earnings.html",
+   "date": "2025-01-29"
+  },
+  {
+   "label": "Teslarati — Megapack exec promoted to VP Energy & Charging",
+   "url": "https://www.teslarati.com/tesla-megapack-exec-promoted-vp-energy-charging/",
+   "date": "2024-10"
+  },
+  {
+   "label": "EE Power — Texas PUCT approves Tesla aggregated-DER VPPs (ERCOT)",
+   "url": "https://eepower.com/news/texas-officials-greenlight-teslas-virtual-power-plants/",
+   "date": "2023-03"
+  },
+  {
+   "label": "Tesla — Megapack product page",
+   "url": "https://www.tesla.com/megapack"
+  },
+  {
+   "label": "Tesla — Powerwall product page",
+   "url": "https://www.tesla.com/powerwall"
+  },
+  {
+   "label": "Tesla Support — Opticaster",
+   "url": "https://www.tesla.com/support/energy/tesla-software/opticaster"
+  },
+  {
+   "label": "Tesla — Virtual Power Plants Worldwide",
+   "url": "https://www.tesla.com/vpp"
+  },
+  {
+   "label": "Tesla — Megapack 2 XL datasheet (CT Siting Council filing)",
+   "url": "https://portal.ct.gov/-/media/csc/3_petitions-medialibrary/petitions_medialibrary/mediapetitionnos1601-1700/pe1607/petitionersubmissions/supplement-attachment-a---megapack_2_xl_datasheet.pdf"
+  },
+  {
+   "label": "Electrek — Tesla VPP guide (California >535 MW record, program list)",
+   "url": "https://electrek.co/guides/tesla-virtual-power-plant/"
+  },
+  {
+   "label": "Tesla Energy Library — Powerwall 3 specifications",
+   "url": "https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/BackupSwitch/en-us/GUID-EC527BC7-4750-4425-BBC4-DB8C000339B3.html"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 5
+}

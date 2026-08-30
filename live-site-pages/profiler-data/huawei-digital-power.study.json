@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "huawei-digital-power",
+  "title": "Huawei Digital Power — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "String versus central: the architecture argument",
+      "bullets": [
+        "Every large power-conversion problem faces the same fork: one big converter (central) or many small ones (string, or distributed). Central wins on cost per watt; distributed wins on availability, granularity of control, and graceful failure",
+        "Solar taught the lesson first: a central inverter ties hundreds of panel strings to one machine, so mismatch anywhere drags the whole array and one failure drops megawatts. String inverters give each group of panels its own conversion and tracking",
+        "MPPT is why granularity harvests more: maximum power point tracking continuously finds each string's optimal operating voltage, which shifts with sun, temperature, and shading — per-string tracking recovers energy that plant-wide averaging forfeits",
+        "The availability math generalizes: a failed string inverter takes down a sliver and is swapped by two technicians, while a failed central unit is a crane, a wait, and a revenue hole — the same logic now argued in UPS rooms and battery plants"
+      ]
+    },
+    {
+      "heading": "Telecom power: the heritage of the remote site",
+      "bullets": [
+        "A mobile network is hundreds of thousands of small power plants: every tower needs continuous DC power, often on weak grids, with no staff and extreme weather — an engineering school that breeds ruthless efficiency and remote-management discipline",
+        "Site power design is a systems problem: rectifiers convert grid or generator power, batteries bridge the gaps, and controllers juggle solar, diesel, and grid to minimize fuel — because at a remote site, every wasted watt is diesel trucked up a mountain",
+        "Fleet management came free with the territory: operating a hundred thousand unmanned sites forces investment in telemetry, remote diagnostics, and predictive maintenance at a scale data-center operators only later discovered they needed",
+        "The DNA transfers directly: the modular rectifier became the modular UPS power module, the hybrid site controller became the microgrid energy manager, and the fleet-monitoring stack became infrastructure-management software — one competence re-costumed across industries"
+      ]
+    },
+    {
+      "heading": "Modular UPS: availability through granularity",
+      "bullets": [
+        "A monolithic UPS is one big power train sized on day one; a modular UPS is a cabinet of identical slide-in power modules sharing the load in parallel — the string-versus-central argument, brought indoors",
+        "The availability case rests on repair time: a failed module hot-swaps in minutes by on-site staff, while a monolithic failure can mean hours or days on bypass — the load exposed to raw utility power — awaiting a specialist. Redundancy in small increments also costs far less than duplicating a monolith",
+        "Modularity right-sizes the early years: a facility at one-third design load runs a third of its modules near their efficiency sweet spot instead of one giant unit loafing inefficiently — and grows by adding modules, not forklifts",
+        "The hidden engineering is control: paralleled modules must share current precisely without a single master whose failure takes down the system — decentralized control, where modules coordinate as peers, is the discipline that makes the architecture trustworthy"
+      ]
+    },
+    {
+      "heading": "Grid security: why regulators scrutinize grid-connected electronics",
+      "bullets": [
+        "Modern inverters, UPS units, and battery systems are computers with network connections: firmware updates, telemetry, and remote management are standard features. Aggregated across a country, that connectivity becomes a control surface for critical infrastructure",
+        "The regulatory concern is coordination at scale: a malicious or compromised update pushed to a large installed fleet could, in principle, disturb generation or load in synchrony — and grid stability depends on failures not happening all at once",
+        "This is a trust question distinct from quality: a technically excellent product can still be judged unacceptable if regulators cannot verify who controls its software, where its data flows, or what legal obligations bind its manufacturer — provenance becomes a specification",
+        "The policy toolkit is expanding worldwide: procurement exclusions, origin-based rules, certification and audit regimes, and contract clauses barring remote access. Vendors respond with local data residency, third-party code audits, and on-premises management options — security posture as a product feature"
+      ]
+    },
+    {
+      "heading": "The integrated stack: power, cooling, and monitoring as one SKU",
+      "bullets": [
+        "The full-stack pitch: one vendor pre-engineers power train, cooling, racks, and monitoring as a single validated product — the interfaces between subsystems, where projects traditionally bleed time and blame, are internalized before shipment",
+        "Speed is the headline benefit: pre-integration moves weeks of on-site coordination into the factory, and one performance guarantee spans the whole stack — no finger-pointing between a power vendor and a cooling vendor when a number is missed",
+        "The trade is lifetime flexibility: a single-vendor stack means expansion, spares, and upgrades are priced by an incumbent facing little competition, and best-of-breed choices at each layer are surrendered — buyers weigh delivery speed against decades of lock-in",
+        "Where it wins tells you what it is: standardized mid-size deployments, markets with thin local engineering ecosystems, and speed-critical builds favor the integrated SKU; sophisticated operators with strong internal engineering more often mix vendors and keep leverage"
+      ]
+    },
+    {
+      "heading": "Operating under export controls: how sanctions reshape a supply chain",
+      "bullets": [
+        "Export controls restrict named technologies — advanced chips, chipmaking tools, certain software — from reaching listed companies or countries: the restricted firm cannot buy them, or products embedding them, from anyone within the controlling jurisdiction's reach",
+        "The engineering response is substitution: redesign products around available components, qualify domestic suppliers, vertically integrate critical parts like power semiconductors, and pour R&D into rebuilding what can no longer be imported — slower and costlier, but compounding",
+        "The commercial response is remapping: markets closed by policy are written off and the company concentrates on accessible geographies — its addressable market becomes a political artifact that shifts with each regulatory action rather than with product merit",
+        "The system-level effect is bifurcation: parallel technology stacks with divergent components and standards emerge on each side of the control line, and every multinational buyer and supplier must now track two compliance regimes — a permanent tax the whole industry pays"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "What is the core trade between central and string (distributed) conversion?",
+      "a": "Central: one big converter — cheapest per watt, but coarse control and a single point of failure that drops megawatts. String: many small converters — finer control, graceful failure, technician-swappable — at a higher cost per watt. The same choice recurs in solar, UPS, and battery plants."
+    },
+    {
+      "q": "What is MPPT, and why does per-string tracking harvest more energy?",
+      "a": "Maximum power point tracking finds the operating voltage where a panel string produces the most power — a point that shifts constantly with sunlight, temperature, and shading. One plant-wide tracker averages across mismatched strings and forfeits energy; per-string tracking recovers it."
+    },
+    {
+      "q": "Why did telecom site power breed strong power-electronics companies?",
+      "a": "Hundreds of thousands of unmanned sites on weak grids force ruthless disciplines: efficient rectifiers, battery-bridged reliability, hybrid solar-diesel control, and fleet-scale remote management. Those competences — modular conversion plus monitoring software — transfer directly to UPS, solar, and data-center power."
+    },
+    {
+      "q": "Why is efficiency a religion at a remote tower site?",
+      "a": "Because waste is paid in logistics, not just electricity: every extra watt at an off-grid site burns diesel that must be trucked in, stored, and guarded. Efficiency improvements compound across a fleet of a hundred thousand sites — the operating-cost case is brutal and immediate."
+    },
+    {
+      "q": "What does modularity do to UPS repair time, and why does that matter as much as failure rate?",
+      "a": "A failed module hot-swaps in minutes; a failed monolith can sit on bypass — the load exposed to raw utility power — for hours or days awaiting specialists. Availability depends on how often things fail and how long repairs take; modularity attacks the repair-time half decisively."
+    },
+    {
+      "q": "How does a modular UPS save energy in a facility's early years?",
+      "a": "Facilities open far below design load. A monolithic UPS loafs at low load, where efficiency sags; a modular system runs only the modules it needs, each near its efficiency sweet spot, and adds modules as load grows — pay-as-you-grow in both capital and losses."
+    },
+    {
+      "q": "Why do regulators treat grid-connected inverters as a security matter?",
+      "a": "They are networked computers controlling power flow, updated remotely at fleet scale. The concern is synchronized action: a compromised update across a large installed base could disturb a grid that depends on failures being uncorrelated. Aggregate connectivity turns products into critical-infrastructure surface."
+    },
+    {
+      "q": "How can a technically excellent product still be excluded from a market?",
+      "a": "Because the test is trust, not quality: regulators ask who controls the software, where telemetry flows, and what legal obligations bind the manufacturer. If provenance cannot be verified to their standard, engineering merit does not cure it — provenance has become part of the specification."
+    },
+    {
+      "q": "What does buying power, cooling, and monitoring as one SKU actually buy?",
+      "a": "Internalized interfaces: the vendor resolves subsystem integration in the factory, delivery compresses, and one performance guarantee covers the stack — no cross-vendor finger-pointing. The buyer trades away lifetime flexibility: expansion and spares are priced by an incumbent, and best-of-breed choices are gone."
+    },
+    {
+      "q": "Where does the integrated single-vendor stack tend to win?",
+      "a": "Standardized mid-size deployments, speed-critical builds, and markets without deep local engineering ecosystems — places where integration capacity is the scarce resource. Sophisticated operators with strong internal engineering more often multi-source to keep leverage and pick the best at each layer."
+    },
+    {
+      "q": "What do export controls force a restricted company to do?",
+      "a": "Substitute and remap: redesign products around components it can still get, qualify domestic suppliers, vertically integrate critical parts, and spend heavily rebuilding blocked technology — while writing off closed markets and concentrating on accessible ones. Its addressable market becomes a policy artifact."
+    },
+    {
+      "q": "What is technology-stack bifurcation?",
+      "a": "The emergence of parallel ecosystems — different components, tools, and standards — on each side of an export-control line. Suppliers and buyers everywhere then carry two compliance regimes, R&D gets duplicated globally, and interoperability erodes: a permanent structural tax created by policy rather than physics."
+    }
+  ]
+}

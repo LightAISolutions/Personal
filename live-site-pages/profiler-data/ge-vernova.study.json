@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "ge-vernova",
+  "title": "GE Vernova — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "The power-OEM business model: sell the machine, earn for decades",
+      "bullets": [
+        "A heavy-duty turbine is priced aggressively because the real prize starts at commissioning: a machine that runs 30-plus years needs parts, repairs, and scheduled overhauls — bought from the OEM (original equipment manufacturer) that holds the design data",
+        "Long-term service agreements lock it in: multi-decade contracts covering planned maintenance at agreed prices, often with availability guarantees and bonus/penalty terms — turning every installed machine into an annuity",
+        "The margin structure inverts intuition: equipment sales run thin while services carry the profit. An OEM's income statement is really its installed base being monetized — new units are partly a customer-acquisition cost for future service",
+        "Hot-section parts explain why: turbine blades operate in gas hotter than their own melting point, surviving on coatings and internal cooling channels, and must be replaced on strict schedules — proprietary consumables only the OEM and its licensed shops supply"
+      ]
+    },
+    {
+      "heading": "The installed-base flywheel: why the biggest fleet wins the next order",
+      "bullets": [
+        "Every operating turbine streams performance data to its maker. The OEM with the biggest fleet accumulates the most operating hours, finds failure modes first, and folds fixes into the next design — a learning loop smaller rivals cannot match",
+        "Buyers reinforce it: a utility already running one OEM's machines holds that fleet's spare parts, trained operators, and service relationships — adding the same brand is cheaper and less risky than introducing a competitor's first unit",
+        "Fleet density carries the service network: parts depots, repair shops, and field engineers cluster near installed machines. A rival winning one outlier unit must service it from far away, at structurally worse economics",
+        "So share compounds: losing an order costs not just the machine margin but decades of service revenue and the inside seat for that customer's next expansion — which is why OEMs defend installed base fiercely even through down cycles"
+      ]
+    },
+    {
+      "heading": "Why grid-equipment factories can't just scale up",
+      "bullets": [
+        "Transformer demand was flat for decades and famously cyclical, so the industry ran lean. When data centers, renewables, and grid aging hit at once, order books filled years deep — and every maker faced the same bet: build capacity that opens in three-plus years, into a boom that might not last",
+        "Expansion is people-limited before it is machine-limited: winders, testers, and design engineers take years to develop, and a new plant ramps only as fast as experienced staff can seed new crews — you cannot hire a transformer workforce off the street",
+        "The material chokepoint is grain-oriented electrical steel (GOES) — the specialty magnetic steel every transformer core requires. A handful of mills worldwide produce it, and every announced factory expansion bids for the same tonnage",
+        "High-voltage test bays — the multimillion-dollar labs every unit must pass through — gate the exit, and switchgear has parallel constraints. Supply answers shortage in years, not quarters, which is why lead times and prices stay elevated mid-buildout"
+      ]
+    },
+    {
+      "heading": "Wind-turbine economics: why bigger machines broke the industry",
+      "bullets": [
+        "Wind's cost logic drove machines relentlessly bigger — taller towers reach steadier wind, and swept area (hence energy) grows with the square of blade length — so each product generation leapfrogged the last within a few years",
+        "The hidden cost: every scale-up resets the reliability learning curve. A new platform ships in the thousands before long-term failure modes surface, and a serial defect must then be fixed across the whole fleet at the maker's expense — provisions measured in billions",
+        "Offshore compounded everything: marine foundations, scarce installation vessels, corrosion, and fixed-price contracts signed years before steel, logistics, and financing costs spiked — leaving OEMs delivering locked-price backlog at post-inflation costs, losing money on every unit",
+        "The industry's correction is discipline over spectacle: freeze designs into proven workhorse platforms, price contracts for risk, and walk away from bad backlog — accepting slower growth in exchange for machines that actually earn"
+      ]
+    },
+    {
+      "heading": "Generator physics: from spinning shaft to grid current",
+      "bullets": [
+        "A generator converts torque into electricity with a rotating magnetic field: the rotor is an electromagnet — energized by a DC 'excitation' current — spinning inside a stator wound with heavy copper coils; the moving field drives current through those windings",
+        "Grid frequency locks rotation: a two-pole rotor on a 60 Hz grid turns at exactly 3,600 rpm, synchronized with every other machine on the interconnection. The turbine supplies torque; the grid effectively dictates speed",
+        "Pushing harder does not spin it faster — it shifts the angle: more torque advances the rotor's magnetic position relative to the grid, delivering more real power. Adjusting excitation instead changes voltage support (reactive power) — one machine, two independent knobs",
+        "Heat sets the size limit: hundreds of megawatts through copper produce losses that must be removed, so large generators run sealed in hydrogen (light, highly heat-conductive) with water-cooled stator bars — cooling engineering is what lets one machine reach 500-plus MW"
+      ]
+    },
+    {
+      "heading": "Portfolio logic: gas, grids, and wind under one roof",
+      "bullets": [
+        "The unifying thesis is electrification: as transport, heat, and computing go electric, demand grows for both generation and the delivery grid — a portfolio spanning gas turbines, grid equipment, and wind sells into every leg of that growth however the mix shifts",
+        "The customer overlaps: the same utilities buying turbines also buy transformers, switchgear, and wind farms — one relationship, three order books, and credibility that a whole-system vendor understands the grid problem end to end",
+        "Spin-offs sharpened the model: carving the energy portfolio out of a broader industrial conglomerate gives it its own stock for deals and incentives, forces standalone discipline on weak segments, and lets investors price the energy transition directly",
+        "The tension: a loss-making segment taxes the winners' cash and attention, and conglomerate discounts return when the pieces stop reinforcing each other — the portfolio persists only while shared customers and shared technology demonstrably beat pure-play focus"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "Why do power OEMs accept thin margins on the machines themselves?",
+      "a": "Because the machine is the entry ticket to a 30-year service relationship. Parts, repairs, and scheduled overhauls flow back to the OEM that holds the design data, usually under long-term service agreements — so the installed base, not the equipment sale, is where the profit actually lives."
+    },
+    {
+      "q": "What is a long-term service agreement (LTSA)?",
+      "a": "A multi-decade contract covering a machine's planned maintenance at agreed prices, often with availability guarantees and bonus/penalty terms. It converts unpredictable repair spending into a contracted annuity for the OEM and predictable cost for the owner — and it binds the customer to the OEM for the machine's life."
+    },
+    {
+      "q": "Why do gas-turbine blades have to be replaced on schedule?",
+      "a": "They operate in combustion gas hotter than the metal's own melting point, surviving only through ceramic coatings and internal cooling channels. That existence is finite by design — blades and other hot-section parts are replaced at set intervals, making them proprietary consumables that anchor the OEM's service business."
+    },
+    {
+      "q": "What is the installed-base flywheel?",
+      "a": "The self-reinforcing advantage of the largest fleet: more operating machines stream more data, so the OEM finds failure modes first and improves designs fastest; customers standardize on the brand they already stock parts and train operators for; and the service network densifies around the fleet. Share compounds — the biggest fleet keeps winning the next order."
+    },
+    {
+      "q": "Why does a utility usually reorder from its incumbent turbine OEM?",
+      "a": "Switching costs: it already holds the incumbent's spare-parts inventory, operator training, maintenance procedures, and service relationships. A competitor's first unit means duplicating all of that for one machine, served from a distant network — so the incumbent wins even at comparable hardware prices."
+    },
+    {
+      "q": "What is GOES and why does it constrain transformer supply?",
+      "a": "Grain-oriented electrical steel — specialty steel processed so its magnetic grains align, minimizing losses in transformer cores. Only a handful of mills worldwide produce it, so every factory expansion competes for the same tonnage. It is the raw-material bottleneck beneath the equipment bottleneck."
+    },
+    {
+      "q": "Why does grid-equipment supply respond to shortages so slowly?",
+      "a": "Three stacked lags: a new plant takes three-plus years to build; the craft workforce (winders, testers) takes years to train and can only grow as fast as experienced staff can seed new crews; and makers hesitate to commit capital because transformer demand was historically cyclical. Supply arrives in years while demand moves in quarters."
+    },
+    {
+      "q": "Why did offshore wind lose money for nearly every OEM?",
+      "a": "Fixed-price contracts were signed years before delivery, then steel, logistics, and financing costs spiked — locking in losses. Layer on marine engineering risk, scarce installation vessels, and new, ever-larger platforms whose defects surfaced only at fleet scale, and the backlog itself became the liability."
+    },
+    {
+      "q": "Why does making wind turbines bigger reset reliability?",
+      "a": "Energy capture grows with the square of blade length, so scaling up is irresistible — but each new platform is substantially new engineering. Long-term failure modes only appear after thousands of units ship, and a serial defect must then be remediated across the entire fleet at the maker's expense. The fix is workhorse discipline: freeze proven designs and iterate slowly."
+    },
+    {
+      "q": "How does a synchronous generator turn rotation into electricity?",
+      "a": "The rotor is an electromagnet energized by a DC excitation current, spun inside a stator wound with heavy copper coils. The rotating magnetic field drives current through the stator windings. On a 60 Hz grid a two-pole rotor turns at exactly 3,600 rpm, locked in step with every other machine on the interconnection."
+    },
+    {
+      "q": "What are a generator's two control 'knobs'?",
+      "a": "Torque and excitation. More turbine torque advances the rotor's magnetic angle against the grid, delivering more real power (MW) — the machine doesn't speed up, it pushes harder. Adjusting the rotor's excitation current changes reactive power (voltage support). One shaft, two independently controllable products."
+    },
+    {
+      "q": "What's the case for keeping gas, grid, and wind businesses together?",
+      "a": "Electrification lifts demand for both generation and delivery, and the same utility customers buy all three product lines — one relationship, several order books. The bundle also hedges policy swings between gas and renewables. The standing counterargument: a loss-making segment drains the winners, and the conglomerate discount returns when the pieces stop reinforcing each other."
+    }
+  ]
+}

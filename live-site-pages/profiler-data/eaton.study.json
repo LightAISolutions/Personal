@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "eaton",
+  "title": "Eaton — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Distributing power inside the building: busway versus cable",
+      "bullets": [
+        "Once power enters a building it flows through a hierarchy — switchgear at the service entrance, distribution boards, then panelboards and power distribution units near the load — each tier rated for the fault energy it must survive, not just the current it carries",
+        "The classic method runs cables in conduit: flexible and familiar, but every circuit is field labor and changing anything means pulling wire. Busway replaces bundles of cable with a prefabricated metal-enclosed conductor bar that bolts together in sections",
+        "Busway's killer feature is the tap-off: plug-in units clamp on anywhere along the run, so an overhead busway down a data-hall aisle lets rack power change without rewiring — capacity becomes something you reconfigure, not reconstruct",
+        "The choice is economics as much as engineering: busway installs faster with less skilled-labor time and carries very high current compactly, while cable wins long single runs and tight budgets — modern data halls overwhelmingly hang busway overhead"
+      ]
+    },
+    {
+      "heading": "Selective coordination: one fault should trip one breaker",
+      "bullets": [
+        "Breakers sit in series from the utility service down to every receptacle. Selectivity means a fault trips only the nearest upstream device — the failure is cut away surgically while everything else keeps running",
+        "The tool is the time-current curve: every breaker has a plotted personality showing how fast it trips at each current level, and engineers nest the curves so the downstream device always wins the race at any plausible fault current",
+        "It's harder than it sounds: at very high fault currents the curves converge and both breakers want to trip instantly. Short-time delays, instantaneous pickup settings, and zone-selective interlocking — the downstream breaker telling upstream 'I have it' — restore order",
+        "In a critical facility, miscoordination is the nightmare: a fault in one rack's power strip opening a main breaker and darkening the hall. That is why coordination studies are a contract deliverable and codes mandate selectivity for life-safety circuits"
+      ]
+    },
+    {
+      "heading": "Double conversion versus eco-mode: the UPS's efficiency-protection dial",
+      "bullets": [
+        "A double-conversion UPS rebuilds power continuously — everything flows through its converters, so the load sees a perfect synthesized waveform no matter what the utility does. The price: a few percent of every megawatt-hour, around the clock, plus the cooling to remove it",
+        "Eco-mode inverts the bet: the load runs on raw utility through a bypass while the conversion stage idles in reserve, lifting efficiency to 98-99% — but when the utility fails, the UPS must detect the failure and transfer within milliseconds",
+        "The physics referee is hold-up time: server power supplies ride through roughly 10-20 milliseconds on internal capacitors, so an eco-mode transfer completed inside that window is invisible to the IT load. The debate is whether detection is reliably that fast for every fault type",
+        "At tens of megawatts, two efficiency points are millions per year, so vendors keep building middle grounds — adaptive modes that keep converters primed for near-instant takeover. Operators pick a point on the dial per facility, not a dogma"
+      ]
+    },
+    {
+      "heading": "Power quality in the building: what dirty loads do",
+      "bullets": [
+        "Loads that chop current — drives, rectifier front ends, aging equipment — reflect distortion into the building's wiring, and the building pays: distortion currents heat transformers and conductors while doing no useful work, which is why specifications call for K-rated transformers and oversized neutrals in harmonic-rich areas",
+        "IEEE 519 draws the property line: distortion limits apply at the point of common coupling, where the building meets the utility, so one customer's dirty loads cannot degrade a neighbor's power — compliance is measured there, not assumed",
+        "Power factor is billed, not just calculated: utilities charge penalties when a facility's reactive draw ties up their capacity. Modern IT gear with active front ends behaves well; the correction burden usually falls on the mechanical plant and legacy equipment",
+        "AI computing added a new species of disturbance: GPU clusters swinging tens of megawatts in milliseconds, rhythmically. Those repeating oscillations can interact with grid resonances below normal line frequency — new enough that detecting them just became a monitoring product feature"
+      ]
+    },
+    {
+      "heading": "Backup orchestration: the choreography of an outage",
+      "bullets": [
+        "The automatic transfer switch (ATS) is the conductor: it senses utility failure, signals generators to start, transfers the load once generation is stable — then manages the return trip when the utility comes back",
+        "The timeline is a relay race: stored energy carries the load instantly at failure; generators need ten-plus seconds to start, stabilize, and accept load; the ATS hands off between them. Every backup layer exists to cover another layer's startup gap",
+        "Transfer style matters: open transition breaks the connection momentarily — the load blinks unless a UPS bridges it — while closed transition briefly parallels generator and utility for a seamless swap, at the cost of strict synchronization and utility approval",
+        "At campus scale, paralleling switchgear synchronizes multiple generators onto a common bus, adds them in priority order, and sheds non-critical load if generation runs short — a room of engines behaving as one coordinated plant, proven on a rigorous test calendar"
+      ]
+    },
+    {
+      "heading": "The electrical aftermarket: services on a forty-year asset",
+      "bullets": [
+        "Switchgear outlives its designers: lineups installed in the 1990s still run today, creating a service market of scheduled inspection and testing — thermographic scans for hot connections, breaker exercising, insulation measurement — on a fixed calendar",
+        "Retrofit beats replacement: a modern trip unit or breaker fitted into an old cubicle delivers current protection technology without demolition, downtime, or new-switchgear lead times — often the only viable path in a facility that can never power down",
+        "Engineering studies are themselves a product: arc-flash studies (calculating the explosion energy a worker could face at each panel), coordination studies, and load studies must be redone as facilities change — recurring, high-expertise, low-capital revenue",
+        "The channel is part of the moat: electrical distributors, contractors, and panel builders carry a vendor's product into thousands of projects the vendor never sees — and the aftermarket follows wherever the installed base went"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "Why do data halls run busway overhead instead of cable and conduit?",
+      "a": "Busway is a prefabricated conductor bar with plug-in tap-offs anywhere along its length, so rack power can be added or moved without pulling wire. It installs faster, carries high current compactly, and turns electrical capacity into something you reconfigure rather than reconstruct."
+    },
+    {
+      "q": "What distinguishes switchgear from an ordinary panelboard?",
+      "a": "Ratings and construction. Switchgear at the service entrance must survive and interrupt the full fault energy of the utility connection — compartmentalized, heavily built, high withstand ratings. Panelboards downstream see progressively less fault energy. The hierarchy is graded by the violence it must contain, not just the amps it carries."
+    },
+    {
+      "q": "What is selective coordination?",
+      "a": "Arranging series breakers so any fault trips only the nearest upstream device, cutting the failure away surgically while the rest of the building keeps running. Engineers nest time-current curves so the downstream breaker always wins the race. Without it, a rack-level fault can open a main breaker and darken the hall."
+    },
+    {
+      "q": "What is zone-selective interlocking?",
+      "a": "A communication scheme between breakers: when a downstream breaker sees a fault, it signals upstream 'I have it,' and the upstream breaker briefly holds off instead of racing. It restores selectivity at high fault currents, where trip curves converge and both devices would otherwise trip instantly."
+    },
+    {
+      "q": "What is traded between double-conversion and eco-mode UPS operation?",
+      "a": "Double conversion rebuilds power continuously — perfect output, but a few percent lost around the clock. Eco-mode runs the load on raw utility with the converter in reserve — 98-99% efficient, but the UPS must detect failure and transfer within milliseconds. Protection versus efficiency, chosen per facility."
+    },
+    {
+      "q": "What is hold-up time, and why does it make eco-mode viable?",
+      "a": "The 10-20 milliseconds a server power supply can ride through on its internal capacitors after input power vanishes. An eco-mode transfer completed inside that window is invisible to the IT load. The engineering debate is whether every fault type is reliably detected fast enough."
+    },
+    {
+      "q": "What is the point of common coupling, and what does IEEE 519 do there?",
+      "a": "It is where a facility's electrical system meets the utility — the property line. IEEE 519 sets distortion limits at that point so one customer's harmonic-rich loads cannot degrade power quality for neighbors. Inside the fence you answer to your own equipment; at the line, limits apply and are measured."
+    },
+    {
+      "q": "Why do GPU clusters create a new class of power-quality problem?",
+      "a": "They swing enormous load — tens of megawatts — in milliseconds, rhythmically with the compute workload. Those repeating oscillations can excite resonances in the supplying grid at frequencies below the 60 Hz line frequency, a phenomenon new enough that detecting it just became a monitoring product feature."
+    },
+    {
+      "q": "What does an automatic transfer switch do during an outage?",
+      "a": "It senses utility failure, signals the generators to start, transfers the load once generation is stable, and manages retransfer when the utility returns. Stored energy carries the load during the ten-plus seconds the generators need — every backup layer covers another layer's startup gap."
+    },
+    {
+      "q": "Open versus closed transition — what is the difference?",
+      "a": "Open transition breaks the connection momentarily during transfer, so the load blinks unless a UPS bridges it. Closed transition briefly parallels generator and utility for a seamless handoff, but requires precise synchronization and utility permission, since you are momentarily backfeeding their grid."
+    },
+    {
+      "q": "Why is retrofit often preferred over replacing old switchgear?",
+      "a": "Old lineups still work mechanically, and replacement means demolition, downtime, and long lead times a running facility cannot absorb. Retrofitting modern trip units or breakers into existing cubicles delivers current protection technology in place — one of the aftermarket's highest-value services."
+    },
+    {
+      "q": "What is an arc-flash study?",
+      "a": "An engineering calculation of the explosion energy available at each point in the electrical system if a fault arcs in open air. It determines the protective equipment workers must wear and the warning labels on every panel — and it must be redone as the system changes, making it recurring expert-services revenue."
+    }
+  ]
+}

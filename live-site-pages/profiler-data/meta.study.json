@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "meta",
+  "title": "Meta — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Two AI species: rankers and generators",
+      "bullets": [
+        "A recommender model answers 'which of these millions of items should this person see next'; a large language model (LLM — a text generator trained on next-word prediction) writes — two different species of AI with fundamentally different compute shapes",
+        "Recommenders are memory-bound: their bulk is embedding tables — giant lookup structures translating every user, post, and ad into lists of numbers — terabytes of parameters touched sparsely, so the bottleneck is memory capacity and bandwidth, not arithmetic",
+        "LLMs are the inverse: dense matrix math, arithmetic-hungry and predictable in access pattern — which is why hardware ideal for one workload can be mediocre at the other, and why an ads company's first custom chip targeted ranking inference rather than chatbots",
+        "Scale flips the intuition about which is 'bigger': serving ranked feeds and ads to billions of users daily can consume more total compute than chatbots do — recommender inference was hyperscale AI years before generative AI made the term famous"
+      ]
+    },
+    {
+      "heading": "The economics of giving models away",
+      "bullets": [
+        "'Open weights' means publishing the trained parameters so anyone can run and fine-tune the model; it is not classic open source — the training data and recipe usually stay private, and the license can still restrict the largest competitors",
+        "The strategy is commoditizing your complement: if models become cheap commodities, value migrates to what pairs with them — distribution, data, and infrastructure — which favors a company that monetizes attention rather than selling model access",
+        "A company with no cloud or API business loses nothing by giving models away — it cannot cannibalize revenue it does not earn — while every rival selling per-token access watches free alternatives compress its prices from below",
+        "The side payments are real: open weights recruit researchers who want visible impact, seed an ecosystem of tools built to your architecture, and can make your model line a default standard — industry influence bought at near-zero marginal cost"
+      ]
+    },
+    {
+      "heading": "Building compute shelters, not monuments",
+      "bullets": [
+        "A traditional data center is a decades-grade concrete building; a tent-style build stretches weatherproof fabric over steel frames around prefabricated power and cooling modules — a structure engineered to be sufficient rather than permanent",
+        "The logic is asymmetric depreciation: the GPUs inside may be economically obsolete in about five years while a concrete shell lasts thirty — when the contents wear out faster than the container, paying for container permanence is capital on the wrong asset",
+        "Time is the actual currency: when model capability tracks deployed compute, a structure type that shaves quarters off first-power converts directly into training runs a competitor has not even started",
+        "The trade-offs are accepted, not ignored: weather exposure, less physical hardening, more operating friction — tolerable for training clusters, which can pause and restart, in a way it never would be for customer-serving clouds bound by uptime contracts"
+      ]
+    },
+    {
+      "heading": "The arms-race logic of AI capex",
+      "bullets": [
+        "The game-theory structure is a classic dilemma: if rivals build capacity and you do not, you may fall behind irrecoverably; if you build and demand disappoints, you wrote a very large check — that asymmetry pushes every player to build",
+        "Executives across the industry reason explicitly in these terms: overbuilding is a recoverable error (assets can be depreciated, repurposed, run below capacity), while being compute-starved during a capability breakthrough might not be recoverable at all",
+        "Capacity is also an option contract with physics: owning ready power, land, and shells means you can exercise instantly if the next model generation demands ten times the compute — the capex buys the right to act without multi-year lead times",
+        "The brake on the spiral is capital-market patience: when the spending is funded by one profitable core business rather than customer contracts, the market's tolerance — expressed through stock reactions to guidance — is the only external check"
+      ]
+    },
+    {
+      "heading": "Engagement data: the labeled dataset nobody can buy",
+      "bullets": [
+        "Ranking models learn from labeled examples (supervised learning), and a social platform generates billions of labels daily for free: every click, pause, share, and hide is a human marking what interested them — a self-renewing dataset no budget could purchase",
+        "The social graph adds structure raw text lacks: who connects to whom and which content travels across which relationships — signals that sharpen ranking and ad targeting and that exist nowhere outside the platform's own logs",
+        "The advantage is workload-specific: engagement data is gold for predicting human preference and attention, but it is not the web-scale text that teaches a language model to reason — a data moat in ranking does not automatically transfer to frontier generative models",
+        "The feedback loop cuts both ways: models trained on engagement optimize for engagement, which reshapes what users see and therefore the next round of training data — a closed loop that is simultaneously a competitive asset and the core critique of the medium"
+      ]
+    },
+    {
+      "heading": "Green tariffs: renewable buying through your utility",
+      "bullets": [
+        "In regulated US states a large customer often cannot sign a power contract directly with a developer — the local utility holds a legal monopoly on selling electricity — so the workaround is a green tariff: a utility-intermediated clean-energy purchase",
+        "Mechanics: the utility contracts for (or builds) new renewable and storage projects, and the customer signs a special rate schedule that pays those projects' costs and receives the clean-energy credit — the utility is the middleman that makes the deal legal",
+        "The regulator's test is cost containment: tariff structures are publicly reviewed to ensure the data center's dedicated resources are paid for by the data center — the ratepayer-protection question that now shadows every large-load interconnection",
+        "Three procurement architectures coexist: direct developer PPAs in deregulated markets, utility green tariffs in regulated ones, and outright asset ownership — most giant buyers end up running all three, matched to each grid's legal structure"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "What is an embedding table and why does it make recommender models memory-bound?",
+      "a": "It's a giant lookup structure translating every user, item, and ad into a list of numbers the model can compute with. The tables run to terabytes but each query touches only a few rows — so the bottleneck is memory capacity and bandwidth, not arithmetic speed."
+    },
+    {
+      "q": "Why can hardware that's great for LLMs be mediocre for recommenders?",
+      "a": "LLMs are compute-bound: dense, predictable matrix math that keeps arithmetic units saturated. Recommenders are memory-bound: sparse lookups across huge tables. A chip optimized for one profile — lots of math units versus lots of fast memory — underperforms on the other."
+    },
+    {
+      "q": "Why was recommender inference 'hyperscale AI' before chatbots existed?",
+      "a": "Serving ranked feeds and ad predictions to billions of users every day consumes enormous total compute — often more than generative chat does. The infrastructure lessons of AI at scale were learned on ranking systems years before LLMs made AI compute famous."
+    },
+    {
+      "q": "How do 'open weights' differ from classic open source?",
+      "a": "Open weights publishes the trained parameters so anyone can run and fine-tune the model. But the training data, code, and recipe usually stay private, and the license can restrict the biggest competitors — so you can use the artifact without being able to reproduce it."
+    },
+    {
+      "q": "What does 'commoditize your complement' mean as a model strategy?",
+      "a": "Make the adjacent product cheap and abundant so value migrates to what you actually sell. If models become free commodities, advantage shifts to distribution, data, and infrastructure — which suits a company monetizing attention, and undercuts rivals whose revenue is selling model access per token."
+    },
+    {
+      "q": "Why can a company without a cloud business afford to give frontier models away?",
+      "a": "It cannot cannibalize revenue it doesn't earn — there's no API or cloud income to lose. Meanwhile the giveaway recruits researchers, seeds a tool ecosystem around its architecture, and pressures competitors' pricing. The strategic cost lands entirely on rivals."
+    },
+    {
+      "q": "What is the logic of a tent-style, structure-light data center?",
+      "a": "Asymmetric depreciation: the GPUs inside are obsolete in roughly five years while a concrete shell lasts thirty — so paying for permanence puts capital on the wrong asset. The fabric structure trades weather exposure and hardening for months of saved schedule, tolerable because training clusters can pause."
+    },
+    {
+      "q": "Why do training clusters tolerate building compromises that customer-facing clouds cannot?",
+      "a": "A training run can checkpoint, pause, and resume — an interruption costs time, not broken customer promises. A serving cloud is bound by uptime contracts where minutes of outage are measured in penalties and lost trust. Different tolerance for risk, different buildings."
+    },
+    {
+      "q": "What asymmetry drives the AI capex arms race?",
+      "a": "Overbuilding is recoverable — assets get depreciated, repurposed, or run below capacity. Falling irrecoverably behind during a capability breakthrough may not be. When every player weighs a bounded loss against an unbounded one, everyone builds — the structure of the game, not exuberance alone, drives the spending."
+    },
+    {
+      "q": "In what sense is spare data-center capacity an 'option'?",
+      "a": "Owning ready power, land, and shells is the right — but not the obligation — to scale instantly if the next model generation demands 10x compute. The capex buys freedom from multi-year lead times; like any option, it costs real money and may expire unused."
+    },
+    {
+      "q": "What makes engagement data valuable, and what are its limits?",
+      "a": "Every click, pause, and share is a free human label of what interests people — a self-renewing supervised dataset for ranking and ad models that money can't buy. But it's preference data, not the web-scale text that teaches reasoning — the moat doesn't automatically transfer to frontier LLMs."
+    },
+    {
+      "q": "How does a utility green tariff work?",
+      "a": "In regulated states where the utility legally must be your power seller, it contracts new renewable and storage projects and the large customer signs a special rate schedule paying those costs and claiming the clean energy. Regulators review the tariff to keep the costs off other ratepayers."
+    }
+  ]
+}

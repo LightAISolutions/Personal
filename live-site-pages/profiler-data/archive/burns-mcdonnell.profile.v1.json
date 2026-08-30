@@ -1,0 +1,442 @@
+{
+  "schemaVersion": 2,
+  "slug": "burns-mcdonnell",
+  "name": "Burns & McDonnell",
+  "legalName": "Burns & McDonnell (100% employee-owned via ESOP; no outside shareholders)",
+  "categories": [
+    "epc"
+  ],
+  "hq": "Kansas City, MO, USA",
+  "founded": "1898 (Kansas City)",
+  "ownership": "private",
+  "employees": "14,000+ (company, 2024); 75+ offices worldwide incl. a 1,900+ person India subsidiary",
+  "website": "https://www.burnsmcd.com",
+  "summary": "BOTTOM LINE UP FRONT: Burns & McDonnell is the AI buildout's utility-side capture play — ENR's #1 power design firm eleven consecutive years, claiming the largest substation design group in the country and >50% US market share in reciprocating-engine (RICE) power plants, fused to a Tier-3 data-center design-build practice under one 100% employee-owned (ESOP) roof. Record 2025 revenue of $8.6B (+19%, after an unexplained ~3% dip to $7.2B in 2024) rode what ENR's 2026 cover story calls the AI design boom, and the Santee Cooper award is the template: a single Aiken County, SC data center generated a utility transmission EPC (16 miles of 115 kV rebuild, two new 230 kV lines, a new 230 kV substation) — Burns & McDonnell gets paid on the utility side of the meter, where competition is thinnest. The design-led hybrid position is distinctive: #7 on ENR's Top 500 Design Firms but #35 on the Top 400 Contractors, after construction revenue grew ~300% under prior CEO Ray Kowalik. Leslie Duke — a T&D-native engineer and the firm's first female president — became Chair and CEO January 2024. Watch items: an active January 2026 lawsuit (Certus Cybersecurity v. 1898 & Co.) alleging MWBE-commitment abuse on a $60M Seattle City Light contract, and the structural cash constraint every aging ESOP carries (repurchase obligations, no outside capital). Collection gap: no backlog or profitability disclosure; revenue is company-stated alongside annual ENR rankings.",
+  "ecosystemRole": "The power-first engineer of the AI buildout: designs (and increasingly builds) the substations, transmission, grid interconnections, and bridge generation that hyperscale campuses force onto utilities — then sells the data center building itself as an integrated design-build package.",
+  "productsAndServices": [
+    {
+      "name": "Mission Critical / Data Center Design-Build",
+      "category": "Data-center architecture, engineering, construction & commissioning",
+      "description": "Site selection through commissioning for data centers, switch centers, control rooms, SCIFs, and DoD facilities — architecture, engineering, construction, and commissioning 'under one roof,' fast-track and turnkey. The practice was rebuilt around design-build, modular construction, and prefabrication after the 2021 hire of mission-critical leader David Bals, and has been adapted for AI densities including advanced thermal management and liquid cooling (Tier 3 / TIA-942 baseline).",
+      "highlights": [
+        "The integration pitch: on-site generation, bridging power, utility interconnection, long-lead equipment procurement, and phased EPC substation delivery aligned to load ramp — the data center AND its power delivered as one package",
+        "Wyoming Hyperscale: company-named 'world's first sustainable hyperscale data center ecosystem' construction launch; hyperscaler client names otherwise undisclosed (NDA norms)",
+        "Independent datapoint: a >$100M, 150,000 sq ft Temple, TX data center on 1,200 concrete piers with up to 185 MW draw, completed summer 2023",
+        "White-paper canon markets storage-as-core-power-strategy and reciprocating engines for data-center demand — Northern Virginia power demand cited up ~500% in a decade"
+      ],
+      "positioning": "Not competing on shell-construction scale with Turner/HITT/Holder — competing on the power interface, where its #1 power-design franchise gives it the seat the building GCs must subcontract",
+      "soldThrough": "Design-build/EPC and design-services contracts; NDA-heavy direct hyperscaler and developer relationships",
+      "targetSegments": [
+        "Hyperscalers and DC developers",
+        "Federal/DoD secure facilities",
+        "Colocation operators"
+      ],
+      "roadmap": "AI-density retrofits (liquid cooling), phased substation-matched delivery, bridge-power integration"
+    },
+    {
+      "name": "Electrical Transmission & Distribution + Substations",
+      "category": "Power-delivery engineering and EPC",
+      "description": "The crown jewel: full-scope T&D — AC/DC transmission (overhead, underground, undersea), substations including gas-insulated, generation interconnections, grid modernization (distribution automation, microgrids, non-wires alternatives) — for IOUs, municipals, co-ops, developers, and the military. ENR has ranked Burns & McDonnell #1 in Power design revenue for eleven consecutive years, and the company claims the largest substation design group in the country.",
+      "highlights": [
+        "Santee Cooper / Aiken County SC: transmission EPC built solely to power one data center — ~16 mi of 115 kV rebuilt, two new 230 kV lines, new 230 kV substation (completion late 2025)",
+        "The interconnection franchise now applies directly to hyperscaler loads as FERC's 2025-26 large-load interconnection orders expand exactly this work",
+        "India T&D group: 400+ engineers in Bengaluru/Mumbai supporting 70 global client teams — offshore design leverage its builder rivals lack"
+      ],
+      "positioning": "Perennial #1 vs Black & Veatch (#2 in power design seven straight years) and Sargent & Lundy (#3); designs what Quanta and Kiewit often build",
+      "soldThrough": "Utility framework agreements, EPC and design-services contracts",
+      "targetSegments": [
+        "Investor-owned utilities",
+        "Municipals/co-ops",
+        "Data-center developers (interconnection)",
+        "Federal/military"
+      ],
+      "roadmap": "Data-center-driven utility transmission programs; grid-modernization spend"
+    },
+    {
+      "name": "Electric Power Generation (Gas, RICE, Renewables & Storage)",
+      "category": "Generation EPC",
+      "description": "1,200+ staff on natural-gas generation with a claimed >50% US market share in reciprocating-engine (RICE) plants — 28 projects in 15 years — plus single-contract EPC for solar, wind, storage, hydrogen, and offshore-wind integration. RICE fleets are the exact 'rapid response power' product AI load centers now need as bridge generation.",
+      "highlights": [
+        "Basin Electric Pioneer Phase IV (Bakken): 600 MW gas expansion — 2 Siemens STG6-5000F simple-cycle turbines + 6 Wärtsilä W18V50SG recip engines",
+        "Vistra Moss Landing BESS expansion (350 MW / 1,400 MWh) won ENR Best Project honors (2024)",
+        "SaskPower Chinook Power Station, 353 MW"
+      ],
+      "positioning": "The RICE claim (>50% share, company figure, unverified) would make it the incumbent in the fastest-mobilizing power class for data-center bridge power",
+      "soldThrough": "EPC contracts with utilities, co-ops, and IPPs",
+      "targetSegments": [
+        "Generation & transmission co-ops",
+        "Utilities",
+        "Data-center bridge-power buyers"
+      ],
+      "roadmap": "Storage-as-core-power-strategy for next-generation data centers (its own white-paper thesis)"
+    },
+    {
+      "name": "1898 & Co. (Consulting, Grid Analytics & Industrial Cybersecurity)",
+      "category": "Critical-infrastructure consulting and OT security",
+      "description": "The firm's consulting/digital arm: asset planning and management (including T&D planning), business strategy, data/analytics/AI, enterprise technology, industrial cybersecurity (OT security, managed security services, cyber-informed engineering), financial analysis, and regulatory work for critical-infrastructure clients.",
+      "highlights": [
+        "Extends the engineering franchise into recurring advisory and managed-security revenue",
+        "Now the named defendant unit in the Certus Cybersecurity MWBE lawsuit over a $60M Seattle City Light contract (active, allegations only)"
+      ],
+      "positioning": "A Burns & McDonnell-branded answer to the consulting layers at AECOM/Jacobs, differentiated by OT/grid depth",
+      "soldThrough": "Consulting engagements and managed-services contracts",
+      "targetSegments": [
+        "Utilities",
+        "Municipal power",
+        "Industrial operators"
+      ],
+      "roadmap": "Grid analytics and OT-security demand scaling with electrification"
+    },
+    {
+      "name": "Aviation, Federal, Water & Industrial (diversified book)",
+      "category": "Multidisciplinary AEC",
+      "description": "The balance of the practice: aviation and federal (the Kansas City KCI single-terminal airport was its landmark design-build), water and wastewater (including the De Soto, KS treatment-plant doubling that serves the Panasonic EV-battery plant site), environmental, transportation, telecom (#3 ENR telecom), and oil & gas/industrial process (#4 ENR).",
+      "highlights": [
+        "ENR 2026 category ranks (company-cited): #3 Telecommunications, #4 Industrial Process/Oil & Gas, #9 Manufacturing",
+        "De Soto wastewater doubling opened June 2026 — infrastructure-for-manufacturing adjacency",
+        "US Best Managed Company five consecutive years (Gold Honoree 2026)"
+      ],
+      "positioning": "Cycle ballast and public-sector presence around the power/mission-critical core",
+      "soldThrough": "Design-build and design-services contracts, public procurement",
+      "targetSegments": [
+        "Airports",
+        "Federal agencies",
+        "Municipal water",
+        "Industrial owners"
+      ],
+      "roadmap": "Steady-state; growth capital concentrates on power and mission-critical"
+    }
+  ],
+  "recentDevelopments": [
+    {
+      "date": "2026-06-24",
+      "category": "Project",
+      "headline": "De Soto, Kansas wastewater treatment plant capacity-doubling opens — built to support the Panasonic EV-battery manufacturing site",
+      "read": "The water practice riding the manufacturing-reshoring adjacency: giga-factories, like data centers, force utility infrastructure the firm gets paid to design and build.",
+      "source": "Burns & McDonnell release, 2026-06-24"
+    },
+    {
+      "date": "2026-05-22",
+      "category": "Recognition",
+      "headline": "ENR 2026 Top 400 Contractors: #35, up seven spots from #42",
+      "read": "The construction arm keeps climbing — the design-led hybrid drifting builder-ward, exactly the Kowalik-era trajectory (construction revenue +~300% 2017-23) continuing under Duke.",
+      "source": "Construction Dive, 2026-05-22"
+    },
+    {
+      "date": "2026-04-23",
+      "category": "Financial",
+      "headline": "Reports record $8.6B 2025 revenue (+19%), 25,000+ projects; ENR Top 500 #7 (ninth straight top-10) and #1 in Power design for the 11th consecutive year",
+      "read": "The company credits 'continued momentum in data centers and electrical infrastructure'; ENR's 2026 Top 500 cover story — 'AI Boom Buoys Design Revenue' — is the market context (power design +14.6% YoY).",
+      "source": "Burns & McDonnell release, 2026-04-23; ENR 2026 Top 500"
+    },
+    {
+      "date": "2026-01-12",
+      "category": "Risk",
+      "headline": "Certus Cybersecurity sues Burns & McDonnell / 1898 & Co. (now W.D. Wash. 2:26-cv-00529), alleging it abused Seattle's women/minority-owned-business contracting requirements to win a $60M Seattle City Light contract, then kept the work for itself",
+      "read": "Allegations only, no adjudication — but public-sector procurement reputations are exactly what a utility-side franchise runs on. Worth tracking to disposition.",
+      "source": "ENR, January 2026; Law360; PacerMonitor"
+    },
+    {
+      "date": "2025-08-11",
+      "category": "Leadership",
+      "headline": "Breck McGary appointed CEO of Burns & McDonnell India — the 1,900+ person subsidiary he helped establish in Bengaluru",
+      "read": "The offshore design engine gets its own CEO: 400+ India T&D engineers already support 70 global client teams — cost leverage its builder rivals lack.",
+      "source": "Burns & McDonnell release, 2025-08-11"
+    },
+    {
+      "date": "2025-04-24",
+      "category": "Financial",
+      "headline": "Reports $7.2B 2024 revenue — down ~3% from 2023's $7.4B, unexplained by the company — while holding ENR #7 and the #1 power-design rank a tenth year",
+      "read": "The dip before the surge: an unusual wobble for a firm this levered to power capex, resolved a year later by the +19% AI-cycle rebound. The company never addressed it.",
+      "source": "Burns & McDonnell release, 2025-04-24"
+    },
+    {
+      "date": "2025-02-05",
+      "category": "Leadership",
+      "headline": "First-ever Executive Vice President tier created: Jerry Fan (Americas North) and Allen Xi (Americas South), plus five new SVPs and twenty VPs",
+      "read": "Duke's first structural reorganization — a geographic EVP layer for a firm now too big for the old flat officer model.",
+      "source": "Burns & McDonnell release, 2025-02-05"
+    },
+    {
+      "date": "2025-01-28",
+      "category": "Customer",
+      "headline": "Santee Cooper transmission EPC for an Aiken County, SC data center: ~16 miles of 115 kV rebuilt, two new 230 kV lines, and a new 230 kV substation (completion late 2025)",
+      "read": "The template award for the whole thesis: one hyperscale campus generates a utility-side transmission program, and Burns & McDonnell collects on the side of the meter where few can compete.",
+      "source": "Burns & McDonnell release, 2025-01-28"
+    },
+    {
+      "date": "2024-10-31",
+      "category": "Recognition",
+      "headline": "Five ENR regional Best Project awards including the Vistra Moss Landing energy-storage expansion (350 MW / 1,400 MWh)",
+      "read": "Storage EPC credentials at flagship scale. (Note: a January 2025 fire occurred at the broader Moss Landing complex; no source ties Burns & McDonnell's phase to the burned building — an unresolved adjacency, not an allegation.)",
+      "source": "Burns & McDonnell release, 2024-10-31"
+    },
+    {
+      "date": "2024-01-01",
+      "category": "Leadership",
+      "headline": "Leslie Duke becomes Chair and CEO — the firm's eighth chief executive and a T&D-native engineer, succeeding Ray Kowalik (retired after 37 years)",
+      "read": "A power-delivery insider takes over precisely as power delivery becomes the AI economy's bottleneck; Kowalik left a firm with headcount up 110% and construction revenue up ~300% on his watch.",
+      "source": "Burns & McDonnell releases, 2023-04 and 2023-12"
+    }
+  ],
+  "strategyRead": [
+    "1. (High confidence) We assess Burns & McDonnell's AI-cycle strategy is utility-side capture rather than shell construction: the #1 power-design rank (11 straight years), the claimed largest US substation design group, and the Santee Cooper template — where one data center generated a full utility transmission EPC — position it to monetize hyperscale growth on the regulated side of the meter, where design authority matters more than construction scale and the building GCs cannot follow.",
+    "2. (High confidence) We assess the firm is a design-led EPC hybrid by deliberate construction: #7 designer but #35 (and climbing) contractor, with construction revenue up ~300% across the Kowalik era. The integrated pitch — data center, substation, interconnection, and bridge generation under one P&L — is the differentiation against both pure designers (Sargent & Lundy) and pure builders (Quanta, Kiewit).",
+    "3. (Moderate confidence) We assess the RICE franchise (28 reciprocating-engine projects in 15 years; company-claimed >50% US share) is becoming disproportionately valuable: fast-start engine fleets are the default bridge-power answer for AI campuses stuck in interconnection queues, and the firm's own white-paper canon shows it is selling that thesis to data-center clients now. The share claim is unverified — treat the number, not the trend, with caution.",
+    "4. (Moderate confidence) We assess the 2024 revenue dip (-3%) followed by 2025's +19% record confirms rising AI/power-capex beta in the book: the firm is increasingly levered to a single demand cycle, partially hedged by aviation, water, federal, and the manufacturing-reshoring adjacency (De Soto/Panasonic).",
+    "5. (Moderate confidence) We assess the ESOP is both the moat and the constraint: 100% employee ownership underwrites the retention story in a craft- and engineer-scarce market, but repurchase obligations to an aging 14,000-person workforce consume cash that public rivals deploy into acquisitions and fleets — Quanta buys companies; Burns & McDonnell must grow organically. The 2009-11 Titus ESOP settlement (~$1.2M) is the only public crack in an otherwise clean ownership record.",
+    "6. (Low confidence) We assess the Certus/1898 & Co. MWBE lawsuit as contained but non-trivial: allegations of reneging on diversity-partnership commitments in public procurement strike at the trust that wins utility and municipal frameworks. No adjudication exists; an adverse finding would be a real reputational event in exactly its best market."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "Data-center delivery capability",
+      "specs": [
+        "Tier 3 / TIA-942 baseline, no-single-point-of-failure designs; liquid cooling for AI density; modular construction and prefabrication",
+        "Phased EPC substation delivery matched to load ramp; on-site and bridging power incl. reciprocating engines and BESS; long-lead equipment procurement",
+        "Independent delivered datapoint: Temple, TX — >$100M, 150,000 sq ft on 1,200 concrete piers, 20 acres, up to 185 MW draw (completed summer 2023)",
+        "Design-build practice rebuilt from 2021 under mission-critical leader David Bals (design-build, modular, prefab lineage)"
+      ],
+      "notes": "Hyperscaler client names are not disclosed on company pages — NDA norms; Wyoming Hyperscale is the named exception"
+    },
+    {
+      "product": "Power design & T&D franchise",
+      "specs": [
+        "ENR #1 Power design revenue — 11 consecutive years (2016-2026 lists); #7 overall ENR Top 500 Design Firms (9th straight top-10); #35 ENR Top 400 Contractors (up 7)",
+        "Company-claimed largest substation design group in the US; full-scope AC/DC transmission incl. underground and undersea; gas-insulated substations; grid modernization",
+        "Santee Cooper data-center transmission EPC: ~16 mi 115 kV rebuild + two 230 kV lines + one new 230 kV substation for a single Aiken County, SC campus",
+        "India engineering base: 1,900+ professionals (Mumbai 2013, Bengaluru 2023, doubled to 116,000 sq ft); India T&D group of 400+ engineers supports 70 global client teams"
+      ],
+      "notes": "The Asset Health Center equipment-testing/analytics lab at the KC HQ supports the T&D practice; 1898 & Co. layers grid analytics and OT cybersecurity on top"
+    },
+    {
+      "product": "Generation EPC bench",
+      "specs": [
+        "1,200+ natural-gas generation staff; 28 RICE projects in 15 years — company-claimed >50% US market share in reciprocating-engine plants (unverified)",
+        "Basin Electric Pioneer Phase IV: 600 MW = 2x Siemens STG6-5000F simple-cycle turbines + 6x Wärtsilä W18V50SG recips (Bakken; 2025 target)",
+        "Vistra Moss Landing BESS expansion: 350 MW / 1,400 MWh (ENR Best Project 2024); SaskPower Chinook: 353 MW",
+        "Single-contract EPC across solar, wind, storage, hydrogen, offshore-wind integration"
+      ],
+      "notes": "The RICE fleet capability doubles as the data-center bridge-power product line the firm's white papers now market"
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Leslie M. Duke",
+      "title": "Chair and Chief Executive Officer",
+      "photo": "images/execs/burns-mcdonnell-duke.jpg",
+      "background": [
+        "Eighth CEO in company history, effective 2024-01-01; holds both Chair and CEO titles",
+        "T&D-native: joined in the late 1990s as an engineer in the Houston transmission & distribution group; SVP 2014; the firm's first female president (2016, Houston/regional)",
+        "Grew the Houston-region client base from 1 to 650+ and oversaw $5B+ of EPC/environmental/consulting delivery; helped establish six offices",
+        "B.S. civil/structural engineering, Texas Tech (Distinguished Engineer, 2018)"
+      ]
+    },
+    {
+      "name": "Jerry Fan",
+      "title": "Executive Vice President, Americas North",
+      "photo": "images/execs/burns-mcdonnell-fan.jpg",
+      "background": [
+        "One of the first two EVPs in firm history (February 2025 reorganization); also Northeast Region GM",
+        "Joined 2007; leads 500+ professionals; ran a $1B utility program completed in 2014"
+      ]
+    },
+    {
+      "name": "Allen Xi",
+      "title": "Executive Vice President, Americas South",
+      "photo": "images/execs/burns-mcdonnell-xi.jpg",
+      "background": [
+        "One of the first two EVPs (February 2025); electrical engineering / power systems background",
+        "Owns the southern half of the Americas footprint including the Texas power and industrial corridors"
+      ]
+    },
+    {
+      "name": "David Bals",
+      "title": "Mission Critical practice leader",
+      "background": [
+        "Hired June 2021 to build the data-center design-build practice; background in design-build, modular construction, and prefabrication",
+        "The practice's shift to turnkey AI-density delivery (liquid cooling, phased substation-matched EPC) dates from his arrival"
+      ]
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "type": "private (100% employee-owned ESOP; no SEC filings — revenue is company-disclosed annually alongside ENR rankings; no backlog or profitability disclosure)",
+    "periods": [
+      {
+        "period": "2025",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "$8.6B (+19%, record)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "25,000+ projects; company credits 'momentum in data centers and electrical infrastructure'; ENR Top 500 #7, #1 Power design 11th straight year"
+          }
+        ],
+        "commentary": "The AI-cycle year: ENR's 2026 Top 500 cover story ('AI Boom Buoys Design Revenue') reported power design revenue up 14.6% market-wide — Burns & McDonnell grew faster than its market."
+      },
+      {
+        "period": "2024",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "$7.2B (-3%)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "An unexplained dip from 2023's $7.4B — the firm did not comment; ENR ranks held (#7 design, #1 power a 10th year)"
+          }
+        ],
+        "commentary": "Implied revenue per employee ~$610K on 2025 figures — high for a design firm, consistent with heavy EPC/procurement pass-through (analyst computation)."
+      },
+      {
+        "period": "2022-2023",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "$7.0B (2022) → $7.4B (2023)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "A 2023 company release describing 2022 'sales revenue' up ~50% refers to bookings, not revenue — the two series are distinct"
+          }
+        ],
+        "commentary": "Kowalik-era arc (2017-2023, company claims): headcount 6,300 → 13,500 (+110%); construction revenue +~300%. ESOP share value is set by annual independent valuation; growth figures are not published. The only public ESOP blemish: Titus v. Burns & McDonnell (2009), settled ~$1.2M in 2011."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Burns & McDonnell — De Soto wastewater plant expansion opens (Panasonic site support)",
+      "url": "https://www.burnsmcd.com/news/expanded-de-soto-wastewater-treatment-plant-opens",
+      "date": "2026-06-24"
+    },
+    {
+      "label": "Construction Dive — ENR 2026 Top 400 Contractors (Burns & McDonnell #35, up 7)",
+      "url": "https://www.constructiondive.com/news/top-commercial-contractors-revenue-2026-enr/820930/",
+      "date": "2026-05-22"
+    },
+    {
+      "label": "Burns & McDonnell — $8.6B 2025 revenue; ENR Top 500 #7; #1 Power 11th consecutive year",
+      "url": "https://www.burnsmcd.com/news/enr-top-10-ninth-year",
+      "date": "2026-04-23"
+    },
+    {
+      "label": "ENR — 2026 Top 500 Design Firms: 'AI Boom Buoys Design Revenue' (power design +14.6%)",
+      "url": "https://www.enr.com/articles/62878-enr-2026-top-500-design-firms-ai-boom-buoys-design-revenue",
+      "date": "2026-04"
+    },
+    {
+      "label": "ENR — Burns & McDonnell targeted over alleged broken promise to use MWBE firms (Certus/1898 & Co.)",
+      "url": "https://www.enr.com/articles/62400-burns-and-mcdonnell-targeted-over-alleged-broken-promise-to-use-mwbe-firms",
+      "date": "2026-01"
+    },
+    {
+      "label": "Utility Dive — FERC data-center interconnection orders (market context)",
+      "url": "https://www.utilitydive.com/news/ferc-doe-data-center-interconnection/823360/",
+      "date": "2026"
+    },
+    {
+      "label": "Burns & McDonnell — Breck McGary named CEO of Burns & McDonnell India",
+      "url": "https://www.burnsmcd.com/news/breck-mcgary-ceo-of-burns-mcdonnell-india",
+      "date": "2025-08-11"
+    },
+    {
+      "label": "Burns & McDonnell — $7.2B 2024 revenue; ENR #7; #1 Power 10th year",
+      "url": "https://www.burnsmcd.com/news/enr-top-10-eighth-consecutive-year",
+      "date": "2025-04-24"
+    },
+    {
+      "label": "Burns & McDonnell — 2025 executive promotions (first EVP tier: Fan, Xi)",
+      "url": "https://www.burnsmcd.com/news/2025-executive-promotions",
+      "date": "2025-02-05"
+    },
+    {
+      "label": "Burns & McDonnell — Santee Cooper transmission expansion for Aiken County data center",
+      "url": "https://www.burnsmcd.com/news/santee-cooper-transmission-expansion",
+      "date": "2025-01-28"
+    },
+    {
+      "label": "Burns & McDonnell — ENR Best Projects 2024 (Vistra Moss Landing BESS 350 MW/1,400 MWh)",
+      "url": "https://www.burnsmcd.com/news/enr-best-projects-2024",
+      "date": "2024-10-31"
+    },
+    {
+      "label": "Burns & McDonnell — $7.4B 2023 revenue; #7 on 2024 ENR Top 500",
+      "url": "https://www.burnsmcd.com/news/7th-on-2024-top-500-design-firms-enr",
+      "date": "2024-04-29"
+    },
+    {
+      "label": "Justia — Bowen v. Burns & McDonnell Engineering Co. (Cal. Ct. App., summary judgment affirmed)",
+      "url": "https://law.justia.com/cases/california/court-of-appeal/2024/a166793.html",
+      "date": "2024"
+    },
+    {
+      "label": "Burns & McDonnell — Ray Kowalik retirement / era impact (headcount +110%, construction revenue +~300%)",
+      "url": "https://www.burnsmcd.com/news/ray-kowalik-retirement-broad-impact",
+      "date": "2023-12"
+    },
+    {
+      "label": "Burns & McDonnell — Basin Electric 600 MW gas plant EPC (Pioneer Phase IV)",
+      "url": "https://www.burnsmcd.com/news/construction-basin-electric-natural-gas-fueled-power-plant",
+      "date": "2023-07-27"
+    },
+    {
+      "label": "Burns & McDonnell — Leslie Duke named CEO (effective 2024-01-01)",
+      "url": "https://www.burnsmcd.com/news/leslie-duke-named-new-ceo",
+      "date": "2023-04"
+    },
+    {
+      "label": "KCTV5 — KC engineering firm awarded $62M in secret KCI arbitration",
+      "url": "https://www.kctv5.com/2023/01/26/kc-engineering-firm-that-lost-out-bid-build-new-airport-is-awarded-62m/",
+      "date": "2023-01-26"
+    },
+    {
+      "label": "Burns & McDonnell — Mission-critical leader David Bals joins firm",
+      "url": "https://www.burnsmcd.com/news/mission-critical-leader-david-bals-joins-firm",
+      "date": "2021-06"
+    },
+    {
+      "label": "ENR — AECOM, Burns & McDonnell question KC committee's pick for $1B airport project",
+      "url": "https://www.enr.com/articles/42839-aecom-burns-mcdonnell-question-kc-committees-pick-for-1b-airport-project",
+      "date": "2017-09-21"
+    },
+    {
+      "label": "Missouri Lawyers Media — ESOP class action (Titus) settles ~$1.2M",
+      "url": "https://molawyersmedia.com/2011/04/25/class-action-against-burns-mcdonnell-settles/",
+      "date": "2011-04-25"
+    },
+    {
+      "label": "Burns & McDonnell — About Us (founded 1898; 100% ESOP; 75+ offices)",
+      "url": "https://www.burnsmcd.com/about-us"
+    },
+    {
+      "label": "Burns & McDonnell — Data Centers & Switch Centers (AI adaptation; liquid cooling; Tier 3)",
+      "url": "https://www.burnsmcd.com/services/buildings/mission-critical-buildings/data-centers-switch-centers"
+    },
+    {
+      "label": "Burns & McDonnell — Electrical Transmission & Distribution services",
+      "url": "https://www.burnsmcd.com/services/electrical-transmission-distribution"
+    },
+    {
+      "label": "Burns & McDonnell — Natural Gas Generation (1,200+ staff; 28 RICE projects; >50% share claim)",
+      "url": "https://www.burnsmcd.com/services/electric-power-generation/natural-gas-generation"
+    },
+    {
+      "label": "1898 & Co. — consulting, grid analytics & industrial cybersecurity",
+      "url": "https://1898andco.burnsmcd.com/"
+    },
+    {
+      "label": "Burns & McDonnell — Leslie Duke bio",
+      "url": "https://www.burnsmcd.com/about/meet-our-people/leslie-duke"
+    },
+    {
+      "label": "Data Center Frontier — Temple TX data center + Dallas market (Burns & McDonnell)",
+      "url": "https://www.datacenterfrontier.com/podcast/article/33037402/dcf-show-data-center-construction-and-dallas-market-talk-with-burns-mcdonnell"
+    },
+    {
+      "label": "T&D World — Keegan Odle profile (largest substation design group claim)",
+      "url": "https://www.tdworld.com/home/contact/21140190/keegan-odle"
+    }
+  ],
+  "lastUpdated": "2026-08-21",
+  "profileVersion": 1
+}

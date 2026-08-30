@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-src https://script.google.com https://*.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://logoipsum.com https://www.shadowaisolutions.com; object-src 'none'; base-uri 'self'; form-action 'self'; media-src 'self'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests;">
+  <meta name="template-id" content="sais-aut-7f3e9b2d">
+  <meta name="build-version" content="v01.03w">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <title>GAS Project Creator</title>
+  <style>
+/* ══════════════ */
+/* TEMPLATE START */
+/* ══════════════ */
+    html, body { margin: 0; padding: 0; height: 100%; }
+    .splash {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 10000; display: none; align-items: center; justify-content: center;
+      flex-direction: column; transition: opacity 0.3s ease;
+    }
+    .splash .splash-title { color: #fff; font: bold 36px/1 sans-serif; margin-bottom: 20px; }
+    .splash img { max-width: 500px; max-height: 500px; }
+    #splash-web { background: #1b5e20; }
+    #splash-code { background: #0d47a1; }
+    #splash-maintenance { background: #b04000; z-index: 9998; }
+    .maintenance-timestamp { color: rgba(255,255,255,0.85); font: 16px/1.4 monospace; margin-top: 20px; }
+    #version-indicator {
+      position: fixed; bottom: 8px; right: 22px; z-index: 9999;
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(0,0,0,0.55); color: #ccc; padding: 4px 10px;
+      border-radius: 12px; font: 11px/1 monospace; user-select: none;
+      pointer-events: auto; cursor: pointer; transition: all 0.3s ease;
+    }
+    #version-indicator:hover { background: rgba(0,0,0,0.75); }
+    #changelog-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); z-index: 10001; display: none;
+      align-items: center; justify-content: center;
+    }
+    #changelog-popup {
+      background: #1a1a2e; color: #e0e0e0; border-radius: 12px;
+      max-width: 480px; width: 90%; max-height: 70vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    #changelog-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    #changelog-title { font: bold 16px/1 sans-serif; color: #fff; }
+    #changelog-close {
+      background: none; border: none; color: #888; font-size: 24px;
+      cursor: pointer; padding: 4px 8px; line-height: 1;
+    }
+    #changelog-close:hover { color: #fff; }
+    #changelog-body {
+      padding: 16px 20px; overflow-y: auto; font: 13px/1.5 sans-serif;
+    }
+    #changelog-body h3 {
+      font-size: 14px; color: #7c8bff; margin: 16px 0 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;
+    }
+    #changelog-body h3:first-child { margin-top: 0; }
+    #changelog-body h4 {
+      font-size: 12px; color: #a0a0a0; margin: 10px 0 4px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    #changelog-body ul { margin: 0 0 8px; padding-left: 20px; }
+    #changelog-body li { margin-bottom: 4px; }
+    #version-indicator .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #888; transition: background 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6px; line-height: 1; color: #fff;
+    }
+    #version-indicator .dot.checking { background: #ffa726; animation: pulse 0.6s infinite alternate; }
+    #version-indicator .dot.counting { background: #888; }
+    #version-indicator .dot.found    { background: #66bb6a; }
+    #version-indicator .dot.error    { background: #ef5350; }
+    @keyframes pulse { from { opacity: 1; } to { opacity: 0.4; } }
+    #gas-pill {
+      position: fixed; bottom: 8px; right: 146px; z-index: 9999;
+      display: none; align-items: center; gap: 6px;
+      background: rgba(0,0,0,0.55); color: #ccc; padding: 4px 10px;
+      border-radius: 12px; font: 11px/1 monospace; user-select: none;
+      pointer-events: auto; cursor: pointer; transition: all 0.3s ease;
+    }
+    #gas-pill:hover { background: rgba(0,0,0,0.75); }
+    #gas-pill .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #888; transition: background 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6px; line-height: 1; color: #fff;
+    }
+    #gas-pill .dot.checking { background: #42a5f5; animation: pulse 0.6s infinite alternate; }
+    #gas-pill .dot.counting { background: #888; }
+    #gas-pill .dot.found    { background: #66bb6a; }
+    #gas-pill .dot.error    { background: #ef5350; }
+    #gcl-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); z-index: 10001; display: none;
+      align-items: center; justify-content: center;
+    }
+    #gcl-popup {
+      background: #1a1a2e; color: #e0e0e0; border-radius: 12px;
+      max-width: 480px; width: 90%; max-height: 70vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    #gcl-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    #gcl-title { font: bold 16px/1 sans-serif; color: #fff; }
+    #gcl-close {
+      background: none; border: none; color: #888; font-size: 24px;
+      cursor: pointer; padding: 4px 8px; line-height: 1;
+    }
+    #gcl-close:hover { color: #fff; }
+    #gcl-body {
+      padding: 16px 20px; overflow-y: auto; font: 13px/1.5 sans-serif;
+    }
+    #gcl-body h3 {
+      font-size: 14px; color: #7c8bff; margin: 16px 0 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;
+    }
+    #gcl-body h3:first-child { margin-top: 0; }
+    #gcl-body h4 {
+      font-size: 12px; color: #a0a0a0; margin: 10px 0 4px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    #gcl-body ul { margin: 0 0 8px; padding-left: 20px; }
+    #gcl-body li { margin-bottom: 4px; }
+
+/* ══════════════ */
+/* TEMPLATE END */
+/* ══════════════ */
+
+/* ══════════════ */
+/* PROJECT START */
+/* ══════════════ */
+
+/* ── GAS Integration Dashboard ── */
+    body {
+      background: #0d1117;
+      color: #c9d1d9;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 16px;
+      min-height: 100%;
+      box-sizing: border-box;
+    }
+    .dashboard {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      max-width: 520px;
+      width: 100%;
+      padding: 28px 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .dashboard h1 {
+      margin: 0 0 4px;
+      font-size: 22px;
+      color: #f0f6fc;
+    }
+    .dashboard .subtitle {
+      font-size: 13px;
+      color: #8b949e;
+      margin: 0 0 20px;
+    }
+    .section-header {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #58a6ff;
+      margin: 20px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #21262d;
+    }
+    .section-header:first-of-type { margin-top: 0; }
+    .divider {
+      height: 1px;
+      background: #21262d;
+      margin: 16px 0;
+    }
+    .footer-note {
+      font-size: 11px;
+      color: #484f58;
+      text-align: center;
+      margin-top: 16px;
+    }
+/* ── Config Form ── */
+    .config-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+    .config-field label {
+      font-size: 12px;
+      color: #8b949e;
+      font-weight: 500;
+    }
+    .config-field input {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: #c9d1d9;
+      font: 13px/1.4 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .config-field input:focus {
+      border-color: #58a6ff;
+    }
+    .config-field input::placeholder {
+      color: #484f58;
+    }
+    .config-field .field-hint {
+      font-size: 11px;
+      color: #484f58;
+    }
+    .config-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .config-actions button {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-apply {
+      background: #238636;
+      color: #fff;
+      border-color: #2ea043 !important;
+    }
+    .btn-apply:hover { background: #2ea043; }
+    .btn-copy {
+      background: #d97757;
+      color: #f0f0f0;
+    }
+    .btn-copy:hover { background: #e08b6d; }
+    .config-actions button:disabled,
+    .btn-copy-gs:disabled,
+    .btn-copy-html:disabled {
+      background: #1e1114 !important;
+      border-color: #30363d !important;
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .btn-apply:disabled {
+      background: #1e1114 !important;
+      border-color: #30363d !important;
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .deploy-separator {
+      border-top: 1px solid #30363d;
+      margin-top: 12px;
+      padding-top: 8px;
+    }
+    .deploy-separator-label {
+      font-size: 11px;
+      color: #484f58;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .step-group-label {
+      font-size: 10px;
+      color: #484f58;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 14px 0 6px 0;
+      padding: 0;
+      list-style: none;
+    }
+    .btn-copy-gs {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #1f6feb;
+      border: 1px solid #388bfd;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-copy-gs:hover { background: #388bfd; }
+    .btn-copy-html {
+      display: block;
+      width: 100%;
+      margin-top: 6px;
+      padding: 5px 10px;
+      background: transparent;
+      border: 1px dashed #30363d;
+      border-radius: 6px;
+      color: #484f58;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-copy-html:hover { border-color: #58a6ff; color: #8b949e; }
+    .btn-copy-html:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+    .config-toast {
+      text-align: center;
+      font-size: 12px;
+      color: #3fb950;
+      margin-top: 8px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .config-toast.show { opacity: 1; }
+/* ── Setup Instructions ── */
+    .setup-steps {
+      font-size: 13px;
+      color: #c9d1d9;
+      line-height: 1.6;
+    }
+    .setup-steps ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .setup-steps > ol {
+      list-style: none;
+      counter-reset: setup-step;
+      padding-left: 0;
+    }
+    .setup-steps > ol > li:not(.step-group-label) {
+      counter-increment: setup-step;
+    }
+    .setup-steps > ol > li:not(.step-group-label)::before {
+      content: counter(setup-step) '. ';
+      font-weight: bold;
+    }
+    .setup-steps li {
+      margin-bottom: 10px;
+    }
+    .setup-steps code {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 1px 5px;
+      font: 12px/1.4 'SFMono-Regular', Consolas, monospace;
+      color: #79c0ff;
+    }
+    .setup-steps pre {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 10px 12px;
+      font: 12px/1.5 'SFMono-Regular', Consolas, monospace;
+      color: #c9d1d9;
+      overflow-x: auto;
+      margin: 6px 0 10px;
+    }
+    .setup-steps .step-note {
+      font-size: 11px;
+      color: #8b949e;
+      margin-top: 2px;
+    }
+    .setup-steps details {
+      margin-top: 8px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #0d1117;
+      padding: 0;
+    }
+    .setup-steps details[open] { padding-bottom: 10px; }
+    .setup-steps summary {
+      cursor: pointer;
+      padding: 8px 12px;
+      color: #f0883e;
+      font-size: 12px;
+      font-weight: 600;
+      list-style: none;
+      user-select: none;
+    }
+    .setup-steps summary::-webkit-details-marker { display: none; }
+    .setup-steps summary::before { content: '\25b6  '; font-size: 10px; }
+    .setup-steps details[open] > summary::before { content: '\25bc  '; }
+    .setup-steps details .troubleshoot-content {
+      padding: 4px 12px 0;
+      font-size: 12px;
+      color: #c9d1d9;
+      line-height: 1.6;
+    }
+    .setup-steps details .troubleshoot-content h4 {
+      color: #58a6ff;
+      font-size: 12px;
+      margin: 10px 0 4px;
+    }
+    .setup-steps details .troubleshoot-content ol,
+    .setup-steps details .troubleshoot-content ul {
+      margin: 4px 0;
+      padding-left: 18px;
+    }
+    .setup-steps details .troubleshoot-content li {
+      margin-bottom: 4px;
+    }
+    .step-input {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 8px 0 4px;
+      padding: 8px 10px;
+      background: rgba(22,27,34,0.5);
+      border: 1px solid #21262d;
+      border-radius: 6px;
+    }
+    .step-input label {
+      font-size: 11px;
+      color: #58a6ff;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .step-input input {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: #c9d1d9;
+      font: 13px/1.4 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .step-input .input-row { display: flex; gap: 6px; align-items: center; }
+    .step-input .input-row input { flex: 1; }
+    .step-input input:focus { border-color: #58a6ff; }
+    .step-input input::placeholder { color: #484f58; }
+    .step-input input.field-empty { background: #112a1c; }
+    .step-input input:disabled { background: #1e1114; }
+    .step-input select:disabled { background: #1e1114 !important; }
+    .field-clear {
+      background: none; border: 1px solid #30363d; border-radius: 6px;
+      color: #f85149; cursor: pointer; font-size: 14px; padding: 6px 8px;
+      line-height: 1; transition: all 0.2s;
+    }
+    .field-clear:hover { background: #da3633; color: #fff; border-color: #da3633; }
+    .step-input .field-hint {
+      font-size: 11px;
+      color: #484f58;
+    }
+/* ── GAS Panel (bottom drawer) ── */
+    #gas-panel {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      transition: height 0.3s ease; display: flex; flex-direction: column;
+    }
+    #gas-panel.collapsed { height: 0 !important; }
+    #gas-panel-tab {
+      position: fixed; bottom: 0; left: 16px; z-index: 101;
+      background: #238636; color: #fff; border: none;
+      border-radius: 8px 8px 0 0; padding: 4px 14px;
+      font: 600 12px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      cursor: pointer; display: none;
+    }
+    #gas-panel-tab:hover { background: #2ea043; }
+    #gas-panel-tab.active { background: #da3633; }
+    #gas-panel-tab.active:hover { background: #f85149; }
+    #gas-panel-resize {
+      height: 5px;
+      background: #30363d;
+      cursor: ns-resize;
+      flex-shrink: 0;
+    }
+    #gas-panel-resize::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 3px;
+      background: #484f58;
+      border-radius: 2px;
+      margin: 1px auto;
+    }
+    #gas-panel iframe {
+      flex: 1; width: 100%; border: none; background: #fff;
+    }
+    .pre-wrap {
+      position: relative;
+    }
+    .pre-wrap .btn-copy-json {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      color: #8b949e;
+      font: 11px/1 'SFMono-Regular', Consolas, monospace;
+      padding: 3px 8px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .pre-wrap .btn-copy-json:hover { color: #58a6ff; border-color: #58a6ff; }
+
+/* ══════════════ */
+/* PROJECT END */
+/* ══════════════ */
+  </style>
+</head>
+<body>
+<!-- ══════════════ -->
+<!-- TEMPLATE START -->
+<!-- ══════════════ -->
+  <div id="splash-web" class="splash"><div class="splash-title">Website Ready</div><img id="splash-logo" src="" alt=""></div>
+  <div id="splash-code" class="splash"><div class="splash-title">Code Ready</div><img id="splash-code-logo" src="" alt=""></div>
+  <div id="splash-maintenance" class="splash"><div class="splash-title">&#128295;This Webpage is Undergoing Maintenance<span id="maint-bypass" tabindex="-1" style="cursor:inherit;-webkit-user-select:none;user-select:text">&#128295;</span></div><img id="maintenance-logo" src="" alt=""><div id="maintenance-timestamp" class="maintenance-timestamp"></div></div>
+
+  <div id="gas-pill"><span class="dot"></span><span id="gas-pill-label">GAS ...</span></div>
+  <div id="gcl-overlay"><div id="gcl-popup"><div id="gcl-header"><span id="gcl-title">GAS Changelog</span><button id="gcl-close">&times;</button></div><div id="gcl-body"></div></div></div>
+<!-- ══════════════ -->
+<!-- TEMPLATE END -->
+<!-- ══════════════ -->
+
+<!-- ══════════════ -->
+<!-- PROJECT START -->
+<!-- ══════════════ -->
+  <!-- GAS panel — collapsible bottom drawer for iframe -->
+  <button id="gas-panel-tab">&#9650; GAS</button>
+  <div id="gas-panel" class="collapsed">
+    <div id="gas-panel-resize"></div>
+    <div style="background:#1c2128;color:#8b949e;font-size:12px;padding:6px 12px;text-align:center;border-bottom:1px solid #30363d">&#128161; If you see <strong style="color:#c9d1d9">&ldquo;Script function not found: doGet&rdquo;</strong>, the deployment ID is valid &mdash; proceed with entering your other fields, then copy Code.gs for GAS into the Apps Script editor</div>
+    <!-- GAS iframe injected dynamically by testGasConnection() -->
+  </div>
+
+  <!-- GAS Project Creator Dashboard -->
+  <div class="dashboard">
+    <h1>GAS Project Creator</h1>
+    <p class="subtitle">Setup tool for creating and configuring Google Apps Script projects</p>
+
+    <div class="section-header">Setup &amp; Configuration</div>
+
+    <div class="setup-steps">
+      <label style="display:flex;align-items:center;gap:6px;margin:0 0 12px 0;font-size:13px;color:#c9d1d9;cursor:pointer;user-select:none;">
+        <input type="checkbox" id="chk-google-auth" style="cursor:pointer;" checked onchange="toggleAuthFields()">
+        <strong>Include Google Authentication</strong> <span style="color:#6e7681;">(adds sign-in gate to both GAS &amp; HTML &mdash; unchecked = no auth, open access)</span>
+      </label>
+      <ol>
+        <li class="step-group-label">Google Account Setup</li>
+        <li>Enable the Apps Script API at <a href="https://script.google.com/home/usersettings" target="_blank" rel="noopener" style="color:#58a6ff">script.google.com/home/usersettings</a></li>
+        <li>Create or use a GCP project where you have <strong>Owner</strong> access. If you don't have one, create a new project at <a href="https://console.cloud.google.com/home/" target="_blank" rel="noopener" style="color:#58a6ff">console.cloud.google.com</a></li>
+        <li>Enable the <strong>Apps Script API</strong> in your GCP project
+          <div class="step-note">APIs &amp; Services &rarr; Library &rarr; search "Apps Script API" &rarr; Enable</div>
+        </li>
+        <li class="step-group-label" id="auth-steps-label" style="display:none">OAuth Setup (Auth Only)</li>
+        <li id="auth-step-consent" style="display:none">Configure the <strong>OAuth consent screen</strong> in your GCP project
+          <div class="step-note">APIs &amp; Services &rarr; OAuth consent screen &rarr; User Type: External (or Internal for Workspace) &rarr; fill in app name and support email &rarr; Add scopes: <code>email</code>, <code>profile</code>, <code>openid</code></div>
+        </li>
+        <li id="auth-step-client" style="display:none">Create an <strong>OAuth 2.0 Client ID</strong> (Web application type)
+          <div class="step-note">APIs &amp; Services &rarr; Credentials &rarr; + Create Credentials &rarr; OAuth client ID &rarr; Application type: Web application &rarr; Authorized JavaScript origins: add your GitHub Pages URL (e.g. <code>https://yourusername.github.io</code>) &rarr; Create</div>
+          <div class="step-note" style="margin-top:6px">Copy the <strong>Client ID</strong> (ends in <code>.apps.googleusercontent.com</code>). You&rsquo;ll paste it in the Auth Settings section below.</div>
+        </li>
+        <li class="step-group-label">New Apps Script Project</li>
+        <li>Create a new Apps Script project via <strong>Google Sheets</strong> (recommended): open a new or existing Google Sheet &rarr; <strong>Extensions</strong> &rarr; <strong>Apps Script</strong>. This creates a script <strong>linked</strong> to that spreadsheet, which is needed for version-tracking features.
+          <div class="step-note">Alternatively, for a <strong>standalone</strong> script (no spreadsheet link), create one at <a href="https://script.google.com" target="_blank" rel="noopener" style="color:#58a6ff">script.google.com</a></div>
+        </li>
+        <li class="step-group-label">GAS Project Settings</li>
+        <li>In Project Settings, enable <strong>Show appsscript.json manifest file</strong>
+          <div class="step-note">Project Settings &rarr; General settings &rarr; Show &ldquo;appsscript.json&rdquo; manifest file</div>
+        </li>
+        <li>Link the GCP project in Apps Script
+          <div class="step-note">Project Settings &rarr; Google Cloud Platform (GCP) Project &rarr; Change project</div>
+          <details>
+            <summary>Potential Troubleshooting: &ldquo;You cannot switch to a Cloud Platform project in an Apps Script-managed folder&rdquo;</summary>
+            <div class="troubleshoot-content">
+              <p>This error means your GCP project ended up inside Google&rsquo;s hidden <code>apps-script</code> managed folder. Even projects you created manually can land there on Workspace accounts.</p>
+              <h4>How to diagnose</h4>
+              <ol>
+                <li>Go to <a href="https://console.cloud.google.com/cloud-resource-manager" target="_blank" rel="noopener" style="color:#58a6ff">Manage Resources</a></li>
+                <li>Look for: <strong>your org &rarr; system-gsuite &rarr; apps-script</strong></li>
+                <li>If your project is inside that folder, that&rsquo;s the problem</li>
+              </ol>
+              <h4>Fix &mdash; Option A: Move the project</h4>
+              <p style="color:#f0883e; font-size:11px">Requires the <strong>Project Mover</strong> IAM role &mdash; you likely don&rsquo;t have it by default, even as org owner/admin.</p>
+              <ol>
+                <li>Go to <a href="https://console.cloud.google.com/iam-admin/iam" target="_blank" rel="noopener" style="color:#58a6ff">IAM &amp; Admin</a> &rarr; use the top dropdown to select your <strong>organization</strong> (not a project)</li>
+                <li>Click <strong>Grant Access</strong> &rarr; enter your own email</li>
+                <li>Select role: <strong>Resource Manager &rarr; Project Mover</strong> &rarr; Save</li>
+                <li>Go to <a href="https://console.cloud.google.com/cloud-resource-manager" target="_blank" rel="noopener" style="color:#58a6ff">Manage Resources</a> &rarr; find your project in the <code>apps-script</code> folder</li>
+                <li>Three-dot menu &rarr; <strong>Migrate</strong> &rarr; move to org root or &ldquo;No organization&rdquo;</li>
+                <li>Retry changing the GCP project in Apps Script settings</li>
+              </ol>
+              <h4>Fix &mdash; Option B: Create a new project</h4>
+              <ol>
+                <li>Go to <a href="https://console.cloud.google.com/" target="_blank" rel="noopener" style="color:#58a6ff">Google Cloud Console</a> &rarr; create a new project</li>
+                <li>Set <strong>Location</strong> to your org root or &ldquo;No organization&rdquo;</li>
+                <li>Verify the project number does <strong>not</strong> start with <code>sys-</code></li>
+                <li>Enable the Apps Script API in the new project</li>
+                <li>Use this project&rsquo;s number in Apps Script settings</li>
+              </ol>
+            </div>
+          </details>
+        </li>
+        <li>Set <strong>Script Properties</strong> in your Apps Script project
+          <div class="step-note">Project Settings &rarr; Script Properties &rarr; Add the following properties:</div>
+          <div style="margin:8px 0;padding:10px 12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;font:12px/1.8 'SFMono-Regular',Consolas,monospace;color:#c9d1d9;">
+            <div style="display:flex;align-items:center;gap:8px;"><code style="color:#79c0ff;border:none;background:none;padding:0;">GITHUB_TOKEN</code><button class="btn-copy-json" onclick="copyText('GITHUB_TOKEN',this)" style="position:static;padding:1px 6px;font-size:10px;line-height:1.4;">Copy</button> <span style="color:#8b949e;">&mdash; your fine-grained personal access token</span></div>
+          </div>
+          <div class="step-note" style="margin-top:6px;color:#8b949e;font-style:italic;"><strong>Note:</strong> <code>CACHE_EPOCH</code><span id="hmac-auto-note" style="display:none">, <code>HMAC_SECRET</code>, and <code>CROSS_PROJECT_ADMIN_SECRET</code></span> are auto-generated/distributed on first deploy &mdash; no manual setup needed.</div>
+          <div class="step-note" style="margin-top:6px"><strong>To create a token:</strong> GitHub.com &rarr; Settings &rarr; Developer settings &rarr; <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:#58a6ff">Fine-grained tokens</a> &rarr; Generate new token. Under "Repository access" select <strong>Public repositories (read-only)</strong>. No additional permissions are needed. Copy the <code>github_pat_...</code> value.</div>
+          <div class="step-note"><strong>Reuse across projects:</strong> The same token works for all your GAS projects &mdash; you don't need a new one per repo. Just paste the same token into each project's Script Properties. Note: GitHub only shows the token once at the time of creation and permanently hides it afterward &mdash; save it somewhere secure before closing the page.</div>
+        </li>
+        <li class="step-group-label">GAS Editor</li>
+        <li>Set the <code>appsscript.json</code> manifest contents to:
+<div class="pre-wrap"><button class="btn-copy-json" onclick="copyManifest(this)">Copy</button><pre id="manifest-json">{
+  "timeZone": "America/New_York",
+  "runtimeVersion": "V8",
+  "dependencies": {},
+  "webapp": {
+    "executeAs": "USER_DEPLOYING",
+    "access": "ANYONE_ANONYMOUS"
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/script.projects",
+    "https://www.googleapis.com/auth/script.external_request",
+    "https://www.googleapis.com/auth/script.deployments",
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/script.send_mail",
+    "https://www.googleapis.com/auth/script.scriptapp",
+    "https://www.googleapis.com/auth/drive"
+  ]
+}</pre></div>
+        </li>
+        <li><strong>Deploy #1</strong> &mdash; Create the Web app deployment
+          <div class="step-note">Deploy &rarr; New deployment &rarr; Select type: Web app &rarr; Execute as: Me &rarr; Who has access: Anyone</div>
+          <div class="step-note" style="margin-top:6px">Copy the <strong>Deployment ID</strong> (starts with <code>AKfycb...</code>). You&rsquo;ll need it for the config below.</div>
+        </li>
+        <li>Fill in your project values below (paste the Deployment ID from step 9) and copy the configured <code>Code.gs</code>
+          <div class="step-note">Paste this code into your Apps Script project, replacing the existing code</div>
+          <div id="auth-client-id-section" style="margin-bottom:10px;padding:12px;border:1px solid #30363d;border-radius:6px;background:#0d1117;">
+            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:#f0883e;margin-bottom:10px;">Authentication Settings</div>
+            <div style="margin:0 0 12px;padding:10px 12px;background:#0d1117;border:1px solid #1f6feb;border-radius:6px;font-size:12px;line-height:1.6;color:#c9d1d9;">
+              <div style="font-weight:600;color:#58a6ff;margin-bottom:6px;">&#10003; Included automatically in every auth project</div>
+              <ul style="margin:0;padding-left:18px;">
+                <li><strong>GAS reachability watchdog</strong> &mdash; if the Apps Script backend doesn&rsquo;t answer the sign-in handshake, the page shows a clear &ldquo;sign-in service isn&rsquo;t responding&rdquo; error instead of spinning forever (helpful when a deployment is empty or stale).</li>
+                <li><strong>Cross-tab session activity</strong> &mdash; staying active in any open auth tab keeps every other auth tab&rsquo;s session alive, so switching between tabs won&rsquo;t silently expire your session.</li>
+              </ul>
+            </div>
+            <div class="step-input" style="margin:0 0 10px;">
+              <label for="cfg-client-id">OAuth Client ID <em style="color:#f85149">(required for auth)</em></label>
+              <div class="input-row"><input type="text" id="cfg-client-id" placeholder="123456789.apps.googleusercontent.com" oninput="updateDeployGate(); updateFieldStates();"><button class="field-clear" onclick="clearField('cfg-client-id'); updateDeployGate(); updateFieldStates();" title="Clear">&times;</button></div>
+              <span class="field-hint">From Google Cloud Console &rarr; APIs &amp; Services &rarr; Credentials &rarr; OAuth 2.0 Client ID (Web application type)</span>
+            </div>
+            <div id="auth-sub-fields">
+              <div class="step-input" style="margin:0 0 10px;">
+                <label for="cfg-auth-preset">Auth Preset</label>
+                <select id="cfg-auth-preset" style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:8px 10px;color:#c9d1d9;font:13px/1.4 'SFMono-Regular',Consolas,monospace;outline:none;">
+                  <option value="standard">standard &mdash; 30min sessions, no HMAC, URL token exchange</option>
+                  <option value="hipaa" selected>hipaa &mdash; 15min sessions, HMAC, audit log, postMessage exchange</option>
+                </select>
+                <span class="field-hint">Controls session duration, security features, and token exchange method. See 6-UNIFIED-TOGGLEABLE-AUTH-PATTERN.md for details</span>
+              </div>
+              <div class="step-input" style="margin:0;">
+                <label for="cfg-allowed-domains">Allowed Domains <em>(optional &mdash; &ldquo;All&rdquo; = any Google account)</em></label>
+                <div class="input-row"><input type="text" id="cfg-allowed-domains" placeholder="yourdomain.com, otherdomain.org" value="All"><button class="field-clear" onclick="clearField('cfg-allowed-domains')" title="Clear">&times;</button></div>
+                <span class="field-hint">&ldquo;All&rdquo; allows any Google account. Enter comma-separated domains to restrict (e.g. yourdomain.com, otherdomain.org)</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-input">
+            <label for="cfg-deployment-id">Deployment ID <em style="color:#f85149">(required)</em></label>
+            <div class="input-row"><input type="text" id="cfg-deployment-id" placeholder="AKfycbw..." oninput="updateDeployGate(); updateFieldStates();"><button class="field-clear" onclick="clearField('cfg-deployment-id'); updateDeployGate(); updateFieldStates();" title="Clear">&times;</button></div>
+            <span class="field-hint">From Apps Script: Deploy &rarr; Manage deployments &mdash; required before using Test GAS Connection, Copy, or GAS Preview</span>
+            <button class="btn-apply" id="btn-apply" onclick="testGasConnection()" disabled style="margin-top:8px">(Optional) Test GAS Connection</button>
+            <span class="field-hint" style="margin-top:6px">&#128161; If the GAS preview shows <strong>&ldquo;Script function not found: doGet&rdquo;</strong>, the deployment ID is valid &mdash; proceed with entering your other fields, then copy Code.gs for GAS into the Apps Script editor</span>
+          </div>
+          <div class="deploy-separator">
+            <div class="deploy-separator-label">Project Configuration</div>
+          </div>
+          <div class="step-input" id="field-env-name">
+            <label for="cfg-env-name">Project Environment Name <em style="color:#f85149">(required)</em></label>
+            <div class="input-row"><input type="text" id="cfg-env-name" placeholder="my-project" oninput="updateDeployGate(); syncAclPagePlaceholder(); updateFieldStates();"><button class="field-clear" onclick="clearField('cfg-env-name'); updateDeployGate(); syncAclPagePlaceholder(); updateFieldStates();" title="Clear">&times;</button></div>
+            <span class="field-hint">Base name for all project files &mdash; e.g. <code>test</code> creates <code>test.html</code>, <code>test.gs</code>, <code>html-versions/testhtml.version.txt</code>, etc.</span>
+          </div>
+          <div class="step-input" id="field-github-owner">
+            <label for="cfg-github-owner">GitHub Owner <em style="color:#f85149">(required)</em></label>
+            <div class="input-row"><input type="text" id="cfg-github-owner" placeholder="YourOrgOrUsername" value="LightAISolutions"><button class="field-clear" onclick="clearField('cfg-github-owner')" title="Clear">&times;</button></div>
+            <span class="field-hint">GitHub org/username that owns this repo. Auto-filled on <code>github.io</code> sites; enter it manually on custom domains (it can&rsquo;t be read from the URL there). Powers the GAS self-update pull from GitHub.</span>
+          </div>
+          <div class="step-input" id="field-github-repo">
+            <label for="cfg-github-repo">GitHub Repo <em style="color:#f85149">(required)</em></label>
+            <div class="input-row"><input type="text" id="cfg-github-repo" placeholder="your-repo-name" value="Sales"><button class="field-clear" onclick="clearField('cfg-github-repo')" title="Clear">&times;</button></div>
+            <span class="field-hint">Repository name. Auto-filled on <code>github.io</code> sites; enter it manually on custom domains. Powers the GAS self-update pull from GitHub.</span>
+          </div>
+          <div class="step-input" id="field-title">
+            <label for="cfg-title">Title <em>(optional &mdash; defaults to &ldquo;YOUR_PROJECT_TITLE&rdquo;)</em></label>
+            <div class="input-row"><input type="text" id="cfg-title" placeholder="My GAS Project"><button class="field-clear" onclick="clearField('cfg-title')" title="Clear">&times;</button></div>
+            <span class="field-hint">Shown in browser tab and GAS UI. If blank, uses a generic placeholder title</span>
+          </div>
+          <div class="step-input" id="field-spreadsheet-id">
+            <label for="cfg-spreadsheet-id">Spreadsheet ID <em>(optional &mdash; if blank, no sheet tracking)</em></label>
+            <div class="input-row"><input type="text" id="cfg-spreadsheet-id" placeholder="1abc2def3ghi..." oninput="syncMasterAclId(); updateFieldStates();"><button class="field-clear" onclick="clearField('cfg-spreadsheet-id'); syncMasterAclId(); updateFieldStates();" title="Clear">&times;</button></div>
+            <span class="field-hint">Google Sheets ID for version tracking. Leave blank if this project doesn&rsquo;t use a spreadsheet</span>
+          </div>
+          <div id="master-acl-section" style="margin:6px 0 10px;">
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#8b949e;cursor:pointer;user-select:none;">
+              <input type="checkbox" id="chk-is-master-acl" style="cursor:pointer;" onchange="toggleMasterAcl()">
+              This spreadsheet is the master ACL <span style="color:#6e7681;">(centralized access control for all projects)</span>
+            </label>
+            <div id="external-acl-id-field" class="step-input" style="margin:10px 0 0;">
+              <label for="cfg-master-acl-id">Master ACL Spreadsheet ID</label>
+              <div class="input-row"><input type="text" id="cfg-master-acl-id" placeholder="1abc2def3ghi..." oninput="updateFieldStates()"><button class="field-clear" onclick="clearField('cfg-master-acl-id'); updateFieldStates();" title="Clear">&times;</button></div>
+              <span class="field-hint">ID of an external spreadsheet that serves as the master ACL. Leave blank if not using centralized access control</span>
+            </div>
+          </div>
+          <div class="step-input" id="field-sheet-name">
+            <label for="cfg-sheet-name">Sheet Tab Name <em>(optional &mdash; defaults to &ldquo;Live_Sheet&rdquo;)</em></label>
+            <div class="input-row"><input type="text" id="cfg-sheet-name" placeholder="Live_Sheet" value="Live_Sheet"><button class="field-clear" onclick="clearField('cfg-sheet-name')" title="Clear">&times;</button></div>
+            <span class="field-hint">Tab name in the spreadsheet. Uses &ldquo;Live_Sheet&rdquo; if left blank</span>
+          </div>
+          <div class="step-input" id="field-acl-sheet-name">
+            <label for="cfg-acl-sheet-name">ACL Sheet Name <em>(optional &mdash; defaults to &ldquo;Access&rdquo;)</em></label>
+            <div class="input-row"><input type="text" id="cfg-acl-sheet-name" placeholder="Access" value="Access"><button class="field-clear" onclick="clearField('cfg-acl-sheet-name')" title="Clear">&times;</button></div>
+            <span class="field-hint">The sheet tab in the ACL spreadsheet where authorized emails are listed</span>
+          </div>
+          <div class="step-input" id="field-acl-page-name">
+            <label for="cfg-acl-page-name">ACL Column Name <em>(optional &mdash; defaults to Environment Name)</em></label>
+            <div class="input-row"><input type="text" id="cfg-acl-page-name" placeholder="Auto-filled from Environment Name"><button class="field-clear" onclick="clearField('cfg-acl-page-name')" title="Clear">&times;</button></div>
+            <span class="field-hint">The column header in the ACL sheet that identifies this page. Defaults to the Environment Name if left blank</span>
+          </div>
+          <div class="step-input" id="field-portal-icon">
+            <label for="cfg-portal-icon">Portal Icon <em>(optional &mdash; defaults to 📱)</em></label>
+            <div class="input-row"><input type="text" id="cfg-portal-icon" placeholder="📱" maxlength="4"><button class="field-clear" onclick="clearField('cfg-portal-icon')" title="Clear">&times;</button></div>
+            <span class="field-hint">Emoji icon shown on the Program Portal card for this project</span>
+          </div>
+          <div class="step-input" id="field-portal-desc">
+            <label for="cfg-portal-desc">Portal Description <em>(optional &mdash; defaults to &ldquo;Title application.&rdquo;)</em></label>
+            <div class="input-row"><input type="text" id="cfg-portal-desc" placeholder="Auto-generated from Title"><button class="field-clear" onclick="clearField('cfg-portal-desc')" title="Clear">&times;</button></div>
+            <span class="field-hint">Short description shown on the Program Portal card</span>
+          </div>
+          <div class="step-input" id="field-developer-logo">
+            <label for="cfg-developer-logo">Developer Logo URL <em>(optional &mdash; defaults to LightAISolutions logo)</em></label>
+            <div class="input-row"><input type="text" id="cfg-developer-logo" placeholder="https://yoursite.com/logo.png" value="https://lightaisolutions.github.io/Sales/images/logo-placeholder.svg"><button class="field-clear" onclick="clearField('cfg-developer-logo')" title="Clear">&times;</button></div>
+            <span class="field-hint">Developer branding logo. Independent of Org and Splash logos</span>
+          </div>
+          <div class="step-input" id="field-org-logo">
+            <label for="cfg-org-logo">Org Logo URL <em>(optional &mdash; defaults to LightAISolutions logo)</em></label>
+            <div class="input-row"><input type="text" id="cfg-org-logo" placeholder="https://yoursite.com/logo.png" value="https://lightaisolutions.github.io/Sales/images/logo-placeholder.svg"><button class="field-clear" onclick="clearField('cfg-org-logo')" title="Clear">&times;</button></div>
+            <span class="field-hint">Organization branding logo. Replace with your org&rsquo;s logo after forking</span>
+          </div>
+          <div class="step-input" id="field-splash-logo">
+            <label for="cfg-splash-logo">Splash Logo URL <em>(optional &mdash; defaults to LightAISolutions logo)</em></label>
+            <div class="input-row"><input type="text" id="cfg-splash-logo" placeholder="https://yoursite.com/logo.png" value="https://lightaisolutions.github.io/Sales/images/logo-placeholder.svg"><button class="field-clear" onclick="clearField('cfg-splash-logo')" title="Clear">&times;</button></div>
+            <span class="field-hint">Logo shown on splash screens (Website Ready, Code Ready, Maintenance). Independent of Developer and Org logos</span>
+          </div>
+          <div class="step-input" id="field-github-branch">
+            <label for="cfg-github-branch">GitHub Branch <em>(optional &mdash; defaults to &ldquo;main&rdquo;)</em></label>
+            <div class="input-row"><input type="text" id="cfg-github-branch" placeholder="main" value="main"><button class="field-clear" onclick="clearField('cfg-github-branch')" title="Clear">&times;</button></div>
+            <span class="field-hint">Default branch for GAS self-update pulls. Uses &ldquo;main&rdquo; if left blank</span>
+          </div>
+          <!-- Test features checkbox removed — test templates consolidated into minimal templates (see repository-information/archive info/GAS-TEST-FUNCTIONS-REFERENCE.md for archived test functions) -->
+          <button class="btn-copy-gs" id="btn-copy-gs" onclick="copyGsCode(this)" disabled>Copy Code.gs for GAS</button>
+          <div class="step-note">In the Apps Script editor, replace all contents of <code>Code.gs</code> with the copied code</div>
+          <button class="btn-copy-html" id="btn-copy-html" onclick="copyHtmlCode(this)" disabled><span style="color:#30363d">Optional &mdash;</span> Copy Embedding Page HTML <span style="color:#30363d">(the setup script creates this automatically)</span></button>
+        </li>
+        <li>Run any function from the Apps Script editor to trigger the initial <strong>OAuth authorization</strong> prompt
+          <div class="step-note">This ensures the script has all required permissions before the final deployment</div>
+        </li>
+        <li><strong>Deploy #2</strong> &mdash; Update the deployment with the new code
+          <div class="step-note">Deploy &rarr; Manage deployments &rarr; Edit (pencil icon) &rarr; Version: New version &rarr; Deploy</div>
+          <div class="step-note" style="margin-top:6px"><strong>Why two deploys?</strong> Deploy #1 creates the deployment URL and gives you the Deployment ID. But the code you pasted in step 10 needs that ID to auto-update itself. Deploy #2 pushes the code (now containing the real Deployment ID) to the live deployment with all OAuth permissions granted. After this, all future updates are automatic &mdash; pushes to GitHub trigger the GAS to pull and redeploy itself.</div>
+        </li>
+        <li class="step-group-label">GAS Triggers</li>
+        <li><em>(Optional)</em> If your project uses installable triggers:
+          <div class="step-note">Apps Script editor &rarr; Triggers &rarr; + Add Trigger &rarr; select your function, event source, and event type</div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="config-actions">
+      <button class="btn-copy" id="btn-copy-config" onclick="copyConfig()" disabled>Copy Config for Claude</button>
+    </div>
+    <div class="config-toast" id="config-toast"></div>
+
+    <div class="footer-note">
+      Copies a setup script command — paste into Claude Code or run directly in your terminal
+    </div>
+  </div>
+<!-- ══════════════ -->
+<!-- PROJECT END -->
+<!-- ══════════════ -->
+  <!-- GAS 1fr4m3 injected dynamically by script -->
+
+  <script>
+/* tpl:7f3e9b2d */ // ── CONFIG ──
+    // Logo shown on the "Website Ready" splash screen
+    var DEVELOPER_LOGO_URL = 'images/logo-placeholder.svg';
+    var YOUR_ORG_LOGO_URL = 'images/logo-placeholder.svg';
+    var SPLASH_LOGO_URL = 'images/logo-placeholder.svg';
+
+    // Auto-refresh: set to false to disable build-version polling
+    var AUTO_REFRESH = true;
+
+    // Show/hide: set to false to hide the website version indicator
+    var SHOW_WEB_VERSION = true;
+    // Show/hide: set to false to disable changelog popup on version indicator click
+    var SHOW_CHANGELOG = true;
+
+// ──────────────
+
+// ══════════════
+// TEMPLATE START
+// ══════════════
+
+    // Set splash logo from config variable
+    document.getElementById('splash-logo').src = SPLASH_LOGO_URL;
+    document.getElementById('splash-code-logo').src = SPLASH_LOGO_URL;
+    document.getElementById('maintenance-logo').src = SPLASH_LOGO_URL;
+
+    // Hidden maintenance bypass — triple-click the second wrench to dismiss
+    (function() {
+      var bp = document.getElementById('maint-bypass');
+      if (!bp) return;
+      bp.addEventListener('click', function(e) {
+        if (e.detail !== 3) return;
+        e.stopPropagation();
+        var overlay = document.getElementById('splash-maintenance');
+        if (overlay && overlay.style.display === 'flex') {
+          sessionStorage.setItem('maint-bypassed', '1');
+          overlay.style.opacity = '0';
+          setTimeout(function() { overlay.style.display = 'none'; }, 300);
+        }
+      });
+    })();
+
+    // Clear stale audio-unlocked flag on non-reload navigations (e.g. Chrome "Duplicate Tab")
+    var _navEntries = performance.getEntriesByType('navigation');
+    var _navType = _navEntries.length ? _navEntries[0].type : 'navigate';
+    if (_navType !== 'reload') {
+      sessionStorage.removeItem('audio-unlocked');
+    }
+
+    // AudioContext for sound playback — deferred to first user gesture to avoid
+    // Chrome's autoplay policy warning ("AudioContext was not allowed to start")
+    var _audioCtx = null;
+
+    function _ensureAudioCtx() {
+      if (_audioCtx) return _audioCtx;
+      try { _audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return null; }
+      if (_audioCtx) _audioCtx.onstatechange = function() { updateAudioStatus(); };
+      return _audioCtx;
+    }
+
+    function updateAudioStatus() {
+      var el = document.getElementById('audio-status');
+      if (!el) return;
+      if (_audioCtx && _audioCtx.state === 'running') {
+        el.textContent = '\u{1F50A}';
+        el.title = 'Sound ready';
+        sessionStorage.setItem('audio-unlocked', '1');
+      } else if (sessionStorage.getItem('audio-unlocked')) {
+        el.textContent = '\u{1F50A}';
+        el.title = 'Sound ready';
+      } else {
+        el.textContent = '\u{1F507}';
+        el.title = 'Sound muted - click page to enable';
+      }
+    }
+
+    function unlockAudio() {
+      var ctx = _ensureAudioCtx();
+      if (!ctx || ctx.state === 'running') return;
+      ctx.resume().then(function() { updateAudioStatus(); }).catch(function() {});
+    }
+    document.addEventListener('click', unlockAudio, { once: false });
+    document.addEventListener('touchstart', unlockAudio, { once: false });
+    if (navigator.userActivation) {
+      var _uaPoll = setInterval(function() {
+        if (navigator.userActivation.hasBeenActive) {
+          clearInterval(_uaPoll);
+          unlockAudio();
+        }
+      }, 200);
+    }
+
+    function playSoundFromDataUrl(dataUrl) {
+      try {
+        var ctx = _ensureAudioCtx();
+        if (ctx.state !== 'running') return;
+        var base64 = dataUrl.split(',')[1];
+        var binary = atob(base64);
+        var bytes = new Uint8Array(binary.length);
+        for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        ctx.decodeAudioData(bytes.buffer, function(audioBuffer) {
+          var source = ctx.createBufferSource();
+          source.buffer = audioBuffer;
+          source.connect(ctx.destination);
+          source.start(0);
+        });
+      } catch(e) {}
+    }
+
+    // Pre-load sound file from same-origin into localStorage
+    function cacheSound(url, key) {
+      if (localStorage.getItem(key)) return;
+      fetch(url).then(function(res) { return res.blob(); }).then(function(blob) {
+        var reader = new FileReader();
+        reader.onloadend = function() { localStorage.setItem(key, reader.result); };
+        reader.readAsDataURL(blob);
+      }).catch(function() {});
+    }
+    cacheSound('sounds/Website_Ready_Voice_1.mp3', 'web-sound-data');
+    cacheSound('sounds/Code_Ready_Voice_1.mp3', 'code-sound-data');
+
+    // Show splash + play sound on update-triggered reloads
+    var _soundPlayed = false;
+    function showUpdateSplash(splashId, soundKey, soundFallback) {
+      if (navigator.vibrate) navigator.vibrate(200);
+      var splash = document.getElementById(splashId);
+      var ctx = _ensureAudioCtx();
+      if (ctx && !_soundPlayed) {
+        _soundPlayed = true;
+        var _playNow = function() {
+          var soundData = localStorage.getItem(soundKey);
+          if (soundData) { playSoundFromDataUrl(soundData); }
+          else { var a = new Audio(soundFallback); a.play().catch(function() {}); }
+        };
+        if (ctx.state === 'running') {
+          _playNow();
+        } else {
+          ctx.resume().then(function() { if (ctx.state === 'running') _playNow(); });
+        }
+      }
+      if (splash) {
+        splash.style.display = 'flex';
+        setTimeout(function() {
+          splash.style.opacity = '0';
+          setTimeout(function() { splash.style.display = 'none'; }, 300);
+        }, 1000);
+      }
+    }
+
+    if (sessionStorage.getItem('web-pending-sound')) {
+      sessionStorage.removeItem('web-pending-sound');
+      showUpdateSplash('splash-web', 'web-sound-data', 'sounds/Website_Ready_Voice_1.mp3');
+    }
+
+    // Auto-refresh: poll <pagename>html.version.txt for version changes and maintenance mode
+    (function() {
+      var POLL_INTERVAL = 10000;
+      if (!AUTO_REFRESH) return;
+
+      var basePath = window.location.href.split('?')[0].split('#')[0];
+      var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
+      if (!pageName) pageName = 'index';
+      var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'html-versions/' + pageName + 'html.version.txt';
+
+      var currentVersion = null;
+      var currentTimestamp = null;
+      var indicator = null;
+      var dot = null;
+      var countdownSeconds = 0;
+      var countdownTimer = null;
+
+      function parseVersionTxt(raw) {
+        var parts = raw.split('|');
+        return {
+          maintenance: parts[0].toLowerCase() === 'maintenance',
+          version: (parts[1] || '').replace(/^v/, ''),
+          timestamp: parts[2] || ''
+        };
+      }
+
+      function createIndicator(version) {
+        indicator = document.createElement('div');
+        indicator.id = 'version-indicator';
+        indicator.innerHTML = '<span class="dot"></span><span class="label">v' + version + '</span><span id="audio-status"></span>';
+        if (SHOW_WEB_VERSION) document.body.appendChild(indicator);
+        updateAudioStatus();
+        dot = indicator.querySelector('.dot');
+      }
+
+      function startCountdown() {
+        countdownSeconds = POLL_INTERVAL / 1000;
+        if (countdownTimer) clearInterval(countdownTimer);
+        countdownTimer = setInterval(function() {
+          countdownSeconds--;
+          if (countdownSeconds <= 0) {
+            clearInterval(countdownTimer);
+            if (dot) { dot.textContent = ''; dot.className = 'dot'; }
+          } else if (countdownSeconds <= 5) {
+            if (dot) { dot.textContent = countdownSeconds; dot.className = 'dot counting'; }
+          }
+        }, 1000);
+      }
+
+      function schedulePoll() {
+        startCountdown();
+        setTimeout(checkForUpdate, POLL_INTERVAL);
+      }
+
+      function checkForUpdate() {
+        window._htmlPollTime = Date.now();
+        if (countdownTimer) clearInterval(countdownTimer);
+        if (dot) dot.textContent = '';
+        if (dot) dot.className = 'dot checking';
+        fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })
+          .then(function(res) { return res.text(); })
+          .then(function(v) {
+            var parsed = parseVersionTxt(v.trim());
+            var maintenanceSplash = document.getElementById('splash-maintenance');
+
+            if (!currentVersion) {
+              currentVersion = parsed.version;
+              createIndicator(currentVersion);
+              if (parsed.maintenance && indicator) indicator.querySelector('.label').textContent = '\uD83D\uDD27 v' + currentVersion;
+            }
+
+            if (parsed.maintenance) {
+              if (maintenanceSplash && !sessionStorage.getItem('maint-bypassed')) {
+                maintenanceSplash.style.display = 'flex'; maintenanceSplash.style.opacity = '1';
+                if (parsed.timestamp !== currentTimestamp) {
+                  currentTimestamp = parsed.timestamp;
+                  var tsEl = document.getElementById('maintenance-timestamp');
+                  if (tsEl) { tsEl.textContent = parsed.timestamp || ''; }
+                }
+              }
+              if (parsed.version && parsed.version !== currentVersion) {
+                if (dot) dot.className = 'dot found';
+                if (indicator) indicator.querySelector('.label').textContent = 'Updating...';
+                if (sessionStorage.getItem('maint-bypassed')) sessionStorage.setItem('web-pending-sound', '1');
+                setTimeout(function() { window.location.reload(); }, 2000);
+                return;
+              }
+              if (indicator) indicator.querySelector('.label').textContent = '\uD83D\uDD27 v' + currentVersion;
+              if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
+              schedulePoll();
+            } else if (parsed.version && parsed.version !== currentVersion) {
+              sessionStorage.removeItem('maint-bypassed');
+              if (maintenanceSplash) maintenanceSplash.style.display = 'none';
+              if (dot) dot.className = 'dot found';
+              if (indicator) indicator.querySelector('.label').textContent = 'Updating...';
+              sessionStorage.setItem('web-pending-sound', '1');
+              setTimeout(function() { window.location.reload(); }, 2000);
+            } else {
+              sessionStorage.removeItem('maint-bypassed');
+              if (maintenanceSplash && maintenanceSplash.style.display === 'flex') {
+                maintenanceSplash.style.opacity = '0';
+                setTimeout(function() { maintenanceSplash.style.display = 'none'; }, 300);
+              }
+              if (indicator) indicator.querySelector('.label').textContent = 'v' + currentVersion;
+              if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
+              schedulePoll();
+            }
+          })
+          .catch(function() {
+            if (dot) {
+              dot.className = 'dot error';
+              setTimeout(function() { dot.className = 'dot'; }, 2000);
+            }
+            schedulePoll();
+          });
+      }
+
+      checkForUpdate();
+    })();
+
+    // GAS auto-refresh: poll <pagename>gs.version.txt for GAS version changes
+    // Also drives the GAS version pill (bottom-right, left of HTML pill) with countdown dot
+    (function() {
+      var GAS_POLL_INTERVAL = 10000;
+      var GAS_INITIAL_DELAY = 15000;
+      if (!AUTO_REFRESH) return;
+
+      var basePath = window.location.href.split('?')[0].split('#')[0];
+      var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
+      if (!pageName) pageName = 'index';
+      var gasVersionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'gs-versions/' + pageName + 'gs.version.txt';
+
+      var currentGasVersion = null;
+      var pill = document.getElementById('gas-pill');
+      var pillLabel = document.getElementById('gas-pill-label');
+      var dot = pill ? pill.querySelector('.dot') : null;
+      var countdownSeconds = 0;
+      var countdownTimer = null;
+
+      function startCountdown(interval) {
+        countdownSeconds = (interval || GAS_POLL_INTERVAL) / 1000;
+        if (countdownTimer) clearInterval(countdownTimer);
+        countdownTimer = setInterval(function() {
+          countdownSeconds--;
+          if (countdownSeconds <= 0) {
+            clearInterval(countdownTimer);
+            if (dot) { dot.textContent = ''; dot.className = 'dot'; }
+          } else if (countdownSeconds <= 5) {
+            if (dot) { dot.textContent = countdownSeconds; dot.className = 'dot counting'; }
+          }
+        }, 1000);
+      }
+
+      function checkGasUpdate() {
+        if (countdownTimer) clearInterval(countdownTimer);
+        if (dot) { dot.textContent = ''; dot.className = 'dot checking'; }
+        fetch(gasVersionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })
+          .then(function(res) { return res.text(); })
+          .then(function(v) {
+            var fetched = v.trim();
+            var gParts = fetched.split('|');
+            var gasVer = (gParts.length >= 2 && gParts[1]) ? gParts[1] : fetched;
+            if (!currentGasVersion) {
+              currentGasVersion = fetched;
+              if (pill) { pill.style.display = 'flex'; }
+              if (pillLabel) pillLabel.textContent = 'GAS ' + gasVer;
+            } else if (fetched !== currentGasVersion) {
+              // GAS version changed on GitHub — reload immediately
+              if (dot) dot.className = 'dot found';
+              if (pillLabel) pillLabel.textContent = 'GAS updated — reloading...';
+              sessionStorage.setItem('gas-pending-sound', '1');
+              setTimeout(function() { window.location.reload(); }, 1500);
+              return;
+            }
+            if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
+            // Anti-sync: if GAS poll fired within 3s of HTML poll, add 5s delay to re-establish gap
+            var _gasPollDelay = GAS_POLL_INTERVAL;
+            if (window._htmlPollTime && Math.abs(Date.now() - window._htmlPollTime) < 3000) {
+              _gasPollDelay += 5000;
+            }
+            startCountdown(_gasPollDelay);
+            setTimeout(checkGasUpdate, _gasPollDelay);
+          })
+          .catch(function() {
+            if (dot) {
+              dot.className = 'dot error';
+              setTimeout(function() { dot.className = 'dot'; }, 2000);
+            }
+            startCountdown();
+            setTimeout(checkGasUpdate, GAS_POLL_INTERVAL);
+          });
+      }
+
+      // Fetch version immediately — only show GAS pill and start polling if gs.version.txt exists
+      // This allows the HTML+GAS template to work as a pure HTML page with no GAS project
+      fetch(gasVersionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })
+        .then(function(res) {
+          if (!res.ok) throw new Error('no gs.version.txt');
+          return res.text();
+        })
+        .then(function(v) {
+          currentGasVersion = v.trim();
+          var gInitParts = currentGasVersion.split('|');
+          var gasInitVer = (gInitParts.length >= 2 && gInitParts[1]) ? gInitParts[1] : currentGasVersion;
+          if (pillLabel) pillLabel.textContent = 'GAS ' + gasInitVer;
+          if (pill) pill.style.display = 'flex';
+          startCountdown(GAS_INITIAL_DELAY);
+          setTimeout(checkGasUpdate, GAS_INITIAL_DELAY);
+        })
+        .catch(function() { /* no gs.version.txt — GAS pill stays hidden, no polling */ });
+
+      // GAS changelog popup — click pill to view GAS changelog
+      var gclOverlay = document.getElementById('gcl-overlay');
+      var gclBody = document.getElementById('gcl-body');
+      var gclCache = null;
+
+      if (pill) {
+        if (SHOW_CHANGELOG) {
+          pill.addEventListener('click', function(e) {
+            e.stopPropagation();
+            gclOverlay.style.display = 'flex';
+            if (!gclCache) fetchGasChangelog();
+          });
+        } else {
+          pill.style.cursor = 'default';
+        }
+      }
+
+      document.getElementById('gcl-close').addEventListener('click', function() { gclOverlay.style.display = 'none'; });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && gclOverlay.style.display === 'flex') gclOverlay.style.display = 'none'; });
+
+      function getGasChangelogUrl() {
+        return basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'gs-changelogs/' + pageName + 'gs.changelog.md';
+      }
+
+      function parseGasChangelog(md) {
+        var lines = md.split('\n');
+        var html = '';
+        var inList = false;
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          if (line.match(/^# /) || line.match(/^`Sections:/) || line.match(/^All notable/)
+              || line.match(/^Format follows/) || line.match(/^Developed by:/)) continue;
+          if (line.match(/^## \[Unreleased\]/)) continue;
+          if (line.match(/^## \[/)) {
+            if (inList) { html += '</ul>'; inList = false; }
+            var m = line.match(/^## \[(v[\d.]+g)\].*?— (.+)/);
+            if (m) html += '<h3>' + m[1] + ' &mdash; ' + m[2] + '</h3>';
+            continue;
+          }
+          if (line.match(/^### /)) {
+            if (inList) { html += '</ul>'; inList = false; }
+            html += '<h4>' + line.substring(4) + '</h4>';
+            continue;
+          }
+          if (line.match(/^- /)) {
+            if (!inList) { html += '<ul>'; inList = true; }
+            html += '<li>' + line.substring(2) + '</li>';
+            continue;
+          }
+        }
+        if (inList) html += '</ul>';
+        return html || '<p style="color:#888">No changelog entries yet.</p>';
+      }
+
+      function fetchGasChangelog() {
+        gclBody.innerHTML = '<p style="color:#888">Loading changelog\u2026</p>';
+        fetch(getGasChangelogUrl())
+          .then(function(res) { if (!res.ok) throw new Error(); return res.text(); })
+          .then(function(md) {
+            gclCache = sanitizeChangelogHtml(parseGasChangelog(md));
+            gclBody.innerHTML = gclCache;
+            var titleEl = document.getElementById('gcl-title');
+            if (titleEl && currentGasVersion) titleEl.textContent = 'GAS Changelog \u2014 ' + currentGasVersion.replace(/\|/g, '');
+          })
+          .catch(function() {
+            gclBody.innerHTML = '<p style="color:#888">Could not load changelog.</p>';
+          });
+      }
+    })();
+
+    // After reload: show green "Code Ready" splash + play Code Ready sound if GAS update pending
+    if (sessionStorage.getItem('gas-pending-sound')) {
+      sessionStorage.removeItem('gas-pending-sound');
+      showUpdateSplash('splash-code', 'code-sound-data', 'sounds/Code_Ready_Voice_1.mp3');
+    }
+
+    // Changelog HTML sanitizer — strips dangerous elements and event handlers
+    function sanitizeChangelogHtml(html) {
+      var tmp = document.createElement('div');
+      tmp.innerHTML = html;
+      var dangerous = tmp.querySelectorAll('script, iframe, object, embed, form, input, textarea, link, style, svg, math');
+      for (var i = dangerous.length - 1; i >= 0; i--) {
+        dangerous[i].parentNode.removeChild(dangerous[i]);
+      }
+      var all = tmp.querySelectorAll('*');
+      for (var j = 0; j < all.length; j++) {
+        var attrs = all[j].attributes;
+        for (var k = attrs.length - 1; k >= 0; k--) {
+          if (attrs[k].name.toLowerCase().indexOf('on') === 0) {
+            all[j].removeAttribute(attrs[k].name);
+          }
+        }
+      }
+      return tmp.innerHTML;
+    }
+
+    // Changelog popup — click version indicator to view page changelog
+    (function() {
+      var overlay = document.createElement('div');
+      overlay.id = 'changelog-overlay';
+      overlay.innerHTML = '<div id="changelog-popup"><div id="changelog-header">'
+        + '<span id="changelog-title">Changelog</span>'
+        + '<button id="changelog-close">&times;</button></div>'
+        + '<div id="changelog-body"></div></div>';
+      document.body.appendChild(overlay);
+
+      var closeBtn = document.getElementById('changelog-close');
+      var body = document.getElementById('changelog-body');
+      var changelogCache = null;
+
+      function show() { overlay.style.display = 'flex'; if (!changelogCache) fetchChangelog(); }
+      function hide() { overlay.style.display = 'none'; }
+
+      closeBtn.addEventListener('click', hide);
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlay.style.display === 'flex') hide();
+      });
+
+      function getChangelogUrl() {
+        var basePath = window.location.href.split('?')[0].split('#')[0];
+        var pn = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
+        if (!pn) pn = 'index';
+        return basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'html-changelogs/' + pn + 'html.changelog.md';
+      }
+
+      function parseChangelog(md) {
+        var lines = md.split('\n');
+        var html = '';
+        var inList = false;
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          if (line.match(/^# /) || line.match(/^`Sections:/) || line.match(/^All notable/)
+              || line.match(/^Format follows/) || line.match(/^Developed by:/)) continue;
+          if (line.match(/^## \[Unreleased\]/)) continue;
+          if (line.match(/^## \[v/)) {
+            if (inList) { html += '</ul>'; inList = false; }
+            var m = line.match(/^## \[(v[\d.]+w)\].*?— (.+)/);
+            if (m) html += '<h3>' + m[1] + ' &mdash; ' + m[2] + '</h3>';
+            continue;
+          }
+          if (line.match(/^### /)) {
+            if (inList) { html += '</ul>'; inList = false; }
+            html += '<h4>' + line.substring(4) + '</h4>';
+            continue;
+          }
+          if (line.match(/^- /)) {
+            if (!inList) { html += '<ul>'; inList = true; }
+            html += '<li>' + line.substring(2) + '</li>';
+            continue;
+          }
+        }
+        if (inList) html += '</ul>';
+        return html || '<p style="color:#888">No changelog entries yet.</p>';
+      }
+
+      function fetchChangelog() {
+        body.innerHTML = '<p style="color:#888">Loading changelog\u2026</p>';
+        fetch(getChangelogUrl())
+          .then(function(res) { if (!res.ok) throw new Error(); return res.text(); })
+          .then(function(md) {
+            changelogCache = sanitizeChangelogHtml(parseChangelog(md));
+            body.innerHTML = changelogCache;
+            var titleEl = document.getElementById('changelog-title');
+            var ind = document.getElementById('version-indicator');
+            if (ind && titleEl) {
+              var lbl = ind.querySelector('.label');
+              if (lbl) titleEl.textContent = 'Changelog \u2014 ' + lbl.textContent;
+            }
+          })
+          .catch(function() {
+            body.innerHTML = '<p style="color:#888">Could not load changelog.</p>';
+          });
+      }
+
+      var obs = new MutationObserver(function() {
+        var ind = document.getElementById('version-indicator');
+        if (ind && !ind._clBound) {
+          ind._clBound = true;
+          if (SHOW_CHANGELOG) {
+            ind.addEventListener('click', function(e) { e.stopPropagation(); show(); });
+          } else {
+            ind.style.cursor = 'default';
+          }
+          obs.disconnect();
+        }
+      });
+      obs.observe(document.body, { childList: true, subtree: true });
+    })();
+
+    // Screen Wake Lock — keep screen on while page is visible
+    var _wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        if (navigator.wakeLock) {
+          _wakeLock = await navigator.wakeLock.request('screen');
+          _wakeLock.addEventListener('release', function() {
+            _wakeLock = null;
+          });
+        }
+      } catch(e) {}
+    }
+    requestWakeLock();
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible') requestWakeLock();
+    });
+
+// ══════════════
+// TEMPLATE END
+// ══════════════
+
+// ══════════════
+// PROJECT START
+// ══════════════
+
+// ── Copy Code.gs ──
+    (function() {
+      // Load GAS template variants (auth/noauth)
+      var _gsTemplates = {};
+      var _templateFiles = {
+        'minimal-noauth': 'templates/gas-minimal-noauth-template-code.js.txt',
+        'minimal-auth':   'templates/gas-minimal-auth-template-code.js.txt'
+      };
+      Object.keys(_templateFiles).forEach(function(key) {
+        fetch(_templateFiles[key])
+          .then(function(r) { return r.text(); })
+          .then(function(t) { _gsTemplates[key] = t; })
+          .catch(function() {});
+      });
+      window.copyGsCode = function(btn) {
+        var useAuth = document.getElementById('chk-google-auth').checked;
+        var templateKey = 'minimal-' + (useAuth ? 'auth' : 'noauth');
+        var source = _gsTemplates[templateKey];
+        if (!source) { btn.textContent = 'Loading...'; return; }
+        var code = source;
+        // Inject config values from form fields into the code
+        var title = (document.getElementById('cfg-title') || {}).value || '';
+        var deployId = (document.getElementById('cfg-deployment-id') || {}).value || '';
+        var sheetId = (document.getElementById('cfg-spreadsheet-id') || {}).value || '';
+        var sheetName = (document.getElementById('cfg-sheet-name') || {}).value || '';
+        // Blank title falls back to a name derived from the environment name, so the
+        // pasted GAS code never ships with the literal TEMPLATE_TITLE placeholder
+        var effTitle = title.trim() || deriveProjectTitle((document.getElementById('cfg-env-name') || {}).value || '');
+        if (effTitle) code = code.replace(/var TITLE\s*=\s*"[^"]*"/, 'var TITLE = "' + effTitle.replace(/"/g, '\\"') + '"');
+        if (deployId.trim()) code = code.replace(/var DEPLOYMENT_ID\s*=\s*"[^"]*"/, 'var DEPLOYMENT_ID = "' + deployId.trim() + '"');
+        if (sheetId.trim()) code = code.replace(/var SPREADSHEET_ID\s*=\s*"[^"]*"/, 'var SPREADSHEET_ID = "' + sheetId.trim() + '"');
+        if (sheetName.trim()) code = code.replace(/var SHEET_NAME\s*=\s*"[^"]*"/, 'var SHEET_NAME     = "' + sheetName.trim().replace(/"/g, '\\"') + '"');
+        var ghBranch = (document.getElementById('cfg-github-branch') || {}).value || 'main';
+        if (ghBranch.trim()) code = code.replace(/var GITHUB_BRANCH\s*=\s*"[^"]*"/, 'var GITHUB_BRANCH = "' + ghBranch.trim() + '"');
+        // Auth-specific replacements
+        if (useAuth) {
+          var preset = (document.getElementById('cfg-auth-preset') || {}).value || 'standard';
+          code = code.replace(/var ACTIVE_PRESET\s*=\s*'[^']*'/, "var ACTIVE_PRESET = '" + preset + "'");
+          var domains = (document.getElementById('cfg-allowed-domains') || {}).value || '';
+          if (domains.trim() && domains.trim().toLowerCase() !== 'all') {
+            var domainList = domains.split(',').map(function(d) { return "'" + d.trim() + "'"; }).join(', ');
+            code = code.replace(/ALLOWED_DOMAINS:\s*\[\]/g, 'ALLOWED_DOMAINS: [' + domainList + ']');
+            // Also enable domain restriction in all presets
+            code = code.replace(/ENABLE_DOMAIN_RESTRICTION:\s*false/g, 'ENABLE_DOMAIN_RESTRICTION: true');
+          }
+          // Master ACL — when toggled on, use the project's Spreadsheet ID; when off, use external ACL ID
+          var isMasterAcl = document.getElementById('chk-is-master-acl').checked;
+          var masterAclId = isMasterAcl
+            ? ((document.getElementById('cfg-spreadsheet-id') || {}).value || '').trim()
+            : ((document.getElementById('cfg-master-acl-id') || {}).value || '').trim();
+          if (masterAclId) code = code.replace(/var MASTER_ACL_SPREADSHEET_ID\s*=\s*"[^"]*"/, 'var MASTER_ACL_SPREADSHEET_ID = "' + masterAclId + '"');
+          var aclSheetName = (document.getElementById('cfg-acl-sheet-name') || {}).value || 'Access';
+          if (aclSheetName.trim()) code = code.replace(/var ACL_SHEET_NAME\s*=\s*"[^"]*"/, 'var ACL_SHEET_NAME = "' + aclSheetName.trim().replace(/"/g, '\\"') + '"');
+          var aclPageName = (document.getElementById('cfg-acl-page-name') || {}).value || '';
+          var envNameVal = (document.getElementById('cfg-env-name') || {}).value || '';
+          var resolvedAclPage = aclPageName.trim() || envNameVal.trim();
+          if (resolvedAclPage) code = code.replace(/var ACL_PAGE_NAME\s*=\s*"[^"]*"/, 'var ACL_PAGE_NAME  = "' + resolvedAclPage + '"');
+          // Portal icon/description always substituted — blank fields get a default icon
+          // and a title-derived description, so the pasted GAS code never carries the
+          // TEMPLATE_PORTAL_ICON / TEMPLATE_PORTAL_DESCRIPTION placeholders into the
+          // Master ACL Access tab when it self-registers
+          var portalIconGs = ((document.getElementById('cfg-portal-icon') || {}).value || '').trim() || '📱';
+          code = code.replace(/var PORTAL_ICON\s*=\s*"[^"]*"/, 'var PORTAL_ICON    = "' + portalIconGs.replace(/"/g, '\\"') + '"');
+          var portalDescGs = ((document.getElementById('cfg-portal-desc') || {}).value || '').trim() || (effTitle ? effTitle + ' application.' : '');
+          if (portalDescGs) code = code.replace(/var PORTAL_DESCRIPTION\s*=\s*"[^"]*"/, 'var PORTAL_DESCRIPTION = "' + portalDescGs.replace(/"/g, '\\"') + '"');
+        }
+        var envName = (document.getElementById('cfg-env-name') || {}).value || '';
+        if (envName.trim()) {
+          // GITHUB_OWNER / GITHUB_REPO come from the form fields (auto-filled on github.io,
+          // entered manually on custom domains where they can't be derived from the URL).
+          // Only substitute when provided — otherwise leave the template placeholders intact
+          // rather than baking in a wrong value (the old URL-based guess produced e.g.
+          // GITHUB_REPO = "gas-project-creator.html" on custom domains).
+          var ghOwner = (document.getElementById('cfg-github-owner').value || '').trim();
+          var ghRepo = (document.getElementById('cfg-github-repo').value || '').trim();
+          if (ghOwner) code = code.replace(/var GITHUB_OWNER\s*=\s*"[^"]*"/, 'var GITHUB_OWNER  = "' + ghOwner + '"');
+          if (ghRepo) code = code.replace(/var GITHUB_REPO\s*=\s*"[^"]*"/, 'var GITHUB_REPO   = "' + ghRepo + '"');
+          // Derive FILE_PATH: folder is PascalCase of env name, file is env_name.gs
+          var folder = envName.trim().split(/[-_]/).map(function(w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join('');
+          var filePath = 'googleAppsScripts/' + folder + '/' + envName.trim() + '.gs';
+          code = code.replace(/var FILE_PATH\s*=\s*"[^"]*"/, 'var FILE_PATH     = "' + filePath + '"');
+          // Derive EMBED_PAGE_URL relative to THIS page's own directory, so it is correct on
+          // both github.io project sites (.../REPO/gas-project-creator.html) and custom domains
+          // (.../gas-project-creator.html at the domain root). Resolving against the page's
+          // directory avoids the bad assumption that path segment [1] is the repo name.
+          var pageDir = window.location.href.split('?')[0].split('#')[0].replace(/[^\/]*$/, '');
+          var embedUrl = pageDir + envName.trim() + '.html';
+          code = code.replace(/var EMBED_PAGE_URL\s*=\s*"[^"]*"/, 'var EMBED_PAGE_URL = "' + embedUrl + '"');
+        }
+        navigator.clipboard.writeText(code).then(function() {
+          btn.textContent = 'Copied!';
+          setTimeout(function() { btn.textContent = 'Copy Code.gs for GAS'; }, 1500);
+        });
+      };
+    })();
+
+// ── Copy Embedding Page HTML ──
+    (function() {
+      var _htmlTemplates = {};
+      var _htmlTemplateFiles = {
+        'noauth': 'templates/HtmlAndGasTemplateAutoUpdate-noauth.html.txt',
+        'auth':   'templates/HtmlAndGasTemplateAutoUpdate-auth.html.txt'
+      };
+      Object.keys(_htmlTemplateFiles).forEach(function(key) {
+        fetch(_htmlTemplateFiles[key])
+          .then(function(r) { return r.text(); })
+          .then(function(t) { _htmlTemplates[key] = t; })
+          .catch(function() {});
+      });
+      window.copyHtmlCode = function(btn) {
+        var useAuth = document.getElementById('chk-google-auth').checked;
+        var source = _htmlTemplates[useAuth ? 'auth' : 'noauth'];
+        if (!source) { btn.textContent = 'Loading...'; return; }
+        var html = source;
+        var title = (document.getElementById('cfg-title') || {}).value || '';
+        // Blank title falls back to a name derived from the environment name (same rule as the GAS code)
+        var effHtmlTitle = title.trim() || deriveProjectTitle((document.getElementById('cfg-env-name') || {}).value || '');
+        if (effHtmlTitle) html = html.replace(/<title>[^<]*<\/title>/, '<title>' + effHtmlTitle.replace(/</g, '&lt;') + '</title>');
+        html = html.replace(/<meta name="build-version" content="[^"]*">/, '<meta name="build-version" content="v01.00w">');
+        var deployId = (document.getElementById('cfg-deployment-id') || {}).value || '';
+        if (deployId.trim() && deployId.trim() !== 'YOUR_DEPLOYMENT_ID') {
+          var fullUrl = 'https://script.google.com/macros/s/' + deployId.trim() + '/exec';
+          var reversed = fullUrl.split('').reverse().join('');
+          var encoded = btoa(reversed);
+          html = html.replace(/var _e = '[^']*';/, "var _e = '" + encoded + "';");
+          // Earliest point in the flow where a real deployment ID is in hand — ping it
+          // so the new project self-registers in the Master ACL right away (deduped)
+          pingProjectRegistration(deployId);
+        } else {
+          html = html.replace(/var _e = '[^']*';/, "var _e = '';");
+        }
+        var devLogo = (document.getElementById('cfg-developer-logo') || {}).value || '';
+        var orgLogo = (document.getElementById('cfg-org-logo') || {}).value || '';
+        var splashLogo = (document.getElementById('cfg-splash-logo') || {}).value || '';
+        if (devLogo.trim()) html = html.replace(/var DEVELOPER_LOGO_URL = '[^']*';/, "var DEVELOPER_LOGO_URL = '" + devLogo.trim() + "';");
+        if (orgLogo.trim()) html = html.replace(/var YOUR_ORG_LOGO_URL = '[^']*';/, "var YOUR_ORG_LOGO_URL = '" + orgLogo.trim() + "';");
+        if (splashLogo.trim()) html = html.replace(/var SPLASH_LOGO_URL = '[^']*';/, "var SPLASH_LOGO_URL = '" + splashLogo.trim() + "';");
+        if (useAuth) {
+          var clientId = (document.getElementById('cfg-client-id') || {}).value || '';
+          if (clientId.trim() && clientId.trim() !== 'YOUR_CLIENT_ID.apps.googleusercontent.com') {
+            html = html.replace(/var CLIENT_ID = '[^']*';/, "var CLIENT_ID = '" + clientId.trim() + "';");
+          }
+        }
+        navigator.clipboard.writeText(html).then(function() {
+          var orig = btn.innerHTML;
+          btn.textContent = 'Copied!';
+          setTimeout(function() { btn.innerHTML = orig; }, 1500);
+        });
+      };
+    })();
+
+// ── Copy Manifest JSON ──
+    function copyManifest(btn) {
+      var text = document.getElementById('manifest-json').textContent;
+      navigator.clipboard.writeText(text).then(function() {
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = 'Copy'; }, 1500);
+      });
+    }
+
+// ── Copy Text Helper ──
+    function copyText(text, btn) {
+      navigator.clipboard.writeText(text).then(function() {
+        var orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = orig; }, 1500);
+      });
+    }
+
+// ── Master ACL Toggle ──
+
+    var _aclValueBeforeToggle = '';
+    var _aclToggleLastState = null;
+    function toggleMasterAcl() {
+      var isChecked = document.getElementById('chk-is-master-acl').checked;
+      var aclIdField = document.getElementById('cfg-master-acl-id');
+      if (!aclIdField) return;
+      var stateChanged = (_aclToggleLastState !== isChecked);
+      _aclToggleLastState = isChecked;
+      if (isChecked) {
+        // Save current value on transition, auto-fill with Spreadsheet ID, make read-only
+        if (stateChanged && !aclIdField.readOnly) _aclValueBeforeToggle = aclIdField.value.trim();
+        var sheetId = (document.getElementById('cfg-spreadsheet-id') || {}).value || '';
+        aclIdField.value = sheetId.trim();
+        aclIdField.disabled = false;
+        aclIdField.readOnly = true;
+        aclIdField.style.opacity = '0.4';
+        aclIdField.placeholder = '\u2500\u2500\u2500  Uncheck master ACL toggle to edit  \u2500\u2500\u2500';
+        var clearBtn = aclIdField.parentElement.querySelector('.field-clear');
+        if (clearBtn) clearBtn.style.display = 'none';
+      } else {
+        // Restore previous value only on transition, make editable
+        if (stateChanged) {
+          aclIdField.value = _aclValueBeforeToggle;
+          _aclValueBeforeToggle = '';
+        }
+        aclIdField.disabled = false;
+        aclIdField.readOnly = false;
+        aclIdField.style.opacity = '1';
+        aclIdField.placeholder = '1abc2def3ghi...';
+        var clearBtn = aclIdField.parentElement.querySelector('.field-clear');
+        if (clearBtn) clearBtn.style.display = '';
+      }
+      syncAclPagePlaceholder();
+      updateEmptyClasses();
+      // Re-evaluate ACL field states based on whether Master ACL ID is now filled
+      var hasMasterAclId = (document.getElementById('cfg-master-acl-id').value || '').trim().length > 0;
+      var aclReason = '\u2500\u2500\u2500  Enter Master ACL Spreadsheet ID first  \u2500\u2500\u2500';
+      setFieldDisabled('cfg-acl-sheet-name', !hasMasterAclId, aclReason);
+      setFieldDisabled('cfg-acl-page-name', !hasMasterAclId, aclReason);
+      if (hasMasterAclId) syncAclPagePlaceholder();
+      updateEmptyClasses();
+    }
+
+    function toggleAclDetails() {
+      // ACL detail fields are always visible now — this function is kept for compatibility
+      syncAclPagePlaceholder();
+      updateEmptyClasses();
+    }
+
+    function syncAclPagePlaceholder() {
+      var aclPageField = document.getElementById('cfg-acl-page-name');
+      if (!aclPageField || aclPageField.disabled) return;
+      var envName = (document.getElementById('cfg-env-name') || {}).value || '';
+      aclPageField.placeholder = envName.trim() ? 'Defaults to: ' + envName.trim() : 'Auto-filled from Environment Name';
+    }
+
+    function syncMasterAclId() {
+      // When toggle is checked, keep the ACL ID field in sync with Spreadsheet ID
+      if (!document.getElementById('chk-is-master-acl').checked) return;
+      var sheetId = (document.getElementById('cfg-spreadsheet-id') || {}).value || '';
+      var aclIdField = document.getElementById('cfg-master-acl-id');
+      if (aclIdField) aclIdField.value = sheetId.trim();
+    }
+
+// ── Field Dependency States ──
+    function updateEmptyClasses() {
+      var inputs = document.querySelectorAll('.step-input input[type="text"]');
+      for (var i = 0; i < inputs.length; i++) {
+        var isEmpty = !inputs[i].value.trim();
+        var isDisabled = inputs[i].disabled;
+        if (!isDisabled && isEmpty) {
+          inputs[i].classList.add('field-empty');
+        } else {
+          inputs[i].classList.remove('field-empty');
+        }
+        // Hide clear button when field is disabled, blank, or readOnly (auto-filled from another field)
+        var isReadOnly = inputs[i].readOnly;
+        var clearBtn = inputs[i].parentElement && inputs[i].parentElement.querySelector('.field-clear');
+        if (clearBtn) clearBtn.style.display = (isDisabled || isEmpty || isReadOnly) ? 'none' : '';
+      }
+    }
+    var _savedFieldValues = {};
+    var _savedFieldPlaceholders = {};
+    function setFieldDisabled(fieldId, disabled, reason) {
+      var el = document.getElementById(fieldId);
+      if (!el) return;
+      if (disabled && !el.disabled) {
+        // Transitioning to disabled — save current value and placeholder, clear field
+        _savedFieldValues[fieldId] = el.value;
+        _savedFieldPlaceholders[fieldId] = el.placeholder;
+        el.value = '';
+        el.placeholder = reason || 'Fill required field first';
+      } else if (!disabled && el.disabled) {
+        // Transitioning to enabled — restore saved value and placeholder
+        if (_savedFieldValues[fieldId] !== undefined) {
+          el.value = _savedFieldValues[fieldId];
+          el.placeholder = _savedFieldPlaceholders[fieldId] || '';
+          delete _savedFieldValues[fieldId];
+          delete _savedFieldPlaceholders[fieldId];
+        }
+      }
+      el.disabled = disabled;
+      el.style.opacity = disabled ? '0.4' : '1';
+    }
+    function setContainerDisabled(containerId, disabled) {
+      var el = document.getElementById(containerId);
+      if (!el) return;
+      el.style.opacity = disabled ? '0.5' : '1';
+      var inputs = el.querySelectorAll('input, select');
+      for (var i = 0; i < inputs.length; i++) {
+        inputs[i].disabled = disabled;
+        inputs[i].style.opacity = disabled ? '0.4' : '1';
+      }
+    }
+    function updateFieldStates() {
+      var useAuth = document.getElementById('chk-google-auth').checked;
+      var hasClientId = (document.getElementById('cfg-client-id').value || '').trim().length > 0;
+      // When auth is enabled, Deployment ID depends on Client ID
+      var deployDisabled = useAuth && !hasClientId;
+      setFieldDisabled('cfg-deployment-id', deployDisabled, '\u2500\u2500\u2500  Enter OAuth Client ID first  \u2500\u2500\u2500');
+      // Re-read after restore
+      var hasDeployId = (document.getElementById('cfg-deployment-id').value || '').trim().length > 0;
+      // Environment Name depends on Deployment ID
+      setFieldDisabled('cfg-env-name', !hasDeployId, '\u2500\u2500\u2500  Enter Deployment ID first  \u2500\u2500\u2500');
+      // Re-read after restore
+      var hasEnvName = (document.getElementById('cfg-env-name').value || '').trim().length > 0;
+      // Project config fields depend on Environment Name
+      var projectDisabled = !hasEnvName || !hasDeployId;
+      var projectReason = !hasDeployId ? '\u2500\u2500\u2500  Enter Deployment ID first  \u2500\u2500\u2500' : '\u2500\u2500\u2500  Enter Environment Name first  \u2500\u2500\u2500';
+      var projectFields = ['cfg-title', 'cfg-spreadsheet-id', 'cfg-developer-logo', 'cfg-org-logo', 'cfg-splash-logo', 'cfg-github-branch'];
+      for (var i = 0; i < projectFields.length; i++) setFieldDisabled(projectFields[i], projectDisabled, projectReason);
+      // Re-read after restore
+      var hasSpreadsheet = (document.getElementById('cfg-spreadsheet-id').value || '').trim().length > 0;
+      // Sheet Tab Name depends on Spreadsheet ID
+      var sheetReason = '\u2500\u2500\u2500  Enter Spreadsheet ID first  \u2500\u2500\u2500';
+      setFieldDisabled('cfg-sheet-name', projectDisabled || !hasSpreadsheet, projectDisabled ? projectReason : sheetReason);
+      // Master ACL toggle and section depend on Spreadsheet ID
+      var masterAclCheckbox = document.getElementById('chk-is-master-acl');
+      var masterAclSection = document.getElementById('master-acl-section');
+      if (masterAclSection) masterAclSection.style.opacity = hasSpreadsheet && !projectDisabled ? '1' : '0.5';
+      if (masterAclCheckbox) {
+        masterAclCheckbox.disabled = projectDisabled || !hasSpreadsheet;
+        masterAclCheckbox.parentElement.style.opacity = (!projectDisabled && hasSpreadsheet) ? '1' : '0.5';
+      }
+      // Master ACL ID field: disabled when no Spreadsheet ID, otherwise managed by toggleMasterAcl
+      if (projectDisabled || !hasSpreadsheet) {
+        setFieldDisabled('cfg-master-acl-id', true, projectDisabled ? projectReason : sheetReason);
+      } else {
+        // First restore the field via setFieldDisabled (clears the disabled state + restores saved value)
+        setFieldDisabled('cfg-master-acl-id', false, '');
+        // Then re-apply toggle state (checked = readOnly with auto-fill, unchecked = editable)
+        toggleMasterAcl();
+      }
+      // If spreadsheet was cleared, uncheck master ACL
+      if (masterAclCheckbox && masterAclCheckbox.checked && !hasSpreadsheet) {
+        masterAclCheckbox.checked = false;
+        toggleMasterAcl();
+      }
+      // ACL Sheet Name and ACL Column Name depend on Master ACL Spreadsheet ID being filled
+      var hasMasterAclId = (document.getElementById('cfg-master-acl-id').value || '').trim().length > 0;
+      var aclReason = '\u2500\u2500\u2500  Enter Master ACL Spreadsheet ID first  \u2500\u2500\u2500';
+      setFieldDisabled('cfg-acl-sheet-name', !hasMasterAclId, aclReason);
+      setFieldDisabled('cfg-acl-page-name', !hasMasterAclId, aclReason);
+      // Auth sub-fields (preset, domains) depend on Client ID
+      if (useAuth) {
+        var clientReason = '\u2500\u2500\u2500  Enter OAuth Client ID first  \u2500\u2500\u2500';
+        var authSubFields = ['cfg-auth-preset', 'cfg-allowed-domains'];
+        for (var j = 0; j < authSubFields.length; j++) setFieldDisabled(authSubFields[j], !hasClientId, clientReason);
+      }
+      toggleAclDetails();
+      updateEmptyClasses();
+      updateDeployGate();
+    }
+
+// ── Auth Fields Toggle ──
+    function toggleAuthFields() {
+      var authChecked = document.getElementById('chk-google-auth').checked;
+      var authClientSection = document.getElementById('auth-client-id-section');
+      if (authClientSection) authClientSection.style.display = authChecked ? 'block' : 'none';
+      var authStepLabel = document.getElementById('auth-steps-label');
+      var authStepConsent = document.getElementById('auth-step-consent');
+      var authStepClient = document.getElementById('auth-step-client');
+      var hmacAutoNote = document.getElementById('hmac-auto-note');
+      if (hmacAutoNote) hmacAutoNote.style.display = authChecked ? 'inline' : 'none';
+      if (authStepLabel) authStepLabel.style.display = authChecked ? '' : 'none';
+      if (authStepConsent) authStepConsent.style.display = authChecked ? '' : 'none';
+      if (authStepClient) authStepClient.style.display = authChecked ? '' : 'none';
+      // Hide auth-only fields when auth is off
+      var masterAclSection = document.getElementById('master-acl-section');
+      if (masterAclSection) masterAclSection.style.display = authChecked ? '' : 'none';
+      var aclSheetField = document.getElementById('field-acl-sheet-name');
+      if (aclSheetField) aclSheetField.style.display = authChecked ? '' : 'none';
+      var aclPageField = document.getElementById('field-acl-page-name');
+      if (aclPageField) aclPageField.style.display = authChecked ? '' : 'none';
+      updateDeployGate();
+      updateFieldStates();
+    }
+    // Initialize field states on load
+    toggleAuthFields();
+    updateFieldStates();
+    toggleAclDetails();
+    updateEmptyClasses();
+    // Keep empty class in sync as user types in any field
+    document.addEventListener('input', function(e) { if (e.target.matches('.step-input input[type="text"]')) updateEmptyClasses(); });
+
+// ── Deployment ID Gate ──
+    function updateDeployGate() {
+      var hasId = (document.getElementById('cfg-deployment-id').value || '').trim().length > 0;
+      var hasEnvName = (document.getElementById('cfg-env-name').value || '').trim().length > 0;
+      var useAuth = document.getElementById('chk-google-auth').checked;
+      var hasClientId = !useAuth || (document.getElementById('cfg-client-id').value || '').trim().length > 0;
+      var applyBtn = document.getElementById('btn-apply');
+      if (applyBtn) applyBtn.disabled = !hasId;
+      // Build missing fields list for button text
+      var missing = [];
+      if (!hasId) missing.push('Deployment ID');
+      if (!hasEnvName) missing.push('Environment Name');
+      if (useAuth && !hasClientId) missing.push('OAuth Client ID');
+      var allReady = missing.length === 0;
+      var missingText = missing.length ? ' \u2500\u2500 needs: ' + missing.join(', ') : '';
+      var gsBtn = document.getElementById('btn-copy-gs');
+      if (gsBtn) {
+        gsBtn.disabled = !allReady;
+        gsBtn.textContent = allReady ? 'Copy Code.gs for GAS' : 'Copy Code.gs for GAS' + missingText;
+      }
+      var htmlBtn = document.getElementById('btn-copy-html');
+      if (htmlBtn) {
+        htmlBtn.disabled = !allReady;
+        htmlBtn.innerHTML = allReady
+          ? '<span style="color:#30363d">Optional \u2014</span> Copy Embedding Page HTML <span style="color:#30363d">(the setup script creates this automatically)</span>'
+          : '<span style="color:#30363d">Optional \u2014</span> Copy Embedding Page HTML' + missingText;
+      }
+      var configBtn = document.getElementById('btn-copy-config');
+      if (configBtn) {
+        configBtn.disabled = !allReady;
+        configBtn.textContent = allReady ? 'Copy Config for Claude' : 'Copy Config for Claude' + missingText;
+      }
+    }
+
+// ── Test GAS Connection (bottom panel) ──
+    function testGasConnection() {
+      var deployId = document.getElementById('cfg-deployment-id').value.trim();
+      if (!deployId) return;
+
+      var panel = document.getElementById('gas-panel');
+      var tab = document.getElementById('gas-panel-tab');
+
+      // Remove any existing iframe
+      var old = document.getElementById('gas-app');
+      if (old) old.remove();
+
+      // Create iframe and load the GAS deployment URL directly
+      var url = 'https://script.google.com/macros/s/' + deployId + '/exec';
+      var f = document.createElement('iframe');
+      f.id = 'gas-app';
+      f.dataset.baseUrl = url;
+      f.src = url;
+      panel.appendChild(f);
+
+      // Show tab and expand panel
+      tab.style.display = 'block';
+      panel.classList.remove('collapsed');
+      panel.style.height = '40%';
+      tab.classList.add('active');
+      tab.textContent = '\u25BC GAS';
+      tab.style.bottom = '40%';
+    }
+
+    // GAS panel toggle + resize
+    (function() {
+      var panel = document.getElementById('gas-panel');
+      var tab = document.getElementById('gas-panel-tab');
+      var resize = document.getElementById('gas-panel-resize');
+      tab.addEventListener('click', function() {
+        panel.classList.toggle('collapsed');
+        tab.classList.toggle('active');
+        tab.textContent = panel.classList.contains('collapsed') ? '\u25B2 GAS' : '\u25BC GAS';
+        tab.style.bottom = panel.classList.contains('collapsed') ? '0' : panel.style.height;
+      });
+      var startY, startH;
+      resize.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        startY = e.clientY; startH = panel.offsetHeight;
+        function onMove(ev) {
+          var h = Math.max(120, Math.min(window.innerHeight * 0.8, startH + (startY - ev.clientY)));
+          panel.style.height = h + 'px'; tab.style.bottom = h + 'px';
+        }
+        function onUp() { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onUp);
+      });
+      resize.addEventListener('touchstart', function(e) {
+        var t0 = e.touches[0]; startY = t0.clientY; startH = panel.offsetHeight;
+        function onTM(ev) {
+          var h = Math.max(120, Math.min(window.innerHeight * 0.8, startH + (startY - ev.touches[0].clientY)));
+          panel.style.height = h + 'px'; tab.style.bottom = h + 'px';
+        }
+        function onTE() { document.removeEventListener('touchmove', onTM); document.removeEventListener('touchend', onTE); }
+        document.addEventListener('touchmove', onTM); document.addEventListener('touchend', onTE);
+      });
+    })();
+
+    // Derive a human-readable project title from the environment name when the Title
+    // field is left blank — e.g. "myproject" → "Myproject", "my-project" → "My Project".
+    // Keeps placeholder tokens (TEMPLATE_TITLE / "CHANGE THIS PROJECT TITLE...") out of the
+    // generated GAS code, embedding HTML, and Claude setup config.
+    function deriveProjectTitle(envName) {
+      var n = (envName || '').trim();
+      if (!n) return '';
+      return n.split(/[-_]/).map(function(w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(' ');
+    }
+
+    // Registration ping — fire-and-forget GET to the new project's deployment so its GAS
+    // code self-registers in the Master ACL Access tab immediately, without anyone having
+    // to open the app once. doGet() runs registerSelfProject() before any routing, so an
+    // unauthenticated request is enough to trigger registration. Uses a hidden iframe
+    // (not fetch) because this page's CSP is connect-src 'self' but frame-src already
+    // allows https://script.google.com and *.googleusercontent.com (the /exec redirect).
+    var _pingedDeployIds = {};
+    function pingProjectRegistration(deployId) {
+      var id = (deployId || '').trim();
+      if (!id || id === 'YOUR_DEPLOYMENT_ID' || _pingedDeployIds[id]) return false;
+      _pingedDeployIds[id] = true;
+      try {
+        var f = document.createElement('iframe');
+        f.style.display = 'none';
+        f.setAttribute('aria-hidden', 'true');
+        f.src = 'https://script.google.com/macros/s/' + id + '/exec?ping=register';
+        document.body.appendChild(f);
+        setTimeout(function() { if (f.parentNode) f.parentNode.removeChild(f); }, 20000);
+      } catch (e) { return false; }
+      return true;
+    }
+
+    function copyConfig() {
+      var envName = document.getElementById('cfg-env-name').value.trim();
+      var title = document.getElementById('cfg-title').value.trim() || deriveProjectTitle(envName) || 'CHANGE THIS PROJECT TITLE GAS TEMPLATE';
+      var deployId = document.getElementById('cfg-deployment-id').value.trim() || 'YOUR_DEPLOYMENT_ID';
+      var sheetId = document.getElementById('cfg-spreadsheet-id').value.trim() || 'YOUR_SPREADSHEET_ID';
+      var sheetName = document.getElementById('cfg-sheet-name').value.trim() || 'YOUR_SHEET_NAME';
+      var devLogo = document.getElementById('cfg-developer-logo').value.trim() || 'YOUR_DEVELOPER_LOGO_URL';
+      var orgLogo = document.getElementById('cfg-org-logo').value.trim() || 'YOUR_ORG_LOGO_URL';
+      var splashLogo = document.getElementById('cfg-splash-logo').value.trim() || 'YOUR_SPLASH_LOGO_URL';
+      var includeAuth = document.getElementById('chk-google-auth').checked;
+
+      var json = '{\n'
+        + '  "PROJECT_ENVIRONMENT_NAME": "' + envName + '",\n'
+        + '  "TITLE": "' + title + '",\n'
+        + '  "DEPLOYMENT_ID": "' + deployId + '",\n'
+        + '  "SPREADSHEET_ID": "' + sheetId + '",\n'
+        + '  "SHEET_NAME": "' + sheetName + '",\n'
+        + '  "DEVELOPER_LOGO_URL": "' + devLogo + '",\n'
+        + '  "YOUR_ORG_LOGO_URL": "' + orgLogo + '",\n'
+        + '  "SPLASH_LOGO_URL": "' + splashLogo + '",\n'
+        + '  "INCLUDE_AUTH": ' + (includeAuth ? 'true' : 'false');
+      if (includeAuth) {
+        var clientId = document.getElementById('cfg-client-id').value.trim() || 'YOUR_CLIENT_ID';
+        var authPreset = document.getElementById('cfg-auth-preset').value || 'standard';
+        var allowedDomains = document.getElementById('cfg-allowed-domains').value.trim() || '';
+        if (allowedDomains.toLowerCase() === 'all') allowedDomains = '';
+        json += ',\n  "CLIENT_ID": "' + clientId + '"'
+          + ',\n  "AUTH_PRESET": "' + authPreset + '"';
+        if (allowedDomains) {
+          json += ',\n  "ALLOWED_DOMAINS": "' + allowedDomains + '"';
+        }
+        var isMasterAcl = document.getElementById('chk-is-master-acl').checked;
+        var externalAclId = (document.getElementById('cfg-master-acl-id') || {}).value.trim() || '';
+        var aclSheetName = document.getElementById('cfg-acl-sheet-name').value.trim() || 'Access';
+        var aclPageName = document.getElementById('cfg-acl-page-name').value.trim() || '';
+        if (isMasterAcl) {
+          json += ',\n  "IS_MASTER_ACL": true';
+          json += ',\n  "MASTER_ACL_SPREADSHEET_ID": "' + sheetId + '"';
+        } else if (externalAclId) {
+          json += ',\n  "MASTER_ACL_SPREADSHEET_ID": "' + externalAclId + '"';
+        }
+        json += ',\n  "ACL_SHEET_NAME": "' + aclSheetName + '"';
+        if (aclPageName) {
+          json += ',\n  "ACL_PAGE_NAME": "' + aclPageName + '"';
+        }
+      }
+      var portalIcon = (document.getElementById('cfg-portal-icon') || {}).value || '';
+      var portalDesc = (document.getElementById('cfg-portal-desc') || {}).value || '';
+      if (portalIcon) json += ',\n  "PORTAL_ICON": "' + portalIcon + '"';
+      if (portalDesc) json += ',\n  "PORTAL_DESCRIPTION": "' + portalDesc + '"';
+      json += '\n}';
+
+      var command = "Set up a new GAS project. Run the script, then commit and push.\n\n"
+        + "bash scripts/setup-gas-project.sh <<'CONFIG'\n" + json + "\nCONFIG";
+
+      // Auto-register the new project in the Master ACL as part of the copy step —
+      // by this point the deployment exists (the ID came from deploying), so the ping
+      // triggers registerSelfProject() without anyone having to open the app
+      var pinged = pingProjectRegistration(deployId);
+
+      navigator.clipboard.writeText(command).then(function() {
+        showToast(pinged
+          ? 'Setup command copied — ACL registration ping sent to the new deployment'
+          : 'Setup command copied — paste into Claude Code');
+      }).catch(function() {
+        showToast('Copy failed — check browser permissions');
+      });
+    }
+
+    function clearField(inputId) {
+      var el = document.getElementById(inputId);
+      if (el) el.value = '';
+      updateDeployGate();
+      updateEmptyClasses();
+    }
+
+    function showToast(msg) {
+      var toast = document.getElementById('config-toast');
+      toast.textContent = msg;
+      toast.className = 'config-toast show';
+      setTimeout(function() { toast.className = 'config-toast'; }, 2500);
+    }
+
+    // Auto-fill GitHub Owner/Repo when served from a github.io project site (where they
+    // ARE in the URL). On custom domains they can't be derived, so the fields are left for
+    // the user to fill in. Only fills empty fields, so user input is never overwritten.
+    function prefillGithubIdentity() {
+      var ownerEl = document.getElementById('cfg-github-owner');
+      var repoEl = document.getElementById('cfg-github-repo');
+      if (!ownerEl || !repoEl) return;
+      var host = window.location.hostname;
+      if (/\.github\.io$/i.test(host)) {
+        if (!ownerEl.value) ownerEl.value = host.split('.')[0];
+        var seg = window.location.pathname.split('/')[1] || '';
+        // A real project-site path segment is a directory (no dot). A filename (has a dot)
+        // means this is a user/org root site with no repo segment — skip it.
+        if (!repoEl.value && seg && seg.indexOf('.') === -1) repoEl.value = seg;
+      }
+    }
+
+// ── Initialize deploy gate on page load ──
+    prefillGithubIdentity();
+    updateDeployGate();
+
+// ══════════════
+// PROJECT END
+// ══════════════
+  </script>
+</body>
+</html>
+<!-- Developed by: LightAISolutions -->

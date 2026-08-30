@@ -1,0 +1,420 @@
+{
+ "schemaVersion": 6,
+ "slug": "panasonic",
+ "name": "Panasonic Holdings Corporation (パナソニックホールディングス) — focus: Panasonic Energy Co., Ltd.",
+ "shortName": "Panasonic",
+ "categories": [
+  "supplier"
+ ],
+ "website": "https://holdings.panasonic/global/",
+ "headquarters": "Osaka (Kadoma), Japan",
+ "founded": 1918,
+ "employees": "183,685 consolidated (Mar 2026); Panasonic Energy ~22,200",
+ "ownership": {
+  "type": "public",
+  "ticker": "TYO: 6752"
+ },
+ "summary": "BOTTOM LINE UP FRONT: Panasonic is pivoting Tesla-built EV-cell capacity into the AI boom — data-center energy storage (rack-mounted BBUs) is now the group's flagship growth story, with a claimed ~80% share of data-center distributed power systems, a ¥800B FY2029 sales target the CEO calls 'a minimum commitment,' and Kansas EV lines being repurposed to data-center cells. BACKGROUND: Founded 1918; holding-company structure since 2022 with Panasonic Energy (est. April 2022, battery roots to 1931) as the battery arm. EV cylindrical cells (2170 at Nevada ~41 GWh/yr and Kansas, 4680 readiness at Wakayama), consumer/industrial batteries, and six group segments. Fiscal years end March 31. Fiscal 2026 group net sales ¥8,048.7B (−4.8%) with operating profit down 44.6% on Group Management Reform restructuring (~12,000 job cuts); Q1 fiscal 2027 (Apr–Jun 2026) was the best Q1 operating profit in 41 years on AI-infrastructure demand.",
+ "ecosystemRole": "We assess Panasonic's ecosystem position as the incumbent of data-center backup power rather than grid-scale BESS: it does not appear in grid-storage integrator rankings, but claims ~80% of the data-center distributed-power (BBU) market, with orders covering >80% of its FY2029 ¥800B data-center storage target. Next-generation Capacitor Backup Units (supercapacitors, with Panasonic Industry) map directly onto NVIDIA's rack-side storage tier. Q1 fiscal 2027 data-center storage sales were ¥113B (1.9× YoY); the FY2027 forecast is ¥550B.",
+ "productsAndServices": [
+  {
+   "name": "Data-Center Energy Storage (BBU / CBU)",
+   "category": "AI-infrastructure power · the growth engine",
+   "description": "Rack-mounted Battery Backup Units — Li-ion cells and storage modules providing blackout backup and peak shaving against AI-server load spikes — plus next-generation Capacitor Backup Units (supercapacitors) co-developed with Panasonic Industry. Investment program: ¥350B (~$2.2B) FY2026–FY2028 within a ¥500B AI-infrastructure envelope; Kansas De Soto lines repurposed from EV to data-center cells; module capacity expanding in Mexico (existing lines + new nearby plant) and Japan (cell capacity ×3 by FY2029 vs FY2026).",
+   "highlights": [
+    "Company claims ~80% market share in data-center distributed power supply systems, with orders covering >80% of planned FY2029 sales",
+    "FY2029 target: ¥800B of data-center storage revenue — CEO Kazuo Tadanobu: 'a minimum commitment,' expecting >¥1T",
+    "Q1 fiscal 2027 data-center storage sales ¥113B (1.9× YoY); FY2027 forecast ¥550B (1.7× FY2026)",
+    "Customers described only as unnamed hyperscalers; trade press reports both Panasonic and Samsung SDI supply-short in BBU cells"
+   ],
+   "positioning": "The BBU incumbent vs Samsung SDI's challenger position; the CBU supercapacitor roadmap targets the rack-side transient tier NVIDIA's GB300 architecture created. Not a grid-scale BESS player — no presence in integrator rankings.",
+   "soldThrough": "Direct B2B supply to hyperscalers and server OEMs",
+   "targetSegments": "AI data centers (hyperscale), server/UPS OEMs",
+   "roadmap": "US data-center battery production from fiscal 2028 (Kansas); 2nd Mexico module site mass-producing FY2027, 3rd FY2028"
+  },
+  {
+   "name": "EV Cylindrical Cells (2170 / 4680)",
+   "category": "Automotive · the pressured incumbent business",
+   "description": "2170 cells from Nevada (~41 GWh/yr, >11B cells to date) and Kansas De Soto (opened July 2025, ~32 GWh target, ~20% higher productivity — full-capacity date abandoned amid the Tesla slump); ~800 Wh/L claimed density, ~19B cells cumulative, zero vehicle recalls claimed. 4680: 'mass-production readiness' declared September 2024 at the Wakayama mother factory; no first-party full-ramp confirmation since. Publicized customers: Lucid, Subaru, Mazda, Harbinger, Zoox (robotaxis); Tesla is the widely understood but first-party-unnamed anchor.",
+   "highlights": [
+    "North American auto-battery sales plan cut 13% to 40 GWh (October 2025) as US EV credits ended",
+    "¥40B one-time charge for 2170 manufacturing defects for an unnamed customer (charging failures, not fire risk — widely inferred to be Tesla, not company-confirmed)",
+    "Sila US silicon-anode supply agreement for ~5% capacity-boosted cells at Kansas"
+   ],
+   "positioning": "#7 global EV battery share (3.7% in 2025, SNE) — slipped below SK On; the only top player that shrank in 2024. Tesla concentration is the structural risk trade press consistently flags.",
+   "soldThrough": "Direct OEM supply from Japan and US plants",
+   "targetSegments": "US/Japan EV OEMs, robotaxis (Zoox), medium-duty EVs (Harbinger)",
+   "roadmap": "4680 ramp unconfirmed; Oklahoma third-plant plan dropped (2023); Kansas partial conversion to data-center cells"
+  },
+  {
+   "name": "Group Segments (Connect, Electric Works, HVAC, Industry, Smart Life)",
+   "category": "Diversified electronics",
+   "description": "Beyond Energy: Connect (supply-chain software/avionics), Electric Works, HVAC & Cooling (¥1,312B fiscal 2026 sales), Industry (capacitors and MEGTRON multilayer PCB materials for AI servers — Thailand capacity doubling), and Smart Life. Automotive was deconsolidated in fiscal 2025; Housing sold to YKK in March 2026; the TV business partnered with Skyworth for Europe.",
+   "highlights": [
+    "Panasonic Industry's MEGTRON PCB materials are a second AI-infrastructure exposure line",
+    "Group Management Reform: ~12,000 job cuts, ¥174.5B fiscal 2026 restructuring cost, ROE 10% target by FY2029"
+   ],
+   "soldThrough": "Diversified B2B/B2C channels",
+   "targetSegments": "Industrial, construction, consumer"
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-07-30",
+   "category": "financial",
+   "headline": "Q1 fiscal 2027: highest Q1 operating profit in 41 years (¥182.5B); data-center storage ¥113B (1.9×); FY2027 guidance raised (adj. OP ¥650B)",
+   "read": "The AI pivot's first headline quarter — a strong beat-and-raise attributed to data-center and AI-related demand offsetting EV weakness.",
+   "source": "https://news.panasonic.com/global/press/en260730-3"
+  },
+  {
+   "date": "2026-06-08",
+   "category": "capacity",
+   "headline": "¥350B FY2026–28 data-center storage investment: Kansas EV lines repurposed, Mexico module plants expanded",
+   "read": "Capital reallocation makes the pivot structural — EV assets redeployed to the AI boom rather than idled. (Investor-deck figures via trade press; deck on Holdings IR.)",
+   "source": "https://www.ess-news.com/2026/06/08/panasonic-to-invest-2-billion-in-data-center-battery-push-ramp-up-us-manufacturing/"
+  },
+  {
+   "date": "2026-05-12",
+   "category": "financial",
+   "headline": "Fiscal 2026 results: group OP −44.6% on restructuring; Energy segment OP ¥69.8B (−¥50.4B) vs an original ¥167B segment plan",
+   "read": "The cost of transition: tariffs, Kansas fixed costs, and the ¥40B defect charge landed together; the data-center line was the lone bright spot (+13% segment sales).",
+   "source": "https://news.panasonic.com/uploads/tmg_block_page_image/file/38977/en260512-10-1.pdf"
+  },
+  {
+   "date": "2026-03-25",
+   "category": "product-launch",
+   "headline": "'Empowering AI Stability at Scale' — BBU/CBU strategy published: ~80% DC distributed-power share claim, ¥800B FY2029 target",
+   "read": "The strategy document for the whole pivot — including the supercapacitor CBU tier that matches NVIDIA's rack-side storage architecture.",
+   "source": "https://news.panasonic.com/global/stories/18524"
+  },
+  {
+   "date": "2025-11-25",
+   "category": "order-win",
+   "headline": "Zoox (Amazon) multi-year 2170 supply for robotaxis — deliveries from early 2026",
+   "read": "Customer diversification beyond the Tesla anchor, and indirect exposure to Amazon's autonomy program.",
+   "source": "https://news.panasonic.com/global/press/en251125-2"
+  },
+  {
+   "date": "2025-10-30",
+   "category": "financial",
+   "headline": "FY2026 guidance cut (OP ¥370B→¥320B); Energy Q2 OP nearly wiped out (¥1.2B, −96%); NA battery sales plan cut 13%",
+   "read": "The trough print: tariffs, lower volumes, and reduced AMPC windfall — the same day LGES cut guidance, marking the sector-wide EV reset.",
+   "source": "https://finance.yahoo.com/news/panasonic-cuts-full-profit-forecast-064900002.html"
+  },
+  {
+   "date": "2025-07-14",
+   "category": "capacity",
+   "headline": "Kansas De Soto factory opens ($4B, 2170 mass production, ~32 GWh target) — full-capacity date later abandoned",
+   "read": "Built for a Tesla demand curve that didn't materialize; now partially the site of the data-center cell conversion — the pivot in one building.",
+   "source": "https://news.panasonic.com/global/press/en250714-6"
+  },
+  {
+   "date": "2025-05-09",
+   "category": "leadership",
+   "headline": "Group Management Reform announced: 10,000 job cuts (later ~12,000), ¥130B+ restructuring, ROE 10% by FY2029",
+   "read": "The group-level restructuring that funds and frames the Energy pivot; Panasonic Corporation itself was dissolved into three companies in April 2026.",
+   "source": "https://finance.yahoo.com/news/panasonic-cut-10-000-jobs-075233295.html"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess the data-center storage pivot is Panasonic's core strategy, not a hedge: ¥350B of dedicated capex, EV lines physically repurposed, Japan cell capacity tripling by FY2029, and a CEO calling ¥800B of FY2029 revenue 'a minimum commitment.' Basis: company filings, strategy publication, and investor briefing.",
+  "(Moderate confidence) We assess the ~80% distributed-power share claim is plausible but self-reported — no third-party verification exists, and Samsung SDI's UPS/BBU push plus reported industry-wide BBU cell shortages suggest the moat will be contested as the market grows toward ~$7B by 2033 (analyst estimates).",
+  "(High confidence) We assess Tesla concentration remains the EV business's defining risk: Kansas ramp decisions tracked Tesla's sales slump, the ¥40B defect charge is widely inferred to involve the 2170 anchor customer, and first-party channels conspicuously avoid naming Tesla while publicizing Lucid/Subaru/Mazda/Zoox diversification.",
+  "(Moderate confidence) We assess the group restructuring (12,000 cuts, segment dissolutions, Housing sale) is the financing mechanism for the AI pivot — fiscal 2026's −44.6% OP was deliberately absorbed to reset the cost base before the FY2027 rebound guidance (adj. OP ¥650B), which the record Q1 supports.",
+  "(Low confidence) The 4680 program's status is a genuine unknown: mass-production readiness was declared September 2024 with no first-party ramp confirmation since — treat any 4680 volume claims as unverified."
+ ],
+ "relationships": [
+  {
+   "slug": "tesla",
+   "type": "customer",
+   "note": "The widely understood (first-party-unnamed) anchor customer for 2170 cells — and the EV business's defining risk.",
+   "context": "Tesla concentration remains Panasonic's defining EV exposure: Nevada's ~41 GWh/yr 2170 output (>11B cells to date) anchors on Tesla, the Kansas De Soto ramp decisions tracked Tesla's sales slump (full-capacity date abandoned), and the ¥40B defect charge is widely inferred to involve the 2170 anchor customer — while first-party channels conspicuously avoid naming Tesla and publicize Lucid/Subaru/Mazda/Zoox diversification instead. The Kansas lines are now partially converting to data-center cells — the AI pivot in one building.",
+   "source": "https://news.panasonic.com/global/press/en250714-6",
+   "status": "active",
+   "scale": "~41 GWh/yr 2170 anchor volume"
+  },
+  {
+   "slug": "amazon",
+   "type": "customer",
+   "note": "Zoox (Amazon) multi-year 2170 supply for robotaxis, deliveries from early 2026.",
+   "context": "November 2025: Panasonic announced a multi-year 2170 cell supply agreement with Zoox, Amazon's robotaxi unit, with deliveries from early 2026 — customer diversification beyond the Tesla anchor and indirect exposure to Amazon's autonomy program.",
+   "source": "https://news.panasonic.com/global/press/en251125-2",
+   "status": "active",
+   "since": "2025-11"
+  },
+  {
+   "slug": "nvidia",
+   "type": "other",
+   "note": "CBU supercapacitor roadmap targets the rack-side transient tier NVIDIA's GB300 architecture created.",
+   "context": "Panasonic's data-center strategy ('Empowering AI Stability at Scale', March 2026 — ~80% claimed share of DC distributed power, ¥800B FY2029 target) includes next-generation Capacitor Backup Units that map directly onto NVIDIA's rack-side storage tier — architecture alignment with the GB300-created transient market, not a named partnership.",
+   "source": "https://news.panasonic.com/global/stories/18524",
+   "status": "active"
+  },
+  {
+   "slug": "samsung-sdi",
+   "type": "competitor",
+   "note": "The BBU challenger contesting Panasonic's claimed ~80% distributed-power incumbency.",
+   "context": "Panasonic is the BBU incumbent with a self-reported ~80% share of data-center distributed power systems; Samsung SDI's UPS/BBU push plus reported industry-wide BBU cell shortages are the reasons the dossier expects the moat to be contested as the market grows toward ~$7B by 2033.",
+   "source": "https://news.panasonic.com/global/stories/18524",
+   "status": "active"
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "2170 EV cell program",
+   "specs": [
+    {
+     "band": "Cell",
+     "label": "Energy density",
+     "value": "~800 Wh/L volumetric (company-claimed industry-leading)"
+    },
+    {
+     "band": "Track record",
+     "label": "Cumulative output",
+     "value": "~19B cells / ~3.7M EVs powered (Mar 2025); zero vehicle recalls claimed"
+    },
+    {
+     "band": "Manufacturing",
+     "label": "Nevada (Sparks)",
+     "value": "~41 GWh/yr, >4,000 employees, since 2017"
+    },
+    {
+     "band": "Manufacturing",
+     "label": "Kansas (De Soto)",
+     "value": "$4B plant, ~32 GWh target, ~20% higher productivity; partial conversion to data-center cells announced"
+    },
+    {
+     "band": "Roadmap",
+     "label": "Next-gen input",
+     "value": "Sila nano-composite silicon anode (~+5% capacity)"
+    }
+   ]
+  },
+  {
+   "product": "Data-center storage program",
+   "specs": [
+    {
+     "band": "Products",
+     "label": "Line",
+     "value": "BBU rack-mounted Li-ion backup/peak-shave modules; CBU supercapacitor units next (with Panasonic Industry)"
+    },
+    {
+     "band": "Market position",
+     "label": "Claimed share",
+     "value": "~80% of data-center distributed power supply systems"
+    },
+    {
+     "band": "Targets",
+     "label": "FY2029",
+     "value": "¥800B sales (orders claimed for >80% of it); Japan cell capacity ×3 vs FY2026"
+    },
+    {
+     "band": "Targets",
+     "label": "Investment",
+     "value": "¥350B FY2026–28 within a ¥500B AI-infrastructure envelope"
+    }
+   ],
+   "notes": "All figures company-claimed; no third-party share verification exists."
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Yuki Kusumi (楠見雄規)",
+   "title": "Representative Director, President, Group CEO — Panasonic Holdings",
+   "background": [
+    "Group CEO since 2021; architect of the Group Management Reform",
+    "Career Panasonic — automotive and appliance businesses"
+   ]
+  },
+  {
+   "name": "Kazuo Tadanobu (只信一生)",
+   "title": "President & CEO — Panasonic Energy",
+   "background": [
+    "CEO since Panasonic Energy's April 2022 establishment; led the battery company from the Tesla-JV era",
+    "Public owner of the ¥800B data-center storage commitment"
+   ]
+  },
+  {
+   "name": "Akira Waniko",
+   "title": "Group CFO — Panasonic Holdings",
+   "background": [
+    "Presents group results and the growth-strategy briefings (fiscal 2026, Q1 fiscal 2027)"
+   ]
+  },
+  {
+   "name": "Yasuaki Takamoto",
+   "title": "EVP Mobility Energy — Panasonic Energy; CEO of Panasonic Energy North America",
+   "background": [
+    "Runs the Nevada/Kansas cell operations at the center of both the EV pressure and the DC-cell conversion"
+   ]
+  },
+  {
+   "name": "Allan Swan",
+   "title": "President & COO — Panasonic Energy Corporation of North America",
+   "background": [
+    "Operational lead for the US plants"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "JPY (¥)",
+  "type": "public",
+  "periods": [
+   {
+    "period": "Q1 fiscal 2027 (Apr–Jun 2026; latest interim)",
+    "metrics": [
+     {
+      "name": "Net sales",
+      "actual": "¥2,018.9B (+6.4%)",
+      "expected": "",
+      "verdict": "beat",
+      "result": "characterized as a strong beat-and-raise"
+     },
+     {
+      "name": "Operating profit",
+      "actual": "¥182.5B (+110%) — best Q1 in 41 years",
+      "expected": "",
+      "verdict": "beat",
+      "result": "net profit ¥135.2B (+89%)"
+     },
+     {
+      "name": "Energy segment",
+      "actual": "sales ¥314.0B / adj. OP ¥41.4B (+¥9.6B)",
+      "expected": "",
+      "verdict": "beat",
+      "result": "data-center storage ¥113B (1.9×); AI-related sales ¥74.9B (1.4×)"
+     }
+    ],
+    "commentary": "FY2027 guidance raised: sales ¥7.8T, adj. OP ¥650B, net ¥450B; data-center storage FY2027 forecast ¥550B; AI-related sales target raised to ¥310B."
+   },
+   {
+    "period": "Fiscal 2026 (Apr 2025–Mar 2026)",
+    "metrics": [
+     {
+      "name": "Net sales",
+      "actual": "¥8,048.7B (−4.8%)",
+      "expected": "",
+      "verdict": "miss",
+      "result": "Q2 FY2026 OP ¥78.0B vs ~¥110B consensus — miss; guidance cut in October"
+     },
+     {
+      "name": "Operating profit",
+      "actual": "¥236.4B (−44.6%); adjusted ¥447.4B",
+      "expected": "Own guidance cut ¥370B→¥320B mid-year",
+      "verdict": "miss",
+      "result": "restructuring ¥174.5B; net profit ¥189.5B (−48.2%)"
+     },
+     {
+      "name": "Energy segment",
+      "actual": "sales ¥984.2B (+13%) / OP ¥69.8B (−¥50.4B)",
+      "expected": "Original segment plan ¥167B",
+      "verdict": "miss",
+      "result": "tariffs, Kansas fixed costs, Japan-factory softness, ¥40B defect charge"
+     }
+    ],
+    "commentary": "The transition-cost year: data-center storage drove segment sales growth while EV-side costs crushed segment profit."
+   },
+   {
+    "period": "Fiscal 2025 (Apr 2024–Mar 2025)",
+    "metrics": [
+     {
+      "name": "Net sales",
+      "actual": "¥8,458.2B (−0.5%)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "no retrievable consensus"
+     },
+     {
+      "name": "Operating profit",
+      "actual": "¥426.5B (+18.2%)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "flattered by Automotive deconsolidation; net profit ¥366.2B (−17.5%)"
+     },
+     {
+      "name": "Energy segment",
+      "actual": "sales ¥873.2B / OP ¥120.2B",
+      "expected": "",
+      "verdict": "inline",
+      "result": "pre-pivot baseline"
+     }
+    ],
+    "commentary": "Operating cash flow boosted by IRA credit monetization via third-party transfer — absent the following year."
+   }
+  ],
+  "commentary": "Fiscal convention: FY20XX ends March 31, 20XX. EV battery share: #7 globally at 3.7% in 2025 (44.2 GWh, SNE), down from #6/3.9% in 2024 — supplies 'mainly Tesla' per SNE. No full-year analyst consensus retrievable for fiscal 2025/2026 — guidance-vs-actual used where consensus is absent."
+ },
+ "sources": [
+  {
+   "label": "Panasonic — Q1 fiscal 2027 results",
+   "url": "https://news.panasonic.com/global/press/en260730-3",
+   "date": "2026-07-30"
+  },
+  {
+   "label": "ESS-News — ¥350B data-center battery investment",
+   "url": "https://www.ess-news.com/2026/06/08/panasonic-to-invest-2-billion-in-data-center-battery-push-ramp-up-us-manufacturing/",
+   "date": "2026-06-08"
+  },
+  {
+   "label": "DCD — Mexico module expansion for data-center demand",
+   "url": "https://www.datacenterdynamics.com/en/news/panasonic-to-expand-battery-module-manufacturing-in-response-to-surging-data-center-demand/",
+   "date": "2026-06"
+  },
+  {
+   "label": "BigGo Finance — ¥40B 2170 defect charge / reform costs",
+   "url": "https://finance.biggo.com/news/JP_6752.T_2026-05-15",
+   "date": "2026-05-15"
+  },
+  {
+   "label": "Panasonic — fiscal 2026 results (PDF, incl. FY2025 comparatives)",
+   "url": "https://news.panasonic.com/uploads/tmg_block_page_image/file/38977/en260512-10-1.pdf",
+   "date": "2026-05-12"
+  },
+  {
+   "label": "Panasonic — 'Empowering AI Stability at Scale' (BBU/CBU strategy)",
+   "url": "https://news.panasonic.com/global/stories/18524",
+   "date": "2026-03-25"
+  },
+  {
+   "label": "CnEVPost — SNE 2025 EV battery share",
+   "url": "https://cnevpost.com/2026/02/04/global-ev-battery-market-share-2025/",
+   "date": "2026-02-04"
+  },
+  {
+   "label": "Panasonic — Zoox 2170 supply",
+   "url": "https://news.panasonic.com/global/press/en251125-2",
+   "date": "2025-11-25"
+  },
+  {
+   "label": "Reuters/Yahoo — FY2026 guidance cut (Oct 2025)",
+   "url": "https://finance.yahoo.com/news/panasonic-cuts-full-profit-forecast-064900002.html",
+   "date": "2025-10-30"
+  },
+  {
+   "label": "Panasonic — Kansas factory opening (2170 program figures)",
+   "url": "https://news.panasonic.com/global/press/en250714-6",
+   "date": "2025-07-14"
+  },
+  {
+   "label": "Kansas Reflector — Kansas full-capacity target abandoned",
+   "url": "https://kansasreflector.com/2025/07/11/panasonic-to-delay-production-at-kansas-battery-plant-as-electric-car-sales-decline-policies-shift/",
+   "date": "2025-07-11"
+  },
+  {
+   "label": "Reuters/Yahoo — 10,000 job cuts (May 2025)",
+   "url": "https://finance.yahoo.com/news/panasonic-cut-10-000-jobs-075233295.html",
+   "date": "2025-05-09"
+  },
+  {
+   "label": "Panasonic — 4680 mass-production readiness (Sept 2024)",
+   "url": "https://news.panasonic.com/global/press/en240909-7",
+   "date": "2024-09-09"
+  },
+  {
+   "label": "Panasonic Energy — company profile",
+   "url": "https://www.panasonic.com/global/energy/company/profile.html"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 3
+}

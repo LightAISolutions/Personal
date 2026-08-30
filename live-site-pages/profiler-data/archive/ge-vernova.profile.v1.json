@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 2,
+  "slug": "ge-vernova",
+  "name": "GE Vernova",
+  "legalName": "GE Vernova Inc.",
+  "categories": ["supplier"],
+  "hq": "Cambridge, MA, USA",
+  "ticker": "NYSE: GEV",
+  "founded": "2024 (spun off from General Electric April 2, 2024)",
+  "ownership": "public",
+  "employees": "~85,000",
+  "website": "https://www.gevernova.com",
+  "summary": "BOTTOM LINE UP FRONT: GE Vernova controls the scarcest resources in the AI power buildout — heavy-duty gas turbine slots and North American transformer capacity — with 116 GW of gas capacity committed (53 GW equipment backlog plus 63 GW of deposit-backed slot reservations) as of Q2 2026, reservations now selling against 2031 delivery, and data-center electrification orders that quintupled inside 18 months ($2.4B in Q1 2026 alone, more than all of 2025). BACKGROUND: Spun from General Electric April 2024; ~85,000 employees; installed base of ~7,000 gas turbines and equipment behind ~25% of world electricity. Three segments — Power (gas/hydro/nuclear/steam), Wind (loss-making), Electrification (grid equipment, now including 100%-owned transformer maker Prolec GE, acquired for $5.275B February 2026). FY2025 revenue $38.1B; total backlog $176B at Q2 2026. Named NVIDIA 800 VDC partner with three AI-factory reference designs (grid-connected, islanded, bridging).",
+  "ecosystemRole": "We assess GE Vernova as the single best lens on the report's time-to-power question: whoever holds turbine slots and transformer capacity sets the energization date for every gigawatt-class campus, and GEV holds more of both than anyone in the Americas. Basis: turbine reservations sold out through ~2030 with ~$3,000/kW implied combined-cycle pricing (roughly triple three years ago), transformer lead times industry-wide at 2.5-4 years with Prolec GE now wholly owned, and hyperscalers routing around the grid queue via GEV hardware — Chevron's 4 GW 'power foundries' (seven 7HA turbines), Crusoe's LM2500XPRESS aeroderivative fleets, and Oracle Abilene's on-site turbines. For BESS vendors, GEV is both channel and competitor: its aeroderivative-plus-BESS bridging configurations and FLEXRESERVOIR storage line compete for the same behind-the-fence scope.",
+  "productsAndServices": [
+    {
+      "name": "Heavy-duty gas turbines (7HA/9HA family)",
+      "description": "The 7HA flagship line: 7HA.01 (290 MW), 7HA.02 (384 MW), 7HA.03 (430 MW simple-cycle), 42.0-43.3% simple-cycle net efficiency and 63-64% combined-cycle; ramp rates to 75 MW/min, ~10-minute hot starts, up to 50% hydrogen-capable. Sold via orders plus paid slot-reservation agreements (~20% cash down) that convert to orders — Q2 2026 alone converted 10 GW of reservations.",
+      "positioning": "One of three OEMs (with Siemens Energy and Mitsubishi Power) supplying two-thirds of turbines for gas plants under construction globally; largest single share of heavy-duty (>14.5% per GMInsights). Slot pricing 10-20 points above the existing backlog is the clearest scarcity-rent evidence in the sector.",
+      "soldThrough": "Direct equipment sales + long-term service agreements; EPC-agnostic.",
+      "targetSegments": ["Utilities and IPPs", "Data-center prime power (Chevron, Duke, hyperscaler-adjacent)", "Industrial cogeneration"],
+      "roadmap": "Output ramps from ~20 GW/yr (Q3 2026 run-rate) to 24 GW in 2028, actions toward 30 GW by 2030; expected 'largely sold out of 2030 deliveries by end of 2026.'"
+    },
+    {
+      "name": "Aeroderivative turbines & bridging power (LM2500/LM6000/TM2500)",
+      "description": "Fast-deploy prime and bridge power for data centers: LM6000 with 5-minute starts (1,300+ units fielded), LM2500XPRESS packaged units (>99.8% availability, powering Crusoe AI data centers), TM2500 mobile units installed in 11 days. Four offered data-center configurations including onsite prime power and grid-connected hybrid with battery.",
+      "positioning": "The 'two weeks to power generation' pitch versus multi-year interconnection queues — competing against Bloom fuel cells, Caterpillar/Cummins gensets, and Solaris mobile turbines for the bridge-power wedge.",
+      "soldThrough": "Direct and through power-as-a-service developers (Crusoe, VoltaGrid-class operators).",
+      "targetSegments": ["AI data centers needing bridge/prime power", "Island and emergency grids"],
+      "roadmap": "Belfort, France line adds +2 GW of ~90 MW 7E-class industrial turbines aimed squarely at bridge-power demand, no new capex."
+    },
+    {
+      "name": "Electrification — transformers, switchgear, HVDC (incl. Prolec GE)",
+      "description": "Power Transmission: power/distribution transformers (Prolec GE: ~10,000 employees, seven Americas plants, five in the US), gas- and air-insulated switchgear 50-800 kV, HV breakers. Grid Systems Integration: HVDC (six consecutive 2 GW bipole contracts with TenneT), AC substations, and direct data-center complex solutions. Grid stability: STATCOMs, synchronous condensers, SVCs.",
+      "positioning": "Hitachi Energy leads global transformers with Siemens Energy, Eaton, GEV, Toshiba in the top tier — but Prolec makes GEV the most North America-weighted. Wood Mackenzie has power-transformer lead times at ~2.5 years and prices predicted to rise through 2030; GEV owns the bottleneck's American toll booth.",
+      "soldThrough": "Utility and hyperscaler direct contracts; Q4 2025 was the segment's largest-ever quarter of orders directly from hyperscalers.",
+      "targetSegments": ["Utilities and grid operators", "Hyperscaler campuses", "Data-center developers"],
+      "roadmap": "Data-center Electrification orders: ~$0.7B (2024) → >$2B (2025) → >$5B in 1H 2026 alone. ~$1B Prolec capex 2026-28; Charleroi PA ($138M) and Italy bushings expansions underway."
+    },
+    {
+      "name": "Solid-state transformers & NVIDIA 800 VDC reference designs",
+      "description": "Three jointly-developed AI-factory reference designs with NVIDIA (grid-connected, islanded, bridging power) centered on 800 VDC — 13.8 kV AC converted to 800 VDC at the perimeter via solid-state transformers and industrial rectifiers, with digital twins in NVIDIA's Omniverse DSX Blueprint. An R&D cost-share with a hyperscaler carries a commitment to buy 1,000 SSTs from 2027 if spec is met.",
+      "positioning": "The SST is the architectural leap that could collapse the AC distribution chain — GEV is the only grid-equipment incumbent with a disclosed hyperscaler SST purchase commitment attached to a development milestone.",
+      "soldThrough": "Reference-design-led programs with hyperscalers.",
+      "targetSegments": ["Gigawatt-scale AI factories"],
+      "roadmap": "SST cited as 12-24 months from commercialization, 24-36 from industrialization (December 2025 investor update)."
+    },
+    {
+      "name": "BESS & solar (FLEXRESERVOIR, RESTORE, FLEXINVERTER)",
+      "description": "FLEXRESERVOIR containerized grid-scale BESS (batteries + power electronics + controls); RESTORE DC Block modular 5 MWh units spanning 2-8 hour durations; FLEXINVERTER utility-scale PCS platform; FLEXIQ EMS. Term sheet with Our Next Energy (ONE) for US-made LFP cells.",
+      "positioning": "A second-tier BESS integrator by shipment share, but sold with generation and grid scope the pure-plays lack — most relevant to this file as the storage arm of GEV's islanded/bridging AI-factory designs.",
+      "soldThrough": "Utility and project contracts, generation-coupled hybrids.",
+      "targetSegments": ["Utility-scale storage", "Data-center microgrids"],
+      "roadmap": "US LFP supply (ONE) addresses domestic-content procurement; storage sits inside the Power Conversion & Storage unit (~$5B backlog end-2025)."
+    }
+  ],
+  "recentDevelopments": [
+    {
+      "date": "2026-07-30",
+      "category": "capacity",
+      "headline": "Charleroi, PA switchgear/breaker plant expansion — part of a $138M program adding ~275 jobs through 2028",
+      "read": "Grid-equipment capacity keeps following the data-center order book; US onshore weighting is deliberate.",
+      "source": "https://www.gevernova.com/news/press-releases/ge-vernova-expands-pennsylvania-manufacturing-facility-strengthen-us-grid-supply"
+    },
+    {
+      "date": "2026-07-22",
+      "category": "financial",
+      "headline": "Q2 2026: orders $24.2B (+88% organic), backlog $176B, gas commitments 116 GW; revenue beat but adjusted EPS missed (~$2.47 vs ~$3.04); FY guidance raised again",
+      "read": "The quarter in miniature: demand records, tariff costs ($100-200M in 2026) and widening wind losses on the same page. Guidance now $45.5-46.5B revenue, $11.5-12.5B free cash flow.",
+      "source": "https://www.gevernova.com/sites/default/files/gev_webcast_pressrelease_07222026.pdf"
+    },
+    {
+      "date": "2026-02-02",
+      "category": "partnership",
+      "headline": "Prolec GE acquisition completed — remaining 50% from Xignux for $5.275B (half cash, half debt including a $2.6B notes offering)",
+      "read": "Full ownership of the largest US-weighted transformer maker converts the industry bottleneck into GEV segment revenue; first material leverage event since the spin.",
+      "source": "https://www.gevernova.com/news/press-releases/ge-vernova-completes-prolec-ge-acquisition"
+    },
+    {
+      "date": "2026-01-28",
+      "category": "financial",
+      "headline": "FY2025: orders $59.3B (+34% organic), revenue $38.1B, FCF $3.7B; 2028 outlook ~$56B revenue at ~20% EBITDA margin",
+      "read": "Wind lost ~$600M against ~$400M guided — the overshoot the company's own materials underplay; Power and Electrification margins (14.7%/14.9%) carried the year.",
+      "source": "https://www.gevernova.com/sites/default/files/gev_webcast_pressrelease_01282026.pdf"
+    },
+    {
+      "date": "2025-12-09",
+      "category": "other",
+      "headline": "Investor Update: slot reservations pricing 10-20 points above backlog; hyperscaler SST program with a 1,000-unit purchase commitment; up to $100B SMR industrialization MoU with the US government (BWRX-300)",
+      "read": "Three structural bets disclosed in one session — scarcity pricing, the SST architecture play, and nuclear optionality.",
+      "source": "https://www.gevernova.com/sites/default/files/gev_webcast_transcript_12092025.pdf"
+    },
+    {
+      "date": "2025-10-24",
+      "category": "product-launch",
+      "headline": "AI Factory 800 VDC reference designs published with NVIDIA — grid-connected, islanded, and bridging-power variants with Omniverse digital twins",
+      "read": "GEV's claim on the AI-factory perimeter: 13.8 kV AC to 800 VDC via SSTs and industrial rectifiers.",
+      "source": "https://library.grid.gevernova.com/white-papers-case-studies/ai-factory-800vdc-reference-designs"
+    },
+    {
+      "date": "2025-06-15",
+      "category": "order-win",
+      "headline": "Duke Energy orders 20 × 7HA turbines (first delivery summer 2026); Chevron 'power foundries' partnership targets up to 4 GW for data centers by 2027",
+      "read": "The two marquee routes to AI load: regulated-utility gas buildout and oil-major behind-the-fence power, both on GEV hardware.",
+      "source": "https://www.gevernova.com/gas-power/resources/articles/2025/meeting-data-center-demand-with-chevron"
+    },
+    {
+      "date": "2025-01-22",
+      "category": "financial",
+      "headline": "Q4 2024 missed consensus (adjusted EPS ~$1.73 vs ~$2.30; slight revenue miss) — the spin-off year closed soft before the 2025-26 order surge",
+      "read": "A reminder the execution record is younger than the narrative; the backlog machine started compounding in 2025.",
+      "source": "https://www.gevernova.com/sites/default/files/gev_webcast_pressrelease_01222025.pdf"
+    }
+  ],
+  "strategyRead": [
+    "(High confidence) We assess GEV holds genuine multi-year pricing power in gas turbines, and that it is scarcity rent rather than durable moat. Basis: reservations selling for 2031 delivery at ~$3,000/kW implied combined-cycle pricing (~3x in three years), 20%-cash-down slot agreements, and capacity 'largely sold out of 2030' — while Siemens Energy nearly doubled unit sales year-over-year and Mitsubishi calls its own +30% capacity add 'not enough.' Competitor supply lands in the same 2028-2030 windows GEV is now selling.",
+    "(High confidence) We assess the transformer bottleneck is the more defensible franchise. Basis: industry lead times of 2.5-4 years with shortage modeled to persist toward 2030 (Wood Mackenzie), Prolec GE's five US plants now wholly owned, and data-center electrification orders quintupling in 18 months — equipment margin in backlog rose 6 points in 2025.",
+    "(Moderate confidence) We assess backlog-to-revenue conversion is the central risk the headline numbers hide. Basis: $176B backlog and 116 GW committed sit upstream of interconnection queues, gas-supply infrastructure, and possible data-center demand revisions; slot deposits (~20%) mitigate but do not eliminate slippage or cancellation, and adjusted EPS missed in two of the last four reported periods even as orders broke records.",
+    "(Moderate confidence) We assess the SST program is the highest-leverage optionality in the file's grid segment. Basis: a hyperscaler-funded development deal with a 1,000-unit purchase commitment from 2027 — if the spec lands, GEV leapfrogs the AC-switchboard incumbents into the 800 VDC perimeter; if it slips, the referenced ~$13B SST market forms around Heron Power-class challengers instead.",
+    "(Low confidence) We assess wind will keep subtracting roughly $400M of EBITDA annually through 2026-27 with limited strategic exit options. Basis: losses overshot guidance in 2025 (~$600M vs ~$400M), the December 2025 federal stop-work order forced further offshore contract-loss accruals, and management's language ('focusing on what we can control') signals containment, not resolution."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "7HA gas turbine family",
+      "specs": ["7HA.01: 290 MW / 7HA.02: 384 MW / 7HA.03: 430 MW (simple cycle)", "42.0-43.3% SC net efficiency; 63-64% combined-cycle", "Ramp 55/60/75 MW/min; ~10-min hot start; up to 50% hydrogen-capable"]
+    },
+    {
+      "product": "Aeroderivative line",
+      "specs": ["LM6000: 5-minute start, 1,300+ units, 40M+ operating hours", "LM2500XPRESS: >99.8% availability (Crusoe AI data centers)", "TM2500: mobile, installed and commissioned in 11 days"]
+    },
+    {
+      "product": "Grid equipment",
+      "specs": ["GIS/AIS switchgear 50-800 kV; HV breakers; instrument transformers", "HVDC: repeatable 2 GW bipole architecture (six consecutive TenneT contracts)", "Prolec GE: 7 Americas transformer plants (5 US), ~10,000 employees"]
+    },
+    {
+      "product": "800 VDC AI-factory reference designs",
+      "specs": ["Grid-connected, islanded, and bridging-power variants", "13.8 kV AC → 800 VDC perimeter conversion via solid-state transformers + industrial rectifiers", "Digital twins aligned with NVIDIA Omniverse DSX Blueprint"]
+    },
+    {
+      "product": "BESS line",
+      "specs": ["FLEXRESERVOIR containerized grid-scale BESS", "RESTORE DC Block: 5 MWh modular, 2-8 h durations", "FLEXINVERTER PCS + FLEXIQ EMS; ONE term sheet for US-made LFP"]
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Scott Strazik", "photo": "images/execs/ge-vernova-strazik.jpg",
+      "title": "Chief Executive Officer",
+      "background": [
+        "20+ years GE finance/operations; CEO of GE Gas Power from 2018, led all GE Power businesses from 2021",
+        "Public architect of the slot-reservation model and the 'sold out through 2030' posture",
+        "Cornell BS; Columbia SIPA MA"
+      ]
+    },
+    {
+      "name": "Kenneth Parks", "photo": "images/execs/ge-vernova-parks.jpg",
+      "title": "Chief Financial Officer",
+      "background": [
+        "CFO since October 2023; 38 years of finance experience",
+        "Owns the first-leverage-event balance sheet (Prolec notes) and the 2028 ~20% EBITDA margin target"
+      ]
+    },
+    {
+      "name": "Eric Gray", "photo": "images/execs/ge-vernova-gray.jpg",
+      "title": "CEO, Power segment",
+      "background": [
+        "Runs the gas turbine franchise: 116 GW committed, 18.8% segment EBITDA margin in Q2 2026"
+      ]
+    },
+    {
+      "name": "Philippe Piron", "photo": "images/execs/ge-vernova-piron.jpg",
+      "title": "CEO, Electrification segment",
+      "background": [
+        "Runs grid equipment through the realignment (Grid Systems Integration / Power Transmission / Power Conversion & Storage)",
+        "Segment orders roughly doubled year-over-year in Q2 2026 to $7.1B"
+      ]
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "type": "fiscal-year (calendar)",
+    "periods": [
+      {
+        "period": "FY2024",
+        "metrics": [
+          {"name": "Revenue", "actual": "$34.9B (+5%)", "expected": "Q4: $10.7B consensus", "verdict": "miss", "result": "Q4 revenue $10.6B slight miss; adjusted EPS ~$1.73 vs ~$2.30 consensus — a ~25% miss"},
+          {"name": "Net income", "actual": "$1.56B (4.5% margin)", "expected": "—", "verdict": "inline", "result": "FCF $1.7B; orders $44.1B (+7% organic)"}
+        ],
+        "commentary": "The first post-spin year ended with a stumble — full-year EPS also flagged as a miss by trackers. The order machine had not yet overwhelmed the cost lines."
+      },
+      {
+        "period": "FY2025",
+        "metrics": [
+          {"name": "Revenue", "actual": "$38.1B (+9%)", "expected": "$36-37B original guide / ~$36.8B consensus", "verdict": "beat", "result": "Q4 revenue ~$11.0B beat consensus ~7%; GAAP EPS swollen by one-time items (tax valuation allowance ~$2.9B)"},
+          {"name": "Free cash flow", "actual": "$3.7B (more than doubled)", "expected": "—", "verdict": "beat", "result": "Orders $59.3B (+34% organic); backlog $150B; dividend doubled, buyback authorization to $10B; S&P upgrade to BBB"}
+        ],
+        "commentary": "The breakout year on orders and cash — but wind lost ~$600M against ~$400M guided, and headline GAAP EPS 'beats' (Q4: $13.39) were one-time-item artifacts; the adjusted picture was modest."
+      },
+      {
+        "period": "Q2 2026 (latest interim)",
+        "metrics": [
+          {"name": "Revenue", "actual": "$11.1B (+22%)", "expected": "~$10.73-10.79B (consensus)", "verdict": "beat", "result": "~3.5% beat; orders $24.2B (+88% organic); backlog record $176B"},
+          {"name": "Adjusted EPS", "actual": "~$2.47", "expected": "~$3.04 (consensus)", "verdict": "miss", "result": "~19% miss on tariffs ($100-200M 2026 headwind) and widening wind losses; shares fell ~3%"}
+        ],
+        "commentary": "Guidance raised to $45.5-46.5B revenue and $11.5-12.5B FCF even as EPS missed — the market is paying for slots and backlog, not current-quarter earnings. Valuation debate is live: ~40x cash flow, consensus target ~$1,233 but a $836-1,450 spread, Citi neutral on conversion risk."
+      }
+    ]
+  },
+  "sources": [
+    {"label": "GE Vernova Q2 2026 press release", "url": "https://www.gevernova.com/sites/default/files/gev_webcast_pressrelease_07222026.pdf", "date": "2026-07-22"},
+    {"label": "Turbomachinery Magazine — 116 GW backlog", "url": "https://www.turbomachinerymag.com/view/ge-vernova-gas-turbine-backlog-hits-116-gw-as-power-orders-more-than-double", "date": "2026-07"},
+    {"label": "Prolec GE acquisition completion", "url": "https://www.gevernova.com/news/press-releases/ge-vernova-completes-prolec-ge-acquisition", "date": "2026-02-02"},
+    {"label": "GE Vernova FY2025 press release", "url": "https://www.gevernova.com/sites/default/files/gev_webcast_pressrelease_01282026.pdf", "date": "2026-01-28"},
+    {"label": "Boston Globe — wind loss overshoot", "url": "https://www.bostonglobe.com/2026/01/28/business/ge-vernova-offshore-wind-losses/", "date": "2026-01-28"},
+    {"label": "December 2025 Investor Update transcript", "url": "https://www.gevernova.com/sites/default/files/gev_webcast_transcript_12092025.pdf", "date": "2025-12-09"},
+    {"label": "Utility Dive — slot/backlog analysis", "url": "https://www.utilitydive.com/news/ge-vernova-gas-turbine-investor/807662/", "date": "2025-12"},
+    {"label": "AI Factory 800 VDC reference designs whitepaper", "url": "https://library.grid.gevernova.com/white-papers-case-studies/ai-factory-800vdc-reference-designs", "date": "2025-10-24"},
+    {"label": "Chevron data-center power partnership", "url": "https://www.gevernova.com/gas-power/resources/articles/2025/meeting-data-center-demand-with-chevron", "date": "2025-06-15"},
+    {"label": "Global Energy Monitor — turbine OEM concentration", "url": "https://globalenergymonitor.org/research/leading-three-manufacturers-providing-two-thirds-turbines-gas-fired-power-plants-under", "date": "2025-02"},
+    {"label": "Wood Mackenzie — transformer lead times", "url": "https://www.woodmac.com/news/opinion/supply-shortages-and-an-inflexible-market-give-rise-to-high-power-transformer-lead-times/", "date": "2024-07"},
+    {"label": "7HA gas turbine product page", "url": "https://www.gevernova.com/gas-power/products/gas-turbines/7ha"},
+    {"label": "Gas power for data centers", "url": "https://www.gevernova.com/gas-power/industries/data-centers"}
+  ],
+  "lastUpdated": "2026-08-09",
+  "profileVersion": 1
+}

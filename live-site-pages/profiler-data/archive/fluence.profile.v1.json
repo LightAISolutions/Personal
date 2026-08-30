@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "slug": "fluence",
+  "name": "Fluence Energy, Inc.",
+  "shortName": "Fluence",
+  "categories": ["integrator"],
+  "website": "https://fluenceenergy.com",
+  "headquarters": "Arlington, Virginia, USA",
+  "founded": 2018,
+  "employees": "~1,670 (Sep 30, 2025, 10-K via aggregator)",
+  "ownership": { "type": "public", "ticker": "NASDAQ: FLNC" },
+  "summary": "Fluence is a pure-play global provider of grid-scale battery energy storage products (Smartstack, Gridstack Pro), services/O&M, and asset-optimization software (Fluence OS, Mosaic, Nispera). Formed in January 2018 as a 50/50 Siemens–AES joint venture and IPO'd in October 2021, it remains Nasdaq-listed (Siemens held 38.9% as of Dec 2025; AES and Siemens sold a combined $420M of shares in a May 2026 secondary; AES itself was reportedly being taken private by GIP/BlackRock for ~$38B). Its US differentiation is a domestic-content supply chain — US-made cells (AESC Tennessee) and Utah module assembly qualifying customers for the IRA domestic-content ITC bonus.",
+  "ecosystemRole": "One of the two leading Western system integrators (with Tesla) in a market now dominated by Chinese vertically integrated players — ranked #7 in Wood Mackenzie's first Global BESS Integrator Comprehensive Ranking (July 2026) as annual global installs passed 100 GW. Cumulative deployed capacity 6.8 GW (Sep 2025, +36% YoY); record $6.4B backlog by June 2026, boosted by master supply agreements with two major hyperscalers and AI/data-center demand.",
+  "productsAndServices": [
+    {
+      "name": "Smartstack (newest grid-scale platform)",
+      "category": "Energy storage systems",
+      "description": "Modular AC-based platform unveiled February 2025 — a centralized 'Smart Skid' (PCS/controls) plus swappable battery pods replacing the 20-ft container paradigm, ~30% denser than existing AC systems; first deliveries from late 2025. A high-density 10 MWh variant followed in June 2026 (2/4/6/8-hour durations, ~680 MWh/acre, up to 40% balance-of-plant cost reduction).",
+      "highlights": ["Swappable pods enable augmentation/repowering without redesigning the site"]
+    },
+    {
+      "name": "Gridstack Pro (current workhorse)",
+      "category": "Energy storage systems",
+      "description": "Utility-scale DC-block line (Pro 1000/2000/5000); Gridstack Pro 5000 delivers up to 5.6 MWh per 20-ft enclosure on 530Ah AESC LFP cells. Anchor of the US domestic-content offering — e.g., a 2.2 GWh agreement with Excelsior Energy Capital deploying US-made systems from 2025.",
+      "highlights": []
+    },
+    {
+      "name": "Fluence OS, Mosaic & Nispera (software)",
+      "category": "Software",
+      "description": "Fluence OS is the unified controls layer engineered with Smartstack as one hardware-software platform; Mosaic is AI-enabled automated bidding for wholesale markets; Nispera (acquired 2022) is renewables asset-performance management. Digital/recurring ARR reached $148M at FY2025-end with a $180M FY2026 target.",
+      "highlights": []
+    },
+    {
+      "name": "Services & O&M",
+      "category": "Services",
+      "description": "Long-term service agreements, guarantees, maintenance, and fleet operations across the installed base; the company cites 99.3% availability across reviewed fleets ≥50 MW as a reliability benchmark for mission-critical (data-center) customers.",
+      "highlights": []
+    },
+    {
+      "name": "US domestic-content supply chain",
+      "category": "Manufacturing strategy",
+      "description": "Battery module production in Utah (from Sept 2024) with US-made cells from AESC's Tennessee plant; first domestic-content system shipments announced September 2025 — qualifying customers for the IRA domestic-content bonus credit and reducing China-tariff exposure. FY2026 shortfalls stem from this ramp's execution delays rather than demand.",
+      "highlights": ["Master supply agreements signed with two major hyperscalers in Q2 FY2026; record $1.44B order intake in Q3 FY2026"]
+    }
+  ],
+  "technicalSpecs": [
+    {
+      "product": "Smartstack (7.5 MWh launch configuration; 10 MWh variant June 2026)",
+      "specs": [
+        { "label": "Energy", "value": "Up to 7.5 MWh per AC block (launch); 10 MWh variant in the same footprint (June 2026)" },
+        { "label": "Architecture", "value": "1500 V DC, liquid-cooled; centralized Smart Skid (7,315 × 2,200 × 1,524 mm, ~11 t) + swappable battery pods (1,762 × 2,528 × 2,550 mm, ~15.5 t each)" },
+        { "label": "Cells", "value": "314 Ah LFP; pods support cells from multiple vendors by design" },
+        { "label": "Durations / environment", "value": "2/4/6/8 h; -20°C to +55°C (-30°C with cold kit); IP55" },
+        { "label": "Density", "value": "~30% higher than available AC systems; 10 MWh variant ~680 MWh/acre (~168 kWh/m²), up to 40% BOP cost reduction" },
+        { "label": "Safety", "value": "Passed large-scale fire testing; availability up to 99%" }
+      ],
+      "notes": ""
+    },
+    {
+      "product": "Gridstack Pro 5000",
+      "specs": [
+        { "label": "Energy", "value": "4.9–5.6 MWh per 20-ft enclosure (2.4 MWh 40-ft variant for logistics-constrained markets)" },
+        { "label": "Cell", "value": "Envision AESC HC-L530A — 3.2 V, 530 Ah LFP" },
+        { "label": "Safety", "value": "Large-scale fire tests at Safe Laboratories (NC) witnessed by CSA Group, exceeding UL 9540A requirements and aligned with NFPA 855 (2026)" }
+      ],
+      "notes": "Third-party teardown (BatteryDesign.net) + company fire-safety release; per-footprint density figures not published."
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Julian Nebreda",
+      "title": "President & CEO (since 2022; board member since Sept 2021)",
+      "photo": "images/execs/fluence-nebreda.jpg",
+      "background": ["~20+ years at AES, most recently President of AES's South America business (from 2018)"]
+    },
+    {
+      "name": "Ahmed Pasha",
+      "title": "SVP & CFO (since 2024)",
+      "photo": "images/execs/fluence-pasha.png",
+      "background": ["~27 years at AES: CFO of AES US Utilities, CFO AES Asia, Global Treasurer & Head of IR"]
+    },
+    {
+      "name": "Peter Williams",
+      "title": "SVP & Chief Product and Supply Chain Officer",
+      "photo": "images/execs/fluence-williams.jpg",
+      "background": ["Leads product and the US domestic supply-chain build-out; no dedicated CTO is listed — this is the closest role"]
+    },
+    {
+      "name": "John Zahurancik",
+      "title": "SVP & Chief Customer Success Officer (formerly President, Americas)",
+      "photo": "images/execs/fluence-zahurancik.png",
+      "background": ["Longtime AES Energy Storage / Fluence leader since the JV's origins; the Americas presidency was reorganized under the Growth/Customer Success structure"]
+    },
+    {
+      "name": "Jeff Monday",
+      "title": "SVP & Chief Growth Officer (on the leadership page from ~Nov 2025)",
+      "photo": "images/execs/fluence-monday.png",
+      "background": ["Career background not published on the leadership page"]
+    },
+    {
+      "name": "Herman Bulls",
+      "title": "Chairman of the Board (independent; chair since Oct 2021)",
+      "linkedin": "https://www.linkedin.com/in/hermanbulls/",
+      "background": ["Vice Chairman, Americas at JLL; West Point graduate; also an AES board director"]
+    },
+    {
+      "name": "Bernerd Da Santos",
+      "title": "Director (AES nominee, appointed June 2026)",
+      "background": ["Chairman of AES Clean Energy board; senior strategic advisor to AES's President"]
+    },
+    {
+      "name": "Peter Chi-Shun Luk",
+      "title": "Director (Siemens representative)",
+      "background": ["SVP Corporate M&A at Siemens"]
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "type": "public",
+    "periods": [
+      {
+        "period": "FY2024 (ended Sep 30, 2024)",
+        "metrics": [
+          { "name": "Revenue", "actual": "$2.7B", "expected": "", "verdict": "inline", "result": "—" },
+          { "name": "Net income", "actual": "$30.4M — first profitable year; Adj. EBITDA $78.1M; backlog $4.5B", "expected": "", "verdict": "inline", "result": "—" },
+          { "name": "Initial FY2025 guidance (Nov 2024)", "actual": "Revenue $3.6–4.4B; Adj. EBITDA $160–200M", "expected": "", "verdict": "inline", "result": "Baseline for the FY2025 guidance collapse below" }
+        ],
+        "commentary": ""
+      },
+      {
+        "period": "FY2025 (ended Sep 30, 2025) — the guidance collapse",
+        "metrics": [
+          { "name": "Guidance trajectory", "actual": "Feb 2025: cut to $3.1–3.7B / $70–100M EBITDA (shares collapsed ~38–46% in a session); May 2025: cut again to $2.6–2.8B / ~breakeven on tariff-driven US project pauses (~$700M pushed out); Aug 2025: pointed to the low end", "expected": "Initial: $3.6–4.4B / $160–200M", "verdict": "miss", "result": "Two guidance cuts + a low-end warning" },
+          { "name": "Revenue (actual)", "actual": "$2.3B — below even the final guided range", "expected": "$2.6–2.8B (final guidance)", "verdict": "miss", "result": "Miss vs guidance" },
+          { "name": "Net result", "actual": "Net loss $68.0M; Adj. EBITDA $19.5M; record backlog $5.3B; ARR $148M; liquidity $1.3B", "expected": "", "verdict": "miss", "result": "—" }
+        ],
+        "commentary": "FY2025 damage was tariff-driven (Chinese cell imports, paused US projects); mitigation via the Utah/Tennessee domestic supply chain became central to the story."
+      },
+      {
+        "period": "FY2026 (in progress; Q3 reported Aug 2026)",
+        "metrics": [
+          { "name": "Initial guidance (Nov 2025)", "actual": "Revenue $3.2–3.6B; Adj. EBITDA $40–60M; ~85% of midpoint secured", "expected": "", "verdict": "inline", "result": "—" },
+          { "name": "Q3 FY2026 revenue", "actual": "$649.8M (~$400M delayed by production issues at new US contract-manufacturing facilities)", "expected": "~$806M (consensus, third-party)", "verdict": "miss", "result": "Adjusted EPS -$0.24 vs ~+$0.02 consensus; shares fell ~23–25%" },
+          { "name": "FY2026 guidance (cut Aug 2026)", "actual": "Revenue $2.9–3.1B; Adj. EBITDA -$30M to +$10M", "expected": "$3.2–3.6B / $40–60M (initial)", "verdict": "miss", "result": "Offsets: record $1.44B quarterly order intake (≈3× YoY) and record $6.4B backlog" }
+        ],
+        "commentary": "Ownership context: AES's reported ~$38B take-private by GIP/BlackRock (Oct 2025) drove a ~24.5% one-day FLNC pop on stake speculation; AES and Siemens then trimmed via the May 2026 $420M secondary (20M shares at $21). No Fluence take-private has occurred."
+      }
+    ],
+    "commentary": "Fiscal year ends September 30. Guidance and results are company-reported; consensus figures and stock-move magnitudes are third-party press numbers (the Feb 2025 drop is reported between 38% and 46% across accounts)."
+  },
+  "sources": [
+    { "label": "Fluence — FY2025 results + FY2026 initial guidance (Nov 24, 2025)", "url": "https://www.globenewswire.com/news-release/2025/11/24/3193926/0/en/Fluence-Energy-Inc-Reports-2025-Financial-Results-and-Initiates-2026-Guidance.html", "accessed": "2026-08-07" },
+    { "label": "Fluence — Q2 FY2026 results, hyperscaler MSAs", "url": "https://ir.fluenceenergy.com/news-releases/news-release-details/fluence-energy-inc-reports-second-quarter-2026-results-reaffirms", "accessed": "2026-08-07" },
+    { "label": "StockTitan — Q3 FY2026: $400M delayed, outlook cut", "url": "https://www.stocktitan.net/news/FLNC/fluence-energy-inc-reports-third-fiscal-quarter-2026-jqyp4two70zq.html", "accessed": "2026-08-07" },
+    { "label": "Fluence — Q2 FY2025 guidance cut on tariff uncertainty (May 2025)", "url": "https://www.globenewswire.com/news-release/2025/05/07/3076549/0/en/Fluence-Energy-Inc-Reports-Second-Quarter-2025-Results-Lowers-Full-Year-2025-Guidance-Citing-Decisions-to-Pause-Certain-U-S-Projects-Due-to-Tariff-Uncertainty.html", "accessed": "2026-08-07" },
+    { "label": "ESS News — Smartstack 7.5 MWh platform launch (Feb 2025)", "url": "https://www.ess-news.com/2025/02/14/fluence-launches-highly-modular-7-5-mwh-ac-based-bess-platform/", "accessed": "2026-08-07" },
+    { "label": "Fluence — Smartstack 10 MWh high-density system (Jun 2026)", "url": "https://www.globenewswire.com/news-release/2026/06/23/3316028/0/en/Fluence-Advances-Smartstack-Energy-Storage-Platform-with-High-Density-10-MWh-System.html", "accessed": "2026-08-07" },
+    { "label": "BatteryDesign.net — Gridstack Pro teardown", "url": "https://www.batterydesign.net/fluence-gridstack-pro/", "accessed": "2026-08-07" },
+    { "label": "Fluence — leadership page (headshot source)", "url": "https://fluenceenergy.com/about/leadership/", "accessed": "2026-08-07" },
+    { "label": "ESS News — Wood Mackenzie global BESS integrator ranking (Jul 2026)", "url": "https://www.ess-news.com/2026/07/14/sungrow-leads-first-global-bess-integrator-ranking-as-market-tops-100-gw/", "accessed": "2026-08-07" },
+    { "label": "Sahm Capital — AES/Siemens $420M secondary (May 2026)", "url": "https://www.sahmcapital.com/news/content/buzz-fluence-energy-steadies-after-aes-siemens-slice-stakes-in-420-mln-secondary-offering-2026-05-13", "accessed": "2026-08-07" }
+  ],
+  "lastUpdated": "2026-08-06",
+  "profileVersion": 1
+}

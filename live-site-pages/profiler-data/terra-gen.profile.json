@@ -1,0 +1,404 @@
+{
+ "schemaVersion": 6,
+ "slug": "terra-gen",
+ "name": "Terra-Gen",
+ "shortName": "Terra-Gen",
+ "categories": [
+  "ipp"
+ ],
+ "website": "https://terra-gen.com",
+ "headquarters": "San Diego, California, United States",
+ "founded": 2007,
+ "employees": "201-500 (LinkedIn band)",
+ "ownership": "private — Masdar (Abu Dhabi Future Energy Co.) 50% + Igneo Infrastructure Partners (First Sentier) 50%. Sequence: formed 2007 when ArcLight acquired Caithness Energy's renewables; ECP acquired 2015; First Sentier took 40% (Dec 2020) then 50% (Feb 2021); Masdar bought ECP's remaining 50%, closed Oct 1, 2024 (value undisclosed) — ECP is fully OUT. Jul 2026: Cypress Infrastructure (Northampton + APG/ABP) made a preferred equity investment in a Lockhart BESS + Monte Cristo wind portfolio",
+ "summary": "BOTTOM LINE UP FRONT: Terra-Gen owns the deepest single-site BESS operating experience on earth — Edwards & Sanborn in Kern County (875 MWdc solar / 3,287 MWh storage, 120,720 battery units, world's largest single BESS site at its Jan 2024 completion, partly on Edwards Air Force Base land under 'the largest public-private collaboration in DoD history') — and it executed the cleanest FEOC pivot in the buyer universe. Having been the most Chinese-content-comfortable large US buyer (a documented LG + Samsung + BYD mix at E&S; BYD enclosures at Canyon Country as late as Nov 2024), it locked an 8 GWh, ~$1.43B LG Energy Solution Vertech order (2026-2029) on US-made Arizona LFP cells with explicit domestic-content framing — LG ES Vertech's largest order ever — effectively pre-booking its mid-decade pipeline. Now 4.2 GW / 5.6 GWh operating across 34 sites with a 15 GW+ pipeline, owners Masdar/Igneo, CEO John O'Connor (Dec 2025; Jim Pagano retired), and a NY development flagship (Alcazar, 250 MW/1,000 MWh, Ulster County — 300 LFP containers, DEIS submitted Aug 2026).",
+ "ecosystemRole": "We assess Terra-Gen as the proof that multi-vendor Chinese procurement at extreme scale was normal US practice until 2024 — and that one Korean-US framework can end it overnight. For the relationship web: its E&S complex holds 1,300 MW of CAISO interconnection, a 3.9 GW franchise buildout ambition, a DoD land relationship, and a 10+ customer offtake stack (PG&E 169 MW/676 MWh, SCE, CCAs, Starbucks) — powered-land-adjacent structure with, notably, no data-center offtake or AI announcement anywhere. The live AIDC channel is ownership-level: Masdar targets 10 GW+ US by 2030 with Terra-Gen as its growth platform and pursues AI-era round-the-clock power globally — Masdar-directed mandates could flow giant BESS procurement through Terra-Gen. The ECP angle in the tasking is dead: ECP exited Oct 2024, before its own AIDC wave (KKR partnership, Calpine sale). Realistic Hithium windows: the non-DoD New York build (Alcazar), Texas growth (Monte Cristo Phase 2 area), and post-2029 re-procurement when the LG cover expires.",
+ "productsAndServices": [
+  {
+   "name": "Edwards & Sanborn complex (the flagship franchise)",
+   "description": "875 MWdc solar / 3,287 MWh BESS on 4,600 acres in Kern County, CA — 1.9M First Solar modules, 120,720 battery units from LG (LG Energy Solution), Samsung SDI, and BYD (per-vendor split unpublished), Mortenson full EPC; substantially complete Jan 2024; 1,300 MW interconnection; up to 1,252 MW deliverable to grid. Structured as ES1A ($804M financing: Deutsche Bank bookrunner, JPMorgan tax equity) and ES1B ($969M: BNP Paribas/CoBank/ING/Nomura, US Bank tax equity; Axium Infrastructure bought 50% of ES1B Jan 2024). Additional solar phases S5 (46 MWac) and S6 (102 MWac) entered operation 2025. Partly on Edwards AFB leased land; won a Presidential Federal Sustainability Award. Expansion: the franchise targets up to 3.9 GW; Enterprise (210 MW/840 MWh BESS + 368 MW solar) is under construction with COD 2026 as part of the complex's growth.",
+   "positioning": "The world's largest single BESS site at completion and the deepest single-site operating dataset in the industry — >$1.7B financed, 10+ offtakers (PG&E 169 MW/676 MWh RA, SCE, San Jose Clean Energy, Clean Power Alliance 100 MW/15-yr, Starbucks as corporate anchor).",
+   "soldThrough": "Utility/CCA RA contracts + corporate offtake; asset-level equity sell-downs (Axium) recycle capital.",
+   "targetSegments": "CAISO resource adequacy; corporate renewable buyers.",
+   "roadmap": "Enterprise COD 2026; further phases toward the 3.9 GW franchise — supplier for Enterprise undisclosed (likely under the LG frameworks — inference)."
+  },
+  {
+   "name": "Standalone BESS fleet (CAISO) + NY development",
+   "description": "Tehachapi ES (77 MW, 2020 — first TG BESS); Valley Center (139-140 MW/560 MWh, San Diego Co., COD Mar 2022, SDG&E 15-yr RA — LG NMC packs; ~100 packs decommissioned after a 2022 fault, separate contained fire Sep 2023); Sagebrush A (80 MW, 2022) + B (99 MW, 2024) sharing wind interconnection at Tehachapi; Lockhart ESS (45 MW); Lockhart CL I & II (128.7 MW/515 MWh, 164 enclosures, COD Jan 7, 2026, two long-term PG&E RA agreements); Beaumont (100 MW, 2024); Canyon Country (80 MW/320 MWh, Santa Clarita, Nov 2024 — BYD enclosures + Power Electronics PCS, Mortenson EPC). Development: Alcazar (Town of Ulster, NY — 250 MW/1,000 MWh, 300 LFP containers, ex-Coleman HS site, SUP filed Apr 2025, DEIS submitted Aug 4, 2026); J90 North (250 MW) and Dorian (200 MW) in LA County.",
+   "positioning": "Storage is 100% CAISO today plus NYISO development — no ERCOT or Nevada storage assets; the pattern is standalone BESS bolted onto existing wind interconnection rather than repowering-plus-storage.",
+   "soldThrough": "Long-term RA agreements (PG&E, SDG&E, CCAs).",
+   "targetSegments": "CAISO RA; NYISO bulk storage (Alcazar).",
+   "roadmap": "Alcazar is the marquee non-DoD, non-California build — its 300-container LFP procurement is a realistic future window."
+  },
+  {
+   "name": "Procurement program (the FEOC pivot)",
+   "description": "The pivotal datapoint: Nov 14-16, 2024 — up to 8 GWh, 4-year (2026-2029) supply agreement with LG Energy Solution Vertech: modular containerized LFP on cells from LG's Arizona plant, 'all products meeting domestic content requirements,' ~KRW 2T (~$1.43B), including AEROS EMS — LG ES Vertech's largest order ever, following a prior 2.2 GWh collaboration (believed to be LG's E&S share). This effectively pre-books the mid-decade CA/NY pipeline with US-made LFP. Prior record: the industry's most multi-vendor Chinese-inclusive book (LG/Samsung/BYD at E&S; BYD at Canyon Country Nov 2024; LG NMC at Valley Center). No Hithium history or contact found; no CATL/EVE/Sungrow/Tesla ties found.",
+   "positioning": "Terra-Gen solved FEOC/domestic-content by long-dating a Korean-US supply chain rather than by diversifying among Chinese OEMs — the single most consequential supplier decision in the Batch B buyer set.",
+   "soldThrough": "Direct OEM frameworks; Mortenson/Cupertino Electric EPC bench; heavy tax-equity usage makes FEOC compliance existential.",
+   "targetSegments": "Internal fleet supply.",
+   "roadmap": "The 8 GWh cover runs through 2029 — but the 15 GW+ pipeline exceeds it; post-2029 re-procurement and any Masdar-mandated mega-orders are where the door could reopen."
+  },
+  {
+   "name": "Wind & solar platform (heritage + Texas growth)",
+   "description": "Owner of the Alta Wind Energy Center (Tehachapi) — the largest single US wind installation; Lockhart solar I-IV (365 MW + 173.7 MW BESS; IV COD Jul 2026, taking the Lockhart facility >530 MW); Texas entry: Monte Cristo I (238.5 MW wind, Hidalgo Co., commissioned Nov/Dec 2025 with two UNNAMED corporate offtakers; Phase 2 permitted) + Big Spring (34.5 MW). Trajectory: 2.4 GW (Mar 2024) → 4.2 GW gross / 5.6 GWh storage / 34 sites / 15 GW+ pipeline (Jul 2026); '$25B+ developed or acquired.' Geothermal heritage (Coso/Dixie Valley) no longer in the portfolio.",
+   "positioning": "A wind-heritage IPP whose growth is now storage-led; the unnamed Monte Cristo corporate buyers could be tech/data-center load — unverified, worth intelligence collection.",
+   "soldThrough": "Corporate PPAs, utility RA, project financings + preferred equity (Cypress, Jul 2026).",
+   "targetSegments": "CAISO, ERCOT wind, NYISO.",
+   "roadmap": "Masdar's 10 GW+ US-by-2030 target makes Terra-Gen the designated growth vehicle — the scale ambition exceeds the current supply cover."
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Storage fleet (operating + development)",
+   "specs": [
+    {
+     "band": "Kern County flagship",
+     "label": "Edwards & Sanborn",
+     "value": "875 MWdc solar / 3,287 MWh BESS; 120,720 battery units — LG + Samsung SDI + BYD mix (split unpublished); Mortenson EPC; 1.9M First Solar modules; 1,300 MW interconnection; complete Jan 2024; partly on Edwards AFB leased land; franchise buildout target up to 3.9 GW"
+    },
+    {
+     "band": "Kern County flagship",
+     "label": "Enterprise (expansion)",
+     "value": "210 MW / 840 MWh BESS + 368 MW solar; under construction; COD 2026; supplier undisclosed"
+    },
+    {
+     "band": "CAISO standalone",
+     "label": "Lockhart CL I & II",
+     "value": "128.7 MW / 515 MWh, 164 enclosures; COD Jan 7, 2026; two long-term PG&E RA agreements; $383.3M Dec 2025 financing (Crédit Agricole, ING, NORD/LB, US Bancorp)"
+    },
+    {
+     "band": "CAISO standalone",
+     "label": "Valley Center / Canyon Country / others",
+     "value": "Valley Center 139-140 MW/560 MWh (LG NMC; 2022 fault + contained Sep 2023 fire; SDG&E 15-yr) · Canyon Country 80 MW/320 MWh (BYD enclosures + Power Electronics PCS, Nov 2024) · Tehachapi ES 77 MW · Sagebrush A/B 179 MW · Beaumont 100 MW · Lockhart ESS 45 MW"
+    },
+    {
+     "band": "NYISO development",
+     "label": "Alcazar",
+     "value": "250 MW / 1,000 MWh, Town of Ulster NY; 300 LFP containers; SUP filed Apr 2025; DEIS submitted Aug 4, 2026 — the marquee non-DoD procurement window"
+    },
+    {
+     "band": "Company totals",
+     "label": "Jul 2026",
+     "value": "4.2 GW gross / 5.6 GWh storage / 34 sites; 15 GW+ development pipeline; ~1.81 GW operating storage (sum of listed projects)"
+    }
+   ],
+   "notes": "E&S figure discrepancies exist across sources (TG's own page says 971 MW/3+ GWh storage; consensus final 3,287 MWh). Suppliers unknown for Tehachapi, Sagebrush, Beaumont, Lockhart CL, Enterprise — likely under the LG 2.2/8 GWh frameworks (inference)."
+  },
+  {
+   "product": "LG Energy Solution Vertech framework (the FEOC pivot)",
+   "specs": [
+    {
+     "band": "Order",
+     "label": "Nov 2024",
+     "value": "Up to 8 GWh over 2026-2029; modular containerized LFP; cells from LG's Arizona plant; 'all products meeting domestic content requirements'; ~KRW 2T (~$1.43B); includes AEROS EMS — LG ES Vertech's largest order ever"
+    },
+    {
+     "band": "Context",
+     "label": "Prior relationship",
+     "value": "2.2 GWh earlier collaboration (believed = LG's Edwards & Sanborn share, per ESN)"
+    },
+    {
+     "band": "Read",
+     "label": "Strategic effect",
+     "value": "Pre-books the mid-decade CA/NY pipeline with US-made LFP; predates OBBBA and functions as Terra-Gen's FEOC hedge — no Terra-Gen-specific 2025 safe-harbor evidence found, because none was needed"
+    }
+   ],
+   "notes": "No public FEOC policy statement exists — the posture is revealed entirely through this framework."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-08-04",
+   "category": "project",
+   "headline": "Alcazar (250 MW/1,000 MWh, Town of Ulster NY) DEIS submitted; town review advances",
+   "read": "The New York flagship moves — a 300-container LFP procurement outside the DoD nexus and outside California's Tesla/LG duopoly patterns; the most realistic future window for a non-incumbent vendor.",
+   "source": "Mid Hudson News / TG filings"
+  },
+  {
+   "date": "2026-07-31",
+   "category": "financial",
+   "headline": "Cypress Infrastructure (Northampton Capital + APG/ABP) debuts with a preferred equity investment in a TG portfolio (Lockhart 128.7 MW BESS + Monte Cristo I 238.5 MW wind)",
+   "read": "Fresh pension-adjacent capital at portfolio level — the capital-recycling machine keeps the 15 GW+ pipeline funded without waiting on sponsors.",
+   "source": "Terra-Gen PR"
+  },
+  {
+   "date": "2026-07-14",
+   "category": "project",
+   "headline": "Lockhart Solar PV IV reaches COD — the Lockhart facility passes 530 MW (365 MW solar + 173.7 MW BESS); portfolio restated at 4.2 GW/5.6 GWh/34 sites/15 GW+ pipeline",
+   "read": "The Kern County adjacency compounding — Lockhart is quietly becoming a second gigawatt-class hub next to E&S.",
+   "source": "Terra-Gen PR"
+  },
+  {
+   "date": "2026-01-07",
+   "category": "project",
+   "headline": "Lockhart CL I & II BESS reach COD — 128.7 MW/515 MWh under two long-term PG&E RA agreements",
+   "read": "The first CODs of the post-LG-framework era; supplier undisclosed but the domestic-content framing points at the LG book.",
+   "source": "Terra-Gen PR"
+  },
+  {
+   "date": "2025-12-02",
+   "category": "financial",
+   "headline": "$383.3M financing for Lockhart III & IV closes (Crédit Agricole CIB, ING, NORD/LB, US Bancorp Impact Finance)",
+   "read": "The standard capital stack — construction/term + tax-equity bridge — that makes FEOC compliance non-negotiable.",
+   "source": "Terra-Gen PR"
+  },
+  {
+   "date": "2025-12-01",
+   "category": "leadership",
+   "headline": "John O'Connor becomes CEO (TG CFO since 2009; ex-Cogentrix/Goldman); Jim Pagano retires after 18 years; Jeff Cast named CFO",
+   "read": "A finance-native succession — continuity capital discipline rather than strategy change; the tasking's 'CEO Jim Pagano' is out of date.",
+   "source": "Terra-Gen PR"
+  },
+  {
+   "date": "2025-11-15",
+   "category": "project",
+   "headline": "Monte Cristo I (238.5 MW wind, Hidalgo Co., TX) commissioned with two unnamed corporate offtakers; Phase 2 permitted",
+   "read": "The Texas beachhead — and the unnamed corporate buyers are the one place a tech/data-center counterparty could be hiding in TG's book.",
+   "source": "Terra-Gen PR"
+  },
+  {
+   "date": "2025-08-15",
+   "category": "leadership",
+   "headline": "Pagano retirement announced (effective Nov 30); portfolio at 3.8 GW/5.1 GWh under Masdar + Igneo",
+   "read": "Transition telegraphed months ahead — orderly, sponsor-blessed.",
+   "source": "Terra-Gen PR"
+  },
+  {
+   "date": "2025-07-16",
+   "category": "project",
+   "headline": "Ulster/Hurley NY 250 MW BESS proposal publicized; Canyon Country residents raise BESS safety questions in Santa Clarita",
+   "read": "The two faces of siting: a welcome-mat NY brownfield redevelopment and California community scrutiny — supplier safety records matter in both.",
+   "source": "RCBJ / Signal SCV"
+  },
+  {
+   "date": "2024-11-14",
+   "category": "procurement",
+   "headline": "Up to 8 GWh LG Energy Solution Vertech supply agreement (2026-2029): US-made Arizona LFP, domestic-content compliant, ~$1.43B — LG ES Vertech's largest order ever",
+   "read": "The FEOC pivot in one stroke: the most Chinese-comfortable large buyer in the US long-dated a Korean-US supply chain and closed its mid-decade procurement window before OBBBA even passed.",
+   "source": "ESN / ess-news"
+  },
+  {
+   "date": "2024-11-01",
+   "category": "project",
+   "headline": "Canyon Country (80 MW/320 MWh, Santa Clarita) completed — BYD battery enclosures + Power Electronics PCS, Mortenson EPC",
+   "read": "The last documented Chinese-container installation — proof the pre-pivot playbook ran right up to the LG signing.",
+   "source": "Mortenson project page"
+  },
+  {
+   "date": "2024-10-01",
+   "category": "corporate",
+   "headline": "Masdar closes its 50% acquisition from ECP; Masdar targets 10 GW+ US capacity by 2030 with Terra-Gen as the growth platform",
+   "read": "The ownership fact that reframes the account: ECP (and its AIDC wave) is out; Abu Dhabi's AI-era power ambitions are the live channel that could flow mega-procurement through TG.",
+   "source": "Terra-Gen / Masdar PR"
+  },
+  {
+   "date": "2024-01-11",
+   "category": "financial",
+   "headline": "Axium Infrastructure acquires 50% of Edwards & Sanborn 1B — 'completes our Edwards Sanborn investments'",
+   "read": "The sell-down engine applied to the flagship — TG recycles equity while keeping operatorship and the franchise buildout rights.",
+   "source": "Terra-Gen PR"
+  },
+  {
+   "date": "2023-09-19",
+   "category": "incident",
+   "headline": "Valley Center BESS fire (LG NMC packs; contained; follows a 2022 sensor/sprinkler fault and a pack-theft incident)",
+   "read": "The NMC-era scar that pushed TG's spec sheet to LFP + containment — favorable ground for LFP safety pitches, but with elevated diligence for everyone.",
+   "source": "ESN / pv magazine USA"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess Terra-Gen's 8 GWh LG Vertech framework (2026-2029, US-made Arizona LFP, ~$1.43B) as the decisive fact of the account: near-term containerized-BESS demand is largely spoken for, and the buyer that once ran LG+Samsung+BYD side-by-side chose to solve FEOC with one Korean-US supply chain rather than by diversifying among Chinese OEMs.",
+  "(High confidence) We assess the institutional memory as double-edged for Hithium: no reflexive China aversion exists (BYD containers were installed as late as Nov 2024, and multi-vendor procurement at 3.3 GWh scale is proven), but the compliance center of gravity is now US-made cells, the tax-equity-heavy capital stack cannot tolerate PFE taint, and the flagship's Edwards AFB nexus makes NDAA §154 optics acute — DoD-adjacent placement is effectively unpitchable.",
+  "(Moderate confidence) We assess the realistic entry windows as: (1) Alcazar NY (1 GWh, 300 LFP containers, non-DoD, DEIS Aug 2026 — procurement still ahead); (2) Texas growth around Monte Cristo (no California incumbency patterns); (3) post-2029 re-procurement when the LG cover expires against a 15 GW+ pipeline that far exceeds 8 GWh; and (4) any Masdar-directed mega-mandate — Abu Dhabi's AI-era round-the-clock power ambitions could flow GWh-scale orders through TG on economics where Chinese supply competes.",
+  "(Moderate confidence) We assess the safety history (Valley Center NMC incidents; Canyon Country community scrutiny) as net-favorable terrain for an LFP-safety pitch — TG now specs LFP + containment and values propagation-test evidence — while raising diligence intensity for every vendor.",
+  "(Moderate confidence) For the Hithium lens: treat Terra-Gen as the definitive case study in how a Chinese-comfortable US buyer de-risks (long-dated Korean-US framework, not vendor diversification), track Enterprise/Lockhart supplier confirmations to verify the LG book's reach, collect intelligence on the unnamed Monte Cristo corporate offtakers, and time any approach to the Alcazar procurement and the post-2029 recompete rather than the covered California builds."
+ ],
+ "relationships": [
+  {
+   "slug": "lg-energy-solution",
+   "type": "supplier",
+   "note": "8 GWh, ~$1.43B Vertech framework (2026-2029) on US-made Arizona LFP — LG ES Vertech's largest order ever.",
+   "context": "November 2024: Terra-Gen locked an up-to-8 GWh, four-year supply agreement with LG Energy Solution Vertech — modular containerized LFP on cells from LG's Arizona plant, 'all products meeting domestic content requirements,' ~KRW 2T (~$1.43B), including AEROS EMS, following a prior 2.2 GWh collaboration believed to be LG's Edwards & Sanborn share.\n\nThe decisive fact of the account: the most Chinese-content-comfortable large US buyer (LG+Samsung+BYD at E&S; BYD at Canyon Country as late as Nov 2024) solved FEOC with one Korean-US supply chain, pre-booking its mid-decade pipeline before OBBBA even passed.",
+   "source": "https://www.ess-news.com/2024/11/18/masdar-backed-terra-gen-places-8-gwh-energy-storage-order-w",
+   "status": "active",
+   "since": "2024-11",
+   "scale": "8 GWh / ~$1.43B"
+  },
+  {
+   "slug": "byd",
+   "type": "supplier",
+   "note": "Enclosures at Canyon Country (Nov 2024) and part of the Edwards & Sanborn mix — the pre-pivot record.",
+   "context": "BYD supplied battery enclosures at Canyon Country (80 MW/320 MWh, Santa Clarita, completed Nov 2024 — the last documented Chinese-container installation) and was part of the 120,720-unit LG/Samsung SDI/BYD mix at Edwards & Sanborn. Proof the pre-pivot playbook ran right up to the LG signing; the compliance center of gravity is now US-made cells.",
+   "source": "https://www.mortenson.com/projects/canyon-country-energy-storage-facility",
+   "status": "historical",
+   "scale": "Canyon Country + E&S share"
+  },
+  {
+   "slug": "samsung-sdi",
+   "type": "supplier",
+   "note": "Part of the three-vendor battery mix at the Edwards & Sanborn flagship.",
+   "context": "Samsung SDI supplied part of the 120,720 battery units (with LG Energy Solution and BYD; per-vendor split unpublished) at Edwards & Sanborn — 875 MWdc solar / 3,287 MWh BESS in Kern County, the largest US solar+storage complex at completion (Jan 2024).",
+   "source": "https://www.solarpowerworldonline.com/2024/01/the-largest-us-solar-storage-project-is-complete/",
+   "status": "historical"
+  },
+  {
+   "slug": "mortenson",
+   "type": "supplier",
+   "note": "EPC on the Edwards & Sanborn flagship and Canyon Country.",
+   "context": "Mortenson delivered Edwards & Sanborn as full EPC (4,600 acres, 1.9M First Solar modules, 3,287 MWh of BESS) and built Canyon Country (BYD enclosures + Power Electronics PCS) — the construction constant across Terra-Gen's flagship franchise.",
+   "source": "https://www.mortenson.com/projects/canyon-country-energy-storage-facility",
+   "status": "active"
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "John O'Connor",
+   "title": "CEO (since Dec 1, 2025)",
+   "background": "TG CFO 2009-2025; ex-CFO/CAO of Cogentrix (then Goldman Sachs-owned); raised $10B+ for ~6 GW at TG — a finance-native successor to Jim Pagano's 18-year tenure."
+  },
+  {
+   "name": "Jeff Cast",
+   "title": "CFO",
+   "background": "Ex-GE Energy Financial Services, PwC; CPA — runs the project-finance/tax-equity machine."
+  },
+  {
+   "name": "Katie Bellezza",
+   "title": "Chief Commercial Officer",
+   "background": "Offtake/procurement-relevant contact — owns the RA/corporate contracting stack."
+  },
+  {
+   "name": "Gus Luna",
+   "title": "Chief Development Officer",
+   "background": "Owns the 15 GW+ pipeline including Alcazar NY and the Texas growth vector."
+  },
+  {
+   "name": "John Ma",
+   "title": "Board Chair",
+   "background": "Affiliation unstated in company materials (likely Igneo — inference); chairs the Masdar/Igneo 50:50 board."
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "private — project-level disclosures; sponsor equity from Masdar/Igneo",
+  "periods": [
+   {
+    "period": "Capital formation",
+    "metrics": [
+     {
+      "name": "Flagship financings",
+      "actual": "E&S Phase 1A: $804M (Deutsche Bank bookrunner, JPMorgan tax equity, ~2021); Phase 1B: $969M (BNP Paribas/CoBank/ING/Nomura; US Bank tax equity; Sep 2022) — >$1.7B total; Axium bought 50% of ES1B (Jan 2024)",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "The largest solar+storage financing package of its era"
+     },
+     {
+      "name": "Recent",
+      "actual": "Lockhart III & IV $383.3M (Dec 2025); Cypress Infrastructure preferred investment (Jul 2026, undisclosed); LG framework ~$1.43B procurement commitment (2026-29); Masdar 50% acquisition value undisclosed",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "Capital recycling (sell-downs + preferred) funds the 15 GW+ pipeline"
+     }
+    ]
+   }
+  ],
+  "commentary": "'$25B+ developed or acquired' (company-claimed). Pattern: project construction debt + tax-equity bridges, then asset-level sell-downs and portfolio preferred to recycle equity. No revenue/EBITDA disclosure. Geothermal heritage divested (timing undocumented)."
+ },
+ "sources": [
+  {
+   "label": "Mid Hudson News — Terra-Gen environmental report advances Ulster BESS review",
+   "url": "https://midhudsonnews.com/2026/08/11/terra-gens-submission-of-environmental-report-advances-town-of-ulster-review-of-proposed-battery-energy-storage-project/",
+   "date": "2026-08-11"
+  },
+  {
+   "label": "Terra-Gen — Cypress Infrastructure preferred investment (Northampton + APG)",
+   "url": "https://terra-gen.com/northampton-capital-partners-and-apg-launch-cypress-infrastructure-debuts-with-preferred-investment-in-terra-gen-renewable-portfolio/",
+   "date": "2026-07-31"
+  },
+  {
+   "label": "Terra-Gen — Lockhart Solar PV IV COD (facility >530 MW; 4.2 GW/5.6 GWh/15 GW+ portfolio)",
+   "url": "https://terra-gen.com/lockhart-solar-pv-iv-project-reaches-commercial-operations-expanding-total-facility-capacity-to-more-than-530-mw/",
+   "date": "2026-07-14"
+  },
+  {
+   "label": "Terra-Gen — Lockhart CL I & II BESS COD (128.7 MW/515 MWh; PG&E RA)",
+   "url": "https://terra-gen.com/3-2/",
+   "date": "2026-01-07"
+  },
+  {
+   "label": "Terra-Gen — Lockhart III & IV $383.3M financing",
+   "url": "https://terra-gen.com/3/",
+   "date": "2025-12-02"
+  },
+  {
+   "label": "Terra-Gen — Monte Cristo I commissioned (two corporate PPAs)",
+   "url": "https://terra-gen.com/2-4/",
+   "date": "2025-11"
+  },
+  {
+   "label": "Terra-Gen — Jim Pagano to retire as CEO (O'Connor succeeds)",
+   "url": "https://terra-gen.com/jim-pagano-to-retire-as-terra-gen-ceo/",
+   "date": "2025-08-15"
+  },
+  {
+   "label": "Signal SCV — residents question battery storage safety in Canyon Country",
+   "url": "https://signalscv.com/2025/07/residents-question-battery-storage-safety-in-canyon-country/",
+   "date": "2025-07"
+  },
+  {
+   "label": "ess-news — Masdar-backed Terra-Gen places 8 GWh energy storage order with LG",
+   "url": "https://www.ess-news.com/2024/11/18/masdar-backed-terra-gen-places-8-gwh-energy-storage-order-with-lg/",
+   "date": "2024-11-18"
+  },
+  {
+   "label": "Energy-Storage.News — LG ES Vertech signs 8 GWh BESS deal with Terra-Gen (prior 2.2 GWh)",
+   "url": "https://www.energy-storage.news/lg-energy-solutions-system-integrator-arm-signs-8gwh-bess-deal-with-terra-gen/",
+   "date": "2024-11-14"
+  },
+  {
+   "label": "Mortenson — Canyon Country 80 MW/320 MWh (BYD enclosures, PE Power PCS)",
+   "url": "https://www.mortenson.com/projects/canyon-country-energy-storage-facility",
+   "date": "2024-11"
+  },
+  {
+   "label": "Terra-Gen/Masdar — Masdar closes acquisition of 50% stake in Terra-Gen (10 GW+ US by 2030)",
+   "url": "https://terra-gen.com/masdar-accelerates-u-s-renewables-expansion-closes-acquisition-of-50-stake-in-terra-gen/",
+   "date": "2024-10-01"
+  },
+  {
+   "label": "Solar Power World — the largest US solar+storage project is complete (E&S: 875 MWdc/3,287 MWh; LG/Samsung/BYD; Mortenson; Starbucks)",
+   "url": "https://www.solarpowerworldonline.com/2024/01/the-largest-us-solar-storage-project-is-complete/",
+   "date": "2024-01"
+  },
+  {
+   "label": "Canary Media — the biggest solar-plus-storage project in the US just came online ($1.7B+; 120,720 batteries; 10+ offtakers)",
+   "url": "https://www.canarymedia.com/articles/solar/the-biggest-solar-plus-storage-project-in-the-us-just-came-online",
+   "date": "2024-01"
+  },
+  {
+   "label": "Terra-Gen — Axium invests in Phase 1B of Edwards & Sanborn",
+   "url": "https://terra-gen.com/axium-infrastructure-invests-in-phase-1b-of-the-edwards-sanborn-solar-storage-facility/",
+   "date": "2024-01-11"
+  },
+  {
+   "label": "Energy-Storage.News — Valley Center fire investigation (LG packs)",
+   "url": "https://www.energy-storage.news/terra-gen-to-investigate-cause-of-valley-center-battery-storage-fire-with-incident-over/",
+   "date": "2023-09"
+  },
+  {
+   "label": "Energy-Storage.News — E&S Phase 2 $969M financing (LG/Samsung/BYD; PG&E 169 MW/676 MWh)",
+   "url": "https://www.energy-storage.news/terra-gen-closes-us1-billion-financing-for-second-phase-of-co-located-3-2gwh-battery-storage-in-california-edwards-sanborn/",
+   "date": "2022-09-20"
+  },
+  {
+   "label": "ulstercleanenergy.com — Terra-Gen Hurley/Alcazar fact sheet (250 MW/1,000 MWh, 300 LFP containers)",
+   "url": "https://ulstercleanenergy.com/wp-content/uploads/2025/06/18427.Terra-Gen-Hurley.FactSheet_r15.pdf",
+   "date": "2025-06"
+  },
+  {
+   "label": "Terra-Gen — energy storage portfolio page + Edwards & Sanborn page + Enterprise page + leadership",
+   "url": "https://terra-gen.com/projects/energy-storage/"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 2
+}

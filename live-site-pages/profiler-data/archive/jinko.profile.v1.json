@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 2,
+  "slug": "jinko",
+  "name": "JinkoSolar Holding Co., Ltd. (晶科能源) — incl. Jinko Solar Co. (SSE STAR: 688223) and Jinko ESS",
+  "shortName": "Jinko",
+  "categories": ["supplier"],
+  "website": "https://www.jinkosolar.com",
+  "headquarters": "Shangrao, Jiangxi, China",
+  "founded": 2006,
+  "employees": "not disclosed on fetched first-party pages (see 20-F)",
+  "ownership": { "type": "public", "ticker": "NYSE: JKS · SSE: 688223" },
+  "summary": "BOTTOM LINE UP FRONT: Jinko is the world's #1 PV module shipper (tied with LONGi in 2025) taking its first annual loss in 12 years to the solar price war — and management has explicitly designated energy storage (SunTera BESS, 5.2 GWh shipped in 2025, guided to more than double in 2026) as the 'second growth engine' to restore profitability, with a new AI-data-center solar+storage play ('Sunny 365' AIDC, plus a planned 1 GW Ningxia data center) opening a third front. BACKGROUND: JinkoSolar Holding (NYSE: JKS) holds ~54% of Jiangxi Jinko (SSE STAR: 688223). Flagship Tiger Neo N-type TOPCon modules (>400 GW cumulative delivered — a world first); >10 manufacturing bases across China, the US (Jacksonville, FL), Southeast Asia, and the Middle East; sales in ~200 countries. FY2025: revenue RMB 65.5B (−29%), net loss RMB 4.45B; Q1 2026 gross margin recovered to 8.3%.",
+  "ecosystemRole": "We assess Jinko as a PV giant becoming a storage challenger: BNEF Tier-1 ESS maker for 8 straight quarters and 12 GWh of claimed ESS capacity, but absent from top-10 BESS integrator rankings (Wood Mackenzie/EnergyTrend) — a fast-growing niche player against Sungrow/BYD/CATL/Tesla scale. Its differentiation is the integrated solar-plus-storage sell (SunTera grid-forming BESS + Tiger Neo modules) now packaged for AI data centers with claimed 800V HVDC architecture compatibility — the first module maker to also move into data-center operation itself (planned 1 GW Ningxia campus).",
+  "productsAndServices": [
+    {
+      "name": "PV Modules — Tiger Neo (N-type TOPCon)",
+      "category": "Solar · core business, price-war-pressured",
+      "description": "Flagship Tiger Neo platform: cumulative shipments ~240 GW by Q1 2026; Tiger Neo 3.0 (launched Sept 2025) delivers 670 W at 24.8% module efficiency (AIDC variant 680 W / 25.17%), 85±5% bifaciality, −0.26%/°C temperature coefficient, 30-year performance warranty. Capacity roadmap: end-2026 target of 120 GW wafer / 95 GW cell / 130 GW module, ~100 GW integrated including 14 GW overseas. US-market EAGLE modules assembled in Jacksonville, FL (650+ workers, since 2018).",
+      "highlights": [
+        "#1 global module shipper: 92.9 GW in 2024; 86 GW in 2025 (7th straight year, tied #1 with LONGi per InfoLink)",
+        "731 N-type TOPCon patents claimed; RETC 'Overall Highest Achiever' 7 consecutive years; TÜV Rheinland shading/hail verification (June 2026)",
+        "Tiger Neo 3.0 global rollout explicitly excludes the US — a tariff-era product-segmentation decision",
+        "10 GW Saudi cell/module JV with PIF's RELC and Vision Industries (announced July 2024)"
+      ],
+      "positioning": "Top of a brutally consolidating market: top-4 makers ≈58% of 536 GW ranked 2025 shipments, entire Chinese chain loss-making through 2024–25; US trade barriers include combined rates up to ~246% on its Vietnam output plus the unresolved 2023 Jacksonville raid backdrop",
+      "soldThrough": "Direct to developers/EPCs/IPPs and distribution; ~80%+ of Q1 2026 module shipments overseas",
+      "targetSegments": "Utility-scale, C&I, and distributed solar globally; AIDC-variant modules for data-center campuses",
+      "roadmap": "FY2026 module guidance 75–85 GW; 'anti-involution' policy-driven price recovery is the margin variable"
+    },
+    {
+      "name": "Energy Storage — SunTera / SunGiga (Jinko ESS)",
+      "category": "BESS · the designated second growth engine",
+      "description": "Utility-scale SunTera line: G2 (5.015 MWh, 314 Ah) and G3 (6.25 MWh, 587 Ah cells, >95% RTE, grid-forming modes incl. black start and microgrid operation — global shipments from Q4 2025); C&I SunGiga line (215–522 kWh liquid-cooled cabinets; G2 Plus adds AI price-forecasting EMS for energy trading); US-market EAGLE Storage variants (DCB-5000/6250, ACB-261) with cybersecurity provisions; 12 GWh of claimed ESS manufacturing capacity.",
+      "highlights": [
+        "5.2 GWh shipped in 2025 (only ~1.7 GWh revenue-recognized); Q1 2026: 1.42 GWh shipped; signed + high-probability orders >10 GWh",
+        "2026 guidance: more than double 2025 shipments; management guides storage growing 100–150% annually over the next three years",
+        "Chairman Li Xiande: storage is 'a primary driver for enhancing our profitability profile' — the explicit loss-offset strategy",
+        "China only 10–15% of ESS sales — focus is Europe, LatAm, Middle East, APAC; US ~600 MWh in 2025 with a 2026 'breakthrough' targeted"
+      ],
+      "positioning": "BNEF Tier-1 ESS provider 8 consecutive quarters but not yet in any top-10 integrator ranking — a credible fast-follower whose bundled solar+storage channel is the wedge, not standalone BESS scale",
+      "soldThrough": "Direct supply agreements with developers/EPCs/IPPs (Sunrev 1 GWh framework; Marubeni in Japan) plus EU distribution",
+      "targetSegments": "Utility solar-plus-storage, standalone grid services, C&I energy trading, and (new) AI data centers",
+      "roadmap": "SunTera G3 global ramp through 2026; >10 GWh order conversion; US market entry expansion"
+    },
+    {
+      "name": "Sunny 365 — AI Data-Center Solar+Storage (2026)",
+      "category": "AIDC solutions · new third front",
+      "description": "Integrated PV+ESS+EMS solution family launched August 2026; the AIDC edition pairs 680 W / 25.17% Tiger Neo 3.0 AIDC modules with SunTera storage for 24/7 green supply and resilient backup — claiming grid-forming support, seamless on/off-grid switching, and compatibility with 800V HVDC data-center power architecture. Alongside it: a company plan for a 1 GW AI data center near Zhongwei, Ningxia (~530,000 m²; groundbreaking 2026, completion ~2028) — the first module maker to move into data-center operation.",
+      "highlights": [
+        "Positions Jinko on the demand side of its own products — 'from power supply to demand management'",
+        "A desert AI-data-center power-supply role is reported by Nikkei/KrAsia but not company-confirmed in accessible filings — treat as unverified"
+      ],
+      "positioning": "Unique among module makers; overlaps conceptually with Google's Intersect-style energy-park model, executed from the supplier side",
+      "soldThrough": "Solution sales; the Ningxia campus may involve bank financing/JVs per reports",
+      "targetSegments": "Chinese AI data-center operators; retail/supermarket edition announced for distributed C&I",
+      "roadmap": "Ningxia campus completion ~2028"
+    }
+  ],
+  "recentDevelopments": [
+    { "date": "2026-08-04", "category": "product-launch", "headline": "'Sunny 365' AIDC integrated solar-storage system launched, claiming 800V HVDC data-center architecture compatibility", "read": "The AI-data-center pitch formalized into product — Jinko selling 24/7 green power to the sector whose demand curve its module business needs.", "source": "https://www.pv-magazine.com/press-releases/jinkosolar-unveils-the-sunny-365-smart-solar-storage-system-an-integrated-solar-storage-aidc-model/" },
+    { "date": "2026-06-xx", "category": "capacity", "headline": "Plan announced for a 1 GW AI data center near Zhongwei, Ningxia (completion ~2028)", "read": "First module maker to become a data-center operator — we assess it as a demand-side hedge on the solar price war, with financing structure still undisclosed.", "source": "https://www.gurufocus.com/news/8899284/jinkosolar-jks-to-build-1-gw-data-center-in-china-to-meet-ai-demand" },
+    { "date": "2026-04-29", "category": "financial", "headline": "Q1 2026: gross margin recovered to 8.3% (from 2.2% FY2025); net loss narrowed to RMB 463.5M; ESS 1.42 GWh shipped", "read": "EPS beat / revenue miss per press; the margin inflection reflects 'anti-involution' price firming plus storage mix — the recovery thesis's first data point.", "source": "https://www.prnewswire.com/news-releases/jinkosolar-announces-first-quarter-2026-financial-results-302757116.html" },
+    { "date": "2026-04-16", "category": "financial", "headline": "FY2025: revenue RMB 65.5B (−29%), first annual net loss in 12 years (RMB 4.45B); 2026 ESS guided to more than double", "read": "Record shipments, collapsed economics — management blamed silver costs (+250–300%), polysilicon, and RMB strength; storage is the stated way out.", "source": "https://ir.jinkosolar.com/news-releases/news-release-details/jinkosolar-announces-fourth-quarter-and-full-year-2025-financial" },
+    { "date": "2026-03-16", "category": "leadership", "headline": "Co-founder Kangping Chen resigns as Jiangxi Jinko CEO (Haiyun 'Charlie' Cao, ex-JKS CFO, appointed); Chen exits all positions by July 2026", "read": "Chinese financial press reads the founding 'iron triangle' fracturing under loss pressure; company cites personal reasons — the governance shift bears watching through the turnaround.", "source": "https://ir.jinkosolar.com/static-files/948f7c95-3460-42b3-8699-db4ab45e1833" },
+    { "date": "2025-09-05", "category": "product-launch", "headline": "Tiger Neo 3.0 launched: 670 W, 24.8% module efficiency, 27% cell efficiency", "read": "Spec leadership maintained through the trough — but the global rollout excludes the US, conceding that market to tariff math.", "source": "https://www.pv-magazine.com/2025/09/05/jinkosolar-launches-670-w-topcon-solar-module-with-24-8-efficiency/" },
+    { "date": "2025-04-14", "category": "product-launch", "headline": "SunTera G3 unveiled: 6.25 MWh, 587 Ah cells, grid-forming (black start, microgrid); global shipments from Q4 2025", "read": "The storage flagship matches the 6+ MWh class of Sungrow/Hithium/BYD — grid-forming capability is the differentiator pitch for weak-grid markets.", "source": "https://www.ess-news.com/2025/04/14/jinko-unveils-6-25-mwh-suntera-g3-global-shipments-set-for-q4-2025/" },
+    { "date": "2025-04-21", "category": "regulatory", "headline": "US Commerce final AD/CVD determinations: Jinko-specific combined rates up to ~246% on Vietnam-made modules", "read": "The US module door narrows to Jacksonville assembly; ROTH called the determinations 'negative for JinkoSolar' — storage and non-US markets carry the growth burden.", "source": "https://pv-magazine-usa.com/2025/04/21/u-s-commerce-department-slaps-unexpectedly-high-tariffs-on-solar-imports/" }
+  ],
+  "strategyRead": [
+    "(High confidence) We assess storage is a survival strategy, not diversification: with module gross margin at 2.2% for FY2025 and the whole Chinese chain loss-making, the ESS ramp (5.2 GWh → >10 GWh guided) is management's stated primary profitability lever. Basis: earnings calls and the chairman's own framing.",
+    "(Moderate confidence) We assess the analyst view is that storage is a margin story, not yet a revenue replacement: 2026 consensus EPS was revised up sharply on margin recovery while revenue forecasts stayed flat (~RMB 92B) — the recovery depends on 'anti-involution' price discipline holding as much as on Jinko's own execution.",
+    "(Moderate confidence) We assess the AIDC moves (Sunny 365, the Ningxia 1 GW campus) are a demand-side hedge: owning/serving data-center load monetizes Jinko's own solar+storage output in-country while US trade barriers cap its western module business — an unproven but structurally logical pivot.",
+    "(Moderate confidence) We assess governance transition is a live risk: the founding family controlled ~55.6% of the holdco, and co-founder Kangping Chen's full 2026 exit amid the first loss in 12 years leaves professional managers (ex-CFO Cao) running the operating company through its hardest stretch.",
+    "(Low confidence) The reported desert AI data-center power-supply arrangement (Nikkei/KrAsia) and the polysilicon consolidation fund are both unconfirmed — either would materially change the economics if realized."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "Tiger Neo 3.0 (utility module)",
+      "specs": [
+        { "label": "Max power / efficiency", "value": "670 W / 24.8% (AIDC variant 680 W / 25.17%); 27% cell efficiency" },
+        { "label": "Bifaciality", "value": "85±5% (vs ~80% mainstream TOPCon)" },
+        { "label": "Degradation / warranty", "value": "Year-1 1%, ~0.4%/yr after; 15-yr product / 30-yr performance" },
+        { "label": "Temp coefficient", "value": "−0.26%/°C" }
+      ],
+      "notes": "Company claims; TÜV Rheinland shading/hail verification June 2026. Global rollout excludes the US."
+    },
+    {
+      "product": "SunTera G3 BESS (utility-scale)",
+      "specs": [
+        { "label": "Capacity / cell", "value": "6.25 MWh per 20-ft container · 587 Ah LFP" },
+        { "label": "Performance", "value": ">95% RTE · >10,000 cycles · ΔT ≤2.5°C (serpentine liquid cooling)" },
+        { "label": "Grid capability", "value": "Grid-forming modes: voltage/frequency support in weak/off-grid, black start, microgrid" },
+        { "label": "Environment", "value": "IP55 / C5 · 4,000 m altitude" }
+      ],
+      "notes": "Unveiled April 2025; global shipments from Q4 2025. US variants (EAGLE DCB-6250) add cybersecurity provisions."
+    }
+  ],
+  "decisionMakers": [
+    { "name": "Li Xiande (李仙德)", "title": "Founder, Chairman & CEO — JinkoSolar Holding", "background": ["Chairman & CEO (CEO since Dec 2020); founder (2006)", "Marketing manager — Zhejiang Yuhuan Solar (2003–04); operations — ReneSola (2005–06)", "Family concert (with brother Li Xianhua and brother-in-law Kangping Chen) controlled ~55.6% of the holdco", "B.A. Shanghai University of Finance and Economics"] },
+    { "name": "Haiyun (Charlie) Cao (曹海云)", "title": "CEO — Jiangxi Jinko (since March 2026); Director, JKS", "background": ["CFO — JinkoSolar Holding (2014–2021); financial controller (2012–14)", "Senior audit manager — PwC (2002–12); AICPA/CICPA", "MS Shanghai University of Finance & Economics"] },
+    { "name": "Mengmeng (Pan) Li (李蒙蒙)", "title": "CFO — JinkoSolar Holding (since May 2021)", "background": ["Deputy finance director and senior internal audit manager — JKS", "Earlier: Hi-P International, Canadian Solar internal audit, EY, KPMG; CIA"] },
+    { "name": "Gener Miao (缪冠华)", "title": "Chief Marketing Officer (since Feb 2019)", "background": ["VP Global Sales & Marketing (2015–19); Chief of Staff to the Chairman (2010–15)", "Ex-Tebon Securities (Fosun), Ingersoll Rand China; MBA CEIBS"] }
+  ],
+  "financials": {
+    "currency": "RMB (¥)",
+    "type": "public",
+    "periods": [
+      { "period": "Q1 2026 (latest interim)", "metrics": [ { "name": "Revenue", "actual": "RMB 12.25B (−11.5%)", "expected": "Consensus revenue higher", "verdict": "miss", "result": "revenue miss; stock dipped despite EPS beat" }, { "name": "Net loss", "actual": "−RMB 463.5M (narrowed from −$181.7M Q1 2025)", "expected": "EPS −$8.85 vs −$14.38 forecast", "verdict": "beat", "result": "per Investing.com" }, { "name": "Gross margin", "actual": "8.3% (vs 2.2% FY2025)", "expected": "", "verdict": "beat", "result": "price firming + storage mix" } ], "commentary": "Module shipments ~13.7 GW (>80% overseas); ESS 1.42 GWh shipped, 520 MWh revenue-recognized. FY2026 guidance: 75–85 GW modules, ESS >2× 2025." },
+      { "period": "FY2025", "metrics": [ { "name": "Revenue", "actual": "RMB 65.50B / $9.37B (−29.0%)", "expected": "Consensus", "verdict": "beat", "result": "revenue beat ~1.1% (Simply Wall St)" }, { "name": "Net loss", "actual": "−RMB 4.45B (US GAAP) — first annual loss in 12 years", "expected": "EPS missed ~79%", "verdict": "miss", "result": "gross margin 2.2%; Q4 alone −$214.5M" }, { "name": "Shipments", "actual": "86 GW modules (#1, 7th year) · 5.2 GWh ESS", "expected": "ESS early guidance ~6 GWh", "verdict": "miss", "result": "ESS slightly under early guidance; still the growth line" } ], "commentary": "Management attribution: silver costs +250–300%, polysilicon cost rises, RMB appreciation. A-share entity reported −RMB 6.88B." },
+      { "period": "FY2024", "metrics": [ { "name": "Revenue", "actual": "RMB 92.26B / $12.64B (−22%)", "expected": "", "verdict": "miss", "result": "Q4 2024 characterized as a miss (Investing.com)" }, { "name": "Net income", "actual": "RMB 57.5M (~breakeven, −98%)", "expected": "", "verdict": "miss", "result": "gross margin 10.9%; record 92.9 GW module shipments" } ], "commentary": "'Record shipments, operational losses' (PV-Tech) — the price war's signature year." }
+    ],
+    "commentary": "Listing structure: NYSE ADR (JKS) holds ~54.17% of Jiangxi Jinko (SSE STAR 688223). ESS competitive context: BYD >60 GWh and Tesla 46.7 GWh shipped in 2025 (Benchmark) vs Jinko's 5.2 GWh — a challenger, not yet a ranked integrator. US trade barriers: combined AD/CVD rates up to ~246% (Vietnam); 2 GW Jacksonville assembly is the US hedge."
+  },
+  "sources": [
+    { "label": "Jinko ESS — Sunny 365 AIDC launch (company release)", "url": "https://www.pv-magazine.com/press-releases/jinkosolar-unveils-the-sunny-365-smart-solar-storage-system-an-integrated-solar-storage-aidc-model/", "date": "2026-08-04" },
+    { "label": "ESS-News — first global BESS integrator ranking context", "url": "https://www.ess-news.com/2026/07/14/sungrow-leads-first-global-bess-integrator-ranking-as-market-tops-100-gw/", "date": "2026-07-14" },
+    { "label": "GuruFocus — 1 GW Ningxia AI data-center plan", "url": "https://www.gurufocus.com/news/8899284/jinkosolar-jks-to-build-1-gw-data-center-in-china-to-meet-ai-demand", "date": "2026-06" },
+    { "label": "KrAsia — reported desert AI-DC power supply (unconfirmed)", "url": "https://kr-asia.com/chinese-solar-giant-jinko-to-supply-power-to-desert-ai-data-center", "date": "2026-06" },
+    { "label": "JinkoSolar — Q1 2026 results", "url": "https://www.prnewswire.com/news-releases/jinkosolar-announces-first-quarter-2026-financial-results-302757116.html", "date": "2026-04-29" },
+    { "label": "ESS-News — FY2025 loss, storage to double in 2026", "url": "https://www.ess-news.com/2026/04/17/jinkosolar-posts-a-loss-but-energy-storage-business-expected-to-double-in-2026/", "date": "2026-04-17" },
+    { "label": "JinkoSolar — Q4/FY2025 results", "url": "https://ir.jinkosolar.com/news-releases/news-release-details/jinkosolar-announces-fourth-quarter-and-full-year-2025-financial", "date": "2026-04-16" },
+    { "label": "JinkoSolar — 2025 Form 20-F filing notice", "url": "https://ir.jinkosolar.com/news-releases/news-release-details/jinkosolar-files-2025-annual-report-form-20-f", "date": "2026-04" },
+    { "label": "JinkoSolar — 6-K: Jiangxi Jinko CEO change (Mar 2026)", "url": "https://ir.jinkosolar.com/static-files/948f7c95-3460-42b3-8699-db4ab45e1833", "date": "2026-03-16" },
+    { "label": "InfoLink — 2025 global module shipment ranking", "url": "https://www.infolink-group.com/energy-article/solar-topic-infolink-2025-global-module-shipment-ranking-combined-shipments-reach-536-gw", "date": "2026-02" },
+    { "label": "pv magazine — Tiger Neo 3.0 launch", "url": "https://www.pv-magazine.com/2025/09/05/jinkosolar-launches-670-w-topcon-solar-module-with-24-8-efficiency/", "date": "2025-09-05" },
+    { "label": "pv magazine USA — Commerce AD/CVD final determinations", "url": "https://pv-magazine-usa.com/2025/04/21/u-s-commerce-department-slaps-unexpectedly-high-tariffs-on-solar-imports/", "date": "2025-04-21" },
+    { "label": "ESS-News — SunTera G3 unveiling", "url": "https://www.ess-news.com/2025/04/14/jinko-unveils-6-25-mwh-suntera-g3-global-shipments-set-for-q4-2025/", "date": "2025-04-14" },
+    { "label": "JinkoSolar — about/capacity claims", "url": "https://www.jinkosolar.com/en/site/aboutus" },
+    { "label": "JinkoSolar — Tiger Neo 3.0 product page", "url": "https://www.jinkosolar.com/en/site/tigerneo_3" }
+  ],
+  "lastUpdated": "2026-08-09",
+  "profileVersion": 1
+}

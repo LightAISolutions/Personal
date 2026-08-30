@@ -1,0 +1,31 @@
+; ═══════════════════════════════════════════════════════════════════════════
+; AutoUpdate.manual-targets.ini — template
+;
+; Copy this file to AutoUpdate.manual-targets.ini (same directory) to seed
+; the Manual Targets wishlist on your local machine. The real file is
+; .gitignore'd and must never be committed — it's a LOCAL-ONLY pre-handoff
+; intent capture: a list of AHK scripts you want Claude to add to the
+; auto-updater. Click "Copy for Claude" in AutoUpdate.ahk's Manual Targets
+; panel to turn the list into a paste-ready prompt for a fresh Claude
+; session. Once Claude integrates the script, this AutoUpdate auto-installs
+; it at the Local Folder you specified.
+;
+; Prefer the built-in GUI — launch AutoUpdate.ahk and use the Manual Targets
+; panel on the right side of the main window. The form's "📁 Browse" button
+; picks the folder where the script should land; the GUI writes here.
+;
+; Each intent lives in its own [intent:Name] section:
+;
+;   description   what the script should do (free-form prose; multi-line
+;                 supported via the ||N|| sentinel encoding)
+;   localFolder   the folder on this machine where the script lands
+;
+; Intents are NOT polled or fetched. They exist only to drive the Copy-for-
+; Claude handoff — they never enter the live TARGETS array.
+; ═══════════════════════════════════════════════════════════════════════════
+
+; [intent:AutoMuteDiscord]
+; description = Auto-mutes Discord whenever a Zoom call joins the foreground, then un-mutes when Zoom backgrounds.
+; localFolder = C:\LAIS\autoHotkey
+
+; Developed by: LightAISolutions

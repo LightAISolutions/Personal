@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "slug": "lambda",
+  "title": "Lambda — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "The neocloud service ladder",
+      "bullets": [
+        "GPU clouds sell the same silicon three ways: on-demand (by the minute, cancel anytime, highest $/hr), reserved clusters (weeks to a year, discounted), and single-tenant contracted capacity (multi-year take-or-pay, cheapest per hour, finances the buildout)",
+        "The unit of price is the GPU-hour: a B200 rents for ~$7 on demand but ~$9-10 in a small managed cluster — clustering costs more per GPU because the fabric, storage, and orchestration around it are the hard part",
+        "Take-or-pay means the customer pays whether or not they use the capacity — it converts a rental business into a bond-like cash-flow stream a bank can lend against",
+        "Lambda's wedge is flexibility at the bottom of the ladder: published prices, per-minute billing, 16-GPU clusters bookable for two weeks — while its Microsoft and NVIDIA deals live at the top"
+      ]
+    },
+    {
+      "heading": "The rack is the new server",
+      "bullets": [
+        "AI systems are now built and sold as whole racks, not boxes: an NVL72 puts 72 GPUs in one rack wired into a single NVLink domain — to software it behaves like one giant accelerator with terabytes of pooled fast memory",
+        "GB300 NVL72 (Blackwell Ultra generation): 37 TB of fast memory, 130 TB/s of internal NVLink switch bandwidth, ~142 kW per rack — one rack draws what ~100 US homes do",
+        "Vera Rubin NVL72 (next generation, H2 2026): 288 GB of HBM4 per GPU and 260 TB/s NVLink-6 per rack — each generation roughly doubles the rack's internal bandwidth and its power draw keeps climbing",
+        "Because one rack is one machine, data-center design flips: the facility question stops being 'how many servers per rack' and becomes 'how many hundred-kW racks can the floor, cooling loop, and utility feed carry'"
+      ]
+    },
+    {
+      "heading": "Two networks: scale-up vs scale-out",
+      "bullets": [
+        "Scale-up (inside the rack): NVLink — extremely fast, short-range, memory-like links that make 72 GPUs act as one; this is why the NVL72 is the building block",
+        "Scale-out (between racks): InfiniBand or specialized Ethernet carries traffic at 400-800 Gb/s per GPU; training jobs synchronize constantly, so the network — not the GPUs — often sets the speed limit",
+        "SHARP does the math inside the switches: instead of every GPU exchanging gradients with every other, the network adds them up in-flight — 'in-network aggregation' — cutting synchronization time",
+        "Co-packaged optics (CPO) puts the laser optics directly onto the switch silicon instead of in pluggable modules — less power per bit and higher density, which matters when the network itself starts consuming megawatts"
+      ]
+    },
+    {
+      "heading": "Colocation vs owning the building",
+      "bullets": [
+        "A colocation tenant rents space, power, and cooling from a landlord (EdgeConneX, Cologix, Aligned, Prime) and installs its own compute — fast to enter, light on capital, but the landlord owns the scarce asset: grid power",
+        "An owner-operator (CoreWeave increasingly, Crusoe, the AI-factory landlords) controls the power contract and captures the real-estate economics, at the cost of billions in capex and multi-year build times",
+        "AI density forced the cooling transition: air handles ~20-40 kW per rack; direct-to-chip liquid cooling is mandatory at 100+ kW, and new builds advertise 600 kW-class rack capability",
+        "Exotic power is being tried at the edges: hydrogen fuel cells can run racks fully off-grid with zero emissions — the fuel cell's water byproduct can even feed the liquid-cooling loop"
+      ]
+    },
+    {
+      "heading": "GPUs as collateral: how neocloud finance works",
+      "bullets": [
+        "Neoclouds borrow against two things: the GPUs themselves and the contracted cash flows they generate — the same structure as aircraft or shipping finance",
+        "The depreciation assumption decides everything: if a GPU earns for 6 years the loan is safe; if new generations crush rental prices in 3, the collateral evaporates — this is the core bear argument against the whole sector",
+        "Lenders' confidence is visible in the coupon: GPU-backed debt priced near 15% in 2023 and reached investment-grade ratings by 2026 — a rating agency saying contracted GPU cash flows are now bankable",
+        "Fully-amortizing loans (principal repaid over the term, not refinanced at maturity) are matched to specific contracts: the debt only works if the customer pays to term — concentration risk and credit risk become the same thing",
+        "Circular financing is the pattern to watch sector-wide: when a chip supplier is also an equity investor and a major customer of the same cloud, reported demand is partly self-referential — real cash, but a fragile signal"
+      ]
+    },
+    {
+      "heading": "What separates a good GPU cloud from a great one",
+      "bullets": [
+        "Independent ratings (SemiAnalysis ClusterMAX) tier providers Platinum → Bronze on operational criteria: do clusters hit expected interconnect bandwidth, how fast are failed nodes replaced, how mature are Kubernetes/Slurm, storage, and security",
+        "The gap is operations, not hardware — everyone buys the same NVIDIA racks; tiers separate on whether thousands of them run reliably as one machine",
+        "Quality tiers translate directly into economics: the Platinum operator commands ~74% gross margins and hyperscaler anchor contracts; Silver-tier operators run thinner margins and compete more on price",
+        "MLPerf benchmarks are the public proof-of-competence: standardized training runs (e.g., how fast a rack trains a reference model) where cloud operators can beat even the chipmaker's own submissions through better systems engineering"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "Why does a GPU cost more per hour inside a managed cluster than on-demand as a single instance?",
+      "a": "The cluster is the product, not the GPU: the InfiniBand fabric, parallel storage, and orchestration that make hundreds of GPUs train one model are the scarce engineering. A lone B200 rents ~$7/hr; the same GPU in a managed 16-node cluster runs ~$9-10."
+    },
+    {
+      "q": "What does 'take-or-pay' mean and why do lenders love it?",
+      "a": "The customer owes the payment whether or not they use the capacity. It converts rental revenue into a bond-like contracted cash flow — which is exactly what banks need to lend billions against GPUs."
+    },
+    {
+      "q": "What is an NVL72?",
+      "a": "A full rack — 72 GPUs plus CPUs — wired into one NVLink domain so software sees a single giant accelerator with pooled fast memory. The rack, not the server, is now the unit AI systems are designed and sold in."
+    },
+    {
+      "q": "Scale-up vs scale-out networking — what's the difference?",
+      "a": "Scale-up is NVLink inside the rack: memory-speed links making 72 GPUs one machine. Scale-out is InfiniBand/Ethernet between racks at 400-800 Gb/s per GPU. Training synchronizes constantly, so scale-out bandwidth often sets the speed limit."
+    },
+    {
+      "q": "What does NVIDIA SHARP do?",
+      "a": "It performs the gradient math inside the network switches — in-network aggregation. Instead of all GPUs exchanging updates pairwise, the switch sums them in flight, cutting the synchronization step that dominates large training runs."
+    },
+    {
+      "q": "Why is liquid cooling non-negotiable for modern AI racks?",
+      "a": "Air can remove roughly 20-40 kW per rack; an NVL72 draws ~142 kW and new builds advertise 600 kW racks. Only liquid touching a cold plate on the chip can carry that heat density away."
+    },
+    {
+      "q": "What is co-packaged optics and why does it matter at cluster scale?",
+      "a": "Putting the optical transmitters directly on the switch silicon instead of in pluggable modules. It cuts power per bit and raises port density — significant when the network fabric of a large cluster is itself drawing megawatts."
+    },
+    {
+      "q": "What's the trade in colocation vs owning the data center?",
+      "a": "Colocation: fast entry, little capex, but the landlord owns the grid connection — the scarce asset. Owning: control of power and real-estate economics, but billions of capex and years of build time. Neoclouds usually start colo and buy in later."
+    },
+    {
+      "q": "Why is the GPU depreciation assumption the core argument about neocloud finance?",
+      "a": "Loans are collateralized by GPUs and their contracted earnings. If a GPU earns for 6 years, the debt is safe; if the next silicon generation collapses rental prices in 3, collateral value and cash flow vanish together. Every lender and short seller is really arguing about this one number."
+    },
+    {
+      "q": "What does it signal when GPU-backed debt gets an investment-grade rating?",
+      "a": "That rating agencies now treat contracted GPU cash flows as bankable, standard project finance. Sector coupons compressed from ~15% in 2023 to investment-grade spreads by 2026 — the debt market validating the model even where equity markets stay skeptical."
+    },
+    {
+      "q": "What is 'circular financing' in the AI infrastructure sector?",
+      "a": "When the chip supplier is simultaneously an equity investor in and a major customer of the same cloud — money flows in a loop (chips sold, equity invested, capacity leased back). The cash is real but the demand signal is partly self-referential."
+    },
+    {
+      "q": "If every cloud buys the same NVIDIA racks, what actually separates quality tiers?",
+      "a": "Operations: do clusters deliver expected interconnect bandwidth, how fast are failed nodes swapped, how mature are the Kubernetes/Slurm/storage layers. Independent ratings tier on this — and the top tier commands both anchor contracts and ~10-point-higher gross margins."
+    }
+  ]
+}

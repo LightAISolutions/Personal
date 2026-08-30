@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "delta-electronics",
+  "title": "Delta Electronics — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Switch-mode power: why switching beat linear",
+      "bullets": [
+        "A linear power supply regulates by burning the voltage difference as heat across a transistor, so its efficiency is roughly output voltage divided by input voltage — hopeless for big conversions, surviving only in tiny noise-sensitive circuits",
+        "A switch-mode supply chops the input on and off tens or hundreds of thousands of times per second and smooths the result; the transistor is either fully on or fully off, dissipating little in either state, so efficiency in the high 90s becomes possible",
+        "Switching fast shrinks the iron: a transformer only stores energy for one switching cycle, so higher frequency means smaller magnetics — the reason a modern kilowatt supply fits in a hand where a 1970s equivalent was a shoebox of copper and steel",
+        "Efficiency is a curve, not a number: supplies peak near half load and sag at light load, where fixed switching losses dominate. Tiers like 80 PLUS Titanium force high efficiency even at 10% load — the hard spec, because real servers spend much of their lives nearly idle"
+      ]
+    },
+    {
+      "heading": "The ODM supply chain: who really builds branded gear",
+      "bullets": [
+        "An OEM sells hardware under its own brand; an ODM (original design manufacturer) designs and builds hardware that others brand; a contract manufacturer builds someone else's design. Most of the world's servers and power supplies flow through a handful of Asian ODMs, whatever the logo says",
+        "The classic chain — components to ODM to brand to customer — collapsed for hyperscalers: they buy white-box hardware straight from the ODM, specifying exactly what they want and cutting out the brand's margin and roadmap",
+        "That flip changed who talks to whom: component and power vendors now sit in design meetings with the end customer, and rack-level standards get negotiated directly between hyperscalers and the manufacturers who build to them",
+        "The supply chain is a specialization ladder: staying a pure builder means competing on cost forever; owning the design captures engineering value; owning the architecture — being the company whose design others copy — captures the most"
+      ]
+    },
+    {
+      "heading": "DC-DC inside the rack: the 12-volt-to-48-volt evolution",
+      "bullets": [
+        "For decades servers distributed 12 V DC internally from the power supply to the motherboard. Fine at a few hundred watts; at multi-kilowatt servers, 12 V means hundreds of amps and busbars that behave like heaters",
+        "Moving to 48 V cuts current fourfold for the same power — and since conductor loss scales with current squared, that is a sixteenfold loss reduction through the same copper. Open rack standards made 48 V busbars the modern norm, still below the 60 V safety threshold",
+        "The last centimeter is the hardest: chips drink roughly one volt at hundreds to over a thousand amps, so the final conversion happens millimeters from the silicon in multi-phase voltage regulators — you cannot route a thousand amps across a motherboard",
+        "Architects choose between two-stage conversion (48 V to an intermediate bus, then to the chip) and direct 48-to-1 V designs: fewer stages waste less, but every stage removed makes the surviving converter's job harder — a live engineering trade"
+      ]
+    },
+    {
+      "heading": "Fans and thermal components: moving air is real engineering",
+      "bullets": [
+        "Fan physics is cruel: airflow rises linearly with speed, pressure with its square, and power with its cube — spinning a fan twice as fast costs eight times the power, which is why fan energy explodes in hot, dense servers",
+        "A fan doesn't deliver its rated airflow into a dense chassis; it delivers where its pressure-flow curve crosses the system's resistance curve. Packed heatsinks and filters demand static pressure, not just impressive free-air numbers",
+        "Server-grade fans are engineered objects: dual counter-rotating rotors for pressure, hot-swappable redundancy, PWM speed control slaved to dozens of temperature sensors, and bearings balancing acoustics against years of continuous duty",
+        "Thermal components — fans, heat sinks, vapor chambers, interface materials — are a classic high-volume components business: individually cheap, sold into every OEM and ODM, and collectively a competence that transfers directly into liquid-cooling hardware"
+      ]
+    },
+    {
+      "heading": "EV charging power electronics: curves, peaks, and demand charges",
+      "bullets": [
+        "A battery charges on a curve, not a number: it accepts maximum current only while partly empty, then tapers as cells approach their voltage ceiling — the constant-current, constant-voltage profile. A 350 kW charger delivers 350 kW only briefly, if at all",
+        "The car, not the charger, usually sets the pace: cell chemistry, pack temperature, and preconditioning determine the acceptable charge rate, so charger capacity beyond the vehicle's limit simply sits idle",
+        "Site economics turn on demand charges: utilities bill commercial customers for their single highest kW peak each month, so a few simultaneous fast charges can dominate the bill — load management and on-site buffering exist to flatten that peak",
+        "The same conversion building blocks appear on both sides of the plug — station-side rectification and DC conversion, vehicle-side charging electronics — so suppliers of one tend to supply the other, amortizing the engineering across two markets"
+      ]
+    },
+    {
+      "heading": "Component-to-system economics: climbing the margin ladder",
+      "bullets": [
+        "Commodity components compete on price per watt at single-digit margins; winners are decided by manufacturing scale, yield, and purchasing power — a treadmill where standing still means shrinking",
+        "Each step up the stack — component to module to shelf to rack to full infrastructure — adds engineering and integration value customers will pay for, plus stickier relationships: replacing a systems vendor hurts far more than re-sourcing a part",
+        "Architecture transitions are when climbing is possible: while sockets are being redefined, a component vendor can sell the whole new subsystem instead of one part of the old one — which is why transitions attract every ambitious supplier at once",
+        "The cost of climbing is channel conflict: sell finished racks and you now compete with the integrators who buy your shelves. Managing when to compete with your own customers is the strategic art of the up-stack move"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "Why is a linear power supply hopeless for high-power conversion?",
+      "a": "It regulates by burning the voltage difference as heat across a transistor, so efficiency is roughly output voltage over input voltage — for large step-downs, most of the energy becomes heat. Switch-mode supplies avoid this by switching the transistor fully on or fully off, where it dissipates almost nothing."
+    },
+    {
+      "q": "Why does switching at higher frequency make a power supply smaller?",
+      "a": "The transformer and inductors only need to store energy for one switching cycle. The higher the frequency, the less energy per cycle and the smaller the magnetics can be — which is why a modern kilowatt supply is palm-sized where the old iron-transformer designs were furniture."
+    },
+    {
+      "q": "Why is efficiency at 10% load the hard spec in tiers like 80 PLUS Titanium?",
+      "a": "Switching supplies carry fixed overhead losses — gate drive, control power, magnetizing losses — that don't shrink with load, so efficiency collapses at light load. Real servers spend much of their lives near idle, so a supply that shines at half load but sags at 10% wastes energy exactly where fleets live."
+    },
+    {
+      "q": "OEM, ODM, contract manufacturer — who does what?",
+      "a": "An OEM sells under its own brand. An ODM designs and manufactures products that other companies brand. A contract manufacturer builds someone else's design. Much of the world's IT hardware is ODM-built: the logo on the front and the factory behind it belong to different companies."
+    },
+    {
+      "q": "Why do hyperscalers buy white-box hardware directly from ODMs?",
+      "a": "At their volume the brand adds margin without adding value: they employ their own hardware engineers, want exact specifications rather than someone's product roadmap, and can qualify suppliers themselves. Cutting out the brand also puts them in the design conversation directly with the people who build the gear."
+    },
+    {
+      "q": "Why did racks move from 12 V to 48 V distribution?",
+      "a": "Same power at four times the voltage means one quarter the current — and conductor loss scales with current squared, so a sixteenfold loss reduction through the same copper. At multi-kilowatt servers, 12 V busbars had become heaters. 48 V also stays below the 60 V safety threshold."
+    },
+    {
+      "q": "Why must the final conversion to about one volt happen right next to the chip?",
+      "a": "Because the chip draws hundreds to over a thousand amps at that voltage. Routing that current any distance would waste huge power in the board and let the voltage droop out of tolerance. So multi-phase regulators sit millimeters from the silicon — the last centimeter is the hardest conversion in the chain."
+    },
+    {
+      "q": "Why does doubling a fan's speed cost eight times the power?",
+      "a": "Fan laws: airflow scales with speed, pressure with speed squared, and power with speed cubed. That cube is why cooling energy explodes in dense servers — and why better heatsinks, ducting, and lower airflow resistance pay off more than simply spinning fans faster."
+    },
+    {
+      "q": "Why does a fan's rated airflow overstate what a dense server actually gets?",
+      "a": "The rating is measured at zero backpressure. A real chassis packed with heatsinks and filters resists airflow, and the fan delivers only where its pressure-flow curve crosses the system's resistance curve. Dense equipment needs fans engineered for static pressure, not just impressive free-air numbers."
+    },
+    {
+      "q": "Why doesn't a 350 kW charger fill a battery at 350 kW?",
+      "a": "Batteries charge on a constant-current, constant-voltage profile: full current only while partly empty, then a long taper as cells approach their voltage ceiling. Chemistry and pack temperature set the acceptable rate, so peak charger power is available only briefly — average power is what actually fills the pack."
+    },
+    {
+      "q": "What are demand charges, and why do they dominate fast-charging economics?",
+      "a": "Utilities bill commercial sites for their single highest power peak each month, on top of energy used. A handful of simultaneous fast charges sets a painful peak that a month of light usage still pays for. Load management and on-site storage exist largely to shave that peak."
+    },
+    {
+      "q": "What is channel conflict in the component-to-system climb?",
+      "a": "When a component supplier starts selling finished systems, it competes with the integrators and OEMs who buy its components. Climb too aggressively and your customers design you out; don't climb and you stay at commodity margins. Timing the climb around architecture transitions is the strategic art."
+    }
+  ]
+}

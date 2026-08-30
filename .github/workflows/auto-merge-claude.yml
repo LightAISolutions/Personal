@@ -1,0 +1,881 @@
+# SINGLE WORKFLOW for merge + all deploys
+#
+# Why one file instead of separate workflows per deploy type:
+#   - The merge into main MUST happen first and only once. Separate workflows
+#     would each need the merge step, creating a race condition (two workflows
+#     trying to merge the same branch simultaneously).
+#   - Splitting would require a shared merge workflow + workflow_run triggers,
+#     adding complexity for no benefit.
+#   - Each deploy step is already independent and conditional (only runs when
+#     its files changed), so it behaves like separate deploys within one pipeline.
+#   - Adding a new GAS project = adding one more conditional step. Simple.
+#
+# Flow:
+#   1. Push to claude/* branch triggers this workflow
+#   1a. Guard: detect inherited branches via dual-source commit-SHA tracking,
+#       commit-timestamp-vs-repo-creation check, IS_TEMPLATE_REPO mismatch,
+#       and already-merged check — delete and skip
+#   2. Merge into main (once)
+#   3. Check what changed (git diff)
+#   4. Deploy GAS projects — only if their <page-name>.gs was modified
+#   5. Delete the claude branch
+#   6. Deploy GitHub Pages — only if live-site-pages/ files were modified
+#   7. After merging, sweep and delete any other stale claude/* branches
+#      that are already merged (self-healing cleanup)
+#   8. Workflow only triggers on claude/* pushes (not main) — prevents
+#      template copies from firing the workflow on their initial commit.
+#      workflow_dispatch is available for manual re-deploys
+#   9. ALL jobs (except check-template) require initialization OR being
+#      the template repo — on an uninitialized copy, only check-template
+#      runs; everything else is skipped. The template repo itself is
+#      always allowed through (is-template = true)
+#  10. SHA update commits use [skip ci] to prevent cascading workflow runs
+#
+# DO NOT manually add 'main' to the push trigger on the template repo. It is
+# deliberately excluded so "Use this template" copies produce zero workflow
+# activity. The init script (scripts/init-repo.sh) adds 'main' back during
+# initialization, enabling direct-to-main auto-deploys on initialized forks.
+#
+# DO NOT use a repo-age guard (e.g. "skip if repo < 10 min old") to suppress
+# template creation deploys. It's a timing-based band-aid that breaks if the
+# workflow runs slowly or if the user acts quickly. The initialization-state
+# check (IS_TEMPLATE_REPO = No) is deterministic and correct by design.
+#
+# HOW TO ADD A NEW GAS PROJECT:
+#
+#   Prerequisites — collect these from the new Apps Script project:
+#     - DEPLOYMENT_ID    : Web app deployment ID (from Deploy → Manage deployments)
+#                          This is also the long string in the /exec URL
+#     - SPREADSHEET_ID   : Google Sheets ID (from the sheet URL between /d/ and /edit)
+#     - SHEET_NAME       : Name of the sheet tab to read/write (e.g. "Live_Sheet")
+#     - GITHUB_TOKEN     : Set in Apps Script: Project Settings → Script Properties
+#                          Key: GITHUB_TOKEN  Value: github_pat_... token
+#     - EMBED_PAGE_URL   : The GitHub Pages URL where this GAS app is iframed (optional)
+#
+#   Steps:
+#     1. Create a folder in googleAppsScripts/ (e.g. "My New Project")
+#     2. Copy <page-name>.gs from an existing project as a template, renaming
+#        it to match the HTML page (e.g. dashboard.gs for dashboard.html)
+#     3. Copy <page-name>.config.json and rename to match (e.g. dashboard.config.json).
+#        Fill in project-unique values (TITLE, DEPLOYMENT_ID, SPREADSHEET_ID, etc.)
+#     4. Update the PROJECT CONFIG section at the top of <page-name>.gs:
+#          var VERSION        = "v01.00g";
+#          var TITLE          = "My New Project";           // ← from config.json
+#          var SPREADSHEET_ID = "your-spreadsheet-id";      // ← from config.json
+#          var SHEET_NAME     = "Live_Sheet";               // ← from config.json
+#          var GITHUB_OWNER   = "<your-github-org>";
+#          var GITHUB_REPO    = "<your-repo-name>";
+#          var GITHUB_BRANCH  = "main";
+#          var FILE_PATH      = "googleAppsScripts/My New Project/my-new-project.gs";
+#          var DEPLOYMENT_ID  = "your-deployment-id";       // ← from config.json
+#          var EMBED_PAGE_URL = "https://<your-org>.github.io/<your-repo>/your-page.html";
+#     5. Bootstrap: manually copy-paste <page-name>.gs into the Apps Script editor and save
+#        (first deploy must be manual — doPost can't deploy itself before it exists)
+#     6. Add a new step in this workflow BEFORE "Delete branch", using this template:
+#
+#        - name: Deploy My New Project
+#          if: steps.guard.outputs.skip != 'true' && success()
+#          run: |
+#            PRE=${{ steps.merge.outputs.pre_merge_sha }}
+#            git diff --name-only "$PRE" HEAD | grep -q "googleAppsScripts/MyNewProject/my-new-project.gs" || exit 0
+#            DEPLOYMENT_ID=$(jq -r .DEPLOYMENT_ID googleAppsScripts/MyNewProject/my-new-project.config.json 2>/dev/null || echo "")
+#            case "$DEPLOYMENT_ID" in ""|null|YOUR_DEPLOYMENT_ID) exit 0 ;; esac
+#            BASE="https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec"
+#            RESP=$(curl -sL -X POST "$BASE" -d "action=deploy" --max-time 120 2>/dev/null || echo "")
+#            case "$RESP" in *"Updated to"*|*"Already up to date"*) echo "Deploy confirmed (POST): $RESP"; exit 0 ;; esac
+#            echo "POST deploy unconfirmed — retrying via GET fallback"
+#            RESP=$(curl -sL "$BASE?action=api&op=deploy" --max-time 120 2>/dev/null || echo "")
+#            case "$RESP" in *"Updated to"*|*"Already up to date"*) echo "Deploy confirmed (GET): $RESP"; exit 0 ;; esac
+#            echo "::warning title=My New Project GAS self-update unconfirmed::Neither POST nor GET deploy returned a confirmation — run pullAndDeployFromGitHub in the Apps Script editor. Response head: $(echo "$RESP" | head -c 200)"
+#
+#     7. That's it — the step only runs when that project's <page-name>.gs changes,
+#        and reads DEPLOYMENT_ID from <page-name>.config.json at merge time (auto-syncs on redeploy).
+name: Auto-merge Claude branches
+
+on:
+  push:
+    branches:
+      - 'claude/**'
+      - 'main'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  auto-merge:
+    if: >-
+      github.ref != 'refs/heads/main' &&
+      (needs.check-template.outputs.is-initialized == 'true' ||
+       needs.check-template.outputs.is-template == 'true')
+    needs: [check-template]
+    runs-on: ubuntu-latest
+    outputs:
+      pages-changed: ${{ steps.check-changes.outputs.pages-changed }}
+    steps:
+      # Token selection — opt-in WORKFLOW_PAT with GITHUB_TOKEN fallback.
+      #
+      # WORKFLOW_PAT is kept as a defensive safety net for scenarios where
+      # GITHUB_TOKEN may fail to push workflow-file-modifying commits to main
+      # (GitHub historically required the `workflow` scope for such pushes,
+      # which only PATs carry). Current empirical evidence shows GITHUB_TOKEN
+      # works for yml-modifying merges, but retaining WORKFLOW_PAT preserves
+      # the escape hatch if GitHub's behavior changes or a future workflow
+      # step self-modifies its own yml.
+      #
+      # Hardened opt-in gate: WORKFLOW_PAT is ONLY used when the repo
+      # variable `USE_WORKFLOW_PAT` is explicitly set to 'true'. This
+      # prevents the prior failure mode where a stale PAT inherited from a
+      # template (or a revoked PAT) was silently selected by `||` because
+      # any non-empty string is truthy, producing "Repository not found"
+      # errors on checkout. Forks that do not opt in fall through to
+      # GITHUB_TOKEN unconditionally — no accidental stale-PAT usage.
+      #
+      # To enable: set repo variable USE_WORKFLOW_PAT='true' AND add a
+      # non-empty WORKFLOW_PAT secret. Both are required — the gate fails
+      # safe to GITHUB_TOKEN if either is missing.
+      #
+      # See: .claude/rules/workflows.md "WORKFLOW_PAT Safety Net"
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ (vars.USE_WORKFLOW_PAT == 'true' && secrets.WORKFLOW_PAT) || secrets.GITHUB_TOKEN }}
+
+      - name: Guard against stale inherited branches
+        id: guard
+        run: |
+          echo "══════════════"
+          echo "GUARD: Starting inherited branch detection"
+          echo "══════════════"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Run number: ${{ github.run_number }}"
+
+          # ── Check 0a: Commit SHA already processed ──
+          # The file .github/last-processed-commit.sha stores the SHA of the
+          # last commit that was successfully merged. On fork/import, the
+          # inherited claude/* branches carry the exact same commit SHAs from
+          # the template repo. If the branch tip matches the stored SHA, it's
+          # an inherited branch replaying an already-processed commit.
+          #
+          # We check the SHA file from TWO sources:
+          #   1. The checked-out branch (the push being processed)
+          #   2. origin/main (which has the most recently updated SHA)
+          # On a fork/copy, the branch carries the template's SHA file, but
+          # origin/main may have a more recent SHA from a prior workflow run.
+          # Matching EITHER means this commit was already processed.
+          INCOMING_SHA="${{ github.sha }}"
+          echo "GUARD: Incoming SHA = $INCOMING_SHA"
+
+          # Source 1: SHA file from the checked-out branch
+          BRANCH_SHA=""
+          if [ -f ".github/last-processed-commit.sha" ]; then
+            BRANCH_SHA=$(cat .github/last-processed-commit.sha | tr -d '[:space:]')
+          fi
+          echo "GUARD Check 0a-1: Branch .sha file = '${BRANCH_SHA:-<empty>}'"
+          if [ -n "$BRANCH_SHA" ] && [ "$BRANCH_SHA" = "$INCOMING_SHA" ]; then
+            echo "::notice::Inherited branch detected — commit SHA $INCOMING_SHA matches last-processed-commit.sha (from branch)"
+            echo "::notice::Deleting inherited branch ${{ github.ref_name }}"
+            git push origin --delete ${{ github.ref_name }} || true
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # ── Fetch origin/main with retry ──
+          MAIN_AVAILABLE=false
+          for attempt in 1 2 3; do
+            if git fetch origin main 2>/dev/null; then
+              MAIN_AVAILABLE=true
+              break
+            fi
+            echo "::warning::Failed to fetch origin/main (attempt $attempt/3)"
+            sleep 3
+          done
+          echo "GUARD: origin/main fetch = $MAIN_AVAILABLE"
+
+          # ── Check 0: origin/main refresh status ──
+          # actions/checkout with fetch-depth:0 already fetched all branches
+          # including main. The explicit fetch above is just a refresh. If it
+          # failed, origin/main from the initial checkout is still available.
+          if [ "$MAIN_AVAILABLE" = false ]; then
+            echo "::warning::Could not refresh origin/main — using checkout version for remaining checks"
+          fi
+
+          # Source 2: SHA file from origin/main (freshly fetched)
+          MAIN_SHA=""
+          MAIN_SHA=$(git show origin/main:.github/last-processed-commit.sha 2>/dev/null | tr -d '[:space:]' || echo "")
+          echo "GUARD Check 0a-2: Main .sha file = '${MAIN_SHA:-<empty>}'"
+          if [ -n "$MAIN_SHA" ] && [ "$MAIN_SHA" = "$INCOMING_SHA" ]; then
+            echo "::notice::Inherited branch detected — commit SHA $INCOMING_SHA matches last-processed-commit.sha (from origin/main)"
+            echo "::notice::Deleting inherited branch ${{ github.ref_name }}"
+            git push origin --delete ${{ github.ref_name }} || true
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # ── Check 1: Already merged ──
+          if git merge-base --is-ancestor ${{ github.sha }} origin/main; then
+            echo "::notice::Branch already merged into main — cleaning up"
+            git push origin --delete ${{ github.ref_name }} || true
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "GUARD Check 1: Branch is NOT ancestor of origin/main — continuing"
+
+          # ── Check 2: Commit predates repo creation ──
+          CREATED_AT=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "${{ github.api_url }}/repos/${{ github.repository }}" | jq -r '.created_at' || echo "")
+          echo "GUARD Check 2: API created_at = '${CREATED_AT:-<empty>}'"
+
+          if [ -n "$CREATED_AT" ] && [ "$CREATED_AT" != "null" ]; then
+            REPO_CREATED_EPOCH=$(date -d "$CREATED_AT" +%s 2>/dev/null || echo "0")
+            COMMIT_AUTHOR_DATE=$(git log -1 --format='%aI' ${{ github.sha }})
+            COMMIT_EPOCH=$(date -d "$COMMIT_AUTHOR_DATE" +%s 2>/dev/null || echo "0")
+
+            echo "GUARD Check 2: Repo created epoch = $REPO_CREATED_EPOCH"
+            echo "GUARD Check 2: Commit author date = $COMMIT_AUTHOR_DATE (epoch: $COMMIT_EPOCH)"
+
+            # Timestamp check: commit older than repo (minus 5 min grace)?
+            GRACE=300
+            REPO_CREATED_WITH_GRACE=$((REPO_CREATED_EPOCH - GRACE))
+            if [ "$COMMIT_EPOCH" -gt 0 ] && [ "$COMMIT_EPOCH" -lt "$REPO_CREATED_WITH_GRACE" ]; then
+              echo "::notice::Inherited branch detected — commit authored $(date -d "@$COMMIT_EPOCH" -u '+%Y-%m-%dT%H:%M:%SZ') but repo created $(date -d "@$REPO_CREATED_EPOCH" -u '+%Y-%m-%dT%H:%M:%SZ')"
+              git push origin --delete ${{ github.ref_name }} || true
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            echo "GUARD Check 2: Commit not older than repo — continuing"
+          else
+            echo "::warning::Could not fetch repo creation date — skipping timestamp check (other guards still apply)"
+          fi
+
+          # ── Check 3: IS_TEMPLATE_REPO mismatch (defense in depth) ──
+          TEMPLATE_VALUE_MAIN=$(git show origin/main:CLAUDE.md 2>/dev/null | \
+            grep -oP '^\| `IS_TEMPLATE_REPO` \| \K[^|]+' | \
+            sed 's/[[:space:]]*$//' | tr -d '\r' || echo "")
+          TEMPLATE_VALUE_BRANCH=$(grep -oP '^\| `IS_TEMPLATE_REPO` \| \K[^|]+' CLAUDE.md | \
+            sed 's/[[:space:]]*$//' | tr -d '\r' || echo "")
+          REPO_NAME="${{ github.event.repository.name }}"
+          echo "GUARD Check 3: IS_TEMPLATE_REPO from main = '${TEMPLATE_VALUE_MAIN:-<empty>}'"
+          echo "GUARD Check 3: IS_TEMPLATE_REPO from branch = '${TEMPLATE_VALUE_BRANCH:-<empty>}'"
+          echo "GUARD Check 3: Actual repo name = '$REPO_NAME'"
+
+          # Case A: main says "No" (initialized) but branch still has template name
+          if [ "$TEMPLATE_VALUE_MAIN" = "No" ] && \
+             [ -n "$TEMPLATE_VALUE_BRANCH" ] && \
+             [ "$TEMPLATE_VALUE_BRANCH" != "No" ] && \
+             [ "$TEMPLATE_VALUE_BRANCH" != "$REPO_NAME" ]; then
+            echo "::notice::Stale branch from pre-initialization detected (main: No, branch: $TEMPLATE_VALUE_BRANCH)"
+            git push origin --delete ${{ github.ref_name }} || true
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Case B: Branch's IS_TEMPLATE_REPO doesn't match this repo name
+          if [ -n "$TEMPLATE_VALUE_BRANCH" ] && \
+             [ "$TEMPLATE_VALUE_BRANCH" != "No" ] && \
+             [ "$TEMPLATE_VALUE_BRANCH" != "$REPO_NAME" ]; then
+            echo "::notice::Stale branch from template repo — IS_TEMPLATE_REPO mismatch ($TEMPLATE_VALUE_BRANCH != $REPO_NAME)"
+            git push origin --delete ${{ github.ref_name }} || true
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "GUARD: All checks passed — branch is legitimate"
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+
+      # ── GAS inner-<script> syntax gate ──
+      # Each .gs builds its served page as a STRING inside a JS template literal,
+      # so `node --check` on the .gs validates the OUTER wrapper but NOT the inner
+      # served <script>'s own syntax. An unclosed brace/IIFE there is invisible to
+      # the wrapper check yet kills the entire served script (including auth init)
+      # at runtime — fresh sign-ins hang while already-open tabs keep working.
+      # This step extracts and syntax-checks each served inner <script>, failing
+      # the run (blocking merge + deploy, branch preserved) on a broken one. It
+      # covers both served-page constructions — template literals (var html = `...`)
+      # and string concatenation ('a' + expr + 'b'). See the script header.
+      - name: Validate GAS served inner <script> syntax
+        if: steps.guard.outputs.skip != 'true' && success()
+        run: node scripts/check-gas-inner-scripts.js
+
+      - name: Merge into main and update SHA tracker
+        if: steps.guard.outputs.skip != 'true' && success()
+        id: merge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout main
+          echo "pre_merge_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+          # Merge the claude branch into main
+          git merge --ff-only ${{ github.ref_name }} || \
+            git merge --no-edit -X theirs ${{ github.ref_name }}
+
+          # Update the SHA tracker in the SAME push as the merge.
+          # This eliminates the race condition where an import/fork copies the
+          # repo between the merge push and the SHA update push, getting an
+          # inconsistent state where the branch exists but the SHA file is stale.
+          MERGE_SHA=$(git rev-parse HEAD)
+          echo "$MERGE_SHA" > .github/last-processed-commit.sha
+          git add .github/last-processed-commit.sha
+          git commit -m "Update last-processed-commit.sha to ${MERGE_SHA:0:7} [skip ci]" || true
+
+          # Single push — merge + SHA update land atomically.
+          # Retry on transient GitHub 5xx errors (same 2s/4s/8s/16s pattern
+          # as the Claude-side Git Operations rules). Without this, one 500
+          # on the push kills the whole merge step — observed on v11.81r
+          # and v11.84r, both of which had clean fast-forward merges but
+          # died at this push with `remote: Internal Server Error` / exit 128.
+          #
+          # On retry, also re-fetch origin/main and check whether it advanced
+          # while we were preparing the push (concurrent merge from another
+          # claude/* workflow, or a manual main push). If origin/main moved,
+          # a plain retry will fail with non-fast-forward forever — we have
+          # to redo the merge on the new base. Push-once enforcement makes
+          # the concurrent-claude case rare, but the resilience is cheap
+          # and protects against unanticipated races (e.g. workflow_dispatch
+          # interleaving with a push trigger).
+          for attempt in 1 2 3 4; do
+            if git push origin main; then
+              break
+            fi
+            if [ "$attempt" -eq 4 ]; then
+              echo "::error::git push origin main failed after 4 attempts"
+              exit 1
+            fi
+            SLEEP=$((2 ** attempt))
+            echo "::warning::git push origin main failed (attempt $attempt/4) — retrying in ${SLEEP}s"
+            sleep "$SLEEP"
+
+            # After backoff, check whether origin/main advanced. If it did,
+            # the push will keep failing with non-fast-forward — redo the
+            # merge on the new base before the next retry. If origin/main
+            # is still our ancestor, the failure was transient (5xx) and
+            # the next retry just tries the same push.
+            git fetch origin main 2>/dev/null || true
+            if ! git merge-base --is-ancestor origin/main HEAD; then
+              echo "::warning::origin/main advanced during merge — redoing merge on new base"
+              git reset --hard origin/main
+              echo "pre_merge_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+              git merge --ff-only ${{ github.ref_name }} || \
+                git merge --no-edit -X theirs ${{ github.ref_name }}
+              NEW_MERGE_SHA=$(git rev-parse HEAD)
+              echo "$NEW_MERGE_SHA" > .github/last-processed-commit.sha
+              git add .github/last-processed-commit.sha
+              git commit -m "Update last-processed-commit.sha to ${NEW_MERGE_SHA:0:7} [skip ci]" || true
+            fi
+          done
+
+      - name: Check what changed
+        if: steps.guard.outputs.skip != 'true' && success()
+        id: check-changes
+        run: |
+          PRE=${{ steps.merge.outputs.pre_merge_sha }}
+          PAGES_CHANGED=false
+          # Deploy if live-site-pages/ files changed
+          if git diff --name-only "$PRE" HEAD | grep -q "^live-site-pages/"; then
+            PAGES_CHANGED=true
+          fi
+          # Deploy on initialization (IS_TEMPLATE_REPO changed to No)
+          if git diff "$PRE" HEAD -- CLAUDE.md | grep -q '^+| `IS_TEMPLATE_REPO` | No |'; then
+            PAGES_CHANGED=true
+          fi
+          echo "pages-changed=$PAGES_CHANGED" >> "$GITHUB_OUTPUT"
+
+      # ── GAS DEPLOY STEPS ──
+      # Add one step per GAS project here, BEFORE "Delete branch".
+      # Each step only fires when its .gs file changed in the merge.
+      #
+      # Template (uncomment and fill in):
+      #
+      # - name: Deploy <Your Project Name>
+      #   if: steps.guard.outputs.skip != 'true' && success()
+      #   run: |
+      #     PRE=${{ steps.merge.outputs.pre_merge_sha }}
+      #     git diff --name-only "$PRE" HEAD | grep -q "googleAppsScripts/<ProjectDir>/<CodeFile>.gs" || exit 0
+      #     DEPLOYMENT_ID=$(jq -r .DEPLOYMENT_ID googleAppsScripts/<ProjectDir>/<CodeFile>.config.json 2>/dev/null || echo "")
+      #     case "$DEPLOYMENT_ID" in ""|null|YOUR_DEPLOYMENT_ID) exit 0 ;; esac
+      #     curl -L -X POST "https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec" -d "action=deploy" --max-time 120 || true
+      # ──────────────
+
+      - name: Deploy Testauthgas1
+        if: steps.guard.outputs.skip != 'true' && success()
+        run: |
+          PRE=${{ steps.merge.outputs.pre_merge_sha }}
+          git diff --name-only "$PRE" HEAD | grep -q "googleAppsScripts/Testauthgas1/testauthgas1.gs" || exit 0
+          DEPLOYMENT_ID=$(jq -r .DEPLOYMENT_ID googleAppsScripts/Testauthgas1/testauthgas1.config.json 2>/dev/null || echo "")
+          case "$DEPLOYMENT_ID" in ""|null|YOUR_DEPLOYMENT_ID) exit 0 ;; esac
+          curl -L -X POST "https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec" -d "action=deploy" --max-time 120 || true
+
+      - name: Deploy Testauthhtml1
+        if: steps.guard.outputs.skip != 'true' && success()
+        run: |
+          PRE=${{ steps.merge.outputs.pre_merge_sha }}
+          git diff --name-only "$PRE" HEAD | grep -q "googleAppsScripts/Testauthhtml1/testauthhtml1.gs" || exit 0
+          DEPLOYMENT_ID=$(jq -r .DEPLOYMENT_ID googleAppsScripts/Testauthhtml1/testauthhtml1.config.json 2>/dev/null || echo "")
+          case "$DEPLOYMENT_ID" in ""|null|YOUR_DEPLOYMENT_ID) exit 0 ;; esac
+          curl -L -X POST "https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec" -d "action=deploy" --max-time 120 || true
+
+      - name: Deploy Globalacl
+        if: steps.guard.outputs.skip != 'true' && success()
+        run: |
+          PRE=${{ steps.merge.outputs.pre_merge_sha }}
+          git diff --name-only "$PRE" HEAD | grep -q "googleAppsScripts/Globalacl/globalacl.gs" || exit 0
+          DEPLOYMENT_ID=$(jq -r .DEPLOYMENT_ID googleAppsScripts/Globalacl/globalacl.config.json 2>/dev/null || echo "")
+          case "$DEPLOYMENT_ID" in ""|null|YOUR_DEPLOYMENT_ID) exit 0 ;; esac
+          curl -L -X POST "https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec" -d "action=deploy" --max-time 120 || true
+
+      - name: Deploy MasterACL
+        if: steps.guard.outputs.skip != 'true' && success()
+        run: |
+          PRE=${{ steps.merge.outputs.pre_merge_sha }}
+          git diff --name-only "$PRE" HEAD | grep -q "googleAppsScripts/MasterACL/MasterACL.gs" || exit 0
+          DEPLOYMENT_ID=$(jq -r .DEPLOYMENT_ID googleAppsScripts/MasterACL/MasterACL.config.json 2>/dev/null || echo "")
+          case "$DEPLOYMENT_ID" in ""|null|YOUR_DEPLOYMENT_ID) exit 0 ;; esac
+          curl -L -X POST "https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec" -d "action=deploy" --max-time 120 || true
+
+      - name: Deploy Scraper
+        if: steps.guard.outputs.skip != 'true' && success()
+        run: |
+          PRE=${{ steps.merge.outputs.pre_merge_sha }}
+          git diff --name-only "$PRE" HEAD | grep -q "googleAppsScripts/Scraper/Scraper.gs" || exit 0
+          DEPLOYMENT_ID=$(jq -r .DEPLOYMENT_ID googleAppsScripts/Scraper/Scraper.config.json 2>/dev/null || echo "")
+          case "$DEPLOYMENT_ID" in ""|null|YOUR_DEPLOYMENT_ID) exit 0 ;; esac
+          BASE="https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec"
+          # POST first; the runner's POST can lose its body on Google's redirect, so verify
+          # the response and fall back to the GAS doGet deploy route (?action=api&op=deploy)
+          RESP=$(curl -sL -X POST "$BASE" -d "action=deploy" --max-time 120 2>/dev/null || echo "")
+          case "$RESP" in *"Updated to"*|*"Already up to date"*) echo "Deploy confirmed (POST): $RESP"; exit 0 ;; esac
+          echo "POST deploy unconfirmed — retrying via GET fallback"
+          RESP=$(curl -sL "$BASE?action=api&op=deploy" --max-time 120 2>/dev/null || echo "")
+          case "$RESP" in *"Updated to"*|*"Already up to date"*) echo "Deploy confirmed (GET): $RESP"; exit 0 ;; esac
+          echo "::warning title=Scraper GAS self-update unconfirmed::Neither POST nor GET deploy returned a confirmation — run pullAndDeployFromGitHub in the Apps Script editor. Response head: $(echo "$RESP" | head -c 200)"
+
+      - name: Deploy Receipts
+        if: steps.guard.outputs.skip != 'true' && success()
+        run: |
+          PRE=${{ steps.merge.outputs.pre_merge_sha }}
+          git diff --name-only "$PRE" HEAD | grep -q "googleAppsScripts/Receipts/Receipts.gs" || exit 0
+          DEPLOYMENT_ID=$(jq -r .DEPLOYMENT_ID googleAppsScripts/Receipts/Receipts.config.json 2>/dev/null || echo "")
+          case "$DEPLOYMENT_ID" in ""|null|YOUR_DEPLOYMENT_ID) exit 0 ;; esac
+          BASE="https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec"
+          # POST first; the runner's POST can lose its body on Google's redirect, so verify
+          # the response and fall back to the GAS doGet deploy route (?action=api&op=deploy)
+          RESP=$(curl -sL -X POST "$BASE" -d "action=deploy" --max-time 120 2>/dev/null || echo "")
+          case "$RESP" in *"Updated to"*|*"Already up to date"*) echo "Deploy confirmed (POST): $RESP"; exit 0 ;; esac
+          echo "POST deploy unconfirmed — retrying via GET fallback"
+          RESP=$(curl -sL "$BASE?action=api&op=deploy" --max-time 120 2>/dev/null || echo "")
+          case "$RESP" in *"Updated to"*|*"Already up to date"*) echo "Deploy confirmed (GET): $RESP"; exit 0 ;; esac
+          echo "::warning title=Receipts GAS self-update unconfirmed::Neither POST nor GET deploy returned a confirmation — run pullAndDeployFromGitHub in the Apps Script editor. Response head: $(echo "$RESP" | head -c 200)"
+
+      - name: Deploy Profiler
+        if: steps.guard.outputs.skip != 'true' && success()
+        run: |
+          PRE=${{ steps.merge.outputs.pre_merge_sha }}
+          git diff --name-only "$PRE" HEAD | grep -q "googleAppsScripts/Profiler/Profiler.gs" || exit 0
+          DEPLOYMENT_ID=$(jq -r .DEPLOYMENT_ID googleAppsScripts/Profiler/Profiler.config.json 2>/dev/null || echo "")
+          case "$DEPLOYMENT_ID" in ""|null|YOUR_DEPLOYMENT_ID) exit 0 ;; esac
+          BASE="https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec"
+          # POST first; the runner's POST can lose its body on Google's redirect, so verify
+          # the response and fall back to the GAS doGet deploy route (?action=api&op=deploy)
+          RESP=$(curl -sL -X POST "$BASE" -d "action=deploy" --max-time 120 2>/dev/null || echo "")
+          case "$RESP" in *"Updated to"*|*"Already up to date"*) echo "Deploy confirmed (POST): $RESP"; exit 0 ;; esac
+          echo "POST deploy unconfirmed — retrying via GET fallback"
+          RESP=$(curl -sL "$BASE?action=api&op=deploy" --max-time 120 2>/dev/null || echo "")
+          case "$RESP" in *"Updated to"*|*"Already up to date"*) echo "Deploy confirmed (GET): $RESP"; exit 0 ;; esac
+          echo "::warning title=Profiler GAS self-update unconfirmed::Neither POST nor GET deploy returned a confirmation — run pullAndDeployFromGitHub in the Apps Script editor. Response head: $(echo "$RESP" | head -c 200)"
+
+      - name: Update AHK version files
+        if: steps.guard.outputs.skip != 'true' && success()
+        run: |
+          PRE=${{ steps.merge.outputs.pre_merge_sha }}
+          if git diff --name-only "$PRE" HEAD | grep -E '\.ahk$' | grep -vq '^autoHotkey/archived/'; then
+            echo "AHK files changed — updating version files"
+            mkdir -p live-site-pages/ahk-versions
+            for ahk_file in $(git diff --name-only "$PRE" HEAD | grep -E '\.ahk$' | grep -v '^autoHotkey/archived/'); do
+              if [ -f "$ahk_file" ]; then
+                VER=$(grep -oP 'VERSION\s*:=\s*"\K[^"]+' "$ahk_file" || echo "")
+                if [ -n "$VER" ]; then
+                  # Strip the trailing .ahk, lowercase, drop any remaining dots
+                  # (handles double-extension names like Test1.ahk.ahk where the
+                  # inner ".ahk" stays in the basename and would otherwise produce
+                  # test1.ahkahk.version.txt — the manifest expects no dots).
+                  BASENAME=$(basename "$ahk_file" .ahk | tr '[:upper:]' '[:lower:]' | tr -d '.' | tr ' ' '-')
+                  echo "|${VER}|" > "live-site-pages/ahk-versions/${BASENAME}ahk.version.txt"
+                  echo "  Updated ${BASENAME}ahk.version.txt → |${VER}|"
+                fi
+              fi
+            done
+            git add live-site-pages/ahk-versions/
+            git commit -m "Update AHK version files [skip ci]" || echo "No changes to commit"
+
+            # Retry the AHK push with exponential backoff (2s/4s/8s/16s),
+            # mirroring the merge-push retry pattern. On non-fast-forward
+            # (narrow race window since merge-push just landed but
+            # origin/main could advance from another concurrent workflow),
+            # rebase the single AHK commit onto the new origin/main —
+            # simpler than the merge-push case because there's only one
+            # commit to replay (no merge + SHA-tracker pair). On total
+            # exhaustion, log a warning and continue; AHK version files
+            # are secondary to the main merge and will be regenerated
+            # idempotently on the next AHK-touching workflow run.
+            PUSHED=false
+            for attempt in 1 2 3 4; do
+              if git push origin main; then
+                PUSHED=true
+                break
+              fi
+              if [ "$attempt" -eq 4 ]; then
+                break
+              fi
+              SLEEP=$((2 ** attempt))
+              echo "::warning::AHK push origin main failed (attempt $attempt/4) — retrying in ${SLEEP}s"
+              sleep "$SLEEP"
+              git fetch origin main 2>/dev/null || true
+              if ! git merge-base --is-ancestor origin/main HEAD; then
+                echo "::warning::origin/main advanced — rebasing AHK commit onto new base"
+                git rebase origin/main || break
+              fi
+            done
+            if [ "$PUSHED" = false ]; then
+              echo "::warning::AHK push failed after 4 attempts — version files will be regenerated on next AHK change"
+            fi
+          else
+            echo "No active AHK files changed — skipping version file update"
+          fi
+      # ──────────────
+
+      # When .html files under auto-update-payloads/ change, update per-file
+      # version files in live-site-pages/auto-update-html-versions/ so the AHK
+      # auto-updater can poll via GitHub Pages. The version is parsed from the
+      # <meta name="build-version" content="vXX.XXw"> tag in each HTML file.
+      - name: Update auto-update HTML payload version files
+        if: steps.guard.outputs.skip != 'true' && success()
+        run: |
+          PRE=${{ steps.merge.outputs.pre_merge_sha }}
+          if git diff --name-only "$PRE" HEAD | grep -qE '^auto-update-payloads/.*\.html$'; then
+            echo "HTML auto-update payloads changed — updating version files"
+            mkdir -p live-site-pages/auto-update-html-versions
+            for html_file in $(git diff --name-only "$PRE" HEAD | grep -E '^auto-update-payloads/.*\.html$'); do
+              if [ -f "$html_file" ]; then
+                VER=$(grep -oP '<meta\s+name="build-version"\s+content="\K[^"]+' "$html_file" || echo "")
+                if [ -n "$VER" ]; then
+                  # Strip the trailing .html, lowercase, drop any remaining dots
+                  # so "mydashboard.html" → "mydashboard" → "mydashboardhtml.version.txt".
+                  BASENAME=$(basename "$html_file" .html | tr '[:upper:]' '[:lower:]' | tr -d '.' | tr ' ' '-')
+                  echo "|${VER}|" > "live-site-pages/auto-update-html-versions/${BASENAME}html.version.txt"
+                  echo "  Updated ${BASENAME}html.version.txt → |${VER}|"
+                fi
+              fi
+            done
+            git add live-site-pages/auto-update-html-versions/
+            git commit -m "Update auto-update HTML payload version files [skip ci]" || echo "No changes to commit"
+
+            # Retry with exponential backoff (2s/4s/8s/16s), mirroring the AHK
+            # version-file push pattern above. On non-fast-forward, rebase the
+            # single commit onto the new origin/main. On total exhaustion, log
+            # a warning and continue — version files regenerate idempotently
+            # on the next payload-touching workflow run.
+            PUSHED=false
+            for attempt in 1 2 3 4; do
+              if git push origin main; then
+                PUSHED=true
+                break
+              fi
+              if [ "$attempt" -eq 4 ]; then
+                break
+              fi
+              SLEEP=$((2 ** attempt))
+              echo "::warning::HTML payload push origin main failed (attempt $attempt/4) — retrying in ${SLEEP}s"
+              sleep "$SLEEP"
+              git fetch origin main 2>/dev/null || true
+              if ! git merge-base --is-ancestor origin/main HEAD; then
+                echo "::warning::origin/main advanced — rebasing HTML payload commit onto new base"
+                git rebase origin/main || break
+              fi
+            done
+            if [ "$PUSHED" = false ]; then
+              echo "::warning::HTML payload push failed after 4 attempts — version files will be regenerated on next payload change"
+            fi
+          else
+            echo "No auto-update HTML payloads changed — skipping version file update"
+          fi
+      # ──────────────
+
+      - name: Delete branch
+        if: steps.guard.outputs.skip != 'true' && success()
+        run: |
+          git push origin --delete ${{ github.ref_name }} || echo "Branch already deleted"
+
+      - name: Sweep stale claude branches
+        if: steps.guard.outputs.skip != 'true' && success()
+        run: |
+          # After merging, sweep for any other claude/* branches already
+          # merged into main. Catches branches that survived due to workflow
+          # failures, race conditions, or re-pushes after deletion.
+          #
+          # Fetch ALL refs (not just main) with --prune so origin/claude/*
+          # remote-tracking refs reflect current remote state. Without --prune
+          # and without an all-refs fetch, the iteration below operates on
+          # whatever origin/claude/* refs were present at checkout time —
+          # which may include refs for branches that have since been deleted
+          # on the remote, producing harmless but noisy "delete" attempts.
+          git fetch --prune origin
+          DELETED=0
+          for ref in $(git branch -r --list 'origin/claude/*' 2>/dev/null); do
+            branch_name="${ref#origin/}"
+            if git merge-base --is-ancestor "$ref" origin/main 2>/dev/null; then
+              echo "Deleting merged branch: $branch_name"
+              git push origin --delete "$branch_name" || true
+              DELETED=$((DELETED + 1))
+            fi
+          done
+          if [ "$DELETED" -gt 0 ]; then
+            echo "::notice::Cleaned up $DELETED stale claude/* branch(es)"
+          else
+            echo "No stale claude/* branches found"
+          fi
+
+  check-template:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      is-template: ${{ steps.check.outputs.is-template }}
+      is-initialized: ${{ steps.check.outputs.is-initialized }}
+      template-deploy: ${{ steps.check.outputs.template-deploy }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          sparse-checkout: CLAUDE.md
+          sparse-checkout-cone-mode: false
+      - name: Check IS_TEMPLATE_REPO in CLAUDE.md
+        id: check
+        run: |
+          TEMPLATE_VALUE=$(grep -oP '^\| `IS_TEMPLATE_REPO` \| \K[^|]+' CLAUDE.md | sed 's/[[:space:]]*$//' | tr -d '\r' || echo "")
+          REPO_NAME="${{ github.event.repository.name }}"
+          if [ -n "$TEMPLATE_VALUE" ] && [ "$TEMPLATE_VALUE" != "No" ] && [ "$TEMPLATE_VALUE" = "$REPO_NAME" ]; then
+            echo "is-template=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is-template=false" >> "$GITHUB_OUTPUT"
+          fi
+          # Initialization check: IS_TEMPLATE_REPO = "No" means the repo has
+          # been initialized via `initialize`. Uninitialized forks still have the
+          # template repo name here. This gates direct-to-main deploys — only
+          # initialized repos should auto-deploy on main pushes. The initialization
+          # commit itself deploys via the auto-merge success path (pages-changed),
+          # not the skipped path, so this doesn't block first deploy.
+          if [ "$TEMPLATE_VALUE" = "No" ]; then
+            echo "is-initialized=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is-initialized=false" >> "$GITHUB_OUTPUT"
+          fi
+          # TEMPLATE_DEPLOY toggle: when "On", allows GitHub Pages deployment
+          # even on the template repo. Has no effect on forks.
+          TEMPLATE_DEPLOY=$(grep -oP '^\| `TEMPLATE_DEPLOY` \| \K[^|]+' CLAUDE.md | sed 's/[[:space:]]*$//' | tr -d '\r' || echo "Off")
+          echo "template-deploy=$TEMPLATE_DEPLOY" >> "$GITHUB_OUTPUT"
+
+  # Deploy condition explained:
+  #   - is-template + template-deploy: skip deploy on the template repo UNLESS
+  #     TEMPLATE_DEPLOY is "On" in CLAUDE.md (allows seeing the live site on
+  #     the template). When TEMPLATE_DEPLOY is "On", the template repo deploys
+  #     on every auto-merge success (bypasses pages-changed gate)
+  #   - auto-merge skipped + is-initialized: handles workflow_dispatch on
+  #     initialized forks (manual re-deploy). Since main is not in the push
+  #     trigger, this path only fires via workflow_dispatch
+  #   - auto-merge success + pages-changed: deploy if live-site-pages/ files
+  #     changed (includes initialization commit which sets IS_TEMPLATE_REPO = No)
+  #   - auto-merge success + template-deploy On: always deploy on template repo
+  #     when toggle is enabled (bypasses pages-changed requirement)
+  deploy:
+    if: >-
+      (needs.check-template.outputs.is-template != 'true' ||
+       needs.check-template.outputs.template-deploy == 'On') &&
+      always() &&
+      ((needs.auto-merge.result == 'skipped' && needs.check-template.outputs.is-initialized == 'true') ||
+       (needs.auto-merge.result == 'success' && needs.auto-merge.outputs.pages-changed == 'true') ||
+       (needs.auto-merge.result == 'success' && needs.check-template.outputs.template-deploy == 'On'))
+    needs: [auto-merge, check-template]
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment2.outputs.page_url || steps.deployment3.outputs.page_url || steps.deployment4.outputs.page_url || steps.deployment5.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: './live-site-pages'
+      # GitHub Pages has been failing deployments server-side intermittently since
+      # 2026-01 (actions/deploy-pages#406, #418): deployments either sit in
+      # deployment_queued until the 10-minute timeout or report deployment_failed
+      # seconds after creation, with occasional successes on retry and no repo-side
+      # cause. Retry up to 5 times before failing the job. Each attempt creates a
+      # fresh Pages deployment from the same uploaded artifact; failed deployments
+      # are terminal server-side (and deploy-pages cancels its own timed-out ones),
+      # so re-invoking is safe.
+      #
+      # Attempts 4-5 (5-minute cool-downs) replace the former standalone
+      # retry-pages-deploy.yml companion workflow: workflow_run triggers create a
+      # visible (skipped) run entry after EVERY auto-merge run, cluttering the
+      # Actions tab. Keeping the long-tail retries inside this job covers the same
+      # outage windows (e.g. run #387, where all 3 short-backoff attempts failed)
+      # with zero extra run entries.
+      - name: Deploy to GitHub Pages (attempt 1)
+        id: deployment
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+      - name: Wait before retry
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 60
+      - name: Deploy to GitHub Pages (attempt 2)
+        id: deployment2
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+      - name: Wait before retry 3
+        if: steps.deployment.outcome == 'failure' && steps.deployment2.outcome == 'failure'
+        run: sleep 120
+      - name: Deploy to GitHub Pages (attempt 3)
+        id: deployment3
+        if: steps.deployment.outcome == 'failure' && steps.deployment2.outcome == 'failure'
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+      - name: Cool down before retry 4 (5 minutes)
+        if: steps.deployment.outcome == 'failure' && steps.deployment2.outcome == 'failure' && steps.deployment3.outcome == 'failure'
+        run: sleep 300
+      - name: Deploy to GitHub Pages (attempt 4)
+        id: deployment4
+        if: steps.deployment.outcome == 'failure' && steps.deployment2.outcome == 'failure' && steps.deployment3.outcome == 'failure'
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+      - name: Cool down before final retry (5 minutes)
+        if: steps.deployment.outcome == 'failure' && steps.deployment2.outcome == 'failure' && steps.deployment3.outcome == 'failure' && steps.deployment4.outcome == 'failure'
+        run: sleep 300
+      - name: Deploy to GitHub Pages (attempt 5)
+        id: deployment5
+        if: steps.deployment.outcome == 'failure' && steps.deployment2.outcome == 'failure' && steps.deployment3.outcome == 'failure' && steps.deployment4.outcome == 'failure'
+        uses: actions/deploy-pages@v5
+
+  # ── Library mirror ──
+  # Mirrors the knowledge files into the private bess-aidc-library repo (the
+  # centralized reporting pool) after every merge to main — and on direct main
+  # pushes (e.g. field-note-intake workflow commits). Requires the
+  # LIBRARY_SYNC_TOKEN repository secret: a fine-grained PAT with Contents
+  # read/write on LightAISolutions/bess-aidc-library ONLY (see
+  # repository-information/ENTERPRISE-SETUP.md — "Library mirror token").
+  # Skips with a notice until the secret exists. Library layout:
+  #   dossiers/ · archive/ · notes/ · study/ (+study-prep/) · digests/ (future
+  #   Scraper export) · reports/ (session-written, never mirrored) · receipts/ (reserved)
+  mirror-library:
+    if: >-
+      always() &&
+      needs.check-template.outputs.is-template != 'true' &&
+      needs.check-template.outputs.is-initialized == 'true' &&
+      (needs.auto-merge.result == 'success' ||
+       (needs.auto-merge.result == 'skipped' && github.ref == 'refs/heads/main'))
+    needs: [auto-merge, check-template]
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check mirror token
+        id: token
+        env:
+          LIBRARY_SYNC_TOKEN: ${{ secrets.LIBRARY_SYNC_TOKEN }}
+        run: |
+          if [ -z "$LIBRARY_SYNC_TOKEN" ]; then
+            echo "have-token=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::LIBRARY_SYNC_TOKEN secret not set — library mirror skipped. Add a fine-grained PAT (Contents read/write on bess-aidc-library) as a repository secret to activate."
+          else
+            echo "have-token=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Checkout Sales main
+        if: steps.token.outputs.have-token == 'true'
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          path: sales
+      - name: Checkout bess-aidc-library
+        if: steps.token.outputs.have-token == 'true'
+        uses: actions/checkout@v5
+        with:
+          repository: LightAISolutions/bess-aidc-library
+          token: ${{ secrets.LIBRARY_SYNC_TOKEN }}
+          path: library
+      - name: Sync knowledge files into library layout
+        if: steps.token.outputs.have-token == 'true'
+        run: |
+          set -euo pipefail
+          SRC=sales/live-site-pages/profiler-data
+          mkdir -p library/dossiers library/archive library/study
+          cp "$SRC"/*.profile.json library/dossiers/ 2>/dev/null || true
+          cp "$SRC/profiler-companies.json" library/dossiers/
+          rsync -a "$SRC/archive/" library/archive/
+          cp "$SRC"/*.study.json library/study/ 2>/dev/null || true
+          if [ -d sales/repository-information/study-prep ]; then
+            mkdir -p library/study/study-prep
+            rsync -a --delete sales/repository-information/study-prep/ library/study/study-prep/
+          fi
+          # Field notes and note files are NOT mirrored — they moved to Drive in
+          # the M3 migration precisely so they never land in a git repo. Mirroring
+          # them here would recreate the exposure in a second repository.
+          if [ -d sales/live-site-pages/scraper-data/digests ]; then
+            mkdir -p library/digests
+            rsync -a --delete sales/live-site-pages/scraper-data/digests/ library/digests/
+          fi
+          # reports/ and receipts/ are written by sessions directly — never touched here.
+          # README is created once (not per-run) so no-change syncs stay commit-free.
+          if [ ! -f library/README.md ]; then
+            {
+              echo "# BESS-AIDC Library — Centralized Knowledge Pool"
+              echo
+              echo "Auto-mirrored from LightAISolutions/Sales on every merge to its main branch."
+              echo
+              echo "- dossiers/ — current company profiles + registry (Profiler)"
+              echo "- archive/ — superseded dossier versions + index"
+              echo "- notes/ — field notes (verbatim, confidence-rated)"
+              echo "- study/ — in-app study guides; study-prep/ holds the full lesson plans"
+              echo "- digests/ — Scraper news digests (activates when the Scraper export ships)"
+              echo "- reports/ — reporting outputs, written by reporting sessions directly"
+              echo "- receipts/ — reserved for Receipts summaries"
+              echo
+              echo "Sync history: see this repo's commit log (one commit per changed mirror)."
+            } > library/README.md
+          fi
+      - name: Commit and push mirror
+        if: steps.token.outputs.have-token == 'true'
+        run: |
+          set -euo pipefail
+          MAIN_SHA=$(git -C sales rev-parse --short HEAD)
+          cd library
+          git config user.name "sales-library-mirror[bot]"
+          git config user.email "actions@github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Library already up to date — nothing to mirror."
+          else
+            git commit -m "Mirror from Sales@${MAIN_SHA}"
+            git push
+          fi
+
+# Developed by: LightAISolutions
+

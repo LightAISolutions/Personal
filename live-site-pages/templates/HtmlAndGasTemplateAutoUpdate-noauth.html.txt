@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-src https://script.google.com https://*.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.shadowaisolutions.com https://logoipsum.com; object-src 'none'; base-uri 'self'; form-action 'self'; media-src 'self'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests;">
+  <meta name="template-id" content="sais-aut-7f3e9b2d">
+  <meta name="build-version" content="v01.00w">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <title>CHANGE THIS PROJECT TITLE TEMPLATE</title>
+  <style>
+/* ══════════════ */
+/* TEMPLATE START */
+/* ══════════════ */
+    html, body { margin: 0; padding: 0; height: 100%; }
+    .splash {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 10000; display: none; align-items: center; justify-content: center;
+      flex-direction: column; transition: opacity 0.3s ease;
+    }
+    .splash .splash-title { color: #fff; font: bold 36px/1 sans-serif; margin-bottom: 20px; }
+    .splash img { max-width: 500px; max-height: 500px; }
+    #splash-web { background: #1b5e20; }
+    #splash-code { background: #0d47a1; }
+    #splash-maintenance { background: #b04000; z-index: 9998; }
+    .maintenance-timestamp { color: rgba(255,255,255,0.85); font: 16px/1.4 monospace; margin-top: 20px; }
+    #version-indicator {
+      position: fixed; bottom: 8px; right: 22px; z-index: 9999;
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(0,0,0,0.55); color: #ccc; padding: 4px 10px;
+      border-radius: 12px; font: 11px/1 monospace;
+      pointer-events: auto; cursor: pointer; transition: all 0.3s ease;
+    }
+    #version-indicator:hover { background: rgba(0,0,0,0.75); }
+    #changelog-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); z-index: 10001; display: none;
+      align-items: center; justify-content: center;
+    }
+    #changelog-popup {
+      background: #1a1a2e; color: #e0e0e0; border-radius: 12px;
+      max-width: 480px; width: 90%; max-height: 70vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    #changelog-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    #changelog-title { font: bold 16px/1 sans-serif; color: #fff; }
+    #changelog-close {
+      background: none; border: none; color: #888; font-size: 24px;
+      cursor: pointer; padding: 4px 8px; line-height: 1;
+    }
+    #changelog-close:hover { color: #fff; }
+    #changelog-body {
+      padding: 16px 20px; overflow-y: auto; font: 13px/1.5 sans-serif;
+    }
+    #changelog-body h3 {
+      font-size: 14px; color: #7c8bff; margin: 16px 0 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;
+    }
+    #changelog-body h3:first-child { margin-top: 0; }
+    #changelog-body h4 {
+      font-size: 12px; color: #a0a0a0; margin: 10px 0 4px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    #changelog-body ul { margin: 0 0 8px; padding-left: 20px; }
+    #changelog-body li { margin-bottom: 4px; }
+    #version-indicator .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #888; transition: background 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6px; line-height: 1; color: #fff;
+    }
+    #version-indicator .dot.checking { background: #ffa726; animation: pulse 0.6s infinite alternate; }
+    #version-indicator .dot.counting { background: #888; }
+    #version-indicator .dot.found    { background: #66bb6a; }
+    #version-indicator .dot.error    { background: #ef5350; }
+    @keyframes pulse { from { opacity: 1; } to { opacity: 0.4; } }
+    #gas-pill {
+      position: fixed; bottom: 8px; right: 146px; z-index: 9999;
+      display: none; align-items: center; gap: 6px;
+      background: rgba(0,0,0,0.55); color: #ccc; padding: 4px 10px;
+      border-radius: 12px; font: 11px/1 monospace;
+      pointer-events: auto; cursor: pointer; transition: all 0.3s ease;
+    }
+    #gas-pill:hover { background: rgba(0,0,0,0.75); }
+    #gas-pill .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #888; transition: background 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6px; line-height: 1; color: #fff;
+    }
+    #gas-pill .dot.checking { background: #42a5f5; animation: pulse 0.6s infinite alternate; }
+    #gas-pill .dot.counting { background: #888; }
+    #gas-pill .dot.found    { background: #66bb6a; }
+    #gas-pill .dot.error    { background: #ef5350; }
+    #gcl-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); z-index: 10001; display: none;
+      align-items: center; justify-content: center;
+    }
+    #gcl-popup {
+      background: #1a1a2e; color: #e0e0e0; border-radius: 12px;
+      max-width: 480px; width: 90%; max-height: 70vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    #gcl-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    #gcl-title { font: bold 16px/1 sans-serif; color: #fff; }
+    #gcl-close {
+      background: none; border: none; color: #888; font-size: 24px;
+      cursor: pointer; padding: 4px 8px; line-height: 1;
+    }
+    #gcl-close:hover { color: #fff; }
+    #gcl-body {
+      padding: 16px 20px; overflow-y: auto; font: 13px/1.5 sans-serif;
+    }
+    #gcl-body h3 {
+      font-size: 14px; color: #7c8bff; margin: 16px 0 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;
+    }
+    #gcl-body h3:first-child { margin-top: 0; }
+    #gcl-body h4 {
+      font-size: 12px; color: #a0a0a0; margin: 10px 0 4px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    #gcl-body ul { margin: 0 0 8px; padding-left: 20px; }
+    #gcl-body li { margin-bottom: 4px; }
+/* ══════════════ */
+/* TEMPLATE END */
+/* ══════════════ */
+  </style>
+</head>
+<body>
+<!-- ══════════════ -->
+<!-- TEMPLATE START -->
+<!-- ══════════════ -->
+  <div id="splash-web" class="splash"><div class="splash-title">Website Ready</div><img id="splash-logo" src="" alt=""></div>
+  <div id="splash-code" class="splash"><div class="splash-title">Code Ready</div><img id="splash-code-logo" src="" alt=""></div>
+  <div id="splash-maintenance" class="splash"><div class="splash-title">🔧This Webpage is Undergoing Maintenance<span id="maint-bypass" tabindex="-1" style="cursor:inherit;-webkit-user-select:none;user-select:text">🔧</span></div><img id="maintenance-logo" src="" alt=""><div id="maintenance-timestamp" class="maintenance-timestamp"></div></div>
+
+  <div id="gas-pill"><span class="dot"></span><span id="gas-pill-label">GAS ...</span></div>
+  <div id="gcl-overlay"><div id="gcl-popup"><div id="gcl-header"><span id="gcl-title">GAS Changelog</span><button id="gcl-close">&times;</button></div><div id="gcl-body"></div></div></div>
+<!-- ══════════════ -->
+<!-- TEMPLATE END -->
+<!-- ══════════════ -->
+
+<!-- ══════════════ -->
+<!-- PROJECT START -->
+<!-- ══════════════ -->
+  <!-- YOUR PAGE CONTENT HERE -->
+<!-- ══════════════ -->
+<!-- PROJECT END -->
+<!-- ══════════════ -->
+  <!-- GAS 1fr4m3 injected dynamically by script -->
+
+  <script>
+/* tpl:7f3e9b2d */ // ── CONFIG ──
+    // Logo shown on the "Website Ready" splash screen
+    var DEVELOPER_LOGO_URL = 'images/logo-placeholder.svg';
+    var YOUR_ORG_LOGO_URL = 'images/logo-placeholder.svg';
+    var SPLASH_LOGO_URL = 'images/logo-placeholder.svg';
+
+    // Auto-refresh: set to false to disable build-version polling
+    var AUTO_REFRESH = true;
+
+    // Show/hide: set to false to hide the website version indicator
+    var SHOW_WEB_VERSION = true;
+    // Show/hide: set to false to disable changelog popup on version indicator click
+    var SHOW_CHANGELOG = true;
+
+// ──────────────
+
+// ══════════════
+// TEMPLATE START
+// ══════════════
+
+    // Set splash logo from config variable
+    document.getElementById('splash-logo').src = SPLASH_LOGO_URL;
+    document.getElementById('splash-code-logo').src = SPLASH_LOGO_URL;
+    document.getElementById('maintenance-logo').src = SPLASH_LOGO_URL;
+
+    // Hidden maintenance bypass — triple-click the second wrench to dismiss
+    (function() {
+      var bp = document.getElementById('maint-bypass');
+      if (!bp) return;
+      bp.addEventListener('click', function(e) {
+        if (e.detail !== 3) return;
+        e.stopPropagation();
+        var overlay = document.getElementById('splash-maintenance');
+        if (overlay && overlay.style.display === 'flex') {
+          sessionStorage.setItem('maint-bypassed', '1');
+          overlay.style.opacity = '0';
+          setTimeout(function() { overlay.style.display = 'none'; }, 300);
+        }
+      });
+    })();
+
+    // Clear stale audio-unlocked flag on non-reload navigations (e.g. Chrome "Duplicate Tab")
+    var _navEntries = performance.getEntriesByType('navigation');
+    var _navType = _navEntries.length ? _navEntries[0].type : 'navigate';
+    if (_navType !== 'reload') {
+      sessionStorage.removeItem('audio-unlocked');
+    }
+
+    // AudioContext for sound playback — deferred to first user gesture to avoid
+    // Chrome's autoplay policy warning ("AudioContext was not allowed to start")
+    var _audioCtx = null;
+
+    function _ensureAudioCtx() {
+      if (_audioCtx) return _audioCtx;
+      try { _audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return null; }
+      if (_audioCtx) _audioCtx.onstatechange = function() { updateAudioStatus(); };
+      return _audioCtx;
+    }
+
+    function updateAudioStatus() {
+      var el = document.getElementById('audio-status');
+      if (!el) return;
+      if (_audioCtx && _audioCtx.state === 'running') {
+        el.textContent = '\u{1F50A}';
+        el.title = 'Sound ready';
+        sessionStorage.setItem('audio-unlocked', '1');
+      } else if (sessionStorage.getItem('audio-unlocked')) {
+        // Audio was unlocked before — a click will restore it instantly
+        el.textContent = '\u{1F50A}';
+        el.title = 'Sound ready';
+      } else {
+        el.textContent = '\u{1F507}';
+        el.title = 'Sound muted - click page to enable';
+      }
+    }
+
+    function unlockAudio() {
+      var ctx = _ensureAudioCtx();
+      if (!ctx || ctx.state === 'running') return;
+      ctx.resume().then(function() { updateAudioStatus(); }).catch(function() {});
+    }
+    document.addEventListener('click', unlockAudio, { once: false });
+    document.addEventListener('touchstart', unlockAudio, { once: false });
+    // UAv2 poll: when a GAS 1fr4m3 covers the page, click/touch events never
+    // reach this document. But Chrome's User Activation v2 propagates the sticky
+    // activation bit upward from cross-origin 1fr4m3s to all ancestors. Poll for
+    // it and unlock audio — the user's click passes straight to the 1fr4m3.
+    if (navigator.userActivation) {
+      var _uaPoll = setInterval(function() {
+        if (navigator.userActivation.hasBeenActive) {
+          clearInterval(_uaPoll);
+          unlockAudio();
+        }
+      }, 200);
+    }
+
+    function playSoundFromDataUrl(dataUrl) {
+      try {
+        var ctx = _ensureAudioCtx();
+        if (ctx.state !== 'running') return;
+        var base64 = dataUrl.split(',')[1];
+        var binary = atob(base64);
+        var bytes = new Uint8Array(binary.length);
+        for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        ctx.decodeAudioData(bytes.buffer, function(audioBuffer) {
+          var source = ctx.createBufferSource();
+          source.buffer = audioBuffer;
+          source.connect(ctx.destination);
+          source.start(0);
+        });
+      } catch(e) {}
+    }
+
+    // Pre-load sound file from same-origin into localStorage
+    function cacheSound(url, key) {
+      if (localStorage.getItem(key)) return;
+      fetch(url).then(function(res) { return res.blob(); }).then(function(blob) {
+        var reader = new FileReader();
+        reader.onloadend = function() { localStorage.setItem(key, reader.result); };
+        reader.readAsDataURL(blob);
+      }).catch(function() {});
+    }
+    cacheSound('sounds/Website_Ready_Voice_1.mp3', 'web-sound-data');
+    cacheSound('sounds/Code_Ready_Voice_1.mp3', 'code-sound-data');
+
+    // Show splash + play sound on update-triggered reloads
+    var _soundPlayed = false;
+    function showUpdateSplash(splashId, soundKey, soundFallback) {
+      if (navigator.vibrate) navigator.vibrate(200);
+      var splash = document.getElementById(splashId);
+      var ctx = _ensureAudioCtx();
+      if (ctx && !_soundPlayed) {
+        _soundPlayed = true;
+        var _playNow = function() {
+          var soundData = localStorage.getItem(soundKey);
+          if (soundData) { playSoundFromDataUrl(soundData); }
+          else { var a = new Audio(soundFallback); a.play().catch(function() {}); }
+        };
+        if (ctx.state === 'running') {
+          _playNow();
+        } else {
+          ctx.resume().then(function() { if (ctx.state === 'running') _playNow(); }).catch(function() {});
+        }
+      }
+      if (splash) {
+        splash.style.display = 'flex';
+        setTimeout(function() {
+          splash.style.opacity = '0';
+          setTimeout(function() { splash.style.display = 'none'; }, 300);
+        }, 1000);
+      }
+    }
+
+    if (sessionStorage.getItem('web-pending-sound')) {
+      sessionStorage.removeItem('web-pending-sound');
+      showUpdateSplash('splash-web', 'web-sound-data', 'sounds/Website_Ready_Voice_1.mp3');
+    }
+
+    // Auto-refresh: poll <pagename>html.version.txt for version changes and maintenance mode
+    // Version is sourced entirely from <pagename>html.version.txt (no hardcoded version in HTML)
+    (function() {
+      var POLL_INTERVAL = 10000;
+      if (!AUTO_REFRESH) return;
+
+      // Resolve <page-name>html.version.txt URL relative to the current page
+      var basePath = window.location.href.split('?')[0].split('#')[0];
+      var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
+      if (!pageName) pageName = 'index';
+      var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'html-versions/' + pageName + 'html.version.txt';
+
+      var currentVersion = null;
+      var currentTimestamp = null;
+      var indicator = null;
+      var dot = null;
+      var countdownSeconds = 0;
+      var countdownTimer = null;
+
+      // Parse <pagename>html.version.txt content: "|v01.00w|" or "maintenance|v01.00w|" or "maintenance|v01.00w|timestamp"
+      function parseVersionTxt(raw) {
+        var parts = raw.split('|');
+        return {
+          maintenance: parts[0].toLowerCase() === 'maintenance',
+          version: (parts[1] || '').replace(/^v/, ''),
+          timestamp: parts[2] || ''
+        };
+      }
+
+      function createIndicator(version) {
+        indicator = document.createElement('div');
+        indicator.id = 'version-indicator';
+        indicator.innerHTML = '<span class="dot"></span><span class="label">v' + version + '</span><span id="audio-status"></span>';
+        if (SHOW_WEB_VERSION) document.body.appendChild(indicator);
+        updateAudioStatus();
+        dot = indicator.querySelector('.dot');
+      }
+
+      function startCountdown() {
+        countdownSeconds = POLL_INTERVAL / 1000;
+        // Don't reset dot immediately — let the 800ms orange checking flash finish first
+        if (countdownTimer) clearInterval(countdownTimer);
+        countdownTimer = setInterval(function() {
+          countdownSeconds--;
+          if (countdownSeconds <= 0) {
+            clearInterval(countdownTimer);
+            if (dot) { dot.textContent = ''; dot.className = 'dot'; }
+          } else if (countdownSeconds <= 5) {
+            if (dot) { dot.textContent = countdownSeconds; dot.className = 'dot counting'; }
+          }
+        }, 1000);
+      }
+
+      function schedulePoll() {
+        startCountdown();
+        setTimeout(checkForUpdate, POLL_INTERVAL);
+      }
+
+      function checkForUpdate() {
+        window._htmlPollTime = Date.now();
+        if (countdownTimer) clearInterval(countdownTimer);
+        if (dot) dot.textContent = '';
+        if (dot) dot.className = 'dot checking';
+        fetch(versionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })
+          .then(function(res) { return res.text(); })
+          .then(function(v) {
+            var parsed = parseVersionTxt(v.trim());
+            var maintenanceSplash = document.getElementById('splash-maintenance');
+
+            if (!currentVersion) {
+              // First fetch — establish baseline version from html.version.txt
+              currentVersion = parsed.version;
+              createIndicator(currentVersion);
+              // Show maintenance prefix in version pill if already in maintenance mode
+              if (parsed.maintenance && indicator) indicator.querySelector('.label').textContent = '\uD83D\uDD27 v' + currentVersion;
+            }
+
+            if (parsed.maintenance) {
+              // Show maintenance overlay — stays until maintenance prefix is removed
+              if (maintenanceSplash && !sessionStorage.getItem('maint-bypassed')) {
+                maintenanceSplash.style.display = 'flex'; maintenanceSplash.style.opacity = '1';
+                // Update timestamp display if timestamp changed (or on first show)
+                if (parsed.timestamp !== currentTimestamp) {
+                  currentTimestamp = parsed.timestamp;
+                  var tsEl = document.getElementById('maintenance-timestamp');
+                  if (tsEl) {
+                    // Display third field verbatim (caller writes the full display string, e.g. "As of: 10:00 PM EST 02/26/2026")
+                    tsEl.textContent = parsed.timestamp || '';
+                  }
+                }
+              }
+              // Check if version also changed during maintenance — reload silently unless user bypassed maintenance
+              if (parsed.version && parsed.version !== currentVersion) {
+                if (dot) dot.className = 'dot found';
+                if (indicator) indicator.querySelector('.label').textContent = 'Updating...';
+                if (sessionStorage.getItem('maint-bypassed')) sessionStorage.setItem('web-pending-sound', '1');
+                setTimeout(function() { window.location.reload(); }, 2000);
+                return;
+              }
+              // Keep version pill showing maintenance prefix
+              if (indicator) indicator.querySelector('.label').textContent = '\uD83D\uDD27 v' + currentVersion;
+              if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
+              schedulePoll();
+            } else if (parsed.version && parsed.version !== currentVersion) {
+              // Version changed — hide maintenance if showing, trigger reload
+              sessionStorage.removeItem('maint-bypassed');
+              if (maintenanceSplash) maintenanceSplash.style.display = 'none';
+              if (dot) dot.className = 'dot found';
+              if (indicator) indicator.querySelector('.label').textContent = 'Updating...';
+              sessionStorage.setItem('web-pending-sound', '1');
+              setTimeout(function() { window.location.reload(); }, 2000);
+            } else {
+              // Same version, no maintenance — fade out maintenance if it was showing
+              sessionStorage.removeItem('maint-bypassed');
+              if (maintenanceSplash && maintenanceSplash.style.display === 'flex') {
+                maintenanceSplash.style.opacity = '0';
+                setTimeout(function() { maintenanceSplash.style.display = 'none'; }, 300);
+              }
+              // Reset version pill to normal (remove maintenance prefix)
+              if (indicator) indicator.querySelector('.label').textContent = 'v' + currentVersion;
+              if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
+              schedulePoll();
+            }
+          })
+          .catch(function() {
+            if (dot) {
+              dot.className = 'dot error';
+              setTimeout(function() { dot.className = 'dot'; }, 2000);
+            }
+            schedulePoll();
+          });
+      }
+
+      // Fetch immediately on load to establish baseline version
+      checkForUpdate();
+    })();
+
+    (function() {
+      var _e = '';
+      if (!_e) return;
+      var _u; try { _u = atob(_e).split('').reverse().join(''); } catch(x) { return; }
+      if (!_u) return;
+      // cr34t3 1fr4m3
+      var f = document.createElement(atob('aWZyYW1l'));
+      f.id = 'gas-app';
+      f.style.cssText = 'width:100%;height:100%;border:none;position:fixed;top:0;left:0;z-index:1;';
+      f.dataset.baseUrl = _u;
+      f.src = _u;
+      document.body.appendChild(f);
+    })();
+
+    // GAS auto-refresh: poll <pagename>gs.version.txt for GAS version changes
+    // Also drives the GAS version pill (bottom-right, left of HTML pill) with countdown dot
+    (function() {
+      var GAS_POLL_INTERVAL = 10000;
+      var GAS_INITIAL_DELAY = 15000;
+      if (!AUTO_REFRESH) return;
+
+      var basePath = window.location.href.split('?')[0].split('#')[0];
+      var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
+      if (!pageName) pageName = 'index';
+      var gasVersionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'gs-versions/' + pageName + 'gs.version.txt';
+
+      var currentGasVersion = null;
+      var pill = document.getElementById('gas-pill');
+      var pillLabel = document.getElementById('gas-pill-label');
+      var dot = pill ? pill.querySelector('.dot') : null;
+      var countdownSeconds = 0;
+      var countdownTimer = null;
+
+      function startCountdown(interval) {
+        countdownSeconds = (interval || GAS_POLL_INTERVAL) / 1000;
+        if (countdownTimer) clearInterval(countdownTimer);
+        countdownTimer = setInterval(function() {
+          countdownSeconds--;
+          if (countdownSeconds <= 0) {
+            clearInterval(countdownTimer);
+            if (dot) { dot.textContent = ''; dot.className = 'dot'; }
+          } else if (countdownSeconds <= 5) {
+            if (dot) { dot.textContent = countdownSeconds; dot.className = 'dot counting'; }
+          }
+        }, 1000);
+      }
+
+      function checkGasUpdate() {
+        if (countdownTimer) clearInterval(countdownTimer);
+        if (dot) { dot.textContent = ''; dot.className = 'dot checking'; }
+        fetch(gasVersionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })
+          .then(function(res) { return res.text(); })
+          .then(function(v) {
+            var fetched = v.trim();
+            var gParts = fetched.split('|');
+            var gasVer = (gParts.length >= 2 && gParts[1]) ? gParts[1] : fetched;
+            if (!currentGasVersion) {
+              currentGasVersion = fetched;
+              if (pill) { pill.style.display = 'flex'; }
+              if (pillLabel) pillLabel.textContent = 'GAS ' + gasVer;
+            } else if (fetched !== currentGasVersion) {
+              // GAS version changed on GitHub — reload immediately
+              if (dot) dot.className = 'dot found';
+              if (pillLabel) pillLabel.textContent = 'GAS updated — reloading...';
+              sessionStorage.setItem('gas-pending-sound', '1');
+              setTimeout(function() { window.location.reload(); }, 1500);
+              return;
+            }
+            if (dot) setTimeout(function() { dot.className = 'dot'; }, 800);
+            // Anti-sync: if GAS poll fired within 3s of HTML poll, add 5s delay to re-establish gap
+            var _gasPollDelay = GAS_POLL_INTERVAL;
+            if (window._htmlPollTime && Math.abs(Date.now() - window._htmlPollTime) < 3000) {
+              _gasPollDelay += 5000;
+            }
+            startCountdown(_gasPollDelay);
+            setTimeout(checkGasUpdate, _gasPollDelay);
+          })
+          .catch(function() {
+            if (dot) {
+              dot.className = 'dot error';
+              setTimeout(function() { dot.className = 'dot'; }, 2000);
+            }
+            startCountdown();
+            setTimeout(checkGasUpdate, GAS_POLL_INTERVAL);
+          });
+      }
+
+      // Fetch version immediately — only show GAS pill and start polling if gs.version.txt exists
+      // This allows the HTML+GAS template to work as a pure HTML page with no GAS project
+      fetch(gasVersionUrl + '?_cb=' + Date.now(), { cache: 'no-store' })
+        .then(function(res) {
+          if (!res.ok) throw new Error('no gs.version.txt');
+          return res.text();
+        })
+        .then(function(v) {
+          currentGasVersion = v.trim();
+          var gInitParts = currentGasVersion.split('|');
+          var gasInitVer = (gInitParts.length >= 2 && gInitParts[1]) ? gInitParts[1] : currentGasVersion;
+          if (pillLabel) pillLabel.textContent = 'GAS ' + gasInitVer;
+          if (pill) pill.style.display = 'flex';
+          startCountdown(GAS_INITIAL_DELAY);
+          setTimeout(checkGasUpdate, GAS_INITIAL_DELAY);
+        })
+        .catch(function() { /* no gs.version.txt — GAS pill stays hidden, no polling */ });
+
+      // GAS changelog popup — click pill to view GAS changelog
+      var gclOverlay = document.getElementById('gcl-overlay');
+      var gclBody = document.getElementById('gcl-body');
+      var gclCache = null;
+
+      if (pill) {
+        if (SHOW_CHANGELOG) {
+          pill.addEventListener('click', function(e) {
+            e.stopPropagation();
+            gclOverlay.style.display = 'flex';
+            if (!gclCache) fetchGasChangelog();
+          });
+        } else {
+          pill.style.cursor = 'default';
+        }
+      }
+
+      document.getElementById('gcl-close').addEventListener('click', function() { gclOverlay.style.display = 'none'; });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && gclOverlay.style.display === 'flex') gclOverlay.style.display = 'none'; });
+
+      function getGasChangelogUrl() {
+        return basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'gs-changelogs/' + pageName + 'gs.changelog.md';
+      }
+
+      function parseGasChangelog(md) {
+        var lines = md.split('\n');
+        var html = '';
+        var inList = false;
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          if (line.match(/^# /) || line.match(/^`Sections:/) || line.match(/^All notable/)
+              || line.match(/^Format follows/) || line.match(/^Developed by:/)) continue;
+          if (line.match(/^## \[Unreleased\]/)) continue;
+          if (line.match(/^## \[/)) {
+            if (inList) { html += '</ul>'; inList = false; }
+            var m = line.match(/^## \[(v[\d.]+g)\].*?— (.+)/);
+            if (m) html += '<h3>' + m[1] + ' &mdash; ' + m[2] + '</h3>';
+            continue;
+          }
+          if (line.match(/^### /)) {
+            if (inList) { html += '</ul>'; inList = false; }
+            html += '<h4>' + line.substring(4) + '</h4>';
+            continue;
+          }
+          if (line.match(/^- /)) {
+            if (!inList) { html += '<ul>'; inList = true; }
+            html += '<li>' + line.substring(2) + '</li>';
+            continue;
+          }
+        }
+        if (inList) html += '</ul>';
+        return html || '<p style="color:#888">No changelog entries yet.</p>';
+      }
+
+      function fetchGasChangelog() {
+        gclBody.innerHTML = '<p style="color:#888">Loading changelog\u2026</p>';
+        fetch(getGasChangelogUrl())
+          .then(function(res) { if (!res.ok) throw new Error(); return res.text(); })
+          .then(function(md) {
+            gclCache = sanitizeChangelogHtml(parseGasChangelog(md));
+            gclBody.innerHTML = gclCache;
+            var titleEl = document.getElementById('gcl-title');
+            if (titleEl && currentGasVersion) titleEl.textContent = 'GAS Changelog \u2014 ' + currentGasVersion.replace(/\|/g, '');
+          })
+          .catch(function() {
+            gclBody.innerHTML = '<p style="color:#888">Could not load changelog.</p>';
+          });
+      }
+    })();
+
+    // After reload: show green "Code Ready" splash + play Code Ready sound if GAS update pending
+    if (sessionStorage.getItem('gas-pending-sound')) {
+      sessionStorage.removeItem('gas-pending-sound');
+      showUpdateSplash('splash-code', 'code-sound-data', 'sounds/Code_Ready_Voice_1.mp3');
+    }
+
+    // Changelog HTML sanitizer — strips dangerous elements and event handlers
+    function sanitizeChangelogHtml(html) {
+      var tmp = document.createElement('div');
+      tmp.innerHTML = html;
+      var dangerous = tmp.querySelectorAll('script, iframe, object, embed, form, input, textarea, link, style, svg, math');
+      for (var i = dangerous.length - 1; i >= 0; i--) {
+        dangerous[i].parentNode.removeChild(dangerous[i]);
+      }
+      var all = tmp.querySelectorAll('*');
+      for (var j = 0; j < all.length; j++) {
+        var attrs = all[j].attributes;
+        for (var k = attrs.length - 1; k >= 0; k--) {
+          if (attrs[k].name.toLowerCase().indexOf('on') === 0) {
+            all[j].removeAttribute(attrs[k].name);
+          }
+        }
+      }
+      return tmp.innerHTML;
+    }
+
+    // Changelog popup — click version indicator to view page changelog
+    (function() {
+      var overlay = document.createElement('div');
+      overlay.id = 'changelog-overlay';
+      overlay.innerHTML = '<div id="changelog-popup"><div id="changelog-header">'
+        + '<span id="changelog-title">Changelog</span>'
+        + '<button id="changelog-close">&times;</button></div>'
+        + '<div id="changelog-body"></div></div>';
+      document.body.appendChild(overlay);
+
+      var closeBtn = document.getElementById('changelog-close');
+      var body = document.getElementById('changelog-body');
+      var changelogCache = null;
+
+      function show() { overlay.style.display = 'flex'; if (!changelogCache) fetchChangelog(); }
+      function hide() { overlay.style.display = 'none'; }
+
+      closeBtn.addEventListener('click', hide);
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlay.style.display === 'flex') hide();
+      });
+
+      function getChangelogUrl() {
+        var basePath = window.location.href.split('?')[0].split('#')[0];
+        var pn = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
+        if (!pn) pn = 'index';
+        return basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'html-changelogs/' + pn + 'html.changelog.md';
+      }
+
+      function parseChangelog(md) {
+        var lines = md.split('\n');
+        var html = '';
+        var inList = false;
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          if (line.match(/^# /) || line.match(/^`Sections:/) || line.match(/^All notable/)
+              || line.match(/^Format follows/) || line.match(/^Developed by:/)) continue;
+          if (line.match(/^## \[Unreleased\]/)) continue;
+          if (line.match(/^## \[v/)) {
+            if (inList) { html += '</ul>'; inList = false; }
+            var m = line.match(/^## \[(v[\d.]+w)\].*?— (.+)/);
+            if (m) html += '<h3>' + m[1] + ' &mdash; ' + m[2] + '</h3>';
+            continue;
+          }
+          if (line.match(/^### /)) {
+            if (inList) { html += '</ul>'; inList = false; }
+            html += '<h4>' + line.substring(4) + '</h4>';
+            continue;
+          }
+          if (line.match(/^- /)) {
+            if (!inList) { html += '<ul>'; inList = true; }
+            html += '<li>' + line.substring(2) + '</li>';
+            continue;
+          }
+        }
+        if (inList) html += '</ul>';
+        return html || '<p style="color:#888">No changelog entries yet.</p>';
+      }
+
+      function fetchChangelog() {
+        body.innerHTML = '<p style="color:#888">Loading changelog\u2026</p>';
+        fetch(getChangelogUrl())
+          .then(function(res) { if (!res.ok) throw new Error(); return res.text(); })
+          .then(function(md) {
+            changelogCache = sanitizeChangelogHtml(parseChangelog(md));
+            body.innerHTML = changelogCache;
+            var titleEl = document.getElementById('changelog-title');
+            var ind = document.getElementById('version-indicator');
+            if (ind && titleEl) {
+              var lbl = ind.querySelector('.label');
+              if (lbl) titleEl.textContent = 'Changelog \u2014 ' + lbl.textContent;
+            }
+          })
+          .catch(function() {
+            body.innerHTML = '<p style="color:#888">Could not load changelog.</p>';
+          });
+      }
+
+      // Attach click handler when version indicator appears (if changelog enabled)
+      var obs = new MutationObserver(function() {
+        var ind = document.getElementById('version-indicator');
+        if (ind && !ind._clBound) {
+          ind._clBound = true;
+          if (SHOW_CHANGELOG) {
+            ind.addEventListener('click', function(e) { e.stopPropagation(); show(); });
+          } else {
+            ind.style.cursor = 'default';
+          }
+          obs.disconnect();
+        }
+      });
+      obs.observe(document.body, { childList: true, subtree: true });
+    })();
+
+    // Screen Wake Lock — keep screen on while page is visible
+    var _wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        if (navigator.wakeLock) {
+          _wakeLock = await navigator.wakeLock.request('screen');
+          _wakeLock.addEventListener('release', function() { _wakeLock = null; });
+        }
+      } catch(e) {}
+    }
+    requestWakeLock();
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible') requestWakeLock();
+    });
+
+// ══════════════
+// TEMPLATE END
+// ══════════════
+
+// ══════════════
+// PROJECT START
+// ══════════════
+
+// ══════════════
+// PROJECT END
+// ══════════════
+  </script>
+</body>
+</html>
+<!-- Developed by: LightAISolutions -->

@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "bechtel",
+  "title": "Bechtel — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "LNG liquefaction: freezing a gas into a shippable liquid",
+      "bullets": [
+        "Natural gas becomes LNG at about -162°C, shrinking to 1/600th of its volume — the only way to ship gas across oceans without a pipeline; the plant that does the freezing is a liquefaction terminal",
+        "The unit of the industry is the 'train': one complete liquefaction line (gas cleanup, refrigeration compressors, cold box) — terminals are built train by train, each a multi-billion-dollar project rated in mtpa (million tonnes per annum)",
+        "A terminal is more than trains: cryogenic storage tanks (nine-percent-nickel steel inner shells), marine berths for LNG carriers, and enormous refrigeration compressor strings driven by gas turbines — refrigeration is the plant's main energy cost",
+        "Trains are classic lump-sum EPC territory: repeatable-enough for a fixed price, big enough that a few builders with proven execution get all the work — which is how one contractor ends up building most of a country's liquefaction capacity"
+      ]
+    },
+    {
+      "heading": "Who holds the bag: lump-sum turnkey vs cost-plus",
+      "bullets": [
+        "Lump-sum turnkey (LSTK) hands the owner a fixed price for a finished, working plant — the contractor absorbs overruns and keeps underruns; cost-plus (or reimbursable) passes actual costs to the owner plus a fee, shifting risk the other way",
+        "LSTK prices embed a risk premium, so it's the higher-margin model when execution goes well and the ruinous one when it doesn't — several public EPC firms retreated from lump-sum work after megaproject losses, leaving the risk appetite to private balance sheets",
+        "Inflationary craft-labor markets stress LSTK hardest: a multi-year fixed price signed before a wage spike is a slow-motion loss — which is why contract 'revisions' and re-signings appear when projects change hands",
+        "Government megaprojects have their own version of accountability: US defense programs that breach cost baselines by set percentages trigger statutory (Nunn-McCurdy) reviews that can restructure or kill the program — a cost overrun literally becomes an act-of-Congress problem"
+      ]
+    },
+    {
+      "heading": "Why nuclear construction is hard — and why finishing one matters so much",
+      "bullets": [
+        "Nuclear plants combine every difficulty at once: safety-grade quality documentation for nearly every weld, a regulator with stop-work authority, supply chains that atrophied over decades, and designs finalized while construction is underway — first-of-a-kind (FOAK) units routinely double their budgets",
+        "The industry's core economic idea is FOAK vs NOAK: the first unit absorbs the learning (design changes, workforce training, supply-chain qualification); nth-of-a-kind units get cheaper — but only if the same team keeps building without a gap",
+        "US licensing splits construction and operation: a construction permit lets you build; an operating license lets you load fuel — advanced reactors are now working through this gauntlet for the first time in a generation",
+        "This is why completing a modern reactor is a franchise, not just a project: the workforce, procedures, and regulator relationships from the finished unit are the scarcest asset in the sector — and the reason the same names appear on the next domestic reactor, the first SMRs, and the export projects"
+      ]
+    },
+    {
+      "heading": "Modularizing the gigawatt: reference designs and AI factories",
+      "bullets": [
+        "A reference design is a fully engineered template meant to be built repeatedly — the philosophy behind standardized reactors, LNG trains, and now gigawatt 'AI factory' blueprints published by chip vendors so the whole supply chain designs to one target",
+        "Modularization moves work from the field into factories: pre-assembled racks of pipe, cable, and equipment ('modules') shipped and set by crane — buying schedule and labor certainty at the cost of heavier upfront engineering and transport constraints",
+        "The economics invert at scale: for one small building, stick-built is cheaper; for twenty identical gigawatt campuses, the module factory amortizes and the field-labor bottleneck disappears — the industrial logic AI buildout timelines are forcing on data centers",
+        "The contractor's role shifts accordingly: less craft management, more manufacturing engineering, logistics, and interface control — the skill set of industrial EPCs, not commercial GCs, which is why energy-megaproject firms see AI factories as their entry point"
+      ]
+    },
+    {
+      "heading": "Vitrification: turning nuclear waste into glass",
+      "bullets": [
+        "Cold-War plutonium production left millions of gallons of radioactive sludge in aging underground tanks; vitrification immobilizes it by melting it into borosilicate glass — chemically stable for millennia — poured into steel canisters",
+        "The plant that does this is a chemical factory operated by remote control: giant melters running above 2,000°F, handling waste no human can approach, built to nuclear quality standards — among the hardest construction projects ever attempted",
+        "Decades-long timelines are structural, not incidental: waste chemistry varies tank by tank, requirements evolve mid-build, and the facility must be verified safe before radioactive commissioning — the first glass pour is a milestone measured in generations",
+        "Cleanup is also a business: government environmental remediation runs on multi-decade cost-plus contracts with award fees — steady revenue, intense oversight, and reputational risk when quality or whistleblower disputes surface"
+      ]
+    },
+    {
+      "heading": "Dynasty capitalism: reading a five-generation private giant",
+      "bullets": [
+        "A family-controlled private megaproject firm answers to no quarterly market: it can hold risk appetites (lump-sum LNG, nuclear FOAK) and ride decade-long cycles that public rivals must smooth away — patient capital as competitive weapon",
+        "The information trade-off is severe: no audited public financials, revenue definitions that differ from survey rankings, even employee counts varying by tens of thousands across trackers — analysts must triangulate from rankings, project pages, and government records",
+        "Backlog is the key forward metric such firms do disclose: signed future work in dollars — a backlog that doubles in five years tells you more about trajectory than any single revenue year",
+        "Succession is the structural risk unique to dynasties: each generational handoff concentrates governance questions that public companies distribute across boards and shareholders — and the record of family firms that survive five generations is short"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "What happens to natural gas at about -162°C, and why does it matter?",
+      "a": "It liquefies into LNG, shrinking to 1/600th of its gaseous volume — compact enough to ship across oceans in cryogenic tankers. Liquefaction is the only way to move gas intercontinentally without a pipeline."
+    },
+    {
+      "q": "What is an LNG 'train' and what does mtpa measure?",
+      "a": "A train is one complete liquefaction line — gas cleanup, refrigeration compressors, cold box. Terminals are built train by train, each rated in mtpa (million tonnes per annum) of LNG output. A 5-train, 27-mtpa terminal is five parallel factories on one site."
+    },
+    {
+      "q": "What's the difference between lump-sum turnkey and cost-plus contracting?",
+      "a": "LSTK: contractor commits to a fixed price for a finished working plant — absorbing overruns, keeping underruns. Cost-plus: the owner reimburses actual costs plus a fee. LSTK carries a risk premium and higher margins when execution succeeds — and ruinous losses when it fails."
+    },
+    {
+      "q": "What is a Nunn-McCurdy breach?",
+      "a": "A US statutory trigger: when a defense program's unit cost grows past set thresholds (critical at 25-50%+ over baseline), the Pentagon must formally review, certify, restructure, or cancel it. It converts a cost overrun into a legal and Congressional event."
+    },
+    {
+      "q": "What do FOAK and NOAK mean in nuclear economics?",
+      "a": "First-of-a-kind vs nth-of-a-kind. The first unit absorbs the learning — design changes, workforce training, supply-chain qualification — and routinely doubles its budget. Later units get cheaper only if the same team keeps building without a gap. The learning curve IS the asset."
+    },
+    {
+      "q": "Why does completing one modern nuclear reactor matter so much to a contractor?",
+      "a": "The finished unit's workforce, procedures, quality systems, and regulator relationships are the scarcest asset in the sector. That execution incumbency wins the next domestic reactor, the first SMRs, and export projects — a franchise, not just a completed job."
+    },
+    {
+      "q": "How does US nuclear licensing split construction from operation?",
+      "a": "A construction permit authorizes building; a separate operating license authorizes fuel load and operation. Advanced-reactor developers are now running this gauntlet for the first time in a generation — 'first with an NRC construction permit' is a real milestone, not marketing."
+    },
+    {
+      "q": "What is a reference design, and why did a chip vendor publish one for AI factories?",
+      "a": "A fully engineered template meant to be built repeatedly — the philosophy behind standardized reactors and LNG trains. Publishing a gigawatt AI-factory blueprint lets the whole supply chain (builders included) engineer to one target, making campuses repeatable products instead of one-off projects."
+    },
+    {
+      "q": "When does modularization beat stick-building?",
+      "a": "At repetition and scale: for one building, field construction is cheaper; for twenty identical gigawatt campuses, the module factory amortizes, schedule risk drops, and the scarce-field-labor bottleneck disappears. The trade is heavier upfront engineering and transport limits."
+    },
+    {
+      "q": "What is nuclear-waste vitrification?",
+      "a": "Melting radioactive tank waste into borosilicate glass — chemically stable for millennia — poured into steel canisters. The plant is a remotely-operated chemical factory with melters above 2,000°F, built to nuclear quality standards; among the hardest construction ever attempted."
+    },
+    {
+      "q": "Why is backlog the key metric for private megaproject firms?",
+      "a": "It's the forward order book — signed future work in dollars — and often the only trajectory number a private firm discloses. A backlog that doubles in five years says more than any single revenue year, because megaproject revenue recognizes over long schedules."
+    },
+    {
+      "q": "What advantages and risks come with five-generation family control of a megaproject firm?",
+      "a": "Advantages: patient capital — holding lump-sum and first-of-a-kind risk appetites through decade cycles no public company could sustain. Risks: opacity (unreconcilable financials, even headcount) and succession — every generational handoff concentrates governance in a way public boards distribute."
+    }
+  ]
+}

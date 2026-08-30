@@ -1,0 +1,946 @@
+{
+  "schemaVersion": 2,
+  "slug": "sinexcel",
+  "name": "Shenzhen Sinexcel Electric Co., Ltd. (深圳市盛弘电气股份有限公司)",
+  "shortName": "Sinexcel",
+  "categories": [
+    "supplier"
+  ],
+  "website": "https://en.sinexcel.com",
+  "headquarters": "Shenzhen, Guangdong, China",
+  "founded": 2007,
+  "employees": "~2,484 (end of FY2024, per aggregator summary of annual report)",
+  "ownership": {
+    "type": "public",
+    "ticker": "SZSE ChiNext: 300693"
+  },
+  "summary": "BOTTOM LINE UP FRONT: Sinexcel's high-margin overseas storage PCS line is the earnings engine over a commoditizing domestic base, with AI data-center power as pre-revenue optionality; the 11 August 2026 H1 report is the near-term checkpoint. BACKGROUND: Sinexcel is a Chinese power-electronics company built around modular power conversion technology, listed on the Shenzhen Stock Exchange ChiNext board since August 2017. It operates four reported business lines: EV charging and battery-swap equipment (its largest segment since 2024), new-energy power conversion (bi-directional energy storage PCS and containerized storage systems), industrial supporting power supplies (active harmonic filters, static var generators, UPS), and battery formation & test equipment. The company claims 5,000+ energy storage projects, 200,000+ EV charging systems, 20,000+ power quality projects, and 300,000+ battery test channels deployed, with manufacturing in Huizhou, Suzhou, California, and Malaysia and subsidiaries across the US, Europe, and Asia-Pacific.",
+  "ecosystemRole": "We assess Sinexcel as one of China's leading third-party PCS (power conversion system) suppliers for battery energy storage, with grid-forming capability and a fast-growing, high-margin overseas storage business (StellaON platform certified for multiple European grids). Also a merchant supplier of EV DC fast chargers and 20/40 kW charging modules, and a long-established power-quality vendor increasingly levered to AI data-center (AIDC) power demand.",
+  "productsAndServices": [
+    {
+      "name": "Energy storage PCS & containerized systems",
+      "category": "New-energy power conversion",
+      "description": "Bi-directional modular storage inverters spanning 30 kW modules to 1,575 kVA utility units and containerized systems: the StellaON 1250K/1575K utility-scale grid-forming flagship (690 Vac, DC 1040-1500 V, 99% peak efficiency), Sirius 135K C&I/microgrid PCS (PWS1-135M), the modular PWS family (PWS2-30P 30 kW DC/AC module; PWS1-500KTL 500 kVA cabinet of up to 8x62.5 kW modules; PWS1-1725KTL-H cabinet of up to 8x215 kVA modules), and 20-ft/40-ft medium-voltage stations up to the 40-ft 10 MW Centralized MV Station (22-33 kV, oil-immersed transformer integrated).",
+      "highlights": [
+        "500+ MW of StellaON orders secured in H1 2026 ahead of its formal European launch at Intersolar Europe 2026; 15+ active projects across Europe, Asia-Pacific, and Africa; first grid connection in Vietnam (April 2026)",
+        "Named a BloombergNEF Tier 1 power inverter manufacturer (Q2 2026); claims 17 GW installed across 5,000+ projects in 60+ markets, with 60+ certified models",
+        "Grid-forming across the range: VSG/PQ/VF (plus SVG mode on StellaON), black start, 100+ MW off-grid parallel operation; StellaON claims 1.5x overload for 60 s vs ~1.2x industry typical and MTBF >300,000 h",
+        "Entered Japan's frequency-regulation market June 2026 (2 MW/8 MWh Matsusaka project on two 1,375 kW PCS; 60+ Japanese utility-scale projects, 10+ local EMS integrations, Tokyo subsidiary)",
+        "Grid-code certifications: EN 50549-2/-10, IEC/EN 62477, RfG+PTPIREE (among the first PCS certified for Poland), Finland SJV2024 (160 kW PCS), UL 1741/IEEE 1547 (Sirius 135K, March 2026); FY2025 overseas storage revenue RMB 645M, +50.1% YoY, at a 61.3% gross margin (aggregator figures)"
+      ],
+      "positioning": "Competes as a third-party modular-PCS specialist against integrated-inverter giants (Sungrow, Power Electronics, SMA) by selling conversion hardware to battery integrators and developers rather than competing with them on full BESS supply; differentiation claims are module-parallel architecture, overload headroom (1.5x/60 s), reliability (MTBF >300,000 h, key-component swap <1 h), and breadth of European grid-code certification (early Poland cohort).",
+      "soldThrough": "Direct to BESS integrators, developers, and EPCs; in Japan through local developers and EMS platforms (Namcha Barwa partnership, June 2026); in the US through Sinexcel Inc. (California)",
+      "targetSegments": "Utility-scale BESS developers (Europe, Asia-Pacific, Africa, Japan), C&I storage integrators, wind/solar co-located storage (e.g. Latvia's largest wind-farm BESS on 1725 kW PCS), frequency-regulation and ancillary-services players",
+      "roadmap": "Spain and US certifications of StellaON stated as 'coming soon' at the June 2026 launch; company active in drafting grid-forming energy-storage standards (2025 PR)"
+    },
+    {
+      "name": "EV charging & battery-swap equipment",
+      "category": "EV charging",
+      "description": "SEC series DC fast chargers from 30 kW to 1,280 kW - integrated (SEC30, SEC80 40-80 kW DC + 22 kW AC, SEC240, SEC640, SEC1000/160) and distributed (SEC480 with up to 6 dispensers; SEC1280 with 960/1280 kW power stacks and up to 16 connectors, 500 A liquid-cooled dual-connector dispensers boostable to 600 A) - plus the IZAR AC charger and SER 20/40 kW merchant charging modules. Largest revenue segment since 2024 (FY2025: RMB 1.496B, 43.2% of revenue).",
+      "highlights": [
+        "Company claims 'world's No.1 in megawatt-level charger sales' (16 years of expertise, per July 2026 Thailand release); SEC1280 was the first megawatt charger with Eichrecht certification",
+        "Bangkok's first megawatt supercharging station with ZEEKR and TPM Automotive (July 2026): 960 kW stack, one 700 A liquid-cooled supercharging dispenser plus three 500 A dispensers, two ZEEKR 7X charged 20-80% in 10 minutes; claimed 97% power utilization",
+        "Shell Recharge joint innovation lab in Shenzhen (June 2026): ultra-fast charging, cloud scheduling, solar-storage-charging, megawatt heavy-duty charging, AI O&M",
+        "One-stop European e-truck charging solution launched July 2026, pairing megawatt chargers with storage and dispatch software for depot vs 45-minute-rest-stop use cases",
+        "CharIN core member (V2G-ready architecture); integrated solar-storage-charging-discharging solution shown at RE+ 2024; certifications: CE, UL, UKCA, TR25 (Singapore), RCM (AU/NZ), KC (Korea), Eichrecht (Germany)"
+      ],
+      "positioning": "Both a charger OEM and a merchant module supplier to other charger makers - one of China's top-three EV charger manufacturers (per CharIN) competing internationally with ABB E-mobility, Alpitronic, and Kempower-class DC fast-charging vendors on distributed architecture (dynamic module-level power allocation) and megawatt-class output; module business competes on SiC efficiency and 50-1000 V output breadth",
+      "soldThrough": "Direct charger sales plus CPO/OEM partnerships (Shell Recharge, ZEEKR/TPM 'EV + charger + local partner' model); SER modules sold merchant to third-party charger builders",
+      "targetSegments": "Charge-point operators, bus and truck fleet depots, highway charging hubs, automotive-OEM branded stations; Southeast Asia, Europe, and North America highlighted",
+      "roadmap": "OCPP 2.0.1 support rollout (from 2025 per SEC1280 page); megawatt heavy-duty truck charging build-out with Shell lab and European e-truck solution; V2G productization via CharIN membership"
+    },
+    {
+      "name": "Power quality solutions",
+      "category": "Industrial supporting power supplies",
+      "description": "The company's original business (2009 Shenzhen 'Startup Star' prize for its active power filter), with 20,000+ projects deployed: active harmonic filters (BLADE AHF 5-15 A SiC wall/rack units; standard AHF 25-300 A modules; PRO AHF 150 A at 98.5% peak efficiency; SiC-based Ultra AHF), static var generators (standard 30-200 kvar; PRO SVG 100 kvar at 98.5%; Ultra SVG, ASVG, HSVG, 50/100 kvar hot-plug units), AVC-RTS supercapacitor voltage-sag correction (30-2,400 kVA), and modular UPS; marine-certified variants (DNV, RINA, CCS, BV).",
+      "highlights": [
+        "Recognized as a Tier 1 low-voltage power quality supplier (March 2025 PR); growth now driven by AI data-center (AIDC) and semiconductor-fab power demand",
+        "AVC-RTS rides through 100% voltage sags (to zero volts) with 2 ms typical response from supercapacitor storage - aimed at semiconductor fabs, precision manufacturing, and AIDC",
+        "SiC adoption across the range: BLADE AHF switches at ~50 kHz average (up to 90 kHz) vs ~20 kHz standard series; PRO series cuts heat ~33% vs legacy"
+      ],
+      "positioning": "Specialist active-compensation vendor competing with Schneider Electric (AccuSine), ABB, and Danfoss-class active filter lines on switching frequency (SiC), modular parallelability (unlimited units), and mounting density; AVC-RTS competes with dynamic voltage restorers and mini-UPS approaches on 2 ms response without batteries",
+      "soldThrough": "Distributors, panel builders, and system integrators plus direct key accounts; marine via classification-certified OEM channels",
+      "targetSegments": "Semiconductor fabs, AI data centers, automotive/PCBA/LED manufacturing, commercial buildings, marine vessels",
+      "roadmap": "Power-quality portfolio positioned as the beachhead for the AIDC division's data-center power push (AHF/SVG/AVC-RTS already deployed in AIDCs)"
+    },
+    {
+      "name": "AI data-center (AIDC) power",
+      "category": "Data-center power (division est. June 2025)",
+      "description": "Dedicated AIDC business division established June 2025 to develop HVDC (high-voltage DC) power systems and solid-state transformers (SST) for data centers, building on the company's APF/SVG power-electronics heritage. Current shipping exposure is a 36 kW HVDC rectifier module - third-party reporting says it is supplied to Vertiv, giving indirect NVIDIA-ecosystem exposure - plus power-quality equipment (AHF/SVG/AVC-RTS) already deployed in AIDCs.",
+      "highlights": [
+        "36 kW HVDC power module claimed at ~100 W/in3 power density vs ~70 W/in3 industry average (aggregator claim)",
+        "Own-brand HVDC products remained pre-revenue as of February 2026 (company statement via financial media); aggregator commentary puts AIDC-related revenue at >20% of the FY2025 industrial-power segment with >50% YoY growth",
+        "Planned scope per Chinese financial media: cabinet power plus high-voltage-side and low-voltage-side DC microgrid solutions, overseas-market-focused"
+      ],
+      "positioning": "Enters the AI data-center power race as a module/OEM supplier (contrast Megmeet's NVIDIA-named full-chain position and Delta's incumbency) - the wedge is power-quality incumbency in existing data centers and HVDC modules sold through established power-infrastructure OEMs rather than direct hyperscaler design-ins",
+      "soldThrough": "OEM module supply (Vertiv per third-party reports); power-quality channels for AHF/SVG/AVC-RTS into data centers",
+      "targetSegments": "Cloud service providers and AI enterprises (cooperative relationships claimed, names undisclosed), data-center power-infrastructure OEMs; overseas markets prioritized",
+      "roadmap": "HVDC and SST product launches expected 2026 (per May 2025 division announcement); watch H1 2026 report (due Aug 11, 2026) for first AIDC revenue disclosure"
+    },
+    {
+      "name": "Battery formation & test equipment",
+      "category": "Battery manufacturing equipment",
+      "description": "BTS-series battery formation, grading, and test systems with energy-recycling power electronics for lithium battery manufacturers; 300,000+ test channels in operation. Third-party reporting names CATL, BYD, ATL, and XPeng among customers.",
+      "highlights": [
+        "FY2025 revenue RMB 343M, +16.0% YoY"
+      ],
+      "positioning": "Energy-recycling formation/grading power electronics (charge energy fed back rather than burned) sold on channel density and efficiency; competes with Chroma, Hangke, and Neware-class test-equipment vendors",
+      "soldThrough": "Direct to battery cell manufacturers",
+      "targetSegments": "Lithium-ion cell makers (power, consumer, storage cells); named third-party-reported customers include CATL, BYD, ATL, XPeng"
+    },
+    {
+      "name": "Microgrid & off-grid converters",
+      "category": "Energy solutions",
+      "description": "Grid-forming microgrid conversion hardware and delivery: PWS1-160M-H 160 kVA high-voltage AC module (VSG technology, seamless on/off-grid transfer, FFR/FCR/FCAS grid services, <=15 ms dispatch response, IP66), Sirius 135K in microgrid duty (100+ units off-grid parallel via proprietary comms, 100% unbalanced load), and PWS2-30P 30 kW modules compatible with lead-acid, lithium, sodium-ion batteries and flywheels; asset-backed storage & microgrid offerings delivered through Sinexcel Inc. (California), including a commercial-scale virtual power plant integration with Molecule Systems.",
+      "highlights": [
+        "160 kW PCS secured Finland SJV2024 grid-services certification (May 2026)",
+        "Multi-chemistry DC-side compatibility (incl. sodium-ion and flywheel) hedges battery-technology shifts"
+      ],
+      "positioning": "Modular grid-forming microgrid PCS positioned against string-inverter-derived hybrid offerings on unbalanced-load tolerance, parallel scale (100+ units), and certified grid-services participation",
+      "soldThrough": "Microgrid integrators and EPCs; US direct via Sinexcel Inc.",
+      "targetSegments": "Industrial parks, island/remote-area microgrids, commercial buildings and data-center backup, VPP operators"
+    }
+  ],
+  "recentDevelopments": [
+    {
+      "date": "2026-07-22",
+      "category": "product-launch",
+      "headline": "One-stop European e-truck charging solution launched (megawatt chargers + storage + dispatch software)",
+      "read": "Moves up the value chain from charger vendor toward fleet-infrastructure solution seller, split by depot vs 45-minute-rest-stop use cases.",
+      "source": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=413"
+    },
+    {
+      "date": "2026-07-13",
+      "category": "partnership",
+      "headline": "Bangkok's first megawatt supercharging station opened with ZEEKR and TPM Automotive (960 kW stack, 700 A liquid-cooled dispenser)",
+      "read": "The 'EV OEM + charger + local partner' model is the Southeast-Asia expansion template — and a live showcase for the SEC1280 platform.",
+      "source": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=412"
+    },
+    {
+      "date": "2026-07-13",
+      "category": "order-win",
+      "headline": "First project entered Japan's frequency-regulation market trading (2 MW/8 MWh Matsusaka BESS on two 1,375 kW PCS)",
+      "read": "First ancillary-services revenue in Japan validates the localization play — 60+ Japanese projects, 10+ EMS integrations, Tokyo subsidiary.",
+      "source": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=411"
+    },
+    {
+      "date": "2026-07-07",
+      "category": "product-launch",
+      "headline": "StellaON 1250K/1575K formally launched for Europe at Intersolar Europe 2026; 500+ MW of orders already secured in H1 2026",
+      "read": "The grid-forming flagship sold ahead of its formal European launch — overseas utility PCS is the margin engine (61.3% gross margin in FY2025).",
+      "source": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=409"
+    },
+    {
+      "date": "2026-06-16",
+      "category": "partnership",
+      "headline": "Shell Recharge and Sinexcel opened a joint EV-charging innovation lab in Shenzhen",
+      "read": "A tier-1 global CPO co-developing ultra-fast, solar-storage-charging, and megawatt truck charging is stronger channel validation than any spec sheet.",
+      "source": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=407"
+    },
+    {
+      "date": "2026-06-16",
+      "category": "other",
+      "headline": "Named a BloombergNEF Tier 1 power inverter manufacturer (Q2 2026)",
+      "read": "Bankability designation aimed squarely at the financing gatekeepers of utility-scale storage tenders.",
+      "source": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=406"
+    },
+    {
+      "date": "2026-06-15",
+      "category": "partnership",
+      "headline": "Partnership with Tokyo developer Namcha Barwa on Japanese utility-scale BESS projects",
+      "read": "Deepens the Japan pipeline beyond frequency regulation into utility-scale BESS development.",
+      "source": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=405"
+    },
+    {
+      "date": "2026-05-14",
+      "category": "regulatory",
+      "headline": "160 kW PCS (PWS1-160M-H) secured Finland SJV2024 certification",
+      "read": "Nordic grid-services certification extends the microgrid module family into another high-value ancillary market.",
+      "source": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=399"
+    },
+    {
+      "date": "2026-04-29",
+      "category": "regulatory",
+      "headline": "StellaON 1250K/1575K among the first PCS to achieve Poland grid certification (EN 62477 / EN 50549 / EN IEC 61000)",
+      "read": "Poland is Europe's hottest BESS tender market — early certification is a queue-jump on rivals.",
+      "source": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=398"
+    },
+    {
+      "date": "2026-04-17",
+      "category": "order-win",
+      "headline": "StellaON 1250K achieved its first grid connection in Vietnam",
+      "read": "First StellaON steel in the ground — Asia-Pacific delivery proof ahead of the European launch.",
+      "source": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=397"
+    },
+    {
+      "date": "2026-04-15",
+      "category": "order-win",
+      "headline": "Powering Latvia's largest wind-farm energy-storage project with 1725 kW PCS cabinets",
+      "read": "Wind co-located storage in the Baltics shows the 215 kVA-module cabinet family winning front-of-meter work, not just the StellaON flagship.",
+      "source": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=395"
+    },
+    {
+      "date": "2026-03-09",
+      "category": "regulatory",
+      "headline": "Sirius 135K earned UL 1741 and IEEE 1547 certification",
+      "read": "Opens North American C&I/microgrid sales for the flagship C&I unit, already certified for Europe, Australia, and Thailand.",
+      "source": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=388"
+    },
+    {
+      "date": "2025-10-09",
+      "category": "other",
+      "headline": "Company confirmed its AIDC division (established June 2025) is developing HVDC and SST data-center power products",
+      "read": "Building own-brand data-center power on the APF/SVG heritage — pre-revenue as of early 2026, while 36 kW HVDC modules are third-party-reported as already shipping to Vertiv.",
+      "source": "https://www.haizhilicai.com/stock_selecter/newsDetail/20251009084653497788"
+    }
+  ],
+  "strategyRead": [
+    "(High confidence) We assess overseas utility PCS is Sinexcel's margin engine — 61.3% FY2025 gross margin on the storage export line versus commoditized domestic pricing, with StellaON grid certifications (Poland, Nordics, Japan) functioning as queue-jumps into tender shortlists. Basis: filings as relayed by broker summaries.",
+    "(Moderate confidence) We assess the third-party PCS position benefits from integrator-versus-vertical dynamics: developers seeking non-captive conversion suppliers keep a durable lane open despite vertically integrated giants.",
+    "(Moderate confidence) We assess the AI data-center power line (built on the APF/SVG heritage; HVDC modules third-party-reported shipping to Vertiv) is optionality, pre-revenue as of early 2026 — treat AI-exposure claims as forward-looking until revenue is disclosed.",
+    "(Moderate confidence) We assess the EV-charging segment — largest since 2024 but lower-margin — is moving up the value chain toward fleet-infrastructure solutions to escape charger commoditization."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "StellaON 1575K — utility-scale grid-forming PCS (flagship; European launch Intersolar Europe 2026)",
+      "specs": [
+        {
+          "label": "Rated AC power",
+          "value": "1,575 kVA (max DC power 1,732 kW; rated DC current 1,515 A)"
+        },
+        {
+          "label": "AC / DC voltage",
+          "value": "690 Vac (-15%/+10%) · DC 1,040–1,500 V"
+        },
+        {
+          "label": "Efficiency",
+          "value": "99% max (98.4% at rated power)"
+        },
+        {
+          "label": "Overload",
+          "value": "1.1× continuous; 1.5× for 10 s (marketing claims 1.5× for 60 s vs 1.2× industry typical)"
+        },
+        {
+          "label": "Grid-forming",
+          "value": "VSG/PQ/VF modes; 100+ MW off-grid parallel; black start; GW-scale grid-forming claimed"
+        },
+        {
+          "label": "Power quality",
+          "value": "THDi ≤3%; regulation accuracy ≤±1%; PF 0.99 (-1 to 1)"
+        },
+        {
+          "label": "Environment",
+          "value": "-40 to 60°C (derate >45°C); 0–100% RH; 3,000 m; IP65; C5; air-cooled"
+        },
+        {
+          "label": "Physical",
+          "value": "720×2,300×1,600 mm; 1,400 kg"
+        },
+        {
+          "label": "Reliability",
+          "value": "MTBF >300,000 h; key-component swap <1 h; full PCS swap <2 h (company claims)"
+        },
+        {
+          "label": "Comms / certs",
+          "value": "RS-485, Ethernet, CAN; Modbus TCP/RTU, IEC 104, IEC 61850 · EN 50549-2/-10, EN 61000, IEC/EN 62477, RfG+PTPIREE, CQC 34120"
+        }
+      ],
+      "notes": "Official datasheet page; Infineon EconoDUAL 3 power modules and 0.6% round-trip-efficiency gain per launch PR. Certified for Germany, Poland, Netherlands, Belgium, Romania; Spain/US pending as of launch."
+    },
+    {
+      "product": "StellaON 1250K — utility-scale grid-forming PCS",
+      "specs": [
+        {
+          "label": "Rated AC power",
+          "value": "1,250 kVA (max DC power 1,375 kW)"
+        },
+        {
+          "label": "AC / DC voltage",
+          "value": "690 Vac (-15%/+10%) · DC 1,040–1,500 V"
+        },
+        {
+          "label": "Efficiency",
+          "value": "99% max (98.5% at rated power)"
+        },
+        {
+          "label": "Overload",
+          "value": "1.1× continuous; 1.8× for 10 s"
+        },
+        {
+          "label": "Grid support",
+          "value": "VSG/PQ/VF; 100+ MW grid-forming; LVRT & HVRT"
+        },
+        {
+          "label": "Environment / physical",
+          "value": "-40 to 60°C (derate >55°C); IP65; air-cooled; 720×2,300×1,600 mm; 1,400 kg"
+        }
+      ],
+      "notes": "Same platform as 1575K with higher short-time overload (1.8×/10 s) and higher derating knee (55°C). First grid connection in Vietnam, April 2026; two 1,375 kW derivatives power the Matsusaka (Japan) frequency-regulation project."
+    },
+    {
+      "product": "Sirius 135K (PWS1-135M) — C&I / microgrid PCS",
+      "specs": [
+        {
+          "label": "Rated power",
+          "value": "135 kW (DC current 193 A)"
+        },
+        {
+          "label": "AC / DC voltage",
+          "value": "400/480 Vac (±15%), 3P4W · DC 600–1,000 V @400 Vac; 720–1,000 V @480 Vac"
+        },
+        {
+          "label": "Efficiency",
+          "value": "98% nominal (>98% full-load per certification PR)"
+        },
+        {
+          "label": "Microgrid",
+          "value": "Grid-forming; 100+ units off-grid parallel via proprietary comms; 100% unbalanced load; transformerless"
+        },
+        {
+          "label": "Environment",
+          "value": "-40 to 60°C (derate ≥55°C); IP65 (IP66 + C5 per cert PR); 720×265×960 mm"
+        },
+        {
+          "label": "Certifications",
+          "value": "UL 1741 & IEEE 1547 (March 2026) + IEC/EN, JET, VDE; markets incl. Europe, Australia, Thailand, North America"
+        }
+      ],
+      "notes": "Cert PR claims 100% higher energy density, 50% smaller footprint, 10× switching capacity vs prior models, harmonic adaptability up to 25%."
+    },
+    {
+      "product": "PWS1-500KTL — 500 kVA modular PCS cabinet",
+      "specs": [
+        {
+          "label": "Rated power",
+          "value": "500 kVA (550 kVA max), scaling 62.5→500 kW via 1–8 power modules"
+        },
+        {
+          "label": "AC / DC voltage",
+          "value": "400 Vac ±15% (380/400/480/690 with external transformer) · DC 600–900 V"
+        },
+        {
+          "label": "Efficiency",
+          "value": "98.2% peak; 97% CEC (NA model, w/o transformer)"
+        },
+        {
+          "label": "Modes",
+          "value": "Utility-interactive and stand-alone (on/off-grid)"
+        },
+        {
+          "label": "Physical",
+          "value": "1,100×2,160×800 mm; forced-air; <75 dB"
+        },
+        {
+          "label": "Certifications",
+          "value": "EX: CE LVD/EMC, EN 50549-1/2, G99, AS4777.2, VDE 4110 · NA: UL 1741, IEEE 1547, CSA 22.2, FCC, CPUC Rule 21, HECO Rule 14"
+        }
+      ],
+      "notes": "The legacy modular workhorse (successor positioning to PWS1-500K in v1 dossier); targets industrial parks, data centers, commercial buildings, remote areas."
+    },
+    {
+      "product": "PWS1-1725KTL-H — 215 kVA-module utility cabinet",
+      "specs": [
+        {
+          "label": "Rated power",
+          "value": "215–1,725 kVA in 215 kVA steps (up to 8 modules)"
+        },
+        {
+          "label": "AC / DC voltage",
+          "value": "690 Vac (-15%/+10%) direct interconnection · DC 1,000–1,500 V (full-power charge), 1,070–1,500 V (full-power discharge)"
+        },
+        {
+          "label": "Efficiency",
+          "value": "98.5% peak @ DC 1,070 V"
+        },
+        {
+          "label": "Physical",
+          "value": "2,200×2,160×1,300 mm; 1,549–2,200 kg; air-cooled"
+        },
+        {
+          "label": "Functions",
+          "value": "Front-of-meter: peak shaving, renewables integration, frequency regulation, black start"
+        }
+      ],
+      "notes": "Deployed in Latvia's largest wind-farm energy-storage project (April 2026 PR)."
+    },
+    {
+      "product": "PWS1-160M-H — 160 kVA microgrid HVAC module",
+      "specs": [
+        {
+          "label": "Rated power",
+          "value": "160 kVA (176 kVA at 1.1× continuous; 1.5× for 10 s)"
+        },
+        {
+          "label": "AC / DC voltage",
+          "value": "400 Vac ±15% (EX) / 480 Vac ±15% (NA) · DC 720–1,500 V (derate to 90% above 1,200 V)"
+        },
+        {
+          "label": "Efficiency",
+          "value": "98.5% max (external auxiliary source)"
+        },
+        {
+          "label": "Microgrid",
+          "value": "VSG grid-forming; seamless on/off-grid with collaborative external switch; FFR/FCR/FCAS; dispatch response ≤15 ms"
+        },
+        {
+          "label": "Environment",
+          "value": "IP66; forced-air; flat/vertical/wall mounting"
+        },
+        {
+          "label": "Certifications",
+          "value": "Finland SJV2024 (May 2026) among others"
+        }
+      ],
+      "notes": "The building block of the 1725KTL-H cabinet family and the Nordic grid-services entry."
+    },
+    {
+      "product": "40ft 10MW Centralized MV Station — containerized medium-voltage skid",
+      "specs": [
+        {
+          "label": "Rated power",
+          "value": "10,000 kVA; 4 or 8 DC branches (2,404 A / 1,202 A max per branch)"
+        },
+        {
+          "label": "Voltage",
+          "value": "MV 22–33 kV (24/36 kV transformer, Dy11y11, ONAN, oil-immersed, 690 V LV) · DC 1,040–1,500 V"
+        },
+        {
+          "label": "Efficiency / PQ",
+          "value": "PCS max 98.5%; THDi/THDu <3%; regulation ≤±1%"
+        },
+        {
+          "label": "Environment",
+          "value": "-40 to 60°C (derate >45°C); IP55 overall (IP68 transformer, IP65 PCS); C5"
+        },
+        {
+          "label": "Physical",
+          "value": "12,192×2,896×2,438 mm (40-ft); ≤45 t"
+        },
+        {
+          "label": "Certifications",
+          "value": "IEC 62477, IEC 61000, G99, VDE 4110, EN 50549-2, IEC 60076, IEC 62271"
+        }
+      ],
+      "notes": "Top of the containerized range (20-ft 2.5 MW to 40-ft 12.5 MW MV stations per launch PR; this datasheet documents the 10 MW unit)."
+    },
+    {
+      "product": "SEC1280 — distributed megawatt charging system",
+      "specs": [
+        {
+          "label": "Power",
+          "value": "960 kW or 1,280 kW power stacks; up to 16 connectors"
+        },
+        {
+          "label": "Output",
+          "value": "200–1,000 V DC; standard dispenser dual liquid-cooled connectors 500 A (boost 600 A; combos 350+350/500+500/500+350 A); suspended dispenser 200 A; 700 A liquid-cooled supercharging dispenser in Thailand deployment"
+        },
+        {
+          "label": "Input / efficiency",
+          "value": "400 Vac ±10%, 50 Hz; 96.3% peak, ~95% average; PF 0.99"
+        },
+        {
+          "label": "Protocols",
+          "value": "OCPP 1.6J (2.0.1 from 2025); DIN 70121, ISO 15118; Ethernet/GSM/4G"
+        },
+        {
+          "label": "Certifications",
+          "value": "CE, RCM, Eichrecht (first megawatt charger so certified), MID"
+        }
+      ],
+      "notes": "Fleet/bus-depot/highway/heavy-truck focus; basis of the Bangkok ZEEKR megawatt station (two vehicles 20→80% in 10 min)."
+    },
+    {
+      "product": "SEC480 — distributed DC fast charging system",
+      "specs": [
+        {
+          "label": "Power",
+          "value": "360–480 kW power cabinet (24 × 20 kW modules); architecture upgradeable toward 960 kW"
+        },
+        {
+          "label": "Output voltage",
+          "value": "200–1,000 V DC (constant-power band 300–1,000 V per distributor sheet; 330–750 V per project page)"
+        },
+        {
+          "label": "Output current",
+          "value": "Up to 500 A at 800 V (≈400 kW) with liquid-cooled cables; ~200 A standard air-cooled dispensers"
+        },
+        {
+          "label": "Efficiency",
+          "value": "Module peak 96.5%; system ~96%"
+        },
+        {
+          "label": "Architecture",
+          "value": "Distributed power bank + up to 6 dispensers; dynamic module-level power allocation; module-level redundancy"
+        },
+        {
+          "label": "Cooling / noise",
+          "value": "Liquid-cooled dispenser <55 dB; air-cooled dispenser near-silent (claimed)"
+        },
+        {
+          "label": "Protocols / certs",
+          "value": "OCPP 1.6J / 2.0 · CE, UL, UKCA, TR25, RCM, KC, Eichrecht"
+        }
+      ],
+      "notes": "Company tagline: '10 minutes charging, 400 kilometers driving.' Dimensions and IP rating not published in retrieved sources."
+    },
+    {
+      "product": "SER 40 kW EV charging module (SER100040K3B)",
+      "specs": [
+        {
+          "label": "Power / output",
+          "value": "40 kW; 50–1,000 V output (constant power 300–1,000 V); max current 133.3 A"
+        },
+        {
+          "label": "Input",
+          "value": "285–525 Vac wide-range three-phase"
+        },
+        {
+          "label": "Efficiency",
+          "value": "97.03% peak"
+        },
+        {
+          "label": "Topology",
+          "value": "3rd-generation SiC MOSFETs; interleaved parallel LLC; high-frequency-transformer galvanic isolation; hot-pluggable"
+        },
+        {
+          "label": "Standards support",
+          "value": "CCS1, CCS2, CHAdeMO, GB/T; also usable in storage systems"
+        }
+      ],
+      "notes": "Merchant module sold to third-party charger makers alongside the 20 kW SER (200–1,000 V) unit."
+    },
+    {
+      "product": "Active harmonic filter family (BLADE / standard / PRO / Ultra AHF)",
+      "specs": [
+        {
+          "label": "BLADE AHF",
+          "value": "5/10/15 A wall/rack units; SiC MOSFET; ~50 kHz avg switching (up to 90 kHz); 2nd–61st harmonics; 410×340×45 mm, 4.98 kg; Wi-Fi monitoring"
+        },
+        {
+          "label": "Standard AHF",
+          "value": "25–300 A modules; 220/400/480/600/690 V; 2nd–50th harmonics; ≥97% efficiency; ~20 kHz avg; unlimited parallel"
+        },
+        {
+          "label": "PRO AHF",
+          "value": "150 A; 98.5% peak efficiency; ~33% less heat vs legacy; 500×550×190 mm, 40 kg"
+        },
+        {
+          "label": "Ultra AHF",
+          "value": "SiC-based; average switching ~40 kHz (claimed up to 95 kHz)"
+        },
+        {
+          "label": "Filtering result",
+          "value": "Auto-tuning to THDi <5%"
+        },
+        {
+          "label": "Certifications",
+          "value": "CE, UL/ETL; marine: DNV, RINA, CCS, BV"
+        }
+      ],
+      "notes": "20,000+ power-quality projects deployed; AIDC and semiconductor demand called out as the growth driver."
+    },
+    {
+      "product": "Static var generator family (SVG / PRO / hot-plug)",
+      "specs": [
+        {
+          "label": "Standard SVG",
+          "value": "30–120 kvar modules across 200/400/480/600/690 V classes; 200 kvar cabinet unit; ≥97% efficiency"
+        },
+        {
+          "label": "Response",
+          "value": "15 ms full power-factor correction; PF to 0.99; three-phase balancing and voltage regulation"
+        },
+        {
+          "label": "PRO SVG",
+          "value": "100 kvar; 98.5% peak; <56 dB; 35 kg; 500×550×190 mm"
+        },
+        {
+          "label": "Hot-plug units",
+          "value": "50/100 kvar, 'no wiring' slide-in installation"
+        },
+        {
+          "label": "Variants",
+          "value": "Ultra SVG, ASVG, HSVG for higher-voltage/special applications (specs not published on retrieved pages)"
+        }
+      ],
+      "notes": "Rack- or wall-mount, 3P3W/3P4W, 45–62 Hz auto-sensing."
+    },
+    {
+      "product": "AVC-RTS — active voltage conditioner (sag ride-through)",
+      "specs": [
+        {
+          "label": "Ratings",
+          "value": "30–2,400 kVA (30/50/60 … 1,200/1,500/1,800/2,400); 208/380/480/600 V; 3P3W/3P4W"
+        },
+        {
+          "label": "Response",
+          "value": "2 ms typical (within 5 ms); off-line topology (inverter on standby)"
+        },
+        {
+          "label": "Compensation",
+          "value": "0–130% of nominal voltage — supports 100% rated voltage even at zero-volt sags; three- or single-phase"
+        },
+        {
+          "label": "Energy storage",
+          "value": "Supercapacitors; 3 s standard backup (customizable)"
+        },
+        {
+          "label": "Efficiency / redundancy",
+          "value": "~99% (off-line); N+1 inverters <1,200 kVA, N+2 ≥1,200 kVA; optional maintenance bypass"
+        }
+      ],
+      "notes": "Deployed in semiconductor fabs, precision manufacturing, and AI data centers — the sharpest AIDC hook in the power-quality line."
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Fang Xing (方兴) — \"Raymond Fang\"",
+      "title": "Founder, Chairman & General Manager",
+      "background": [
+        "Founded Sinexcel in 2007; Chairman & GM of the joint-stock company since June 2015",
+        "Jabil Electronics (Guangzhou) — 2000–2007",
+        "Procter & Gamble (Guangzhou) — 1994–2000",
+        "B. 1972; master's degree; FY2024 compensation RMB 2.31M"
+      ]
+    },
+    {
+      "name": "Xiao Jin (肖瑾) — \"Jessica J. X.\"",
+      "title": "Vice Chairman (since Nov 2022)",
+      "background": [
+        "Previously Bank of China (Hong Kong branch) and Shenzhen Click Electronics (可立克)",
+        "B. 1974; Hong Kong Chinese national; master's degree"
+      ]
+    },
+    {
+      "name": "Yang Liu (杨柳)",
+      "title": "Director, Deputy GM & CFO (since June 2021)",
+      "background": [
+        "Prior finance roles in the chemical and banking sectors; certified public accountant",
+        "Highest-paid executive in FY2024 (RMB 2.79M); holds ~83,800 shares",
+        "B. 1973; bachelor's degree"
+      ]
+    },
+    {
+      "name": "Wei Xiaoliang (魏晓亮)",
+      "title": "Director & Deputy GM (Deputy GM since June 2021, Director since Aug 2022)",
+      "background": [
+        "Formerly R&D manager at Emerson Network Power",
+        "B. 1976; master's degree; senior engineer"
+      ]
+    },
+    {
+      "name": "Liu Shuai (刘帅)",
+      "title": "Deputy General Manager (since March 2023)",
+      "background": [
+        "B. 1987; master's degree; FY2024 compensation RMB 2.29M"
+      ]
+    },
+    {
+      "name": "Zhao Qinghe (赵庆河)",
+      "title": "Deputy General Manager (since July 2024)",
+      "background": [
+        "B. 1987; bachelor's degree"
+      ]
+    },
+    {
+      "name": "Hu Tianshun (胡天舜)",
+      "title": "Board Secretary (since June 2021)",
+      "background": [
+        "B. 1985; bachelor's degree; securities affairs representative: Yang Ning (杨宁)"
+      ]
+    },
+    {
+      "name": "Henry Cheung",
+      "title": "GM, Global Energy Storage & Microgrid Solution BU",
+      "background": [
+        "Listed on the official Senior Leadership page; Chinese name not published"
+      ]
+    },
+    {
+      "name": "Roy Luo",
+      "title": "GM, Global Power Quality & CSS BU",
+      "background": [
+        "Listed on the official Senior Leadership page; Chinese name not published"
+      ]
+    },
+    {
+      "name": "Derek Leng",
+      "title": "Managing Director, Sinexcel US Market",
+      "background": [
+        "Leads Sinexcel Inc. (California) — US storage & microgrid delivery"
+      ]
+    }
+  ],
+  "financials": {
+    "currency": "CNY (RMB)",
+    "type": "public",
+    "periods": [
+      {
+        "period": "FY2024 (reported April 2025)",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "RMB 3.036B (+14.5% YoY)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "No public revenue consensus found"
+          },
+          {
+            "name": "Net profit (attributable)",
+            "actual": "RMB 429M (+6.5% YoY)",
+            "expected": "RMB 426M (company earnings-express report)",
+            "verdict": "beat",
+            "result": "Slight beat — Soochow Securities titled its review \"results slightly beat expectations\"; another broker called it in-line"
+          },
+          {
+            "name": "Gross margin",
+            "actual": "~39.2% (aggregator calculation)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "—"
+          }
+        ],
+        "commentary": "Segments: EV charging RMB 1.216B (+43.0%), energy storage RMB 857M (≈ -6% YoY, 29.6% gross margin), power quality RMB 603M (+13.1%), battery formation & test RMB 296M. Post-results, Soochow cut 2025/2026 profit forecasts to RMB 560M/680M (from 590M/730M) citing overseas storage tariff risk. Dividend: RMB 5.00 per 10 shares (~RMB 156M)."
+      },
+      {
+        "period": "FY2025 (reported April 2026)",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "RMB 3.463B (+14.1% YoY)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "No public revenue consensus found"
+          },
+          {
+            "name": "Net profit (attributable)",
+            "actual": "RMB 476M (+11.0% YoY)",
+            "expected": "~RMB 511M (start-of-2025 consensus, aggregator-cited); ~RMB 490M after mid-year broker cuts",
+            "verdict": "miss",
+            "result": "~7% below start-of-year consensus; roughly in line with post-cut estimates after the weak storage H1"
+          },
+          {
+            "name": "Gross margin",
+            "actual": "~38.5% (down ~1.9 pp, aggregator)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "—"
+          }
+        ],
+        "commentary": "Segments: EV charging RMB 1.496B (+23.0%, now 43.2% of revenue), energy storage RMB 825M (-3.7% — H1 down 39% on the domestic price war, sharp H2 recovery), power quality RMB 710M (+17.8%), battery test RMB 343M (+16.0%). Overseas storage revenue RMB 645M (+50.1%) at 61.3% gross margin. Q4 2025 accelerated: revenue +32.5%, profit +25.9%. Sector narrative: \"storage stalled; AIDC/data-center power the swing factor.\" Dividend: RMB 5.00 per 10 shares (RMB 156M, paid May 2026)."
+      },
+      {
+        "period": "Q1 2026 (latest interim; H1 2026 report not yet published as of Aug 2026)",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "RMB 744M (+23.1% YoY)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "No quarterly consensus published"
+          },
+          {
+            "name": "Net profit (attributable)",
+            "actual": "RMB 85.2M (+16.9% YoY); ex-non-recurring RMB 85.5M (+25.0%)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "Financial expenses spiked +544%, flagged by aggregators"
+          }
+        ],
+        "commentary": "FY2026 analyst consensus: net profit ~RMB 589–600M (+~26% YoY, EPS ~1.88); one cautious independent estimate ~RMB 538M assuming AIDC revenue halves. Ratings found are buy/overweight-type (Soochow, Everbright, Guolian); no sell ratings found. Market cap ~RMB 15.2B in mid-June 2026 (~28× 2026E earnings)."
+      }
+    ],
+    "commentary": "Figures are company-reported unless marked as aggregator/analyst; segment gross margins and the employee count come from aggregator/broker summaries of the annual reports (primary cninfo PDFs could not be fetched during research)."
+  },
+  "sources": [
+    {
+      "label": "Sinexcel news — Japan frequency-regulation market entry (2026-07-13)",
+      "url": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=411",
+      "date": "2026-07-13"
+    },
+    {
+      "label": "Sinexcel news — ZEEKR/TPM Bangkok megawatt station (2026-07-13)",
+      "url": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=412",
+      "date": "2026-07-13"
+    },
+    {
+      "label": "electrive — Sinexcel one-stop e-truck charging solution (2026-07-10)",
+      "url": "https://www.electrive.com/2026/07/10/sinexcel-launches-one-stop-solution-for-e-truck-charging/",
+      "date": "2026-07-10"
+    },
+    {
+      "label": "东方财富财富号 — FY2025 segment/overseas detail, 2026 estimates",
+      "url": "https://caifuhao2.eastmoney.com/news/20260624203928825563980",
+      "date": "2026-06-24"
+    },
+    {
+      "label": "Sinexcel news — BloombergNEF Tier 1 inverter maker Q2 2026 (2026-06-16)",
+      "url": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=406",
+      "date": "2026-06-16"
+    },
+    {
+      "label": "Sinexcel news — Shell Recharge joint innovation lab (2026-06-16)",
+      "url": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=407",
+      "date": "2026-06-16"
+    },
+    {
+      "label": "PR Newswire — StellaON 1250K/1575K launch (specs)",
+      "url": "https://www.prnewswire.com/news-releases/sinexcel-launches-stellaon-1250k1575k-to-advance-utility-scale-energy-storage-in-europe-302818190.html",
+      "date": "2026-06"
+    },
+    {
+      "label": "36氪 — \"储能业务失速…能靠AIDC翻红吗\" (sector narrative)",
+      "url": "https://www.36kr.com/p/3470744802924681",
+      "date": "2026-06"
+    },
+    {
+      "label": "同花顺 — FY2025 dividend implementation (RMB 5.00 per 10 shares)",
+      "url": "https://m.10jqka.com.cn/20260513/c676647694.shtml",
+      "date": "2026-05-13"
+    },
+    {
+      "label": "东方财富 — Q1 2026 results",
+      "url": "https://wap.eastmoney.com/a/202604233716404974.html",
+      "date": "2026-04-23"
+    },
+    {
+      "label": "证券之星 — FY2025 annual report analysis (300693)",
+      "url": "https://stock.stockstar.com/RB2026041100004297.shtml",
+      "date": "2026-04-11"
+    },
+    {
+      "label": "Energy-Storage.News — StellaON Poland grid certification",
+      "url": "https://www.energy-storage.news/industry-updates/sinexcel-stellaon-1250k-1575k-among-first-to-secure-poland-grid-certification/",
+      "date": "2026-04"
+    },
+    {
+      "label": "Sinexcel news — Sirius 135K UL 1741 & IEEE 1547 certification (2026-03-09)",
+      "url": "https://en.sinexcel.com/about/detail.html?id=5&bid=5250&cid=388",
+      "date": "2026-03-09"
+    },
+    {
+      "label": "海之理财 — AIDC division established, developing HVDC/SST (2025-10-09)",
+      "url": "https://www.haizhilicai.com/stock_selecter/newsDetail/20251009084653497788",
+      "date": "2025-10-09"
+    },
+    {
+      "label": "Sohu — Sinexcel AIDC division focus on HVDC & SST (盛弘股份AIDC事业部)",
+      "url": "https://www.sohu.com/a/949181584_122362510",
+      "date": "2025-10"
+    },
+    {
+      "label": "Everbright Securities H1 2025 note — storage pressured, AIDC upside (via Sina)",
+      "url": "https://finance.sina.com.cn/roll/2025-08-19/doc-infmqfes0797001.shtml",
+      "date": "2025-08-19"
+    },
+    {
+      "label": "Soochow Securities FY2024 review — \"results slightly beat expectations\" (via Sina)",
+      "url": "https://finance.sina.com.cn/stock/relnews/cn/2025-04-06/doc-inesfyaa9098513.shtml",
+      "date": "2025-04-06"
+    },
+    {
+      "label": "证券之星 — FY2024 annual report analysis (300693)",
+      "url": "https://stock.stockstar.com/RB2025040400004454.shtml",
+      "date": "2025-04-04"
+    },
+    {
+      "label": "PR Newswire — Tier 1 low-voltage power quality supplier recognition (2025-03)",
+      "url": "https://www.prnewswire.com/news-releases/sinexcel-recognized-as-a-tier-1-low-voltage-power-quality-supplier-302406928.html",
+      "date": "2025-03"
+    },
+    {
+      "label": "Sinexcel official site (EN) — products, installed-base claims",
+      "url": "https://en.sinexcel.com/"
+    },
+    {
+      "label": "Sinexcel official — Senior Leadership page",
+      "url": "https://en.sinexcel.com/about/teams.html"
+    },
+    {
+      "label": "Sinexcel official — SEC480 Distributed Charger",
+      "url": "https://en.sinexcel.com/evcharger/480kw.php"
+    },
+    {
+      "label": "Sinexcel official — Active Harmonic Filter",
+      "url": "https://en.sinexcel.com/power/ahf.php"
+    },
+    {
+      "label": "Sinexcel official — Energy Storage product listing",
+      "url": "https://en.sinexcel.com/energy-storage/"
+    },
+    {
+      "label": "Sinexcel official — StellaON 1575K datasheet",
+      "url": "https://en.sinexcel.com/energy-storage/details.html?id=39"
+    },
+    {
+      "label": "Sinexcel official — StellaON 1250K datasheet",
+      "url": "https://en.sinexcel.com/energy-storage/details.html?id=19"
+    },
+    {
+      "label": "Sinexcel official — Sirius 135K (PWS1-135M) datasheet",
+      "url": "https://en.sinexcel.com/energy-storage/sirius135k.html"
+    },
+    {
+      "label": "Sinexcel official — PWS1-500KTL modular PCS cabinet",
+      "url": "https://en.sinexcel.com/energy-storage/details.html?id=24"
+    },
+    {
+      "label": "Sinexcel official — PWS1-1725KTL-H 215K cabinet",
+      "url": "https://en.sinexcel.com/energy-storage/details.html?id=18"
+    },
+    {
+      "label": "Sinexcel official — PWS1-160M-H 160 kW microgrid module",
+      "url": "https://en.sinexcel.com/energy-storage/details.html?id=22"
+    },
+    {
+      "label": "Sinexcel official — PWS2-30P 30 kW DC/AC module",
+      "url": "https://en.sinexcel.com/energy-storage/details.html?id=15"
+    },
+    {
+      "label": "Sinexcel official — 40ft 10MW Centralized MV Station",
+      "url": "https://en.sinexcel.com/energy-storage/details.html?id=38"
+    },
+    {
+      "label": "Sinexcel official — Power Quality product listing (incl. PRO series)",
+      "url": "https://en.sinexcel.com/power/"
+    },
+    {
+      "label": "Sinexcel official — SVG family page",
+      "url": "https://en.sinexcel.com/power/svg.php"
+    },
+    {
+      "label": "Sinexcel official — AVC-RTS page",
+      "url": "https://en.sinexcel.com/power/avc-rts.php"
+    },
+    {
+      "label": "Sinexcel official — EV Charging product listing",
+      "url": "https://en.sinexcel.com/evcharger/"
+    },
+    {
+      "label": "Sinexcel official — SEC1280 distributed charger",
+      "url": "https://en.sinexcel.com/evcharger/sh1280kw.php"
+    },
+    {
+      "label": "Sinexcel official — SER 40 kW EV power module",
+      "url": "https://en.sinexcel.com/evcharger/40kW.php"
+    },
+    {
+      "label": "Sinexcel official — news archive (2025–2026 releases)",
+      "url": "https://en.sinexcel.com/about/news.html"
+    },
+    {
+      "label": "中商情报网 (askci) — executive/board biographies (300693)",
+      "url": "https://s.askci.com/stock/executives/300693/"
+    },
+    {
+      "label": "读特/Shenzhen Press Group — founder profile of Fang Xing",
+      "url": "https://www.dutenews.com/n/article/7204616"
+    },
+    {
+      "label": "CharIN — Sinexcel core membership announcement",
+      "url": "https://www.charin.global/news/sinexcel-becomes-a-core-member-of-charin-e-v/"
+    }
+  ],
+  "lastUpdated": "2026-08-09",
+  "profileVersion": 3
+}

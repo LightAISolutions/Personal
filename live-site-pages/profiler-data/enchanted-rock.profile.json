@@ -1,0 +1,416 @@
+{
+ "schemaVersion": 6,
+ "slug": "enchanted-rock",
+ "name": "ERock (Enchanted Rock)",
+ "shortName": "ERock",
+ "categories": [
+  "supplier"
+ ],
+ "website": "https://erock.com",
+ "headquarters": "Houston, Texas, United States",
+ "founded": "2006",
+ "employees": "~300-315 (May 2026, aggregator-reported; not confirmed in the S-1)",
+ "ownership": {
+  "type": "public",
+  "ticker": "NYSE: EROC",
+  "notes": "IPO'd June 10, 2026 at $21.50/share (27.9M Class A shares, ~$600M gross; Morgan Stanley/J.P. Morgan leads). UP-C structure over Enchanted Rock Holdings, LLC: public float ~10.2% of economics / ~12.7% of votes. Energy Impact Partners is the largest pre-IPO institutional owner (entities tied to EIP's Hans Kobler hold ~83.4M Class B + ~19.4M Class A); founder Thomas McAndrew retains a disclosed ~31.9% beneficial stake. Tax Receivable Agreement obligates up to ~$1.19B of undiscounted payments to pre-IPO owners. Historic fleet capex ran off-balance-sheet through Basalt Infrastructure Partners' Texas Microgrid LLC vehicle."
+ },
+ "summary": "BOTTOM LINE UP FRONT: ERock (rebranded from Enchanted Rock at its June 2026 NYSE IPO) is the most bankable pure-play in the FEOC-immune gas-microgrid category that is siphoning AIDC energy budgets away from grid-plus-BESS architectures. Three anchor contracts define it: Microsoft San Jose (100 MW RNG-backed backup, complete), Meta El Paso via El Paso Electric (McCloud Generation — 366 MW, ~$473-500M, utility-owned and Meta-funded, exclusive 5-year bridge from 2027, construction started Q2 2026), and an ~470 MW RockBlock equipment order from Anthropic (August 11, 2026 — its largest ever, taking backlog to ~$1.7B, 10x year-over-year, and moving the stock +23%). The platform is pure natural-gas gensets — 500 kW ERT500 units and megawatt-scale RockBlock strings assembled in Houston-area plants ramping toward ~1.2 GW/yr by end-2026 at only ~$15M capex — with zero BESS in the product line. For Hithium the company is not a battery rival but a demand-shaper: every campus that signs an ERock bridge defers or shrinks a containerized-storage purchase, while ERock's own post-bridge narrative ('permanent utility feeds supplemented by battery storage') and its ex-Stem CEO leave a visible storage-attach socket open.",
+ "ecosystemRole": "We assess ERock as the archetype of the FEOC-immune energy dollar in US AIDC — a public, cash-rich ($626.6M, zero debt), vertically integrated gas-genset platform selling bridge power, diesel-replacement backup, and flexible-capacity interconnection enablement to exactly the hyperscaler budgets a containerized BESS supplier targets. It competes with VoltaGrid and ProEnergy inside the gas-bridge category, competes with grid-plus-BESS at the architecture level, and — because its own roadmap concedes battery supplementation after the bridge years — doubles as a plausible future BESS procurement channel that Hithium's NDAA §154 designation likely locks it out of on US soil.",
+ "productsAndServices": [
+  {
+   "name": "RockBlock + ERT500 modular gas gensets (the AIDC product)",
+   "description": "Launched September 2025: ERT500 is a 500 kW modular natural-gas genset; RockBlock is the megawatt-scale 'diesel replacement' — modular strings of 1.5-3.5 MW configurable in 0.5 MW increments. Legacy fleet built on ~0.45 MW units (Microsoft San Jose runs 224 of them). Engines are Power Solutions International 21.9L natural-gas blocks (400 kWe LTR / 448 kWe standby) under a ~$335M mutually exclusive five-year supply agreement — PSI is majority-owned by China's Weichai Power, an under-discussed supply-chain irony inside the 'FEOC-clean' pitch. Marketed against diesel: up to 99% fewer particulates, no water use, <70 dBA, unlimited pipeline-fed runtime, ~20-year life, avoids Title V major-source permitting; CARB DG-compliant.",
+   "positioning": "Direct competitor to diesel backup (Cat/Cummins/MTU) on emissions and grid value, to VoltaGrid and ProEnergy on AIDC bridge power (smaller unit granularity, deeper utility integration), and to grid-plus-BESS at the architecture level. Not a BESS product — batteries appear only at the edges (software dispatch of third-party storage, hybrid Texas Backup Power Package configs, post-bridge storage narrative).",
+   "soldThrough": "Three routes: (1) reliability-as-a-service — customer pays a service fee, ERock monetizes the fleet in ERCOT as an aggregated VPP; (2) straight equipment sales with ~10-year O&M attach (>95% attach, 100% renewal, $23.6M annualized recurring service revenue); (3) utility-partner program — utilities (Entergy 'Power Through', ComEd, El Paso Electric) own or resell the microgrid service.",
+   "targetSegments": "Hyperscale and AI data centers (bridge, backup, flexible capacity), utilities, C&I resiliency (H-E-B, Walmart, Buc-ee's), municipal water infrastructure",
+   "roadmap": "Production 'completely sold out through 2027 and into 2028' (Q2 2026 call); Hyperion assembly plant (Cypress, TX) began operations Q2 2026 targeting ~1.2 GW/yr by end-2026; HyBLOX hydrogen-blend engine program ($2.1M CEC grant); RNG supply flowing to Microsoft San Jose from early 2026 via US Energy food-waste partnership."
+  },
+  {
+   "name": "Bridge-to-grid and flexible-capacity structures",
+   "description": "Productized May 2024 explicitly for AI-driven load: prime power ahead of interconnection (the Meta El Paso template — utility-owned, hyperscaler-funded, exclusive 5-year bridge), diesel-replacement backup (Microsoft), and 'flexible capacity' that lets a campus accept non-firm/curtailable interconnection for faster grid access — the same enablement role 4-hour BESS plays in competing architectures.",
+   "positioning": "The El Paso Electric/McCloud structure — a $473-500M plant owned by the utility, fully paid by Meta under a commission-approved rate, operated by ERock — is the template competitors now have to answer; it converts a merchant bridge sale into regulated-utility paper.",
+   "soldThrough": "Utility rate filings (PUCT), direct hyperscaler equipment POs (Anthropic), RaaS contracts",
+   "targetSegments": "Hyperscalers with stranded interconnection queues; utilities monetizing large-load connection demand",
+   "roadmap": "McCloud construction started Q2 2026, bridge service from 2027; Anthropic 470 MW extends production commitments into 2028 with O&M contracts to follow separately."
+  },
+  {
+   "name": "GraniteEcosystem software + ERCOT VPP operations",
+   "description": "Monitoring, predictive analytics, and automated dispatch that forecasts market/grid conditions and optimizes onsite generation, solar, storage and other resources. The founding economic thesis: aggregated microgrids sell energy and ancillary services into ERCOT, and that wholesale revenue subsidizes the customer's resiliency fee (dual-value). Historically monetized through Basalt's Texas Microgrid LLC (~167-225 MW).",
+   "positioning": "The software layer is the one place ERock's architecture formally touches batteries today — GraniteEcosystem can dispatch third-party storage in hybrid microgrids, and the Texas Backup Power Package ($1.8B, ≤2.5 MW projects at $500/kW) requires solar+battery+gas combinations.",
+   "soldThrough": "Bundled with RaaS and O&M contracts",
+   "targetSegments": "All fleet customers; Texas program participants",
+   "roadmap": "Watch for storage-attach productization — CEO John Carrington ran Stem, Inc. (BESS/AI software) and the bridge narrative concedes post-bridge battery supplementation."
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Contracted AIDC book (named)",
+   "specs": [
+    {
+     "band": "Anthropic",
+     "label": "~470 MW",
+     "value": "RockBlock equipment purchase order announced with Q2 results Aug 11, 2026 — largest order in company history; backlog to ~$1.7B (10x YoY); production commitments into 2028; O&M to follow; sites undisclosed (Anthropic's Fluidstack TX/NY buildout is the inferred host — unconfirmed); stock +23% on the print"
+    },
+    {
+     "band": "Meta / El Paso Electric",
+     "label": "366 MW",
+     "value": "McCloud Generation: 813 modular gensets (163 RockBlocks per Q2 slides — the two counts appear to reflect engines vs strings), ~$473-500M plant owned by EPE and fully paid by Meta under a commission-approved rate; exclusive 5-year bridge starting 2027 at 225 MW/95% load initially; adjacent to Meta's reported up-to-$14B, ~1 GW El Paso AI campus; PUCT filing Jan 2026; construction commenced Q2 2026"
+    },
+    {
+     "band": "Microsoft",
+     "label": "100 MW",
+     "value": "San Jose RNG-supported backup microgrid — 224 × 0.45 MW units across 2 buildings; 'California's largest RNG microgrid'; announced Jun 2022, complete ~mid-2024; food-waste RNG from US Energy flowing from early 2026; participates in California's Base Interruptible Program (grid services baked in); supports Microsoft's diesel-exit-by-2030 pledge"
+    },
+    {
+     "band": "Other named",
+     "label": "Foxconn · Wistron · utilities",
+     "value": "S-1 discloses Foxconn and Wistron (AI-server plants) plus retail/utility anchors H-E-B, Walmart, Buc-ee's, Entergy, ComEd; Entergy 'Power Through' Baton Rouge General 9.4 MW activated Nov 2025; ComEd Bronzeville community microgrid (2021); Houston NE Water Purification Plant 32 MW under construction"
+    }
+   ],
+   "notes": "Fleet: ~1,104 MW installed across 400+ sites (Q2 2026); 2,000+ units deployed; ~500 MW of projects in Texas. Backlog trajectory: $145.2M (Q1 2025) → ~$1.3B (Mar 2026, +779%) → ~$1.7B (Aug 2026)."
+  },
+  {
+   "product": "Platform hardware & manufacturing",
+   "specs": [
+    {
+     "band": "ERT500",
+     "label": "500 kW NG genset",
+     "value": "Launched Sept 2025; PSI 21.9L engine (400 kWe LTR / 448 kWe standby); <70 dBA; no water; ISO 8528-5 G3 load response; ~20-yr life; unlimited pipeline-fed runtime"
+    },
+    {
+     "band": "RockBlock",
+     "label": "1.5-3.5 MW strings",
+     "value": "Megawatt-scale diesel replacement in 0.5 MW increments; 80-96% lower local emissions than Tier 4 diesel claimed at San Jose; avoids Title V major-source permitting; CARB DG-compliant"
+    },
+    {
+     "band": "Assembly capacity",
+     "label": "~1.2 GW/yr by end-2026",
+     "value": "Titan (Houston) + Hyperion (Legacy Point, Cypress TX — assembly began Q2 2026) at only ~$15M capex; capex-light assembly, not heavy manufacturing; production sold out through 2027 into 2028"
+    },
+    {
+     "band": "Engine supply",
+     "label": "PSI exclusive (~$335M/5yr)",
+     "value": "Single-source, mutually exclusive; PSI majority-owned by Weichai Power (China) — a latent narrative risk inside the FEOC-clean positioning; 2021 Generac development alliance for next-gen NG generators/controls"
+    }
+   ],
+   "notes": "No BESS anywhere in the product line — the battery touchpoints are software dispatch, hybrid program configs, and the post-bridge 'grid supplemented by battery storage' narrative. That is the open socket."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-08-13",
+   "category": "market",
+   "headline": "CNBC/BofA frame EROC as 'a play on the Anthropic IPO'; Buy reiterated",
+   "read": "Sell-side is now pricing ERock as an Anthropic derivative — customer concentration cuts both ways.",
+   "source": "CNBC / BofA note"
+  },
+  {
+   "date": "2026-08-11",
+   "category": "contract",
+   "headline": "Q2 2026: Anthropic ~470 MW RockBlock order — largest ever; backlog ~$1.7B (10x YoY); stock +23%",
+   "read": "The order extends production commitments into 2028 and validates equipment-sale-plus-O&M as the scaling model beyond RaaS. Sites undisclosed — Fluidstack's Texas/New York builds for Anthropic are the inferred host.",
+   "source": "BusinessWire Q2 results / Seeking Alpha / Yahoo Finance"
+  },
+  {
+   "date": "2026-08-11",
+   "category": "financial",
+   "headline": "Q2 revenue $39.9M (-41.7% YoY on delivery timing); net loss $(67.7)M; cash $626.6M, zero debt; FY26 guide $435-465M reaffirmed",
+   "read": "The P&L is still small and lumpy against a $1.7B backlog — H2 2026 conversion is the whole story; gross margin slipped to 18.6%.",
+   "source": "Q2 2026 earnings release"
+  },
+  {
+   "date": "2026-06-10",
+   "category": "corporate",
+   "headline": "IPO: 27.9M Class A at $21.50, ~$600M gross, NYSE: EROC (Morgan Stanley/J.P. Morgan leads)",
+   "read": "Public currency and $627M of cash arm the scale-up; the stock broke issue to $8.88 before the Anthropic pop — valuation remains fragile. TRA overhang up to $1.19B.",
+   "source": "S-1/424B4 / IPO pricing release"
+  },
+  {
+   "date": "2026-04-01",
+   "category": "project",
+   "headline": "Q2 2026: Hyperion assembly plant operational; construction starts on 366 MW EPE/Meta McCloud plant",
+   "read": "Both legs of the growth story — capacity and the flagship bridge project — moved from paper to execution in the same quarter.",
+   "source": "Q2 2026 earnings slides"
+  },
+  {
+   "date": "2026-01-18",
+   "category": "regulatory",
+   "headline": "El Paso Electric files McCloud Generation at PUCT: $473M, 366 MW for Meta's campus, 5-year exclusive bridge from 2027",
+   "read": "The structural innovation: the utility owns the plant, Meta pays for it under a commission-approved rate, ERock builds and operates. Regulated paper de-risks the bridge model and is hard for merchant rivals to replicate.",
+   "source": "El Paso Matters / PUCT filing / Argus"
+  },
+  {
+   "date": "2025-12-10",
+   "category": "leadership",
+   "headline": "John Carrington named CEO (ex-Stem CEO; exec chairman since Jun 2025); Corey Amthor returns to President; founder McAndrew to board/strategic advisor",
+   "read": "A public-market operator with BESS-software DNA now runs a pure gas-genset company — we read the hire as IPO preparation and a live signal on eventual storage attach.",
+   "source": "PRNewswire"
+  },
+  {
+   "date": "2025-11-01",
+   "category": "project",
+   "headline": "Baton Rouge General 9.4 MW activated under Entergy 'Power Through'",
+   "read": "The utility-partner channel keeps compounding outside the data-center spotlight.",
+   "source": "Entergy"
+  },
+  {
+   "date": "2025-09-01",
+   "category": "product",
+   "headline": "ERT500 and RockBlock product launches",
+   "read": "Standardized 500 kW building blocks replace the bespoke legacy fleet — the manufacturing-scale prerequisite for GW-class orders.",
+   "source": "POWER Magazine"
+  },
+  {
+   "date": "2023-12-01",
+   "category": "partnership",
+   "headline": "US Energy partnership to supply food-waste RNG to Microsoft San Jose (procurement from early 2026)",
+   "read": "RNG is the decarbonization hedge that keeps gas gensets inside hyperscaler carbon pledges.",
+   "source": "Data Center Frontier / PRNewswire"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess ERock as a demand-shaper, not a battery competitor: every AIDC campus that signs an ERock bridge or backup contract defers, shrinks, or eliminates a containerized BESS purchase for that phase of the buildout. The three anchor deals (Microsoft, Meta/EPE, Anthropic) represent ~936 MW of gas capacity serving loads that grid-plus-BESS architectures would otherwise have addressed.",
+  "(High confidence) The FEOC-immunity of the platform is central to its momentum — hyperscalers can buy 470 MW of it with zero sourcing-compliance diligence, in direct contrast to Chinese-cell BESS after the Jan 2026 Section 301 escalation and FY2026 NDAA §154-type prohibitions. The irony we would keep in reserve: ERock's single-source engine supplier PSI is majority-owned by China's Weichai Power, so the 'clean' supply chain has its own China dependency one layer down.",
+  "(Medium confidence) The storage-attach socket is real and dated: ERock's own bridge narrative concedes sites transition to 'permanent utility feeds supplemented by battery storage' after the ~5-year bridge, GraniteEcosystem already dispatches third-party storage, the Texas Backup Power Package forces solar+battery+gas hybrids, and the CEO is the former CEO of Stem. We expect a formal storage offering or partnership within 24 months — and Hithium's §154 designation makes it a near-certain design-out on US soil, while the structure itself (utility-owned, hyperscaler-funded) is the template Hithium's US customers will face.",
+  "(Medium confidence) Customer concentration is the principal fragility: three contracts dominate the growth story, sell-side now frames the stock as an Anthropic derivative, and the $1.7B backlog must convert through an assembly ramp (Hyperion) that has never run at rate. A slip in H2 2026 deliveries would re-break the stock and slow the category's momentum — a window in which BESS-based architectures regain relative bankability.",
+  "(Low confidence) Emissions friction is the sleeper risk to the whole gas-bridge category: BAAQMD objected to run-hour assumptions at Microsoft San Jose, El Paso council scrutiny targets NOx/CO from 813 engines, and EPA tightening on long-duration 'mobile' generation would raise costs across ERock, VoltaGrid, and ProEnergy simultaneously — the scenario in which BESS attach accelerates fastest."
+ ],
+ "relationships": [
+  {
+   "slug": "microsoft",
+   "type": "customer",
+   "note": "100 MW RNG-backed backup at San Jose (complete) — 224 of ERock's ~0.45 MW units replacing diesel.",
+   "context": "The first anchor contract of the AIDC book, with food-waste RNG procured via a US Energy partnership from early 2026 to keep gas gensets inside hyperscaler carbon pledges. Air-district friction is the watch item: BAAQMD objected to run-hour assumptions at the site.",
+   "source": "Data Center Frontier / PRNewswire",
+   "status": "active",
+   "scale": "100 MW"
+  },
+  {
+   "slug": "meta",
+   "type": "customer",
+   "note": "The 366 MW McCloud Generation bridge plant for Meta's El Paso campus — utility-owned (El Paso Electric), Meta-funded, ERock-built-and-operated; construction started Q2 2026.",
+   "context": "Filed at the PUCT in January 2026 at $473–500M: a commission-approved rate structure where the utility owns the plant and Meta pays for it, with an exclusive 5-year bridge from 2027. The dossier calls this the structural innovation competitors must now answer — it converts a merchant bridge sale into regulated-utility paper.",
+   "source": "El Paso Matters / PUCT filing / Argus",
+   "status": "active",
+   "since": "2026-01",
+   "scale": "366 MW / ~$473-500M"
+  },
+  {
+   "slug": "voltagrid",
+   "type": "competitor",
+   "note": "Gas-bridge category rival — ERock differentiates on smaller unit granularity and deeper utility integration; both face the same EPA/air-district emissions risk."
+  },
+  {
+   "slug": "proenergy",
+   "type": "competitor",
+   "note": "The third member of the AIDC gas-bridge category — aeroderivative bridge power against ERock's modular gensets."
+  },
+  {
+   "slug": "hithium",
+   "type": "other",
+   "note": "Not a battery rival but a demand-shaper: every ERock bridge defers a containerized-storage purchase, while ERock's own post-bridge roadmap concedes battery supplementation — a future BESS channel Hithium's NDAA §154 designation likely locks it out of on US soil."
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "John Carrington",
+   "title": "Chief Executive Officer (since Dec 2025; exec chairman from Jun 2025)",
+   "background": "Former CEO of Stem, Inc. (took the BESS/AI-software company public), earlier MiaSolé, First Solar, GE. His storage pedigree is the strongest signal that ERock's battery-attach socket eventually gets filled."
+  },
+  {
+   "name": "Thomas McAndrew",
+   "title": "Founder; board member and strategic advisor (~31.9% beneficial holder)",
+   "background": "Founded Enchanted Rock in 2006; built the dual-value ERCOT model; stepped out of the CEO seat in 2025 and is styled the company's 'transformational deal originator'."
+  },
+  {
+   "name": "Corey Amthor",
+   "title": "President (interim CEO Jun-Dec 2025)",
+   "background": "Long-tenured operator; holds ~5.6M shares. Runs the delivery machine through the Hyperion ramp."
+  },
+  {
+   "name": "Ian Blakely",
+   "title": "Chief Financial Officer",
+   "background": "Steered the UP-C IPO and the TRA structure; holds ~4.9M Class B units."
+  },
+  {
+   "name": "Allan Schurr",
+   "title": "Chief Commercial Officer",
+   "background": "The company's chief public voice on data-center flexibility — on record that campuses now ask for 500 MW against 3-10 year interconnection waits."
+  },
+  {
+   "name": "Regis Malloy",
+   "title": "SVP Data Centers",
+   "background": "Owns the hyperscaler account portfolio (Microsoft, Meta/EPE, Anthropic)."
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "public (NYSE: EROC since Jun 2026) — S-1 and quarterly disclosures",
+  "periods": [
+   {
+    "period": "FY2025",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "$183.1M (+42.5%)",
+      "expected": "n/a (private)",
+      "verdict": "n/a",
+      "result": "Net loss $(59.0)M; adjusted EBITDA $(22.6)M — scaling losses ahead of the IPO",
+      "kpi": "revenue",
+      "usdMillions": 183.1,
+      "fxBasis": "as reported"
+     }
+    ],
+    "periodType": "annual",
+    "periodEnd": "2025-12-31"
+   },
+   {
+    "period": "Q2 2026",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "$39.9M (-41.7% YoY on delivery timing)",
+      "expected": "FY26 guide $435-465M implies a steep H2 ramp",
+      "verdict": "in line (timing)",
+      "result": "Net loss $(67.7)M; adj. EBITDA $(14.0)M; gross margin 18.6% (from 22.2%)"
+     },
+     {
+      "name": "Backlog",
+      "actual": "~$1.7B (10x YoY) incl. Anthropic ~470 MW",
+      "expected": "n/a",
+      "verdict": "beat",
+      "result": "$360-390M of backlog guided to convert to 2026 revenue"
+     },
+     {
+      "name": "Balance sheet",
+      "actual": "$626.6M cash, zero debt, $250M undrawn revolver; total assets $978M",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "TRA overhang up to $1.19B undiscounted; market cap ~$2.9B fully exchanged (~$14.3/sh, Aug 21, 2026)"
+     }
+    ]
+   }
+  ],
+  "commentary": "The equity story is a backlog-conversion bet: ~$40M/quarter of current revenue against $1.7B contracted, with profitability guided to arrive via the H2 2026 delivery ramp (FY26 adj. EBITDA guide $3-9M). The stock's round trip — $21.50 IPO, $8.88 trough, +23% Anthropic pop to ~$14 — shows the market pricing execution risk, not the model."
+ },
+ "sources": [
+  {
+   "label": "CNBC / BofA — EROC as 'a play on the Anthropic IPO'",
+   "url": "https://www.cnbc.com",
+   "date": "2026-08-13"
+  },
+  {
+   "label": "BusinessWire — ERock Q2 2026 results; Anthropic ~470 MW order; backlog ~$1.7B",
+   "url": "https://www.businesswire.com/news/home/20260811144024/en/",
+   "date": "2026-08-11"
+  },
+  {
+   "label": "Seeking Alpha — EROC Q2 coverage / Anthropic order",
+   "url": "https://seekingalpha.com/news/4631501",
+   "date": "2026-08-12"
+  },
+  {
+   "label": "ERock — IPO pricing release (NYSE: EROC, $21.50, ~$600M gross)",
+   "url": "https://erock.com/company/newsroom/",
+   "date": "2026-06-09"
+  },
+  {
+   "label": "SEC — ERock S-1/S-1A/424B4 (CIK 2110029): UP-C structure, EIP/McAndrew stakes, TRA, customers",
+   "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=2110029",
+   "date": "2026-05"
+  },
+  {
+   "label": "Bloomberg — ERock files for US IPO",
+   "url": "https://www.bloomberg.com/news/articles/2026-05-15/power-systems-maker-for-data-centers-erock-files-for-us-ipo",
+   "date": "2026-05-15"
+  },
+  {
+   "label": "El Paso Matters — EPE/Meta McCloud Generation $473M, 366 MW PUCT filing",
+   "url": "https://elpasomatters.org",
+   "date": "2026-01-18"
+  },
+  {
+   "label": "Datacenter Dynamics — Meta 366 MW modular generation, El Paso",
+   "url": "https://www.datacenterdynamics.com",
+   "date": "2026-01"
+  },
+  {
+   "label": "PRNewswire — John Carrington named CEO",
+   "url": "https://www.prnewswire.com/news-releases/302637375.html",
+   "date": "2025-12-10"
+  },
+  {
+   "label": "Entergy — Baton Rouge General 9.4 MW under Power Through",
+   "url": "https://www.entergy.com",
+   "date": "2025-11"
+  },
+  {
+   "label": "POWER Magazine — ERT500 and RockBlock launches",
+   "url": "https://www.powermag.com",
+   "date": "2025-09"
+  },
+  {
+   "label": "Canary Media — Texas $1.8B Backup Power Package; ERock positioning",
+   "url": "https://www.canarymedia.com",
+   "date": "2025"
+  },
+  {
+   "label": "mgrid — production scaled past 1 GW/yr across Titan + Legacy Point",
+   "url": "https://mgrid.org",
+   "date": "2026-02-25"
+  },
+  {
+   "label": "power-eng.com — CCO Allan Schurr on data-center flexibility (500 MW asks)",
+   "url": "https://www.power-eng.com",
+   "date": "2024-05-21"
+  },
+  {
+   "label": "DoD Tradewinds — 'Awardable' status (PRNewswire 302181211)",
+   "url": "https://www.prnewswire.com/news-releases/302181211.html",
+   "date": "2024-06"
+  },
+  {
+   "label": "PRNewswire — CEC HyBLOX $2.1M hydrogen-blend grant (302044157)",
+   "url": "https://www.prnewswire.com/news-releases/302044157.html",
+   "date": "2024-01"
+  },
+  {
+   "label": "Data Center Frontier / PRNewswire — US Energy RNG partnership for Microsoft San Jose (302012202)",
+   "url": "https://www.prnewswire.com/news-releases/302012202.html",
+   "date": "2023-12"
+  },
+  {
+   "label": "Microgrid Knowledge — Microsoft San Jose 100 MW RNG microgrid",
+   "url": "https://www.microgridknowledge.com",
+   "date": "2022-06"
+  },
+  {
+   "label": "Investor relations of Power Solutions International — ~$335M exclusive engine supply agreement; 1,000th unit (Jan 2021)",
+   "url": "https://investors.psiengines.com",
+   "date": "2021-01-27"
+  },
+  {
+   "label": "PRNewswire — ComEd selects Enchanted Rock for Bronzeville Community Microgrid",
+   "url": "https://www.prnewswire.com",
+   "date": "2021-01"
+  },
+  {
+   "label": "Basalt Infrastructure Partners — Texas Microgrid LLC portfolio (225 MW designed/installed)",
+   "url": "https://basaltinfra.com",
+   "date": null
+  },
+  {
+   "label": "ERock — data centers, about, leadership, natural-gas generators pages",
+   "url": "https://erock.com/data-centers/",
+   "date": null
+  },
+  {
+   "label": "BAAQMD — CEQA comment letter re San Jose data-center emissions assumptions",
+   "url": "https://www.baaqmd.gov",
+   "date": null
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 2
+}

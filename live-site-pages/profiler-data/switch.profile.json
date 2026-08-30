@@ -1,0 +1,822 @@
+{
+ "schemaVersion": 6,
+ "slug": "switch",
+ "name": "Switch, Inc.",
+ "categories": [
+  "developer"
+ ],
+ "hq": "Las Vegas, NV, USA",
+ "founded": "2000 (Las Vegas, NV, by Rob Roy; NYSE-listed October 2017; taken private December 2022)",
+ "ownership": "private (DigitalBridge-managed, with IFM Investors; Aware Super minority stake since July 2023; confidential US IPO filing reported by Bloomberg, August 2026)",
+ "website": "https://www.switch.com",
+ "summary": "BOTTOM LINE UP FRONT: Switch is the patent-moated, Tier 5-branded US colocation landlord racing back to the public markets: it filed confidentially for a US IPO in August 2026 (per Bloomberg) after hiring banks for a listing that could raise up to $10B and value it at up to $80B including debt as soon as Q4 2026 (per Reuters, July 2026; Bloomberg's July report put the target near $50B) — less than four years after DigitalBridge and IFM Investors took it private for ~$11B — carrying more than $24B raised since 2024, a 12GW non-binding Oklo nuclear master agreement, and Rob Roy's EVO AI Factories rated to 2MW per rack into the AI buildout. An Andreessen Horowitz-led private round targeting about $2B, with Ben Horowitz expected to join the board, was reported alongside the filing. BACKGROUND: Founded 2000 in Las Vegas by Rob Roy — still founder, CEO and designer of record (950+ issued and pending patent claims per the company). Six announced US campus locations: The Core (Las Vegas, up to 495MW at completion), The Citadel (Tahoe Reno — opened 2017 with a claim as the largest data-center campus in the world, planned to 17.4M sq ft and marketed at gigawatts of power at completion), The Pyramid (Grand Rapids, up to 1.8M sq ft / 320MW), The Keep (Atlanta, up to ~150MW, plus a $772M 'Keep 2.0' campus in Cartersville, GA), a Texas ecosystem (The Rock in Round Rock on land bought from Dell, plus Data Foundry's Austin/Houston sites — over 2M sq ft and 185MW announced) and a 382-acre Beaver County, Pennsylvania campus announced April 2026; 300+ acres more are banked at Apex Industrial Park, North Las Vegas (~$180M across two 2025-26 purchases, per Las Vegas Review-Journal/DCD). All facilities 100% renewable-powered since January 2016 with net-zero Scope 1-2 emissions, per company statements. NYSE-listed 2017-2022; final public-year guidance was $660-674M revenue and $345-357M adjusted EBITDA (FY2022); no revenue or EBITDA has been disclosed since the take-private. Customers per Reuters include NVIDIA, Dell Technologies and FedEx; CoreWeave ran the world-first NVIDIA GB200 (Nov 2024) and GB300 NVL72 (Jul 2025) bring-ups inside Switch AI Factories.",
+ "ecosystemRole": "We assess Switch as the design-led counterweight to the pure wholesale giants: the only US operator-landlord at this scale that productized its own facility standard (Tier 5 Platinum), holds its differentiation in a founder-authored patent estate rather than land position alone, and sells retail colocation, wholesale capacity and a packaged AI-factory product from the same campuses. Basis: company releases and trade coverage — world-first GB200/GB300 deployments landed in its EVO AI Factories; a $1.9B Schneider Electric supply-capacity agreement industrializes the 2MW-per-rack design; and its self-attributed position as the largest single data-center ABS issuer since 2024 ($4.2B across five issuances, plus the largest green data-center CMBS at $2.4B) gives it a securitization franchise second only to Vantage's in this cohort. For power-chain vendors it is a standards-driven, Nevada-anchored buyer that self-funds power infrastructure — a first-of-kind $2.6B (now $3.5B) syndicated performance letter-of-credit facility backs its transmission and generation commitments — and signs decade-scale offtakes (Oklo 12GW through 2044, Ormat 20-year geothermal).",
+ "productsAndServices": [
+  {
+   "name": "Exascale Prime campuses — retail and wholesale colocation (core business)",
+   "category": "Data centers",
+   "description": "Build-own-operate colocation across giant single-market campuses the company brands 'Prime' locations, each anchoring a US latency zone: The Core (Las Vegas — southwestern zone, up to 495MW at completion, 5ms to Los Angeles), The Citadel (Tahoe Reno — northwestern zone, planned to 17.4M sq ft, marketed at gigawatts of power at completion, 4.5ms to the Bay Area), The Pyramid (Grand Rapids — northeastern zone, up to 1.8M sq ft / 320MW, anchored by the adaptive reuse of the Steelcase pyramid), The Keep (Atlanta — southeastern zone, up to ~150MW, plus the $772M Keep 2.0 campus in Cartersville, GA, first phase cited for Q2 2026), and the Texas ecosystem (The Rock, Round Rock, on 1.5M+ sq ft of land bought from Dell next to Dell's HQ, plus Data Foundry's Austin/Houston facilities — over 2M sq ft and 185MW announced). A sixth campus on 382 acres in Beaver County, Pennsylvania (greater Pittsburgh) was announced April 2026 for East Coast finance/healthcare/government latency. Unlike most wholesale peers, Switch retains a large multi-tenant retail base: the securitized trust alone serves 550+ customers, ~84% of trust revenue from investment-grade tenants (per DBRS-rated ABS disclosures, April 2026).",
+   "highlights": [
+    "Five operating campus ecosystems plus Pennsylvania announced — all Tier 5 Platinum-designed, 100% renewable-powered since January 2016",
+    "The Citadel opened 2017 with the company's claim as the largest, most advanced data-center campus in the world",
+    "300+ acres banked at Apex Industrial Park, North Las Vegas (~$180M, Dec 2025-2026 purchases) for future Nevada growth",
+    "Customers per Reuters include NVIDIA, Dell Technologies and FedEx; CoreWeave is the marquee AI tenant"
+   ],
+   "positioning": "Against Vantage/Aligned/QTS-style pure wholesale developers, Switch sells a standards-and-density story (Tier 5 Platinum, 2MW per rack) rather than raw build-to-suit scale; against retail incumbents Equinix and Digital Realty it wins on campus power depth and single-operator design control. Its five-zone US footprint is a deliberate latency lattice — every campus pitched as covering a quadrant of the country — rather than a metro-by-metro land bank.",
+   "soldThrough": "Direct colocation contracts (retail cabinets to multi-hall wholesale) plus long-term single-tenant leases; capacity is financed through ABS/CMBS against in-place leases.",
+   "targetSegments": [
+    "Hyperscalers and AI clouds (CoreWeave, and per Reuters NVIDIA and Dell as customers)",
+    "Large enterprises (FedEx-class) needing US multi-site colocation",
+    "Government, finance, healthcare and education (stated target of the Pennsylvania campus)"
+   ],
+   "roadmap": "Keep 2.0 Cartersville first phase cited Q2 2026 (per Bartow County filings); Beaver County, PA campus in pre-development (no announced timeline); Apex/North Las Vegas land held for future capacity; EVO AI Factory construction underway across all five campuses per the July 2025 release."
+  },
+  {
+   "name": "EVO AI Factories (Rob Roy's AI-factory product)",
+   "category": "AI infrastructure",
+   "description": "Switch's productized AI data center: a hybrid air-and-liquid-cooled hall design rated for rack densities from 20kW up to 2MW per rack ('100X'), with five separate fluidic system pathways delivering liquid-to-air and liquid-to-chip cooling at independently controlled pressures and temperatures into an enclosed 'EVO Chamber' (patent pending, US Serial No. 19/213,614). Aligned to NVIDIA DGX/MGX roadmaps from Blackwell through Rubin; hosted the industry-first NVIDIA GB200 NVL72 bring-up (CoreWeave, November 2024) and the world-first GB300 NVL72 bring-up (CoreWeave on Dell rack-scale systems, July 2025). Operated by 'LDC EVO', Switch's living-data-center operating system that replaces conventional DCIM with a physics-accurate digital twin built on NVIDIA Omniverse libraries and OpenUSD (integrated with the NVIDIA Omniverse DSX Blueprint, announced March 2026, with partners including Dell, Schneider Electric, Cadence, ETAP, Dassault Systèmes, Oxide and Procore).",
+   "highlights": [
+    "Construction underway across all five campuses including Tahoe Reno and Atlanta (company release, July 2025)",
+    "$1.9B two-phase Schneider Electric supply-capacity agreement (November 2025) locks prefabricated power modules and Uniflair chillers for the rollout",
+    "Two consecutive 'world-first' NVIDIA platform bring-ups are the product's proof points",
+    "Showcased in the DSX AI Infrastructure Pavilion at NVIDIA GTC 2026"
+   ],
+   "positioning": "Versus Vantage/Aligned AI halls (250kW-class liquid-cooled designs) Switch markets an order-of-magnitude higher density ceiling (2MW per rack) and a facility operating system, not just a shell — the pitch is a co-engineered NVIDIA-generation-cadence product. The 2MW figure is a design rating, not a disclosed operating density; treat competitive comparisons accordingly.",
+   "soldThrough": "Colocation/lease agreements within existing Switch campuses; supply chain locked through OEM agreements (Schneider) rather than self-manufacture.",
+   "targetSegments": [
+    "Neoclouds and AI platforms (CoreWeave is the named tenant)",
+    "Hyperscalers deploying GB300/Rubin-class systems",
+    "Enterprises adopting NVIDIA reference AI factories"
+   ],
+   "roadmap": "Phased EVO capacity deliveries across all five campuses (no per-site MW disclosed); design track follows NVIDIA Blackwell-to-Rubin cadence; LDC EVO/Omniverse DSX operational rollout from March 2026."
+  },
+  {
+   "name": "Tier 5 Platinum standard and the patent portfolio (productized design moat)",
+   "category": "Design standards / IP",
+   "description": "Switch wrote its own facility standard — Tier 5 Platinum — and built the brand into every campus. Beyond Tier IV-style redundancy it specifies 30+ additional elements, per the company: 100-hour fault-tolerant standby power (vs 12 hours at Tier IV), indefinite cooling operation without water, all cooling water kept outside the building shell, zero roof penetrations with dual independently replaceable roofs, 10 on-net carriers with 6 entry vaults on 2+ pathways, per-rack physical security, 100-hour shelter-in-place, mandatory 100% renewable power from new local projects, and a trailing-average PUE below 1.3. The standard is self-declared (not an Uptime Institute rating) and doubles as the spec sheet for Rob Roy's patent estate — 950+ issued and pending patent claims (company figure, 2026; 700+ cited by DigitalBridge in 2023) covering T-SCIF heat-containment rows, the TSC multi-mode exterior cooling units, POWER SPINE distribution and Switch SHIELD dual-roof systems.",
+   "highlights": [
+    "Tier 5 Platinum branding applied to every campus and carried into MOD build-to-suit sales",
+    "Patented designs are OEM-manufactured — the company states 80% of what goes into a Switch MOD facility is OEM-built",
+    "The standard hardwires sustainability (renewables, PUE) into a resiliency rating — unusual among facility standards"
+   ],
+   "positioning": "No direct competitor claims a 'Tier 5'; the label competes with Uptime Tier IV certifications held by peers. The moat is asserted through patents and marketing rather than third-party certification — a differentiation strategy that trades auditability for brand control.",
+   "soldThrough": "Embedded in colocation pricing and MOD licensing/build-to-suit contracts; not sold as a standalone certification.",
+   "targetSegments": [
+    "Mission-critical enterprises and public sector (resiliency buyers)",
+    "AI tenants needing density plus uptime guarantees"
+   ],
+   "roadmap": "EVO Chamber patent (filed 2025, pending) extends the estate into AI-factory cooling; no announced plan to seek third-party certification of Tier 5."
+  },
+  {
+   "name": "Switch MOD — build-to-suit and modular data centers",
+   "category": "Build-to-suit",
+   "description": "Single-tenant facilities built to Switch's patented designs in three form factors: MOD 250 (PRIME) — a 250-foot-wide exascale building scalable to any length, built to Tier 5 Platinum; MOD 100 (REGIONAL EDGE) — a 100-foot-wide single-user facility deployable on parcels as small as 400x400 feet; and MOD 15 (EDGE) — an air-transportable edge unit housing 24-100+ cabinets. The company claims MOD 250/100 deliver Tier 5 Platinum resiliency at costs comparable to competitors' Tier 2/3 builds, on the strength of OEM-manufacturing 80% of facility content.",
+   "highlights": [
+    "Extends the patented design system beyond Switch's own campuses to customer sites",
+    "Modular manufacturing is the cost/speed argument — standardized, pretested layouts"
+   ],
+   "positioning": "Competes with build-to-suit programs at Vantage, Aligned and STACK and with modular vendors; differentiated by the Tier 5 spec and patent estate rather than balance-sheet scale.",
+   "soldThrough": "Build-to-suit development agreements bundled with Switch CONNECT telecom services.",
+   "targetSegments": [
+    "Enterprises and agencies wanting dedicated facilities",
+    "Edge deployments (MOD 15)"
+   ],
+   "roadmap": "No publicly announced MOD pipeline; offering maintained on the current product page."
+  },
+  {
+   "name": "Switch CONNECT and The CORE Cooperative (telecom services)",
+   "category": "Connectivity",
+   "description": "Carrier-neutral connectivity plus a telecom buying cooperative: Switch CONNECT audits customer telecom spend and resells carrier services purchased at the aggregate buying power of the combined customer base (The CORE Cooperative, developed under Chief Connectivity Officer Chris Donnelly), with claimed savings of 35-60%. Physical backbone is the Switch SUPERLOOP — a private fiber loop linking the Nevada campuses to California markets at 7ms Las Vegas-Reno and 4.5ms Citadel-Bay Area, letting tenants serve California workloads from cheaper, lower-risk Nevada real estate. Tier 5 spec guarantees 10 on-net carriers per facility.",
+   "highlights": [
+    "SUPERLOOP converts Nevada geography into a California latency product",
+    "Telecom cooperative is a stickiness/TCO lever layered onto colocation contracts"
+   ],
+   "positioning": "Not an interconnection ecosystem play like Equinix — the pitch is cost reduction and California-adjacent latency, not network density; carrier neutrality plus cooperative pricing against carrier-owned colocation.",
+   "soldThrough": "Bundled with colocation agreements; audit-led sales motion.",
+   "targetSegments": [
+    "Existing colocation tenants",
+    "Multi-site enterprises with large telecom spend"
+   ],
+   "roadmap": "No announced expansions; SUPERLOOP capacity grows with campus buildouts."
+  },
+  {
+   "name": "Power procurement and sustainability platform",
+   "category": "Power",
+   "description": "Switch buys and finances its own power position rather than building generation: 100% renewable supply across all campuses since January 1, 2016 (via PPAs and renewable credits, with net-zero Scope 1-2 claimed), a non-binding 12GW master power agreement with Oklo (December 2024) to be drawn down through individual PPAs on Aurora fast-reactor powerhouses through 2044, and a 20-year, ~13MW geothermal PPA with Ormat from the Salt Wells plant near Fallon, NV (January 2026; deliveries from Q1 2030, with a ~7MW solar add option) — Ormat's first direct data-center PPA. The financing arm is part of the product: an industry-first $2.6B syndicated performance letter-of-credit facility (April 2026, upsized to $3.5B by June 2026) exists specifically to back utility performance-assurance obligations for new transmission and generation, and the company publicly committed to self-funding its power infrastructure in Texas (Abbott data-center standards) and Pennsylvania.",
+   "highlights": [
+    "Oklo 12GW is among the largest corporate clean-power agreements ever signed — but non-binding, with no operating Oklo plant yet (first Aurora targeted late 2027 at Idaho National Laboratory per trade press)",
+    "Water: 'net positive' commitment — replenish up to 2x operational use over the coming decade; zero-water closed-loop cooling and recycled-effluent pipeline projects in host communities",
+    "Publicly aligned with ratepayer-protection politics: backs Governor Abbott's Texas standards (August 2026) — pay-your-own-way as market positioning"
+   ],
+   "positioning": "Contrast with Vantage (gas microgrids via VoltaGrid/Liberty) and Crusoe (owned generation): Switch stays a creditworthy offtaker — using LC capacity, long-dated PPAs and nuclear options instead of putting turbines on its balance sheet.",
+   "soldThrough": "Utility tariffs and PPAs backed by the syndicated LC facility; renewable attributes passed through to tenant ESG reporting.",
+   "targetSegments": [
+    "Its own campuses (grid-constrained Nevada, Georgia, Texas, Pennsylvania markets)",
+    "Tenants buying 100%-renewable colocation for Scope 3 claims"
+   ],
+   "roadmap": "Oklo PPAs to be individually bound as project milestones hit (through 2044); Ormat deliveries Q1 2030; LC facility expected to upsize further, per EVP Jon Edwards (April 2026)."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-08-07",
+   "category": "financial",
+   "headline": "Bloomberg: Switch files confidentially for a US IPO — listing possible as soon as November; July reporting put the target valuation near $50B including debt; BofA, Citi, Goldman, JPMorgan and Morgan Stanley on the deal; Ben Horowitz expected to join the board via an a16z-led private round targeting ~$2B",
+   "read": "The take-private cycle closes in under four years at a reported 4-7x markup — and an a16z board seat signals the AI-era investor base the listing is being sold to.",
+   "source": "https://www.bloomberg.com/news/articles/2026-08-07/data-center-firm-switch-is-said-to-file-confidentially-for-ipo"
+  },
+  {
+   "date": "2026-08-03",
+   "category": "regulatory",
+   "headline": "Texas Governor Abbott pauses new data-center approvals pending an ERCOT/PUCT energy-and-water audit; Switch publicly backs the governor's data-center standards, citing self-funded infrastructure, REC-backed renewables and $250M+ committed in Round Rock",
+   "read": "The ratepayer-politics tripwire reaches Texas — Switch converts its pay-your-own-way posture into first-mover regulatory alignment while rivals scramble.",
+   "source": "https://www.houstonpublicmedia.org/articles/news/energy-environment/2026/08/03/558529/gov-greg-abbott-pauses-new-data-centers-until-ercot-puct-audit-energy-water-usage/"
+  },
+  {
+   "date": "2026-07-13",
+   "category": "financial",
+   "headline": "Reuters exclusive: Switch taps Goldman Sachs and JPMorgan to lead an IPO raising up to $10B at a valuation of up to $80B including debt, as soon as Q4 2026; prior private-round discussions had valued it at $40B+",
+   "read": "An $80B ask on a company whose last public revenue guidance was $674M says the market is being asked to price the contracted AI pipeline, not the trailing book.",
+   "source": "https://finance.yahoo.com/technology/articles/exclusive-data-center-firm-switch-152221299.html"
+  },
+  {
+   "date": "2026-06-10",
+   "category": "financial",
+   "headline": "Corporate revolver extended and upsized past $6B and the performance LC facility grown to $3.5B — nearly $10B of combined liquidity (TD/Wells Fargo lead the revolver; BBVA/Natixis the LCF)",
+   "read": "Pre-IPO balance-sheet staging: maximum committed liquidity in place so the listing prices growth, not funding risk.",
+   "source": "https://www.switch.com/switch-expands-corporate-revolving-credit-and-letter-of-credit-facilities-to-nearly-10-billion/"
+  },
+  {
+   "date": "2026-04-30",
+   "category": "capacity",
+   "headline": "Sixth campus announced: 382 acres in Big Beaver Borough, Beaver County, Pennsylvania (greater Pittsburgh), targeting East Coast finance, healthcare, education and government latency; no MW, cost or timeline disclosed",
+   "read": "First new market since Texas 2021 — Switch plants its flag in the PJM/gas-country data-center rush but keeps every number back, preserving IPO-story flexibility.",
+   "source": "https://www.switch.com/switch-announces-new-data-center-campus-in-beaver-county-pennsylvania/"
+  },
+  {
+   "date": "2026-04-21",
+   "category": "financial",
+   "headline": "$2.6B syndicated performance letter-of-credit facility closes — billed as the data-center industry's first — backing utility performance-assurance for new transmission and generation; cumulative capital raised since 2024 tops $24B",
+   "read": "A purpose-built instrument for the power bottleneck: Switch is collateralizing grid buildout promises at multi-billion scale so utilities move first.",
+   "source": "https://www.switch.com/switch-secures-landmark-2-6-billion-syndicated-letter-of-credit-facility/"
+  },
+  {
+   "date": "2026-04-14",
+   "category": "financial",
+   "headline": "Fifth ABS since 2024 raises $768M (AAA/AA-low/A-low by Morningstar DBRS) against a ~1.4M sq ft, 52+MW Reno collateral pool — trust now spans 11 data centers, five markets, 550+ customers, ~84% investment-grade revenue; ~$4.2B of ABS cumulative, all secured green bonds",
+   "read": "The trust disclosures are the only public window into Switch's book — and they show a diversified, investment-grade-heavy tenant base, not a single-tenant AI bet.",
+   "source": "https://www.switch.com/switch-raises-768-million-in-latest-data-center-abs-issuance/"
+  },
+  {
+   "date": "2026-03-16",
+   "category": "product-launch",
+   "headline": "NVIDIA Omniverse DSX Blueprint integrated into EVO AI Factories and the LDC EVO operating system — physics-accurate digital twins replacing DCIM, validated on Grace Blackwell/Dell PowerEdge at extreme density; showcased at GTC 2026 with Dell, Schneider, Cadence, ETAP and others",
+   "read": "Switch is positioning the facility operating system, not just the building, as product — the software layer is the new differentiation front among AI landlords.",
+   "source": "https://www.switch.com/switch-integrates-nvidia-omniverse-dsx-blueprint-into-switchs-evo-ai-factories/"
+  },
+  {
+   "date": "2026-01-12",
+   "category": "partnership",
+   "headline": "Ormat signs its first-ever direct data-center PPA: 20 years, ~13MW from the Salt Wells geothermal plant near Fallon, NV to Switch, deliveries from Q1 2030, with an option to add ~7MW of solar",
+   "read": "Small MW, big signal — firm 24/7 geothermal added to the renewable stack shows Switch buying baseload attributes, not just RECs.",
+   "source": "https://www.globenewswire.com/news-release/2026/01/12/3217401/0/en/Ormat-Technologies-Signs-20-Year-PPA-with-Switch-for-13MW-of-Carbon-Free-Geothermal-Capacity-to-Power-Data-Centers.html"
+  },
+  {
+   "date": "2025-11-19",
+   "category": "partnership",
+   "headline": "Schneider Electric supply-capacity agreement expanded to $1.9B across two phases: prefabricated power modules, first North American deployment of new Uniflair chillers, and a three-year full-service maintenance contract — supporting up to 2MW-per-rack EVO builds across all five campuses",
+   "read": "Supply-chain reservation at OEM scale — Switch locked its power-and-cooling slots for the EVO rollout the way hyperscalers lock GPUs.",
+   "source": "https://www.switch.com/schneider-electric-and-switch-expand-partnership-with-1-9-billion-supply-capacity-agreement/"
+  },
+  {
+   "date": "2025-10-20",
+   "category": "financial",
+   "headline": "Fourth ABS raises $659M (AAA-rated senior; ~$3.5B ABS cumulative since 2024) — the first Switch securitization dedicated entirely to new development, after the July 2025 retirement of all $6.5B of take-private bank debt",
+   "read": "The flywheel pivots from refinancing the LBO to funding growth — acquisition debt is gone and the ABS machine now feeds construction.",
+   "source": "https://www.switch.com/switch-raises-659-million-in-fourth-data-center-abs-offering/"
+  },
+  {
+   "date": "2025-07-15",
+   "category": "financial",
+   "headline": "Borrowing-base and revolving credit facilities expanded to $10B, taking capital raised since 2024 to $20B ($5.2B CMBS/ABS + $4.5B project financings + $10B facilities); 100% of 2022 take-private bank debt retired; proceeds fund EVO AI Factory construction underway across all five campuses",
+   "read": "The clearest company statement of the strategy: contracted campus growth plus Rob Roy's EVO AI Factories, funded by the sector's busiest private-credit stack.",
+   "source": "https://www.switch.com/switch-expands-credit-facilities-raising-20-billion-since-2024/"
+  },
+  {
+   "date": "2025-07-03",
+   "category": "order-win",
+   "headline": "CoreWeave and Dell execute the world-first NVIDIA GB300 NVL72 bring-up inside Switch's Rob Roy EVO AI Factories — following the industry-first GB200 NVL72 deployment at Switch in November 2024",
+   "read": "Two NVIDIA generations launched first on Switch floors — the strongest third-party validation available that the EVO density claims translate to deployed hardware.",
+   "source": "https://www.switch.com/coreweave-deploys-industry-first-nvidia-gb300-nvl72-in-switchs-ai-factory-solution/"
+  },
+  {
+   "date": "2025-03-25",
+   "category": "financial",
+   "headline": "$3.5B of securitized debt in one month: a $2.4B single-asset CMBS (largest green data-center CMBS ever; Las Vegas 7/9 and Reno 2 collateral) plus a $1.1B ABS (largest green data-center ABS; Las Vegas 10/11) — refinancing the majority of the remaining take-private acquisition debt",
+   "read": "Record-size green securitizations against Vegas and Reno halls — the stabilized fleet is liquid enough to carry the LBO exit on its own.",
+   "source": "https://www.switch.com/switch-announces-3-5-billion-in-securitized-debt-financings/"
+  },
+  {
+   "date": "2024-12-18",
+   "category": "partnership",
+   "headline": "Oklo and Switch sign a non-binding 12GW master power agreement — one of the largest corporate clean-power deals ever — for Aurora fast-reactor powerhouses deployed under individual PPAs through 2044",
+   "read": "A gigawatt-scale nuclear option written before Oklo has an operating plant: cheap strategic insurance for Switch, transformative order-book credibility for Oklo — binding economics still to come.",
+   "source": "https://www.switch.com/oklo-and-switch-form-landmark-strategic-relationship-to-deploy-12-gigawatts-of-advanced-nuclear-power-one-of-the-largest-corporate-clean-power-agreements-ever-signed/"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess Switch is executing a deliberately sequenced return to public markets at the AI cycle's peak. Basis: a confidential S-1 filed roughly 44 months after the $11B take-private (Bloomberg, Aug 2026), five bulge-bracket banks on an up-to-$10B raise at a press-reported $50–80B including debt, and an a16z-led ~$2B private round with a Ben Horowitz board seat expected — equity events stacked around the EVO AI-factory narrative.",
+  "(High confidence) We assess the self-authored Tier 5 standard plus the patent estate functions as a genuine engineering moat fused to marketing — and that reference deployments, not certifications, are its proof. Basis: 950+ issued and pending patent claims (T-SCIF, POWER SPINE, Switch SHIELD, the pending EVO Chamber), Tier 5's 100-hour standby and waterless-cooling requirements (explicitly not an Uptime Institute rating), and two consecutive world-first NVIDIA bring-ups — GB200 (Nov 2024) and GB300 NVL72 (Jul 2025) — executed by CoreWeave and Dell inside Switch halls.",
+  "(Moderate confidence) We assess Switch's power posture is offtaker, not owner — contracted clean firm power over behind-the-meter generation. Basis: the 12GW non-binding Oklo master agreement through 2044 (no operating plant yet — execution risk is real), a 20-year Ormat geothermal PPA with deliveries from 2030, 100% renewable procurement since 2016, and an industry-first $3.5B syndicated performance-LC facility that collateralizes utility transmission and generation commitments — the structural opposite of Vantage's microgrid-ownership path.",
+  "(Moderate confidence) We assess the financing machine was deliberately rebuilt for development velocity ahead of the listing. Basis: 100% of the $6.5B take-private bank debt retired through securitization by July 2025, the October 2025 ABS dedicated purely to new development, roughly $24B raised since 2024 across five green ABS and the largest green data-center CMBS on record, and a $1.9B Schneider Electric supply-capacity reservation ahead of EVO construction on all five campuses.",
+  "(Low confidence) We assess a quiet executive-suite reorganization may be underway pre-IPO. Basis: President & CLO Thomas Morton — 17 years at the company and its long-time public voice — was last company-quoted in October 2025 and is absent from the March 2026-refreshed executive page with no announcement either way. Collection gap: no company statement; verify before relying on the org chart."
+ ],
+ "relationships": [
+  {
+   "slug": "nvidia",
+   "type": "partner",
+   "note": "Two consecutive world-first NVIDIA bring-ups on Switch floors; Omniverse DSX integrated into the LDC EVO operating system — NVIDIA also a customer per Reuters.",
+   "context": "Switch's EVO AI Factories are aligned to NVIDIA DGX/MGX roadmaps from Blackwell through Rubin and hosted the industry-first GB200 NVL72 bring-up (Nov 2024) and world-first GB300 NVL72 bring-up (Jul 2025). March 2026: the NVIDIA Omniverse DSX Blueprint was integrated into EVO and the LDC EVO living-data-center OS — a physics-accurate digital twin replacing DCIM, showcased at GTC with Dell, Schneider, Cadence and ETAP. Reuters also lists NVIDIA among Switch customers.",
+   "source": "https://www.switch.com/switch-integrates-nvidia-omniverse-dsx-blueprint-into-switchs-evo-ai-fac",
+   "status": "active",
+   "since": "2024-11"
+  },
+  {
+   "slug": "coreweave",
+   "type": "customer",
+   "note": "Executed both world-first NVIDIA bring-ups (GB200, GB300 NVL72) inside Switch AI Factories.",
+   "context": "CoreWeave ran the industry-first NVIDIA GB200 NVL72 bring-up (November 2024) and the world-first GB300 NVL72 bring-up (on Dell rack-scale systems, July 2025) inside Switch's Rob Roy EVO AI Factories — two NVIDIA generations launched first on Switch floors, the strongest third-party validation that the 2MW-per-rack EVO density claims translate to deployed hardware.",
+   "source": "https://www.switch.com/coreweave-deploys-industry-first-nvidia-gb300-nvl72-in-switchs-ai-factor",
+   "status": "active",
+   "since": "2024-11"
+  },
+  {
+   "slug": "schneider-electric",
+   "type": "supplier",
+   "note": "$1.9B supply-capacity agreement — prefab power modules, Uniflair chillers, and full-service maintenance for the EVO rollout.",
+   "context": "November 2025: the Schneider Electric supply-capacity agreement expanded to $1.9B across two phases — prefabricated power modules, the first North American deployment of new Uniflair chillers, and a three-year full-service maintenance contract supporting up to 2MW-per-rack EVO builds across all five campuses. Switch locked its power-and-cooling slots the way hyperscalers lock GPUs.",
+   "source": "https://www.switch.com/schneider-electric-and-switch-expand-partnership-with-1-9-billion-supply",
+   "status": "active",
+   "since": "2025-11",
+   "scale": "$1.9B supply-capacity reservation"
+  },
+  {
+   "slug": "equinix",
+   "type": "competitor",
+   "note": "Retail-colocation incumbent Switch beats on campus power depth, not network density.",
+   "context": "Against retail incumbents Equinix and Digital Realty, Switch wins on campus power depth and single-operator design control (Tier 5 Platinum, 2MW per rack); Switch CONNECT is explicitly not an interconnection-ecosystem play — the pitch is cost reduction and latency, not Equinix-style network density.",
+   "source": "Dossier competitive assessment — colocation",
+   "status": "active"
+  },
+  {
+   "slug": "vantage",
+   "type": "competitor",
+   "note": "AI-hall rival whose 250kW-class designs Switch's 2MW-per-rack ceiling out-specs.",
+   "context": "Versus Vantage/Aligned AI halls (250kW-class liquid-cooled designs), Switch markets an order-of-magnitude higher density ceiling and a facility operating system, not just a shell. On power, the models diverge too: Vantage goes gas-microgrid (VoltaGrid/Liberty) while Switch stays a creditworthy offtaker with PPAs, LC capacity and nuclear options (Oklo).",
+   "source": "Dossier competitive assessment — AI factories",
+   "status": "active"
+  },
+  {
+   "slug": "aligned",
+   "type": "competitor",
+   "note": "Wholesale AI-hall peer in the density-and-standards contest.",
+   "context": "Aligned's liquid-cooled AI halls sit in the competitive set Switch answers with Tier 5 standards and the 2MW-per-rack EVO product — a standards-and-density story against raw build-to-suit scale.",
+   "source": "Dossier competitive assessment — AI factories",
+   "status": "active"
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "The Citadel Campus — Tahoe Reno, NV (flagship)",
+   "specs": [
+    {
+     "band": "Scale",
+     "label": "Planned",
+     "value": "Planned up to 17.4M sq ft of data center space and up to 850MW per earlier company materials; current campus page markets 'gigawatts of power capacity upon completion'"
+    },
+    {
+     "band": "History",
+     "label": "Opening",
+     "value": "Opened February 2017 with the company's claim as the largest, most advanced data-center campus in the world; anchor building cited at 1.3M+ sq ft"
+    },
+    {
+     "band": "Density & standard",
+     "label": "Marketed",
+     "value": "Up to 2MW per cabinet marketed; 100% power-uptime guarantee; Tier 5 Platinum design"
+    },
+    {
+     "band": "Connectivity",
+     "label": "Latency & supply",
+     "value": "4.5ms latency to the Bay Area; 7ms dedicated fiber to The Core (Las Vegas) via Switch SUPERLOOP; 100% renewable supply"
+    },
+    {
+     "band": "Verified figures",
+     "label": "ABS collateral",
+     "value": "April 2026 ABS collateral discloses a ~1.4M sq ft, 52+MW securitized Reno pool — the only third-party-verified operating figures"
+    }
+   ],
+   "notes": "Campus totals are build-out targets, not operational capacity; Switch does not disclose commissioned MW. The 'largest campus' claim predates Stargate-era giga-campuses (Vantage Frontier 1.4GW, etc.)."
+  },
+  {
+   "product": "The Core Campus — Las Vegas, NV",
+   "specs": [
+    {
+     "band": "Scale",
+     "label": "Capacity",
+     "value": "Up to 495MW of power upon completion (company figure); a dozen-plus LAS VEGAS buildings built since 2000 (LV 7/9/10/11 appear as securitization collateral)"
+    },
+    {
+     "band": "Density & standard",
+     "label": "Marketed",
+     "value": "Tier 5 Platinum; up to 2MW per cabinet marketed; 5ms latency to Los Angeles"
+    },
+    {
+     "band": "Expansion",
+     "label": "In progress",
+     "value": "New ~57,000 sq ft data-center building proposed at the southwest Las Vegas campus (Clark County zoning, 2026, per Las Vegas Review-Journal); AI-factory construction underway in southwest Las Vegas"
+    },
+    {
+     "band": "Land bank",
+     "label": "Apex Industrial Park",
+     "value": "300+ acres of expansion land acquired at Apex Industrial Park, North Las Vegas (~$180M combined, Dec 2025-2026)"
+    }
+   ],
+   "notes": "The original campus — Rob Roy's design lineage from SUPERNAP 7 onward; HQ at 7135 S Decatur Blvd, Las Vegas."
+  },
+  {
+   "product": "EVO AI Factory design (fleet product)",
+   "specs": [
+    {
+     "band": "Density",
+     "label": "Per rack",
+     "value": "Rack density 20kW to 2,000kW (2MW) per rack — '100X' design headroom; hybrid air + liquid cooling"
+    },
+    {
+     "band": "Cooling",
+     "label": "Fluid pathways",
+     "value": "Five separate fluidic system pathways (liquid-to-air and liquid-to-chip), each deliverable at different pressures/temperatures into the enclosed EVO Chamber (patent pending, US Serial No. 19/213,614)"
+    },
+    {
+     "band": "Platform alignment",
+     "label": "NVIDIA",
+     "value": "Aligned to NVIDIA DGX/MGX roadmaps Blackwell through Rubin; validated GB200 NVL72 (Nov 2024) and GB300 NVL72 (Jul 2025) world-firsts with CoreWeave/Dell"
+    },
+    {
+     "band": "Software",
+     "label": "LDC EVO operating system",
+     "value": "digital-twin facility OS on NVIDIA Omniverse/OpenUSD replacing conventional DCIM (announced March 2026); computational-fluid-dynamics and electrical simulation integrated (ETAP, Cadence)"
+    },
+    {
+     "band": "Supply",
+     "label": "Schneider Electric",
+     "value": "prefabricated power modules and Uniflair chillers under a $1.9B two-phase supply agreement (Nov 2025)"
+    }
+   ],
+   "notes": "2MW/rack is a forward design rating anticipating late-decade NVIDIA systems — deployed 2025-26 racks (GB300-class) draw ~130-150kW. Zero-water closed-loop cooling claimed for servers and GPUs."
+  },
+  {
+   "product": "Tier 5 Platinum standard (company-authored)",
+   "specs": [
+    {
+     "band": "Power",
+     "label": "Standby & distribution",
+     "value": "100-hour fault-tolerant standby power (vs 12 hours under Tier IV); A+B power online through 90% of maintenance; N+1 stored energy, permanently monitored, three control stations"
+    },
+    {
+     "band": "Cooling",
+     "label": "Water independence",
+     "value": "indefinite operation without water; all cooling water outside the building shell; outside-air pollutant detection; 12-hour redundant makeup water"
+    },
+    {
+     "band": "Network",
+     "label": "Requirements",
+     "value": "10 on-net carriers to all customers; 6 fiber entry vaults on 2+ separate pathways; DDoS mitigation included"
+    },
+    {
+     "band": "Physical security",
+     "label": "Requirements",
+     "value": "zero roof penetrations, dual independently replaceable roofs, windowless concrete walls, per-rack security, 100-hour shelter-in-place, outside 100-year flood plains"
+    },
+    {
+     "band": "Sustainability",
+     "label": "Requirements",
+     "value": "100% renewable power from new local projects; trailing-average PUE below 1.3"
+    }
+   ],
+   "notes": "Self-declared standard, not an Uptime Institute rating — no independent certification body audits 'Tier 5'. It functions as a productized superset of Tier IV plus Switch's patent portfolio."
+  },
+  {
+   "product": "Eastern and Texas campuses",
+   "specs": [
+    {
+     "band": "Midwest",
+     "label": "The Pyramid, Grand Rapids, MI",
+     "value": "up to 1.8M sq ft / 320MW planned; anchored by the adaptive reuse of the 1989 Steelcase pyramid (225,000+ sq ft first phase; 138-acre site acquired 2017 for $22.2M); opened 2017"
+    },
+    {
+     "band": "Southeast",
+     "label": "The Keep, Atlanta (Lithia Springs/Douglas County), GA",
+     "value": "1M+ sq ft operating footprint, up to ~150MW at completion; anchor tenant signed November 2020"
+    },
+    {
+     "band": "Southeast",
+     "label": "Keep 2.0 Atlanta North, Cartersville (Bartow County), GA",
+     "value": "126 acres, $772M announced investment, first phase cited Q2 2026 with build-out to 2046 (per county/economic-development filings)"
+    },
+    {
+     "band": "Texas",
+     "label": "The Rock and Data Foundry",
+     "value": "The Rock (Round Rock, 1.5M+ sq ft Tier 5 on land purchased from Dell, announced June 2021) plus Data Foundry acquisition (500,000+ sq ft, 60MW, Austin and Houston) — over 2M sq ft / 185MW announced statewide"
+    },
+    {
+     "band": "Northeast",
+     "label": "Beaver County, PA (announced April 2026)",
+     "value": "382 acres, Big Beaver Borough — no size, cost or timeline disclosed"
+    }
+   ],
+   "notes": "All figures are company build-out targets except where county filings are cited; Switch discloses no per-campus operational MW."
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Rob Roy",
+   "title": "Founder & Chief Executive Officer (since 2000)",
+   "photo": "images/execs/switch-roy.jpg",
+   "background": [
+    "Founded Switch in 2000 and remains its designer of record — 950+ issued and pending patent claims covering T-SCIF containment, TSC cooling, POWER SPINE, Switch SHIELD and the pending EVO Chamber",
+    "Pioneered Switch's modular data-center designs (2005) and what the company calls the first gigawatt-scale campus (2015); personally credited for the EVO AI Factory line ('Rob Roy's EVO AI Factories')",
+    "Public face of the AI-and-energy argument — November 2025 Axios fireside (Schneider Electric Innovation Summit) on grid strain, the AI bubble question, and AI accelerating commercial fusion 'two or three decades'",
+    "Founder of Rob Roy's Innevation Centers and a $10M+ STEAM-education donor in Nevada"
+   ]
+  },
+  {
+   "name": "Thomas Morton",
+   "title": "President & Chief Legal Officer",
+   "background": [
+    "President since the public-company era and lead negotiator of the 2022 $11B take-private ('the optimal path forward for Switch and our shareholders')",
+    "Joined Switch in 2008; general counsel before adding the presidency; University of Houston Energy advisory board member",
+    "Fronted the 2024-2025 financing wave in company releases (last quoted October 2025); collection note: the executive-team page as refreshed in March 2026 lists the C-suite without him and no departure has been announced — verify current status before outreach"
+   ]
+  },
+  {
+   "name": "Madonna Park",
+   "title": "Chief Financial Officer (since October 2023)",
+   "photo": "images/execs/switch-park.jpg",
+   "background": [
+    "20+ years in investment banking and equity research; previously Managing Director at RBC Capital Markets leading communications-infrastructure M&A and capital-markets advisory",
+    "RBC was lead financial advisor to DigitalBridge/IFM on the Switch take-private — she then crossed to the company she helped buy",
+    "Has fronted every securitization since 2024: five ABS (~$4.2B), the $2.4B CMBS, and the facilities stack to ~$10B of committed liquidity"
+   ]
+  },
+  {
+   "name": "Jesse Burros",
+   "title": "Chief Investment Officer (since 2023)",
+   "photo": "images/execs/switch-burros.jpg",
+   "background": [
+    "20+ years across finance and technology; former Managing Director, Investment Banking at BMO Capital Markets leading M&A and structured financings for digital-infrastructure clients",
+    "Owns the power-procurement finance stack — quoted lead on the $2.6B performance LC facility ('a significant advancement in how digital infrastructure companies secure power at scale')",
+    "Harvard graduate"
+   ]
+  },
+  {
+   "name": "Jason Hoffman",
+   "title": "Chief Strategy Officer",
+   "photo": "images/execs/switch-hoffman.jpg",
+   "background": [
+    "Founded MobiledgeX (edge computing; acquired by Google, 2022) and cloud pioneer Joyent (acquired by Samsung); led virtualization/cloud at Ericsson",
+    "Owns the EVO/AI-factory strategy narrative — quoted lead on the $1.9B Schneider supply agreement",
+    "PhD, Sanford Burnham Institute lineage (per company bio)"
+   ]
+  },
+  {
+   "name": "Zia Syed",
+   "title": "Chief Technology Officer",
+   "photo": "images/execs/switch-syed.jpg",
+   "background": [
+    "Leads end-to-end technology for AI-factory design and operations, including the LDC EVO operating system and NVIDIA Omniverse DSX integration",
+    "Senior CTO/VP roles at Rakuten Symphony, Dell and Ericsson across 5G and platform software",
+    "MS Advanced Software Engineering, University of York"
+   ]
+  },
+  {
+   "name": "Jonathan H. King",
+   "title": "Chief Business Officer",
+   "photo": "images/execs/switch-king.jpg",
+   "background": [
+    "25+ years across the data-center and technology ecosystem; led partnerships at Google Cloud",
+    "Previously VP Strategy at World Wide Technology; executive roles at Ericsson and CenturyLink",
+    "Commercial owner for hyperscale/AI tenant relationships"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "private",
+  "periods": [
+   {
+    "period": "Ownership & valuation marks (2022–2026)",
+    "metrics": [
+     {
+      "name": "Take-private (Dec 2022)",
+      "actual": "$34.25/share all-cash, ~$11B including debt — DigitalBridge and IFM Investors; announced May 11, 2022, closed December 6, 2022",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Ends the 2017-2022 NYSE run (SWCH); debt financing led by TD Securities with SocGen, RBC, Citizens, Truist, Santander, Scotiabank and MUFG"
+     },
+     {
+      "name": "Aware Super minority stake (Jul 2023)",
+      "actual": "Australian pension fund Aware Super partnered with DigitalBridge to take an undisclosed minority stake",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Amount and percentage never disclosed"
+     },
+     {
+      "name": "IPO exploration (Sep 2024)",
+      "actual": "Reuters: owners exploring an IPO at ~$40B including debt, listing as early as 2025",
+      "expected": "",
+      "verdict": "inline",
+      "result": "First public valuation mark since the take-private — ~3.6x the 2022 deal in 21 months"
+     },
+     {
+      "name": "IPO mandate (Jul 2026)",
+      "actual": "Reuters: Goldman Sachs and JPMorgan hired to lead an IPO raising up to $10B at up to $80B including debt, as soon as Q4 2026; prior private-round talks at $40B+",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Would rank among the largest US listings of the AI cycle"
+     },
+     {
+      "name": "Confidential filing (Aug 2026)",
+      "actual": "Bloomberg: confidential S-1 filed; listing possible as soon as November; July Bloomberg reporting put the target near $50B including debt; BofA, Citi, Goldman, JPMorgan, Morgan Stanley on the deal; a16z-led private round targeting ~$2B with Ben Horowitz expected to join the board",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Company has not confirmed terms; valuation range across reports spans $40-80B including debt"
+     }
+    ],
+    "commentary": "All valuation marks are press-attributed (Reuters/Bloomberg), not company-confirmed. Ownership split between DigitalBridge-managed vehicles (majority), IFM Investors and Aware Super is not publicly quantified."
+   },
+   {
+    "period": "Debt & securitization program (2024–2026)",
+    "metrics": [
+     {
+      "name": "ABS master trust",
+      "actual": "Five issuances since 2024 totaling ~$4.2B, all secured green bonds, rated by Morningstar DBRS: $752M (Mar 2024), $940M (Jun 2024), $1.1B (Mar 2025 — largest green data-center ABS at issue), $659M (Oct 2025 — first dedicated to new development), $768M (Apr 2026; AAA/AA-low/A-low; Reno collateral ~1.4M sq ft, 52+MW)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Trust at Apr 2026: 11 data centers, five markets, 550+ customers, ~84% of revenue from investment-grade tenants; company claims largest single data-center ABS issuer since 2024"
+     },
+     {
+      "name": "CMBS",
+      "actual": "$2.4B single-asset single-borrower CMBS (Mar 2025) — largest green data-center CMBS ever, second-largest data-center CMBS in history; collateral Las Vegas 7, Las Vegas 9, Reno 2; 66 investors, seven tranches",
+      "expected": "",
+      "verdict": "inline",
+      "result": "With the concurrent $1.1B ABS, refinanced the majority of the remaining take-private acquisition debt"
+     },
+     {
+      "name": "Bank facilities",
+      "actual": "$4.25B sustainability-linked borrowing-base facility + $770M revolver (Sep 2024, 25+ banks, JPM/TD structuring) → expanded to $10B combined (Jul 2025) → corporate revolver upsized past $6B plus $3.5B performance LC facility for ~$10B combined liquidity (Jun 2026; TD/Wells Fargo and BBVA/Natixis leads)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "100% of 2022 take-private bank debt ($6.5B) retired by July 2025"
+     },
+     {
+      "name": "Performance LC facility",
+      "actual": "$2.6B syndicated performance letter-of-credit facility (Apr 2026) — industry first — backing utility performance assurance for new transmission and generation; upsized to $3.5B by June 2026",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Cumulative capital raised since 2024: $20B by Jul 2025, $24B+ by Apr 2026 (company figures)"
+     }
+    ],
+    "commentary": "The securitization disclosures are the only recurring public window into operating scale. No leverage, revenue or EBITDA figures have been published since the take-private."
+   },
+   {
+    "period": "FY2022 (last public-company year)",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "Q1 $164.6M / Q2 $168.2M / Q3 $174.5M (last reported quarter before the December 2022 close)",
+      "expected": "FY2022 company guidance $660-674M (+13% YoY at midpoint)",
+      "verdict": "inline",
+      "result": "Tracking to guidance when reporting ceased; no full-year figure was ever published"
+     },
+     {
+      "name": "Adjusted EBITDA",
+      "actual": "Q1 $86.8M / Q2 $84.6M / Q3 $69.5M",
+      "expected": "FY2022 company guidance $345-357M (~52.6% margin at midpoint)",
+      "verdict": "inline",
+      "result": "Guidance was the company's own, not analyst consensus"
+     }
+    ],
+    "commentary": "Collection gap: Switch has published no revenue, EBITDA, headcount or consolidated balance-sheet data since going private in December 2022 — the FY2022 rows are a historical anchor, and current scale must be triangulated from securitization disclosures, facility sizes and press-reported valuations. A second gap: no aggregate operational MW or utilization is disclosed for any campus; published MW figures are build-out targets."
+   }
+  ]
+ },
+ "sources": [
+  {
+   "label": "Switch — statement supporting Governor Abbott's Texas data-center standards",
+   "url": "https://www.switch.com/statement-on-gov-abbotts-data-center-standards/",
+   "date": "2026-08"
+  },
+  {
+   "label": "Bloomberg — Switch said to file confidentially for IPO (~$50B target; a16z round, Ben Horowitz to board)",
+   "url": "https://www.bloomberg.com/news/articles/2026-08-07/data-center-firm-switch-is-said-to-file-confidentially-for-ipo",
+   "date": "2026-08-07"
+  },
+  {
+   "label": "Houston Public Media — Gov. Abbott pauses new Texas data centers pending ERCOT/PUCT audit",
+   "url": "https://www.houstonpublicmedia.org/articles/news/energy-environment/2026/08/03/558529/gov-greg-abbott-pauses-new-data-centers-until-ercot-puct-audit-energy-water-usage/",
+   "date": "2026-08-03"
+  },
+  {
+   "label": "Reuters (via Yahoo Finance) — Switch taps banks for IPO valuing it up to $80B, raising up to $10B",
+   "url": "https://finance.yahoo.com/technology/articles/exclusive-data-center-firm-switch-152221299.html",
+   "date": "2026-07-13"
+  },
+  {
+   "label": "Switch — corporate revolver and LC facilities expanded to nearly $10B",
+   "url": "https://www.switch.com/switch-expands-corporate-revolving-credit-and-letter-of-credit-facilities-to-nearly-10-billion/",
+   "date": "2026-06-10"
+  },
+  {
+   "label": "Las Vegas Review-Journal — Switch buys ~140 more acres at Apex Industrial Park for $95M (300+ acres total)",
+   "url": "https://www.reviewjournal.com/business/switch-buys-more-land-in-nlv-apex-park-for-95m-3731350/",
+   "date": "2026-05"
+  },
+  {
+   "label": "Switch — new data center campus announced in Beaver County, Pennsylvania (382 acres)",
+   "url": "https://www.switch.com/switch-announces-new-data-center-campus-in-beaver-county-pennsylvania/",
+   "date": "2026-04-30"
+  },
+  {
+   "label": "Switch — $2.6B syndicated performance letter-of-credit facility (industry first; $24B+ raised since 2024)",
+   "url": "https://www.switch.com/switch-secures-landmark-2-6-billion-syndicated-letter-of-credit-facility/",
+   "date": "2026-04-21"
+  },
+  {
+   "label": "Switch — $768M fifth data-center ABS (trust: 11 DCs, 550+ customers, ~84% IG revenue)",
+   "url": "https://www.switch.com/switch-raises-768-million-in-latest-data-center-abs-issuance/",
+   "date": "2026-04-14"
+  },
+  {
+   "label": "Switch — research sponsorship with Stanford's Center for Integrated Facility Engineering (CIFE)",
+   "url": "https://www.switch.com/switch-completes-agreement-to-sponsor-research-with-stanfords-center-for-integrated-facility-engineering-cife/",
+   "date": "2026-03-25"
+  },
+  {
+   "label": "Switch/PRNewswire — NVIDIA Omniverse DSX Blueprint integrated into EVO AI Factories (LDC EVO)",
+   "url": "https://www.switch.com/switch-integrates-nvidia-omniverse-dsx-blueprint-into-switchs-evo-ai-factories/",
+   "date": "2026-03-16"
+  },
+  {
+   "label": "DCD — Switch buys 176 acres at Apex Industrial Park, North Las Vegas ($85.5M, closed Dec 2025)",
+   "url": "https://www.datacenterdynamics.com/en/news/switch-buys-176-acres-at-apex-industrial-park-las-vegas/",
+   "date": "2026-01"
+  },
+  {
+   "label": "Ormat/GlobeNewswire — 20-year PPA with Switch for ~13MW geothermal (Salt Wells; deliveries Q1 2030)",
+   "url": "https://www.globenewswire.com/news-release/2026/01/12/3217401/0/en/Ormat-Technologies-Signs-20-Year-PPA-with-Switch-for-13MW-of-Carbon-Free-Geothermal-Capacity-to-Power-Data-Centers.html",
+   "date": "2026-01-12"
+  },
+  {
+   "label": "Switch/Schneider Electric — $1.9B supply-capacity agreement (prefab power modules, Uniflair chillers)",
+   "url": "https://www.switch.com/schneider-electric-and-switch-expand-partnership-with-1-9-billion-supply-capacity-agreement/",
+   "date": "2025-11-19"
+  },
+  {
+   "label": "Axios — energy-resilience event with Switch founder/CEO Rob Roy (fireside with Ben Geman)",
+   "url": "https://www.axios.com/2025/11/05/axioslive-event-lasvegas-innovationsummit-energy-ai-resilience",
+   "date": "2025-11-05"
+  },
+  {
+   "label": "Switch — $659M fourth data-center ABS; $6.5B take-private bank debt fully retired July 2025",
+   "url": "https://www.switch.com/switch-raises-659-million-in-fourth-data-center-abs-offering/",
+   "date": "2025-10-20"
+  },
+  {
+   "label": "Switch — credit facilities expanded to $10B; $20B raised since 2024; EVO AI Factories under construction on all five campuses",
+   "url": "https://www.switch.com/switch-expands-credit-facilities-raising-20-billion-since-2024/",
+   "date": "2025-07-15"
+  },
+  {
+   "label": "Switch — CoreWeave deploys world-first NVIDIA GB300 NVL72 in Switch's AI Factory (Dell rack-scale)",
+   "url": "https://www.switch.com/coreweave-deploys-industry-first-nvidia-gb300-nvl72-in-switchs-ai-factory-solution/",
+   "date": "2025-07-03"
+  },
+  {
+   "label": "Switch — $3.5B securitized: $2.4B SASB CMBS (largest green DC CMBS) + $1.1B ABS (largest green DC ABS)",
+   "url": "https://www.switch.com/switch-announces-3-5-billion-in-securitized-debt-financings/",
+   "date": "2025-03-25"
+  },
+  {
+   "label": "Switch/Oklo — 12GW advanced-nuclear master power agreement through 2044 (non-binding)",
+   "url": "https://www.switch.com/oklo-and-switch-form-landmark-strategic-relationship-to-deploy-12-gigawatts-of-advanced-nuclear-power-one-of-the-largest-corporate-clean-power-agreements-ever-signed/",
+   "date": "2024-12-18"
+  },
+  {
+   "label": "Utility Dive — Oklo inks 12GW advanced-reactor supply agreement with Switch (Aurora context)",
+   "url": "https://www.utilitydive.com/news/oklo-aurora-smr-advanced-nuclear-reactor-supply-agreement-data-center-developer-switch/735933/",
+   "date": "2024-12"
+  },
+  {
+   "label": "Switch — $5B new debt: $4.25B sustainability-linked borrowing-base facility + $770M revolver (25+ banks)",
+   "url": "https://www.switch.com/switch-secures-5-billion-in-new-debt-financing/",
+   "date": "2024-09-12"
+  },
+  {
+   "label": "Reuters (via Investing.com) — Switch owners explore IPO at ~$40B valuation including debt",
+   "url": "https://www.investing.com/news/stock-market-news/exclusivedata-center-operator-switch-weighs-ipo-at-about-40-billion-valuation-sources-say-3609423",
+   "date": "2024-09-10"
+  },
+  {
+   "label": "Switch — $1.7B in ABS financing across two inaugural issuances ($752M Mar; $940M Jun; DBRS-rated green bonds)",
+   "url": "https://www.switch.com/switch-completes-1-7-billion-in-abs-financing/",
+   "date": "2024-06-24"
+  },
+  {
+   "label": "DigitalBridge — Aware Super partnership to invest in Switch (renewable-powered data centers)",
+   "url": "https://www.digitalbridge.com/news/2023-07-13-aware-super-and-digitalbridge-announce-partnership-to-invest-in-renewable-powered-data-centers",
+   "date": "2023-07-13"
+  },
+  {
+   "label": "Switch/DigitalBridge — $11B take-private completed ($34.25/share)",
+   "url": "https://www.switch.com/digitalbridge-and-ifm-investors-complete-11-billion-take-private-of-switch/",
+   "date": "2022-12-06"
+  },
+  {
+   "label": "Switch — Q3 2022 results (last public quarter: revenue $174.5M)",
+   "url": "https://www.prnewswire.com/news-releases/switch-announces-third-quarter-2022-financial-results-301673217.html",
+   "date": "2022-11-09"
+  },
+  {
+   "label": "PRNewswire — Switch to be taken private by DigitalBridge and IFM in $11B transaction",
+   "url": "https://www.prnewswire.com/news-releases/switch-to-be-taken-private-by-digitalbridge-investment-management-and-ifm-in-11-billion-transaction-301544962.html",
+   "date": "2022-05-11"
+  },
+  {
+   "label": "Switch — Q1 2022 results (FY2022 guidance: revenue $660-674M, adjusted EBITDA $345-357M)",
+   "url": "https://investors.switch.com/news/press-release/2022/Switch-Announces-First-Quarter-2022-Financial-Results/default.aspx",
+   "date": "2022-05"
+  },
+  {
+   "label": "Switch — fifth Prime campus: The Rock, Round Rock, TX (Dell land purchase; >2M sq ft / 185MW Texas ecosystem)",
+   "url": "https://www.switch.com/switch-announces-fifth-prime-expansion-with-development-of-exascale-data-center-campus-in-texas/",
+   "date": "2021-06-02"
+  },
+  {
+   "label": "Switch — anchor tenant signed at The Keep, Atlanta; next two buildings break ground",
+   "url": "https://www.switch.com/switch-signs-anchor-tenant-at-the-keep-campus-in-atlanta-and-breaks-ground-on-next-two-buildings/",
+   "date": "2020-11"
+  },
+  {
+   "label": "Switch — Grand Rapids (The Pyramid) opens: largest, most advanced campus in the eastern US",
+   "url": "https://www.switch.com/switch-grand-rapids-now-open-largest-advanced-data-center-campus-eastern-u-s/",
+   "date": "2017-03"
+  },
+  {
+   "label": "Switch — Tahoe Reno (The Citadel) opens: claimed largest, most advanced data-center campus in the world",
+   "url": "https://www.switch.com/switch-tahoe-reno-data-center-now-open/",
+   "date": "2017-02"
+  },
+  {
+   "label": "Switch — AI Factories product page (EVO specs: 2MW/rack, five fluidic pathways, EVO Chamber patent, GB200/GB300 firsts)",
+   "url": "https://www.switch.com/ai-factories/"
+  },
+  {
+   "label": "Switch — Tier 5 Platinum standard page (full requirements list)",
+   "url": "https://www.switch.com/tier-5/"
+  },
+  {
+   "label": "Switch — executive team page (roles, bios, photos)",
+   "url": "https://www.switch.com/executive-team/"
+  },
+  {
+   "label": "Switch — about page (founded 2000; 950+ patent claims; SUPERLOOP; Innevation Centers)",
+   "url": "https://www.switch.com/about/"
+  },
+  {
+   "label": "Switch — sustainability page (100% renewable since Jan 2016; net-zero Scope 1-2; net-positive water)",
+   "url": "https://www.switch.com/sustainability/"
+  },
+  {
+   "label": "Switch — build-to-suit page (Switch MOD 250/100/15)",
+   "url": "https://www.switch.com/build-to-suit/"
+  },
+  {
+   "label": "Switch — Switch CONNECT page (telecom audit; 35-60% savings claim)",
+   "url": "https://www.switch.com/switch-connect/"
+  },
+  {
+   "label": "Switch — Tahoe Reno campus page (gigawatts at completion; 4.5ms Bay Area; 2MW/cabinet)",
+   "url": "https://www.switch.com/tahoe-reno/"
+  },
+  {
+   "label": "Switch — Las Vegas campus page (The Core: up to 495MW; 5ms to LA; SUPERLOOP)",
+   "url": "https://www.switch.com/las-vegas/"
+  },
+  {
+   "label": "Switch — Atlanta campus page (The Keep: up to ~150MW)",
+   "url": "https://www.switch.com/atlanta/"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 3
+}

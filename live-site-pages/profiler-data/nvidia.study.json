@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "nvidia",
+  "title": "NVIDIA — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Why thousands of simple cores beat a few clever ones",
+      "bullets": [
+        "A CPU (central processing unit) spends most of its silicon making a few cores individually fast — caches, branch prediction, out-of-order tricks — because it must race through one unpredictable instruction stream at minimum latency",
+        "A GPU (graphics processing unit) inverts the bet: thousands of simple cores, each slow alone, optimized for total throughput — the right shape for work that is the same small operation repeated across millions of independent data points",
+        "Neural networks are exactly that shape: training and inference reduce to enormous matrix multiplications whose individual multiply-adds don't depend on each other — 'embarrassingly parallel' work that saturates all the simple cores at once",
+        "SIMT (single instruction, multiple threads) is the organizing trick: cores execute in groups that all run the same instruction on different data — one instruction fetch amortized across 32 threads — which is why GPU code that lets threads diverge onto different paths loses its speed"
+      ]
+    },
+    {
+      "heading": "Tensor cores and the strange power of low precision",
+      "bullets": [
+        "A tensor core is a matrix engine inside the GPU: instead of multiplying numbers one at a time, it consumes small matrix blocks whole — a hardware unit shaped like the inner loop of deep learning",
+        "Precision formats are the throughput lever: FP8 and FP4 (floating-point numbers stored in 8 or 4 bits, versus 32 traditionally) let each memory transfer and each arithmetic unit carry more numbers — roughly doubling throughput with every halving of bits",
+        "Why lower precision works at all: neural networks are statistical machines tolerant of noise — individual weights being slightly wrong washes out across billions of parameters, especially when running sums accumulate in higher precision so rounding errors don't compound",
+        "The catch is dynamic range: 4-bit numbers can represent very few distinct values, so models must be scaled and calibrated carefully — the industry's shift toward ever-lower precision is a co-design dance between chip designers and model builders"
+      ]
+    },
+    {
+      "heading": "CUDA: the moat made of other people's code",
+      "bullets": [
+        "CUDA (Compute Unified Device Architecture) is the software layer for programming the GPUs — the compiler, libraries, and tools that turn researcher code into instructions thousands of cores execute efficiently",
+        "The moat is accumulated ecosystem: nearly two decades of optimized libraries, framework integrations, tutorials, and institutional muscle memory — virtually every AI codebase on earth assumes it, and every graduating engineer already knows it",
+        "Switching hardware means porting software: a rival chip with equal silicon still asks customers to rewrite, revalidate, and re-optimize their stack — a cost measured in engineer-years and delayed launches, which is precisely the price the incumbent's customers avoid",
+        "The moat's edges are where to watch: compilers that abstract the hardware away, open alternatives backed by consortiums, and the fact that inference (simpler, more repetitive than training) ports far more easily — the lock-in is strongest exactly where the work is hardest"
+      ]
+    },
+    {
+      "heading": "Two kinds of wire: scale-up domains vs scale-out fabrics",
+      "bullets": [
+        "The design question inside every AI machine: how many GPUs can share data at nearly memory speed (scale-up), and how do you connect those islands into a fleet (scale-out) — two different technologies because physics prices distance",
+        "A scale-up link is memory-like: extremely high bandwidth, tiny latency, minimal protocol overhead — letting a group of GPUs pool their memory and act as one giant accelerator; but such links ride copper, and copper's reach at those speeds is roughly one rack",
+        "That reach limit is why the rack became the unit of computing: the scale-up domain ends where the copper does, so the industry's engineering effort pours into packing more GPUs, memory, and power into a single rack-sized domain",
+        "Scale-out is a different discipline: between racks, traffic crosses a switched network with longer latency and protocol overhead — so training software is written to keep the chattiest communication inside the scale-up domain and send only what must travel between islands"
+      ]
+    },
+    {
+      "heading": "HBM and CoWoS: when memory became the bottleneck",
+      "bullets": [
+        "The memory wall: compute performance grew far faster than memory bandwidth for decades, so modern accelerators starve — arithmetic units idle waiting for data — making memory delivery, not math, the binding constraint of AI chips",
+        "High Bandwidth Memory (HBM) attacks it with geometry: DRAM dies are stacked vertically like pancakes and wired down through the stack with through-silicon vias — thousands of connections over millimeters instead of hundreds over centimeters",
+        "The stack must sit almost touching the processor, which requires advanced packaging: CoWoS (chip-on-wafer-on-substrate) mounts the GPU die and HBM stacks together on a silicon interposer — a wiring layer with connections far finer than any circuit board",
+        "Packaging became the industry's chokepoint: a GPU is not one chip but an assembly of dies, and the factories doing that assembly — and the memory stacks feeding it — sell out years ahead, deciding how many accelerators exist regardless of chip designs"
+      ]
+    },
+    {
+      "heading": "Fabless and foundry: designing without a factory",
+      "bullets": [
+        "The industry split into two professions: fabless companies design chips and own no factories; foundries manufacture other companies' designs — because a leading-edge fabrication plant costs tens of billions and must run full to pay for itself",
+        "The economics of the split: the foundry pools demand from many designers to keep its fab full, while the fabless designer converts a brutal fixed-cost business into a variable-cost line item — paying per wafer instead of per factory",
+        "The designer captures the margin when its design is scarce and differentiated: the foundry earns manufacturing returns while the fabless firm prices its product against the value of the workload — which is how a company with no factories became one of the most valuable on earth",
+        "The dependency is the risk: a fabless giant relies on one or two foundries at the leading edge, prepays and reserves capacity years ahead, and its supply — and geopolitical exposure — is only as diversified as its foundry list"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "Why does a GPU use thousands of simple cores instead of a few powerful ones?",
+      "a": "It optimizes throughput, not latency. A CPU spends silicon making one unpredictable instruction stream fast; a GPU bets on work that repeats the same small operation across millions of independent data points — so many simple cores finishing together beat a few clever ones finishing one at a time."
+    },
+    {
+      "q": "What makes neural-network math 'embarrassingly parallel'?",
+      "a": "Training and inference reduce to enormous matrix multiplications whose individual multiply-add operations don't depend on each other. Millions can proceed simultaneously with no coordination — exactly the workload shape that saturates thousands of simple cores at once."
+    },
+    {
+      "q": "What is SIMT and why does divergent code kill GPU performance?",
+      "a": "Single instruction, multiple threads: cores execute in groups (warps) that all run the same instruction on different data, amortizing one instruction fetch across 32 threads. If threads branch onto different paths, the group executes each path serially — the parallelism the whole design depends on evaporates."
+    },
+    {
+      "q": "What is a tensor core?",
+      "a": "A matrix engine built into the GPU that consumes small matrix blocks whole instead of multiplying numbers one at a time. It's hardware shaped like the inner loop of deep learning — most of a modern AI accelerator's usable performance lives in these units."
+    },
+    {
+      "q": "Why does 8-bit or 4-bit math work for neural networks when it would ruin spreadsheets?",
+      "a": "Networks are statistical machines tolerant of noise: a slightly wrong weight washes out across billions of parameters. Running sums are accumulated in higher precision so rounding doesn't compound. In exchange, every halving of bits roughly doubles throughput and halves memory traffic."
+    },
+    {
+      "q": "What's the catch with very low precision formats like FP4?",
+      "a": "Dynamic range: 4 bits can express very few distinct values, so numbers must be carefully scaled and calibrated per layer or per block to avoid clipping and dead values. Each precision step-down is a co-design negotiation between chip architects and model builders, not a free lunch."
+    },
+    {
+      "q": "Why is CUDA described as a moat made of other people's code?",
+      "a": "Two decades of optimized libraries, framework integrations, and engineer training assume it. A rival chip with equal silicon still asks customers to port, revalidate, and re-optimize their software — a cost in engineer-years and delayed launches that most buyers refuse to pay. The lock-in lives in the ecosystem, not the hardware."
+    },
+    {
+      "q": "What distinguishes a scale-up link from a scale-out network?",
+      "a": "Scale-up is memory-like: enormous bandwidth, tiny latency, minimal protocol, letting a group of GPUs pool memory and act as one accelerator. Scale-out is a switched network between those islands — longer latency, more overhead. Software keeps the chattiest traffic inside the scale-up domain."
+    },
+    {
+      "q": "Why did the rack become the unit of AI computing?",
+      "a": "Because scale-up links ride copper, and copper's reach at those speeds is roughly one rack. The memory-like domain ends where the copper does — so engineering effort pours into packing more GPUs, memory, and power into that single rack-sized machine."
+    },
+    {
+      "q": "How does High Bandwidth Memory (HBM) attack the memory wall?",
+      "a": "Geometry: DRAM dies are stacked vertically and wired down through the stack with through-silicon vias, creating thousands of short connections instead of hundreds of long ones. The stack sits almost touching the processor, multiplying bandwidth precisely where arithmetic units were starving."
+    },
+    {
+      "q": "What is CoWoS and why did packaging become a supply chokepoint?",
+      "a": "Chip-on-wafer-on-substrate: the GPU die and HBM stacks are mounted together on a silicon interposer — a wiring layer far finer than any circuit board. A modern accelerator is an assembly of dies, so the plants doing that assembly (and the HBM feeding it) cap industry output regardless of chip designs."
+    },
+    {
+      "q": "How does the fabless/foundry split work, and where's the risk?",
+      "a": "Fabless firms design chips; foundries manufacture them, pooling many customers' demand to keep tens-of-billions-of-dollars fabs full. The designer trades fixed factory costs for per-wafer costs and captures the margin when its design is scarce. The risk: leading-edge supply depends on one or two foundries, concentrating both capacity and geopolitical exposure."
+    }
+  ]
+}

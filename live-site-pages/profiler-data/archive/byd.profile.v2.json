@@ -1,0 +1,283 @@
+{
+  "schemaVersion": 2,
+  "slug": "byd",
+  "name": "BYD Company Limited (比亚迪股份有限公司)",
+  "shortName": "BYD",
+  "categories": ["supplier"],
+  "website": "https://www.byd.com",
+  "headquarters": "Shenzhen, Guangdong, China",
+  "founded": 1995,
+  "employees": "~968,900 (end-2024, company-reported)",
+  "ownership": { "type": "public", "ticker": "SZSE: 002594 · HKEX: 1211" },
+  "summary": "BYD is a Chinese conglomerate spanning batteries, new-energy vehicles, electronics, and rail transit, and one of the world's largest battery-energy-storage suppliers. Its storage arm — the Energy Storage & New-type Battery Business Division (BYD Energy Storage, est. 2008), supplied by cell subsidiary FinDreams Battery — makes LFP 'Blade' cells and integrated BESS products from grid-scale containers to home batteries. BYD is also China's largest NEV maker (4.60M NEVs sold in 2025, >1M exported), sharing the Blade LFP platform between vehicles and storage.",
+  "ecosystemRole": "Top-tier in every storage ranking, with scope-dependent placement: #2 global ESS battery shipper in 2023 (28.4 GWh, Fastmarkets), #3 ESS cell shipper in 2024 (SMM/InfoLink), and for 2025 Benchmark ranked BYD the #1 global BESS system integrator (~60 GWh, 13% share, overtaking Tesla) while InfoLink placed it #3 in systems — estimates differ by scope. Company-reported: >75 GWh in commercial operation across 360+ projects in 110+ countries by end-2024. FinDreams capacity expansion (incl. Chongqing blade-cell base and Wuwei, Gansu) took planned battery capacity above 500 GWh in 2025.",
+  "productsAndServices": [
+    {
+      "name": "HaoHan utility-scale platform (浩瀚, flagship 2025–)",
+      "category": "Energy storage systems — grid-scale",
+      "description": "Launched September 18, 2025 at the International Digital Energy Expo (Shenzhen): the world's largest single-unit DC block at 14.5 MWh — more than double the 6–7 MWh industry norm — built on a 2,710 Ah long Blade LFP cell (claimed >300% single-cell capacity gain vs earlier generations, −30°C to 55°C operation). A 20-ft-container configuration delivers 10 MWh at 233 kWh/m³ volumetric density (+51% vs industry average). Sold as a platform with the GC Flux grid-forming PCS (2.5–10 MW) and GC Master EMS. Deployed at gigawatt scale from late 2025.",
+      "highlights": [
+        "11.275 GWh HaoHan supply contract signed July 2026 for Masdar/EWEC's 5.2 GW / 19 GWh round-the-clock solar-plus-storage project in Abu Dhabi — the world's first gigascale RTC renewable project, online from 2027",
+        "Claimed lifecycle energy cost below CNY 0.1/kWh (~$0.014/kWh) and >10,000 cycles"
+      ],
+      "positioning": "Single-block capacity leadership: 14.5 MWh vs CATL TENER's 6.25 MWh (9 MWh TENER Stack announced) and Tesla Megapack 3's ~5 MWh per unit. BYD's pitch is fewer blocks, less land, and lower balance-of-plant per MWh, plus grid-forming capability bundled in-house (GC Flux) rather than via a third-party PCS vendor — competing head-on with Sungrow's PowerTitan integrated approach.",
+      "soldThrough": "Direct framework supply agreements with utilities, sovereign developers, and IPPs (Masdar, Saudi Electricity Company); BYD supplies the DC block + PCS + EMS while EPC partners handle plant integration",
+      "targetSegments": "Gigawatt-scale grid-side storage, round-the-clock solar-plus-storage tenders, Middle East / Latin America / China utility programs",
+      "roadmap": "Liquid-cooling integration on the 2026 roadmap (launch version cooling unspecified); Masdar RTC deliveries run through 2027 COD"
+    },
+    {
+      "name": "MC Cube-T utility container (2024–)",
+      "category": "Energy storage systems — grid-scale",
+      "description": "6.432 MWh containerized system introduced April 2024, the first with CTS (cell-to-system) integration of BYD's new-generation long-blade storage cells — up to +11% single-cell energy and +35.8% system energy vs the prior MC Cube, with −24.7% footprint. Built from modular ~500 kWh units combined into enclosures up to 6.4+ MWh; GB/T 36276-compliant. The volume workhorse behind the Saudi Electricity Company and Grenergy Chile fleets.",
+      "highlights": [
+        "12.5 GWh SEC deal signed February 2025 (5 × 500 MW/2,500 MWh) — the world's largest grid-scale BESS award at signing, lifting SEC cooperation to 15.1 GWh",
+        "Grenergy Oasis de Atacama (Chile): 3 GWh across phases 1–3, +3.5 GWh phase 6 (624 MC Cube-T units, May 2025), +2.6 GWh for Central Oasis (March 2026) — Latin America's largest battery supply relationship"
+      ],
+      "positioning": "Slightly above CATL TENER's 6.25 MWh per standard container and well above Tesla Megapack 3 (~5 MWh); differentiates on CTS integration density and BYD's vertically owned cell supply. In China's brutal per-kWh system pricing environment, BYD leans on cell self-supply cost rather than premium features.",
+      "soldThrough": "Direct supply agreements with utilities and IPP/developers (SEC, Grenergy); repeat framework purchases are the norm",
+      "targetSegments": "Utility grid-side storage, large solar-plus-storage plants (Middle East, Latin America, China)",
+      "roadmap": "Planned ~BRL 500M ($98M) BESS assembly line in Brazil (module/pack/system integration, not cells) timed to Brazil's first large industrial storage auction in December 2026 — siting decision (Manaus vs new plant) pending"
+    },
+    {
+      "name": "MC Cube-SIB sodium-ion BESS (2024–)",
+      "category": "Energy storage systems — sodium-ion",
+      "description": "Claimed world's first high-performance sodium-ion BESS, announced November 2024: 2.3 MWh per 20-ft container using long-blade sodium-ion cells in the same CTS super-integrated design, 1,200 V nominal (800–1,400 V range). Trades much lower energy density (vs 5+ MWh LFP containers) for higher charge/discharge rates, wider operating temperature range, longer cycle life, and enhanced safety.",
+      "highlights": [],
+      "positioning": "A chemistry-hedge product against LFP incumbents and CATL's Naxtra sodium push — commercially niche today, aimed at duty cycles and climates where LFP degrades (high-rate cycling, extreme cold) and at lithium-price insurance",
+      "soldThrough": "Same direct utility/developer channel as the LFP line",
+      "targetSegments": "Grid ancillary services, extreme-climate sites, customers hedging lithium exposure"
+    },
+    {
+      "name": "Storage cells — Blade LFP (FinDreams Battery)",
+      "category": "Battery cells",
+      "description": "Dedicated storage cell family: 320 Ah thick-blade LFP cells (ceramic terminals, >10,000 cycles) for C&I products, and the 2,710 Ah long Blade cell powering HaoHan — roughly triple conventional storage-cell capacity, −30°C to 55°C. FinDreams also sells cells merchant: from Q1 2025 it supplies LFP cells to Tesla's Shanghai Megafactory, reportedly securing >20% of Megapack cell orders alongside primary supplier CATL. Benchmark ranked BYD #4 in 2025 global ESS cell shipments (~60 GWh, ~10%).",
+      "highlights": ["Merchant supply to Tesla Shanghai Megafactory (LFP storage cells, from Q1 2025) — BYD cells inside a direct competitor's flagship BESS product"],
+      "positioning": "Vertical integration is the differentiator vs merchant-only cell makers (EVE, REPT, Hithium): BYD consumes its own cells in vehicles and BESS at volumes that fund cost curves, then sells the surplus — competing with CATL both as cell merchant and as system vendor",
+      "soldThrough": "Internal transfer to BYD Energy Storage and BYD Auto; merchant cell sales to external OEMs/integrators (incl. Tesla)",
+      "targetSegments": "Grid-scale and C&I storage integrators, EV/storage OEMs seeking non-CATL LFP supply"
+    },
+    {
+      "name": "C&I storage — Chess Plus (2025–)",
+      "category": "Energy storage systems — commercial & industrial",
+      "description": "Modular AC-coupled C&I cabinet launched March 26, 2025 (Beijing Clean Energy Expo): China version 233 kWh / 125 kW at 729.6 V nominal, US version 350.1 kWh; scalable 125 kW–1 MW. Integrates BMS, distributed management control, EMS and AC unit in one enclosure with AI-driven O&M. Built on 320 Ah thick-blade cells with 2-hour fire-resistant battery casing and built-in aerosol suppression. Sold in China and the US; European version under evaluation.",
+      "highlights": [],
+      "positioning": "Competes with Sungrow PowerStack, CATL EnerOne-derived cabinets, Sinexcel and Delta C&I offerings; leads with blade-cell safety story (fire-resistant casing, aerosol suppression, IP55, seismic rating) in a segment where thermal incidents drive procurement",
+      "soldThrough": "Distribution/installer channel plus direct key accounts; regional product variants (CN fire-host / US smart-HVAC) tailored per market",
+      "targetSegments": "Factories, commercial buildings, EV-charging depots doing peak shaving, demand-charge management and backup",
+      "roadmap": "European variant under evaluation (as of 2025 launch); AI O&M feature expansion"
+    },
+    {
+      "name": "Residential storage — Battery-Box",
+      "category": "Energy storage systems — residential",
+      "description": "Modular LFP home-battery line sold worldwide under the Battery-Box brand (Premium/HVS/HVM/LVS families). Premium HVS stacks 2–5 modules for 5.1–12.8 kWh usable (to 38.4 kWh with 3 parallel); Premium HVM stacks 3–8 modules for 8.3–22.1 kWh (to 66.2 kWh parallel). Plug-in tower design with no internal wiring; inverter-agnostic — certified with Fronius, GoodWe, Kostal, SMA, SolarEdge and others; VDE 2510-50 safety standard, 96% efficiency, IP55, 10-year warranty. Kept BYD a top-3 global residential storage supplier in 2025 (InfoLink, behind Tesla and Huawei).",
+      "highlights": [],
+      "positioning": "Unlike Tesla Powerwall (integrated AC battery) and Huawei LUNA (paired with Huawei inverters), Battery-Box is a DC battery sold inverter-agnostic through the installer channel — the 'works with everything' option in European/Australian rooftop solar",
+      "soldThrough": "Solar distribution channel and installer networks (notably Europe/Australia); certified inverter-partner ecosystem",
+      "targetSegments": "Residential rooftop solar self-consumption and backup; small commercial via LVS/HVM stacking"
+    },
+    {
+      "name": "EV platform (adjacent volume engine)",
+      "category": "Automotive — context",
+      "description": "The automotive group is the scale engine that funds Blade cell cost curves: 4.60M NEVs sold in 2025 (>1M exported). Key platforms: Super e-Platform (March 2025) — first mass-produced full-domain 1,000 V architecture with 10C 'flash charging' at up to 1 MW (400 km range in 5 min; Han L / Tang L first), backed by liquid-cooled 1,360 kW charging terminals; e-Platform 3.0 / 3.0 Evo — 800 V architecture with 8-in-1 integrated drive; 5th-gen DM-i hybrid (May 2024) — 46.06% engine thermal efficiency, as low as 2.9 L/100 km at low charge, ~2,100 km combined range; and the 2nd-generation Blade Battery (March 2026) — 10–70% charge in 5 minutes, reported 190–210 Wh/kg. The storage business reorganized in August 2025 into Domestic and Overseas centers (Europe, MEA, Asia-Pacific); the 2025–26 China EV price war remains the group's dominant margin story.",
+      "highlights": ["Same Blade LFP cell platform and FinDreams supply chain shared between vehicles and storage — EV volume underwrites storage-cell cost leadership"],
+      "positioning": "vs Tesla: BYD out-ships it in NEVs and (per Benchmark) in BESS; vs CATL: BYD is its own anchor cell customer, so storage pricing rides on EV-scale amortization",
+      "soldThrough": "Company-owned dealer networks and distributors in 110+ markets",
+      "targetSegments": "Global mass-market EV/PHEV buyers; the flash-charging station buildout (thousands planned in China) is a captive demand source for storage-buffered charging"
+    }
+  ],
+  "recentDevelopments": [
+    { "date": "2026-07-09", "category": "order-win", "headline": "11.275 GWh HaoHan contract signed with Masdar for Abu Dhabi's 5.2 GW / 19 GWh round-the-clock RTC project", "read": "HaoHan validated at gigascale within a year of launch — BYD supplies the majority of the world's first gigascale solar+storage RTC plant (online 2027).", "source": "https://www.bydenergy.com/en/news/20260709" },
+    { "date": "2026-06-17", "category": "capacity", "headline": "Up to BRL 500M ($98M) BESS production line planned in Brazil — module/pack/system integration, not cells", "read": "Localizing system assembly ahead of Brazil's first large industrial storage auction (Dec 2026) — the SEC/Grenergy playbook of following tender demand with local content.", "source": "https://www.ess-news.com/2026/06/22/byd-plans-98-million-bess-production-line-in-brazil/" },
+    { "date": "2026-05-13", "category": "other", "headline": "Benchmark ranks BYD the #1 global BESS integrator for 2025 (>60 GWh shipped, 13% share), overtaking Tesla (46.7 GWh)", "read": "The scale crown is real but scope-dependent — InfoLink's system ranking still places BYD #3; either way BYD now leads or podiums every storage league table.", "source": "https://electrek.co/2026/05/13/byd-surpasses-tesla-energy-storage-bess-benchmark-2025/" },
+    { "date": "2026-03-30", "category": "order-win", "headline": "Grenergy locks in 2.6 GWh of MC Cube-T for its Central Oasis platform in Chile", "read": "Third repeat purchase from the same customer (after 3 GWh + 3.5 GWh at Oasis de Atacama) — the strongest possible field-performance endorsement of MC Cube-T in Latin America.", "source": "https://www.ess-news.com/2026/03/30/grenergy-locks-in-2-6-gwh-of-byds-mc-cube-t-batteries-for-its-central-oasis-platform-in-chile/" },
+    { "date": "2026-03-05", "category": "product-launch", "headline": "2nd-generation Blade Battery unveiled: 10–70% charge in 5 minutes, ~97% in 9 minutes, reported 190–210 Wh/kg", "read": "EV-side cell breakthrough that historically cascades into the storage cell family — chemistry reports conflict (LMFP vs improved LFP), so treat density figures as provisional.", "source": "https://cnevpost.com/2026/03/05/byd-unveils-2nd-gen-blade-battery/" },
+    { "date": "2025-09-18", "category": "product-launch", "headline": "HaoHan platform launched: 14.5 MWh single DC block (world's largest), 2,710 Ah long Blade cell, GC Flux grid-forming PCS", "read": "BYD leapfrogs the 6–8 MWh container race entirely — betting that block size, land efficiency and in-house grid-forming decide the next tender cycle.", "source": "https://www.pv-magazine.com/2025/09/19/byd-unveils-14-5-mwh-storage-system-worlds-largest-yet/" },
+    { "date": "2025-05-22", "category": "order-win", "headline": "3.5 GWh MC Cube-T supply deal for phase 6 of Grenergy's Oasis de Atacama (624 units) — Latin America's largest battery supply deal at signing", "read": "Chile becomes BYD's LatAm showcase: 6.5 GWh cumulative with one developer on an 11 GWh project pipeline.", "source": "https://www.energy-storage.news/byd-signs-3-5gwh-bess-supply-deal-for-grenergys-oasis-de-atacama-project-in-chile/" },
+    { "date": "2025-03-26", "category": "product-launch", "headline": "Chess Plus C&I cabinet launched (233 kWh/125 kW China; 350.1 kWh US version)", "read": "A serious C&I re-entry led by the blade-cell safety story — fire-resistant casing and aerosol suppression aimed at the segment's thermal-incident anxiety.", "source": "https://www.ess-news.com/2025/04/07/byd-launches-new-ci-highly-integrated-battery-storage-solution/" },
+    { "date": "2025-03-17", "category": "product-launch", "headline": "Super e-Platform unveiled: 1,000 V architecture, 10C flash charging at up to 1 MW — 400 km of range in 5 minutes", "read": "Charging-speed leadership as the new EV battleground; the flash-charging station network (with storage buffering) creates captive demand for BYD's own BESS.", "source": "https://www.byd.com/en/news-list/BYD-Unveils-Super-e-Platform-Megawatt-Flash-Charging-Electric-Vehicles-Matching-Refueling-Speeds.html" },
+    { "date": "2025-02-17", "category": "order-win", "headline": "12.5 GWh grid-scale BESS contract with Saudi Electricity Company (5 × 500 MW/2,500 MWh) — world's largest grid-side award at signing", "read": "Anchor reference for MC Cube-T at national-utility scale; lifts cumulative SEC cooperation to 15.1 GWh.", "source": "https://www.pv-magazine.com/2025/02/17/byd-to-supply-12-5-gwh-of-battery-storage-in-saudi-arabia/" }
+  ],
+  "technicalSpecs": [
+    {
+      "product": "HaoHan DC block (September 2025)",
+      "specs": [
+        { "label": "Energy", "value": "14.5 MWh single unit (world's largest DC block); 10 MWh 20-ft variant" },
+        { "label": "Cell", "value": "2,710 Ah long Blade LFP (claimed >300% single-cell capacity gain vs earlier generations)" },
+        { "label": "Cycle life", "value": ">10,000 cycles; lifecycle energy cost claimed below CNY 0.1/kWh (~$0.014/kWh)" },
+        { "label": "Density", "value": "233 kWh/m³ volumetric (claimed +51% vs industry average); 52% volumetric cell-to-system efficiency" },
+        { "label": "Operating range", "value": "−30°C to 55°C" },
+        { "label": "Grid capability", "value": "Millisecond response; GW-scale grid-forming with GC Flux PCS (2.5–10 MW) and GC Master EMS" },
+        { "label": "Cooling / certifications", "value": "Current-version cooling not specified (liquid-cooling integration on the 2026 roadmap); certifications not found" }
+      ],
+      "notes": "Company-reported launch figures (International Digital Energy Expo, Shenzhen, Sep 18, 2025)."
+    },
+    {
+      "product": "MC Cube-T utility container (April 2024)",
+      "specs": [
+        { "label": "Energy", "value": "6.432 MWh per unit; modular ~500 kWh building blocks combined into enclosures up to 6.4+ MWh" },
+        { "label": "Architecture", "value": "CTS (cell-to-system) — first BYD product integrating cells directly into the system, no module layer" },
+        { "label": "Cell", "value": "New-generation long-blade LFP; up to +11% single-cell energy vs prior generation" },
+        { "label": "vs predecessor (MC Cube)", "value": "+35.8% system energy; −24.7% footprint" },
+        { "label": "Compliance", "value": "GB/T 36276" }
+      ],
+      "notes": "Cell Ah and cycle life not disclosed in launch sources. Fleet-proven: SEC Saudi Arabia (12.5 GWh) and Grenergy Chile (9.1 GWh cumulative)."
+    },
+    {
+      "product": "MC Cube-SIB sodium-ion BESS (November 2024)",
+      "specs": [
+        { "label": "Energy", "value": "2.3 MWh per 20-ft container" },
+        { "label": "Voltage", "value": "1,200 V nominal; 800–1,400 V range" },
+        { "label": "Cell", "value": "Long-blade sodium-ion, CTS super-integrated design" },
+        { "label": "Claimed advantages vs LFP", "value": "Higher charge/discharge rates, wider operating temperature range, longer cycle life, higher safety — at much lower energy density" }
+      ],
+      "notes": "Claimed world's first high-performance sodium-ion BESS; specific cycle-life and rate figures not published."
+    },
+    {
+      "product": "Chess Plus C&I cabinet (March 2025)",
+      "specs": [
+        { "label": "Energy / power", "value": "China: 233 kWh / 125 kW at 729.6 V nominal; US: 350.1 kWh; systems 125 kW–1 MW" },
+        { "label": "Cell", "value": "320 Ah thick-blade LFP with ceramic terminals; >10,000 cycles" },
+        { "label": "Efficiency", "value": "System efficiency ≥90%" },
+        { "label": "Integration", "value": "BMS + distributed management control (DMC) + EMCU + EMS + AC unit in one cabinet; AI-driven O&M" },
+        { "label": "Cooling", "value": "Dual-mode — liquid for batteries, smart forced-air for power electronics (−20% auxiliary consumption); US version uses separate smart HVAC" },
+        { "label": "Safety / environment", "value": "2-hour fire-resistant casing, built-in aerosol suppression, IP55, 8.0-magnitude seismic rating; validated −25°C to 55°C and 260% overcharge testing" }
+      ],
+      "notes": "China version includes an internal fire-protection host; European variant under evaluation at launch."
+    },
+    {
+      "product": "Blade cell family (FinDreams Battery)",
+      "specs": [
+        { "label": "EV Blade 1.0 (2020)", "value": "LFP, 960 × 90 × 13.5 mm laminated cell; ~140 Wh/kg at launch, ~150 Wh/kg current; cell-to-pack (CTP) — >50% space saving vs module packs" },
+        { "label": "EV Blade 2.0 (March 2026)", "value": "10–70% charge in 5 min, ~97% in 9 min; reported 190–210 Wh/kg; extreme-cold charge time within ~3 min of room temperature" },
+        { "label": "Storage thick blade", "value": "320 Ah LFP, ceramic terminals, >10,000 cycles (C&I products)" },
+        { "label": "Storage long blade", "value": "2,710 Ah LFP (HaoHan) — roughly 3× conventional storage-cell capacity" },
+        { "label": "Merchant supply", "value": "LFP storage cells to Tesla Shanghai Megafactory from Q1 2025 (reportedly >20% of Megapack cell orders; CATL remains primary)" }
+      ],
+      "notes": "Blade 2.0 chemistry is reported inconsistently across sources (improved LFP vs lithium manganese iron phosphate) — density figures provisional. Benchmark: #4 global ESS cell shipper 2025 (~60 GWh, ~10%)."
+    },
+    {
+      "product": "Super e-Platform + flash charging (March 2025)",
+      "specs": [
+        { "label": "Architecture", "value": "Full-domain 1,000 V high-voltage platform (first mass-produced); debuted on Han L and Tang L" },
+        { "label": "Charging", "value": "10C rate, up to 1,000 A / 1 MW (1,000 kW) peak — 400 km of range in 5 minutes; peak ~2 km of range per second" },
+        { "label": "Drive", "value": "Single-motor module up to 580 kW; dual-motor Han L 0–100 km/h in 2.7 s" },
+        { "label": "Infrastructure", "value": "Liquid-cooled megawatt flash-charging terminals up to 1,360 kW; thousands of flash-charging stations planned across China" }
+      ],
+      "notes": "EV-side context: demonstrates the 1,000 V power-electronics and high-C-rate cell capability adjacent to the storage business; flash-charging stations use storage buffering to protect the grid."
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Wang Chuanfu (王传福)",
+      "title": "Founder, Chairman & President (since 1995)",
+      "background": [
+        "Chemist by training — former government battery researcher",
+        "BS metallurgical physical chemistry, Central South University (1987); MS, Beijing General Research Institute of Non-Ferrous Metals (1990)"
+      ]
+    },
+    {
+      "name": "Stella Li (李柯)",
+      "title": "Executive Vice President; CEO of BYD Americas",
+      "background": [
+        "Joined BYD 1996 from Global Sources; built the overseas network (Hong Kong 1997, Rotterdam 1999, Los Angeles 2011)",
+        "BS Statistics, Fudan University (1992); World Car Person of the Year 2025"
+      ]
+    },
+    {
+      "name": "Zhou Yalin (周亚琳)",
+      "title": "Senior VP & CFO (Chief Accountant 2014, CFO 2019, SVP 2021)",
+      "background": [
+        "Joined BYD 1999; economics, Jiangxi University of Finance and Economics; also CFO of BYD Electronic",
+        "2025 pay of RMB 10.1M made her the first A-share CFO above RMB 10M"
+      ]
+    },
+    {
+      "name": "Yin Xueqin (尹雪芹)",
+      "title": "General Manager, Energy Storage & New-type Battery Business Division (since August 2025)",
+      "background": [
+        "Previously director of BYD's Electric Power Science Research Institute",
+        "Lead drafter of ESS battery-management industry standards; member of China's power-storage standardization committee SC/TC550"
+      ]
+    },
+    {
+      "name": "Yin Xiaoqiang (尹小强)",
+      "title": "Predecessor GM of the storage division (2022–Aug 2025)",
+      "background": ["Under his tenure BYD storage reached global top-2; joined BYD 2000 as a lab technician, later Qinghai regional GM; subsequent role not disclosed"]
+    },
+    {
+      "name": "He Long (何龙)",
+      "title": "BYD Vice President; Chairman of FinDreams Battery (est. May 2019)",
+      "background": ["Legal representative of the cell subsidiary supplying Blade storage cells; co-presented the 2020 Blade Battery launch with Wang Chuanfu"]
+    }
+  ],
+  "financials": {
+    "currency": "CNY (RMB)",
+    "type": "public",
+    "periods": [
+      {
+        "period": "FY2024",
+        "metrics": [
+          { "name": "Revenue", "actual": "RMB 777.1B (+29%)", "expected": "", "verdict": "inline", "result": "No consensus comparison found" },
+          { "name": "Net profit (attributable)", "actual": "RMB 40.25B (+34%); gross margin 19.4%", "expected": "", "verdict": "inline", "result": "—" },
+          { "name": "Vehicles / storage", "actual": "4.27M vehicles sold; ESS GWh figure for the year not separately disclosed (global #3 cell rank)", "expected": "", "verdict": "inline", "result": "—" }
+        ],
+        "commentary": ""
+      },
+      {
+        "period": "FY2025 (reported March 2026)",
+        "metrics": [
+          { "name": "Revenue", "actual": "RMB 803.97B (+3.5%)", "expected": "RMB 836.26B (consensus)", "verdict": "miss", "result": "Below consensus" },
+          { "name": "Net profit (attributable)", "actual": "RMB 32.62B (-19% — first annual decline in four years); gross margin 17.7%", "expected": "RMB 35.65B (Bloomberg consensus)", "verdict": "miss", "result": "The 'knockout-stage' China EV price war crushed auto margins even as storage boomed" },
+          { "name": "Storage shipments", "actual": "~60 GWh of storage systems (2025, Benchmark estimate) — world #1 integrator by that count; no standalone ESS revenue disclosed (folded into automobiles & related products, RMB 648.65B)", "expected": "", "verdict": "inline", "result": "—" }
+        ],
+        "commentary": "NEV sales 4,602,436 (+7.7%); exports 1.05M (+140%); R&D RMB 63.4B (+17%); proposed final dividend RMB 0.358/share."
+      },
+      {
+        "period": "Q1 2026 (reported April 2026; H1 2026 due late August)",
+        "metrics": [
+          { "name": "Revenue", "actual": "RMB 150.23B (-11.8%)", "expected": "", "verdict": "miss", "result": "Slow-season China demand; vehicle sales ~700k (-30%)" },
+          { "name": "Net profit", "actual": "RMB 4.08B (-55.4%), hit by ~RMB 1.2B FX losses and impairments; gross margin 18.8%", "expected": "", "verdict": "miss", "result": "Goldman Sachs reportedly called underlying EBIT a beat on overseas mix (~46% of volume)" }
+        ],
+        "commentary": "H1 2026 monthly data show NEV sales ~1.81M (-15.7%) with overseas +70.7% — the overseas pivot is the offset to domestic price-war pressure."
+      }
+    ],
+    "commentary": "Group figures company-reported; consensus numbers are Bloomberg/press estimates. BYD does not disclose standalone energy-storage revenue — storage sits inside the automobiles & related products segment, so shipment GWh (third-party estimates) is the best storage KPI."
+  },
+  "sources": [
+    { "label": "BYD Energy Storage — Masdar 11.275 GWh RTC contract announcement (first-party)", "url": "https://www.bydenergy.com/en/news/20260709", "accessed": "2026-08-08" },
+    { "label": "BYD Energy Storage — MC Cube-T BESS product page (first-party)", "url": "https://www.bydenergy.com/en/productDetails/Utility-Scale/MC_Cube-T_BESS", "accessed": "2026-08-08" },
+    { "label": "BYD — Super e-Platform megawatt flash charging release (first-party)", "url": "https://www.byd.com/en/news-list/BYD-Unveils-Super-e-Platform-Megawatt-Flash-Charging-Electric-Vehicles-Matching-Refueling-Speeds.html", "accessed": "2026-08-08" },
+    { "label": "BYD — 2nd Generation Blade Battery and FLASH charging release (first-party)", "url": "https://www.byd.com/za/news-list/byd-unveils-2nd-generation-blade-battery-and-flash-charging-technologyw", "accessed": "2026-08-08" },
+    { "label": "BYD Battery-Box Premium HVS/HVM datasheet (first-party)", "url": "https://bydbatterybox.com/uploads/downloads/BYD%20Battery-Box%20Premium_Datasheet_HV-AU%20V1.2%20EN-5eec6422498ad.pdf", "accessed": "2026-08-08" },
+    { "label": "Energy-Storage.News — 2025 BESS shipments: BYD takes the crown (Benchmark)", "url": "https://www.energy-storage.news/2025-bess-cell-and-system-shipments-byd-takes-bess-crown-no-korean-firms-in-top-10-cell-suppliers/", "accessed": "2026-08-07" },
+    { "label": "ESS News — InfoLink global ESS shipments (Dec 2025)", "url": "https://www.ess-news.com/2025/12/05/global-ess-shipments-hit-286-gwh-as-tesla-and-chinese-heavyweights-out-front-infolink-says/", "accessed": "2026-08-07" },
+    { "label": "SMM — 2024 ESS cell shipment rankings", "url": "https://news.metal.com/newscontent/103174804-2024-energy-storage-battery-cell-shipment-rankings", "accessed": "2026-08-07" },
+    { "label": "Fastmarkets — 2023 Chinese ESS battery shipments", "url": "https://www.fastmarkets.com/insights/chinese-shipments-of-energy-storage-batteries-outpace-growth-in-ev-batteries/", "accessed": "2026-08-07" },
+    { "label": "pv magazine — 12.5 GWh Saudi Electricity Company deal (Feb 2025)", "url": "https://www.pv-magazine.com/2025/02/17/byd-to-supply-12-5-gwh-of-battery-storage-in-saudi-arabia/", "accessed": "2026-08-07" },
+    { "label": "Electrek — 11.3 GWh Masdar Abu Dhabi HaoHan deal (Jul 2026)", "url": "https://electrek.co/2026/07/10/byd-masdar-11-gwh-rtc-storage-abu-dhabi/", "accessed": "2026-08-07" },
+    { "label": "ESS News — Masdar RTC 11.275 GWh HaoHan supply detail (Jul 2026)", "url": "https://www.ess-news.com/2026/07/13/byd-to-supply-11-275-gwh-for-masdars-abu-dhabi-rtc-project/", "accessed": "2026-08-08" },
+    { "label": "ESS News — HaoHan 14.5 MWh DC block unveiling (Sep 2025)", "url": "https://www.ess-news.com/2025/09/19/byd-unveils-worlds-largest-14-5-mwh-dc-energy-storage-system/", "accessed": "2026-08-07" },
+    { "label": "pv magazine — HaoHan 14.5 MWh: specs incl. 233 kWh/m³, 2,710 Ah cell (Sep 2025)", "url": "https://www.pv-magazine.com/2025/09/19/byd-unveils-14-5-mwh-storage-system-worlds-largest-yet/", "accessed": "2026-08-08" },
+    { "label": "CnEVPost — MC Cube-T launch (Apr 2024)", "url": "https://cnevpost.com/2024/04/11/byd-launches-energy-storage-mc-cube-t/", "accessed": "2026-08-07" },
+    { "label": "GlobeNewswire — Chess Plus C&I launch (Mar 2025)", "url": "https://www.globenewswire.com/news-release/2025/03/30/3051898/0/en/BYD-Energy-Storage-Launches-Chess-Plus-for-C-I-Energy-Storage-in-China.html", "accessed": "2026-08-07" },
+    { "label": "pv magazine — Chess Plus specs: 729.6 V, 350.1 kWh US version (Apr 2025)", "url": "https://www.pv-magazine.com/2025/04/07/byd-launches-new-ci-highly-integrated-battery-storage-solution/", "accessed": "2026-08-08" },
+    { "label": "Energy-Storage.News — MC Cube-SIB sodium-ion BESS launch (Nov 2024)", "url": "https://www.energy-storage.news/byd-launches-sodium-ion-grid-scale-bess-product/", "accessed": "2026-08-08" },
+    { "label": "Energy-Storage.News — Grenergy 3.5 GWh Oasis de Atacama phase 6 deal (May 2025)", "url": "https://www.energy-storage.news/byd-signs-3-5gwh-bess-supply-deal-for-grenergys-oasis-de-atacama-project-in-chile/", "accessed": "2026-08-08" },
+    { "label": "ESS News — Grenergy 2.6 GWh MC Cube-T for Central Oasis (Mar 2026)", "url": "https://www.ess-news.com/2026/03/30/grenergy-locks-in-2-6-gwh-of-byds-mc-cube-t-batteries-for-its-central-oasis-platform-in-chile/", "accessed": "2026-08-08" },
+    { "label": "ESS News — BYD plans $98M BESS production line in Brazil (Jun 2026)", "url": "https://www.ess-news.com/2026/06/22/byd-plans-98-million-bess-production-line-in-brazil/", "accessed": "2026-08-08" },
+    { "label": "Electrek — BYD surpasses Tesla as top BESS deployer, Benchmark 2025 ranking (May 2026)", "url": "https://electrek.co/2026/05/13/byd-surpasses-tesla-energy-storage-bess-benchmark-2025/", "accessed": "2026-08-08" },
+    { "label": "CnEVPost — FinDreams to supply cells to Tesla Shanghai Megafactory (Jun 2024; supply from Q1 2025)", "url": "https://cnevpost.com/2024/06/05/byd-findreams-to-supply-battery-cells-to-tesla-megafactory/", "accessed": "2026-08-08" },
+    { "label": "Battery Design — BYD Blade cell teardown (960×90×13.5 mm, LFP)", "url": "https://www.batterydesign.net/byd-blade/", "accessed": "2026-08-08" },
+    { "label": "CnEVPost — 2nd-gen Blade Battery unveiling (Mar 2026)", "url": "https://cnevpost.com/2026/03/05/byd-unveils-2nd-gen-blade-battery/", "accessed": "2026-08-08" },
+    { "label": "electrive — 2nd-gen Blade Battery: 10–97% in nine minutes (Mar 2026)", "url": "https://www.electrive.com/2026/03/05/10-97-in-nine-minutes-byd-presents-second-generation-of-blade-battery/", "accessed": "2026-08-08" },
+    { "label": "CnEVPost — e-Platform 3.0 Evo launch (May 2024)", "url": "https://cnevpost.com/2024/05/10/byd-launches-e-platform-3-evo-sea-lion-07-ev/", "accessed": "2026-08-08" },
+    { "label": "CnEVPost — 5th-gen DM hybrid launch: 46.06% thermal efficiency, 2,100 km (May 2024)", "url": "https://cnevpost.com/2024/05/28/byd-launches-5th-gen-dm-tech/", "accessed": "2026-08-08" },
+    { "label": "paultan.org — Super e-Platform 1000V technical details (Mar 2025)", "url": "https://paultan.org/2025/03/19/byd-reveals-1000v-super-e-platform/", "accessed": "2026-08-08" },
+    { "label": "VP Solar — Battery-Box Premium HVS/HVM capacities & inverter compatibility", "url": "https://www.vpsolar.com/en/product/byd-battery-box-premium-hvs-hvm/", "accessed": "2026-08-08" },
+    { "label": "CnEVPost — FY2025 results: profit -19% on price war (Mar 2026)", "url": "https://cnevpost.com/2026/03/27/byd-2025-full-year-results/", "accessed": "2026-08-07" },
+    { "label": "CnEVPost — Q1 2026 profit -55% (Apr 2026)", "url": "https://cnevpost.com/2026/04/28/byd-reports-drop-in-q1-2026-net-profit/", "accessed": "2026-08-07" },
+    { "label": "Eastmoney — storage leadership change: Yin Xueqin succeeds Yin Xiaoqiang (Aug 2025)", "url": "https://caifuhao.eastmoney.com/news/20250816221834817024760", "accessed": "2026-08-07" }
+  ],
+  "lastUpdated": "2026-08-08",
+  "profileVersion": 2
+}

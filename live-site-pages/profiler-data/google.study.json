@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "google",
+  "title": "Google — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Systolic arrays: a chip shaped like the math",
+      "bullets": [
+        "Nearly all neural-network compute reduces to matrix multiplication — huge grids of numbers multiplied and summed — so a chip that does only that, extremely well, can beat a general-purpose processor on the one workload that matters",
+        "A systolic array is that design: a grid of thousands of tiny multiply-accumulate units where data pulses neighbor-to-neighbor like blood through a heart (hence 'systolic') — each value is fetched from memory once and reused across the whole grid",
+        "The reuse is the win: on modern chips, moving data costs far more energy than doing arithmetic on it — so an architecture that minimizes memory traffic delivers more useful math per watt than one that shuttles values in and out constantly",
+        "A tensor processing unit (TPU) packages a systolic array as a deployable accelerator; the trade is generality — brilliant at dense matrix math, dependent on a compiler to map models onto it, and unhelpful for work that is not matrix-shaped"
+      ]
+    },
+    {
+      "heading": "Hourly matching: the honest version of '100% renewable'",
+      "bullets": [
+        "Annual matching — the standard corporate claim — buys enough clean energy over a year to equal total consumption; it says nothing about timing, so a company can be 'matched' on paper while running on gas-heavy grid power every night",
+        "24/7 carbon-free energy (CFE) accounting matches every hour on the local grid instead: for each hour of consumption, was a contracted carbon-free megawatt-hour generated on the same grid at the same time? The score is the percentage of hours covered",
+        "The last percentage points are brutally expensive: solar and wind cover sunny and windy hours cheaply, but closing dark calm weeks requires storage, geothermal, nuclear, or shifting the workload — the marginal hour costs many times the average hour",
+        "The accounting choice drives the shopping list: an annual matcher buys the cheapest renewables anywhere on earth; an hourly matcher must buy specific technologies on specific grids — which is why hourly commitments create markets for storage and clean-firm power"
+      ]
+    },
+    {
+      "heading": "Subsea cables and private backbones: owning the internet's plumbing",
+      "bullets": [
+        "A subsea cable is a fiber bundle about the width of a garden hose carrying much of the world's intercontinental traffic; light dims over distance, so repeaters — amplifiers powered by thousands of volts fed down the cable itself — sit every 60-80 km",
+        "Capacity economics favor the owner: one modern cable carries hundreds of terabits per second across multiple fiber pairs, and owning fiber converts a permanent transit bill into a controlled asset with decades of spare capacity to grow into",
+        "A private backbone means traffic between a company's data centers rides its own fiber rather than the public internet — deterministic latency and guaranteed capacity, which multi-region computing and distributed AI training quietly depend on",
+        "Landing points are the strategic chokepoints: cables must come ashore at permitted landing stations, so resilience comes from route diversity — many cables on many paths turning individually fragile threads into a global network that survives any single cut"
+      ]
+    },
+    {
+      "heading": "Running liquid cooling as a fleet, not a project",
+      "bullets": [
+        "Water can carry roughly 4,000x more heat than the same volume of air, so chips past a power threshold get cold plates plumbed with coolant — the physics is the easy part; operating thousands of liquid loops for years is the hard part",
+        "The operator's discipline: coolant chemistry drifts, fittings weep, pumps wear — so a fleet operator standardizes one loop design, watches temperature, pressure, and flow telemetry continuously, and rehearses leak response the way airlines rehearse engine-out",
+        "Serviceability is designed in, not bolted on: quick-disconnect fittings, per-rack isolation valves, and redundant coolant distribution let one machine be swapped without draining a row — the difference between a lab demo and a fleet product",
+        "The pioneer's advantage compounds: an operator that liquid-cooled its accelerators years before the industry was forced to holds a decade of failure data — and at fleet scale, failure data rather than raw cooling capacity is what determines uptime"
+      ]
+    },
+    {
+      "heading": "Clean firm power: geothermal and the next procurement frontier",
+      "bullets": [
+        "'Clean firm' means carbon-free power available on demand at any hour — the category solar and wind cannot fill alone — and it is the scarcest, most valuable input in any hourly-matching energy strategy",
+        "Enhanced geothermal systems (EGS) manufacture the resource instead of hunting it: drillers borrow horizontal-drilling and fracturing techniques from shale oil to crack hot dry rock, circulate water through the fractures, and harvest heat almost anywhere",
+        "The learning-curve logic transfers with the drill rigs: wells are a repetitive manufactured product that gets cheaper with each repetition — unlike one-off giant plants — so early commercial contracts directly fund the repetitions that pull costs down",
+        "A first-of-a-kind offtake is a market signal as much as a power deal: a creditworthy buyer signing for a new technology's output hands the developer bankable revenue — the same role early purchase contracts played in making wind and solar mainstream"
+      ]
+    },
+    {
+      "heading": "The auction that pays for everything",
+      "bullets": [
+        "Search advertising runs on auctions: advertisers bid for placement against each query and the winner pays only when clicked — millions of micro-markets priced simultaneously, with no salesperson touching the transaction",
+        "The auction is quality-weighted: rank depends on the bid multiplied by predicted usefulness (will anyone actually click this?), so relevance is profitable by design — better prediction models translate directly into revenue per search",
+        "The margin structure is extraordinary because the inventory is nearly free: serving one more search costs fractions of a cent against auction-set prices — and that surplus is the cash engine that funds moonshot-scale infrastructure",
+        "The open strategic question is self-cannibalization: an AI that answers directly creates fewer clickable moments than ten blue links — the incumbent's bet is that answers grow total queries and open new ad surfaces faster than they erode the old ones"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "What is a systolic array?",
+      "a": "A grid of thousands of tiny multiply-accumulate units where data pulses neighbor-to-neighbor — like blood through a heart. Each value is fetched from memory once and reused across the grid, making it extremely efficient at the matrix multiplication that dominates neural networks."
+    },
+    {
+      "q": "Why does minimizing data movement matter more than adding arithmetic units?",
+      "a": "On modern chips, moving a number costs far more energy than multiplying it. An architecture that keeps data flowing between neighboring compute units instead of shuttling it to and from memory delivers more useful math per watt — the metric AI infrastructure actually runs on."
+    },
+    {
+      "q": "What does a TPU give up in exchange for its efficiency?",
+      "a": "Generality. A tensor processing unit is brilliant at dense matrix math but depends on a compiler to map models onto its rigid structure, and it is unhelpful for workloads that aren't matrix-shaped. A GPU runs almost anything; the specialized chip runs one thing superbly."
+    },
+    {
+      "q": "What's the difference between annual matching and 24/7 hourly matching of clean energy?",
+      "a": "Annual matching buys clean energy equal to a year's total consumption, ignoring timing — you can be 'matched' while burning gas power all night. Hourly matching requires a carbon-free megawatt-hour on the same grid in the same hour as consumption, scored as a percentage of hours covered."
+    },
+    {
+      "q": "Why are the last percentage points of hourly carbon-free energy so expensive?",
+      "a": "Solar and wind cover the easy hours cheaply, but dark, calm stretches need storage, geothermal, nuclear, or shifting the load itself. The marginal hour costs many times the average hour — which is exactly why hourly-matching commitments create demand for storage and clean-firm power."
+    },
+    {
+      "q": "How does a subsea cable carry signals across an entire ocean?",
+      "a": "Light dims with distance, so repeaters — amplifiers spliced into the cable every 60-80 km — boost the signal, powered by thousands of volts fed down the cable itself from the shore. One modern cable carries hundreds of terabits per second over multiple fiber pairs."
+    },
+    {
+      "q": "What is a private backbone and why do hyperscalers build them?",
+      "a": "It's company-owned fiber carrying traffic between data centers instead of the public internet. The owner gets deterministic latency and guaranteed capacity — properties that multi-region services and distributed AI training depend on — and converts a permanent transit bill into an owned asset."
+    },
+    {
+      "q": "If liquid cooling physics is easy, what's the hard part at fleet scale?",
+      "a": "Operations over years: coolant chemistry drifts, fittings weep, pumps wear. Fleet operators standardize one loop design, monitor temperature, pressure, and flow continuously, and design for serviceability — quick-disconnects and isolation valves so one machine swaps without draining a row. Accumulated failure data is what actually protects uptime."
+    },
+    {
+      "q": "What does 'clean firm' power mean?",
+      "a": "Carbon-free electricity available on demand at any hour — nuclear, geothermal, and long-duration-backed resources — as opposed to weather-dependent solar and wind. It's the scarcest input in an hourly-matching strategy because it covers the hours renewables can't."
+    },
+    {
+      "q": "How do enhanced geothermal systems (EGS) differ from conventional geothermal?",
+      "a": "Conventional geothermal hunts rare natural steam reservoirs. EGS manufactures the reservoir: horizontal drilling and fracturing techniques from shale oil crack hot dry rock, water circulates through the fractures, and heat comes back up — making geothermal viable almost anywhere. Because wells are repetitive products, costs fall with each one drilled."
+    },
+    {
+      "q": "How does a quality-weighted ad auction make relevance profitable?",
+      "a": "Placement is ranked by bid multiplied by predicted click likelihood, and the advertiser pays only on a click. Showing useless ads earns nothing regardless of bid — so better prediction models increase revenue per search directly, aligning the money with the user experience."
+    },
+    {
+      "q": "What is the self-cannibalization question hanging over AI in search?",
+      "a": "An AI that answers directly creates fewer clickable ad moments than a page of links, threatening the auction revenue that funds everything. The counter-bet: answers grow total question volume and create new advertising surfaces faster than they erode the old ones. The outcome is genuinely undecided."
+    }
+  ]
+}

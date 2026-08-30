@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "slug": "switch",
+  "title": "Switch — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Retail plus wholesale colocation on one campus",
+      "bullets": [
+        "Retail colocation rents cabinets and cages to many customers; wholesale leases whole halls or buildings to a few giants. Most operators pick a lane — Switch runs both on the same campuses, which is why its securitized pool shows 550+ customers while its AI halls host single hyperscale tenants",
+        "A mixed tenant base changes the risk math: hundreds of sticky enterprise contracts smooth revenue, while a handful of AI leases drive growth — rating agencies price the blend (~84% of Switch trust revenue is from investment-grade tenants)",
+        "The 'operator-landlord' model: the landlord owns land, shell, power and cooling and staffs operations 24/7; tenants own the IT gear. Rent is typically take-or-pay on reserved capacity — contractual cash flow that can be financed like infrastructure",
+        "Campus-scale matters because power, security, staff and fiber amortize over more megawatts — one reason operators brand giant single-market 'campuses' instead of scattering small sites"
+      ]
+    },
+    {
+      "heading": "Availability ratings: Uptime Tiers I-IV — and what a self-declared 'Tier 5' is",
+      "bullets": [
+        "The Uptime Institute's Tier system is the industry's availability ladder: Tier I (basic), Tier II (redundant components), Tier III (concurrently maintainable — any part serviceable without downtime), Tier IV (fault-tolerant — survives any single equipment failure, ~96-hour on-site power ride-through expectation)",
+        "'Tier 5 Platinum' is Switch's own standard, not an Uptime rating — no third party audits or certifies it. Honest reading: it is a marketing-plus-engineering superset that bundles real design choices (100-hour standby power vs Tier IV's 12-hour benchmark as Switch frames it, zero roof penetrations, indefinite waterless cooling, 10 on-net carriers, per-rack security) with brand control",
+        "Why operators self-declare: certification constrains design and hands the brand to the certifier. Why buyers should still ask questions: a self-declared standard can change definitions, and no independent body verifies compliance",
+        "The useful skill: translate any vendor tier claim back into the four questions that matter — can it ride through grid loss (how long?), can every component be maintained live, what breaks concurrently, and who verified it"
+      ]
+    },
+    {
+      "heading": "Heat containment: hot aisles, T-SCIF and keeping water out of the hall",
+      "bullets": [
+        "Basic physics: servers pull in cool air and exhaust hot air. If hot exhaust mixes back into intakes, chillers work overtime — so modern halls separate the streams. Hot-aisle containment walls off the exhaust side and ducts it away; cold air floods the room",
+        "Switch's patented T-SCIF (Thermal Separate Compartment in Facility) is containment taken to its logical end: racks sit in enclosed thermal rows where 100% of exhaust is captured into an overhead hot plenum and returned to cooling units — the IT floor never sees mixed air",
+        "Its multi-mode exterior cooling units (TSC series) sit outside the building shell and switch between cooling methods (direct evaporative, indirect, DX refrigeration) as weather changes — desert-optimized, and it keeps all cooling water outside the data hall, which is both a leak-risk and a security argument",
+        "Same idea, new scale: the EVO 'chamber' encloses AI racks in their own environment with five separate liquid loops at independent pressures/temperatures — containment logic applied to liquid cooling, designed for racks that air physically cannot cool"
+      ]
+    },
+    {
+      "heading": "The density ladder: why 20kW racks became 2MW design targets",
+      "bullets": [
+        "An enterprise rack draws 5-15kW and air cooling suffices. GPU training racks (NVIDIA GB200/GB300 NVL72 class) draw ~130-150kW — beyond air's practical limit, so coolant must touch the chips via cold plates fed from coolant distribution units (CDUs)",
+        "Vendors now design for what's next, not what ships: Switch's EVO rating of 'up to 2MW per rack' anticipates late-decade rack-scale systems. Design ratings are ceilings, not deployed reality — a key skill is distinguishing 'rated for' from 'operating at'",
+        "Why density keeps climbing: AI training profits from shorter copper interconnects — packing more compute per rack cuts network latency and cost, so the industry consolidates whole rows into single mega-racks",
+        "Hybrid cooling is the transition state: liquid-to-chip for the silicon plus air handling for everything else (power supplies, storage, people). A hall that can serve any mix future-proofs the landlord against tenant hardware churn",
+        "A digital-twin 'facility operating system' (Switch's LDC EVO on NVIDIA Omniverse) simulates thermal and electrical behavior before hardware lands — at 2MW per rack, commissioning by trial-and-error is no longer survivable"
+      ]
+    },
+    {
+      "heading": "100% renewable: what the claim mechanically means",
+      "bullets": [
+        "Three procurement tools: (1) PPAs — long-term contracts to buy a specific plant's output, which can finance new construction ('additionality'); (2) RECs — certificates representing 1MWh of renewable generation bought separately from the power itself; (3) utility green tariffs — the utility bundles renewable supply into your rate",
+        "'100% renewable since 2016' claims (Switch's, and most of the industry's) are annual-matching claims: total renewable MWh bought ≥ total MWh consumed over a year. The electrons at 3am are still whatever the grid is burning — which is why 24/7 hourly matching is the emerging gold standard",
+        "Additionality is the quality test: buying RECs from a 20-year-old hydro dam changes nothing; contracting a new-build plant adds clean supply. Switch's own Tier 5 standard requires renewables from 'new local projects' — the stronger form of the claim",
+        "Firm vs variable renewables: solar and wind are cheap but intermittent; geothermal runs 24/7. A 20-year, 13MW geothermal PPA is small in MW but strategically different in kind — it buys always-on carbon-free supply that matches a data center's flat load"
+      ]
+    },
+    {
+      "heading": "Campus-scale power procurement: queues, LCs and paying your own way",
+      "bullets": [
+        "Getting hundreds of new megawatts means the utility must build substations and transmission first — and interconnection queues for large loads run years. The scarce asset in this industry is approved megawatts with a delivery date, not land",
+        "Utilities demand performance assurance before building: if the data center walks away, ratepayers would eat the stranded infrastructure. Letters of credit (a bank's promise to pay if the customer defaults) are how developers collateralize those promises — Switch raised a first-of-kind $2.6B (later $3.5B) syndicated LC facility precisely for this",
+        "The ratepayer-politics layer: when data centers strain grids, household bills rise and backlash follows (state audits, moratoria, referenda). The industry's pre-emptive answer is 'pay your own way' — developer-funded infrastructure, dedicated rate classes, self-supplied water — now formalized in state-level standards like Texas's",
+        "Nevada context: Switch's home grid (NV Energy) sits outside the big organized markets like ERCOT and PJM — a vertically integrated utility state where large customers negotiate special contracts and can even pay exit fees to buy power on the open market, something Switch historically fought for"
+      ]
+    },
+    {
+      "heading": "Nuclear offtake: what a 12GW 'master power agreement' actually commits",
+      "bullets": [
+        "Small modular / advanced reactors (like Oklo's Aurora, ~15MW-class fast reactors initially) promise factory-built, siteable, always-on carbon-free power — exactly the load profile data centers want — but none of the new designs are operating commercially yet; the first Aurora is targeted for late 2027 at Idaho National Laboratory",
+        "A master power agreement is a framework, not a purchase: it sets terms under which many individual, binding PPAs may be signed as projects hit milestones. '12GW through 2044' means an option book that could become hundreds of reactor deployments — or far fewer if licensing, cost or schedule slips",
+        "Why sign non-binding gigawatts? The buyer gets queue position and price framing on future firm power at near-zero cost today; the reactor startup gets order-book credibility for fundraising and regulators. Read announcements of this species as strategic options, not supply",
+        "The licensing gate: US reactors need NRC approval (combined license applications, multi-year reviews). Any nuclear-powered-data-center timeline is bounded by the regulator, not the construction crew",
+        "Scale check: 12GW is roughly ten large nuclear units' worth of capacity — several times Switch's entire announced campus pipeline — which itself signals the agreement is about long-run optionality across decades"
+      ]
+    },
+    {
+      "heading": "Water: zero-water cooling and 'net positive' claims",
+      "bullets": [
+        "Traditional evaporative cooling trades water for electricity: evaporating water removes heat cheaply but consumes millions of gallons. Closed-loop designs circulate the same fluid forever and reject heat through air-cooled equipment — near-zero water at somewhat higher power draw",
+        "Desert operators lead on waterless design out of necessity: community water objections can kill permits faster than power constraints in NV/AZ. Switch markets zero-water cooling for servers and GPUs plus recycled-effluent pipeline projects in host communities",
+        "'Net positive water' means funding restoration/reuse projects that return more water to the basin than operations consume — a design-plus-offset structure (Switch's stated goal: replenish up to 2x its use over the coming decade)",
+        "The metric: WUE (liters of water per kWh of IT energy). Near-zero WUE via closed loops is the emerging expectation for AI-scale campuses; when evaluating claims, ask whether the figure covers the power plant's water too (source WUE) or just the site"
+      ]
+    },
+    {
+      "heading": "Financing the machine: ABS, CMBS and the private-to-public round trip",
+      "bullets": [
+        "Data-center securitization pools lease cash flows from stabilized, tenant-filled buildings into rated notes: ABS (master-trust structures secured by the tenant leases and assets, expandable with new series) vs CMBS (mortgage bonds against specific properties — Switch's $2.4B deal was 'single-asset single-borrower'). Both let a private company borrow at investment-grade-like pricing without public equity",
+        "Tranching splits one cash-flow pool by seniority: AAA seniors get paid first at low yield; BBB/BB juniors absorb losses first for higher yield. Green-bond designation (verified use of proceeds for sustainable assets) widens the buyer base",
+        "The take-private playbook in one line: buy with bank debt ($11B, 2022) → refinance the expensive acquisition debt with securitizations as assets stabilize (retired 100% by mid-2025) → shift issuance to funding new construction → relist at an AI-cycle multiple (reported $40-80B range) — the securitization market effectively financed the equity markup",
+        "Why the trust disclosures matter to an analyst: a private company reveals nothing quarterly, but every rated ABS forces disclosure of collateral (buildings, MW, customer counts, credit mix) — read the rating reports as a proxy income statement"
+      ]
+    },
+    {
+      "heading": "The patent-moat strategy vs the land-bank strategy",
+      "bullets": [
+        "Two ways to defend a data-center franchise: control scarce inputs (land + interconnection queues — the Vantage/QTS model) or control design IP and brand (patents + proprietary standards — the Switch model). Most operators blend both; Switch is the extreme IP case with 950+ issued and pending patent claims held around its founder's designs",
+        "Founder-designer concentration cuts both ways: coherent product vision and fast iteration (one authority signs off), but key-person risk that public-market investors will price — the S-1 risk-factors section for a founder-designed platform is worth reading closely",
+        "Patents in this industry protect containment structures, cooling units, power distribution ('POWER SPINE') and roof systems ('Switch SHIELD') — mechanical/architectural IP with long lives, unlike fast-cycling IT hardware",
+        "The test of a design moat is external validation: world-first NVIDIA GB200/GB300 bring-ups landing in Switch halls (via CoreWeave/Dell) is the strongest public evidence its density designs work at the frontier — stronger than any self-published spec"
+      ]
+    },
+    {
+      "heading": "The competitive map: where Switch sits",
+      "bullets": [
+        "Wholesale pure-plays (Vantage, Aligned, STACK, CloudHQ, QTS): compete on giga-scale build-to-suit and time-to-power; Vantage is even a DigitalBridge sibling — same sponsor, different product philosophy (standardized blueprint at scale vs patented density flagship)",
+        "Retail/interconnection REITs (Equinix, Digital Realty): public giants whose moat is network ecosystems and global reach; Switch counters with campus power depth, Tier 5 branding and the telecom cooperative, not network density",
+        "Energy-first entrants (Crusoe; miner-pivots like Applied Digital, TeraWulf, Core Scientific): bring power positions and speed, but thin operating track records with enterprise tenants — Switch's 26-year uptime story and IG-heavy tenant base is the counter-pitch",
+        "Neoclouds (CoreWeave, Lambda) are tenants more than rivals — they rent the halls and buy the GPUs; landlords hosting their flagship deployments convert that into marketing",
+        "Switch's distinctive bundle: self-authored standard + patent estate + retail-and-wholesale mix + AI-factory product + renewable-since-2016 record — no single peer holds all five; the open question is whether that bundle scales as fast as the land-bank giants build"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "Uptime Tier III vs Tier IV — what capability separates them?",
+      "a": "Tier III is concurrently maintainable: any component can be serviced without downtime. Tier IV is fault-tolerant: the facility rides through any single unplanned equipment failure, not just planned maintenance."
+    },
+    {
+      "q": "What is 'Tier 5 Platinum' — and what's the honest caveat?",
+      "a": "Switch's own facility standard: a superset of Tier IV-style redundancy plus 30+ extra requirements (100-hour standby power, waterless cooling operation, 10 on-net carriers, zero roof penetrations, mandatory renewables, PUE < 1.3). Caveat: it is self-declared and marketing-controlled — no independent body like the Uptime Institute audits or certifies it."
+    },
+    {
+      "q": "Why does hot-aisle containment save energy?",
+      "a": "It stops hot server exhaust from mixing back into cold intake air. Cooling systems then work against a clean temperature difference instead of a blended room, so chillers run less for the same IT load."
+    },
+    {
+      "q": "What does Switch's T-SCIF design do conceptually?",
+      "a": "It encloses racks in a separate thermal compartment: 100% of hot exhaust is captured into an overhead plenum and returned to cooling units outside the hall, so supply and return air never mix on the IT floor."
+    },
+    {
+      "q": "Why must a 130kW+ GPU rack be liquid-cooled?",
+      "a": "Air physically cannot carry heat away fast enough at that density — the required airflow and temperature difference become impossible. Coolant must contact the chips via cold plates, fed through coolant distribution units (CDUs)."
+    },
+    {
+      "q": "A vendor rates halls for 'up to 2MW per rack' while today's biggest racks draw ~150kW. How do you read that?",
+      "a": "As design headroom, not deployed reality. It claims the power delivery and liquid loops can scale to future rack-scale systems without rebuilding — check what's actually operating before treating it as a spec."
+    },
+    {
+      "q": "PPA vs REC — what's the difference and which drives new clean supply?",
+      "a": "A PPA is a long-term contract for a specific plant's output — it can finance new construction (additionality). A REC is a certificate for 1MWh of renewable generation bought separately from the power. PPAs for new-build plants change the grid; loose RECs mostly change accounting."
+    },
+    {
+      "q": "What does '100% renewable since 2016' typically mean mechanically?",
+      "a": "Annual matching: renewable MWh purchased ≥ MWh consumed over the year. It does not mean every hour runs on clean electrons — that stronger claim is 24/7 hourly matching, which almost no one achieves yet."
+    },
+    {
+      "q": "Why is a small 13MW geothermal PPA strategically interesting for a data-center operator?",
+      "a": "Geothermal is firm, 24/7 carbon-free power that matches a data center's flat load — unlike variable solar/wind. It adds always-on clean supply, upgrading the quality (not just the quantity) of a renewable portfolio."
+    },
+    {
+      "q": "What is a performance letter of credit, and why do utilities demand them from data-center developers?",
+      "a": "A bank guarantee that pays the utility if the customer abandons its commitments. Utilities must build substations and transmission before the load arrives; the LC protects ratepayers from stranded costs — which is why multi-GW developers now raise billion-scale syndicated LC facilities."
+    },
+    {
+      "q": "What does a non-binding 12GW nuclear 'master power agreement' actually commit?",
+      "a": "A framework only: terms under which individual, binding PPAs may be signed as reactor projects hit milestones. It grants queue position and price framing to the buyer and order-book credibility to the reactor company — but zero megawatts are guaranteed until each PPA binds."
+    },
+    {
+      "q": "What gates the timeline of any US advanced-reactor deployment?",
+      "a": "NRC licensing — combined license applications and multi-year safety reviews. Construction is fast by comparison; the regulator, not the crew, sets the critical path."
+    },
+    {
+      "q": "How does closed-loop cooling achieve near-zero water use, and what's the trade?",
+      "a": "The same fluid circulates forever, rejecting heat through air-cooled equipment instead of evaporating water away. The trade: somewhat higher electricity use — you swap WUE for a bit of PUE."
+    },
+    {
+      "q": "ABS vs single-asset CMBS in data-center finance?",
+      "a": "ABS: a master trust secured by lease cash flows and assets, expandable with new note series as the fleet grows. SASB CMBS: a mortgage bond against specific named properties. Both convert private buildings into rated, investment-grade-priced debt."
+    },
+    {
+      "q": "Why do ABS rating disclosures matter for analyzing a private data-center company?",
+      "a": "They force public collateral disclosure — building counts, square footage, MW, customer counts, tenant credit mix — creating a proxy income statement for a company that otherwise reports nothing."
+    },
+    {
+      "q": "Walk the take-private-to-IPO financing playbook in four steps.",
+      "a": "(1) Acquire with bank debt; (2) refinance the expensive acquisition debt via ABS/CMBS as assets stabilize; (3) redirect securitization to fund new construction once the LBO debt is retired; (4) relist at the new cycle's multiple. The credit markets finance the equity markup."
+    },
+    {
+      "q": "Patent-moat vs land-bank strategy in the data-center industry?",
+      "a": "Land-bank: control scarce sites and interconnection queue positions — value in approved megawatts. Patent-moat: control facility design IP and a branded standard — value in what you can build and charge for anywhere. Land constrains rivals; IP differentiates product."
+    },
+    {
+      "q": "What is a facility 'digital twin' operating system and why does AI density make it necessary?",
+      "a": "A physics-accurate live 3D model of the facility (thermal, electrical, telemetry) used to simulate changes before touching hardware. At hundreds of kW per rack, a cooling misstep destroys equipment in seconds — commissioning and operating by simulation replaces trial-and-error DCIM."
+    }
+  ]
+}

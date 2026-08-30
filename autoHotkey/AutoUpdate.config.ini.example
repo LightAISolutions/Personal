@@ -1,0 +1,29 @@
+; ═══════════════════════════════════════════════════════════════════════════
+; AutoUpdate.config.ini — template
+; Copy this file to AutoUpdate.config.ini (same directory) and fill in the
+; token. The real AutoUpdate.config.ini is .gitignore'd and must never be
+; committed — it contains a GitHub Personal Access Token.
+; ═══════════════════════════════════════════════════════════════════════════
+;
+; Required PAT scope:
+;   Fine-grained PAT with `Contents: Read` access to LightAISolutions/lightaisolutions.
+;   The PAT already used by the Google Apps Script changelog-reader flow
+;   (stored in each GAS project's Script Properties) has the same scope and
+;   may be reused here — one PAT to rotate instead of two.
+;
+; Rotation guidance:
+;   The token sits in plaintext on your-workstation. This is acceptable for an
+;   internal server, but the PAT must be minimum-privilege (Contents: Read
+;   only) and rotated immediately if the server is ever compromised.
+;
+; Deployment:
+;   1. On your-workstation, copy this file to AutoUpdate.config.ini
+;   2. Paste your PAT into the `token = ` line below
+;   3. Save and launch AutoUpdate.ahk — the startup shortcut installs itself
+;      on first run, and subsequent logons autostart the updater.
+; ═══════════════════════════════════════════════════════════════════════════
+
+[github]
+token = github_pat_REPLACE_WITH_YOUR_TOKEN
+
+; Developed by: LightAISolutions

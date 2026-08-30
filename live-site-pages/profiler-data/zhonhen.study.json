@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "zhonhen",
+  "title": "Zhonhen Electric — Study Guide",
+  "lastUpdated": "2026-08-19",
+  "sections": [
+    {
+      "heading": "The physics toolkit",
+      "bullets": [
+        "Power = voltage × current: a megawatt is 2,500A at 400V or 1,250A at 800V — same power, very different copper",
+        "Conductor loss scales with the SQUARE of current (I²R): double the voltage, quarter the loss — every architecture decision is ultimately a voltage decision",
+        "Every conversion stage costs ~1–3% as heat (paid again in cooling), a box of capex and floor space, and a failure mode — architecture design is the art of deleting stages",
+        "The grid is AC because transformers only work on AC; chips, batteries and solar are all DC-native — every AC segment between a battery and a chip is historical, not physical"
+      ]
+    },
+    {
+      "heading": "The Western AC chain (the incumbent)",
+      "bullets": [
+        "Transmission (115–345kVac) → substation (12.47–34.5kVac in the US) → MV transformer (480Vac US / 400Vac international) → UPS → PDU transformer → server PSU (54Vdc) → VRMs (~1V at the die)",
+        "The double-conversion UPS secretly rectifies AC to DC for its battery, then inverts back to AC — the chain converts to DC twice and throws it away once",
+        "Seven to eight series stages; end-to-end efficiency roughly 88–94%",
+        "It persists because it is inherited: UL/NEC codes, AC-trained field labor, and fifty years of UPS/PDU vendor incumbency"
+      ]
+    },
+    {
+      "heading": "China's HVDC: 240V/336V DC (Zhonhen's franchise)",
+      "bullets": [
+        "Descended from telecom −48Vdc battery plants: rectify once, float the battery directly on the bus, zero transfer time — no UPS, no inverter, no transfer switch",
+        "The adoption trick: a stock server PSU's universal input accepts 240Vdc without modification — China's DC transition required no server changes at all",
+        "Chain: 10kVac → 380Vac → HVDC rectifier (240/336Vdc, ≥97.5%) with batteries on the bus → DC distribution → stock PSU → chip. About five stages against the AC chain's eight",
+        "336Vdc adds headroom and efficiency but needs DC-rated PSUs — used where operators control the hardware fleet",
+        "Zhonhen shipped the first-generation 240Vdc system (2010) and lead-drafted the national 240V/336V standard; independently ranked #1 in China data-center HVDC at 31% share (2025)"
+      ]
+    },
+    {
+      "heading": "Panama power: medium voltage to DC in one stage",
+      "bullets": [
+        "Folds the MV transformer, rectification and distribution into ONE factory-built, pre-tested module: 10kVac in → 240/400/800Vdc out, >97.5% system efficiency, 2.5MW blocks",
+        "Named like the canal — one cut instead of four locks; co-developed with Alibaba (2019)",
+        "In NVIDIA-ecosystem vocabulary its device class is the solid-state transformer / MV rectifier 'sidecar'",
+        "Prefabrication moves DC arc-management engineering into the factory — and substitutes factory labor for scarce field electricians"
+      ]
+    },
+    {
+      "heading": "800Vdc: the West arrives at the same thesis",
+      "bullets": [
+        "AI racks (120–150kW today, ~600kW Kyber-class 2H 2027, 1MW beyond) physically break AC-to-the-rack: a legacy 1MW rack needs ~200kg of busbar",
+        "NVIDIA's architecture: 13.8kVac → SST/MV rectifier sidecar → 800Vdc bus → in-rack DC/DC → ~0.8V; supercaps and battery shelves hang on the DC bus",
+        "NVIDIA's published numbers: +157% power through the same copper vs 415Vac, −45% copper, ~+5% end-to-end efficiency, ~30% lower TCO",
+        "Why 800V: I²R at megawatt-rack power, plus the EV industry already made 800V-class components cheap",
+        "The convergence line: China standardized DC-to-the-rack in 2010 because 240Vdc rides through a stock PSU; NVIDIA is standardizing 800Vdc because AI racks broke AC — same thesis, voltage scaled to the load"
+      ]
+    },
+    {
+      "heading": "DC safety literacy",
+      "bullets": [
+        "An AC arc self-extinguishes 120 times a second at zero crossings; a DC arc has no zero crossing and must be engineered out: DC-rated breakers, arc-fault management, grounding design",
+        "Solved at 240/336V across a decade of Chinese fleet operations; the 800V ecosystem is doing the same engineering now"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "Why does doubling distribution voltage cut conductor loss to a quarter?",
+      "a": "Loss = I²R. Same power at double the voltage means half the current, and loss scales with current squared: (½)² = ¼."
+    },
+    {
+      "q": "Where does DC secretly appear inside the conventional AC chain?",
+      "a": "Twice: inside the double-conversion UPS (rectified for the battery, then inverted back to AC) and after the server PSU. The chain makes DC twice and throws it away once."
+    },
+    {
+      "q": "What made 240Vdc adoptable in China without changing any servers?",
+      "a": "A stock server PSU's universal input (90–264Vac) rectifies immediately at its front end — feed it 240Vdc and it passes through. The IT fleet ran unmodified."
+    },
+    {
+      "q": "Why does an HVDC plant need no transfer switch or inverter?",
+      "a": "Battery strings float directly on the DC bus. When the grid fails, nothing switches — the bus simply drains the battery. Zero transfer time."
+    },
+    {
+      "q": "What is a Panama power module in one sentence?",
+      "a": "Medium voltage to DC in one factory-built stage: 10kVac in, 240/400/800Vdc out, >97.5% efficiency, ~2.5MW per pre-tested block — the device class NVIDIA's ecosystem calls an SST or MV sidecar."
+    },
+    {
+      "q": "Count the stages: conventional AC chain vs 240Vdc HVDC vs Panama.",
+      "a": "Roughly 7–8 (three transformers + UPS's two conversions + PSU + VRMs) vs ~5 (rectify once, battery on bus) vs ~3 (grid → module → rack)."
+    },
+    {
+      "q": "Why is NVIDIA's number 800V and not 240V?",
+      "a": "I²R at megawatt-rack power — 800V carries an AI rack at a quarter of 400V's conductor loss — plus the EV industry already made 800V-class semiconductors, cables and connectors cheap."
+    },
+    {
+      "q": "What are NVIDIA's published gains for 800Vdc vs 415Vac?",
+      "a": "About 157% more power through the same copper, up to 45% less copper, ~5% better end-to-end efficiency, ~30% lower TCO."
+    },
+    {
+      "q": "What is DC's one genuine safety disadvantage, and its answer?",
+      "a": "A DC arc has no zero crossing so it doesn't self-extinguish. Answer: DC-rated breakers, arc-fault management and grounding design — solved at fleet scale at 240/336V, being engineered now at 800V."
+    },
+    {
+      "q": "What's the difference between 336Vdc and 240Vdc systems?",
+      "a": "336V lowers current further (thinner copper, slightly better efficiency) but exceeds stock-PSU passthrough tolerance, so it needs DC-rated supplies — used where the operator controls the fleet."
+    },
+    {
+      "q": "What does 'HVDC' mean in the data-center context vs the grid context?",
+      "a": "In data centers: 240/336/800Vdc distribution inside the facility ('high' relative to telecom −48V). On the grid: ±hundreds-of-kV transmission. Same acronym, unrelated products."
+    },
+    {
+      "q": "Why did DC win in China first — physics or institutions?",
+      "a": "Institutions. A few hyperscalers and three operators who own their fleets could standardize by fiat, and 240Vdc needed no server changes. The US had UL/NEC codes, AC-trained labor and thousands of buyers. AI density is what forces the US hand now."
+    }
+  ]
+}

@@ -1,0 +1,270 @@
+var VERSION = "v01.00g";
+var TITLE = "YOUR_PROJECT_TITLE";
+var GITHUB_OWNER  = "YOUR_ORG_NAME";
+var GITHUB_REPO   = "YOUR_REPO_NAME";
+var GITHUB_BRANCH = "main";
+var FILE_PATH     = "googleAppsScripts/YOUR_PROJECT_FOLDER/YOUR_PAGE_NAME.gs";
+var DEPLOYMENT_ID = "YOUR_DEPLOYMENT_ID";
+var SPREADSHEET_ID = "YOUR_SPREADSHEET_ID";
+var SHEET_NAME     = "YOUR_SHEET_NAME";
+var EMBED_PAGE_URL = "YOUR_EMBED_PAGE_URL";
+
+// ══════════════
+// PROJECT START
+// ══════════════
+
+// ══════════════
+// PROJECT END
+// ══════════════
+
+// ══════════════
+// TEMPLATE START
+// ══════════════
+
+function doGet(e) {
+  // GET deploy fallback — the CI deploy webhook's POST can fail on Google's redirect
+  // (the workflow runner's curl loses the POST body → error page), so the workflow
+  // retries as GET ?action=api&op=deploy. Same bare, unauthenticated semantics as the
+  // protected doPost(action=deploy) handler (see its ⚠️ CRITICAL comment): it can only
+  // re-pull what GitHub already contains. Do NOT add guards, secrets, or auth here.
+  var getAction = (e && e.parameter && e.parameter.action) || '';
+  if (getAction === 'api' && ((e && e.parameter && e.parameter.op) || '') === 'deploy') {
+    return ContentService.createTextOutput(pullAndDeployFromGitHub());
+  }
+
+  var html = `
+    <html>
+    <head>
+      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+      <meta http-equiv="Pragma" content="no-cache">
+      <meta http-equiv="Expires" content="0">
+      <style>
+        html, body { height: 100%; margin: 0; overflow: hidden; }
+        body { font-family: sans-serif; background: #bdbdbd; }  /* shows through the 30px top/bottom bands around the app surface */
+        /* App surface inset 30px top/bottom: the GAS layer spans the full screen, but the app
+           UI/background lives between the bands — only overlay chrome (version pill,
+           usable-area readout) occupies the exposed strips. Projects restyle background/color
+           freely; keep the insets so the framing matches the other apps */
+        #main-content { position: fixed; top: 30px; left: 0; right: 0; bottom: 30px; overflow: auto; background: #fff; color: #000; }
+        #version { position: fixed; bottom: 9px; left: 8px; z-index: 9999; color: #1565c0; font-size: 12px; margin: 0; font-family: monospace; opacity: 0.8; }
+        /* Discreet usable-area readout: live width×height of the app viewport. Sits on the
+           bottom band, left of the HOST page's pill stack (bottom-right corner) */
+        #app-dims { position: fixed; right: 185px; bottom: 10px; z-index: 9000; color: #888; font: 10px/1 monospace; opacity: 0.7; pointer-events: none; }
+      </style>
+    </head>
+    <body>
+      <h2 id="version">${VERSION}</h2>
+      <!-- App surface (template): project content renders inside the inset framing -->
+      <div id="main-content">
+        <!-- PROJECT START — Add your project-specific content here -->
+        <!-- PROJECT END -->
+      </div>
+      <span id="app-dims"></span>
+      <button id="gas-layer-toggle" onclick="window._toggleGasLayer()" style="position:fixed;bottom:7px;left:135px;z-index:9999;background:rgba(0,0,0,0.55);color:#ccc;border:1px solid rgba(255,255,255,0.2);padding:3px 8px;border-radius:10px;font:10px/1 monospace;cursor:pointer;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">GAS</button>
+
+      <script>
+        // GAS layer visibility toggle
+        (function() {
+          var _gasLayerVisible = true;
+          var _gasLayerEls = ['version', 'main-content', 'app-dims'];
+          window._toggleGasLayer = function() {
+            _gasLayerVisible = !_gasLayerVisible;
+            var btn = document.getElementById('gas-layer-toggle');
+            _gasLayerEls.forEach(function(id) {
+              var el = document.getElementById(id);
+              if (!el) return;
+              el.style.display = _gasLayerVisible ? '' : 'none';
+            });
+            if (btn) {
+              btn.textContent = _gasLayerVisible ? 'GAS' : 'GAS \\u25CB';
+              btn.style.borderColor = _gasLayerVisible ? 'rgba(255,255,255,0.2)' : '#58a6ff';
+            }
+            document.body.style.background = _gasLayerVisible ? '' : 'transparent';
+          };
+        })();
+        // Usable-area readout (template): live width×height of the app viewport,
+        // updated on resize and device rotation
+        (function () {
+          function updDims() {
+            var el = document.getElementById('app-dims');
+            if (el) el.textContent = (window.innerWidth || 0) + '×' + (window.innerHeight || 0);
+          }
+          window.addEventListener('resize', updDims);
+          window.addEventListener('orientationchange', updDims);
+          updDims();
+        })();
+        window.addEventListener('message', function(e) {
+          if (e.data && e.data.type === 'gas-version-check') {
+            google.script.run
+              .withSuccessHandler(function(data) {
+                top.postMessage({type: 'gas-version', version: data.version}, '*');
+              })
+              .withFailureHandler(function() {
+                top.postMessage({type: 'gas-version', version: null}, '*');
+              })
+              .getAppData();
+          }
+        });
+      </script>
+    </body>
+    </html>
+  `;
+  return HtmlService.createHtmlOutput(html)
+    .setTitle(TITLE)
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function doPost(e) {
+  var action = (e && e.parameter && e.parameter.action) || "";
+
+  // ⚠️ CRITICAL: Do NOT add authentication, secret checks, or any guards to this deploy handler.
+  // The GitHub Actions workflow calls doPost(action=deploy) via webhook to trigger GAS self-update.
+  // Adding auth here (e.g. DEPLOY_SECRET check) will silently break auto-updates — the workflow
+  // gets "Unauthorized" and the GAS script never pulls new code from GitHub.
+  // The deploy action only calls pullAndDeployFromGitHub() which is safe — it overwrites the
+  // script with whatever is on GitHub (the source of truth), so there is no abuse vector.
+  if (action === "deploy") {
+    var result = pullAndDeployFromGitHub();
+    return ContentService.createTextOutput(result);
+  }
+
+  return ContentService.createTextOutput("Unknown action");
+}
+
+function getAppData() {
+  var data = { version: VERSION, title: TITLE };
+  return data;
+}
+
+/**
+ * Ensure CACHE_EPOCH exists in Script Properties.
+ * Called after a successful deploy — generates default if missing.
+ * Existing value is never overwritten.
+ */
+function ensureScriptProperties_() {
+  try {
+    var props = PropertiesService.getScriptProperties();
+    if (!props.getProperty('CACHE_EPOCH')) {
+      props.setProperty('CACHE_EPOCH', '1');
+    }
+  } catch (e) {
+    Logger.log('ensureScriptProperties_ error: ' + e.message);
+  }
+}
+
+function pullAndDeployFromGitHub() {
+  var GITHUB_TOKEN = PropertiesService.getScriptProperties().getProperty("GITHUB_TOKEN");
+
+  var apiUrl = "https://api.github.com/repos/"
+    + GITHUB_OWNER + "/" + GITHUB_REPO + "/contents/" + FILE_PATH
+    + "?ref=" + GITHUB_BRANCH + "&t=" + new Date().getTime();
+
+  var fetchHeaders = { "Accept": "application/vnd.github.v3.raw" };
+  if (GITHUB_TOKEN) {
+    fetchHeaders["Authorization"] = "token " + GITHUB_TOKEN;
+  }
+
+  var response = UrlFetchApp.fetch(apiUrl, { headers: fetchHeaders });
+  var newCode = response.getContentText();
+
+  var versionMatch = newCode.match(/var VERSION\s*=\s*"([^"]+)"/);
+  var pulledVersion = versionMatch ? versionMatch[1] : null;
+
+  if (pulledVersion && pulledVersion === VERSION) {
+    return "Already up to date (" + VERSION + ")";
+  }
+
+  var scriptId = ScriptApp.getScriptId();
+  var url = "https://script.googleapis.com/v1/projects/" + scriptId + "/content";
+  var current = UrlFetchApp.fetch(url, {
+    headers: { "Authorization": "Bearer " + ScriptApp.getOAuthToken() }
+  });
+  var currentFiles = JSON.parse(current.getContentText()).files;
+  var manifest = currentFiles.find(function(f) { return f.name === "appsscript"; });
+
+  var payload = {
+    files: [
+      { name: "Code", type: "SERVER_JS", source: newCode },
+      manifest
+    ]
+  };
+
+  UrlFetchApp.fetch(url, {
+    method: "put",
+    contentType: "application/json",
+    headers: { "Authorization": "Bearer " + ScriptApp.getOAuthToken() },
+    payload: JSON.stringify(payload)
+  });
+
+  // Count existing versions first so we can fail *clearly* if the project has hit Apps Script's
+  // version ceiling. Otherwise versions.create throws AFTER the code was already overwritten,
+  // leaving the editor on the new version but the live deployment stuck on the old one.
+  var totalVersions = 0;
+  try {
+    var vPageToken = null;
+    do {
+      var vListUrl = "https://script.googleapis.com/v1/projects/" + scriptId + "/versions"
+        + (vPageToken ? "?pageToken=" + vPageToken : "");
+      var vListResp = UrlFetchApp.fetch(vListUrl, {
+        muteHttpExceptions: true,
+        headers: { "Authorization": "Bearer " + ScriptApp.getOAuthToken() }
+      });
+      var vListData = JSON.parse(vListResp.getContentText());
+      if (vListData.versions) totalVersions += vListData.versions.length;
+      vPageToken = vListData.nextPageToken || null;
+    } while (vPageToken);
+  } catch (countErr) { totalVersions = -1; }
+
+  if (totalVersions >= 200) {
+    return "DEPLOY HALTED — code updated to " + pulledVersion + " but the version limit ("
+      + totalVersions + "/200) is reached, so the live deployment is STILL on the old version. "
+      + "Free up versions in the Apps Script editor, then redeploy.";
+  }
+
+  var versionUrl = "https://script.googleapis.com/v1/projects/" + scriptId + "/versions";
+  var versionResponse = UrlFetchApp.fetch(versionUrl, {
+    method: "post",
+    contentType: "application/json",
+    muteHttpExceptions: true,
+    headers: { "Authorization": "Bearer " + ScriptApp.getOAuthToken() },
+    payload: JSON.stringify({ description: pulledVersion + " — from GitHub " + new Date().toLocaleString() })
+  });
+  if (versionResponse.getResponseCode() >= 300) {
+    return "DEPLOY FAILED creating a new version — code was updated to " + pulledVersion
+      + " but the live deployment was NOT advanced (still on the old version). HTTP "
+      + versionResponse.getResponseCode() + ": " + versionResponse.getContentText();
+  }
+  var newVersion = JSON.parse(versionResponse.getContentText()).versionNumber;
+
+  var deployUrl = "https://script.googleapis.com/v1/projects/" + scriptId
+    + "/deployments/" + DEPLOYMENT_ID;
+  var deployResp = UrlFetchApp.fetch(deployUrl, {
+    method: "put",
+    contentType: "application/json",
+    muteHttpExceptions: true,
+    headers: { "Authorization": "Bearer " + ScriptApp.getOAuthToken() },
+    payload: JSON.stringify({
+      deploymentConfig: {
+        scriptId: scriptId,
+        versionNumber: newVersion,
+        description: pulledVersion + " (deployment " + newVersion + ")"
+      }
+    })
+  });
+  if (deployResp.getResponseCode() >= 300) {
+    return "DEPLOY FAILED repointing the deployment — version " + newVersion
+      + " was created but the live deployment was NOT updated to it. HTTP "
+      + deployResp.getResponseCode() + ": " + deployResp.getContentText();
+  }
+
+  // Auto-initialize required Script Properties on first deploy
+  ensureScriptProperties_();
+
+  return "Updated to " + pulledVersion + " (deployment " + newVersion + ") | "
+    + (totalVersions + 1) + "/200";
+}
+
+// ══════════════
+// TEMPLATE END
+// ══════════════
+// Developed by: LightAISolutions

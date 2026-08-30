@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "slug": "sungrow",
+  "name": "Sungrow Power Supply Co., Ltd. (阳光电源股份有限公司)",
+  "shortName": "Sungrow",
+  "categories": ["supplier"],
+  "website": "https://en.sungrowpower.com",
+  "headquarters": "Hefei, Anhui, China",
+  "founded": 1997,
+  "employees": "~17,305 (Dec 31, 2024)",
+  "ownership": { "type": "public", "ticker": "SZSE: 300274" },
+  "summary": "Sungrow is one of the world's largest manufacturers of solar PV inverters and battery energy storage systems, founded in 1997 by Hefei University of Technology academic Cao Renxian, with additional businesses in wind power converters, EV drive/charging equipment, floating PV, hydrogen electrolyzers, and renewable plant development. Listed on Shenzhen's ChiNext since 2011; a Hong Kong H-share application was re-filed in April 2026 (the first, from October 2025, lapsed) — the A+H structure was pending as of August 2026.",
+  "ecosystemRole": "Ranked No. 1 in BOTH Wood Mackenzie's Global BESS Integrator Comprehensive Ranking and its Global PV Inverter Manufacturer Comprehensive Ranking (2026 edition, assessing 2025) — the first company to take the integrator top spot from Tesla. Company-reported 2025 shipments: 43 GWh of storage (+53.5%) and 143 GW of inverters. ESS revenue overtook inverters as the largest segment in FY2025 (41.8% of revenue at a 36.5% gross margin). BloombergNEF has named Sungrow the most bankable ESS and PCS brand.",
+  "productsAndServices": [
+    {
+      "name": "PV inverters (string, central, modular)",
+      "category": "Power conversion",
+      "description": "Full range from residential (SG-RS) to utility-scale (SG350HX and the '1+X' modular platform). 2025 shipments were 143 GW, down ~2.7% YoY as China's residential market contracted after the '531' policy, while overseas shipments grew ~12%.",
+      "highlights": []
+    },
+    {
+      "name": "Utility-scale BESS — PowerTitan 1.0 / 2.0 / 3.0",
+      "category": "Energy storage systems",
+      "description": "Liquid-cooled containerized AC-block systems: PowerTitan 2.0 (5 MWh / 2.5 MW per 20-ft unit) and PowerTitan 3.0 (June 2025) on the first mass-producible 684 Ah cell.",
+      "highlights": [
+        "7.8 GWh Algihaz Holding order in Saudi Arabia (July 2024 — then the world's largest ESS order; 1,500+ PowerTitan 2.0 units, grid-connected 2025)",
+        "7.5 GWh of PowerTitan 3.0 + 2.6 GW of inverters for Masdar's 5.2 GW/19 GWh round-the-clock Abu Dhabi project (May 2026, ~40% of its battery capacity, COD 2027)"
+      ]
+    },
+    {
+      "name": "C&I and residential storage",
+      "category": "Energy storage systems",
+      "description": "PowerStack 255CS/510CS liquid-cooled C&I systems covering 400 V–35 kV applications, plus residential three-phase hybrid inverters with stackable battery modules sold across Europe and Australia.",
+      "highlights": []
+    },
+    {
+      "name": "Storage PCS & grid-forming",
+      "category": "Power conversion",
+      "description": "In-house storage PCS line, including the fully liquid-cooled silicon-carbide PCS integrated in PowerTitan 3.0; grid-forming capability brought to Europe in January 2026.",
+      "highlights": []
+    },
+    {
+      "name": "Hydrogen, floating PV & wind converters",
+      "category": "Adjacent clean-energy businesses",
+      "description": "Subsidiary Sungrow Hydrogen supplies alkaline and PEM electrolyzers and green-hydrogen plant equipment; Sungrow FPV is a leading floating-body/anchoring supplier; the company remains a major Chinese wind power converter vendor. Volume figures not published.",
+      "highlights": []
+    }
+  ],
+  "technicalSpecs": [
+    {
+      "product": "PowerTitan 3.0 (June 2025)",
+      "specs": [
+        { "label": "Cell", "value": "684 Ah LFP (first mass-producible), 448 Wh/L, >15,000 cycles to 80%" },
+        { "label": "Versions", "value": "Flex 3.45 MWh · Class 6.9 MWh (20-ft) · Plus 12.5 MWh / up to 3.125 MW (30-ft)" },
+        { "label": "Energy density", "value": ">500 kWh/m² (Plus variant)" },
+        { "label": "PCS", "value": "Integrated silicon-carbide PCS, fully liquid-cooled; grid-forming" },
+        { "label": "Environment", "value": "-40°C to +55°C; up to 5,000 m altitude; 2–12 hour configurations" }
+      ],
+      "notes": ""
+    },
+    {
+      "product": "PowerTitan 2.0 (workhorse AC block)",
+      "specs": [
+        { "label": "Capacity / power", "value": "5,015 kWh with up to 2.5 MW PCS in one 20-ft container" },
+        { "label": "Cooling", "value": "Fully liquid-cooled packs and PCS (12 modular PCS units per container)" },
+        { "label": "Scaling", "value": "10 MWh / 5 MW block incl. MV transformer, scalable to GWh class" },
+        { "label": "Track record", "value": "1,500+ units in the Saudi 7.8 GWh fleet" }
+      ],
+      "notes": "Cell Ah and certification list not confirmed in the sources used."
+    },
+    {
+      "product": "1+X 2.0 modular inverter (April 2025)",
+      "specs": [
+        { "label": "Unit power", "value": "800 kW per module; parallels up to 9.6 MW (12 units)" },
+        { "label": "Max efficiency", "value": "99%" },
+        { "label": "Thermal", "value": "No derating up to 52°C (MEA-focused variant)" },
+        { "label": "Protection", "value": "Arc-fault isolation in 40 ms; AI fault detection; grid-forming" }
+      ],
+      "notes": ""
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Cao Renxian (曹仁贤)",
+      "title": "Founder, Chairman & President (chairman of the joint-stock company since 2007)",
+      "background": [
+        "Former Hefei University of Technology academic; founded Sungrow in 1997; postgraduate degree",
+        "NPC delegate; chairman of the China Photovoltaic Industry Association"
+      ]
+    },
+    {
+      "name": "Gu Yilei (顾亦磊)",
+      "title": "Vice Chairman, Senior VP & President, PV & ESS Group (director since 2023)",
+      "background": [
+        "Joined Sungrow 2015; previously headed the Central Research Institute",
+        "PhD; ex-Delta Group, Santak, and Eaton China"
+      ]
+    },
+    {
+      "name": "Wu Jiamao (吴家貌)",
+      "title": "Director, Senior VP & Global Marketing President, PV & ESS Group",
+      "background": ["Joined 2005; formerly sales manager and Shanghai branch GM; master's degree"]
+    },
+    {
+      "name": "Zhao Wei (赵为)",
+      "title": "Employee-representative Director, Senior VP & Group Chief Scientist",
+      "background": ["Former deputy head of the R&D center; PhD, senior engineer"]
+    },
+    {
+      "name": "Zhang Xucheng (张许成)",
+      "title": "Director; Chairman & President of Sungrow Renewables (plant development)",
+      "background": ["Director since May 2023; master's degree"]
+    },
+    {
+      "name": "Tian Shuai (田帅)",
+      "title": "VP & CFO (since June 2022)",
+      "background": ["Joined Sungrow 2021; ex-Sany Heavy Industry and Huawei; CMA"]
+    },
+    {
+      "name": "Lu Yang (陆阳)",
+      "title": "VP, Board Secretary & GM of the Strategy Center",
+      "background": ["Joined August 2016"]
+    }
+  ],
+  "financials": {
+    "currency": "CNY (RMB)",
+    "type": "public",
+    "periods": [
+      {
+        "period": "FY2024",
+        "metrics": [
+          { "name": "Revenue", "actual": "RMB 77.86B (+7.8%)", "expected": "", "verdict": "inline", "result": "—" },
+          { "name": "Net profit (attributable)", "actual": "RMB 11.04B (+16.9%)", "expected": "", "verdict": "inline", "result": "No explicit consensus comparison found" },
+          { "name": "Shipments", "actual": "Inverters 147 GW; storage ~28 GWh (derived from 2025's 43 GWh at +53.5%)", "expected": "", "verdict": "inline", "result": "—" }
+        ],
+        "commentary": ""
+      },
+      {
+        "period": "FY2025 (reported April 2026)",
+        "metrics": [
+          { "name": "Revenue", "actual": "RMB 89.18B (+14.6%)", "expected": "", "verdict": "inline", "result": "No explicit consensus comparison found; Q4 momentum decelerated" },
+          { "name": "Net profit (attributable)", "actual": "RMB 13.46B (+22.0%); operating cash flow RMB 16.92B (+40.2%)", "expected": "", "verdict": "inline", "result": "—" },
+          { "name": "Segments", "actual": "ESS RMB 37.29B (+49.4%, 41.8% of revenue, GM 36.5%) overtook inverters (RMB 31.14B, +6.9%); storage 43 GWh (+53.5%); inverters 143 GW; overseas ~60.5% of revenue (+48.8%)", "expected": "", "verdict": "beat", "result": "Storage became the largest and highest-margin segment" }
+        ],
+        "commentary": "Dividends: FY2025 final RMB 6.90 per 10 shares plus an H1 2025 interim of RMB 9.50 per 10 shares; ~RMB 300M of buybacks in 2025. Shares hit a record (~RMB 413.5B market cap) in Nov 2025 after the first >RMB 4B quarterly profit."
+      },
+      {
+        "period": "Q1 2026 (reported April 2026; H1 2026 due late August)",
+        "metrics": [
+          { "name": "Revenue", "actual": "RMB 15.56B (-18.3%)", "expected": "", "verdict": "miss", "result": "China's post-'531' residential PV contraction" },
+          { "name": "Net profit", "actual": "RMB 2.29B (-40.1%); gross margin 33.3% (-1.8 pp) on falling storage prices", "expected": "Analyst estimates (missed)", "verdict": "miss", "result": "Institutions cut target prices; market cap ~RMB 277B by late April, >10% down YTD" }
+        ],
+        "commentary": "2026 management operating targets circulating from investor-briefing recaps (unverified against a filing): revenue RMB 110–120B, net profit RMB 17–19B, storage shipments ≥60 GWh."
+      }
+    ],
+    "commentary": "Company-reported figures from annual/quarterly disclosures as relayed by cited outlets; the FY2024 storage GWh is derived, and the 2026 targets are investor-recap numbers, both flagged as such."
+  },
+  "sources": [
+    { "label": "TaiyangNews — FY2025 results, ESS growth surge", "url": "https://taiyangnews.info/business/sungrow-fy-2025-financial-results", "accessed": "2026-08-07" },
+    { "label": "EnergyTrend — FY2025 revenue RMB 89.18B, segment detail", "url": "https://www.energytrend.com/news/20260401-51176.html", "accessed": "2026-08-07" },
+    { "label": "新浪财经 — FY2025 results + dividend", "url": "https://finance.sina.com.cn/jjxw/2026-04-01/doc-inhsyfvi5066947.shtml", "accessed": "2026-08-07" },
+    { "label": "Smartkarma — Q1 2026 net income -40%, misses estimates", "url": "https://www.smartkarma.com/home/newswire/earnings-alerts/sungrow-power-supply-300274-earnings-q1-net-income-falls-40-misses-estimates/", "accessed": "2026-08-07" },
+    { "label": "PR Newswire — #1 in Wood Mackenzie BESS integrator + PV inverter rankings", "url": "https://www.prnewswire.com/news-releases/sungrow-ranks-no1-in-wood-mackenzies-global-bess-integrator-and-pv-inverter-manufacturer-ranking-302842097.html", "accessed": "2026-08-07" },
+    { "label": "pv magazine — PowerTitan 3.0 launch, 684 Ah cell (Jun 2025)", "url": "https://www.pv-magazine.com/2025/06/10/", "accessed": "2026-08-07" },
+    { "label": "pv magazine — 1+X 2.0 modular inverter (Apr 2025)", "url": "https://www.pv-magazine.com/2025/04/16/", "accessed": "2026-08-07" },
+    { "label": "pv magazine — 7.8 GWh Saudi Algihaz order (Jul 2024)", "url": "https://www.pv-magazine.com/2024/07/16/", "accessed": "2026-08-07" },
+    { "label": "ESS News — 7.5 GWh Masdar Abu Dhabi order (May 2026)", "url": "https://www.ess-news.com/2026/05/22/", "accessed": "2026-08-07" },
+    { "label": "Eastmoney — executive biographies (300274)", "url": "https://caifuhao.eastmoney.com/news/20230824080507759283230", "accessed": "2026-08-07" },
+    { "label": "StockAnalysis — company profile (300274)", "url": "https://stockanalysis.com/quote/she/300274/company/", "accessed": "2026-08-07" }
+  ],
+  "lastUpdated": "2026-08-06",
+  "profileVersion": 1
+}

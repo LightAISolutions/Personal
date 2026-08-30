@@ -1,0 +1,489 @@
+{
+  "schemaVersion": 2,
+  "slug": "lambda",
+  "name": "Lambda",
+  "legalName": "Lambda, Inc. (formerly branded Lambda Labs)",
+  "categories": [
+    "neocloud"
+  ],
+  "hq": "San Francisco, CA, USA",
+  "founded": "2012 (GPU cloud from 2018; on-prem hardware exited August 2025)",
+  "ownership": "private",
+  "employees": "Not disclosed",
+  "website": "https://lambda.ai",
+  "summary": "BOTTOM LINE UP FRONT: Lambda is the developer-DNA neocloud converting itself into a contracted 'Superintelligence Cloud' ahead of a reported H2 2026 IPO — a multibillion-dollar multi-year Microsoft deployment agreement (November 2025), NVIDIA as simultaneous supplier, Series D investor, and reportedly largest customer (a $1.5B four-year leaseback of ~18,000 of its own GPUs, per The Information), a >$1.5B Series E at $5.9B post-money (Forge round data; Lambda never disclosed the valuation), and the first investment-grade-rated Term Loan B by a private neocloud ($926M, Baa2, SOFR+300bps, August 2026). BACKGROUND: Founded 2012 in San Francisco by Stephen and Michael Balaban; sold GPU workstations and servers for a decade before going cloud-only (hardware exited August 2025; Inference API and Lambda Chat sunset September 2025). Michel Combes (ex-Sprint, Alcatel-Lucent, SoftBank International) replaced founder Stephen Balaban as CEO in May 2026; stated target is 3 GW of AI compute under management by 2030 against a footprint whose largest disclosed site is ~100 MW potential. SemiAnalysis ClusterMAX holds Lambda at Silver — two tiers below CoreWeave's Platinum — across both rating cycles.",
+  "ecosystemRole": "We assess Lambda as the price-and-flexibility neocloud moving up-market into the CoreWeave model — and as a demand signal rather than a power buyer for most of this ecosystem's vendors, because its footprint is colocation-first (EdgeConneX Chicago, Cologix Columbus, Prime Data Centers Vernon, Aligned DFW) with owned 'AI factories' only now emerging (Kansas City, 24 MW scaling to 100 MW+). Basis: company site-level disclosures and trade press; no company-wide MW or GPU-fleet figure has ever been published — a collection gap its S-1 would close. For power-chain vendors the read-through is indirect: Lambda's 600 kW-rack Chicago build and hydrogen-powered GB300 deployment at ECL Mountain View show where high-density neocloud requirements are heading, but the facility capex mostly belongs to its colocation landlords.",
+  "productsAndServices": [
+    {
+      "name": "On-demand GPU cloud (Instances, Workspaces, Bare Metal)",
+      "category": "GPU cloud",
+      "description": "Self-serve NVIDIA instances billed by the minute with no egress fees: B200 SXM6 at $6.69–6.99/GPU-hr, H100 SXM at $3.99–4.29, GH200 at $2.29, down to V100 at $0.79 (published pricing, August 2026). Bare Metal Instances (May 2026) remove the hypervisor entirely — lifecycle managed through NVIDIA BlueField DPUs in zero-trust mode, first on GB300 NVL72. Workspaces (June 2026) added free multi-region organization/access-control containers.",
+      "highlights": [
+        "Per-minute billing, no egress fees, no waitlist positioning",
+        "B200 on-demand launched August 2025 'no waitlists or commitments'",
+        "Pre-installed Lambda Stack (PyTorch/CUDA) — the developer-first heritage"
+      ],
+      "positioning": "The price leader among major neoclouds — Sacra put Lambda's H100 PCIe at $2.49/GPU-hr vs CoreWeave's $4.25; ClusterMAX calls it a 'top-tier on-demand provider' even while holding the company at Silver overall.",
+      "soldThrough": "Self-serve dashboard/API; contact-sales only for reserved terms beyond one year.",
+      "targetSegments": [
+        "Researchers and startups",
+        "Enterprises testing AI workloads",
+        "200K+ developer accounts (Sacra)"
+      ],
+      "roadmap": "Vera Rubin NVL72 instances at general availability of the platform (H2 2026)."
+    },
+    {
+      "name": "1-Click Clusters",
+      "category": "GPU cloud",
+      "description": "Self-serve multi-node clusters from 16 to 2,000+ GPUs (HGX B200 or H100) on Quantum-2 InfiniBand with NVIDIA SHARP in-network aggregation, managed Kubernetes or Slurm, terms from two weeks to a year. Published pricing: B200 at $8.87–9.86/GPU-hr by tier, H100 at $5.54–6.16.",
+      "highlights": [
+        "16-GPU evaluation clusters bookable for two weeks — no negotiation",
+        "SHARP enabled July 2025; FP4 workflows promoted on B200",
+        "SOC 2 Type II plus ISO 27001/27017/27701/22301"
+      ],
+      "positioning": "The mid-scale flexibility wedge: Sacra highlights Lambda partitioning 16,000+-GPU clusters into small allocations rentable in 15-minute increments, against CoreWeave's multi-year committed model.",
+      "soldThrough": "Self-serve with published prices; reserved 1-year+ via sales.",
+      "targetSegments": [
+        "Teams training mid-size models",
+        "Startups scaling past single nodes"
+      ],
+      "roadmap": "Blackwell-Ultra 1CC on Quantum-X800 InfiniBand (6.4 Tb/s, rail-optimized) announced."
+    },
+    {
+      "name": "Superclusters (single-tenant contracted capacity)",
+      "category": "AI infrastructure",
+      "description": "Single-tenant, shared-nothing deployments from 4,000 to 165,000+ GPUs built on GB300 NVL72, HGX B300, and (H2 2026) Vera Rubin NVL72 rack systems, with managed Kubernetes/Slurm under SLA and co-engineering. This is the layer the Microsoft agreement (November 2025, tens of thousands of GPUs including GB300 NVL72) and the NVIDIA leaseback run through.",
+      "highlights": [
+        "MLPerf Training v6.0 (June 2026): fastest GB300 NVL72 submission — Llama 3.1 8B in 11.59 min, ahead of NVIDIA's own entry",
+        "GB300 NVL72 live on Lambda Cloud October 2025",
+        "Industry-first hydrogen-powered GB300 NVL72 systems online at ECL Mountain View (September 2025)"
+      ],
+      "positioning": "Converts Lambda from developer cloud into a CoreWeave-style contracted operator; ClusterMAX 2.0 (November 2025) still rates Lambda Silver vs CoreWeave Platinum and Nebius/Crusoe/Fluidstack Gold, citing capacity sell-outs, immature Kubernetes, and weak inference support.",
+      "soldThrough": "Multi-year committed contracts; private cloud and dedicated bare-metal variants.",
+      "targetSegments": [
+        "Microsoft (multibillion agreement)",
+        "NVIDIA (reported $1.5B leaseback)",
+        "Frontier labs, quant finance (Hudson River Trading, May 2026)",
+        "Government/DoD (In-Q-Tel investor; FedRAMP-adjacent positioning)"
+      ],
+      "roadmap": "3 GW of AI compute under management and 1M+ GPUs targeted by 2030 (company statements)."
+    },
+    {
+      "name": "AI factories (data-center layer)",
+      "category": "Data centers",
+      "description": "Lambda's physical footprint: 'contiguous AI factories' (75 MW+ campuses) and 'distributed AI factories' (5–75 MW metro sites), overwhelmingly leased from colocation partners today — EdgeConneX Chicago (23 MW, 600+ kW racks, RFS 2026) and Atlanta, Cologix Columbus (HGX B200, 44 kW air-cooled racks), Prime Data Centers Vernon CA (21 of 33 MW), Aligned DFW-04 Plano — plus the first owned-scale conversion in Kansas City, MO (~$500M, 24 MW at early-2026 launch, >10,000 Blackwell Ultra GPUs, scalable past 100 MW, dedicated to a single unnamed customer).",
+      "highlights": [
+        "Company-stated megawatt footprint 'multiplying by 4 between 2025-2026'",
+        "Hydrogen fuel-cell off-grid GB300 site with ECL: zero-emissions, water byproduct recycled into liquid cooling",
+        "Joined Open Compute Project January 2026; early bet on co-packaged optics"
+      ],
+      "positioning": "Colocation-heavy against Crusoe's energy-first owned campuses and CoreWeave's 1 GW+ active power — no operating Lambda site above ~100 MW potential has been documented; the gigawatt language is forward-looking.",
+      "soldThrough": "Capacity delivered through Lambda's cloud contracts; facilities leased or (Kansas City) owned.",
+      "targetSegments": [
+        "Its own cloud customers — the data-center layer is not sold standalone"
+      ],
+      "roadmap": "1 MW rack-scale designs on the AI-infrastructure roadmap; 2 GW+ vision with 1M+ GPUs by end of decade (EdgeConneX release)."
+    }
+  ],
+  "recentDevelopments": [
+    {
+      "date": "2026-08-12",
+      "category": "financial",
+      "headline": "Priced $926M senior secured Term Loan B — Baa2 (Moody's), 'first investment-grade-rated TLB by a private neocloud'; SOFR+300bps (tightened 75bps from initial ~+375 talk on a ~$917M launch per Bloomberg), fully amortizing to Dec 2030, collateralized by GPU servers and contracted cash flows for an investment-grade offtaker",
+      "read": "The debt market now prices Lambda's contracted cash flows like CoreWeave's — GPU-collateralized lending has matured from 15%-coupon exotica to investment grade in ~2 years, and the loan is explicitly tied to an NVIDIA-linked chip purchase.",
+      "source": "https://lambda.ai/blog/lambda-prices-926-million-senior-secured-term-loan-b-facility"
+    },
+    {
+      "date": "2026-05-20",
+      "category": "order-win",
+      "headline": "Hudson River Trading multi-year cloud agreement — Lambda becomes the quant firm's third compute provider",
+      "read": "First marquee non-tech-platform win of 2026; diversification evidence for the pre-IPO narrative, though value and GPU counts were not disclosed.",
+      "source": "https://lambda.ai/blog/lambda-partners-with-hudson-river-trading-to-power-quantitative-research-and-development"
+    },
+    {
+      "date": "2026-05-07",
+      "category": "financial",
+      "headline": "Closed $1B senior secured credit facility (J.P. Morgan lead, oversubscribed) — upsized ~4x from the $275M facility established August 2025",
+      "read": "The debt ladder keeps pace with contracted demand; proceeds fund next-generation NVIDIA fleet and data-center capacity.",
+      "source": "https://lambda.ai/blog/lambda-closes-1-billion-senior-secured-credit-facility"
+    },
+    {
+      "date": "2026-05-05",
+      "category": "leadership",
+      "headline": "Michel Combes (ex-Sprint/Alcatel-Lucent/SoftBank International CEO) appointed CEO; founder Stephen Balaban moves to CTO, Michael Balaban to CPO; John Donovan (ex-AT&T Communications CEO) becomes chairman",
+      "read": "A telecom-infrastructure operator installed for gigawatt-scale capex and public markets — the clearest pre-IPO professionalization signal a private company can send.",
+      "source": "https://lambda.ai/blog/lambda-assembles-leadership-team-to-power-gigawatt-scale-ai-infrastructure"
+    },
+    {
+      "date": "2026-01-09",
+      "category": "product-launch",
+      "headline": "Vera Rubin NVL72 announced as core Supercluster building block; production availability H2 2026",
+      "read": "First-wave access to NVIDIA's next rack generation keeps Lambda in the same silicon cadence as CoreWeave and Nebius.",
+      "source": "https://lambda.ai/blog/nvidias-vera-rubin-nvl72-coming-to-lambdas-superintelligence-cloud"
+    },
+    {
+      "date": "2026-01-08",
+      "category": "financial",
+      "headline": "Reported: ≥$350M Mubadala-led pre-IPO convertible priced ~20% below eventual IPO price, with extra equity/cash owed if no listing within a year; IPO timing slips from H1 to H2 2026 (The Information)",
+      "read": "A contractual forcing mechanism on the IPO clock — every quarter of delay now has an explicit cost.",
+      "source": "https://siliconangle.com/2026/01/09/ai-cloud-provider-lambda-reportedly-raising-350m-round/"
+    },
+    {
+      "date": "2025-11-18",
+      "category": "financial",
+      "headline": "Series E of over $1.5B led by TWG Global with US Innovative Technology Fund — $5.9B post-money per Forge round data (valuation never company-disclosed)",
+      "read": "Raised two weeks after the Microsoft agreement; the equity market paid up for contracted-backlog conversion, not the developer cloud.",
+      "source": "https://lambda.ai/blog/lambda-raises-over-1.5b-from-twg-global-usit-to-build-superintelligence-cloud-infrastructure"
+    },
+    {
+      "date": "2025-11-03",
+      "category": "order-win",
+      "headline": "Multibillion-dollar multi-year Microsoft agreement: Lambda deploys AI infrastructure with tens of thousands of NVIDIA GPUs including GB300 NVL72",
+      "read": "The anchor-tenant moment — though Microsoft signed ~$33B of neocloud deals in October 2025 alone (Nebius, Nscale, CoreWeave...), so Microsoft is diversifying across neoclouds while Lambda concentrates.",
+      "source": "https://lambda.ai/blog/lambda-announces-multibillion-dollar-agreement-with-microsoft-to-deploy-ai-infrastructure-powered-by-tens-of-thousands-of-nvidia-gpus"
+    },
+    {
+      "date": "2025-10-28",
+      "category": "capacity",
+      "headline": "Kansas City, MO AI factory: ~$500M conversion of a former Bank of America data-center campus — 24 MW and >10,000 Blackwell Ultra GPUs at early-2026 launch, scalable past 100 MW, dedicated to a single customer",
+      "read": "Lambda's first owned-scale site — the beginning of a shift away from pure colocation, in a state paying data-center incentives.",
+      "source": "https://lambda.ai/blog/lambda-to-build-a-100mw-ai-factory-in-kansas-city-mo"
+    },
+    {
+      "date": "2025-09-08",
+      "category": "partnership",
+      "headline": "Reported: NVIDIA signs $1.5B four-year deal to lease ~18,000 of its own GPUs back from Lambda (~$1.3B for 10,000 GB300-class + ~$200M for 8,000 older chips) — making NVIDIA Lambda's largest customer per The Information",
+      "read": "The sharpest instance of the sector's circular-financing pattern: the chip supplier is also an equity investor and now reportedly the biggest revenue line. Utilization is real but self-referential.",
+      "source": "https://www.tomshardware.com/tech-industry/artificial-intelligence/nvidia-signs-usd1-5-billion-deal-with-cloud-startup-lambda-to-rent-back-its-own-ai-chips-18-000-gpus-will-be-leased-over-4-years-as-lambda-gears-up-for-its-ipo"
+    },
+    {
+      "date": "2025-09-04",
+      "category": "financial",
+      "headline": "Reported: Morgan Stanley, J.P. Morgan and Citi hired to prepare a U.S. IPO 'as soon as H1 2026' (The Information)",
+      "read": "The IPO process began within months of CoreWeave's March 2025 listing validating neocloud multiples.",
+      "source": "https://techcrunch.com/2025/09/04/cloud-provider-lambda-may-be-gearing-up-for-an-ipo/"
+    },
+    {
+      "date": "2025-08-29",
+      "category": "other",
+      "headline": "Exited the on-prem hardware business (Vector workstations, Scalar/Hyperplane servers) after a decade; Inference API and Lambda Chat sunset weeks later",
+      "read": "All side quests cut ahead of the S-1 — Lambda chose the capital-intensive contracted-cloud lane over its diversified developer heritage.",
+      "source": "https://lambda.ai/legacy-hardware"
+    }
+  ],
+  "strategyRead": [
+    "(High confidence) We assess Lambda has executed a deliberate, near-total pivot from developer GPU cloud to contracted superintelligence infrastructure in preparation for a public listing. Basis: hardware business exited (Aug 2025), inference products sunset (Sep 2025), Microsoft and NVIDIA anchor contracts (Q4 2025), investor-relations and audit-chair appointments, and a professional CEO/CFO installed (2026) — every move since mid-2025 points the same direction.",
+    "(High confidence) We assess the NVIDIA relationship is simultaneously Lambda's moat and its largest structural risk. Basis: NVIDIA is chip supplier, Series D investor, and — per The Information — largest customer via the $1.5B leaseback; the August 2026 term loan finances an NVIDIA-tied chip purchase. The circular-financing critique applied to CoreWeave applies here with more force, because Lambda's concentration is undisclosed pending an S-1.",
+    "(Moderate confidence) We assess a 2026 IPO is contractually incentivized, not merely aspirational. Basis: the reported Mubadala convertible carries penalty terms if no listing within a year of January 2026; banks have been engaged since September 2025; timing has already slipped once (H1→H2 2026). Collection gap: no public S-1 exists as of 2026-08-21, and any filing would likely be confidential first.",
+    "(Moderate confidence) We assess the operational-quality gap versus CoreWeave is the valuation-relevant execution question. Basis: ClusterMAX held Lambda at Silver across 1.0 and 2.0 while Nebius/Crusoe/Fluidstack sit at Gold and CoreWeave alone at Platinum, citing capacity sell-outs and 'a general degree of disorganization'; Sacra pegs cloud gross margin ~61% vs CoreWeave's 74%. The Combes/Fisher/Hunter leadership import is the board's answer to exactly this.",
+    "(Moderate confidence) We assess capacity strategy is colocation-first with ownership just emerging, which caps near-term capex but also caps the power moat. Basis: EdgeConneX/Cologix/Prime/Aligned leases versus one owned conversion (Kansas City, ≤100 MW+ potential) against a stated 3 GW-by-2030 target. Collection gap: Lambda has never disclosed company-wide operating MW or GPU-fleet size — the widest disclosure gap among the major neoclouds."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "Rack-scale platforms (company-stated)",
+      "specs": [
+        {
+          "band": "Current platform",
+          "label": "GB300 NVL72",
+          "value": "72 Blackwell Ultra GPUs + 36 Grace CPUs; 37 TB fast memory; 130 TB/s NVLink switch bandwidth; 800 Gb/s per GPU multi-rack InfiniBand; ~142 kW per system"
+        },
+        {
+          "band": "Next platform",
+          "label": "Vera Rubin NVL72 (H2 2026)",
+          "value": "72 Rubin GPUs (50 PFLOPS NVFP4 each) + 36 Vera CPUs + 18 BlueField-4 DPUs; 288 GB HBM4/GPU; 260 TB/s NVLink-6 per rack; ConnectX-9 1600G SuperNICs; claimed 10x token throughput per watt vs Blackwell"
+        },
+        {
+          "band": "Networking",
+          "label": "HGX B200 fleet",
+          "value": "Quantum-2 InfiniBand 3.2 Tb/s per node with SHARP in-network aggregation"
+        }
+      ],
+      "notes": "MLPerf Training v6.0 (June 2026): Llama 3.1 8B trained in 11.59 min on GB300 NVL72 — the fastest GB300 submission, ahead of NVIDIA's own 11.75."
+    },
+    {
+      "product": "Published cloud pricing (August 2026, $/GPU-hr)",
+      "specs": [
+        {
+          "band": "On-demand",
+          "label": "Rates",
+          "value": "B200 $6.69 (8x) – $6.99 (1x); H100 SXM $3.99–4.29; GH200 $2.29; A100 80GB $2.79; V100 $0.79"
+        },
+        {
+          "band": "Reserved",
+          "label": "1-Click Clusters (2wk–1yr terms)",
+          "value": "B200 $8.87 (256+) – $9.86 (16 GPUs); H100 $5.54–6.16"
+        },
+        {
+          "band": "Commercial terms",
+          "label": "Billing & access",
+          "value": "Per-minute billing, no egress fees; Bare Metal on GB300 NVL72 via BlueField DPU zero-trust management"
+        }
+      ],
+      "notes": "Transparent published pricing is itself the differentiator — most contracted-neocloud pricing is negotiated and opaque."
+    },
+    {
+      "product": "Data-center footprint (site-level disclosures)",
+      "specs": [
+        {
+          "band": "Owned",
+          "label": "Kansas City MO (owned conversion)",
+          "value": "24 MW launch → 100 MW+ potential; >10,000 Blackwell Ultra GPUs; single customer"
+        },
+        {
+          "band": "Leased",
+          "label": "EdgeConneX Chicago",
+          "value": "23 MW single-tenant, 600+ kW rack density, hybrid liquid/air, RFS 2026; +Atlanta = 30+ MW combined"
+        },
+        {
+          "band": "Leased",
+          "label": "Other sites",
+          "value": "Prime Data Centers Vernon CA (LAX01): 21 of 33 MW leased; Cologix Columbus OH: HGX B200 at 44 kW air-cooled racks; Aligned DFW-04 Plano TX; ECL Mountain View: hydrogen fuel-cell off-grid GB300 NVL72, water byproduct recycled to liquid cooling"
+        },
+        {
+          "band": "Disclosure",
+          "label": "Totals",
+          "value": "No company-wide MW or GPU-fleet total disclosed; stated targets: 3 GW under management / 1M+ GPUs by 2030"
+        }
+      ],
+      "notes": "Colocation-heavy footprint — the landlords (EdgeConneX, Cologix, Prime, Aligned) carry most facility capex."
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Michel Combes",
+      "title": "Chief Executive Officer (May 2026)",
+      "photo": "images/execs/lambda-combes.jpg",
+      "background": [
+        "CEO, SoftBank Group International (2022–2024); President from 2020",
+        "CEO, Sprint (2018–2020, through the T-Mobile merger); CFO before that",
+        "CEO, Altice (2016–2017); CEO, Alcatel-Lucent (2013–2015); CEO, Vodafone Europe (2008–2012)",
+        "Chairman & CEO, Brightspeed (2024–2026) immediately before Lambda; École Polytechnique + Télécom ParisTech",
+        "Hired explicitly to scale Lambda to 3 GW under management by 2030"
+      ]
+    },
+    {
+      "name": "Stephen Balaban",
+      "title": "Co-founder & Chief Technology Officer (CEO 2012–May 2026)",
+      "photo": "images/execs/lambda-sbalaban.jpg",
+      "background": [
+        "Founded Lambda 2012 out of a Mission District hackerspace; led it from face-recognition apps through GPU workstations to the cloud pivot",
+        "First engineering hire at Perceptio (on-device deep learning; acquired by Apple, 2015)",
+        "University of Michigan, Computer Science & Economics; research published in NeurIPS and SPIE",
+        "Now owns technology strategy, product vision, and architecture"
+      ]
+    },
+    {
+      "name": "Michael Balaban",
+      "title": "Co-founder & Chief Product Officer (CTO until May 2026)",
+      "photo": "images/execs/lambda-mbalaban.jpg",
+      "background": [
+        "Co-founded Lambda 2012 with brother Stephen; scaled the technology foundation from the earliest days",
+        "Moved from CTO to CPO in the May 2026 leadership overhaul; leads product execution"
+      ]
+    },
+    {
+      "name": "Charles Fisher",
+      "title": "Chief Financial Officer (February 2026)",
+      "photo": "images/execs/lambda-fisher.jpg",
+      "background": [
+        "CFO, Turo (through its IPO preparation era)",
+        "Senior finance executive, Charter Communications",
+        "Owns the debt ladder ($1B facility, $926M TLB) and the IPO process"
+      ]
+    },
+    {
+      "name": "John Donovan",
+      "title": "Chairman of the Board (May 2026)",
+      "background": [
+        "CEO, AT&T Communications (2017–2019); AT&T CTO and Group President, Technology & Operations before that",
+        "Chairs the board through the planned listing; joined alongside Vice Chairman Jerry Hunter (ex-Snap COO, early AWS infrastructure)"
+      ]
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "type": "reported-private (no audited public statements; third-party figures attributed)",
+    "periods": [
+      {
+        "period": "FY2024 – FY-Sep-2025 (third-party reported)",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "2024 ~$425M (+~70%, Contrary Research); FY ended Sep 2025 >$520M with Q3 sales +80% YoY (The Information); ~$760M annualized exiting 2025 (Sacra estimate)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "Cloud passed hardware in mid-2024; hardware exited Aug 2025 — the revenue base is now entirely cloud"
+          },
+          {
+            "name": "Profitability",
+            "actual": "~$175M trailing-twelve-month net loss (The Information, Jan 2026); cloud gross margin ~61% vs CoreWeave ~74% (Sacra estimates)",
+            "expected": "",
+            "verdict": "miss",
+            "result": "Loss-making with thinner unit economics than the category leader"
+          }
+        ],
+        "commentary": "Expectations honesty: Lambda publishes no financials and no analyst consensus exists — every figure here is The Information's reporting or Sacra/Contrary estimates, attributed as such. The S-1 will be the first audited look."
+      },
+      {
+        "period": "Valuation & capital trajectory",
+        "metrics": [
+          {
+            "name": "Priced equity rounds",
+            "actual": "$1.5B (Series C $320M, Feb 2024) → ~$2.5B (Series D $480M, Feb 2025, NVIDIA/ARK/In-Q-Tel participating) → $5.9B post (Series E >$1.5B, Nov 2025, TWG Global lead — per Forge round data)",
+            "expected": "",
+            "verdict": "beat",
+            "result": "~$2.36B total equity raised; Forge secondary at $39.32/share (2026-08-21) sits ~22% above the $32.27 Series E price"
+          },
+          {
+            "name": "Debt ladder",
+            "actual": "$500M Macquarie GPU-backed facility (Apr 2024, the sector's first) → $275M JPMorgan (Aug 2025) → $1B secured facility (May 2026, oversubscribed) → $926M TLB at Baa2/SOFR+300 (Aug 2026)",
+            "expected": "",
+            "verdict": "beat",
+            "result": "The first private neocloud with an investment-grade-rated term loan — the same coupon-compression arc CoreWeave traveled, compressed into two years"
+          },
+          {
+            "name": "Pre-IPO convertible",
+            "actual": "≥$350M Mubadala-led notes (reported Jan 2026) priced ~20% below eventual IPO, penalties if no listing within a year",
+            "expected": "",
+            "verdict": "inline",
+            "result": "Reported H2 2026 listing window; Morgan Stanley/J.P. Morgan/Citi engaged since Sep 2025; no public S-1 as of 2026-08-21"
+          }
+        ],
+        "commentary": "The capital structure tells the strategy: equity for land-grab speed, GPU-collateralized debt matched to contracted cash flows from a concentrated customer set (NVIDIA leaseback, Microsoft). Fully-amortizing structures mean the debt only works if the contracts pay to term."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Lambda — $926M Term Loan B priced (Baa2, first IG-rated private-neocloud TLB)",
+      "url": "https://lambda.ai/blog/lambda-prices-926-million-senior-secured-term-loan-b-facility",
+      "date": "2026-08-12"
+    },
+    {
+      "label": "Bloomberg (via Yahoo Finance) — Lambda taps loan market for NVIDIA-tied chip deal",
+      "url": "https://finance.yahoo.com/technology/ai/articles/ai-cloud-provider-lambda-taps-144447179.html",
+      "date": "2026-08-10"
+    },
+    {
+      "label": "Lambda — MLPerf Training v6.0 fastest GB300 NVL72 LLM training",
+      "url": "https://lambda.ai/blog/mlperf-training-v6.0-lambda-delivers-fastest-llm-training",
+      "date": "2026-06-16"
+    },
+    {
+      "label": "Lambda — Bare Metal Instances launch",
+      "url": "https://lambda.ai/blog/lambda-bare-metal-instances",
+      "date": "2026-05-21"
+    },
+    {
+      "label": "Lambda — Hudson River Trading partnership",
+      "url": "https://lambda.ai/blog/lambda-partners-with-hudson-river-trading-to-power-quantitative-research-and-development",
+      "date": "2026-05-20"
+    },
+    {
+      "label": "Lambda — $1B senior secured credit facility closed",
+      "url": "https://lambda.ai/blog/lambda-closes-1-billion-senior-secured-credit-facility",
+      "date": "2026-05-07"
+    },
+    {
+      "label": "Lambda — leadership team announcement (Combes CEO)",
+      "url": "https://lambda.ai/blog/lambda-assembles-leadership-team-to-power-gigawatt-scale-ai-infrastructure",
+      "date": "2026-05-05"
+    },
+    {
+      "label": "Bloomberg — Lambda taps former Sprint CEO as new leader",
+      "url": "https://www.bloomberg.com/news/articles/2026-05-05/ai-cloud-provider-lambda-taps-former-sprint-ceo-as-new-leader",
+      "date": "2026-05-05"
+    },
+    {
+      "label": "SiliconANGLE — Lambda reportedly raising $350M pre-IPO convertible (The Information)",
+      "url": "https://siliconangle.com/2026/01/09/ai-cloud-provider-lambda-reportedly-raising-350m-round/",
+      "date": "2026-01-09"
+    },
+    {
+      "label": "Lambda — Vera Rubin NVL72 coming to the Superintelligence Cloud",
+      "url": "https://lambda.ai/blog/nvidias-vera-rubin-nvl72-coming-to-lambdas-superintelligence-cloud",
+      "date": "2026-01-09"
+    },
+    {
+      "label": "TechCrunch — Lambda raises $1.5B after multibillion-dollar Microsoft deal",
+      "url": "https://techcrunch.com/2025/11/18/ai-data-center-provider-lambda-raises-whopping-1-5b-after-multibillion-dollar-microsoft-deal/",
+      "date": "2025-11-18"
+    },
+    {
+      "label": "Lambda — Series E announcement (TWG Global / USIT)",
+      "url": "https://lambda.ai/blog/lambda-raises-over-1.5b-from-twg-global-usit-to-build-superintelligence-cloud-infrastructure",
+      "date": "2025-11-18"
+    },
+    {
+      "label": "SemiAnalysis — ClusterMAX 2.0 ratings (Lambda: Silver)",
+      "url": "https://newsletter.semianalysis.com/p/clustermax-20-the-industry-standard",
+      "date": "2025-11-06"
+    },
+    {
+      "label": "Lambda — Microsoft multibillion-dollar agreement",
+      "url": "https://lambda.ai/blog/lambda-announces-multibillion-dollar-agreement-with-microsoft-to-deploy-ai-infrastructure-powered-by-tens-of-thousands-of-nvidia-gpus",
+      "date": "2025-11-03"
+    },
+    {
+      "label": "Lambda — Kansas City 100 MW AI factory",
+      "url": "https://lambda.ai/blog/lambda-to-build-a-100mw-ai-factory-in-kansas-city-mo",
+      "date": "2025-10-28"
+    },
+    {
+      "label": "Contrary Research — Lambda business breakdown",
+      "url": "https://research.contrary.com/company/lambda",
+      "date": "2025-10-30"
+    },
+    {
+      "label": "Lambda — hydrogen-powered GB300 NVL72 with ECL",
+      "url": "https://lambda.ai/blog/lambda-ecl-bring-first-hydrogen-powered-nvidia-gb300-nvl72-systems-online",
+      "date": "2025-09-23"
+    },
+    {
+      "label": "Tom's Hardware — NVIDIA $1.5B leaseback of ~18,000 GPUs from Lambda (The Information)",
+      "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/nvidia-signs-usd1-5-billion-deal-with-cloud-startup-lambda-to-rent-back-its-own-ai-chips-18-000-gpus-will-be-leased-over-4-years-as-lambda-gears-up-for-its-ipo",
+      "date": "2025-09-08"
+    },
+    {
+      "label": "TechCrunch — Lambda may be gearing up for an IPO (banks hired)",
+      "url": "https://techcrunch.com/2025/09/04/cloud-provider-lambda-may-be-gearing-up-for-an-ipo/",
+      "date": "2025-09-04"
+    },
+    {
+      "label": "EdgeConneX — Chicago AI factory with Lambda (23 MW, 600+ kW racks)",
+      "url": "https://www.edgeconnex.com/news/press-releases/edgeconnex-and-lambda-to-build-ai-factory-in-chicago-with-industry-leading-high-density-data-center-infrastructure/",
+      "date": "2025-08-21"
+    },
+    {
+      "label": "CNBC — Lambda raises $480M Series D, NVIDIA among investors",
+      "url": "https://www.cnbc.com/2025/02/19/ai-cloud-startup-lambda-raises-480-million-in-new-round-nvidia-among-investors.html",
+      "date": "2025-02-19"
+    },
+    {
+      "label": "Lambda — GPU cloud pricing",
+      "url": "https://lambda.ai/pricing"
+    },
+    {
+      "label": "Lambda — Superclusters",
+      "url": "https://lambda.ai/superclusters"
+    },
+    {
+      "label": "Lambda — legacy hardware wind-down notice",
+      "url": "https://lambda.ai/legacy-hardware"
+    },
+    {
+      "label": "ClusterMAX by SemiAnalysis — Lambda cloud review",
+      "url": "https://www.clustermax.ai/cloudreview/lambda"
+    },
+    {
+      "label": "Forge Global — Lambda IPO timeline and round data",
+      "url": "https://forgeglobal.com/lambda_ipo/"
+    },
+    {
+      "label": "Sacra — Lambda revenue, valuation & funding estimates",
+      "url": "https://sacra.com/c/lambda-labs/"
+    }
+  ],
+  "lastUpdated": "2026-08-22",
+  "profileVersion": 2
+}

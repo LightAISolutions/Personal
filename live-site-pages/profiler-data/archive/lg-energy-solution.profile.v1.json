@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 2,
+  "slug": "lg-energy-solution",
+  "name": "LG Energy Solution, Ltd. (LG에너지솔루션)",
+  "shortName": "LG Energy Solution",
+  "categories": ["supplier"],
+  "website": "https://www.lgensol.com",
+  "headquarters": "Seoul, South Korea",
+  "founded": 2020,
+  "employees": "32,760 (11,974 domestic / 20,786 overseas; company-reported)",
+  "ownership": { "type": "public", "ticker": "KRX: 373220" },
+  "summary": "BOTTOM LINE UP FRONT: LG Energy Solution is executing the sharpest EV-to-ESS pivot among the Korean cell makers — ESS revenue grew ~4.6x YoY in H1 2026 to the high-20% of revenue, anchored by North American manufacturing that Chinese rivals cannot match under FEOC rules — but profitability remains dependent on US production tax credits, with operating losses ex-credits in most recent quarters. BACKGROUND: Spun off from LG Chem in December 2020 (battery heritage to 1947), Seoul-based LGES is the world's #3 EV battery maker (9.2% share in 2025 per SNE Research). It makes pouch (NCMA, and new LFP/mid-nickel lines) and cylindrical (2170, 46-Series) cells, ESS cells-to-containers, and runs LG Energy Solution Vertech, a US turnkey BESS system integrator. Production sites in 6 countries; 100,000+ battery patents claimed.",
+  "ecosystemRole": "We assess LGES as the ecosystem's premier non-Chinese ESS supply chain: five North American ESS production sites targeting ~50 GWh of NA cell output by end-2026 (global >60 GWh, >80% NA), a 140 GWh ESS order backlog (end-2025), and the Vertech integration arm delivering turnkey BESS. Its own strategy deck frames the growth market as AI data centers explicitly — BESS + UPS + BBU — claiming it is the only supplier serving all three AI-DC storage applications with a non-FEOC supply chain. H1 2026 ESS shipments grew +357% YoY (SNE), with ~86% going to North America.",
+  "productsAndServices": [
+    {
+      "name": "ESS Batteries & Systems (cells → containers)",
+      "category": "Energy storage · ~high-20% of H1 2026 revenue and rising",
+      "description": "Grid, C&I, UPS, and residential storage: pouch LFP cells (JF1 56.6 Ah; JF2 159.2 Ah — US production from Q1 2026; JF3 >500 Wh next), NCM JH4 cells, containerized DC systems (JF1 DC LINK 2.4 at 2.45 MWh; JH4 DC LINK 2.8 at 2.86 MWh), and RESU/enblock residential lines. Roadmap: North-America-made prismatic LFP prototypes, a next-gen LFP product with 15% total-cost reduction shipping from 2028 (already contracted), and sodium-ion ESS samples to customers in 2027.",
+      "highlights": [
+        "ESS order backlog 140 GWh at end-2025; 2026 targets: >90 GWh of new ESS orders and >60 GWh of ESS cell capacity (>80% North American)",
+        "Tesla Megapack 3 LFP cell supplier — $4.3B deal, production from 2027 at Lansing, MI (confirmed via US government filings, March 2026); company cites 12% higher energy density and up to 15,000 cycles",
+        "H1 2026: >KRW 3T of new ESS contracts including AI-data-center deals; ESS revenue ~4.6x YoY",
+        "DTE Energy (Michigan): 6 GWh/1.5 GW across 8 projects — grid buildout serving the Oracle-managed OpenAI data center; PGE (Poland) 981 MWh from the Wrocław plant"
+      ],
+      "positioning": "Globally #11 in H1 2026 ESS battery shipments (2.6% share) but the fastest-growing top-tier player (+357% YoY, SNE) and #2 in North America exposure terms (13.6% NA share vs CATL 38.8%, Hithium 17.2%). The wedge is regulatory: FEOC/tariff rules push US buyers toward non-Chinese cells that only Korean suppliers make locally at scale.",
+      "soldThrough": "Direct cell/container supply to integrators and utilities; turnkey via Vertech; residential via installer channel",
+      "targetSegments": "US utilities and developers, AI data-center infrastructure (BESS/UPS/BBU), European grid (PGE), residential",
+      "roadmap": "JF2 US production Q1 2026 · prismatic LFP prototypes · 2028 next-gen LFP (−15% total cost) · sodium-ion samples 2027"
+    },
+    {
+      "name": "LG Energy Solution Vertech (US BESS integrator)",
+      "category": "System integration · Westborough, MA",
+      "description": "Formed from the 2022 NEC Energy Solutions acquisition: turnkey grid-scale BESS — DC containers, integration, EPC coordination, O&M, system-level warranty ('one contact, one contract') — plus the AEROS software suite (controls, cloud analytics, AI/ML optimization, digital twin). Claims 19 GWh of US projects installed/under construction/contracted.",
+      "highlights": [
+        "Deal pipeline: DTE 6 GWh · Excelsior Energy Capital 7.5 GWh · Terra-Gen 8 GWh · Qcells EPC 5 GWh (2028–2030, Holland MI cells)",
+        "Vertech is how LGES captures the integration margin its cell rivals leave to Fluence/Tesla-class players"
+      ],
+      "positioning": "Directly competes with the app's covered integrators (Fluence, Tesla, FlexGen) while the parent supplies cells to some of them — a dual role unique in the covered set",
+      "soldThrough": "Turnkey contracts with utilities and IPPs",
+      "targetSegments": "US utility-scale storage owners"
+    },
+    {
+      "name": "EV Batteries (pouch + cylindrical 46-Series)",
+      "category": "Automotive · largest but pressured segment",
+      "description": "NCMA pouch cells (E101A: 101.8 Ah, 637 Wh/L) and cylindrical 2170/46-Series (4680/4695/46100/46110/46120 — tabless, high-nickel + silicon, dry-electrode process). New 'affordable' LFP/high-voltage mid-nickel pouch line in mass production from Q1 2026. JV network: Ultium Cells (GM), NextStar (Stellantis — LGES taking 100% ownership, Feb 2026, with ESS flexibility), L-H Battery (Honda), plus Arizona 46-Series fab starting late 2026.",
+      "highlights": [
+        "46-Series order backlog >440 GWh (April 2026), including >100 GWh of new orders in Q1 2026 — the strongest cylindrical book outside Tesla's own supply",
+        "Customer set: Tesla, GM, Hyundai, VW, Honda, Stellantis; ~KRW 13.5T of contracts cancelled in the downturn (Ford ~9.6T, Freudenberg 3.9T)",
+        "GM LMR (lithium-manganese-rich) co-development announced May 2025; sulfur-cathode solid-state demonstrated March 2026"
+      ],
+      "positioning": "#3 global EV battery share (9.2% in 2025, down from 10.9%) — the largest share decline among top players as Chinese makers grow faster even outside China; #2 ex-China",
+      "soldThrough": "OEM JVs and direct supply agreements",
+      "targetSegments": "US/EU/Korean EV OEMs; robotics and LEV via cylindrical",
+      "roadmap": "Arizona 46-Series fab late 2026; capex cut >40% in 2026 as EV lines convert to ESS"
+    }
+  ],
+  "recentDevelopments": [
+    { "date": "2026-07-30", "category": "financial", "headline": "Q2 2026: revenue KRW 7.56T, operating profit KRW 113.3B — but a large miss vs LSEG consensus (~KRW 249B); ex-AMPC it was a ~KRW 128B loss", "read": "The profit snapped a two-quarter loss streak on ESS strength, yet the miss and credit-dependence show the pivot is buying growth before margin.", "source": "https://www.prnewswire.com/news-releases/lg-energy-solution-releases-2026-second-quarter-financial-results-302838408.html" },
+    { "date": "2026-05-27", "category": "order-win", "headline": "Vertech–DTE Energy: 6 GWh / 1.5 GW of Michigan BESS over 2 years, domestic-content-compliant", "read": "Grid storage sold on the back of AI load — the projects support the grid serving the Oracle-managed OpenAI data center in Saline Township.", "source": "https://www.prnewswire.com/news-releases/lg-energy-solution-vertech-announces-agreement-with-dte-energy-for-6gwh-of-battery-energy-storage-systems-302783737.html" },
+    { "date": "2026-05-08", "category": "partnership", "headline": "Confirmed as Tesla's Megapack 3 LFP cell supplier ($4.3B; Lansing MI production from 2027)", "read": "Eight months of 'mystery buyer' speculation resolved — a structural win: Tesla onshoring Megapack cells to a Korean supplier is the FEOC thesis in action.", "source": "https://inside.lgensol.com/en/2026/05/what-makes-lg-energy-solutions-ess-batteries-different-as-tesla-ess-partner/" },
+    { "date": "2026-04-30", "category": "financial", "headline": "Q1 2026: operating loss KRW 207.8B on ESS ramp-up costs and collapsed NA pouch EV sales; >100 GWh of new 46-Series orders", "read": "The quarter that shows both faces of the pivot: losses from converting lines to ESS while the cylindrical EV book quietly hit records.", "source": "https://inside.lgensol.com/en/2026/04/lg-energy-solution-releases-2026-first-quarter-financial-results/" },
+    { "date": "2026-02-06", "category": "partnership", "headline": "Taking full ownership of NextStar Energy (Windsor, Canada) from the Stellantis JV", "read": "JV consolidation gives LGES flexibility to point Canadian capacity at ESS — the same conversion logic as Tennessee and the Honda JV lines.", "source": "https://inside.lgensol.com/en/2026/02/lg-energy-solution-to-acquire-full-ownership-of-nextstar-energy-in-joint-strategic-decision-with-stellantis/" },
+    { "date": "2026-01-29", "category": "financial", "headline": "FY2025: revenue KRW 23.7T (−7.6%, missing its own +5–10% guidance); operating profit KRW 1.35T (+134%); ESS backlog 140 GWh", "read": "Top-line miss, profit rebound on credits and mix — the FY2026 plan (capex −40%, ESS-led growth) formalizes the strategic rotation.", "source": "https://inside.lgensol.com/en/2026/01/lg-energy-solution-releases-2025-financial-results/" },
+    { "date": "2025-09-04", "category": "regulatory", "headline": "ICE raid at the HL-GA (Hyundai–LGES) Georgia JV site: ~475 detained, construction halted, restart pushed to H1 2026", "read": "A months-long setback and a chill on Korean US investment sentiment — operational risk in the US footprint is now political, not just industrial.", "source": "https://www.cbsnews.com/news/hyundai-georigia-ice-raid-450-detained-electric-vehicles-batteries/" },
+    { "date": "2025-03-25", "category": "order-win", "headline": "981 MWh grid ESS for Poland's PGE (Żarnowiec) — first grid-scale ESS cells from the Wrocław plant", "read": "The European ESS beachhead: EU grid demand served from EU manufacturing mirrors the NA playbook.", "source": "https://inside.lgensol.com/en/2025/03/lg-energy-solution-secures-grid-scale-ess-supply-agreement-in-europe-with-polands-pge/" }
+  ],
+  "strategyRead": [
+    "(High confidence) We assess LGES is converting EV overcapacity into an ESS franchise faster than any peer: EV JV lines (Ultium Tennessee, Honda JV, NextStar) are being pointed at ESS cells, capex is cut >40% for 2026, and ESS went from single-digit to high-20% of revenue in a year. Basis: company disclosures and SNE shipment data (+357% YoY H1 2026).",
+    "(High confidence) We assess the durable advantage is regulatory, not technical: FEOC/tariff rules and domestic-content credits make LGES's five-site North American ESS network the default non-Chinese supply chain for US storage — the Tesla Megapack 3 contract and DTE/Qcells/Excelsior pipeline are direct evidence.",
+    "(Moderate confidence) We assess profitability quality is the central vulnerability: consensus misses in 3 of the last 4 reported quarters, and ex-AMPC operating losses in most quarters from Q4 2024 through Q2 2026 — the equity story currently rests on US production credits persisting and ESS margin maturing before credits taper.",
+    "(Moderate confidence) We assess the AI data-center thesis is explicit company strategy, not narrative garnish: the IR deck names AI-DC expansion (UPS/BBU scale-up, grid-bottleneck-driven BESS) as the demand driver and claims unique coverage of all three AI-DC storage applications — H1 2026's >KRW 3T of ESS contracts 'including AI DC' begins to corroborate it.",
+    "(Low confidence) The reported Google Steel River supply role (~2.9 GWh, per Seoul Economic Daily citing industry sources) is not company-confirmed — treat as unverified until disclosed."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "ESS cell & container lineup",
+      "specs": [
+        { "label": "JF2 LFP pouch cell", "value": "159.2 Ah · 509.4 Wh · 388.4 Wh/L · production: China Q3'25, Poland Q4'25, USA Q1'26" },
+        { "label": "JF1 LFP pouch cell", "value": "56.6 Ah · 182.25 Wh · 320.4 Wh/L" },
+        { "label": "JH4 DC LINK 2.8 container", "value": "2,860 kWh · 1,008–1,411 V · 29 t (NCM)" },
+        { "label": "JF1 DC LINK 2.4 container", "value": "2,453.8 kWh · 1,020–1,489 V · 29 t (LFP)" },
+        { "label": "Tesla Megapack 3 cells", "value": "LFP, company-cited 12% higher energy density, up to 15,000 cycles; Lansing MI from 2027" }
+      ],
+      "notes": "Company spec-sheet figures (2024–2026). Roadmap: JF3 >500 Wh pouch, NA prismatic LFP prototypes, 2028 next-gen LFP at −15% total cost, sodium-ion samples 2027."
+    },
+    {
+      "product": "46-Series cylindrical EV cells",
+      "specs": [
+        { "label": "Formats", "value": "4680 / 4695 / 46100 / 46110 / 46120 — tabless, high-Ni NCMA + silicon, directional venting" },
+        { "label": "Order backlog", "value": ">440 GWh (April 2026), incl. >100 GWh new in Q1 2026" },
+        { "label": "Production", "value": "4695 at Ochang; Arizona 46-Series fab from late 2026" }
+      ]
+    }
+  ],
+  "decisionMakers": [
+    { "name": "Kim Dong-Myung (김동명)", "title": "Executive President & CEO", "photo": "images/execs/lg-energy-solution-myung.png", "background": ["CEO — LG Energy Solution (term Mar 2024–Mar 2027)", "Former Head of the Advanced Automotive Battery Division"] },
+    { "name": "Lee Chang Sil", "title": "Executive Vice President & CFO", "photo": "images/execs/lg-energy-solution-sil.png", "background": ["CFO — LG Energy Solution (board term Dec 2020–Mar 2028)", "Former Senior Vice President — LG Chem"] },
+    { "name": "Hyung Kim", "title": "Head of ESS Battery Division", "background": ["Leads the ESS business through the AI-DC pivot; quoted on the PGE and ESS strategy announcements"] },
+    { "name": "Jaehong Park", "title": "CEO & President, LG Energy Solution Vertech", "background": ["Runs the US turnkey BESS integration subsidiary (ex-NEC Energy Solutions)"] }
+  ],
+  "financials": {
+    "currency": "KRW",
+    "type": "public",
+    "periods": [
+      { "period": "Q2 2026 (latest interim)", "metrics": [ { "name": "Revenue", "actual": "7.56T (+15.3% QoQ)", "expected": "", "verdict": "inline", "result": "H1 2026 revenue 14.1T (+10% YoY)" }, { "name": "Operating profit", "actual": "113.3B (1.5% margin)", "expected": "~249B (LSEG SmartEstimate)", "verdict": "miss", "result": "~55% below consensus; ex-AMPC (241B credit) a ~128B loss" }, { "name": "ESS share of revenue", "actual": "high-20% (×4.6 YoY H1)", "expected": "", "verdict": "beat", "result": ">KRW 3T new ESS contracts in H1 incl. AI-DC deals" } ], "commentary": "Snapped a two-quarter loss streak on ESS and European EV recovery; profitability remains AMPC-dependent. Q1 2026 was a 207.8B operating loss on ESS ramp costs and weak NA pouch EV sales." },
+      { "period": "FY2025", "metrics": [ { "name": "Revenue", "actual": "23.67T (−7.6%)", "expected": "Own guidance: +5–10%", "verdict": "miss", "result": "missed its own growth guidance" }, { "name": "Operating profit", "actual": "1.346T (+133.9%)", "expected": "Q4: loss 122B vs LSEG loss ~77B", "verdict": "miss", "result": "Q4 ex-AMPC loss 454.8B" }, { "name": "ESS order backlog", "actual": "140 GWh (end-2025)", "expected": "", "verdict": "inline", "result": "2026 target: >90 GWh new ESS orders" } ], "commentary": "~KRW 13.5T of EV contracts cancelled during the period (Ford ~9.6T, Freudenberg 3.9T). Restated FY2025 under the 2026 accounting change (NA incentives into revenue): revenue 25.3T, OP 1.35T, incentives 1.65T." },
+      { "period": "FY2024", "metrics": [ { "name": "Revenue", "actual": "25.6T (−24.1%)", "expected": "", "verdict": "miss", "result": "EV demand slump year" }, { "name": "Operating profit", "actual": "575.4B (−73.4%)", "expected": "Q4 consensus: ~16.4B profit; actual: 225.5B loss", "verdict": "miss", "result": "Q4 ex-credit loss 602.8B" } ], "commentary": "The trough that triggered the capex retrenchment (−20–30% for 2025, then >40% cut for 2026) and the ESS pivot." }
+    ],
+    "commentary": "Global EV battery share 9.2% in 2025 (#3, down from 10.9% — the largest decline among top players, SNE Research); #2 ex-China. ESS: #11 globally in H1 2026 (2.6%) but fastest-growing top-tier player, ~86% of shipments to North America (13.6% NA share). Quarterly AMPC (45X) credits disclosed: 377.3B (Q4'24) → 332.8B (Q4'25) → 189.8B (Q1'26) → 241B (Q2'26)."
+  },
+  "sources": [
+    { "label": "CnEVPost — SNE H1 2026 global ESS battery share", "url": "https://cnevpost.com/2026/08/04/global-ess-battery-market-share-h1-2026/", "date": "2026-08-04" },
+    { "label": "LGES — Q2 2026 financial results", "url": "https://www.prnewswire.com/news-releases/lg-energy-solution-releases-2026-second-quarter-financial-results-302838408.html", "date": "2026-07-30" },
+    { "label": "LGES — Q2 2026 IR deck (AI-DC ESS strategy)", "url": "https://www.lgensol.com/upload/file/irEvent/26_2Q_LGES_business_performance_F_EN.pdf", "date": "2026-07-30" },
+    { "label": "Seoul Economic Daily — reported Google Steel River role (unconfirmed)", "url": "https://en.sedaily.com/finance/2026/07/16/lg-energy-solution-wins-google-energy-project-as-big-tech", "date": "2026-07-16" },
+    { "label": "LGES Vertech — DTE Energy 6 GWh agreement", "url": "https://www.prnewswire.com/news-releases/lg-energy-solution-vertech-announces-agreement-with-dte-energy-for-6gwh-of-battery-energy-storage-systems-302783737.html", "date": "2026-05-27" },
+    { "label": "LGES — Tesla ESS partner explainer (Megapack 3 cells)", "url": "https://inside.lgensol.com/en/2026/05/what-makes-lg-energy-solutions-ess-batteries-different-as-tesla-ess-partner/", "date": "2026-05-08" },
+    { "label": "LGES — Q1 2026 financial results", "url": "https://inside.lgensol.com/en/2026/04/lg-energy-solution-releases-2026-first-quarter-financial-results/", "date": "2026-04-30" },
+    { "label": "Electrek — Tesla confirmed as $4.3B LFP buyer", "url": "https://electrek.co/2026/03/17/tesla-lg-energy-solution-4-3-billion-lfp-battery-deal-megapack-confirmed/", "date": "2026-03-17" },
+    { "label": "CnEVPost — SNE 2025 global EV battery share", "url": "https://cnevpost.com/2026/02/04/global-ev-battery-market-share-2025/", "date": "2026-02-04" },
+    { "label": "LGES — FY2025 financial results", "url": "https://inside.lgensol.com/en/2026/01/lg-energy-solution-releases-2025-financial-results/", "date": "2026-01-29" },
+    { "label": "CBS — Georgia HL-GA plant ICE raid", "url": "https://www.cbsnews.com/news/hyundai-georigia-ice-raid-450-detained-electric-vehicles-batteries/", "date": "2025-09-04" },
+    { "label": "LGES Vertech — Excelsior 7.5 GWh projects", "url": "https://lgensol-vt.com/lg-energy-solution-vertech-to-deliver-7-5-gwh-of-integrated-u-s-energy-storage-projects-for-excelsior-energy-capital/", "date": "2025-06" },
+    { "label": "LGES — PGE Poland 981 MWh grid ESS", "url": "https://inside.lgensol.com/en/2025/03/lg-energy-solution-secures-grid-scale-ess-supply-agreement-in-europe-with-polands-pge/", "date": "2025-03-25" },
+    { "label": "Utility Dive — Arizona ESS plant pause", "url": "https://www.utilitydive.com/news/lg-pauses-arizona-battery-plant-energy-storage-queen-creek/720416/", "date": "2024-07" },
+    { "label": "LGES — cell spec sheet (2024)", "url": "https://www.lgensol.com/assets/file/LGES_spec_sheet_cells_2024.pdf" }
+  ],
+  "lastUpdated": "2026-08-09",
+  "profileVersion": 1
+}

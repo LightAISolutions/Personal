@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "slug": "flexgen",
+  "name": "FlexGen Power Systems, Inc.",
+  "shortName": "FlexGen",
+  "categories": ["integrator"],
+  "website": "https://www.flexgen.com",
+  "headquarters": "Durham, North Carolina, USA",
+  "founded": 2009,
+  "employees": "~300–500 (2026, conflicting third-party estimates; no company figure published)",
+  "ownership": { "type": "private" },
+  "summary": "FlexGen is a software-first battery energy storage integrator providing the HybridOS energy management system, engineering/integration, and lifecycle services for grid-scale storage. Founded in 2009 as a military hybrid-power hardware company (founder Josh Prueher), it pivoted to utility-scale storage integration and, after 2023, to a software-and-services model. In August 2025 it acquired the assets of bankrupt rival Powin ($36M stalking-horse bid: hardware/software IP, IT systems, spare parts), in April 2026 it acquired commissioning firm Clean Energy Services, and in June 2026 it launched European operations. Backed by Apollo Global Management ($150M, 2021), Vitol (anchored the $100M Series C, 2022), and Altira Group.",
+  "ecosystemRole": "US-centric BESS integrator positioned around hardware-agnostic software and services rather than factory-built AC blocks: 25+ GWh across 200+ energy storage systems in 10+ countries under software and services after the Powin acquisition (company-reported). Historically claimed the #2 US storage-technology-provider spot and ~80% Texas share (2022, company claim, dated). Services the ex-Powin fleet and offers migration to HybridOS; European projects secured in the UK, Finland, and Sweden (2026).",
+  "productsAndServices": [
+    {
+      "name": "HybridOS energy management system",
+      "category": "Software / EMS",
+      "description": "Hardware-agnostic site-controls platform for single sites and multi-site fleets, with modules for EMS, battery-health analytics (HybridOS Analyze), and BMS control. HybridOS v13 (Feb 2026) added a unified real-time/historical UI, a historian data API, a fleet-view mobile app, predictive diagnostics, and native CAN BMS support.",
+      "highlights": ["Four control packages: ESS Block, Storage, Merchant, Renewables"]
+    },
+    {
+      "name": "Solar power plant controller",
+      "category": "Software / controls",
+      "description": "HybridOS extension controlling solar arrays, trackers, MET stations, capacitor banks, and solar shedding for hybrid solar-plus-storage plants; announced with the v13 release.",
+      "highlights": []
+    },
+    {
+      "name": "Integration services",
+      "category": "Engineering & delivery",
+      "description": "Engineering, procurement, and commissioning for grid-scale BESS. Flagship reference: ~2.15 GWh integrated for Ameresco at three Southern California Edison substations on an emergency timeline (2021–22); 2 GWh for Vitol's VC Renewables; a 10 GWh multi-year battery supply agreement signed with CATL (2022).",
+      "highlights": ["Data-center angle: 'BESSUPS' utility-scale battery backup solution for data centers with Rosendin (June 2025)"]
+    },
+    {
+      "name": "Lifecycle services & remote operations",
+      "category": "Services / O&M",
+      "description": "24/7 Remote Operations Center in Durham providing monitoring, root-cause analysis, field-service dispatch, and augmentation planning; the company claims 99% site-level availability when software is combined with lifecycle services (unverified marketing claim).",
+      "highlights": []
+    },
+    {
+      "name": "Powin fleet servicing & CES commissioning",
+      "category": "Services / acquisitions",
+      "description": "Continuing support for the ex-Powin fleet (IP, IT systems, spare parts, and former Powin staff acquired Aug 2025) with migration paths to HybridOS. Subsidiary Clean Energy Services (acquired Apr 2026) has commissioned 15+ GWh of BESS and services 4.5+ GWh of battery sites as an authorized service provider.",
+      "highlights": []
+    }
+  ],
+  "technicalSpecs": [
+    {
+      "product": "HybridOS platform — published capability profile",
+      "specs": [
+        { "label": "Hardware compatibility", "value": "Hardware-agnostic — company states compatibility with \"any hardware that sends or receives a signal\"; no published list of supported OEMs or protocols" },
+        { "label": "Scale under management", "value": "25+ GWh · 200+ systems · 10+ countries (software and services, company-reported, post-Powin)" },
+        { "label": "Modules", "value": "HybridOS EMS · HybridOS Analyze (battery health) · HybridOS Control BMS · Solar PPC" },
+        { "label": "Availability claim", "value": "99% site-level availability with lifecycle services (company marketing claim, not independently verified)" },
+        { "label": "Certifications", "value": "No published cybersecurity certifications found (IEC 62443 / SOC 2 / NERC CIP not documented); UL testing and VDE prototype certification in progress for the German market (June 2026, company-reported)" }
+      ],
+      "notes": "FlexGen no longer publishes reference hardware-block specs — the FlexPod line predates the software-first pivot. Absences above are explicit findings, not omissions."
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Kelcy Pegler",
+      "title": "Chief Executive Officer (since March 2021)",
+      "linkedin": "https://www.linkedin.com/in/kelcy-pegler-6873991b/",
+      "background": [
+        "Co-founded and led Roof Diagnostics Solar (acquired by NRG Energy, 2014)",
+        "Executive Chairman of Sofdesk (sold to Enphase Energy, 2021)"
+      ]
+    },
+    {
+      "name": "Gary Cristini",
+      "title": "Chief Financial Officer (since January 2023)",
+      "linkedin": "https://www.linkedin.com/in/gary-cristini-4b23b498/",
+      "background": [
+        "VP & CFO, Day & Zimmermann Engineering, Construction & Maintenance group (~$1.5B division, 2000–2023)",
+        "Earlier roles at Covance and Browning-Ferris; MBA, Saint Joseph's University; Stanford GSB Emerging CFO program"
+      ]
+    },
+    {
+      "name": "Hugh Scott",
+      "title": "Chief Technology Officer (since September 2022)",
+      "background": [
+        "Technology executive at NRG Energy; co-founded Together Solar",
+        "PhD Computer Science (University of Warwick); BSc Mathematics & Physics (University of Glasgow)"
+      ]
+    },
+    {
+      "name": "Diane Giacomozzi",
+      "title": "Chief Operating Officer (since September 2022)",
+      "background": ["35+ years in operations; prior executive roles building clean-energy operations teams at MasTec and Quanta Services"]
+    },
+    {
+      "name": "Pasi Taimela",
+      "title": "Chief Innovation Officer",
+      "background": ["Power-electronics background; previously listed as CTO; appointment year not published"]
+    },
+    {
+      "name": "Aruna Chandra",
+      "title": "EVP & General Counsel",
+      "background": ["Appointment year not published"]
+    },
+    {
+      "name": "Mike Wallace",
+      "title": "Managing Director, Europe (2026 launch)",
+      "background": ["Leads the European operations launch with secured projects in the UK, Finland, and Sweden"]
+    },
+    {
+      "name": "Josh Prueher",
+      "title": "Founder (2009); original CEO through the 2020–21 leadership transition",
+      "background": ["Founded FlexGen around hybrid off-grid power for the US military; no current executive role found"]
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "type": "private",
+    "periods": [
+      {
+        "period": "Funding history (2015–2022)",
+        "metrics": [
+          { "name": "Series A", "actual": "$25.5M (Aug 2015 — Altira-led, with GE Ventures and Caterpillar Ventures)", "expected": "", "verdict": "inline", "result": "—" },
+          { "name": "Apollo equity commitment", "actual": "$150M (Aug 2021)", "expected": "", "verdict": "inline", "result": "—" },
+          { "name": "Series C", "actual": "$100M (Jul 2022, anchored by Vitol); ~$250M raised in the 12 months to Sep 2022 (company)", "expected": "", "verdict": "inline", "result": "Total disclosed equity ~$275M+" }
+        ],
+        "commentary": "No later rounds, revenue, EBITDA, or valuation disclosures found — private with no analyst consensus."
+      },
+      {
+        "period": "2025–2026 — consolidation moves",
+        "metrics": [
+          { "name": "Powin asset acquisition", "actual": "$36M stalking-horse bid in Powin's Chapter 11 (filed June 2025, ~$300M+ debt); up to $27.5M DIP financing; closed Aug 19, 2025", "expected": "", "verdict": "inline", "result": "Acquired all hardware/software IP, IT systems, spare parts" },
+          { "name": "Clean Energy Services acquisition", "actual": "Closed Apr 2, 2026 — terms not disclosed", "expected": "", "verdict": "inline", "result": "—" },
+          { "name": "Scale after Powin", "actual": "25+ GWh · 200+ systems · 10+ countries under software and services (company-reported)", "expected": "", "verdict": "inline", "result": "—" }
+        ],
+        "commentary": "Backlog proxies only: 10 GWh CATL supply agreement (2022), 2.15 GWh Ameresco/SCE reference, European projects secured in UK/Finland/Sweden (2026). No FlexGen-specific layoff or restructuring reports found; the 2023–24 software-first pivot's headcount effects are undocumented."
+      }
+    ],
+    "commentary": "Private company — no financial statements published; figures above are deal disclosures and company-reported scale metrics. Employee counts (~300–500) are conflicting third-party estimates."
+  },
+  "sources": [
+    { "label": "FlexGen — HybridOS product page", "url": "https://www.flexgen.com/software/hybridos-energy-management-system", "accessed": "2026-08-07" },
+    { "label": "Business Wire — HybridOS v13 launch (Feb 2026)", "url": "https://www.businesswire.com/news/home/20260219177956/en/", "accessed": "2026-08-07" },
+    { "label": "Business Wire — FlexGen completes Powin asset acquisition (Aug 2025)", "url": "https://www.businesswire.com/news/home/20250819895894/en/", "accessed": "2026-08-07" },
+    { "label": "Hart Energy — FlexGen closes $36M deal for Powin assets", "url": "https://www.hartenergy.com/exclusives/flexgen-closes-36mm-deal-powins-assets-213882", "accessed": "2026-08-07" },
+    { "label": "PR Newswire — Apollo $150M equity commitment (Aug 2021)", "url": "https://www.prnewswire.com/news-releases/funds-managed-by-affiliates-of-apollo-global-management-announce-150-million-equity-commitment-to-flexgen-power-systems-inc-301362572.html", "accessed": "2026-08-07" },
+    { "label": "PR Newswire — $100M Series C (Jul 2022)", "url": "https://www.prnewswire.com/news-releases/flexgen-announces-100-million-series-c-to-power-continued-growth-301588894.html", "accessed": "2026-08-07" },
+    { "label": "Business Wire — FlexGen acquires Clean Energy Services (Apr 2026)", "url": "https://www.businesswire.com/news/home/20260402922794/en/", "accessed": "2026-08-07" },
+    { "label": "PR Newswire — executive team hires: Scott, Giacomozzi (Sep 2022)", "url": "https://www.prnewswire.com/news-releases/flexgen-expands-leadership-with-key-executive-team-hires-301623587.html", "accessed": "2026-08-07" },
+    { "label": "ESS News — FlexGen launches European operations (Jun 2026)", "url": "https://www.ess-news.com/2026/06/22/flexgen-launches-european-operations-for-battery-storage-software/", "accessed": "2026-08-07" },
+    { "label": "PR Newswire — CATL–FlexGen 10 GWh supply agreement (Sep 2022)", "url": "https://www.prnewswire.com/news-releases/catl-and-flexgen-sign-10gwh-multi-year-battery-energy-storage-system-supply-agreement-301630386.html", "accessed": "2026-08-07" },
+    { "label": "PR Newswire — Ameresco/SCE 2.1 GWh integration (Dec 2021)", "url": "https://www.prnewswire.com/news-releases/flexgen-selected-by-ameresco-to-integrate-2-1gwh-of-energy-storage-for-southern-california-301439017.html", "accessed": "2026-08-07" },
+    { "label": "Wikipedia — FlexGen Power Systems (history, founding, Series A)", "url": "https://en.wikipedia.org/wiki/FlexGen_Power_Systems", "accessed": "2026-08-07" }
+  ],
+  "lastUpdated": "2026-08-06",
+  "profileVersion": 1
+}

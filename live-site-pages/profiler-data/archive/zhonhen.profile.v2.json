@@ -1,0 +1,638 @@
+{
+  "schemaVersion": 2,
+  "slug": "zhonhen",
+  "name": "Hangzhou Zhonhen Electric Co., Ltd.",
+  "shortName": "Zhonhen Electric",
+  "categories": [
+    "supplier"
+  ],
+  "website": "https://en.hzzh.com",
+  "headquarters": "Hangzhou, Zhejiang, China",
+  "founded": 1996,
+  "employees": "2,073 (end-2025; 653 in R&D)",
+  "ownership": {
+    "type": "public",
+    "ticker": "SZSE: 002364"
+  },
+  "summary": "BOTTOM LINE UP FRONT: Zhonhen Electric is China's data-center HVDC power leader — #1 at 31% share per Kezhi Consulting's 2025 count, the co-developer of Alibaba's Panama power architecture, and the lead drafter of the national 240V/336V DC standard — now converting that fifteen-year domestic franchise into an 800VDC/AI story while CATL pays RMB 4.1B for 49% of its controlling holdco; the unpublished H1 2026 report (due by 31 August 2026) is the near-term checkpoint. BACKGROUND: Founded 1996 in Hangzhou by Zhu Guoding; listed on the Shenzhen Stock Exchange March 2010. Four reported businesses: data-center power (36.3% of FY2025 revenue), telecom/station energy, grid power-supply systems, and power-digitalization software via subsidiary Beijing Zhonhen Borui, plus an EV charging line. FY2025 revenue RMB 2.137B (+8.9%), attributable net profit RMB 126.4M (+15.3%) — a miss against the ~RMB 164M institutional consensus, per company filings and consensus data from Tonghuashun (the Chinese financial-data platform 10jqka.com.cn). Exports were 4.1% of FY2025 revenue; overseas expansion runs through Singapore — wholly-owned Enervell Power Pte. Ltd. (est. 2024) and the 20%-held SuperX Digital Power JV (est. September 2025, mandate: global HVDC excluding Greater China). Governance requires explicit note: founder and actual controller Zhu Guoding (40.12% voting control) was convicted of securities-market manipulation by the Hangzhou Intermediate Court on 31 December 2025 (three years imprisonment suspended for four, RMB 1M fine); he resigned the chair in 2021 and holds no board or officer seat. His wife Bao Xiaoru has chaired the company since November 2021. Collection gap: no H1 2026 report or profit alert as of 18 August 2026.",
+  "ecosystemRole": "We assess Zhonhen as the strongest pure claim on the thesis that NVIDIA's 800VDC transition validates an architecture China already runs at scale — its Panama one-stage 10kV-to-DC conversion predates the Western 800VDC push by six years, and its BAT/operator installed base is the largest HVDC field record anywhere. For US-facing AIDC work its relevance is prospective, not present: exports are 4.1% of revenue, no US entity is on record, it is absent from NVIDIA's published 800VDC partner rosters (whose power-component tier names Delta, Flex Power, Lead Wealth, LiteOn and Megmeet — Hopewind, contrary to Chinese trade coverage, is not on NVIDIA's lists either), and the company itself denied signed agreements with NVIDIA, Meta or Google in August 2025. The competitive read-through: Zhonhen entering the West via the Enervell/SuperX structure tests whether a Chinese HVDC incumbent can sell architecture leadership into markets whose policy stack is being built to exclude Chinese electronics.",
+  "productsAndServices": [
+    {
+      "name": "Data-center power — HVDC, Panama and 800V",
+      "category": "AIDC critical power",
+      "description": "The core franchise (RMB 775.8M, 36.3% of FY2025 revenue, +16.1%): a grid-to-chip DC power matrix spanning HVDC systems (380VAC to 240V/336V/800V DC, ≥97.5% efficiency, batteries hung directly on the DC busbar for zero-interruption ride-through), Panama power (one-stage conversion of 10kV directly to 240V/400V/800V DC, collapsing the traditional four-level chain to one, >97.5% system efficiency), prefabricated Panama power modules (P/H/AC series integrating 10kV distribution, transformer, UPS and output distribution; 2.5MW IT load per system), precision row-level distribution cabinets, and server PSUs. Per company filings.",
+      "highlights": [
+        "Independently ranked #1 in China intelligent-computing-center HVDC at 31% share, CR3 72% (Kezhi Consulting 2025, via Ajian Securities); pioneer credit is documented — first-generation 240V DC system in 2010, lead drafter of the national 240V/336V DC standard, MIIT Manufacturing Single-Item Champion 2022",
+        "Panama power co-developed with Alibaba; FY2025 wins include Alibaba Panama 2.0/STS/ATS systems, Tencent elastic DC systems, ByteDance precision distribution, Bank of China HVDC, and an 800V DC microgrid project with China Mobile Energy — per the FY2025 annual report",
+        "Panama-800V medium-voltage rectifier series shown at IDCC2025 in three architectures (2N, N+1, and a DR four-bus design the company describes as optimized for NVIDIA SuperPOD-class GPU servers); won the 2025 China IDC Industry Innovation Technology Product Award; company claims vs traditional distributed systems: footprint −50%, construction cost −30%, deployment 50% faster",
+        "TÜV Rheinland Bauart Mark/CE certification for AIDC power products (January 2026) — company states it is the first AIDC power maker in Greater China to hold it, framed explicitly as the gateway for international expansion",
+        "Not on NVIDIA's published 800VDC partner rosters (whose component tier names Delta, Flex Power, Lead Wealth, LiteOn and Megmeet; Hopewind appears only in Chinese trade coverage, not on NVIDIA's own lists), and the company denied signed agreements with NVIDIA/Meta/Google in its 19 August 2025 abnormal-fluctuation clarification — the architecture-compatibility claims are the company's own"
+      ],
+      "positioning": "Domestic HVDC leader ahead of Kehua Data (whose 800V order momentum is independently reported to be narrowing the gap), Delta China and Vertiv; in traditional UPS the market belongs to Delta, Vertiv and Schneider. Differentiation is architecture incumbency: fifteen years of DC-for-data-centers field history and the Alibaba co-development record, against rivals arriving at DC power from the UPS side.",
+      "soldThrough": "100% direct sales per the FY2025 annual report; top-5 customers 14.34% of sales; hyperscaler and operator centralized procurement",
+      "targetSegments": "Intelligent-computing and supercomputing centers, internet platforms (Alibaba, Tencent, ByteDance), third-party colocation, telecom operators, financial and government data centers",
+      "roadmap": "2026 plan per the annual report: enrich the 800V DC product system and complete global certifications; an 800V smart-computing reference-design white paper was announced at IDCC2025 (December 2025)"
+    },
+    {
+      "name": "Enervell and the SuperX Digital Power JV",
+      "category": "International expansion",
+      "description": "The overseas structure has two layers: Enervell Power Pte. Ltd. (Singapore, wholly-owned, est. 2024) — the international brand covering IDC power, telecom/5G power, new-power-system equipment and EV charging — and SuperX Digital Power Pte. Ltd. (est. September 2025), a JV with Nasdaq-listed Super X AI Technology covering global HVDC excluding mainland China/HK/Macau, in which Enervell holds 20% and entities controlled by overseas-business co-heads Zhu Yikun and Xu Feifei hold 10% each. Per SZSE announcement 2025-47 and the SuperX SEC 6-K.",
+      "highlights": [
+        "JV launched two 800V products on 31 October 2025: SuperX Panama-800VDC (new-build, up to 3.6MW, 98.5% peak efficiency, conversion stages cut from 4–5 to 1–2, copper −45% vs AC, supports 1MW+ cabinets; company states compatibility with NVIDIA's Kyber architecture) and SuperX Aurora-800VDC (live-retrofit for existing data centers)",
+        "SuperX bears the JV's necessary operating costs for three years; CEO jointly appointed by SuperX and Enervell — an unusually low-capital route to an overseas channel",
+        "Caveat per third-party record: SuperX (Nasdaq: SUPX) converted from an interior-design services firm into an AI-infrastructure company; the JV is the NVIDIA-adjacent linkage retail narratives lean on",
+        "No US entity, USPTO trademark or US hiring evidence found as of 18 August 2026; overseas exports were 4.1% of FY2025 revenue (RMB 87.6M, +178%) via EPC channels (Saudi plant DC systems, Germany 3MW hydrogen, Egypt Suez 1.1GW wind)"
+      ],
+      "positioning": "Entering Western and Southeast Asian AIDC power against Vertiv, Eaton, Schneider, Delta and the ODM tier — with architecture claims and cost position but no local certification base, service network or reference installations outside China",
+      "soldThrough": "JV channel (SuperX brand) plus Enervell direct/OEM; the international site offers white-label power modules",
+      "targetSegments": "AI data centers in Southeast Asia, the Middle East and — prospectively — North America",
+      "roadmap": "Global certifications named as the 2026 gating item in the annual report; TÜV CE certification (Jan 2026) is the first completed step"
+    },
+    {
+      "name": "Telecom and station energy",
+      "category": "Telecom power",
+      "description": "Modular power systems to 600A, integrated energy cabinets accepting mains/PV/diesel/wind inputs with DC48V/AC220V/DC280V outputs ('one cabinet, one station'), and distributed PV-storage — RMB 384.2M of FY2025 revenue (+25.8%, 26.75% gross margin). Long-term China Mobile and China Tower relationships; FY2025 wins include China Tower modular-power central procurement and the China Telecom 2025–2027 combined switching-power procurement; a 6G zero-carbon base-station pilot installed 2025. Per the FY2025 annual report.",
+      "highlights": [
+        "Front-rank share in operator centralized procurement (company claim)",
+        "Modular power 4.0 (open, cloud-architecture) named as the roadmap direction"
+      ]
+    },
+    {
+      "name": "Grid power-supply systems",
+      "category": "Grid equipment",
+      "description": "AC low-voltage switchgear, substation DC systems, power-communication power, power UPS/inverters and new-energy DC products for State Grid, Southern Grid and power plants — RMB 473.7M of FY2025 revenue (−1.1%, 24.19% gross margin). FY2025 wins include State Grid UHV projects and export deliveries through EPC channels: Saudi power-plant DC systems, a 3MW hydrogen-production system in Germany, and Egypt's 1.1GW Suez wind project. Per the FY2025 annual report.",
+      "highlights": [
+        "The stable legacy base that funds the AIDC push",
+        "Exports ride other companies' EPC scope rather than an own channel"
+      ]
+    },
+    {
+      "name": "EV charging and battery swap",
+      "category": "EV infrastructure",
+      "description": "High-power DC charging: 60–640kW integrated dual-gun chargers, 360–2500kW split charging stacks with liquid-cooled 800A supercharge terminals, Panama 800V direct-on-DC-bus charging (320–480kW integrated, 1200–2400kW split), megawatt chargers for swap stations, and V2G. Customers include State Grid, Sinopec, China Tower, CNOOC; custom high-power equipment supplied to Envision Energy and CATL's charging-service arm Times Electric Service branded stations. Per the FY2025 annual report.",
+      "highlights": [
+        "Not a ranked player in China's charging-module market (top-5 lists are Infypower, UUGreenPower, Yonglian, Tonhe, Increase) — Zhonhen sells equipment and stacks, not merchant modules",
+        "The CATL strategic cooperation names charging/swap as one of three collaboration domains, via subsidiary Zhonhen Yunqi Energy"
+      ]
+    },
+    {
+      "name": "Power digitalization software (Beijing Zhonhen Borui)",
+      "category": "Software",
+      "description": "The highest-margin segment (RMB 418.9M FY2025 revenue, +7.3%, 34.58% gross margin; subsidiary net profit RMB 32.1M): power-market trading and virtual-power-plant platforms covering all provincial spot-market rules, relay-protection setting calculation, grid planning and line-loss management, power data/project-management AI tools, integrated-energy services and simulation/digital-twin analytics, sold to State Grid, Southern Grid, gencos, petrochemical, nuclear and data centers. Per the FY2025 annual report.",
+      "highlights": [
+        "20 spot-trading projects delivered in FY2025; VPP pilots in 10+ provinces",
+        "The CATL strategic cooperation names power trading ('compute-electricity coordination') as a collaboration domain running through Borui"
+      ]
+    }
+  ],
+  "technicalSpecs": [
+    {
+      "product": "SuperX Panama-800VDC (JV flagship)",
+      "specs": [
+        {
+          "label": "Capacity",
+          "value": "Up to 3.6MW per system"
+        },
+        {
+          "label": "Peak efficiency",
+          "value": "98.5% (company-stated)"
+        },
+        {
+          "label": "Conversion stages",
+          "value": "1–2, vs 4–5 in legacy AC architecture"
+        },
+        {
+          "label": "Copper use",
+          "value": "−45% vs equivalent AC distribution (company-stated)"
+        },
+        {
+          "label": "Rack support",
+          "value": "1MW+ single cabinets; 250kW+ GPU racks; stated NVIDIA Kyber compatibility"
+        }
+      ],
+      "notes": "Launched 31 October 2025 with SuperX Aurora-800VDC, a modular live-retrofit variant for existing halls. Figures are company/JV claims; no third-party test data published."
+    },
+    {
+      "product": "Panama prefabricated power modules (P/H/AC series)",
+      "specs": [
+        {
+          "label": "Input",
+          "value": "10kV medium voltage, converted in one stage"
+        },
+        {
+          "label": "Output",
+          "value": "240V/400V/800V DC"
+        },
+        {
+          "label": "IT load",
+          "value": "2.5MW per system (current series; earlier series 2.4MW)"
+        },
+        {
+          "label": "System efficiency",
+          "value": ">97.5% (company-stated; earlier marketing claims 98%)"
+        },
+        {
+          "label": "Delivery",
+          "value": "Factory pre-integrated and pre-tested skid: 10kV distribution + transformer + UPS + output distribution"
+        }
+      ],
+      "notes": "Company claims vs conventional build: >20% cost reduction, >50% space saving, ~50% faster deployment. Co-developed lineage with Alibaba's Panama architecture."
+    },
+    {
+      "product": "HVDC power system (240V/336V/800V)",
+      "specs": [
+        {
+          "label": "Input",
+          "value": "380VAC mains"
+        },
+        {
+          "label": "Output",
+          "value": "240V or 336V DC (China standard), 800V DC (new line)"
+        },
+        {
+          "label": "Efficiency",
+          "value": "≥97.5% (company-stated)"
+        },
+        {
+          "label": "Ride-through",
+          "value": "Battery strings sit directly on the DC output busbar — zero-transfer-time backup"
+        }
+      ],
+      "notes": "The architecture that replaced UPS in Chinese internet data centers; Zhonhen led the national standard for it. 'HVDC' here is data-center DC distribution, not grid transmission HVDC."
+    },
+    {
+      "product": "EV charging stacks",
+      "specs": [
+        {
+          "label": "Split stacks",
+          "value": "360–2500kW ACDC, dynamic power-pool allocation"
+        },
+        {
+          "label": "Supercharge terminals",
+          "value": "800A liquid-cooled option"
+        },
+        {
+          "label": "DC-bus variants",
+          "value": "Panama DCDC 320–480kW integrated; 1200–2400kW split"
+        }
+      ],
+      "notes": "Megawatt-class chargers for battery-swap stations; V2G bidirectional units on the international site."
+    }
+  ],
+  "recentDevelopments": [
+    {
+      "date": "2026-08-14",
+      "category": "financial",
+      "headline": "CATL signs definitive agreements: RMB 4.099B (RMB 3.512B cash + a 49% stake in Times Tianyuan valued RMB 588M) for 49% of controlling holdco Zhonhen Technology Investment; Zhu Guoding remains actual controller (35.7% of holdco post-deal, wife Bao Xiaoru 15.3%); same-day strategic cooperation across computing-power infrastructure, charging/swap and power trading",
+      "read": "The 'compute-electricity coordination' bet lands at the holdco, not the listco — CATL gains nomination rights to one listco director, one deputy GM and a finance-department manager while the family keeps control; closing within six months.",
+      "source": "Announcement 2026-28, cninfo, 2026-08-15; NBD; cls.cn"
+    },
+    {
+      "date": "2026-08-12",
+      "category": "other",
+      "headline": "EGM approves the third employee stock ownership plan: up to RMB 40M, ≤40 participants, buyback shares at RMB 21.79 (half the market average), with unlock hurdles of revenue +30%/+70%/+120% vs FY2025 (or profit alternatives) across 2026–2028",
+      "read": "Management's own ambition curve: the hurdles imply roughly RMB 2.8B/3.6B/4.7B revenue — a doubling in three years that only the AIDC line can plausibly deliver.",
+      "source": "ESOP-3 draft + EGM resolution, cninfo, 2026-07-28 / 2026-08-12"
+    },
+    {
+      "date": "2026-04-28",
+      "category": "financial",
+      "headline": "Q1 2026: revenue RMB 418.4M (+7.8%), net profit RMB 24.9M (+22.9%); inventory +37.9% vs year-end on stocking for shipments; short-term borrowings up ~14x to RMB 224M",
+      "read": "The inventory and borrowing build reads as ramp preparation ahead of H1 deliveries — the H1 report (due by 31 August 2026) is the verification point.",
+      "source": "Q1 2026 report, SZSE, 2026-04-28"
+    },
+    {
+      "date": "2026-04-21",
+      "category": "financial",
+      "headline": "FY2025: revenue RMB 2.137B (+8.9%), attributable net profit RMB 126.4M (+15.3%) — below the ~RMB 164M three-institution consensus; data-center power RMB 775.8M (+16.1%); FY2025 wins include Alibaba Panama 2.0/STS/ATS, Tencent elastic DC, ByteDance precision distribution",
+      "read": "Revenue in line, profit a 20–25% miss against consensus — the AIDC narrative ran ahead of the income statement for a second straight year.",
+      "source": "FY2025 annual report, cninfo, 2026-04-21; 10jqka consensus"
+    },
+    {
+      "date": "2026-04-09",
+      "category": "partnership",
+      "headline": "CATL framework agreement announced: intent to acquire 49% of the controlling holdco at a ~43.5% premium to appraised value",
+      "read": "First public confirmation of the CATL tie-up after months of market speculation; the definitive terms landed four months later with a different cash/equity split.",
+      "source": "Announcement 2026-03, cninfo, 2026-04-09; 21jingji"
+    },
+    {
+      "date": "2026-01-13",
+      "category": "regulatory",
+      "headline": "TÜV Rheinland Bauart Mark / CE certification for AIDC power products — claimed first among Greater China AIDC power manufacturers",
+      "read": "The first completed step of the 2026 'global certifications' plan; a prerequisite for selling prefabricated HVDC outside China, not a differentiator inside it.",
+      "source": "Company news, hzzh.com, 2026-01-13"
+    },
+    {
+      "date": "2025-12-31",
+      "category": "regulatory",
+      "headline": "Founder and actual controller Zhu Guoding convicted of securities-market manipulation by Hangzhou Intermediate Court: three years imprisonment suspended for four, RMB 1M fine; company states he holds no director/officer role and operations are unaffected",
+      "read": "The largest single governance fact on file — he retains 40.12% voting control, and the CATL deal eight months later was structured around him remaining actual controller.",
+      "source": "The Paper, 2026-01-01; stcn, 2025-12-31"
+    },
+    {
+      "date": "2025-12-14",
+      "category": "partnership",
+      "headline": "Eighth-anniversary strategic partnership signing with ABB (China) Electrification covering HVDC, 800V DC for AI computing and global expansion",
+      "read": "A Western-incumbent channel relationship that predates the AI cycle — notable because ABB is simultaneously building its own medium-voltage AIDC power franchise.",
+      "source": "Company news, hzzh.com, 2025-12-14"
+    },
+    {
+      "date": "2025-12-12",
+      "category": "product-launch",
+      "headline": "Panama-800V medium-voltage rectifier series presented at IDCC2025 in three architectures including a DR four-bus design described as optimized for NVIDIA SuperPOD-class GPU servers; wins 2025 China IDC Industry Innovation Technology Product Award; 800V reference-design white paper announced",
+      "read": "The domestic 800V flagship moment — architecture claims are the company's own; NVIDIA has not listed Zhonhen among its 800VDC partners.",
+      "source": "Company news, hzzh.com, 2025-12-12"
+    },
+    {
+      "date": "2025-10-31",
+      "category": "product-launch",
+      "headline": "SuperX Digital Power JV launches SuperX Panama-800VDC (3.6MW, 98.5% peak efficiency, stated NVIDIA Kyber compatibility) and SuperX Aurora-800VDC (live retrofit)",
+      "read": "The overseas product line exists five weeks after the JV was formed — speed enabled by rebadging the domestic Panama stack under a Singapore JV brand.",
+      "source": "Company news, hzzh.com, 2025-10-31; Ajian Securities initiation"
+    },
+    {
+      "date": "2025-09-16",
+      "category": "partnership",
+      "headline": "SuperX Digital Power Pte. Ltd. JV formed with Nasdaq-listed Super X AI Technology (40%), Enervell (20%), entities of overseas co-heads Zhu Yikun (10%) and Xu Feifei (10%), and a Singaporean investor (20%); mandate is global HVDC excluding Greater China; SuperX bears operating costs for three years",
+      "read": "The overseas vehicle binds the controller's son and the GM with personal equity — incentive alignment that also routes overseas upside partly outside the listed company.",
+      "source": "Announcement 2025-47, cninfo, 2025-09-16; SuperX SEC 6-K"
+    },
+    {
+      "date": "2025-08-19",
+      "category": "other",
+      "headline": "Abnormal-fluctuation clarification after the stock rose >20% in three sessions: rumors of partnerships with NVIDIA, Meta and Google are false; no cooperation agreements or sales contracts signed with these overseas cloud vendors",
+      "read": "The stock trades on an AI-export narrative the company itself has formally disavowed — any Western-partnership claim after this date needs primary-source verification.",
+      "source": "jrj.com.cn, 2025-08-20"
+    },
+    {
+      "date": "2025-07-31",
+      "category": "other",
+      "headline": "Co-organizes China's first 800V DC power seminar for intelligent-computing centers with the communications-industry ICT-energy committee; founder Zhu Guoding commits continued 800V R&D investment",
+      "read": "Standard-setting is the incumbent's playbook — the same route it used to own the 240V/336V specification a decade earlier.",
+      "source": "Company news, hzzh.com, 2025-07-31"
+    }
+  ],
+  "strategyRead": [
+    "(High confidence) We assess Zhonhen's domestic HVDC leadership as real and structural, not narrative. Basis: independent share data (Kezhi Consulting 2025: #1 at 31%, CR3 72%), lead authorship of the national 240V/336V DC standard, MIIT single-champion designation, the Alibaba Panama co-development record, and FY2025 wins spanning Alibaba, Tencent, ByteDance, Bank of China and China Mobile Energy. Customer-validation cycles of three-plus years function as the moat.",
+    "(High confidence) We assess the 800VDC/AI transition as double-edged for Zhonhen: it globally validates the DC-for-compute architecture the company pioneered, yet re-opens domestic competition and exposes its absence from the Western ecosystem. Basis: Kehua Data's independently reported 800V order momentum 'narrowing the gap'; NVIDIA's published 800VDC partner rosters naming Delta and Megmeet among mainland-linked vendors but not Zhonhen; the company's own August 2025 denial of NVIDIA/Meta/Google agreements.",
+    "(Moderate confidence) We assess the overseas expansion as deliberately structured for speed and insulation rather than commitment: a Singapore brand (Enervell), a JV whose Nasdaq-listed partner bears three years of operating costs, and personal 10% stakes for the controller's son and the GM. This binds the family's next generation to the international outcome but keeps the listco's capital exposure minimal — and routes part of any overseas upside outside the listed company. US footprint as of August 2026: no entity, no certifications beyond TÜV CE, exports 4.1% of revenue.",
+    "(High confidence) We assess the CATL transaction as a re-rating of what Zhonhen is: RMB 4.1B for 49% of the holdco, with nomination rights reaching into listco management, converts a data-center power vendor into the equipment arm of a 'compute-electricity coordination' platform spanning AIDC power, charging/swap and power trading. Basis: the definitive agreements and strategic-cooperation scope of 14 August 2026.",
+    "(Moderate confidence) We assess that a governance and quality discount is warranted alongside the growth story. Basis: the founder's December 2025 manipulation conviction; receivables at roughly nine times profit with negative Q1 operating cash flow; a FY2025 profit miss against consensus; and a stock that required a formal rumor denial in August 2025. Indicator to watch: the H1 2026 report (due by 31 August 2026) — data-center power revenue growth and cash conversion are the tests of whether the ESOP hurdles (+30% revenue in 2026) are credible."
+  ],
+  "decisionMakers": [
+    {
+      "name": "Bao Xiaoru (包晓茹)",
+      "title": "Chairman (since November 2021)",
+      "background": [
+        "Chairman, Hangzhou Zhonhen Electric — took the chair after founder Zhu Guoding resigned all posts in October 2021; re-elected with the 9th board July 2025, term to 2028",
+        "Executive director & GM, Hangzhou Zhonhen Technology Investment (the controlling holdco; 30% pre-CATL, 15.3% post-deal)",
+        "Wife of founder/actual controller Zhu Guoding; mother of overseas-business co-head Zhu Yikun; directly holds 1.28% of the listco; drew no listco salary in 2025 (compensated at a related party)",
+        "Binjiang District People's Congress deputy; born 1969"
+      ]
+    },
+    {
+      "name": "Xu Feifei (胥飞飞)",
+      "title": "Vice Chairman & General Manager; co-head of overseas business",
+      "background": [
+        "General Manager since 2025 board renewal; Vice Chairman since August 2022; joined Zhonhen 2009 (R&D project manager → product director → IDC Business Division GM from December 2020)",
+        "First drafter of the national 240V/336V DC power-system standard; Hangzhou high-level talent designation; born 1986",
+        "Co-head (with Zhu Yikun) of overseas business per announcement 2025-47; holds 10% of the SuperX Digital Power JV via a personal entity; FY2025 pay RMB 1.99M; subscribing 11.08% of ESOP-3"
+      ]
+    },
+    {
+      "name": "Zhu Guoding (朱国锭)",
+      "title": "Founder & actual controller (no board or officer seat)",
+      "background": [
+        "Founded Zhonhen 1996; chairman until October 2021, when he resigned all posts amid a CSRC manipulation investigation; retains 40.12% voting control (holdco + 4.56% direct)",
+        "Convicted of securities-market manipulation, Hangzhou Intermediate Court, 31 December 2025 — three years imprisonment suspended for four, RMB 1M fine; earlier fined RMB 200k for obstructing CSRC inspectors (2021)",
+        "Post-CATL deal holds 35.7% of the holdco and remains actual controller by agreement; still appears at company events (800V seminar July 2025, transformation camp October 2025)",
+        "Zhejiang University (1990); born 1963, Shengzhou, Zhejiang"
+      ]
+    },
+    {
+      "name": "Zhu Yikun (朱一鲲)",
+      "title": "Co-head of overseas business",
+      "background": [
+        "Son of actual controller Zhu Guoding and chairman Bao Xiaoru, per SZSE announcement 2025-47 — the company's only public statement about him",
+        "With GM Xu Feifei, 'comprehensively coordinates overseas market expansion, customer maintenance and business landing' (announcement language, September 2025)",
+        "Holds 10% of SuperX Digital Power Pte. Ltd. via a personal entity — the board framed the co-investment as binding the overseas-business core leaders' interests",
+        "No disclosed listco title, board seat, shareholding, age, education or prior roles; no media profile exists as of August 2026"
+      ]
+    },
+    {
+      "name": "Qiu Xiangdong (仇向东)",
+      "title": "Director & Deputy GM; Chairman & GM, Beijing Zhonhen Borui",
+      "background": [
+        "Runs the software subsidiary (power-market trading, VPP, relay-setting platforms) — with Borui since 2002, pre-dating Zhonhen's 2012 acquisition",
+        "Professor-level senior engineer; master's degree; born 1980; FY2025 pay RMB 1.01M"
+      ]
+    },
+    {
+      "name": "Duan Jianping (段建平)",
+      "title": "Deputy GM & CFO",
+      "background": [
+        "CFO since joining 2017; previously CFO of Wensli Silk Culture Co.",
+        "Professor-level senior accountant, tax adviser, US CMA; born 1974; FY2025 pay RMB 1.18M"
+      ]
+    },
+    {
+      "name": "Fang Nengjie (方能杰)",
+      "title": "Deputy GM & Board Secretary",
+      "background": [
+        "Joined March 2017; former securities-affairs representative; left the board at the July 2025 renewal but remains an officer; IR contact (zhengquan@hzzh.com)",
+        "Senior engineer; born 1992; FY2025 pay RMB 1.11M"
+      ]
+    },
+    {
+      "name": "Li Shance (李善策)",
+      "title": "General Manager, IDC Business Unit",
+      "background": [
+        "Fronts the AIDC line publicly — spoke at the July 2025 800V seminar and announced the TÜV Rheinland certification (January 2026)",
+        "No published bio; the AIDC CTO (romanized 'Shen Yeye') appears only in IDCC2025 coverage"
+      ]
+    }
+  ],
+  "financials": {
+    "currency": "RMB",
+    "type": "public",
+    "periods": [
+      {
+        "period": "FY2024 (reported April 2025)",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "1.962B",
+            "expected": "—",
+            "verdict": "inline",
+            "result": "+26.1% YoY; no sell-side consensus existed before the company's January 2025 guidance"
+          },
+          {
+            "name": "Net profit (attributable)",
+            "actual": "110M",
+            "expected": "100–125M (company guidance)",
+            "verdict": "inline",
+            "result": "+178.5% YoY; landed mid-guidance"
+          }
+        ],
+        "commentary": "Data-center power revenue RMB 668M (+111%) drove the year, rising from 21% to 34% of revenue. Operating cash flow RMB 468M."
+      },
+      {
+        "period": "FY2025 (reported April 2026)",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "2.137B",
+            "expected": "~2.0–2.2B (institutional forecasts)",
+            "verdict": "inline",
+            "result": "+8.9% YoY"
+          },
+          {
+            "name": "Net profit (attributable)",
+            "actual": "126.4M",
+            "expected": "~164M (three-institution consensus, 10jqka)",
+            "verdict": "miss",
+            "result": "+15.3% YoY but roughly 23% below consensus"
+          },
+          {
+            "name": "Data-center power revenue",
+            "actual": "775.8M",
+            "expected": "—",
+            "verdict": "inline",
+            "result": "+16.1%; 36.3% of revenue; 2025 HVDC orders ~RMB 776M"
+          }
+        ],
+        "commentary": "Gross margin pressure (9M 2025 −2.84pp) and receivables growth (RMB 1.01B at Q3, ~9x profit) accompanied the growth; operating cash flow fell 48% to RMB 243M. Exports RMB 87.6M (+178%) — 4.1% of revenue."
+      },
+      {
+        "period": "Q1 2026 (latest interim; H1 2026 not published as of 2026-08-18)",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "418.4M",
+            "expected": "—",
+            "verdict": "inline",
+            "result": "+7.8% YoY; no per-quarter consensus published"
+          },
+          {
+            "name": "Net profit (attributable)",
+            "actual": "24.9M",
+            "expected": "—",
+            "verdict": "inline",
+            "result": "+22.9% YoY"
+          }
+        ],
+        "commentary": "Inventory +37.9% vs year-end and short-term borrowings up ~14x to RMB 224M read as ramp preparation. Forward consensus for FY2026: ~RMB 311M net profit (10jqka) — against ESOP hurdles of revenue +30% or profit +35%. H1 2026 report due by 31 August 2026; no profit alert filed, which under SZSE rules weakly implies no ±50% swing."
+      }
+    ],
+    "commentary": "The structural pattern: revenue and the AIDC mix advance while profit quality lags — consensus misses, thin cash conversion, heavy receivables. The CATL holdco investment (RMB 4.1B, definitive August 2026) and the ESOP-3 hurdles define the bull case management itself has signed up for."
+  },
+  "sources": [
+    {
+      "label": "Announcement 2026-28 — CATL definitive agreements (capital increase, shareholders' & strategic-cooperation agreements)",
+      "url": "http://static.cninfo.com.cn/finalpage/2026-08-15/1225474715.PDF",
+      "date": "2026-08-15"
+    },
+    {
+      "label": "NBD — CATL RMB 4.1B holdco capital increase signed",
+      "url": "https://www.nbd.com.cn/articles/2026-08-14/4542451.html",
+      "date": "2026-08-14"
+    },
+    {
+      "label": "cls.cn — '41亿增资正式启动'",
+      "url": "https://www.cls.cn/detail/2454953",
+      "date": "2026-08-14"
+    },
+    {
+      "label": "ESOP-3 draft (hurdles, participants, pricing)",
+      "url": "http://static.cninfo.com.cn/finalpage/2026-07-28/1225443619.PDF",
+      "date": "2026-07-28"
+    },
+    {
+      "label": "Guosen Securities note (2026–28E forecasts)",
+      "url": "https://pdf.dfcfw.com/pdf/H3_AP202605061821988597_1.pdf",
+      "date": "2026-05-06"
+    },
+    {
+      "label": "Sina 调研速递 — FY2025 results briefing (HVDC orders ~RMB 776M; Alibaba Panama 2.0/STS/ATS)",
+      "url": "https://finance.sina.com.cn/stock/aigc/jgdy/2026-04-30/doc-inhwftwn6280996.shtml",
+      "date": "2026-04-30"
+    },
+    {
+      "label": "Q1 2026 report",
+      "url": "https://disc.static.szse.cn/disc/disk03/finalpage/2026-04-28/9c992ad2-83cf-4d3e-a0f0-40001f2ef80a.PDF",
+      "date": "2026-04-28"
+    },
+    {
+      "label": "FY2025 annual report (full text)",
+      "url": "https://disc.static.szse.cn/download/disc/disk03/finalpage/2026-04-21/d0543cb8-6de6-4606-9add-49a587d32b30.PDF",
+      "date": "2026-04-21"
+    },
+    {
+      "label": "21jingji — CATL 41亿 intent coverage",
+      "url": "https://www.21jingji.com/article/20260410/c961315bf508c984a18571d019f04e32.html",
+      "date": "2026-04-10"
+    },
+    {
+      "label": "Announcement 2026-03 — CATL framework agreement",
+      "url": "http://static.cninfo.com.cn/finalpage/2026-04-09/1225083748.PDF",
+      "date": "2026-04-09"
+    },
+    {
+      "label": "Caifuhao — Kehua narrowing the 800V gap; share history",
+      "url": "https://caifuhao.eastmoney.com/news/20260228120221036937090",
+      "date": "2026-02-28"
+    },
+    {
+      "label": "Company news — TÜV Rheinland Bauart/CE certification for AIDC power",
+      "url": "https://www.hzzh.com/news/detail/id/209.html",
+      "date": "2026-01-13"
+    },
+    {
+      "label": "Yemacaijing/Sina — controller sentenced, wife chairs; 40.12% voting control",
+      "url": "https://www.yemacaijing.com/Index/view/id/90526.html",
+      "date": "2026-01-05"
+    },
+    {
+      "label": "The Paper — Zhu Guoding verdict (3y suspended 4, RMB 1M fine)",
+      "url": "https://m.thepaper.cn/newsDetail_forward_32293580",
+      "date": "2026-01-01"
+    },
+    {
+      "label": "stcn — verdict report",
+      "url": "https://www.stcn.com/article/detail/3566931.html",
+      "date": "2025-12-31"
+    },
+    {
+      "label": "Ajian Securities initiation — Kezhi 2025 HVDC share 31%/CR3 72%; SuperX JV detail; forecasts",
+      "url": "https://pdf.dfcfw.com/pdf/H3_AP202512231806511647_1.pdf",
+      "date": "2025-12-23"
+    },
+    {
+      "label": "Company news — ABB (China) Electrification partnership signing",
+      "url": "https://www.hzzh.com/news/detail/id/208.html",
+      "date": "2025-12-14"
+    },
+    {
+      "label": "Company news — IDCC2025 Panama-800V series + industry award",
+      "url": "https://www.hzzh.com/news/detail/id/207.html",
+      "date": "2025-12-12"
+    },
+    {
+      "label": "Announcement 2025-51 — share-pledge status (12.43% of holding pledged)",
+      "url": "https://file.finance.qq.com/finance/hs/pdf/2025/11/27/1224828421.PDF",
+      "date": "2025-11-27"
+    },
+    {
+      "label": "Company news — SuperX Panama-800VDC / Aurora-800VDC launches",
+      "url": "https://www.hzzh.com/news/detail/id/206.html",
+      "date": "2025-10-31"
+    },
+    {
+      "label": "Tencent News — Q3 2025 receivables/cash-flow analysis",
+      "url": "https://news.qq.com/rain/a/20251026A022LL00",
+      "date": "2025-10-26"
+    },
+    {
+      "label": "Sina AI — 9M 2025 results",
+      "url": "https://finance.sina.com.cn/stock/aiassist/yjbg/2025-10-24/doc-infuyzvh8300560.shtml",
+      "date": "2025-10-24"
+    },
+    {
+      "label": "NVIDIA Technical Blog — Building the 800 VDC Ecosystem (expanded partner roster; no Hopewind, no Zhonhen)",
+      "url": "https://developer.nvidia.com/blog/building-the-800-vdc-ecosystem-for-efficient-scalable-ai-factories/",
+      "date": "2025-10-13"
+    },
+    {
+      "label": "Company news — Data Centre World Asia, Singapore (Enervell debut)",
+      "url": "https://www.hzzh.com/news/detail/id/204.html",
+      "date": "2025-10-09"
+    },
+    {
+      "label": "TMTPost — NVIDIA 800VDC white paper vs China HVDC landscape",
+      "url": "https://www.tmtpost.com/7740051.html",
+      "date": "2025-10"
+    },
+    {
+      "label": "Company news — 2025 Cloud Summit (98%+ HVDC, 3.1MW productized offer)",
+      "url": "https://www.hzzh.com/news/detail/id/203.html",
+      "date": "2025-09-25"
+    },
+    {
+      "label": "Announcement 2025-47 — SuperX JV formation; Zhu Yikun/Xu Feifei roles and stakes",
+      "url": "http://static.cninfo.com.cn/finalpage/2025-09-16/1224661262.PDF",
+      "date": "2025-09-16"
+    },
+    {
+      "label": "SuperX AI Technology SEC Form 6-K — JV filing",
+      "url": "https://www.sec.gov/Archives/edgar/data/1897087/000121390025087434/ea0257336-6k_superxai.htm",
+      "date": "2025-09"
+    },
+    {
+      "label": "PR Newswire — SuperX–Zhonhen JV announcement",
+      "url": "https://www.prnewswire.com/news-releases/superx-forms-joint-venture-with-zhonhen-electric-to-revolutionize-global-ai-data-center-power-infrastructure-302556290.html",
+      "date": "2025-09"
+    },
+    {
+      "label": "jrj.com.cn — abnormal-fluctuation clarification: NVIDIA/Meta/Google rumors false",
+      "url": "https://m.jrj.com.cn/madapter/finance/2025/08/20070352550845.shtml",
+      "date": "2025-08-20"
+    },
+    {
+      "label": "Company news — first 800V DC intelligent-computing power seminar",
+      "url": "https://www.hzzh.com/news/detail/id/200.html",
+      "date": "2025-07-31"
+    },
+    {
+      "label": "Sina — 9th board election (Bao Xiaoru re-elected; Xu Feifei GM)",
+      "url": "https://finance.sina.cn/2025-07-17/detail-inffuvpk4982283.d.html",
+      "date": "2025-07-17"
+    },
+    {
+      "label": "Shanxi Securities deep report — 'HVDC方案领头羊'",
+      "url": "https://finance.sina.com.cn/roll/2025-07-12/doc-inffekkv8531444.shtml",
+      "date": "2025-07-12"
+    },
+    {
+      "label": "NVIDIA Technical Blog — 800 VDC architecture announcement (first partner roster: Delta, Flex Power, Lead Wealth, LiteOn, Megmeet on components)",
+      "url": "https://developer.nvidia.com/blog/nvidia-800-v-hvdc-architecture-will-power-the-next-generation-of-ai-factories/",
+      "date": "2025-05-20"
+    },
+    {
+      "label": "Sina AI — FY2024 results",
+      "url": "https://finance.sina.com.cn/stock/aiassist/yjbg/2025-04-21/doc-inetxwts1635305.shtml",
+      "date": "2025-04-21"
+    },
+    {
+      "label": "NBD — FY2024 guidance RMB 100–125M",
+      "url": "https://m.nbd.com.cn/articles/2025-01-20/3728792.html",
+      "date": "2025-01-20"
+    },
+    {
+      "label": "C114 — Alibaba RMB 800M Panama framework contract",
+      "url": "https://m.c114.com.cn/w16-1181433.html",
+      "date": "2021-10"
+    },
+    {
+      "label": "Company English site — about",
+      "url": "https://en.hzzh.com/about/index.html"
+    },
+    {
+      "label": "Company prefabricated-power solution page",
+      "url": "https://www.hzzh.com/solution/prefabrication.html"
+    },
+    {
+      "label": "Enervell Power site",
+      "url": "https://www.enervell-power.com/"
+    },
+    {
+      "label": "International site — IDC power / EV modules",
+      "url": "https://www.zhonhen.com/idcpower"
+    },
+    {
+      "label": "10jqka F10 — consensus data (FY2025E ~164M; FY2026E ~311M)",
+      "url": "http://basic.10jqka.com.cn/002364/worth.html"
+    }
+  ],
+  "lastUpdated": "2026-08-22",
+  "profileVersion": 2
+}

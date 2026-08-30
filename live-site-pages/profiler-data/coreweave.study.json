@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "coreweave",
+  "title": "CoreWeave — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "GPU-backed debt: when asset-backed lending met silicon",
+      "bullets": [
+        "Asset-backed lending means the loan is secured by a named asset and the cash flows it generates, not the borrower's general promise to pay — the centuries-old playbook of ship, aircraft, and railcar finance, now applied to racks of chips",
+        "The structure: the GPUs and their customer contracts sit inside a special purpose vehicle (SPV) — a ring-fenced subsidiary the lender can claim — and the lender advances a percentage of collateral value (the advance rate) through a delayed-draw term loan (DDTL), drawn in slices as hardware is actually purchased",
+        "Appraising a chip is the hard part: there is no blue book for used GPUs, so lenders lean on the contracted rental stream instead of resale value and demand amortization schedules that repay principal within the contract term — before residual value is ever tested",
+        "Covenants do the policing: loan-to-value tests, cash sweeps that redirect customer payments straight to principal, and cross-default clauses that trip every facility if one fails — the machinery lenders use to stay ahead of fast-depreciating collateral"
+      ]
+    },
+    {
+      "heading": "Take-or-pay: the economics of committed capacity",
+      "bullets": [
+        "High-fixed-cost businesses live or die on utilization: a GPU fleet costs nearly the same to own idle as busy, so empty capacity is pure loss — the same math that makes airlines oversell seats and pipelines demand shipper commitments before laying pipe",
+        "Committed-capacity contracts shift utilization risk to the buyer: the customer reserves capacity for years and pays whether they use it or not, converting a spot-rental business into a contracted stream a lender can underwrite — provided the buyer's own credit holds",
+        "The fine print determines whether committed means committed: read term length against hardware life (does the contract outlive the collateral?), payment start dates against delivery dates, credit support, and what events allow the customer to walk",
+        "Concentration is the flip side of giant commitments: measure it in backlog share as well as revenue share, and remember the leverage it hands an anchor customer at renewal — when the seller's entire debt structure quietly assumes the contract rolls over"
+      ]
+    },
+    {
+      "heading": "Goodput: why 10,000 GPUs fail as one machine",
+      "bullets": [
+        "A training job across 10,000 GPUs is one synchronized computation, not 10,000 independent jobs: every GPU must finish each step before any can start the next, so a single failed card, cable, or memory error stalls the entire fleet at once",
+        "The failure math at scale is brutal: components that individually fail once in years, multiplied across hundreds of thousands of parts, produce an interruption every few hours — a large cluster operates in a state of permanent partial failure",
+        "Goodput is the honest metric: the share of paid GPU-hours that produce useful training progress after subtracting crashes, restarts, stragglers, and repeated work — two clouds running identical hardware can deliver very different goodput",
+        "Checkpointing is the main defense: periodically saving the job's full state so a crash loses minutes instead of days — save too often and the checkpoints themselves eat throughput, too rarely and every failure erases hours; automated node replacement and pre-flight burn-in testing handle the rest"
+      ]
+    },
+    {
+      "heading": "The crypto-to-AI pivot: what transfers and what doesn't",
+      "bullets": [
+        "The pivot comes in two archetypes: the site-pivot, where a bitcoin miner keeps its land and power connections and rebuilds the halls for AI tenants, and the fleet-pivot, where a GPU-based miner keeps its chips and operating skills and becomes a cloud",
+        "What transfers: the instinct for finding cheap power and the muscle memory of running thousands of hot, failure-prone machines around the clock — mining is a genuine trade school for large-scale fleet operations",
+        "What doesn't transfer: enterprise software, security and compliance certifications, multi-tenant isolation, and the reliability culture paying customers contract for — mining tolerated downtime that a cloud agreement penalizes, so that layer gets built or bought from scratch",
+        "The tell of a real pivot is what the company sheds: selling or spinning off the legacy mining business, re-anchoring the brand, and retraining or replacing staff — half-pivots that keep mining as a fallback tend to under-invest in both businesses"
+      ]
+    },
+    {
+      "heading": "Reading circularity: supplier, investor, and customer in one loop",
+      "bullets": [
+        "Vendor financing is old: railroad, aircraft, and telecom equipment makers all lent to or invested in their own customers to seed demand for their products — a supplier taking equity in its buyer is a recurring pattern of young, capital-hungry industries",
+        "The AI version forms a triangle: the chip maker invests in the cloud, the cloud spends the money on chips, and sometimes the chip maker rents capacity back — each leg is a legitimate transaction; the question is what the whole loop nets out to",
+        "Where to look: related-party footnotes in filings, disclosed ownership percentages, board seats, and contract terms — public companies must disclose dealings with significant shareholders, which is exactly where the loops become legible",
+        "The tests: trace the cash (equity invested versus purchases flowing back), compare pricing on related-party deals with what unaffiliated customers pay, and discount announced partnerships that carry no binding commitment — circularity is a fragility signal, not automatically fraud"
+      ]
+    },
+    {
+      "heading": "Specialized cloud vs general cloud: utilization, refresh, depreciation",
+      "bullets": [
+        "A general cloud sells thousands of services to millions of customers whose demand peaks at different times — statistical smoothing keeps the machines busy; a specialized GPU cloud sells one product to a handful of huge customers, so utilization is contract-driven, not diversified",
+        "The depreciation schedule is the pivotal accounting choice: spreading a GPU's cost over six years instead of three roughly halves the annual expense and can flip reported profit to loss — it is management's estimate of useful life, and it is contestable",
+        "Fleet refresh is the treadmill: each new chip generation cuts the rental price of the old one, so the specialist must keep buying the newest silicon just to stand still — a pressure the general cloud softens by cascading older chips into internal and lower-tier workloads",
+        "The margin consequence cuts both ways: a specialist running near-full on committed contracts can out-earn a general cloud per dollar of hardware — but with no other business to absorb idle capacity, any demand pause hits its income statement immediately and completely"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "What makes a loan 'asset-backed,' and where did the playbook come from?",
+      "a": "The lender is secured by a specific asset and the cash flows it generates, not by the borrower's general promise to pay — default, and the lender takes the collateral. Ships, aircraft, and railcars were financed this way for decades before anyone applied the structure to racks of GPUs."
+    },
+    {
+      "q": "What is a delayed-draw term loan (DDTL), and why does it fit a GPU buildout?",
+      "a": "A facility the lender commits up front but the borrower draws in slices as needed. GPU fleets are bought in waves as contracts are signed, so the borrower pays interest only on capital actually deployed — with the hardware and its contracts typically held in a ring-fenced special purpose vehicle (SPV) the lender can claim."
+    },
+    {
+      "q": "How do lenders handle collateral with no blue book value, like a used GPU?",
+      "a": "They lend mainly against the contracted rental stream rather than resale value, size the loan as a fraction of collateral value (the advance rate), and amortize principal fully within the contract term — so repayment never depends on what old silicon fetches later. Loan-to-value tests and cash sweeps police the gap quarter by quarter."
+    },
+    {
+      "q": "Why do high-fixed-cost capacity businesses insist on committed contracts?",
+      "a": "A GPU fleet, an airplane, or a pipeline costs nearly the same whether idle or full, so empty capacity is pure loss. Committed-capacity (take-or-pay) contracts shift utilization risk to the buyer — the seller's economics stop depending on spot demand, and lenders can underwrite the contracted stream."
+    },
+    {
+      "q": "What fine print decides whether a 'committed' contract is really committed?",
+      "a": "Term length versus the hardware's earning life, when payments start relative to delivery, what credit support stands behind the promise, and what events allow termination. A commitment with easy exits or payments gated on milestones is much softer than its headline number."
+    },
+    {
+      "q": "Why does a 10,000-GPU training job fail differently than 10,000 separate jobs?",
+      "a": "It is one synchronized computation: every GPU must complete each step before any can proceed, so a single failed card or cable stalls the whole fleet. With hundreds of thousands of components, something breaks every few hours — a large cluster lives in permanent partial failure."
+    },
+    {
+      "q": "What is goodput?",
+      "a": "The share of paid GPU-hours that produce useful training progress, after subtracting crashes, restarts, stragglers, and repeated work. Two clouds with identical hardware can deliver very different goodput — it is the honest measure of cluster quality."
+    },
+    {
+      "q": "What is the checkpointing trade-off?",
+      "a": "Checkpoints periodically save a training job's full state so a failure loses minutes instead of days. Save too often and the checkpoints themselves eat throughput; too rarely and each crash erases hours. Tuning the interval against the cluster's real failure rate is core reliability engineering."
+    },
+    {
+      "q": "What are the two archetypes of the crypto-to-AI pivot?",
+      "a": "The site-pivot: a bitcoin miner keeps its land and power connections and rebuilds the facilities for AI tenants. The fleet-pivot: a GPU-based miner keeps its chips and operating skills and becomes a cloud. What carries over — and what must be built from scratch — differs for each."
+    },
+    {
+      "q": "What transfers from crypto mining to running an AI cloud, and what doesn't?",
+      "a": "Transfers: cheap-power procurement instincts and the muscle memory of running thousands of hot, failure-prone machines around the clock. Doesn't: enterprise software, security and compliance certification, multi-tenant isolation, and the reliability culture paying customers contract for — that layer must be built or bought."
+    },
+    {
+      "q": "How do you read a supplier-investor-customer circularity structure?",
+      "a": "Find the related-party footnotes, ownership stakes, and board seats in filings, then run three tests: trace the cash loop (equity in versus purchases back), compare related-party pricing with what unaffiliated customers pay, and discount partnerships with no binding commitments. Circularity signals fragility, not automatically fraud."
+    },
+    {
+      "q": "Why is the depreciation schedule the most contested number in GPU cloud accounting?",
+      "a": "Spreading a GPU's cost over six years instead of three roughly halves the annual expense — the same fleet can show profit or loss depending on management's useful-life estimate. Each new chip generation cutting old rental prices is the evidence both sides of the argument point to."
+    }
+  ]
+}

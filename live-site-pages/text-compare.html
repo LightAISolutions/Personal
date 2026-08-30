@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; connect-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.shadowaisolutions.com https://logoipsum.com; object-src 'none'; base-uri 'self'; form-action 'self'; media-src 'self'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests;">
+  <meta name="template-id" content="sais-aut-7f3e9b2d">
+  <meta name="build-version" content="v01.01w">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <title>Text Compare Tool</title>
+  <style>
+/* ══════════════ */
+/* TEMPLATE START */
+/* ══════════════ */
+    html, body { margin: 0; padding: 0; height: 100%; }
+    .splash {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 10000; display: none; align-items: center; justify-content: center;
+      flex-direction: column; transition: opacity 0.3s ease;
+    }
+    .splash .splash-title { color: #fff; font: bold 36px/1 sans-serif; margin-bottom: 20px; }
+    .splash img { max-width: 500px; max-height: 500px; }
+    #splash-web { background: #1b5e20; }
+    #splash-code { background: #0d47a1; }
+    #splash-maintenance { background: #b04000; z-index: 9998; }
+    .maintenance-timestamp { color: rgba(255,255,255,0.85); font: 16px/1.4 monospace; margin-top: 20px; }
+    #version-indicator {
+      position: fixed; bottom: 8px; right: 22px; z-index: 9999;
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(0,0,0,0.55); color: #ccc; padding: 4px 10px;
+      border-radius: 12px; font: 11px/1 monospace;
+      pointer-events: auto; cursor: pointer; transition: all 0.3s ease;
+    }
+    #version-indicator:hover { background: rgba(0,0,0,0.75); }
+    #changelog-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); z-index: 10001; display: none;
+      align-items: center; justify-content: center;
+    }
+    #changelog-popup {
+      background: #1a1a2e; color: #e0e0e0; border-radius: 12px;
+      max-width: 480px; width: 90%; max-height: 70vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    #changelog-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    #changelog-title { font: bold 16px/1 sans-serif; color: #fff; }
+    #changelog-close {
+      background: none; border: none; color: #888; font-size: 24px;
+      cursor: pointer; padding: 4px 8px; line-height: 1;
+    }
+    #changelog-close:hover { color: #fff; }
+    #changelog-body {
+      padding: 16px 20px; overflow-y: auto; font: 13px/1.5 sans-serif;
+    }
+    #changelog-body h3 {
+      font-size: 14px; color: #7c8bff; margin: 16px 0 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;
+    }
+    #changelog-body h3:first-child { margin-top: 0; }
+    #changelog-body h4 {
+      font-size: 12px; color: #a0a0a0; margin: 10px 0 4px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    #changelog-body ul { margin: 0 0 8px; padding-left: 20px; }
+    #changelog-body li { margin-bottom: 4px; }
+    #version-indicator .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #888; transition: background 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6px; line-height: 1; color: #fff;
+    }
+    #version-indicator .dot.checking { background: #ffa726; animation: pulse 0.6s infinite alternate; }
+    #version-indicator .dot.counting { background: #888; }
+    #version-indicator .dot.found    { background: #66bb6a; }
+    #version-indicator .dot.error    { background: #ef5350; }
+    @keyframes pulse { from { opacity: 1; } to { opacity: 0.4; } }
+    #gas-pill {
+      position: fixed; bottom: 8px; right: 146px; z-index: 9999;
+      display: none; align-items: center; gap: 6px;
+      background: rgba(0,0,0,0.55); color: #ccc; padding: 4px 10px;
+      border-radius: 12px; font: 11px/1 monospace;
+      pointer-events: auto; cursor: pointer; transition: all 0.3s ease;
+    }
+    #gas-pill:hover { background: rgba(0,0,0,0.75); }
+    #gas-pill .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #888; transition: background 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6px; line-height: 1; color: #fff;
+    }
+    #gas-pill .dot.checking { background: #42a5f5; animation: pulse 0.6s infinite alternate; }
+    #gas-pill .dot.counting { background: #888; }
+    #gas-pill .dot.found    { background: #66bb6a; }
+    #gas-pill .dot.error    { background: #ef5350; }
+    #gcl-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); z-index: 10001; display: none;
+      align-items: center; justify-content: center;
+    }
+    #gcl-popup {
+      background: #1a1a2e; color: #e0e0e0; border-radius: 12px;
+      max-width: 480px; width: 90%; max-height: 70vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    #gcl-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    #gcl-title { font: bold 16px/1 sans-serif; color: #fff; }
+    #gcl-close {
+      background: none; border: none; color: #888; font-size: 24px;
+      cursor: pointer; padding: 4px 8px; line-height: 1;
+    }
+    #gcl-close:hover { color: #fff; }
+    #gcl-body {
+      padding: 16px 20px; overflow-y: auto; font: 13px/1.5 sans-serif;
+    }
+    #gcl-body h3 {
+      font-size: 14px; color: #7c8bff; margin: 16px 0 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;
+    }
+    #gcl-body h3:first-child { margin-top: 0; }
+    #gcl-body h4 {
+      font-size: 12px; color: #a0a0a0; margin: 10px 0 4px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    #gcl-body ul { margin: 0 0 8px; padding-left: 20px; }
+    #gcl-body li { margin-bottom: 4px; }
+/* ══════════════ */
+/* TEMPLATE END */
+/* ══════════════ */
+
+/* ══════════════ */
+/* PROJECT START */
+/* ══════════════ */
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f23; color: #e0e0e0; }
+    .app-container { max-width: 1400px; margin: 0 auto; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; }
+    .app-header { text-align: center; margin-bottom: 20px; }
+    .app-header h1 { font-size: 28px; color: #fff; margin: 0 0 6px; }
+    .app-header p { color: #888; font-size: 14px; margin: 0; }
+    .input-section { display: flex; gap: 16px; margin-bottom: 16px; }
+    .input-col { flex: 1; display: flex; flex-direction: column; }
+    .input-col label { font-size: 13px; font-weight: 600; color: #aaa; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .input-col label .char-count { font-weight: 400; font-size: 11px; color: #666; }
+    .input-col textarea {
+      flex: 1; min-height: 200px; background: #1a1a2e; color: #e0e0e0; border: 1px solid #333;
+      border-radius: 8px; padding: 12px; font: 13px/1.5 'Consolas', 'Monaco', 'Courier New', monospace;
+      resize: vertical; outline: none; transition: border-color 0.2s;
+    }
+    .input-col textarea:focus { border-color: #5b6abf; }
+    .controls { display: flex; gap: 12px; align-items: center; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+    .control-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 6px 12px; border: 1px solid #333; border-radius: 8px; }
+    .control-group-label { font-size: 11px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+    .btn {
+      padding: 10px 24px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-primary { background: #5b6abf; color: #fff; }
+    .btn-primary:hover { background: #6d7bd4; }
+    .btn-secondary { background: #2a2a3e; color: #ccc; border: 1px solid #444; }
+    .btn-secondary:hover { background: #333350; }
+    .btn-swap { background: #2a2a3e; color: #ccc; border: 1px solid #444; padding: 10px 16px; }
+    .btn-swap:hover { background: #333350; }
+    .stats-bar {
+      display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 20px; padding: 12px 20px; background: #1a1a2e; border-radius: 8px; border: 1px solid #2a2a3e;
+    }
+    .stat { text-align: center; }
+    .stat .stat-value { font-size: 22px; font-weight: 700; }
+    .stat .stat-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-equal .stat-value { color: #66bb6a; }
+    .stat-added .stat-value { color: #42a5f5; }
+    .stat-removed .stat-value { color: #ef5350; }
+    .stat-modified .stat-value { color: #ffa726; }
+    .stat-total .stat-value { color: #ccc; }
+    .result-section { flex: 1; }
+    .result-header { font-size: 15px; font-weight: 600; color: #aaa; margin-bottom: 10px; }
+    .diff-view { display: flex; gap: 0; border: 1px solid #333; border-radius: 8px; overflow: hidden; background: #1a1a2e; }
+    .diff-col { flex: 1; overflow-x: auto; }
+    .diff-col-header {
+      padding: 8px 12px; font-size: 12px; font-weight: 600;
+      background: #22223a; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 1;
+    }
+    .diff-col-header.header-left { color: #ef5350; }
+    .diff-col-header.header-right { color: #42a5f5; }
+    .diff-col:first-child { border-right: 1px solid #333; }
+    .diff-line { display: flex; font: 13px/1.6 'Consolas', 'Monaco', 'Courier New', monospace; min-height: 22px; }
+    .diff-line-num {
+      min-width: 40px; padding: 0 8px; text-align: right; color: #555;
+      background: rgba(0,0,0,0.2); user-select: none; flex-shrink: 0;
+    }
+    .diff-line-content { padding: 0 10px; white-space: pre-wrap; word-break: break-all; flex: 1; }
+    .diff-line.equal { background: transparent; }
+    .diff-line.added { background: rgba(66,165,245,0.12); }
+    .diff-line.added .diff-line-num { color: #42a5f5; }
+    .diff-line.removed { background: rgba(239,83,80,0.12); }
+    .diff-line.removed .diff-line-num { color: #ef5350; }
+    .diff-line.modified { background: rgba(255,167,38,0.12); }
+    .diff-line.modified .diff-line-num { color: #ffa726; }
+    .diff-line.empty { background: rgba(255,255,255,0.02); }
+    .diff-line.empty .diff-line-content { color: #333; }
+    .char-add { background: rgba(66,165,245,0.35); border-radius: 2px; }
+    .char-del { background: rgba(239,83,80,0.35); border-radius: 2px; }
+    .char-mod { background: rgba(255,167,38,0.35); border-radius: 2px; }
+    .no-results { text-align: center; padding: 60px 20px; color: #555; font-size: 15px; }
+    .identical-msg { text-align: center; padding: 40px 20px; color: #66bb6a; font-size: 16px; font-weight: 600; }
+    .copy-diff-controls {
+      display: flex; gap: 12px; align-items: center; justify-content: center;
+      margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .btn-copy-diff { background: #2e7d32; color: #fff; }
+    .btn-copy-diff:hover { background: #388e3c; }
+    .btn-copy-diff.copied { background: #1b5e20; }
+    .context-lines-input {
+      width: 50px; background: #1a1a2e; color: #e0e0e0; border: 1px solid #444;
+      border-radius: 6px; padding: 6px 8px; font-size: 13px; text-align: center;
+    }
+    .diff-view.hide-equal .diff-line.equal { display: none; }
+    .diff-view.hide-equal .diff-line.empty { display: none; }
+    @media (max-width: 768px) {
+      .input-section { flex-direction: column; }
+      .diff-view { flex-direction: column; }
+      .diff-col:first-child { border-right: none; border-bottom: 1px solid #333; }
+      .app-header h1 { font-size: 22px; }
+    }
+/* ══════════════ */
+/* PROJECT END */
+/* ══════════════ */
+  </style>
+</head>
+<body>
+<!-- ══════════════ -->
+<!-- TEMPLATE START -->
+<!-- ══════════════ -->
+  <div id="splash-web" class="splash"><div class="splash-title">Website Ready</div><img id="splash-logo" src="" alt=""></div>
+  <div id="splash-code" class="splash"><div class="splash-title">Code Ready</div><img id="splash-code-logo" src="" alt=""></div>
+  <div id="splash-maintenance" class="splash"><div class="splash-title">🔧This Webpage is Undergoing Maintenance<span id="maint-bypass" tabindex="-1" style="cursor:inherit;-webkit-user-select:none;user-select:text">🔧</span></div><img id="maintenance-logo" src="" alt=""><div id="maintenance-timestamp" class="maintenance-timestamp"></div></div>
+
+  <div id="gas-pill"><span class="dot"></span><span id="gas-pill-label">GAS ...</span></div>
+  <div id="gcl-overlay"><div id="gcl-popup"><div id="gcl-header"><span id="gcl-title">GAS Changelog</span><button id="gcl-close">&times;</button></div><div id="gcl-body"></div></div></div>
+<!-- ══════════════ -->
+<!-- TEMPLATE END -->
+<!-- ══════════════ -->
+
+<!-- ══════════════ -->
+<!-- PROJECT START -->
+<!-- ══════════════ -->
+  <div class="app-container">
+    <div class="app-header">
+      <h1>Text Compare</h1>
+      <p>Paste two texts to find similarities and differences</p>
+    </div>
+
+    <div class="input-section">
+      <div class="input-col">
+        <label>Text A <span class="char-count" id="count-left">0 chars, 0 lines</span></label>
+        <textarea id="text-left" placeholder="Paste text A here..."></textarea>
+      </div>
+      <div class="input-col">
+        <label>Text B <span class="char-count" id="count-right">0 chars, 0 lines</span></label>
+        <textarea id="text-right" placeholder="Paste text B here..."></textarea>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn btn-primary" id="btn-compare" title="Compare texts">Compare</button>
+      <button class="btn btn-swap" id="btn-swap" title="Swap left and right">⇄ Swap</button>
+      <button class="btn btn-secondary" id="btn-clear" title="Clear all">Clear</button>
+      <div class="control-group">
+        <span class="control-group-label">Before Compare</span>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#888;cursor:pointer;">
+          <input type="checkbox" id="chk-trim" checked> Ignore whitespace
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#888;cursor:pointer;">
+          <input type="checkbox" id="chk-case"> Ignore case
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#888;cursor:pointer;" title="Strip PROJECT blocks before comparing — only compare TEMPLATE (shared/foundational) code">
+          <input type="checkbox" id="chk-template-only"> Template only
+        </label>
+      </div>
+      <div class="control-group">
+        <span class="control-group-label">Display</span>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#888;cursor:pointer;" title="Hide identical lines — show only differences">
+          <input type="checkbox" id="chk-hide-equal" checked> Hide equal lines
+        </label>
+      </div>
+    </div>
+
+    <div id="stats-bar" class="stats-bar" style="display:none;">
+      <div class="stat stat-total"><div class="stat-value" id="stat-total">0</div><div class="stat-label">Total Lines</div></div>
+      <div class="stat stat-equal"><div class="stat-value" id="stat-equal">0</div><div class="stat-label">Equal</div></div>
+      <div class="stat stat-added"><div class="stat-value" id="stat-added">0</div><div class="stat-label">Only in B</div></div>
+      <div class="stat stat-removed"><div class="stat-value" id="stat-removed">0</div><div class="stat-label">Only in A</div></div>
+      <div class="stat stat-modified"><div class="stat-value" id="stat-modified">0</div><div class="stat-label">Modified</div></div>
+    </div>
+
+    <div id="copy-diff-controls" class="copy-diff-controls" style="display:none;">
+      <label style="font-size:13px;color:#888;display:flex;align-items:center;gap:6px;cursor:pointer;" title="Automatically adjusts context per change — shows up to 10 surrounding lines, expanding to fill gaps between nearby changes">
+        <input type="checkbox" id="chk-smart-context" checked> Smart context
+      </label>
+      <label style="font-size:13px;color:#888;display:flex;align-items:center;gap:6px;">
+        Context lines:
+        <input type="number" id="context-lines" class="context-lines-input" value="auto" min="0" max="50" readonly title="Smart context is active — this shows the auto-computed value" style="opacity:0.6">
+      </label>
+      <button class="btn btn-copy-diff" id="btn-copy-diff" title="Copy unified diff to clipboard for AI consumption">Copy Context Diff</button>
+    </div>
+
+    <div class="result-section">
+      <div id="no-results" class="no-results">Enter text in both fields and click Compare</div>
+      <div id="diff-output" style="display:none;">
+        <div class="diff-view" id="diff-view">
+          <div class="diff-col">
+            <div class="diff-col-header header-left">Text A (red = only in A)</div>
+            <div id="diff-left"></div>
+          </div>
+          <div class="diff-col">
+            <div class="diff-col-header header-right">Text B (blue = only in B)</div>
+            <div id="diff-right"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- ══════════════ -->
+<!-- PROJECT END -->
+<!-- ══════════════ -->
+
+  <script>
+/* tpl:7f3e9b2d */ // ── CONFIG ──
+    var DEVELOPER_LOGO_URL = 'images/logo-placeholder.svg';
+    var YOUR_ORG_LOGO_URL = 'images/logo-placeholder.svg';
+    var SPLASH_LOGO_URL = 'images/logo-placeholder.svg';
+    var AUTO_REFRESH = true;
+    var SHOW_WEB_VERSION = true;
+    var SHOW_CHANGELOG = true;
+// ──────────────
+
+// ══════════════
+// TEMPLATE START
+// ══════════════
+
+    document.getElementById('splash-logo').src = SPLASH_LOGO_URL;
+    document.getElementById('splash-code-logo').src = SPLASH_LOGO_URL;
+    document.getElementById('maintenance-logo').src = SPLASH_LOGO_URL;
+
+    (function() {
+      var bp = document.getElementById('maint-bypass');
+      if (!bp) return;
+      bp.addEventListener('click', function(e) {
+        if (e.detail !== 3) return;
+        e.stopPropagation();
+        var overlay = document.getElementById('splash-maintenance');
+        if (overlay && overlay.style.display === 'flex') {
+          sessionStorage.setItem('maint-bypassed', '1');
+          overlay.style.opacity = '0';
+          setTimeout(function() { overlay.style.display = 'none'; }, 300);
+        }
+      });
+    })();
+
+    var _navEntries = performance.getEntriesByType('navigation');
+    var _navType = _navEntries.length ? _navEntries[0].type : 'navigate';
+    if (_navType !== 'reload') sessionStorage.removeItem('audio-unlocked');
+
+    var _audioCtx = null;
+    function _ensureAudioCtx() {
+      if (_audioCtx) return _audioCtx;
+      try { _audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return null; }
+      if (_audioCtx) _audioCtx.onstatechange = function() { updateAudioStatus(); };
+      return _audioCtx;
+    }
+    function updateAudioStatus() {
+      var el = document.getElementById('audio-status');
+      if (!el) return;
+      if (_audioCtx && _audioCtx.state === 'running') {
+        el.textContent = '\u{1F50A}'; el.title = 'Sound ready'; sessionStorage.setItem('audio-unlocked', '1');
+      } else if (sessionStorage.getItem('audio-unlocked')) {
+        el.textContent = '\u{1F50A}'; el.title = 'Sound ready';
+      } else {
+        el.textContent = '\u{1F507}'; el.title = 'Sound muted - click page to enable';
+      }
+    }
+    function unlockAudio() {
+      var ctx = _ensureAudioCtx();
+      if (!ctx || ctx.state === 'running') return;
+      ctx.resume().then(function() { updateAudioStatus(); }).catch(function() {});
+    }
+    document.addEventListener('click', unlockAudio, { once: false });
+    document.addEventListener('touchstart', unlockAudio, { once: false });
+    if (navigator.userActivation) {
+      var _uaPoll = setInterval(function() {
+        if (navigator.userActivation.hasBeenActive) { clearInterval(_uaPoll); unlockAudio(); }
+      }, 200);
+    }
+
+    function playSoundFromDataUrl(dataUrl) {
+      try {
+        var ctx = _ensureAudioCtx();
+        if (ctx.state !== 'running') return;
+        var base64 = dataUrl.split(',')[1]; var binary = atob(base64);
+        var bytes = new Uint8Array(binary.length);
+        for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        ctx.decodeAudioData(bytes.buffer, function(buf) {
+          var src = ctx.createBufferSource(); src.buffer = buf; src.connect(ctx.destination); src.start(0);
+        });
+      } catch(e) {}
+    }
+    function cacheSound(url, key) {
+      if (localStorage.getItem(key)) return;
+      fetch(url).then(function(r){return r.blob();}).then(function(b){
+        var reader = new FileReader();
+        reader.onloadend = function(){localStorage.setItem(key,reader.result);};
+        reader.readAsDataURL(b);
+      }).catch(function(){});
+    }
+    cacheSound('sounds/Website_Ready_Voice_1.mp3', 'web-sound-data');
+    cacheSound('sounds/Code_Ready_Voice_1.mp3', 'code-sound-data');
+
+    var _soundPlayed = false;
+    function showUpdateSplash(splashId, soundKey, soundFallback) {
+      if (navigator.vibrate) navigator.vibrate(200);
+      var splash = document.getElementById(splashId);
+      var ctx = _ensureAudioCtx();
+      if (ctx && !_soundPlayed) {
+        _soundPlayed = true;
+        var _playNow = function() {
+          var d = localStorage.getItem(soundKey);
+          if (d) playSoundFromDataUrl(d); else { var a = new Audio(soundFallback); a.play().catch(function(){}); }
+        };
+        if (ctx.state === 'running') _playNow();
+        else ctx.resume().then(function(){if(ctx.state==='running')_playNow();}).catch(function(){});
+      }
+      if (splash) {
+        splash.style.display = 'flex';
+        setTimeout(function(){ splash.style.opacity='0'; setTimeout(function(){splash.style.display='none';},300); },1000);
+      }
+    }
+    if (sessionStorage.getItem('web-pending-sound')) {
+      sessionStorage.removeItem('web-pending-sound');
+      showUpdateSplash('splash-web', 'web-sound-data', 'sounds/Website_Ready_Voice_1.mp3');
+    }
+
+    // Auto-refresh polling
+    (function() {
+      var POLL_INTERVAL = 10000;
+      if (!AUTO_REFRESH) return;
+      var basePath = window.location.href.split('?')[0].split('#')[0];
+      var pageName = basePath.substring(basePath.lastIndexOf('/') + 1).replace('.html', '');
+      if (!pageName) pageName = 'index';
+      var versionUrl = basePath.substring(0, basePath.lastIndexOf('/') + 1) + 'html-versions/' + pageName + 'html.version.txt';
+      var currentVersion = null, currentTimestamp = null, indicator = null, dot = null, countdownSeconds = 0, countdownTimer = null;
+
+      function parseVersionTxt(raw) {
+        var parts = raw.split('|');
+        return { maintenance: parts[0].toLowerCase() === 'maintenance', version: (parts[1]||'').replace(/^v/,''), timestamp: parts[2]||'' };
+      }
+      function createIndicator(version) {
+        indicator = document.createElement('div'); indicator.id = 'version-indicator';
+        indicator.innerHTML = '<span class="dot"></span><span class="label">v'+version+'</span><span id="audio-status"></span>';
+        if (SHOW_WEB_VERSION) document.body.appendChild(indicator);
+        updateAudioStatus(); dot = indicator.querySelector('.dot');
+      }
+      function startCountdown() {
+        countdownSeconds = POLL_INTERVAL / 1000;
+        if (countdownTimer) clearInterval(countdownTimer);
+        countdownTimer = setInterval(function() {
+          countdownSeconds--;
+          if (countdownSeconds <= 0) { clearInterval(countdownTimer); if(dot){dot.textContent='';dot.className='dot';} }
+          else if (countdownSeconds <= 5) { if(dot){dot.textContent=countdownSeconds;dot.className='dot counting';} }
+        }, 1000);
+      }
+      function schedulePoll() { startCountdown(); setTimeout(checkForUpdate, POLL_INTERVAL); }
+      function checkForUpdate() {
+        window._htmlPollTime = Date.now();
+        if (countdownTimer) clearInterval(countdownTimer);
+        if (dot) { dot.textContent=''; dot.className='dot checking'; }
+        fetch(versionUrl+'?_cb='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(v) {
+          var parsed = parseVersionTxt(v.trim());
+          var ms = document.getElementById('splash-maintenance');
+          if (!currentVersion) { currentVersion=parsed.version; createIndicator(currentVersion); if(parsed.maintenance&&indicator)indicator.querySelector('.label').textContent='\uD83D\uDD27 v'+currentVersion; }
+          if (parsed.maintenance) {
+            if (ms && !sessionStorage.getItem('maint-bypassed')) { ms.style.display='flex'; ms.style.opacity='1'; if(parsed.timestamp!==currentTimestamp){currentTimestamp=parsed.timestamp;var tsEl=document.getElementById('maintenance-timestamp');if(tsEl)tsEl.textContent=parsed.timestamp||'';} }
+            if (parsed.version && parsed.version !== currentVersion) { if(dot)dot.className='dot found';if(indicator)indicator.querySelector('.label').textContent='Updating...';if(sessionStorage.getItem('maint-bypassed'))sessionStorage.setItem('web-pending-sound','1');setTimeout(function(){window.location.reload();},2000);return; }
+            if(indicator)indicator.querySelector('.label').textContent='\uD83D\uDD27 v'+currentVersion;if(dot)setTimeout(function(){dot.className='dot';},800);schedulePoll();
+          } else if (parsed.version && parsed.version !== currentVersion) {
+            sessionStorage.removeItem('maint-bypassed');if(ms)ms.style.display='none';if(dot)dot.className='dot found';if(indicator)indicator.querySelector('.label').textContent='Updating...';sessionStorage.setItem('web-pending-sound','1');setTimeout(function(){window.location.reload();},2000);
+          } else {
+            sessionStorage.removeItem('maint-bypassed');if(ms&&ms.style.display==='flex'){ms.style.opacity='0';setTimeout(function(){ms.style.display='none';},300);}if(indicator)indicator.querySelector('.label').textContent='v'+currentVersion;if(dot)setTimeout(function(){dot.className='dot';},800);schedulePoll();
+          }
+        }).catch(function(){if(dot){dot.className='dot error';setTimeout(function(){dot.className='dot';},2000);}schedulePoll();});
+      }
+      checkForUpdate();
+    })();
+
+    // GAS iframe (empty — no GAS project)
+    (function() { var _e=''; if(!_e)return; })();
+
+    // GAS auto-refresh polling
+    (function() {
+      var GAS_POLL_INTERVAL=10000,GAS_INITIAL_DELAY=15000;
+      if(!AUTO_REFRESH)return;
+      var basePath=window.location.href.split('?')[0].split('#')[0];
+      var pageName=basePath.substring(basePath.lastIndexOf('/')+1).replace('.html','');
+      if(!pageName)pageName='index';
+      var gasVersionUrl=basePath.substring(0,basePath.lastIndexOf('/')+1)+'gs-versions/'+pageName+'gs.version.txt';
+      var currentGasVersion=null;var pill=document.getElementById('gas-pill');var pillLabel=document.getElementById('gas-pill-label');
+      var dot=pill?pill.querySelector('.dot'):null;var countdownSeconds=0;var countdownTimer=null;
+      function startCountdown(interval){countdownSeconds=(interval||GAS_POLL_INTERVAL)/1000;if(countdownTimer)clearInterval(countdownTimer);countdownTimer=setInterval(function(){countdownSeconds--;if(countdownSeconds<=0){clearInterval(countdownTimer);if(dot){dot.textContent='';dot.className='dot';}}else if(countdownSeconds<=5){if(dot){dot.textContent=countdownSeconds;dot.className='dot counting';}}},1000);}
+      function checkGasUpdate(){if(countdownTimer)clearInterval(countdownTimer);if(dot){dot.textContent='';dot.className='dot checking';}fetch(gasVersionUrl+'?_cb='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(v){var f=v.trim();var gp=f.split('|');var gv=(gp.length>=2&&gp[1])?gp[1]:f;if(!currentGasVersion){currentGasVersion=f;if(pill)pill.style.display='flex';if(pillLabel)pillLabel.textContent='GAS '+gv;}else if(f!==currentGasVersion){if(dot)dot.className='dot found';if(pillLabel)pillLabel.textContent='GAS updated — reloading...';sessionStorage.setItem('gas-pending-sound','1');setTimeout(function(){window.location.reload();},1500);return;}if(dot)setTimeout(function(){dot.className='dot';},800);var d=GAS_POLL_INTERVAL;if(window._htmlPollTime&&Math.abs(Date.now()-window._htmlPollTime)<3000)d+=5000;startCountdown(d);setTimeout(checkGasUpdate,d);}).catch(function(){if(dot){dot.className='dot error';setTimeout(function(){dot.className='dot';},2000);}startCountdown();setTimeout(checkGasUpdate,GAS_POLL_INTERVAL);});}
+      fetch(gasVersionUrl+'?_cb='+Date.now(),{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error();return r.text();}).then(function(v){currentGasVersion=v.trim();var gip=currentGasVersion.split('|');var giv=(gip.length>=2&&gip[1])?gip[1]:currentGasVersion;if(pillLabel)pillLabel.textContent='GAS '+giv;if(pill)pill.style.display='flex';startCountdown(GAS_INITIAL_DELAY);setTimeout(checkGasUpdate,GAS_INITIAL_DELAY);}).catch(function(){});
+      var gclOverlay=document.getElementById('gcl-overlay');var gclBody=document.getElementById('gcl-body');var gclCache=null;
+      if(pill){if(SHOW_CHANGELOG){pill.addEventListener('click',function(e){e.stopPropagation();gclOverlay.style.display='flex';if(!gclCache)fetchGasChangelog();});}else{pill.style.cursor='default';}}
+      document.getElementById('gcl-close').addEventListener('click',function(){gclOverlay.style.display='none';});
+      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&gclOverlay.style.display==='flex')gclOverlay.style.display='none';});
+      function fetchGasChangelog(){gclBody.innerHTML='<p style="color:#888">Loading changelog\u2026</p>';var url=basePath.substring(0,basePath.lastIndexOf('/')+1)+'gs-changelogs/'+pageName+'gs.changelog.md';fetch(url).then(function(r){if(!r.ok)throw new Error();return r.text();}).then(function(md){gclCache=sanitizeChangelogHtml(parseGasChangelog(md));gclBody.innerHTML=gclCache;var t=document.getElementById('gcl-title');if(t&&currentGasVersion)t.textContent='GAS Changelog \u2014 '+currentGasVersion.replace(/\|/g,'');}).catch(function(){gclBody.innerHTML='<p style="color:#888">Could not load changelog.</p>';});}
+      function parseGasChangelog(md){var lines=md.split('\n');var html='';var inList=false;for(var i=0;i<lines.length;i++){var line=lines[i];if(line.match(/^# /)||line.match(/^`Sections:/)||line.match(/^All notable/)||line.match(/^Format follows/)||line.match(/^Developed by:/))continue;if(line.match(/^## \[Unreleased\]/))continue;if(line.match(/^## \[/)){if(inList){html+='</ul>';inList=false;}var m=line.match(/^## \[(v[\d.]+g)\].*?— (.+)/);if(m)html+='<h3>'+m[1]+' &mdash; '+m[2]+'</h3>';continue;}if(line.match(/^### /)){if(inList){html+='</ul>';inList=false;}html+='<h4>'+line.substring(4)+'</h4>';continue;}if(line.match(/^- /)){if(!inList){html+='<ul>';inList=true;}html+='<li>'+line.substring(2)+'</li>';continue;}}if(inList)html+='</ul>';return html||'<p style="color:#888">No changelog entries yet.</p>';}
+    })();
+
+    if (sessionStorage.getItem('gas-pending-sound')) { sessionStorage.removeItem('gas-pending-sound'); showUpdateSplash('splash-code','code-sound-data','sounds/Code_Ready_Voice_1.mp3'); }
+
+    function sanitizeChangelogHtml(html) {
+      var tmp=document.createElement('div');tmp.innerHTML=html;
+      var dangerous=tmp.querySelectorAll('script,iframe,object,embed,form,input,textarea,link,style,svg,math');
+      for(var i=dangerous.length-1;i>=0;i--)dangerous[i].parentNode.removeChild(dangerous[i]);
+      var all=tmp.querySelectorAll('*');for(var j=0;j<all.length;j++){var attrs=all[j].attributes;for(var k=attrs.length-1;k>=0;k--){if(attrs[k].name.toLowerCase().indexOf('on')===0)all[j].removeAttribute(attrs[k].name);}}
+      return tmp.innerHTML;
+    }
+
+    // Changelog popup
+    (function() {
+      var overlay=document.createElement('div');overlay.id='changelog-overlay';
+      overlay.innerHTML='<div id="changelog-popup"><div id="changelog-header"><span id="changelog-title">Changelog</span><button id="changelog-close">&times;</button></div><div id="changelog-body"></div></div>';
+      document.body.appendChild(overlay);
+      var closeBtn=document.getElementById('changelog-close');var body=document.getElementById('changelog-body');var changelogCache=null;
+      function show(){overlay.style.display='flex';if(!changelogCache)fetchChangelog();}
+      function hide(){overlay.style.display='none';}
+      closeBtn.addEventListener('click',hide);
+      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.style.display==='flex')hide();});
+      function getChangelogUrl(){var bp=window.location.href.split('?')[0].split('#')[0];var pn=bp.substring(bp.lastIndexOf('/')+1).replace('.html','');if(!pn)pn='index';return bp.substring(0,bp.lastIndexOf('/')+1)+'html-changelogs/'+pn+'html.changelog.md';}
+      function parseChangelog(md){var lines=md.split('\n');var html='';var inList=false;for(var i=0;i<lines.length;i++){var line=lines[i];if(line.match(/^# /)||line.match(/^`Sections:/)||line.match(/^All notable/)||line.match(/^Format follows/)||line.match(/^Developed by:/))continue;if(line.match(/^## \[Unreleased\]/))continue;if(line.match(/^## \[v/)){if(inList){html+='</ul>';inList=false;}var m=line.match(/^## \[(v[\d.]+w)\].*?— (.+)/);if(m)html+='<h3>'+m[1]+' &mdash; '+m[2]+'</h3>';continue;}if(line.match(/^### /)){if(inList){html+='</ul>';inList=false;}html+='<h4>'+line.substring(4)+'</h4>';continue;}if(line.match(/^- /)){if(!inList){html+='<ul>';inList=true;}html+='<li>'+line.substring(2)+'</li>';continue;}}if(inList)html+='</ul>';return html||'<p style="color:#888">No changelog entries yet.</p>';}
+      function fetchChangelog(){body.innerHTML='<p style="color:#888">Loading changelog\u2026</p>';fetch(getChangelogUrl()).then(function(r){if(!r.ok)throw new Error();return r.text();}).then(function(md){changelogCache=sanitizeChangelogHtml(parseChangelog(md));body.innerHTML=changelogCache;var t=document.getElementById('changelog-title');var ind=document.getElementById('version-indicator');if(ind&&t){var lbl=ind.querySelector('.label');if(lbl)t.textContent='Changelog \u2014 '+lbl.textContent;}}).catch(function(){body.innerHTML='<p style="color:#888">Could not load changelog.</p>';});}
+      var obs=new MutationObserver(function(){var ind=document.getElementById('version-indicator');if(ind&&!ind._clBound){ind._clBound=true;if(SHOW_CHANGELOG){ind.addEventListener('click',function(e){e.stopPropagation();show();});}else{ind.style.cursor='default';}obs.disconnect();}});
+      obs.observe(document.body,{childList:true,subtree:true});
+    })();
+
+    var _wakeLock=null;
+    async function requestWakeLock(){try{if(navigator.wakeLock){_wakeLock=await navigator.wakeLock.request('screen');_wakeLock.addEventListener('release',function(){_wakeLock=null;});}}catch(e){}}
+    requestWakeLock();
+    document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')requestWakeLock();});
+
+// ══════════════
+// TEMPLATE END
+// ══════════════
+
+// ══════════════
+// PROJECT START
+// ══════════════
+
+    var _lastDiffOps = null;
+    var _lastTemplateOnly = false;
+
+    // --- LCS-based line diff ---
+    function lcs(a, b, eq) {
+      var m = a.length, n = b.length;
+      var dp = new Array(m + 1);
+      for (var i = 0; i <= m; i++) { dp[i] = new Array(n + 1); dp[i][0] = 0; }
+      for (var j = 0; j <= n; j++) dp[0][j] = 0;
+      for (var i = 1; i <= m; i++)
+        for (var j = 1; j <= n; j++)
+          dp[i][j] = eq(a[i-1], b[j-1]) ? dp[i-1][j-1] + 1 : Math.max(dp[i-1][j], dp[i][j-1]);
+      var result = [];
+      var i = m, j = n;
+      while (i > 0 && j > 0) {
+        if (eq(a[i-1], b[j-1])) { result.unshift({ ai: i-1, bi: j-1 }); i--; j--; }
+        else if (dp[i-1][j] >= dp[i][j-1]) i--;
+        else j--;
+      }
+      return result;
+    }
+
+    // Character-level diff for modified lines
+    function charDiff(oldStr, newStr) {
+      var oldChars = oldStr.split(''), newChars = newStr.split('');
+      var matches = lcs(oldChars, newChars, function(a,b){ return a === b; });
+      var oldMarked = [], newMarked = [];
+      var mi = 0, oi = 0, ni = 0;
+      // Build old side
+      var matchedOld = new Set(), matchedNew = new Set();
+      for (var k = 0; k < matches.length; k++) { matchedOld.add(matches[k].ai); matchedNew.add(matches[k].bi); }
+      for (var c = 0; c < oldChars.length; c++) {
+        if (matchedOld.has(c)) oldMarked.push(escHtml(oldChars[c]));
+        else oldMarked.push('<span class="char-del">' + escHtml(oldChars[c]) + '</span>');
+      }
+      for (var c = 0; c < newChars.length; c++) {
+        if (matchedNew.has(c)) newMarked.push(escHtml(newChars[c]));
+        else newMarked.push('<span class="char-add">' + escHtml(newChars[c]) + '</span>');
+      }
+      return { oldHtml: oldMarked.join(''), newHtml: newMarked.join('') };
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function normalizeLine(line, trimWs, ignoreCase) {
+      var r = line;
+      if (trimWs) r = r.replace(/^\s+|\s+$/g, '');
+      if (ignoreCase) r = r.toLowerCase();
+      return r;
+    }
+
+    // --- Strip PROJECT blocks (keep only TEMPLATE/shared code) ---
+    function stripProjectBlocks(text) {
+      var lines = text.split('\n');
+      var result = [];
+      var inProject = false;
+      var projectStartRe = /PROJECT\s+START/;
+      var projectEndRe = /PROJECT\s+END/;
+      for (var i = 0; i < lines.length; i++) {
+        if (projectStartRe.test(lines[i])) {
+          inProject = true;
+          continue;
+        }
+        if (projectEndRe.test(lines[i])) {
+          inProject = false;
+          continue;
+        }
+        // Also skip the ══════════════ divider lines adjacent to PROJECT markers
+        if (!inProject) {
+          result.push(lines[i]);
+        }
+      }
+      return result.join('\n');
+    }
+
+    // --- Main compare function ---
+    function compareTexts() {
+      var leftText = document.getElementById('text-left').value;
+      var rightText = document.getElementById('text-right').value;
+      if (!leftText && !rightText) return;
+
+      var trimWs = document.getElementById('chk-trim').checked;
+      var ignoreCase = document.getElementById('chk-case').checked;
+      var templateOnly = document.getElementById('chk-template-only').checked;
+
+      if (templateOnly) {
+        leftText = stripProjectBlocks(leftText);
+        rightText = stripProjectBlocks(rightText);
+      }
+
+      var leftLines = leftText.split('\n');
+      var rightLines = rightText.split('\n');
+
+      var eq = function(a, b) { return normalizeLine(a, trimWs, ignoreCase) === normalizeLine(b, trimWs, ignoreCase); };
+      var matches = lcs(leftLines, rightLines, eq);
+
+      // Build diff operations
+      var ops = [];
+      var li = 0, ri = 0;
+      for (var k = 0; k < matches.length; k++) {
+        var m = matches[k];
+        // Removed lines before this match
+        while (li < m.ai) { ops.push({ type: 'removed', left: leftLines[li], leftNum: li+1, right: null, rightNum: null }); li++; }
+        // Added lines before this match
+        while (ri < m.bi) { ops.push({ type: 'added', left: null, leftNum: null, right: rightLines[ri], rightNum: ri+1 }); ri++; }
+        // Equal line
+        ops.push({ type: 'equal', left: leftLines[li], leftNum: li+1, right: rightLines[ri], rightNum: ri+1 }); li++; ri++;
+      }
+      while (li < leftLines.length) { ops.push({ type: 'removed', left: leftLines[li], leftNum: li+1, right: null, rightNum: null }); li++; }
+      while (ri < rightLines.length) { ops.push({ type: 'added', left: null, leftNum: null, right: rightLines[ri], rightNum: ri+1 }); ri++; }
+
+      // Merge adjacent removed+added into modified pairs
+      var merged = [];
+      var i = 0;
+      while (i < ops.length) {
+        if (ops[i].type === 'removed') {
+          var remStart = i;
+          while (i < ops.length && ops[i].type === 'removed') i++;
+          var addStart = i;
+          while (i < ops.length && ops[i].type === 'added') i++;
+          var remCount = addStart - remStart;
+          var addCount = i - addStart;
+          var pairs = Math.min(remCount, addCount);
+          for (var p = 0; p < pairs; p++) {
+            merged.push({ type: 'modified', left: ops[remStart+p].left, leftNum: ops[remStart+p].leftNum, right: ops[addStart+p].right, rightNum: ops[addStart+p].rightNum });
+          }
+          for (var p = pairs; p < remCount; p++) merged.push(ops[remStart+p]);
+          for (var p = pairs; p < addCount; p++) merged.push(ops[addStart+p]);
+        } else {
+          merged.push(ops[i]); i++;
+        }
+      }
+
+      // Store for export and render
+      _lastDiffOps = merged;
+      _lastTemplateOnly = templateOnly;
+      renderDiff(merged);
+    }
+
+    function renderDiff(ops) {
+      var leftHtml = '', rightHtml = '';
+      var stats = { total: 0, equal: 0, added: 0, removed: 0, modified: 0 };
+
+      for (var i = 0; i < ops.length; i++) {
+        var op = ops[i];
+        stats.total++;
+        if (op.type === 'equal') {
+          stats.equal++;
+          leftHtml += '<div class="diff-line equal"><span class="diff-line-num">'+op.leftNum+'</span><span class="diff-line-content">'+escHtml(op.left)+'</span></div>';
+          rightHtml += '<div class="diff-line equal"><span class="diff-line-num">'+op.rightNum+'</span><span class="diff-line-content">'+escHtml(op.right)+'</span></div>';
+        } else if (op.type === 'removed') {
+          stats.removed++;
+          leftHtml += '<div class="diff-line removed"><span class="diff-line-num">'+op.leftNum+'</span><span class="diff-line-content">'+escHtml(op.left)+'</span></div>';
+          rightHtml += '<div class="diff-line empty"><span class="diff-line-num"></span><span class="diff-line-content"></span></div>';
+        } else if (op.type === 'added') {
+          stats.added++;
+          leftHtml += '<div class="diff-line empty"><span class="diff-line-num"></span><span class="diff-line-content"></span></div>';
+          rightHtml += '<div class="diff-line added"><span class="diff-line-num">'+op.rightNum+'</span><span class="diff-line-content">'+escHtml(op.right)+'</span></div>';
+        } else if (op.type === 'modified') {
+          stats.modified++;
+          var cd = charDiff(op.left, op.right);
+          leftHtml += '<div class="diff-line modified"><span class="diff-line-num">'+op.leftNum+'</span><span class="diff-line-content">'+cd.oldHtml+'</span></div>';
+          rightHtml += '<div class="diff-line modified"><span class="diff-line-num">'+op.rightNum+'</span><span class="diff-line-content">'+cd.newHtml+'</span></div>';
+        }
+      }
+
+      document.getElementById('stat-total').textContent = stats.total;
+      document.getElementById('stat-equal').textContent = stats.equal;
+      document.getElementById('stat-added').textContent = stats.added;
+      document.getElementById('stat-removed').textContent = stats.removed;
+      document.getElementById('stat-modified').textContent = stats.modified;
+      document.getElementById('stats-bar').style.display = 'flex';
+      document.getElementById('copy-diff-controls').style.display = 'flex';
+      updateSmartContextDisplay();
+
+      if (stats.total === stats.equal && stats.total > 0) {
+        document.getElementById('diff-left').innerHTML = '';
+        document.getElementById('diff-right').innerHTML = '';
+        document.getElementById('diff-output').style.display = 'block';
+        var identicalMsg = _lastTemplateOnly
+          ? '✓ Template code is identical (' + stats.total + ' lines) — only PROJECT blocks differ'
+          : '✓ Texts are identical (' + stats.total + ' lines)';
+        document.getElementById('no-results').innerHTML = '<div class="identical-msg">' + identicalMsg + '</div>';
+        document.getElementById('no-results').style.display = 'block';
+      } else {
+        document.getElementById('no-results').style.display = 'none';
+        document.getElementById('diff-output').style.display = 'block';
+        document.getElementById('diff-left').innerHTML = leftHtml;
+        document.getElementById('diff-right').innerHTML = rightHtml;
+      }
+
+      // Apply hide-equal if checked
+      var diffView = document.getElementById('diff-view');
+      if (document.getElementById('chk-hide-equal').checked) {
+        diffView.classList.add('hide-equal');
+      } else {
+        diffView.classList.remove('hide-equal');
+      }
+
+      // Sync scroll
+      var diffLeft = document.getElementById('diff-left');
+      var diffRight = document.getElementById('diff-right');
+      var syncing = false;
+      diffLeft.parentElement.onscroll = function() {
+        if (syncing) return; syncing = true;
+        diffRight.parentElement.scrollTop = diffLeft.parentElement.scrollTop;
+        syncing = false;
+      };
+      diffRight.parentElement.onscroll = function() {
+        if (syncing) return; syncing = true;
+        diffLeft.parentElement.scrollTop = diffRight.parentElement.scrollTop;
+        syncing = false;
+      };
+    }
+
+    // --- Update smart context display value ---
+    function updateSmartContextDisplay() {
+      var input = document.getElementById('context-lines');
+      if (!document.getElementById('chk-smart-context').checked) return;
+      if (!_lastDiffOps || _lastDiffOps.length === 0) { input.value = 'auto'; return; }
+      // Show the max smart context cap so the user knows the effective value
+      input.value = 10;
+    }
+
+    // --- Generate unified diff for clipboard ---
+    function generateContextDiff() {
+      if (!_lastDiffOps || _lastDiffOps.length === 0) return '';
+      var smartContext = document.getElementById('chk-smart-context').checked;
+      var MAX_SMART = 10;
+      var ops = _lastDiffOps;
+
+      // Find indices of all non-equal ops
+      var changeIndices = [];
+      for (var i = 0; i < ops.length; i++) {
+        if (ops[i].type !== 'equal') changeIndices.push(i);
+      }
+      if (changeIndices.length === 0) return '(No differences found)';
+
+      // Build hunk ranges with context
+      var hunks = [];
+      if (smartContext) {
+        // Smart: expand each change to fill gaps between neighbors, capped at MAX_SMART
+        // Find contiguous change groups first
+        var groups = [];
+        var gStart = changeIndices[0], gEnd = changeIndices[0];
+        for (var c = 1; c < changeIndices.length; c++) {
+          if (changeIndices[c] === gEnd + 1) {
+            gEnd = changeIndices[c];
+          } else {
+            groups.push({ first: gStart, last: gEnd });
+            gStart = changeIndices[c];
+            gEnd = changeIndices[c];
+          }
+        }
+        groups.push({ first: gStart, last: gEnd });
+
+        // For each group, compute context: expand toward neighbors up to MAX_SMART
+        for (var g = 0; g < groups.length; g++) {
+          var before = MAX_SMART;
+          var after = MAX_SMART;
+          // If previous group is close, expand to fill the gap (merge naturally)
+          if (g > 0) {
+            var gap = groups[g].first - groups[g - 1].last - 1;
+            if (gap <= MAX_SMART * 2) before = gap; // show all lines between groups
+          }
+          var hStart = Math.max(0, groups[g].first - before);
+          var hEnd = Math.min(ops.length - 1, groups[g].last + after);
+          // Merge with previous hunk if overlapping
+          if (hunks.length > 0 && hStart <= hunks[hunks.length - 1].end + 1) {
+            hunks[hunks.length - 1].end = hEnd;
+          } else {
+            hunks.push({ start: hStart, end: hEnd });
+          }
+        }
+      } else {
+        // Fixed context lines
+        var contextN = parseInt(document.getElementById('context-lines').value) || 3;
+        var hStart = Math.max(0, changeIndices[0] - contextN);
+        var hEnd = Math.min(ops.length - 1, changeIndices[0] + contextN);
+        for (var c = 1; c < changeIndices.length; c++) {
+          var nStart = Math.max(0, changeIndices[c] - contextN);
+          var nEnd = Math.min(ops.length - 1, changeIndices[c] + contextN);
+          if (nStart <= hEnd + 1) {
+            hEnd = nEnd;
+          } else {
+            hunks.push({ start: hStart, end: hEnd });
+            hStart = nStart;
+            hEnd = nEnd;
+          }
+        }
+        hunks.push({ start: hStart, end: hEnd });
+      }
+
+      // Emit unified diff output
+      var output = '';
+      if (_lastTemplateOnly) {
+        output += '# Template-Only Comparison (PROJECT blocks stripped)\n';
+        output += '# Differences below are in TEMPLATE/shared foundational code only.\n';
+        output += '# If no differences appear, the template code is identical.\n\n';
+      }
+      output += '--- Text A\n+++ Text B\n';
+      for (var h = 0; h < hunks.length; h++) {
+        var hunk = hunks[h];
+        var lStart = null, lCount = 0, rStart = null, rCount = 0;
+        for (var i = hunk.start; i <= hunk.end; i++) {
+          var op = ops[i];
+          if (op.type === 'equal' || op.type === 'removed' || op.type === 'modified') {
+            if (lStart === null) lStart = op.leftNum;
+            lCount++;
+          }
+          if (op.type === 'equal' || op.type === 'added' || op.type === 'modified') {
+            if (rStart === null) rStart = op.rightNum;
+            rCount++;
+          }
+        }
+        output += '@@ -' + (lStart || 1) + ',' + lCount + ' +' + (rStart || 1) + ',' + rCount + ' @@\n';
+        for (var i = hunk.start; i <= hunk.end; i++) {
+          var op = ops[i];
+          if (op.type === 'equal') {
+            output += ' ' + op.left + '\n';
+          } else if (op.type === 'removed') {
+            output += '-' + op.left + '\n';
+          } else if (op.type === 'added') {
+            output += '+' + op.right + '\n';
+          } else if (op.type === 'modified') {
+            output += '-' + op.left + '\n';
+            output += '+' + op.right + '\n';
+          }
+        }
+      }
+      return output;
+    }
+
+    // --- Event listeners ---
+    document.getElementById('btn-compare').addEventListener('click', compareTexts);
+    document.getElementById('btn-swap').addEventListener('click', function() {
+      var l = document.getElementById('text-left'), r = document.getElementById('text-right');
+      var tmp = l.value; l.value = r.value; r.value = tmp;
+      updateCounts();
+    });
+    document.getElementById('btn-clear').addEventListener('click', function() {
+      document.getElementById('text-left').value = '';
+      document.getElementById('text-right').value = '';
+      document.getElementById('stats-bar').style.display = 'none';
+      document.getElementById('copy-diff-controls').style.display = 'none';
+      document.getElementById('diff-output').style.display = 'none';
+      document.getElementById('no-results').style.display = 'block';
+      document.getElementById('no-results').innerHTML = 'Enter text in both fields and click Compare';
+      _lastDiffOps = null;
+      _lastTemplateOnly = false;
+      document.getElementById('chk-hide-equal').checked = true;
+      var dv = document.getElementById('diff-view'); if (dv) dv.classList.add('hide-equal');
+      updateCounts();
+    });
+
+    function updateCounts() {
+      var l = document.getElementById('text-left').value;
+      var r = document.getElementById('text-right').value;
+      document.getElementById('count-left').textContent = l.length + ' chars, ' + (l ? l.split('\n').length : 0) + ' lines';
+      document.getElementById('count-right').textContent = r.length + ' chars, ' + (r ? r.split('\n').length : 0) + ' lines';
+    }
+    document.getElementById('text-left').addEventListener('input', updateCounts);
+    document.getElementById('text-right').addEventListener('input', updateCounts);
+
+    // Toggle smart context — switch input between readonly (auto) and editable (manual)
+    document.getElementById('chk-smart-context').addEventListener('change', function() {
+      var input = document.getElementById('context-lines');
+      if (this.checked) {
+        input.readOnly = true;
+        input.title = 'Smart context is active — this shows the auto-computed value';
+        input.style.opacity = '0.6';
+        updateSmartContextDisplay();
+      } else {
+        input.readOnly = false;
+        input.title = '';
+        input.style.opacity = '1';
+        input.value = '3';
+      }
+    });
+
+    // Toggle hiding equal lines in the visual diff
+    document.getElementById('chk-hide-equal').addEventListener('change', function() {
+      var diffView = document.getElementById('diff-view');
+      if (diffView) {
+        if (this.checked) { diffView.classList.add('hide-equal'); }
+        else { diffView.classList.remove('hide-equal'); }
+      }
+    });
+
+    // Copy context diff to clipboard
+    document.getElementById('btn-copy-diff').addEventListener('click', function() {
+      var diffText = generateContextDiff();
+      if (!diffText) return;
+      var btn = document.getElementById('btn-copy-diff');
+      navigator.clipboard.writeText(diffText).then(function() {
+        var orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+      }).catch(function() {
+        var ta = document.createElement('textarea');
+        ta.value = diffText;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy Context Diff'; btn.classList.remove('copied'); }, 2000);
+      });
+    });
+
+    // Compare on Ctrl+Enter
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') compareTexts();
+    });
+
+// ══════════════
+// PROJECT END
+// ══════════════
+  </script>
+</body>
+</html>
+<!-- Developed by: LightAISolutions -->

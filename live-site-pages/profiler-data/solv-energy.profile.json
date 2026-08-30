@@ -1,0 +1,362 @@
+{
+ "schemaVersion": 6,
+ "slug": "solv-energy",
+ "name": "SOLV Energy",
+ "shortName": "SOLV",
+ "categories": [
+  "epc"
+ ],
+ "website": "https://www.solvenergy.com",
+ "headquarters": "San Diego, California, United States",
+ "founded": 2008,
+ "employees": "~2,007 (Mar 2026 prospectus; ~1,219 field)",
+ "ownership": {
+  "type": "public",
+  "ticker": "NASDAQ: MWH",
+  "notes": "IPO'd Feb 11-12, 2026 at $25/share (~$589M gross with greenshoe; ~$5-6B reported valuation) — the first pure-play US solar+storage EPC to list. PE firm American Securities (which bought the business from Swinerton in Dec 2021 for a reported ~$2B) remained majority holder post-IPO and sold down in a May 2026 secondary at $36."
+ },
+ "summary": "BOTTOM LINE UP FRONT: SOLV Energy is the pure-play benchmark of the US solar+storage EPC tier — >21 GWdc built across 500+ plants since its 2008 Swinerton Renewable Energy origins, the #2 US BESS builder of 2024 (4,586 MWh installed, a 35x ramp from 2022), an ~8.5 GW ERCOT construction record, and the industry's largest solar O&M fleet (~22 GWdc across ~155 plants). Its February 2026 Nasdaq IPO (MWH) and $8.9B backlog (~100% safe-harbored, storage-linked slice $2.5B and climbing) make it the cleanest public read on the storage-EPC cycle. The channel fact that matters most: on every verified flagship BESS build (Arevon's Vikings and Eland, Intersect's Oberon), the batteries were owner-furnished Tesla Megapacks — SOLV installs what owners buy — so its battery-selection influence concentrates in mid-size utility/co-op jobs, its advertised battery-module procurement scope, and the augmentation cycle of the O&M fleet, where OEM lock-in is weakest. It is 'actively exploring storage for data centers' (Q2 2026) and just bought Roberson Waite for urban BESS + substation capability.",
+ "ecosystemRole": "We assess SOLV as a constructability gatekeeper and services annuity rather than a procurement principal: winning SOLV means install-compatibility, commissioning familiarity, and a voice in owner equipment selection (its CEO explicitly markets lifecycle-data-driven 'select equipment' influence), not purchase orders. For the relationship web it is the physical link between Batch B's buyers and Batch A's suppliers — it built Arevon's Tesla flagships, services Intersect Power (Google's co-location partner) and SB Energy (the Stargate-linked developer) under O&M, and its Sungrow experience is inverter-side only. Its 22 GW O&M fleet is the quiet strategic asset for any battery OEM: augmentation and repowering purchases recur for decades and are less FEOC-visible than new-build ITC procurement.",
+ "productsAndServices": [
+  {
+   "name": "Utility-scale solar + storage EPC",
+   "description": ">21 GWdc built across 500+ plants; 50+ BESS projects in 14 states; 2024 BESS installs 4,586 MWh (#2 nationally per Solar Power World). Verified flagship builds: Vikings (Arevon — 157 MWdc + 150 MW/600 MWh Tesla Megapack, COD Nov 2024, 'first US utility-scale solar peaker'); Eland 1 & 2 (Arevon — 758 MWdc + 1,200 MWh combined, Tesla Megapack 2 XL, >$2B complex); Oberon 1 (Intersect Power — 339 MWdc scope + 500 kV substation/gen-tie + 250 MWac/1,000 MWh Tesla BESS); Chirreon (Torch/Trico co-op — 13 MW PV + 15 MW/2-hr BESS). Active slate (Jun 2026): >4 GWdc of 600+ MW projects including a 1,200 MWdc Arizona solar+BESS — the largest single award in company history (owners undisclosed).",
+   "positioning": "#2 solar contractor per ENR (No. 66 Top 400 overall); top-5 by installed volume in Solar Power World's 2025-2026 lists; ~8.5 GW built in ERCOT. Rival Rosendin takes Arevon's standalone BESS (Condor, Peregrine, Nighthawk) while SOLV wins the hybrids — the split to watch in its home market.",
+   "soldThrough": "EPC contracts with LNTP structures (customers prepay deposits for long-lead equipment); repeat owners include Arevon, Intersect Power, Matrix Renewables, Sol Systems, SB Energy, Clēnera; union labor capability demonstrated (250+ union workers at Vikings).",
+   "targetSegments": "IPPs, utilities, co-ops, CCA-contracted developers — CAISO and ERCOT-centric with national reach (41 states licensed).",
+   "roadmap": "FY2026 revenue guided to $3.87-3.97B; 'majority of projects are solar plus storage now' (Q2 2026 call)."
+  },
+  {
+   "name": "O&M / services platform (the annuity — and the OEM entry point)",
+   "description": "~22 GWdc / ~155 plants under long-term O&M (+4.8 GW added in the year to Apr 2025), 140+ sites remote-monitored from the San Diego Operations Center. Services include BESS testing/repair/upgrades, NETA-compliant high-voltage work, and battery augmentation and repowering. Named O&M customers: Intersect Power, SB Energy (longstanding), Greenalia, Matrix Renewables (new 2025).",
+   "positioning": "The largest independent solar O&M fleet in the US — a recurring counterparty for augmentation-stage battery procurement where owner lock-in to the original OEM is weakest.",
+   "soldThrough": "Long-term O&M contracts, often bundled with EPC wins.",
+   "targetSegments": "Operating solar/storage fleets nationwide.",
+   "roadmap": "BESS/substation services expansion is the stated growth vector; augmentation demand compounds as the 2020-2023 build cohort ages."
+  },
+  {
+   "name": "Self-perform + adjacency acquisitions",
+   "description": "Self-perform field model (~1,219 field employees; large apprenticeship program — 1,219 apprentices/students in development, DOL ACE Network participant). Acquisitions: Sacramento Drilling (early 2025 — foundations self-perform), Spartan Infrastructure (Jun 2025 — high-voltage T&D), Roberson Waite Electric (~$45M, closed Jul 2026 — Anaheim substation/testing contractor adding urban BESS + regulated-utility capability, press-linked to data-center-supporting infrastructure).",
+   "positioning": "Vertical integration of the scopes that bottleneck storage builds: foundations, HV interconnection, substations.",
+   "soldThrough": "Integrated into EPC delivery.",
+   "targetSegments": "Its own project execution plus regulated-utility work (Roberson Waite).",
+   "roadmap": "'Actively exploring storage for data centers' as a growth avenue (Q2 2026 call) — the AIDC on-ramp is urban BESS + substation scope, not data-center buildings."
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Construction & services record",
+   "specs": [
+    {
+     "band": "Scale",
+     "label": "Cumulative",
+     "value": ">21 GWdc solar across 500+ plants since 2008; 50+ BESS projects in 14 states; 4,586 MWh of BESS installed in 2024 alone (#2 nationally); ~8.5 GW built in ERCOT; cumulative BESS GWh not published"
+    },
+    {
+     "band": "Scale",
+     "label": "O&M fleet",
+     "value": "~22 GWdc / ~155 plants under long-term O&M; 140+ sites remote-monitored; BESS testing/repair/augmentation and NETA HV services in scope"
+    },
+    {
+     "band": "Flagship BESS builds",
+     "label": "Verified projects",
+     "value": "Vikings (150 MW/600 MWh, Tesla) · Eland 1&2 (300 MW/1,200 MWh, Tesla Megapack 2 XL) · Oberon 1 (250 MWac/1,000 MWh, Tesla, + 500 kV substation) · Chirreon (15 MW co-op BESS)"
+    },
+    {
+     "band": "OEM interfaces",
+     "label": "Documented",
+     "value": "Tesla Megapack on every verified flagship (owner-furnished by Arevon/Intersect); Sungrow experience is PV-inverter-side (Vikings); no public Fluence/LG/Samsung/PowerTitan/BYD/Hithium BESS install found — project-level supplier disclosure is thin"
+    },
+    {
+     "band": "Backlog",
+     "label": "Q2 2026",
+     "value": "$8.9B total (up from $4.3B YE2024); storage-linked slice $2.5B; ~100% safe-harbored; visibility through 2028; 68% signed EPC at YE2025"
+    }
+   ],
+   "notes": "Procurement scope: SOLV's BESS services page claims procurement of 'inverters, battery modules, switchgear and balance of system' — it carries equipment scope on some jobs, but marquee-project batteries are owner-contracted. No battery framework/preferred-vendor agreement is public."
+  },
+  {
+   "product": "Public-company profile (Nasdaq: MWH)",
+   "specs": [
+    {
+     "band": "IPO",
+     "label": "Feb 2026",
+     "value": "$25.00/share; 23.575M Class A shares with greenshoe = $589.4M gross; first-day close $30.67 (+22.7%); ~$5-6B reported valuation; May 2026 secondary at $36.00"
+    },
+    {
+     "band": "Results",
+     "label": "FY2025 / H1 2026",
+     "value": "FY2025 revenue $2.49B, net income $149.2M, adj. EBITDA $342M, gross margin 18.6%; Q2 2026 revenue $951.2M (+77%), NI $67M, adj. EBITDA $117.5M; FY2026 guided $3.87-3.97B revenue / $485-505M EBITDA"
+    }
+   ],
+   "notes": "Revenue dipped in 2024 ($1.85B) before the 2025-26 storage-driven surge — the backlog doubling (+86% in 2025) is the leading indicator."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-08-20",
+   "category": "aidc",
+   "headline": "Q2 2026 call: 'majority of projects are solar plus storage now'; SOLV 'actively exploring storage for data centers'; storage backlog $2.5B",
+   "read": "The EPC tier's demand signal confirms the market thesis — and the data-center-storage exploration is the first step toward an AIDC construction product.",
+   "source": "Q2 2026 earnings call"
+  },
+  {
+   "date": "2026-08-13",
+   "category": "financial",
+   "headline": "Q2 2026: revenue $951.2M (+77%), backlog $8.9B; FY2026 guidance raised to $3.87-3.97B revenue",
+   "read": "Post-IPO execution beating plan — the storage cycle is carrying the growth.",
+   "source": "GlobeNewswire"
+  },
+  {
+   "date": "2026-07-01",
+   "category": "corporate",
+   "headline": "Roberson Waite Electric acquisition closes (~$45M) — Anaheim substation/testing contractor adding urban BESS and regulated-utility capability",
+   "read": "The third adjacency acquisition in 18 months — and the one trade press links to data-center-supporting infrastructure.",
+   "source": "GlobeNewswire / Solar Power World"
+  },
+  {
+   "date": "2026-06-02",
+   "category": "project",
+   "headline": ">4 GW slate of 600+ MW projects announced, including a 1,200 MWdc Arizona solar+BESS — the largest single award in company history (owners undisclosed)",
+   "read": "Gigawatt-class single awards have arrived at the EPC tier; the batteries on these will be selected in the next 12-18 months.",
+   "source": "SOLV PR"
+  },
+  {
+   "date": "2026-02-11",
+   "category": "financial",
+   "headline": "Nasdaq IPO at $25 (ticker MWH); ~$589M gross with greenshoe; +22.7% day one; ~$5-6B valuation — the first pure-play solar+storage EPC to list",
+   "read": "Public-market validation of the storage-EPC cycle — and public-company scrutiny that makes SOLV more careful, not less, about politically exposed supplier associations.",
+   "source": "SEC 424B4 / press"
+  },
+  {
+   "date": "2025-11-15",
+   "category": "project",
+   "headline": "Stillhouse Solar completed for Matrix Renewables (284 MWdc, ERCOT, + O&M); Sol Systems Uvalde TX 209 MWdc award",
+   "read": "The Texas franchise keeps compounding — ~8.5 GW built in ERCOT and counting.",
+   "source": "PRNewswire / pv-tech"
+  },
+  {
+   "date": "2025-06-25",
+   "category": "corporate",
+   "headline": "Spartan Infrastructure acquired (high-voltage T&D contractor)",
+   "read": "Interconnection scope vertically integrated — the bottleneck trade for storage builds.",
+   "source": "pv-tech"
+  },
+  {
+   "date": "2025-05-19",
+   "category": "project",
+   "headline": ">6 GW of new awards announced at CLEANPOWER 2025 (Arevon, Clēnera, Sol Systems + three first-time customers)",
+   "read": "The award cadence that built the $8B backlog — owner names show the repeat-customer moat.",
+   "source": "SOLV PR"
+  },
+  {
+   "date": "2025-04-21",
+   "category": "corporate",
+   "headline": "O&M fleet grows 4.8 GW year-over-year (Greenalia and Matrix added); BESS/substation services expanded",
+   "read": "The annuity compounds — every O&M gigawatt is future augmentation-stage battery demand.",
+   "source": "SOLV PR"
+  },
+  {
+   "date": "2024-11-21",
+   "category": "project",
+   "headline": "Vikings COD for Arevon — 157 MWdc + 150 MW/600 MWh Tesla Megapack; 250+ union workers; 'components sourced from American suppliers' marketing",
+   "read": "The template build: owner-furnished Tesla, union labor, Buy-America framing — the domestic-content EPC playbook in one project.",
+   "source": "Arevon PR / SOLV project page"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess SOLV as a constructability and services channel, not a procurement principal: every verified flagship BESS was owner-furnished Tesla, and its influence runs through equipment-selection advice, install-compatibility standards, and commissioning familiarity. A battery OEM 'wins' SOLV by being easy to build and service, which then lowers friction in owner selections — not by selling it containers.",
+  "(High confidence) We assess the O&M fleet (~22 GW, ~155 plants, augmentation/repowering in scope) as the most underrated Hithium-relevant surface in the EPC tier: augmentation purchases recur for decades, are less FEOC-visible than new-build ITC procurement, and the incumbent-OEM lock weakens as fleets age. SOLV is the counterparty that executes those purchases.",
+  "(Moderate confidence) We assess SOLV's public posture as domestic-leaning but not China-hostile: CEO Hershman's record is anti-tariff yet pro-domestic-manufacturing (past SEIA board chair), the backlog is marketed as 100% safe-harbored and tax-credit-clean, and Vikings was sold on American-made components. As a newly public company it has no appetite to champion a §154-named supplier — but no blanket aversion either (Sungrow inverters run its flagship).",
+  "(Moderate confidence) We assess the AIDC angle as forming, not formed: 'actively exploring storage for data centers,' the Roberson Waite urban-BESS/substation capability, and O&M relationships with Stargate-linked SB Energy and Google-partnered Intersect Power put SOLV one contract away from AIDC-adjacent storage construction — worth monitoring for the first named award.",
+  "(Moderate confidence) For the Hithium lens: treat SOLV as an install-ecosystem qualification target — container handling specs, foundation/spacing standards, commissioning interfaces, service training — so that when an owner (a KCE, a Plus Power, a post-2029 Terra-Gen) considers Hithium hardware, the largest storage-experienced EPC bench in CAISO/ERCOT is already familiar with it rather than pricing in first-build risk."
+ ],
+ "relationships": [
+  {
+   "slug": "arevon",
+   "type": "customer",
+   "note": "Built Arevon's Tesla-Megapack flagships — Vikings and the >$2B Eland complex.",
+   "context": "SOLV's verified flagship builds are Arevon projects: Vikings (157 MWdc + 150 MW/600 MWh Tesla Megapack, COD Nov 2024, 'first US utility-scale solar peaker') and Eland 1 & 2 (758 MWdc + 1,200 MWh combined, Tesla Megapack 2 XL, >$2B). The template: owner-furnished Tesla, union labor, Buy-America framing.",
+   "source": "https://www.solvenergy.com/projects",
+   "status": "active",
+   "scale": "Vikings + Eland (>$2B complex)"
+  },
+  {
+   "slug": "tesla",
+   "type": "other",
+   "note": "Owner-furnished Tesla Megapacks on every verified flagship BESS build — SOLV installs what owners buy.",
+   "context": "On Vikings, Eland and Intersect's Oberon, the batteries were owner-furnished Tesla Megapacks — the channel fact that matters most: SOLV is a constructability and services channel, not a procurement principal, with battery-selection influence concentrated in mid-size utility/co-op jobs, advertised battery-module procurement scope, and the O&M fleet's augmentation cycle (~22 GW, ~155 plants) where OEM lock-in is weakest.",
+   "source": "Verified flagship builds — Vikings / Eland / Oberon",
+   "status": "active"
+  },
+  {
+   "slug": "rosendin",
+   "type": "competitor",
+   "note": "Takes Arevon's standalone BESS while SOLV wins the hybrids.",
+   "context": "In SOLV's home market, rival Rosendin takes Arevon's standalone BESS builds (Condor, Peregrine, Nighthawk) while SOLV wins the hybrids — the account-level split to watch between the two storage-experienced California EPC benches.",
+   "source": "Dossier competitive assessment — Arevon split",
+   "status": "active"
+  },
+  {
+   "slug": "sungrow",
+   "type": "other",
+   "note": "Inverter-side experience only — no blanket China aversion, no battery relationship.",
+   "context": "Sungrow inverters run SOLV's flagship solar builds — evidence there is no blanket aversion to Chinese equipment, though as a newly public company SOLV has no appetite to champion a §154-named battery supplier. Its Sungrow experience is inverter-side only.",
+   "source": "Dossier assessment — equipment experience",
+   "status": "active"
+  },
+  {
+   "slug": "google",
+   "type": "other",
+   "note": "One contract away: services Google's co-location partner Intersect Power under O&M.",
+   "context": "SOLV built Intersect Power's Oberon 1 (339 MWdc + 250 MWac/1,000 MWh Tesla BESS) and services Intersect — Google's co-location partner — and Stargate-linked SB Energy under O&M. With 'actively exploring storage for data centers' and the Roberson Waite urban-BESS capability, the dossier rates SOLV one contract away from AIDC-adjacent storage construction.",
+   "source": "Dossier assessment — AIDC angle",
+   "status": "active"
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "George Hershman",
+   "title": "CEO",
+   "background": "Led Swinerton Renewable Energy before the spin-out; past SEIA board chair — the industry-policy voice of the solar EPC tier; historically anti-tariff, pro-domestic-manufacturing."
+  },
+  {
+   "name": "Chad Plotkin",
+   "title": "CFO",
+   "background": "27 years in energy infrastructure, ex-public-company; runs the post-IPO reporting cadence."
+  },
+  {
+   "name": "Clint Kyllonen",
+   "title": "SVP, High Voltage & Energy Storage",
+   "background": "The storage business-unit lead a BESS OEM would meet (title per org aggregators — verify currency)."
+  },
+  {
+   "name": "Chris Dunn",
+   "title": "SVP, Services",
+   "background": "Owns the ~22 GW O&M fleet — the augmentation-stage battery buyer."
+  },
+  {
+   "name": "Tucker Ruberti",
+   "title": "VP Corporate Development & Strategy",
+   "background": "Former storage senior PM; historic voice of SOLV's vendor-agnostic storage posture ('works with leading vendors and various design approaches')."
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "public filings (Nasdaq: MWH)",
+  "periods": [
+   {
+    "period": "FY2023-FY2025",
+    "metrics": [
+     {
+      "name": "Trajectory",
+      "actual": "Revenue $2.10B (2023) → $1.85B (2024 dip) → $2.49B (2025); net income −$109.8M → $9.9M → $149.2M; FY2025 adj. EBITDA $342M, gross margin 18.6%",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "The 2024 trough preceded the storage-driven surge; backlog +86% in 2025"
+     }
+    ]
+   },
+   {
+    "period": "H1 2026",
+    "metrics": [
+     {
+      "name": "Results",
+      "actual": "Q1 revenue $676.8M (+66%, net loss on IPO costs); Q2 revenue $951.2M (+77%), NI $67M, adj. EBITDA $117.5M; backlog $8.9B ($2.5B storage-linked); FY2026 guided $3.87-3.97B / $485-505M EBITDA",
+      "expected": "Guidance raised at Q2",
+      "verdict": "beat",
+      "result": "~100% of backlog safe-harbored; visibility through 2028"
+     }
+    ]
+   }
+  ],
+  "commentary": "American Securities bought the business for a reported ~$2B (2021), IPO'd it at ~$5-6B (2026), and sold down at $36 in May — a >2.5x sponsor markup that also means continued sponsor-controlled governance."
+ },
+ "sources": [
+  {
+   "label": "Motley Fool — SOLV Q2 2026 earnings call transcript (data-center storage exploration)",
+   "url": "https://www.fool.com/earnings/call-transcripts/2026/08/20/solv-energy-mwh-q2-2026",
+   "date": "2026-08-20"
+  },
+  {
+   "label": "GlobeNewswire — SOLV Q2 2026 results",
+   "url": "https://www.globenewswire.com/news-release/2026/08/13/3344355",
+   "date": "2026-08-13"
+  },
+  {
+   "label": "SOLV — 'Scales Up' >4 GW slate PR (largest-ever award)",
+   "url": "https://www.solvenergy.com/news/solv-energy-scales-up",
+   "date": "2026-06-02"
+  },
+  {
+   "label": "SEC 424B4 — secondary offering at $36",
+   "url": "https://www.sec.gov/Archives/edgar/data/0002065636/000119312526248671/d150146d424b4.htm",
+   "date": "2026-05-28"
+  },
+  {
+   "label": "GlobeNewswire / Solar Power World — Roberson Waite acquisition",
+   "url": "https://www.solarpowerworldonline.com/2026/05/solv-energy-buys-utility-substation-company-rwe",
+   "date": "2026-05-04"
+  },
+  {
+   "label": "GlobeNewswire — Q4/FY2025 results",
+   "url": "https://www.globenewswire.com/news-release/2026/03/19/3258862",
+   "date": "2026-03-19"
+  },
+  {
+   "label": "ENR — 'SOLV set to go public' (No. 66 Top 400; No. 2 solar; No. 7 power)",
+   "url": "https://www.enr.com/articles/62504",
+   "date": "2026-02"
+  },
+  {
+   "label": "pv-tech — SOLV to build 209 MW Texas project for Sol Systems",
+   "url": "https://www.pv-tech.org/solv-energy-build-209mw-texas-solar-project-for-sol-systems",
+   "date": "2025-11"
+  },
+  {
+   "label": "PRNewswire — Stillhouse Solar completion (Matrix Renewables)",
+   "url": "https://www.prnewswire.com/news-releases/stillhouse-solar-302605857.html",
+   "date": "2025-11"
+  },
+  {
+   "label": "Solar Power World — 2026 Top Solar Contractors (2025 volumes)",
+   "url": "https://www.solarpowerworldonline.com/2026-top-solar-contractors",
+   "date": "2026-07"
+  },
+  {
+   "label": "pv-tech — SOLV acquires Spartan Infrastructure",
+   "url": "https://www.pv-tech.org/solv-energy-acquires-spartan-infrastructure",
+   "date": "2025-06-25"
+  },
+  {
+   "label": "PRNewswire — >6 GW of awards at CLEANPOWER 2025",
+   "url": "https://www.prnewswire.com/news-releases/more-than-6-gws-302458543.html",
+   "date": "2025-05-19"
+  },
+  {
+   "label": "PRNewswire — O&M expansion (+4.8 GW year-over-year)",
+   "url": "https://www.prnewswire.com/news-releases/302433157.html",
+   "date": "2025-04-21"
+  },
+  {
+   "label": "Arevon — Vikings COD (SOLV EPC; Tesla Lathrop; union labor)",
+   "url": "https://arevonenergy.com/news/releases/",
+   "date": "2024-11-21"
+  },
+  {
+   "label": "SOLV — BESS services page (50+ projects; battery-module procurement claim)",
+   "url": "https://www.solvenergy.com/what-we-do/battery-energy-storage-systems"
+  },
+  {
+   "label": "SOLV — Vikings and Oberon 1 project pages",
+   "url": "https://www.solvenergy.com/projects"
+  },
+  {
+   "label": "American Securities — SRE/SOLV acquisition releases",
+   "url": "https://www.american-securities.com/",
+   "date": "2021-12"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 2
+}

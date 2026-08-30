@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 2,
+  "slug": "rosendin",
+  "name": "Rosendin Holdings, Inc. (Rosendin Electric, Inc.)",
+  "shortName": "Rosendin",
+  "categories": ["epc"],
+  "website": "https://www.rosendin.com",
+  "headquarters": "San Jose, CA, USA",
+  "founded": 1919,
+  "employees": "12,000+ (2025, company-reported)",
+  "ownership": { "type": "private" },
+  "summary": "BOTTOM LINE UP FRONT: Rosendin is close to pure-play exposure to the AI data-center electrical build-out — revenue roughly doubled in two years ($2.80B in 2023 to a company-reported $5.6B in 2025), it is now the second-largest US electrical contractor per EC&M's 2025 ranking, and its CEO states customers provide work forecasts 10–20 years out. BACKGROUND: Rosendin Holdings is the parent of Rosendin Electric (electrical contracting) and Modular Power Solutions (off-site electrical manufacturing), founded 1919 in San Jose and 100% employee-owned (ESOP) since 2000 — the largest employee-owned electrical contractor in the US, a claim uncontested in reviewed rankings. 12,000+ employees (2025, company-reported). Core markets: hyperscale data centers (35+ years in the sector, 15+ GW deployed, $7.5B total data-center work value per company), utility-scale solar and BESS EPC through the Rosendin Energy Group, transportation infrastructure, and commercial construction.",
+  "ecosystemRole": "We assess Rosendin as the ecosystem's build-side: one of the few contractors combining hyperscale data-center electrical delivery with GW-scale renewables and ~10 GWh of installed BESS EPC in-house — the company that physically installs what the app's suppliers sell and the hyperscalers buy. Basis: company disclosures corroborated by EC&M rankings and owner press (Arevon, Recurrent Energy projects). Its BESSUPS partnership with FlexGen (utility-scale BESS replacing data-center UPS and diesel gensets) places it directly in the BESS-for-AIDC product conversation, not just installation.",
+  "productsAndServices": [
+    {
+      "name": "Data-Center Electrical Construction",
+      "category": "Electrical contracting · flagship franchise",
+      "description": "Turnkey electrical construction for hyperscale, colocation, AI, and modular data centers — 35+ years in the sector, originating in Silicon Valley. Company-reported scale: 15+ GW of power deployed across data-center projects, $7.5B total data-center work value, 4M+ electrician man-hours of annual capacity, with integrated design-build (~20% of projects) and BIM/IPD delivery.",
+      "highlights": [
+        "Project Goliath (CyrusOne, Sterling VA): 20 MW of electrical infrastructure — 20 diesel generators, 40 UPS, 120 distribution devices — constructed in 26 weeks, a company-claimed construction speed record",
+        "MAZ Mesa (AZ) hyperscale campus: design-build electrical with 1,500+ daily workers at peak under GC DPR Construction; client confidential",
+        "EC&M's 2025 ranking places Rosendin #2 among US electrical contractors ($3.69B 2024 revenue, +31.8%), behind only utility-T&D-weighted Quanta Services",
+        "Customers provide work forecasts 10–20 years out, per CEO Keith Douglas (January 2026) — unusual backlog visibility for construction"
+      ],
+      "positioning": "Company claims to be the leading electrical contractor for hyperscale construction; trade coverage places it top-tier alongside Cupertino Electric (~half its size) among data-center electrical specialists. No independent market-share figure exists. Hyperscaler client names are almost never disclosed — project codenames and confidential-client listings are the norm.",
+      "soldThrough": "Direct contracts with hyperscalers, colocation developers, and general contractors; integrated project delivery and design-build",
+      "targetSegments": "Hyperscale/AI campuses, colocation, enterprise data centers, US-wide",
+      "roadmap": "Mountain West regional HQ opened Chandler, AZ (May 2026) for Southwest data-center/semiconductor growth; Richmond, VA logistics + training center near the Virginia data-center corridor (2026)"
+    },
+    {
+      "name": "Prefabrication & Modular Power Solutions (MPS)",
+      "category": "Off-site manufacturing",
+      "description": "In-house prefabrication (conduit, panel assemblies, electric rooms, rooftop assemblies) plus sister company MPS (Sherman/McKinney/Lewisville TX, Mt. Juliet TN), which manufactures skid-built prefabricated electrical rooms and integrated critical-power solutions for data centers, medium/high-voltage, renewables, and BESS markets across North America. Company-reported: 2M+ sq ft of manufacturing space, 7,000+ MW of annual fabrication capacity.",
+      "highlights": [
+        "Prefab positioned as the structural answer to the electrician shortage — converting site labor constraints into factory throughput",
+        "Robotic solar installer trial with ULC Technologies (April 2025): 350–400 modules per 8-hour shift with a 2-person crew, roughly triple manual rates, per company",
+        "MPS carries its own SVP on the holdings executive team — organizationally first-class, not a support shop"
+      ],
+      "positioning": "Trade coverage describes MPS as a go-to for factory-built data-center electrical; prefab depth at this scale is rare among electrical contractors",
+      "soldThrough": "Integrated with Rosendin projects plus direct MPS sales across US, Canada, Mexico",
+      "targetSegments": "Data centers, critical power, renewables/BESS"
+    },
+    {
+      "name": "Rosendin Energy Group — Solar & BESS EPC",
+      "category": "Renewables EPC",
+      "description": "Turnkey utility-scale EPC: solar (rooftop to 720+ MW single-axis tracker sites), BESS (peak shaving, frequency regulation, grid stability, microgrid support), substations (1–800+ MVA), transmission, and SCADA. Company-reported record over 15 years: ~32 GW of clean energy delivered, 7.1+ GW solar installed, 9.5–10+ GWh of BESS installed, 151 substations, 330+ projects across the US, Canada, Puerto Rico, and Guam.",
+      "highlights": [
+        "Townsite Solar+Storage (Boulder City, NV): 232 MWdc solar + 90 MWac Tesla Megapack BESS — completion corroborated by owner Arevon",
+        "Tranquility BESS 72 MW/288 MWh (Recurrent Energy), Garland BESS 88 MW/352 MWh, Mustang BESS 75 MW/300 MWh — named California projects",
+        "February 2026: new Energy Group leadership (Billy Watts, ex-Primoris/Mortenson/Siemens Energy) with BESS and substation expansion explicitly aimed at data-center support and grid stability",
+        "Exploring floating solar, small modular reactors, and gas turbines per the February 2026 announcement — a whole-of-grid posture beyond renewables"
+      ],
+      "positioning": "Solar Power World ranks Rosendin roughly #8–#10 among national solar contractors/EPCs (2024–2025, company-cited). The differentiator is the combination: few firms hold hyperscale electrical delivery and GW-scale BESS/solar EPC under one roof",
+      "soldThrough": "EPC and design-build contracts with project owners and developers (Arevon, Recurrent Energy among corroborated customers)",
+      "targetSegments": "Utility-scale developers, IPPs, utilities, and increasingly data-center-adjacent grid work"
+    },
+    {
+      "name": "BESSUPS & Next-Generation Data-Center Power",
+      "category": "Product development · with FlexGen",
+      "description": "Announced June 2025 with FlexGen: a utility-scale BESS engineered to replace traditional data-center UPS systems and diesel generators, sited outside the building at medium voltage — combining Rosendin's patented BESSUPS design with FlexGen's grid-interconnection and transient-frequency-stabilization patents, meeting CBEMA power-quality standards. Separately, an August 2025 partnership with Phinergy brings aluminum-air backup generators (MW-scale, multi-day duration claims) to the US data-center market as a diesel alternative.",
+      "highlights": [
+        "Direct BESS-for-AI-data-center product play — the contractor moving up from installing storage to co-developing it",
+        "Phinergy selection came via the Net Zero Innovation Hub (Google, Microsoft, Data4, Vertiv, Schneider) from 70+ proposals",
+        "Rosendin SVP Bill Mazzetti: 'Our clients simply need more power, and without it, development stops'"
+      ],
+      "positioning": "Cross-links two ecosystem players: FlexGen (software-first BESS integrator) supplies the controls IP; Rosendin supplies the delivery machine and data-center customer base",
+      "soldThrough": "Joint commercialization with FlexGen; early stage",
+      "targetSegments": "AI data-center operators seeking UPS/diesel alternatives and faster power",
+      "roadmap": "Commercialization announced June 2025; no deployed-site count published yet"
+    },
+    {
+      "name": "Transportation & Commercial Sectors",
+      "category": "Diversified contracting",
+      "description": "Aviation (security, networks, radio systems), transit (traction power, catenary, train control — BART, Caltrain, WMATA, LAX among named), highway ITS, plus commercial, healthcare, semiconductor, biotech, education, and entertainment construction (Crypto.com Arena, SoFi Stadium, Oracle Park among historical projects). 24/7 service and maintenance operations.",
+      "highlights": [
+        "Diversification base that predates and cushions the data-center concentration"
+      ],
+      "soldThrough": "Public agency and commercial construction contracts",
+      "targetSegments": "Transit agencies, airports, commercial owners across 11 sectors"
+    }
+  ],
+  "recentDevelopments": [
+    { "date": "2026-05-14", "category": "capacity", "headline": "New Mountain West regional headquarters opened in Chandler, AZ (100,622 sq ft)", "read": "Consolidating Phoenix-metro operations where data-center and semiconductor construction concentrate — footprint follows the AI build-out.", "source": "https://www.rosendin.com/news-updates/rosendin-electric-inc-announces-new-mountain-west-regional-headquarters-in-chandler/" },
+    { "date": "2026-02-19", "category": "leadership", "headline": "Rosendin Energy Group leadership refresh (Billy Watts, ex-Primoris/Mortenson/Siemens Energy) with BESS/substation expansion aimed at data-center support", "read": "The renewables arm is being pointed at data-center grid work; stated exploration of floating solar, SMRs, and gas turbines signals a whole-of-power posture.", "source": "https://www.rosendin.com/news-updates/rosendin-energy-group-names-new-leadership-to-drive-strategic-growth/" },
+    { "date": "2026-01-28", "category": "leadership", "headline": "Rosendin Holdings adopts co-president structure; discloses $5.6B 2025 revenue and 12,000 employees", "read": "One president's portfolio bundles energy, AI, data centers, and MPS — organizationally fusing power/BESS with data-center delivery. CEO: customers forecast work 10–20 years out.", "source": "https://www.constructiondive.com/news/rosendin-executive-president-data-center/811066/" },
+    { "date": "2025-09-17", "category": "capacity", "headline": "$23M purchase of a 130,944 sq ft San Jose office complex as new headquarters", "read": "Growth-driven consolidation; trade press tied the expansion directly to the data-center surge.", "source": "https://www.rosendin.com/news-updates/rosendin-purchases-office-complex-for-new-san-jose-headquarters/" },
+    { "date": "2025-08-12", "category": "partnership", "headline": "Phinergy partnership to bring aluminum-air backup generators to US data centers", "read": "A diesel-generator alternative selected via the Net Zero Innovation Hub (Google, Microsoft, Vertiv, Schneider among members) — Rosendin positioning as power innovator, not just installer.", "source": "https://www.rosendin.com/news-updates/rosendin-partners-with-phinergy-to-rollout-aluminum-air-backup-for-us-data-center-market/" },
+    { "date": "2025-06-03", "category": "product-launch", "headline": "BESSUPS commercialization announced with FlexGen — utility-scale BESS replacing data-center UPS and diesel", "read": "The clearest BESS-for-AIDC product move by any contractor in the covered set; pairs Rosendin's patents and customer base with FlexGen's controls IP.", "source": "https://www.businesswire.com/news/home/20250603612484/en/" },
+    { "date": "2025-04-07", "category": "product-launch", "headline": "Robotic solar installer demonstrated with ULC Technologies in West Texas", "read": "350–400 modules per shift with a 2-person crew (company claim) — automation as the answer to the electrician shortage that constrains the whole sector.", "source": "https://www.rosendin.com/news-updates/rosendin-to-demonstrate-robotic-solar-installers-at-texas-job-site/" }
+  ],
+  "strategyRead": [
+    "(High confidence) We assess Rosendin as near-pure-play exposure to the AI data-center electrical build-out: revenue roughly doubled in two years ($2.80B in 2023 → $3.69B in 2024 → ~$5.6B in 2025), moving it to #2 among US electrical contractors. Basis: EC&M rankings corroborate the company's figures, and the growth timing matches the hyperscaler capex cycle exactly.",
+    "(Moderate confidence) We assess prefabrication is the scaling strategy: 7,000+ MW of annual fabrication capacity and MPS's factory-built electrical rooms convert the industry's binding constraint — skilled electricians — into factory throughput; the robotic solar trial extends the same logic to field labor.",
+    "(Moderate confidence) We assess the Energy Group is being deliberately converged with the data-center franchise: BESSUPS with FlexGen (BESS replacing UPS/diesel), the Phinergy backup partnership, and stated SMR/gas-turbine exploration read as a play to sell data-center customers power capacity, not just electrical installation — because, per its own SVP, without power 'development stops.'",
+    "(Moderate confidence) We assess the ESOP structure functions as a talent-retention moat in a labor-short market and permits patient investment; the cost is disclosure — financials are company-reported and unaudited publicly. Collection gap: no independent verification exists for the 9.5–10 GWh BESS aggregate or backlog claims, though owner press corroborates individual projects."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "Utility-scale BESS EPC record (selected corroborated projects)",
+      "specs": [
+        { "label": "Townsite Solar+Storage (Boulder City, NV)", "value": "232 MWdc solar + 90 MWac Tesla Megapack BESS — owner Arevon" },
+        { "label": "Garland BESS (CA)", "value": "88 MW / 352 MWh" },
+        { "label": "Tranquility BESS (Fresno Co., CA)", "value": "72 MW / 288 MWh — owner Recurrent Energy" },
+        { "label": "Mustang BESS (Kings Co., CA)", "value": "75 MW / 300 MWh" },
+        { "label": "Aggregate installed", "value": "9.5–10+ GWh BESS · 151 substations · 7.1+ GW solar (company-reported)" }
+      ],
+      "notes": "Aggregate figures are company claims; individual projects corroborated by owner announcements."
+    },
+    {
+      "product": "Data-center delivery capability",
+      "specs": [
+        { "label": "Power deployed", "value": "15+ GW across data-center projects (company-reported)" },
+        { "label": "Fabrication", "value": "7,000+ MW annual capacity · 2M+ sq ft manufacturing space" },
+        { "label": "Labor", "value": "4M+ electrician man-hours annual capacity · 12,000+ employees" },
+        { "label": "Reference speed", "value": "20 MW of electrical infrastructure in 26 weeks (Project Goliath, CyrusOne)" }
+      ],
+      "notes": "Company-published figures from the data-center sector page, accessed 2026-08-09."
+    }
+  ],
+  "decisionMakers": [
+    { "name": "Keith Douglas", "photo": "images/execs/rosendin-douglas.jpg", "title": "CEO, Rosendin Holdings (since January 2024)", "background": ["CEO — Rosendin Holdings (2024–present)", "COO Eastern Region — Rosendin (2020–2023; 9 offices across AZ/NV/TX/TN/NC/VA/MD)", "Joined 2012 as Division Manager, established Mid-Atlantic operations", "30+ years in the electrical industry"] },
+    { "name": "Paolo Degrassi", "photo": "images/execs/rosendin-degrassi.jpg", "title": "President — core markets (data centers, semiconductor, commercial, healthcare, transportation)", "background": ["Co-president under the January 2026 collaborative leadership structure"] },
+    { "name": "Justin Tinoco", "photo": "images/execs/rosendin-tinoco.jpg", "title": "President — high-growth (national programs, energy, AI, data centers, Modular Power Solutions)", "background": ["Co-president under the January 2026 structure — the portfolio that fuses power/BESS with data-center delivery"] },
+    { "name": "Matt Hisaka", "photo": "images/execs/rosendin-hisaka.jpg", "title": "CFO (since January 2024)", "background": ["Appointed in the 2024 executive succession alongside Keith Douglas"] },
+    { "name": "Bill Mazzetti", "title": "Senior Vice President (data-center power)", "background": ["Company spokesperson on data-center power strategy (Phinergy partnership)", "Quoted: 'Our clients simply need more power, and without it, development stops'"] }
+  ],
+  "financials": {
+    "currency": "USD",
+    "type": "private",
+    "periods": [
+      { "period": "2025", "metrics": [ { "name": "Revenue", "actual": "$5.6B (company-reported)", "expected": "", "verdict": "inline", "result": "corroborated by Electrical Wholesaling trade press" }, { "name": "Employees", "actual": "12,000+", "expected": "", "verdict": "inline", "result": "company-reported" } ], "commentary": "Roughly +52% YoY per the EC&M trajectory — the second consecutive step-change year, timed to the AI data-center capex cycle." },
+      { "period": "2024", "metrics": [ { "name": "Revenue", "actual": "$3.69B (+31.8%)", "expected": "", "verdict": "inline", "result": "EC&M Top 50 ranking data — #2 US electrical contractor" } ], "commentary": "Passed MYR Group to become #2 behind Quanta Services ($13.5B, utility-T&D-weighted)." },
+      { "period": "2023", "metrics": [ { "name": "Revenue", "actual": "$2.80B (−6.7%)", "expected": "", "verdict": "inline", "result": "EC&M Top 50 ranking data — #3 that year" } ], "commentary": "The pre-AI-boom baseline; growth since is almost entirely data-center-driven per EC&M's sector commentary." }
+    ],
+    "commentary": "Private, employee-owned — no audited public financials or analyst consensus exist. Revenue figures are company-reported and corroborated by EC&M's independent Top 50 rankings; treat backlog and aggregate GWh claims as company statements."
+  },
+  "sources": [
+    { "label": "Rosendin Energy Group leadership PR (Feb 2026)", "url": "https://www.rosendin.com/news-updates/rosendin-energy-group-names-new-leadership-to-drive-strategic-growth/", "date": "2026-02-19" },
+    { "label": "Electrical Wholesaling — Richmond expansion / $5.6B scale", "url": "https://www.ewweb.com/news/bulletin-board/article/55362919/rosendin-electric-to-expand-in-richmond-market", "date": "2026-02" },
+    { "label": "Construction Dive — co-president reorg amid data-center boom", "url": "https://www.constructiondive.com/news/rosendin-executive-president-data-center/811066/", "date": "2026-01-28" },
+    { "label": "Rosendin Holdings — collaborative leadership structure PR (Jan 2026)", "url": "https://www.rosendin.com/news-updates/rosendin-holdings-announces-collaborative-leadership-structure-focused-on-purposeful-growth/", "date": "2026-01" },
+    { "label": "Rosendin × Phinergy aluminum-air backup PR (Aug 2025)", "url": "https://www.rosendin.com/news-updates/rosendin-partners-with-phinergy-to-rollout-aluminum-air-backup-for-us-data-center-market/", "date": "2025-08-12" },
+    { "label": "Rosendin × FlexGen BESSUPS announcement (Business Wire, Jun 2025)", "url": "https://www.businesswire.com/news/home/20250603612484/en/", "date": "2025-06-03" },
+    { "label": "EC&M 2025 Top 50 Electrical Contractors rankings", "url": "https://www.ecmweb.com/top-50-electrical-contractors/article/55316333/2025-top-50-electrical-contractors-rankings", "date": "2025-06" },
+    { "label": "Data Center Frontier — BESSUPS analysis", "url": "https://www.datacenterfrontier.com/energy/article/55296732/transforming-data-center-energy-the-innovative-flexgen-and-rosendin-bessups-collaboration", "date": "2025-06" },
+    { "label": "Arevon — Townsite Solar+Storage completion", "url": "https://arevonenergy.com/news/releases/arevon-and-rosendin-complete-townsite-solar-storage-project-in-boulder-city-nevada/", "date": "2022-04" },
+    { "label": "Rosendin — Who We Are / history", "url": "https://www.rosendin.com/who-we-are/" },
+    { "label": "Rosendin — Data Centers sector page", "url": "https://www.rosendin.com/sectors/data-centers/" },
+    { "label": "Rosendin — Renewable Energy sector page", "url": "https://www.rosendin.com/sectors/renewable-energy/" }
+  ],
+  "lastUpdated": "2026-08-09",
+  "profileVersion": 1
+}

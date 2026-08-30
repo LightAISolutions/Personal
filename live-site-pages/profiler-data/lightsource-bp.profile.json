@@ -1,0 +1,445 @@
+{
+ "schemaVersion": 6,
+ "slug": "lightsource-bp",
+ "name": "Lightsource bp",
+ "shortName": "Lightsource",
+ "categories": [
+  "ipp"
+ ],
+ "website": "https://lightsourcebp.com",
+ "headquarters": "London, United Kingdom (US arm: Denver, CO — Lightsource bp USA)",
+ "founded": 2010,
+ "employees": "~1,000 worldwide (company-claimed)",
+ "ownership": "wholly owned by bp since Oct 24, 2024 (£400M for the remaining 50.03% + £2.1bn net debt consolidated) — and in play: after the 'Project Scala' 50%-stake process (2025), the FT reported Jul 24, 2026 that bp is in advanced talks to sell the ENTIRE Lightsource business to a Kuwait-backed consortium of Wren House (KIA) + Qualitas Energy; no signing confirmed as of Aug 2026",
+ "summary": "BOTTOM LINE UP FRONT: Lightsource bp is the second verified Hithium customer in the field — and the cleaner illustration that the relationship lives only where FEOC doesn't reach. The deal: Woolooga BESS Stage 1 in Queensland, Australia — 128 × 5 MWh containers (640 MWh, 314 Ah LFP, 25-year warranties, INTEC partnering on O&M), announced Dec 2024 as Hithium's Australian market entry, with Lightsource BP then named among Hithium's flagship customers in HKEX prospectus coverage (ess-news, Mar 2025). But there is no incumbency lock — the next, larger Queensland battery (Lower Wonga, 281 MW/843 MWh) went to rival Gotion via an INTEC JV — and the US business runs the opposite playbook: ~8.3 GW of FEOC-clean First Solar modules committed through 2028, all-domestic marketing, no US BESS in the public record. The dominant fact about the account is ownership volatility: bp's renewables retreat turned its 2024 acquisition into a 2026 disposal process, the Woolooga asset itself may have moved to Aula Energy (Macquarie) in the Feb 2026 1 GW portfolio sale, and a Kuwaiti-consortium acquisition would reset procurement strategy entirely.",
+ "ecosystemRole": "We assess Lightsource bp as three different counterparties wearing one brand: (1) in Australia/APAC, a proven Chinese-BESS buyer (Hithium at Woolooga, Gotion at Lower Wonga, CHINT at Goulburn River) pivoting explicitly to hybrids for 'data centre and AI-driven demand'; (2) in the US, a top-tier solar developer (#1 US solar developer, Solar Power World 2025) with hyperscaler PPAs (two with Meta — including Mowata, framed against Meta's Hyperion AI campus in Louisiana; Google's Fort Wayne data-center campus via Honeysuckle; Amazon Ohio; Microsoft) whose supply chain is deliberately FEOC-proof and whose storage business barely exists yet — three development-stage solar+storage projects with no disclosed MWh; (3) at the corporate level, a distressed-strategy asset mid-sale whose signing entity may not own its projects at COD (the sell-down model plus the Aula transfer make warranty/O&M counterparty identity a live diligence question on every deal).",
+ "productsAndServices": [
+  {
+   "name": "US solar development platform (the hyperscaler franchise)",
+   "description": "~2,730 MW operating across 18 US projects, ~856 MW in construction (led by the 700 MW Jones City Energy Center, TX — Toyota 15-yr VPPA on Jones City 2), ~1,785 MW advanced development. Named offtakers include Google (Honeysuckle 188 MW IN — 'supporting Google's Fort Wayne data center campus'), Meta (Arche 133 MW OH; Mowata 172 MWdc LA, PPA Jul 2026, $237M, framed by trade press against Meta's Hyperion campus in Richland Parish), Amazon (375 MWdc Ohio PPA), Microsoft, Toyota, McDonald's, Verizon, L3Harris, H&M, Allianz, Constellation.",
+   "positioning": "#1 US solar developer (Solar Power World 2025); the Gulf-South/Louisiana position adjacent to Meta's AI buildout is the sharpest AIDC asset. US supply chain marketed as American-made: First Solar modules (~8.3 GW committed through 2028), Array Technologies trackers, Nucor steel.",
+   "soldThrough": "PPA-first develop-finance-build with sell-downs (JERA Nex bought 395 MW in 2024 with Lightsource retaining asset management; HASI structured equity; Pinnacle tax equity); $5B+ third-party US capital raised since 2019.",
+   "targetSegments": "Hyperscalers/corporates (a dedicated 'Data Center Solutions' page offers PPAs, JVs, directly connected arrangements, co-location), utilities, C&I.",
+   "roadmap": "US storage is the undeveloped leg: Big Bronco (300 MW solar + 300 MW storage, CO), Zion Valley (342 MW, KS) and Golden Plains (150 MW, NE) carry storage components with no disclosed MWh or suppliers — an open procurement whitespace."
+  },
+  {
+   "name": "APAC hybrid & storage platform (where the Hithium relationship lives)",
+   "description": "Australia is the storage proving ground: Woolooga BESS Stage 1 (222 MW/640 MWh, QLD — 128 Hithium 5 MWh containers, construction from Dec 2024, expected operational mid-2026); Goulburn River (585 MWdc solar + 49 MW/562 MWh DC-coupled 8-hr hybrid + a separately announced 450 MW/1,370 MWh standalone battery, NSW — CHINT battery technology and O&M, DT Infrastructure EPC, energization late 2026); Lower Wonga (380 MWdc + 281 MW/843 MWh, QLD — INTEC + Gotion Hi-Tech Australia EPC JV, Rio Tinto hybrid offtake for the Boyne Island smelter, COD late 2028). Feb 2026: five operating solar assets (1,037 MWdc incl. Woolooga solar) plus options over ~800 MW/800 MWh of co-located BESS sold to Aula Energy (Macquarie); retained APAC pipeline 9.5 GW+.",
+   "positioning": "The APAC strategy is explicitly 'hybrid renewable projects... for emerging data centre and AI-driven demand' (COO Adam Pegg). Chinese BESS suppliers compete freely here — no FEOC regime — and Lightsource multi-sources them (Hithium, Gotion, CHINT), with INTEC the recurring integration/O&M constant.",
+   "soldThrough": "CIS/LTESA revenue support (Australia), corporate hybrid PPAs (Rio Tinto), asset sell-downs (Aula).",
+   "targetSegments": "APAC grid and industrial/AIDC load.",
+   "roadmap": "Post-sale ownership of the under-construction Woolooga BESS (Lightsource vs Aula) is unresolved in the public record — it determines who Hithium's warranty/O&M counterparty actually is."
+  },
+  {
+   "name": "UK/Europe development & services",
+   "description": "UK heritage business (~2.4 GW developed): Tiln Farm — the company's first co-located BESS globally (25 MW/50 MWh, energized Feb 2024, supplier undisclosed, sold to Schroders Greencoat); Pentir — first UK standalone BESS (57 MW/228 MWh, Wales, consented Oct 2024); Plas Power (57 MWac solar + storage, approved May 2026); Hett Moor (AR7 CfD, Feb 2026). UK O&M/services platform (1.3 GW managed; #3 in UK solar O&M per Wood Mackenzie) put up for separate sale Aug 2025. Iberia: 500 MW solar+storage portfolio marketed.",
+   "positioning": "Storage described as 'first of a multi-gigawatt global pipeline' — no GW figure ever disclosed.",
+   "soldThrough": "Develop-and-sell (Schroders Greencoat) + retained O&M.",
+   "targetSegments": "UK/European utilities and funds.",
+   "roadmap": "Pentir construction timing and supplier selection are open; the O&M platform sale removes a retention argument."
+  },
+  {
+   "name": "bp integration & the sale process (the meta-story)",
+   "description": "bp took 43% in 2017, 50% in 2019, and completed 100% on Oct 24, 2024 (£400M + £2.1bn net debt) — then reset strategy within months: renewables capex cut ~$5B/yr, a $20B divestment program, Elliott Management pressure, and 'Project Scala' (sell 50% of Lightsource; bids due Jun 2025) escalating to reported advanced talks to sell the whole business to Wren House (KIA) + Qualitas Energy (FT via Reuters, Jul 24, 2026). bp CEO churn compounds it: Auchincloss out Dec 2025; Meg O'Neill (ex-Woodside) CEO from Apr 2026. bp flagged $4-5B of Q4 2025 impairments primarily in gas & low-carbon, with press attributing >$4B cumulative to Lightsource + Archaea (split undisclosed).",
+   "positioning": "From bp growth engine (Nov 2023 rationale) to divestment asset in ~9 months — the fastest strategy reversal among the Batch B accounts.",
+   "soldThrough": "n/a — corporate process.",
+   "targetSegments": "n/a.",
+   "roadmap": "A Kuwait-consortium close would re-underwrite every procurement framework; interim decision paralysis is the realistic near-term state."
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Storage fleet & pipeline (by region)",
+   "specs": [
+    {
+     "band": "Australia",
+     "label": "Woolooga BESS Stage 1",
+     "value": "222 MW / 640 MWh, QLD — 128 × Hithium 5 MWh 20-ft containers on 314 Ah prismatic LFP; 25-yr warranties; IP67; Hithium + INTEC O&M; construction from Dec 2024; expected operational mid-2026 (energization unconfirmed as of Aug 2026)"
+    },
+    {
+     "band": "Australia",
+     "label": "Goulburn River",
+     "value": "585 MWdc solar + 49 MW/562 MWh DC-coupled 8-hr hybrid battery + separately announced 450 MW/1,370 MWh standalone; NSW LTESA offtake; CHINT battery technology & O&M; DT Infrastructure EPC (its first BESS for Lightsource); AU$880M; energization late 2026"
+    },
+    {
+     "band": "Australia",
+     "label": "Lower Wonga",
+     "value": "380 MWdc solar + 281 MW/843 MWh BESS; INTEC Energy Solutions + Gotion Hi-Tech Australia EPC JV; Rio Tinto hybrid PPA (40% of output for the Boyne Island smelter); CIS-backed; construction from Jun 2026, COD late 2028"
+    },
+    {
+     "band": "United Kingdom",
+     "label": "Tiln / Pentir",
+     "value": "Tiln Farm: 25 MW/50 MWh 2-hr — first Lightsource BESS globally, energized Feb 8, 2024, supplier undisclosed, sold to Schroders Greencoat. Pentir: 57 MW/228 MWh — first UK standalone BESS, consented Oct 2024, construction TBD"
+    },
+    {
+     "band": "United States",
+     "label": "Storage development",
+     "value": "No completed US utility-scale BESS in the public record. Development-stage storage components: Big Bronco (300 MW storage, Adams Co. CO, $675M project), Zion Valley (342 MW, KS), Golden Plains (150 MW, NE) — MWh, CODs, and suppliers all undisclosed"
+    },
+    {
+     "band": "Company totals",
+     "label": "Scale claims (2026)",
+     "value": "52 GW+ pipeline (down from 62 GW at the Oct 2024 bp completion); 14.2 GW track record; 7 GW operating + under construction; 2.3 GW developed in 2025 incl. 0.8 GW storage (2025 Sustainability Report); 15+ markets"
+    }
+   ],
+   "notes": "Battery suppliers are vendor-anonymous by design outside Australia — the 2025 Sustainability Report confirms an active battery-supplier roster ('100% of active module and battery storage suppliers subject to ESG and traceability audits') without naming one."
+  },
+  {
+   "product": "Hithium procurement record (verified third-party)",
+   "specs": [
+    {
+     "band": "Supply agreement",
+     "label": "Dec 17-18, 2024",
+     "value": "Woolooga BESS Stage 1 — 128 × 5 MWh containers (640 MWh) on 314 Ah LFP; 25-yr warranties; Hithium president of global business Mizhi Zhang framed it as 'a significant move for Hithium into the Australian market' — i.e., market entry, implying a first deal rather than a global framework"
+    },
+    {
+     "band": "Prospectus reference",
+     "label": "Mar 2025 HKEX A1",
+     "value": "ess-news coverage names Lightsource BP among Hithium's flagship customers (with Jupiter Power, Samsung C&T, Datang, China Electric Equipment, Longyuan Power); scope consistent with the single 640 MWh contract"
+    },
+    {
+     "band": "Boundaries",
+     "label": "What it is NOT",
+     "value": "No evidence of Hithium supplying Lightsource in the UK or US, and no multi-GWh framework found; the next Queensland battery (Lower Wonga, 843 MWh) went to Gotion — no incumbency lock"
+    },
+    {
+     "band": "Counterparty risk",
+     "label": "Asset transfer",
+     "value": "Woolooga solar sold to Aula Energy (Macquarie) Feb 2026 within a 1,037 MWdc portfolio + ~800 MWh of BESS options; whether the under-construction Hithium BESS (and its contract) transferred is unresolved in the public record"
+    }
+   ],
+   "notes": "First-party arithmetic clue that predated third-party confirmation: Lightsource's own Dec 2024 release stated 640 MWh across exactly 128 units = 5.0 MWh/container."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-07-24",
+   "category": "corporate",
+   "headline": "FT (via Reuters): bp in advanced talks to sell the entire Lightsource business to a Kuwait-backed consortium — Wren House (KIA infrastructure arm) + Qualitas Energy; value undisclosed",
+   "read": "The account's decision rights are in escrow — assume procurement frameworks freeze until ownership resolves, then get re-underwritten by owners with no bp legacy commitments.",
+   "source": "FT via Reuters / Yahoo Finance"
+  },
+  {
+   "date": "2026-07-23",
+   "category": "aidc",
+   "headline": "Meta signs a long-term PPA for Mowata Solar (172 MWdc, Acadia Parish LA; $237M; construction late 2026) — trade press frames it against Meta's Hyperion AI campus in Richland Parish",
+   "read": "The second Meta deal and the clearest AIDC adjacency — Lightsource's Louisiana position tracks the largest AI campus buildout in the South.",
+   "source": "DCD / Solar Power World"
+  },
+  {
+   "date": "2026-06-05",
+   "category": "project",
+   "headline": "Lower Wonga hybrid starts construction (380 MWdc + 281 MW/843 MWh, QLD) — delivered by an INTEC + Gotion Hi-Tech Australia JV; Rio Tinto takes 40% for the Boyne Island smelter",
+   "read": "The larger follow-on Queensland battery went to a rival Chinese maker — Lightsource multi-sources Chinese suppliers deal-by-deal, with INTEC the continuity partner, not Hithium.",
+   "source": "RenewEconomy"
+  },
+  {
+   "date": "2026-02-23",
+   "category": "corporate",
+   "headline": "1,037 MWdc Australian operating solar portfolio (incl. Woolooga) + options over ~800 MWh of co-located BESS sold to Aula Energy (Macquarie); APAC strategy restated as hybrids for 'data centre and AI-driven demand'; follows the FIRB-blocked ~A$800M sale to Beijing Energy International",
+   "read": "Two lessons: Australian scrutiny bites on Chinese asset OWNERSHIP (BJEI blocked) while Chinese SUPPLY proceeds unimpeded — and the entity that signed Hithium's Woolooga contract may no longer own the asset.",
+   "source": "pv magazine Australia / ESN / ess-news"
+  },
+  {
+   "date": "2026-01-15",
+   "category": "financial",
+   "headline": "bp flags $4-5B of Q4 2025 impairments, primarily gas & low-carbon; press ties >$4B cumulative to Lightsource + Archaea (per-asset split undisclosed)",
+   "read": "The accounting record of the strategy reversal — and a bargaining anchor for any acquirer of the platform.",
+   "source": "Rigzone"
+  },
+  {
+   "date": "2025-12-18",
+   "category": "corporate",
+   "headline": "bp CEO Murray Auchincloss exits abruptly; Meg O'Neill (ex-Woodside) named CEO effective Apr 1, 2026 — bp's first external CEO, expected to accelerate non-core disposals",
+   "read": "The parent's oil-and-gas refocus hardens; Lightsource's disposal is now a when, not an if.",
+   "source": "CNBC"
+  },
+  {
+   "date": "2025-10-28",
+   "category": "financial",
+   "headline": "$97.9M tax equity from Pinnacle Financial Partners for Peacock Solar (187 MW, TX)",
+   "read": "The US financing machine runs on ITC monetization — which is exactly why the US supply chain stays FEOC-clean.",
+   "source": "Mercom / SolarQuarter"
+  },
+  {
+   "date": "2025-08-06",
+   "category": "corporate",
+   "headline": "UK O&M/services platform (1.3 GW managed; #3 in UK solar O&M per Wood Mackenzie) put up for sale as bp's renewables retreat continues",
+   "read": "Even the sticky services business is on the block — nothing at Lightsource is core to bp anymore.",
+   "source": "Solar Power Portal"
+  },
+  {
+   "date": "2025-05-15",
+   "category": "corporate",
+   "headline": "'Project Scala' reported: process to sell 50% of Lightsource bp; non-binding bids due June 2025",
+   "read": "The strategic-partner intent stated at the Oct 2024 completion became a formal process within seven months — and later escalated to a whole-business sale.",
+   "source": "Zacks / TradingView"
+  },
+  {
+   "date": "2025-03-27",
+   "category": "procurement",
+   "headline": "Hithium's HKEX A1 filing coverage names Lightsource BP among flagship customers",
+   "read": "The prospectus reference verified — anchored to the single Woolooga contract rather than a broader framework.",
+   "source": "ess-news"
+  },
+  {
+   "date": "2024-12-17",
+   "category": "procurement",
+   "headline": "Hithium wins the Woolooga BESS: 128 × 5 MWh containers (640 MWh, 314 Ah LFP, 25-yr warranties), Hithium + INTEC O&M — Hithium's Australian grid-scale market entry",
+   "read": "The anchor transaction — struck where FEOC doesn't reach, on the 5 MWh/314 Ah platform, with the long warranty tail that makes counterparty stability (on both sides) the real underwriting question.",
+   "source": "Energy-Storage.News / ess-news / pv magazine Australia"
+  },
+  {
+   "date": "2024-10-24",
+   "category": "corporate",
+   "headline": "bp completes 100% acquisition of Lightsource bp — £400M for the remaining 50.03%, £2.1bn net debt consolidated; 62 GW pipeline across 19 markets",
+   "read": "Peak ownership clarity — everything since has moved toward disposal.",
+   "source": "pv magazine / Solar Power Portal"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess the Hithium-Lightsource relationship as real, single-deal, and geographically fenced: one 640 MWh Australian contract plus a prospectus naming — with no US or UK extension possible under current rules (the US book is FEOC-clean by design: ~8.3 GW of First Solar modules, all-domestic marketing, ITC-dependent financing) and no Australian incumbency lock (Lower Wonga went to Gotion).",
+  "(High confidence) We assess ownership volatility as the dominant account risk: bp is mid-process on selling the entire platform (Wren House/Qualitas reported), the UK O&M arm is separately for sale, and the Woolooga asset itself may now belong to Aula Energy — meaning the counterparty that signed Hithium's contract, the entity that owns the asset at COD, and the owner who decides future procurement may be three different organizations within a year.",
+  "(Moderate confidence) We assess the practical Hithium plays as: (1) deliver Woolooga to energization flawlessly — it is the Australian reference asset and the prospectus proof point; (2) chase the retained 9.5 GW+ APAC hybrid pipeline (explicitly aimed at data-center/AI demand) where Chinese supply competes freely and INTEC relationships carry over; (3) track the Aula BESS options (~800 MWh) — the buyer of those options inherits the procurement decision; (4) treat the US storage whitespace (Big Bronco/Zion Valley/Golden Plains, suppliers unnamed) as unwinnable for ITC-claiming vintages absent a FEOC-compliant structure.",
+  "(Moderate confidence) We assess the AIDC angle as PPA-mediated rather than storage-led today: Google Fort Wayne, two Meta deals against the Hyperion buildout, Amazon Ohio, Microsoft — a first-class hyperscaler rolodex attached to solar, with the storage attach (and its supplier choices) still ahead of it, mostly in APAC first.",
+  "(High confidence) For the Hithium lens: Lightsource proves the export-market playbook works — win where FEOC doesn't reach, on price-competitive 5 MWh hardware with long warranties and a local O&M partner — and simultaneously proves its ceiling: no co-marketing gravity, no framework, contestable follow-ons, and a customer whose US half is structurally closed. Weight the account by its APAC pipeline, not its global GW."
+ ],
+ "relationships": [
+  {
+   "slug": "hithium",
+   "type": "supplier",
+   "note": "Woolooga BESS Stage 1: 128 × 5 MWh containers (640 MWh) — Hithium's Australian market entry, geographically fenced from the FEOC-clean US book.",
+   "context": "The December 2024 deal — 640 MWh of 314 Ah LFP containers with 25-year warranties and INTEC partnering on O&M, expected operational mid-2026 — made Lightsource bp the second verified Hithium field customer, later named among Hithium's flagship customers in HKEX prospectus coverage.\n\nThe relationship lives only where FEOC doesn't reach: the US book is FEOC-clean by design (~8.3 GW of First Solar modules), the larger follow-on Queensland battery (Lower Wonga) went to rival Gotion, and the Woolooga asset itself may now belong to Aula Energy after the February 2026 Australian portfolio sale — so the signing entity, the COD owner, and the future procurement decider may be three different organizations.",
+   "source": "https://www.energy-storage.news/lightsource-bp-picks-hithium-to-supply-640mwh-bess-for-australia-pro",
+   "status": "active",
+   "since": "2024-12",
+   "scale": "640 MWh (128 × 5 MWh)"
+  },
+  {
+   "slug": "meta",
+   "type": "customer",
+   "note": "Two solar PPAs, including Mowata (172 MWdc, LA) framed against Meta's Hyperion AI campus.",
+   "context": "Meta holds two Lightsource bp offtakes — Arche (133 MW, Ohio) and Mowata (172 MWdc, Louisiana; PPA July 2026, $237M), which trade press frames against Meta's Hyperion AI campus in Richland Parish. The Gulf-South/Louisiana position adjacent to Meta's AI buildout is the dossier's sharpest AIDC asset for the #1-ranked US solar developer.",
+   "source": "https://www.datacenterdynamics.com/en/news/meta-inks-172mw-solar-ppa-with-lightsource-bp-in-acadia-p",
+   "status": "active",
+   "scale": "Arche 133 MW + Mowata 172 MWdc"
+  },
+  {
+   "slug": "google",
+   "type": "customer",
+   "note": "Honeysuckle solar (188 MW, Indiana) — 'supporting Google's Fort Wayne data center campus'.",
+   "context": "The Honeysuckle project (188 MW, Indiana) is contracted to Google and explicitly framed as supporting the Fort Wayne data-center campus — a PPA-mediated AIDC relationship: hyperscaler demand attached to solar, with the storage attach (and its supplier choices) still ahead.",
+   "source": "https://lightsourcebp.com/news/honeysuckle-solar-goes-online/",
+   "status": "active",
+   "scale": "188 MW"
+  },
+  {
+   "slug": "amazon",
+   "type": "customer",
+   "note": "375 MWdc Ohio solar PPA.",
+   "context": "Amazon holds a 375 MWdc Ohio PPA in Lightsource bp's hyperscaler offtaker roster (Google, Meta ×2, Amazon, Microsoft) — part of the first-class hyperscaler rolodex attached to the #1 US solar development platform.",
+   "source": "Lightsource bp US platform disclosures",
+   "status": "active",
+   "scale": "375 MWdc"
+  },
+  {
+   "slug": "microsoft",
+   "type": "customer",
+   "note": "Named hyperscaler offtaker in the US solar PPA book.",
+   "context": "Microsoft appears among Lightsource bp's named offtakers (with Google, Meta, Amazon, Toyota, Constellation et al.) — the hyperscaler PPA franchise that makes the platform's FEOC-proof US supply chain strategy commercially coherent.",
+   "source": "Lightsource bp US platform disclosures",
+   "status": "active"
+  },
+  {
+   "slug": "constellation-energy",
+   "type": "customer",
+   "note": "Named corporate offtaker in the US PPA roster.",
+   "context": "Constellation appears on Lightsource bp's named-offtaker roster alongside the hyperscalers and corporates (Toyota, McDonald's, Verizon, L3Harris, H&M, Allianz) — a conventional PPA relationship within the top-ranked US solar development platform.",
+   "source": "Lightsource bp US platform disclosures",
+   "status": "active"
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Joaquin Oliveira",
+   "title": "Group CEO (from Feb 2025)",
+   "background": "Ex-bp gas & low-carbon-energy group CFO; replaced founder Nick Boyle (13 years as CEO, now advisory) after the bp completion."
+  },
+  {
+   "name": "Adam Pegg",
+   "title": "COO, APAC",
+   "background": "Fronts every storage/hybrid announcement in the region where the Hithium relationship lives — Woolooga, Goulburn River, Lower Wonga, the Aula pivot ('data centre and AI-driven demand' framing is his)."
+  },
+  {
+   "name": "Emilie Wangerman",
+   "title": "COO & Head of USA (since May 2024)",
+   "background": "Primary US spokesperson (Meta/Toyota/Pinnacle releases); leads the Denver-based US organization behind the #1-US-solar-developer ranking."
+  },
+  {
+   "name": "Miguel Vega",
+   "title": "Group CFO",
+   "background": "Oversees financial, investment AND procurement teams — the closest named procurement authority; no dedicated CPO or storage-business lead is published."
+  },
+  {
+   "name": "Zosia Riesner",
+   "title": "Global Chief Commercial Officer",
+   "background": "Owns the PPA machine — 10 PPAs / 1.3 GW contracted in 2024 across Microsoft, Google, LyondellBasell and others."
+  }
+ ],
+ "financials": {
+  "currency": "GBP/USD",
+  "type": "private bp subsidiary — no standalone P&L published; acquisition and financing events only",
+  "periods": [
+   {
+    "period": "bp acquisition & aftermath (2024-2026)",
+    "metrics": [
+     {
+      "name": "Acquisition",
+      "actual": "£400M for the remaining 50.03% (≈£200M of it a pass-through of pre-completion asset-sale proceeds); £2.1bn net debt consolidated; completed Oct 24, 2024",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "Described by bp as transitional 'until a strategic partner is brought alongside' — the partner process became a full-sale process"
+     },
+     {
+      "name": "Impairments",
+      "actual": "bp low-carbon-linked charges: $1.86B (2024), $881M (9M-2025), $4-5B flagged for Q4 2025; press attributes >$4B cumulative to Lightsource + Archaea (split undisclosed)",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "The write-down trail of bp's renewables reversal"
+     },
+     {
+      "name": "US financing cadence",
+      "actual": "$533M Ventress (345 MW LA); $460M multi-project LA/IN; $376M Colorado; $348M Texas (2×288 MW); $97.9M Pinnacle tax equity (Peacock, Oct 2025); $5B+ third-party US capital since 2019",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "A functioning project-finance machine even amid corporate limbo"
+     }
+    ]
+   }
+  ],
+  "commentary": "Platform data per bp's Feb 2025 CMD: 5.7 GW operating assets across 19 markets, >2 GW completed in 2024, 3-5 GW/yr addition target (set pre-retreat; credibility now unclear). Sale-process valuations undisclosed; the only Australian anchor is the failed ~A$800M BJEI deal for the 1 GW portfolio later sold to Aula."
+ },
+ "sources": [
+  {
+   "label": "Yahoo Finance (Reuters via FT) — bp nears Lightsource sale to Kuwait-backed group (Wren House + Qualitas)",
+   "url": "https://finance.yahoo.com/energy/articles/bp-nears-lightsource-sale-kuwait-162700514.html",
+   "date": "2026-07-24"
+  },
+  {
+   "label": "Data Center Dynamics — Meta 172 MW solar PPA with Lightsource bp (Hyperion campus framing)",
+   "url": "https://www.datacenterdynamics.com/en/news/meta-inks-172mw-solar-ppa-with-lightsource-bp-in-acadia-parish-louisiana/",
+   "date": "2026-07"
+  },
+  {
+   "label": "Lightsource bp — Meta PPA for Mowata Solar, Louisiana",
+   "url": "https://lightsourcebp.com/news/usa-lightsource-bp-and-meta-expand-partnership-with-new-power-purchase-agreement-for-mowata-solar-in-louisiana/",
+   "date": "2026-07-23"
+  },
+  {
+   "label": "Lightsource bp — 2025 Sustainability Report (0.8 GW storage developed in 2025; battery-supplier ESG audits)",
+   "url": "https://lightsourcebp.com/news/lightsource-bp-publishes-2025-sustainability-report/",
+   "date": "2026-06-26"
+  },
+  {
+   "label": "RenewEconomy — Lower Wonga construction start (Gotion supply, Rio Tinto offtake)",
+   "url": "https://reneweconomy.com.au/power-sector-enters-new-phase-as-huge-solar-battery-project-that-will-help-power-smelter-starts-construction/",
+   "date": "2026-06-05"
+  },
+  {
+   "label": "Lightsource bp — Lower Wonga construction begins as hybrid strategy gathers pace",
+   "url": "https://lightsourcebp.com/news/australia-lightsource-bp-begins-construction-on-lower-wonga-solar-and-battery-project-as-hybrid-strategy-gathers-pace/",
+   "date": "2026-06-05"
+  },
+  {
+   "label": "Energy-Storage.News — Lightsource bp sells 800 MWh of co-located BESS options in Australia to Aula Energy",
+   "url": "https://www.energy-storage.news/lightsource-bp-sells-800mwh-of-co-located-battery-storage-in-australia-to-aula-energy/",
+   "date": "2026-02-24"
+  },
+  {
+   "label": "ess-news — Lightsource bp Australia portfolio sale, BJEI/FIRB failure, hybrid/AI-demand pivot",
+   "url": "https://www.ess-news.com/2026/02/24/lightsource-bp-in-australia-finds-a-buyer-for-large-solar-and-storage-portfolio-pivots-to-hybrid-generation/",
+   "date": "2026-02-24"
+  },
+  {
+   "label": "Rigzone — bp sees up to $5B impairments tied to low-carbon assets",
+   "url": "https://www.rigzone.com/news/bp_sees_up_to_5b_impairments_tied_to_low_carbon_assets-15-jan-2026-182768-article/",
+   "date": "2026-01-15"
+  },
+  {
+   "label": "Lightsource bp — Toyota 15-yr VPPA, Jones City 2, Texas",
+   "url": "https://lightsourcebp.com/news/usa-lightsource-bp-and-toyota-enter-into-a-power-contract-in-texas/",
+   "date": "2026-01-13"
+  },
+  {
+   "label": "CNBC — Meg O'Neill to replace Murray Auchincloss as bp CEO",
+   "url": "https://www.cnbc.com/2025/12/18/woodside-energys-meg-oneill-to-replace-murray-auchincloss-as-bp-ceo.html",
+   "date": "2025-12-18"
+  },
+  {
+   "label": "Mercom — Lightsource bp secures $97.9M tax equity for 187 MW Peacock Solar",
+   "url": "https://mercomcapital.com/lightsource-bp-secures-97-9-m-tax-equity-financing-187-mw-solar-project/",
+   "date": "2025-10-28"
+  },
+  {
+   "label": "Lightsource bp — Goulburn River: first solar and storage hybrid advances (CHINT battery technology)",
+   "url": "https://lightsourcebp.com/news/australia-lightsource-bp-advances-its-first-solar-and-storage-hybrid-project/",
+   "date": "2025-09-18"
+  },
+  {
+   "label": "Solar Power Portal — Lightsource UK services platform for sale as bp continues renewables retreat",
+   "url": "https://www.solarpowerportal.co.uk/solar-investment/lightsource-bp-service-platform-for-sale-as-bp-continues-renewables-retreat",
+   "date": "2025-08-06"
+  },
+  {
+   "label": "Lightsource bp — named the US's top solar developer (Solar Power World)",
+   "url": "https://lightsourcebp.com/news/usa-lightsource-bp-named-the-uss-top-solar-developer/",
+   "date": "2025-07-31"
+  },
+  {
+   "label": "Zacks via TradingView — bp intends to sell half of Lightsource bp; bids due June ('Project Scala')",
+   "url": "https://www.tradingview.com/news/zacks:3cf66f402094b:0-bp-intends-to-sell-half-lightsource-bp-bids-due-in-june/",
+   "date": "2025-05"
+  },
+  {
+   "label": "ess-news — Hithium files for Hong Kong listing (Lightsource BP named flagship customer)",
+   "url": "https://www.ess-news.com/2025/03/27/hithium-files-for-hong-kong-listing-as-global-demand-for-energy-storage-surges/",
+   "date": "2025-03-27"
+  },
+  {
+   "label": "Energy-Storage.News — Lightsource bp picks Hithium to supply 640 MWh BESS for Australia project",
+   "url": "https://www.energy-storage.news/lightsource-bp-picks-hithium-to-supply-640mwh-bess-for-australia-project/",
+   "date": "2024-12-18"
+  },
+  {
+   "label": "pv magazine Australia — Hithium to supply 128 units of 5 MWh battery solutions for Woolooga BESS",
+   "url": "https://www.pv-magazine-australia.com/2024/12/19/hithium-to-supply-128-units-of-5-mwh-battery-solutions-for-woolooga-bess/",
+   "date": "2024-12-19"
+  },
+  {
+   "label": "Lightsource bp — Australian milestone: Goulburn River + Woolooga BESS construction (640 MWh / 128 units)",
+   "url": "https://lightsourcebp.com/news/australia-lightsource-bp-reaches-major-milestone-on-solar-and-battery-projects-to-deliver-firmed-renewable-energy-solutions/",
+   "date": "2024-12-15"
+  },
+  {
+   "label": "pv magazine — bp completes takeover of Lightsource (£400M; 62 GW pipeline)",
+   "url": "https://www.pv-magazine.com/2024/10/25/bp-completes-takeover-of-lightsource-business/",
+   "date": "2024-10-25"
+  },
+  {
+   "label": "Lightsource bp — Honeysuckle Solar online (Google Fort Wayne data-center campus PPA; all-domestic major equipment)",
+   "url": "https://lightsourcebp.com/news/honeysuckle-solar-goes-online/",
+   "date": "2024-10-17"
+  },
+  {
+   "label": "PV Tech — Lightsource bp and First Solar ink 4 GW module supply for 2026-28 (~8.3 GW cumulative)",
+   "url": "https://www.pv-tech.org/lightsource-bp-and-first-solar-ink-4gw-module-supply-agreement-for-2026-28/",
+   "date": "2023-02-28"
+  },
+  {
+   "label": "Lightsource bp — Data Center Solutions page",
+   "url": "https://lightsourcebp.com/data-center-solutions/"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 2
+}

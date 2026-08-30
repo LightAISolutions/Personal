@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Sales"
+abstract: "A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script embedding support."
+authors:
+  - name: "LightAISolutions"
+type: software
+license: "All Rights Reserved"
+repository-code: "https://github.com/LightAISolutions/Sales"
+url: "https://lightaisolutions.github.io/Sales"
+# Developed by: LightAISolutions

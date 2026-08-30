@@ -1,0 +1,40 @@
+{
+ "schemaVersion": 1,
+ "reports": [
+  {
+   "id": "aidc-power-conversion--competitive--2026-08-29",
+   "title": "AIDC Power Conversion — The 800 VDC Race",
+   "type": "competitive",
+   "topic": "Who is winning the AI data-center power-conversion transition — rack shelves, sidecars, and hall-edge blocks — across the covered peer family",
+   "date": "2026-08-29",
+   "scopeLabel": "8 covered AIDC power-conversion players",
+   "companies": 8,
+   "citations": 29,
+   "status": "current",
+   "overlayModules": ["nvidia-800vdc-2026-08"]
+  },
+  {
+   "id": "s154-listed-bess-suppliers--risk--2026-08-29",
+   "title": "§154-Listed BESS Suppliers — US Market-Access Risk",
+   "type": "risk",
+   "topic": "US market-access, policy, and counterparty risk across the covered FY2024 NDAA §154(b)-listed battery makers",
+   "date": "2026-08-29",
+   "scopeLabel": "5 covered §154(b)-listed makers",
+   "companies": 5,
+   "citations": 24,
+   "status": "current",
+   "overlayModules": ["bess-bankability-2026-08", "china-policy-stack-2026-08", "power-infra-aidc-2026-08", "utility-aidc-procurement-2026-08"]
+  },
+  {
+   "id": "grid-scale-bess--competitive--2026-08-29",
+   "title": "Grid-Scale Battery Storage — Competitive Assessment",
+   "type": "competitive",
+   "topic": "Grid-scale battery energy storage systems — the head-to-head set of system suppliers and integrators",
+   "date": "2026-08-29",
+   "scopeLabel": "12 grid-scale BESS system players",
+   "companies": 12,
+   "citations": 42,
+   "status": "current"
+  }
+ ]
+}

@@ -1,0 +1,10 @@
+# Enforce LF line endings in the repo (prevents CRLF from Windows editors/git config)
+* text=auto eol=lf
+
+# Binary files — do not normalize
+*.png binary
+*.mp3 binary
+*.pdf binary
+
+# Developed by: LightAISolutions
+

@@ -1,0 +1,714 @@
+{
+  "amazon": [
+    {
+      "file": "amazon.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-10",
+      "supersededBy": 2
+    },
+    {
+      "file": "amazon.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 3
+    },
+    {
+      "file": "amazon.profile.v3.json",
+      "profileVersion": 3,
+      "archivedAt": "2026-08-29",
+      "supersededBy": 4
+    }
+  ],
+  "byd": [
+    {
+      "file": "byd.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-08",
+      "supersededBy": 2
+    },
+    {
+      "file": "byd.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-09",
+      "supersededBy": 3
+    },
+    {
+      "file": "byd.profile.v3.json",
+      "profileVersion": 3,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 4
+    }
+  ],
+  "catl": [
+    {
+      "file": "catl.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-08",
+      "supersededBy": 2
+    },
+    {
+      "file": "catl.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-09",
+      "supersededBy": 3
+    },
+    {
+      "file": "catl.profile.v3.json",
+      "profileVersion": 3,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 4
+    }
+  ],
+  "flexgen": [
+    {
+      "file": "flexgen.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-08",
+      "supersededBy": 2
+    },
+    {
+      "file": "flexgen.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-09",
+      "supersededBy": 3
+    },
+    {
+      "file": "flexgen.profile.v3.json",
+      "profileVersion": 3,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 4
+    }
+  ],
+  "fluence": [
+    {
+      "file": "fluence.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-08",
+      "supersededBy": 2
+    },
+    {
+      "file": "fluence.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-09",
+      "supersededBy": 3
+    },
+    {
+      "file": "fluence.profile.v3.json",
+      "profileVersion": 3,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 4
+    }
+  ],
+  "hithium": [
+    {
+      "file": "hithium.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-08",
+      "supersededBy": 2
+    },
+    {
+      "file": "hithium.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-09",
+      "supersededBy": 3
+    },
+    {
+      "file": "hithium.profile.v3.json",
+      "profileVersion": 3,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 4
+    },
+    {
+      "file": "hithium.profile.v4.json",
+      "profileVersion": 4,
+      "archivedAt": "2026-08-24",
+      "supersededBy": 5
+    }
+  ],
+  "huawei-digital-power": [
+    {
+      "file": "huawei-digital-power.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-14",
+      "supersededBy": 2
+    },
+    {
+      "file": "huawei-digital-power.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 3
+    }
+  ],
+  "megmeet": [
+    {
+      "file": "megmeet.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-09",
+      "supersededBy": 2
+    },
+    {
+      "file": "megmeet.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 3
+    }
+  ],
+  "sinexcel": [
+    {
+      "file": "sinexcel.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-08",
+      "supersededBy": 2
+    },
+    {
+      "file": "sinexcel.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-09",
+      "supersededBy": 3
+    },
+    {
+      "file": "sinexcel.profile.v3.json",
+      "profileVersion": 3,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 4
+    }
+  ],
+  "sungrow": [
+    {
+      "file": "sungrow.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-08",
+      "supersededBy": 2
+    },
+    {
+      "file": "sungrow.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-09",
+      "supersededBy": 3
+    },
+    {
+      "file": "sungrow.profile.v3.json",
+      "profileVersion": 3,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 4
+    }
+  ],
+  "tesla": [
+    {
+      "file": "tesla.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-08",
+      "supersededBy": 2
+    },
+    {
+      "file": "tesla.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-09",
+      "supersededBy": 3
+    },
+    {
+      "file": "tesla.profile.v3.json",
+      "profileVersion": 3,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 4
+    }
+  ],
+  "wartsila": [
+    {
+      "file": "wartsila.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-08",
+      "supersededBy": 2
+    },
+    {
+      "file": "wartsila.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-09",
+      "supersededBy": 3
+    },
+    {
+      "file": "wartsila.profile.v3.json",
+      "profileVersion": 3,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 4
+    }
+  ],
+  "zhonhen": [
+    {
+      "file": "zhonhen.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    },
+    {
+      "file": "zhonhen.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 3
+    },
+    {
+      "file": "zhonhen.profile.v3.json",
+      "profileVersion": 3,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 4
+    }
+  ],
+  "abb": [
+    {
+      "file": "abb.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "aligned": [
+    {
+      "file": "aligned.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "applied-digital": [
+    {
+      "file": "applied-digital.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "bechtel": [
+    {
+      "file": "bechtel.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "black-veatch": [
+    {
+      "file": "black-veatch.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "bloom-energy": [
+    {
+      "file": "bloom-energy.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "burns-mcdonnell": [
+    {
+      "file": "burns-mcdonnell.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "constellation-energy": [
+    {
+      "file": "constellation-energy.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "core-scientific": [
+    {
+      "file": "core-scientific.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "coreweave": [
+    {
+      "file": "coreweave.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    },
+    {
+      "file": "coreweave.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-29",
+      "supersededBy": 3
+    }
+  ],
+  "crusoe": [
+    {
+      "file": "crusoe.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    },
+    {
+      "file": "crusoe.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-29",
+      "supersededBy": 3
+    }
+  ],
+  "delta-electronics": [
+    {
+      "file": "delta-electronics.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "dpr": [
+    {
+      "file": "dpr.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "eaton": [
+    {
+      "file": "eaton.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "equinix": [
+    {
+      "file": "equinix.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "eve-energy": [
+    {
+      "file": "eve-energy.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "ge-vernova": [
+    {
+      "file": "ge-vernova.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "google": [
+    {
+      "file": "google.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    },
+    {
+      "file": "google.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-29",
+      "supersededBy": 3
+    }
+  ],
+  "hitachi-energy": [
+    {
+      "file": "hitachi-energy.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "jinko": [
+    {
+      "file": "jinko.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "hitt": [
+    {
+      "file": "hitt.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "holder-construction": [
+    {
+      "file": "holder-construction.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "iren": [
+    {
+      "file": "iren.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    },
+    {
+      "file": "iren.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-29",
+      "supersededBy": 3
+    }
+  ],
+  "kiewit": [
+    {
+      "file": "kiewit.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "lambda": [
+    {
+      "file": "lambda.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    },
+    {
+      "file": "lambda.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-29",
+      "supersededBy": 3
+    }
+  ],
+  "lg-energy-solution": [
+    {
+      "file": "lg-energy-solution.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "liteon": [
+    {
+      "file": "liteon.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "meta": [
+    {
+      "file": "meta.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    },
+    {
+      "file": "meta.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-29",
+      "supersededBy": 3
+    }
+  ],
+  "microsoft": [
+    {
+      "file": "microsoft.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    },
+    {
+      "file": "microsoft.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-29",
+      "supersededBy": 3
+    }
+  ],
+  "mortenson": [
+    {
+      "file": "mortenson.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "nebius": [
+    {
+      "file": "nebius.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    },
+    {
+      "file": "nebius.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-29",
+      "supersededBy": 3
+    }
+  ],
+  "nvidia": [
+    {
+      "file": "nvidia.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "openai": [
+    {
+      "file": "openai.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    },
+    {
+      "file": "openai.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-29",
+      "supersededBy": 3
+    }
+  ],
+  "oracle": [
+    {
+      "file": "oracle.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    },
+    {
+      "file": "oracle.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-29",
+      "supersededBy": 3
+    }
+  ],
+  "panasonic": [
+    {
+      "file": "panasonic.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "primoris": [
+    {
+      "file": "primoris.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "qts": [
+    {
+      "file": "qts.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "quanta-services": [
+    {
+      "file": "quanta-services.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "rosendin": [
+    {
+      "file": "rosendin.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "samsung-sdi": [
+    {
+      "file": "samsung-sdi.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "schneider-electric": [
+    {
+      "file": "schneider-electric.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "siemens-energy": [
+    {
+      "file": "siemens-energy.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "stack-infrastructure": [
+    {
+      "file": "stack-infrastructure.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "terawulf": [
+    {
+      "file": "terawulf.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "switch": [
+    {
+      "file": "switch.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "turner-construction": [
+    {
+      "file": "turner-construction.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "vantage": [
+    {
+      "file": "vantage.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "vertiv": [
+    {
+      "file": "vertiv.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    }
+  ],
+  "xai": [
+    {
+      "file": "xai.profile.v1.json",
+      "profileVersion": 1,
+      "archivedAt": "2026-08-22",
+      "supersededBy": 2
+    },
+    {
+      "file": "xai.profile.v2.json",
+      "profileVersion": 2,
+      "archivedAt": "2026-08-29",
+      "supersededBy": 3
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "slug": "stack-infrastructure",
+  "title": "STACK Infrastructure — Study Guide",
+  "lastUpdated": "2026-08-22",
+  "sections": [
+    {
+      "heading": "The wholesale developer-landlord model",
+      "bullets": [
+        "A wholesale data-center developer buys land and power, builds the facility, and leases whole data halls, buildings or entire campuses to a handful of giant tenants on multi-year contracts — versus retail colocation, which rents racks and cages to many small customers",
+        "The landlord owns and operates the building, power infrastructure and cooling plant; the tenant installs and owns the IT gear (servers, GPUs, networking) — a clean split of capital and expertise",
+        "Leases are typically take-or-pay: rent is owed on the reserved megawatts whether or not the tenant fills them, which makes the cash flows financeable like infrastructure rather than like a tech business",
+        "Megawatts, not square feet, are the unit of account — a campus is described by its critical IT load (e.g. 200MW) because power is the scarce input everything else is sized around"
+      ]
+    },
+    {
+      "heading": "The product ladder: powered shell, turnkey, build-to-suit",
+      "bullets": [
+        "Powered shell — the landlord delivers the building plus utility power connection only; the tenant self-performs electrical distribution, UPS, generators and cooling. Cheapest rent, most tenant control, longest fit-out",
+        "Turnkey wholesale — the landlord delivers the complete environment (power distribution, backup, cooling, security, operations); the tenant rolls in racks. Higher rent, fastest time to compute",
+        "Build-to-suit — the campus or building is designed around one named tenant's requirements before ground breaks, trading speculative risk for a locked anchor lease",
+        "Sophisticated hyperscalers often prefer shell (they trust their own fit-out engineering and supply chain); scaling AI tenants prefer turnkey speed — a developer that offers every rung on one campus can serve both without losing the deal",
+        "A single campus can mix rungs: master-plan the site, build shells for the self-performers, turnkey halls for everyone else — which is why 'engineered for shell and turnkey' appears in modern campus specs"
+      ]
+    },
+    {
+      "heading": "Land and power banking: the interconnection queue game",
+      "bullets": [
+        "Utilities and grid operators process connection requests in order; for gigawatt-class loads the queue can run years — so a site with an approved connection date is worth far more than the dirt itself",
+        "Power banking means acquiring sites where large connections can be secured early, then holding the position while demand catches up — the developer's real inventory is approved megawatts, not acreage",
+        "An on-site substation dedicated to the campus (built with the local utility) removes the shared-infrastructure bottleneck and makes expansion increments predictable",
+        "Siting adjacent to high-voltage transmission corridors shortens the interconnection path — 'premier power corridor' locations command premiums for exactly this reason",
+        "When the queue is still too slow, the escape hatch is behind-the-meter generation: an on-site microgrid powers the campus independently of the regional grid, converting a multi-year utility dependency into an equipment-procurement problem"
+      ]
+    },
+    {
+      "heading": "Greenfield, conversion, and buy-vs-build market entry",
+      "bullets": [
+        "Greenfield development — raw land to new campus — offers clean design (modern density, closed-loop cooling) but carries entitlement, queue and construction risk; it is how giga-campuses get built",
+        "Conversion/acquisition entry — buying existing facilities or platforms — trades design purity for instant market position, customers and operating teams",
+        "Platform assembly by M&A is a sponsor specialty: combine acquired operating assets under one new brand, keep the teams, then layer greenfield growth on top — faster than building a company from scratch",
+        "Joint ventures solve the local-knowledge problem in new countries: partnering with a local builder or industrial-real-estate owner supplies land access, permits and construction capacity the foreign entrant lacks",
+        "The same logic runs in reverse: a business line that no longer fits the strategy (e.g. an enterprise colocation unit inside a hyperscale developer) can be carved out and sold whole to a sponsor who wants exactly that product"
+      ]
+    },
+    {
+      "heading": "Why regional platforms are financed and run separately",
+      "bullets": [
+        "Global developers typically organize as separate regional companies — own CEO, own balance sheet, own lender group — rather than one consolidated firm",
+        "Currency matching: an Australian campus financed in AUD and a Japanese campus in JPY eliminate exchange-rate mismatch between rent (local currency) and debt service",
+        "Lender-base matching: regional banks understand their own utilities, permitting and tenants — a Tokyo syndicate prices Japanese risk better than a New York one",
+        "Risk ring-fencing: a problem in one region cannot drag down the others' financings; each platform's debt is secured only by its own assets",
+        "Separability is the quiet third benefit: a cleanly ring-fenced region can be sold whole — platform-level M&A at tens of billions is only possible because the region was never entangled with the rest",
+        "The cost is coordination: global clients want consistent design and contracting across regions, which is why regional platforms share a design standard and brand even with separate capital structures"
+      ]
+    },
+    {
+      "heading": "The ownership chain: funds, fund managers, and GP acquisitions",
+      "bullets": [
+        "A private data-center platform is typically owned by investment funds, which are managed by a fund manager (the GP) on behalf of institutional investors (the LPs) — three distinct layers that can each change hands separately",
+        "When one asset manager buys another's business (a 'GP acquisition'), the funds and their assets don't move — the management contracts do: the same funds are now managed under a new name, and the operating company's sponsor changes without a single building being sold",
+        "Fund managers earn management fees plus carried interest; buying a manager is buying those fee streams and the team, typically paid mostly in the acquirer's stock to keep the team invested",
+        "Finite-life funds must eventually exit every asset — creating forced-seller moments; this is the structural weakness perpetual capital was invented to fix",
+        "Watch the chain, not just the logo: 'Company X, a portfolio company of funds managed by Y, which was acquired by Z' is one sentence but three different owners of risk"
+      ]
+    },
+    {
+      "heading": "Perpetual capital: from fund to forever-vehicle",
+      "bullets": [
+        "A perpetual (evergreen) vehicle — such as a non-traded REIT — has no end date: it raises capital continuously (often from wealth-channel individual investors), buys stabilized income-producing assets, and never faces a fund-expiry forced sale",
+        "The recycling loop: a finite fund develops and stabilizes a campus → sells it to the manager's own perpetual vehicle at appraised value → the fund returns capital to LPs → the operating company stays on as operator — assets change owner, operations don't",
+        "Related-party sales inside one manager require governance guardrails (independent fairness opinions, disclosed valuations) because the same firm advises both buyer and seller",
+        "For the developer this creates a captive exit lane: stabilized buildings have a known buyer, so development capital turns over faster and the platform can keep growing without third-party sales",
+        "Non-traded REITs file with the SEC even though they don't trade — making them a rare window into an otherwise private platform's numbers (asset counts, megawatts, lease rates, debt terms)"
+      ]
+    },
+    {
+      "heading": "Data-center ABS: master trusts and repeat issuance",
+      "bullets": [
+        "Securitization pools contractual lease payments from stabilized, tenant-filled data centers into a bankruptcy-remote entity that issues rated notes — investors get bond-like paper, the developer gets long-dated capital cheaper than construction debt",
+        "A master trust is a reusable structure: the sponsor pledges assets and leases into one trust and issues new series against the growing pool as funding needs evolve — series after series, year after year, without rebuilding the legal machinery",
+        "Notes carry an anticipated repayment date (ARD — when the sponsor is expected to refinance, typically ~5 years out) and a much later rated final maturity; missing the ARD triggers penalty interest, not default",
+        "Take-or-pay leases from investment-grade tenants are why the paper rates in the single-A band — the cash flows resemble mortgage or franchise-royalty ABS that markets already know how to price",
+        "The refinancing flywheel: build with construction debt → lease up → securitize the stabilized asset → recycle proceeds into the next build; mature programs even use new series to refinance old ones, rolling the whole stack forward",
+        "Repeat issuance is itself the asset: a sponsor with ten series outstanding has a track record, a known collateral pool and an investor base — each new series prices faster and tighter than a first-time deal"
+      ]
+    },
+    {
+      "heading": "Anchor-tenant mega-programs and their economics",
+      "bullets": [
+        "Multi-billion-dollar campus programs are announced only after an anchor tenant commits — no developer carries a $10B+ build on spec; the announcement is really the disclosure of a signed lease program",
+        "Single-tenant concentration cuts both ways: one hyperscaler's credit supports enormous cheap financing, but the developer's fortunes become correlated with that tenant's capex cycle",
+        "Industrial revenue bonds (IRBs) and similar county-level structures reduce property-tax burdens on mega-projects: the county technically owns the assets and leases them back, taxing a negotiated payment instead of full assessed value — which is how headline bond authorizations can reach astronomical figures",
+        "The community-cost playbook is now standard: the developer or tenant funds its own water, wastewater and grid upgrades (rather than ratepayers), pays for dedicated utility infrastructure, and commits to water-positive designs — pre-empting the objections that stall permits",
+        "Emergency grid citizenship matters too: in regions under strain, regulators can order load flexibility (e.g. US DOE Section 202(c) emergency orders during extreme weather) — operators increasingly position themselves publicly as coordinating partners, not just load"
+      ]
+    },
+    {
+      "heading": "Cooling, water, and the density transition",
+      "bullets": [
+        "The density ladder: enterprise racks draw 5-15kW, modern GPU racks 100kW+; above roughly 100kW per rack, air cannot carry the heat and liquid must reach the chip (liquid-to-chip via coolant distribution units)",
+        "Closed-loop cooling circulates the same water indefinitely and rejects heat through air-cooled equipment — near-zero consumption, which is why new designs advertise 'zero potable water for cooling' or water use 'at office-building levels'",
+        "Hybrid designs run air-cooled most of the year and add evaporative water assistance only above a temperature threshold (e.g. ~85°F) — trading a little water on the hottest days for year-round electrical efficiency",
+        "Reclaimed (non-potable) water systems answer the sharpest community objection: industrial cooling that never touches the drinking-water supply",
+        "AI-ready campus design means engineering the shell, power and cooling for both cloud-density and AI/ML-density from day one, so the same buildings can serve either tenant class as demand shifts"
+      ]
+    },
+    {
+      "heading": "The competitive map: where STACK sits",
+      "bullets": [
+        "Private wholesale build-to-suit peers: Vantage (largest, ~9GW claim, Stargate's Frontier/Lighthouse), Aligned (Tier-II US metros + LatAm), QTS (Blackstone — largest US land bank), CloudHQ, Switch (DigitalBridge) — all compete on time-to-power and delivery credibility for the same hyperscaler leases",
+        "Public REITs Equinix and Digital Realty sell interconnection ecosystems and enterprise density; they build hyperscale capacity through JVs rather than pure landlord bets — a different product for a different buyer",
+        "Energy-first entrants (Crusoe, miner-pivots like Applied Digital, TeraWulf, Core Scientific) start from owned power positions and add data-center competence — cheaper power, shorter delivery track records",
+        "STACK's distinctive combination: an explicit shell-through-turnkey product ladder, three separately financed regional platforms, a ten-series ABS master trust, and two named anchor mega-programs (Amazon's Louisiana buildout, a Stargate campus) — few peers hold all four at once",
+        "The sponsor dimension separates look-alikes: Vantage answers to DigitalBridge, STACK to Blue Owl, QTS to Blackstone — sponsor strategy (recycle, carve out, sell regions, IPO) shapes each platform's behavior as much as tenant demand does"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "Powered shell vs turnkey wholesale — who installs the UPS, generators and cooling?",
+      "a": "In powered shell, the tenant does: the landlord delivers only the building and utility power. In turnkey, the landlord delivers the complete environment and the tenant just installs IT gear. Shell trades lower rent and more control for a longer fit-out; turnkey buys speed."
+    },
+    {
+      "q": "Why would a hyperscaler choose powered shell when turnkey is faster?",
+      "a": "Sophisticated operators trust their own fit-out engineering and supply chains, want design control down to the electrical topology, and can beat the landlord's cost on the inside plant. Shell lets them buy just the scarce parts — land, building, approved megawatts."
+    },
+    {
+      "q": "What makes a take-or-pay wholesale lease securitizable?",
+      "a": "Rent is owed on the reserved megawatts regardless of usage, so the cash flow is contractual, predictable and backed by an investment-grade tenant — the same profile as mortgage or franchise-royalty cash flows ABS investors already price."
+    },
+    {
+      "q": "What is a master trust, and why do repeat ABS issuers use one?",
+      "a": "A reusable securitization structure: assets and leases are pledged into one trust that issues new note series against the growing pool as needed. The legal machinery, ratings history and investor base carry over, so each new series is faster and cheaper than a standalone deal."
+    },
+    {
+      "q": "What is the ARD on a data-center ABS note, and what happens if it's missed?",
+      "a": "The anticipated repayment date — when the sponsor is expected to refinance, typically ~5 years after issuance, far before the rated final maturity. Missing it triggers penalty interest and cash sweeps, not default; it's an incentive structure, not a cliff."
+    },
+    {
+      "q": "How does the securitization refinancing flywheel work?",
+      "a": "Build with construction debt → lease up to stabilization → securitize the stabilized asset into rated notes at cheaper pricing → recycle proceeds into the next build. Mature programs also issue new series to refinance old ones, rolling the stack forward at each rate cycle."
+    },
+    {
+      "q": "In a GP acquisition, what actually changes hands when one asset manager buys another?",
+      "a": "The management contracts and team — not the buildings. The funds keep owning their assets; they're simply managed by the acquirer now. An operating company can get a new sponsor overnight without a single asset being sold."
+    },
+    {
+      "q": "What problem does a perpetual-capital vehicle solve for a private developer?",
+      "a": "Finite-life funds must sell every asset before the fund expires — forced-seller moments. A perpetual vehicle (like a non-traded REIT) never expires, so stabilized assets can move to it at appraised value, the fund returns capital, and the operator keeps running the buildings."
+    },
+    {
+      "q": "Why do related-party sales between a fund and its manager's own perpetual vehicle need special governance?",
+      "a": "The same firm advises both buyer and seller, so the price isn't market-tested. Independent fairness opinions and disclosed valuations substitute for the arm's-length negotiation that normally protects each side's investors."
+    },
+    {
+      "q": "Why do global developers finance each regional platform separately?",
+      "a": "Currency matching (AUD debt for AUD rent), lender-base matching (regional banks price local risk best), and ring-fencing (one region's trouble can't sink another's financing). The quiet third benefit: a cleanly separated region can be sold whole."
+    },
+    {
+      "q": "Why is an approved grid connection worth more than the land under a campus?",
+      "a": "Interconnection queues for gigawatt loads run years, and revenue can't start until power flows. Land is abundant; approved megawatts with a delivery date are the scarce input — which is why developers 'bank' power positions ahead of demand."
+    },
+    {
+      "q": "How does an on-site microgrid change a mega-campus's delivery timeline?",
+      "a": "Behind-the-meter generation powers the campus independently of the regional grid, converting a multi-year interconnection dependency into an equipment-procurement problem. The trade: fuel logistics, emissions permitting, and running your own power plant."
+    },
+    {
+      "q": "Buy vs build: how do platforms enter a new country's data-center market?",
+      "a": "Build (greenfield) for clean modern design but slow entitlement and queue risk; buy (acquire operators or JV with local builders/landowners) for instant position, permits and teams. Most global platforms mix both — acquire to enter, then greenfield to scale."
+    },
+    {
+      "q": "Why would a hyperscale developer carve out and sell its colocation business?",
+      "a": "Retail/enterprise colo and hyperscale wholesale are different products — different sales motions, customers, and capital profiles. Selling the colo unit whole to a sponsor who wants that product lets the developer concentrate capital and management on gigawatt campuses."
+    },
+    {
+      "q": "Why are giga-campus programs announced only after an anchor tenant signs?",
+      "a": "At billions per campus, no developer builds on spec. The public announcement is effectively the disclosure of a committed lease program — the capital, the county incentives and the construction schedule all hang off the anchor's signature."
+    },
+    {
+      "q": "What does an industrial revenue bond (IRB) actually do for a data-center project?",
+      "a": "The county technically owns the project assets and leases them back, taxing a negotiated payment instead of full assessed value — reducing property-tax burden over decades. The headline 'bond' figure is an authorization ceiling, not cash raised."
+    },
+    {
+      "q": "Why do new campus designs advertise 'zero potable water for cooling'?",
+      "a": "Closed-loop systems circulate the same water indefinitely and reject heat through air-cooled equipment, so consumption stays near zero — or designs use reclaimed water and evaporate only on the hottest days. Water is the sharpest community objection; the design answers it before the hearing."
+    },
+    {
+      "q": "At what rack density does air cooling stop working, and what replaces it?",
+      "a": "Above roughly 100kW per rack, air physically can't carry the heat away. Liquid must reach the silicon — coolant distribution units feeding direct-to-chip cold plates — which is why 'AI-ready' campuses are engineered for liquid-to-chip from day one."
+    }
+  ]
+}

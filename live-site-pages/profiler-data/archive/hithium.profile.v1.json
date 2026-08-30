@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "slug": "hithium",
+  "name": "Xiamen Hithium Energy Storage Technology Co., Ltd. (厦门海辰储能科技股份有限公司)",
+  "shortName": "Hithium",
+  "categories": ["supplier"],
+  "website": "https://en.hithium.com",
+  "headquarters": "Xiamen, Fujian, China",
+  "founded": 2019,
+  "employees": "~7,650 (FY2024, company ESG figure via aggregator); ~10,500 (Mar 2026, third-party workforce estimate)",
+  "ownership": { "type": "private" },
+  "summary": "Hithium is a pure-play stationary energy-storage battery manufacturer founded in December 2019 by former CATL engineer Wu Zuyu. It mass-produces prismatic LFP cells purpose-built for storage (280Ah, 314Ah, 587Ah, 1175Ah, and 1300Ah classes), sodium-ion cells, and integrated battery energy storage systems (∞Block and ∞Power DC blocks up to 6.9 MWh) for utility-scale, C&I, and residential applications, selling to grid operators, developers, and integrators in 20+ countries. The company remains private as of August 2026: an A-share attempt was withdrawn in 2023 and two Hong Kong Main Board applications (March 2025, October 2025) both lapsed, the second in April 2026.",
+  "ecosystemRole": "One of the world's largest ESS cell suppliers — No. 5 globally in 2023 (>15 GWh, InfoLink), No. 3 in 2024 (35.1 GWh, ~11% share, behind CATL and EVE), and Top 2 in both total and utility-scale ESS battery shipments for 2025 (InfoLink/SMM/ICC); cumulative shipments passed 100 GWh in August 2025. Manufacturing: Xiamen HQ, Chongqing (world's first WEF 'Lighthouse Factory' in energy-storage batteries, Jan 2026), Shandong, a 10 GWh/yr module + system plant in Mesquite, Texas (first shipments Aug 2025), and a committed €400M cell + BESS gigafactory in Navarre, Spain (target 2027).",
+  "productsAndServices": [
+    {
+      "name": "Utility-scale LFP storage cells (∞Cell line)",
+      "category": "Battery cells",
+      "description": "Prismatic LFP cells purpose-built for stationary storage: ESS Cell 280Ah (≥7,000 cycles), 314Ah (≥13,000 cycles), ∞Cell 587Ah (mass delivery from 2025), ∞Cell 1175Ah (world's first mass-produced kAh-class cell, Chongqing, from June 2025), ∞Cell 1300Ah for 8-hour LDES (mass delivery targeted Q4 2026), and a 650Ah cell slated for 2027.",
+      "highlights": [
+        "Cells supplied to integrators including NHOA, Risen Energy, and (formerly) Powin alongside Hithium's own systems",
+        "∞Cell 1175Ah earned UL 1973 and UL 9540A certification at SNEC 2025"
+      ]
+    },
+    {
+      "name": "Containerized utility-scale systems (∞Block / ∞Power)",
+      "category": "Battery energy storage systems",
+      "description": "DC blocks from the ∞Block 5.016 MWh (314Ah cells) to ∞Power 6.25 MWh 2h/4h variants in a standard 20-ft container (587Ah / 1175Ah cells), a 6.9 MWh 8-hour system (1300Ah cell, Q4 2026), the modular 10-ft ∞Power Flexsso, and a hardened 'Desert Eagle' variant rated -30°C to 60°C.",
+      "highlights": [
+        "4 GWh Saudi Electricity Company LDES projects (Tabuk and Hail, with Alfanar; reported RMB 2.6B supply deal; commissioning targeted 2026)",
+        "2 GWh to Ukraine via KNESS Group from Q1 2026; 2 GWh Eastern Europe framework with Bulgaria's Solarpro",
+        "Statkraft cooperation for a wind-farm BESS in Navarre and a 30.1 MWh project in France (July 2026)",
+        "Prospectus customers include Jupiter Power, Lightsource bp, Samsung C&T, Datang Group, and Longyuan Power"
+      ]
+    },
+    {
+      "name": "Sodium-ion products (∞Cell N162Ah / ∞Power N)",
+      "category": "Battery cells",
+      "description": "The ∞Cell N162Ah (launched December 2024) is billed as the first sodium-ion battery specialized for utility-scale storage — NFPP cathode with hard-carbon anode, ~94.2% retention after 4,000 cycles, projected >20,000 cycles to 70% SOH, and a -40°C to 60°C operating window; paired with the ∞Power N 2.28 MWh (1h) system.",
+      "highlights": ["GWh-scale mass production planned from Q4 2025"]
+    },
+    {
+      "name": "C&I storage",
+      "category": "Battery energy storage systems",
+      "description": "∞Block 261 kWh and ∞Power 418 kWh cabinet-class DC blocks for commercial & industrial applications, alongside earlier-generation 5 MWh 20-ft containers.",
+      "highlights": []
+    },
+    {
+      "name": "Residential & portable power (HeroEE line)",
+      "category": "Consumer energy products",
+      "description": "HeroEE portable/home backup products — HeroEE 1 (1,004.8 Wh) and HeroEE 2 (built-in 2 kWh, up to 10,000 cycles, launched June 2024) — plus home energy-storage system solutions.",
+      "highlights": []
+    },
+    {
+      "name": "Localized manufacturing & delivery",
+      "category": "Manufacturing footprint",
+      "description": "US module and full-BESS assembly in Mesquite, Texas (~484,000 sq ft, ~$200M, 10 GWh/yr, first shipments August 2025) for the North American market; committed European cell + BESS production in Navarre, Spain (€400M JV with Sodena, ~700 jobs, €81M Spanish government grant, target 2027); long-term O&M included in the Saudi SEC projects.",
+      "highlights": []
+    }
+  ],
+  "technicalSpecs": [
+    {
+      "product": "∞Cell 1175Ah — flagship long-duration cell (world's first mass-produced kAh-class cell)",
+      "specs": [
+        { "label": "Chemistry", "value": "LFP prismatic, 3.2 V nominal" },
+        { "label": "Capacity", "value": "1,175 Ah (~3.76 kWh)" },
+        { "label": "Cycle life", "value": "≥11,000 cycles" },
+        { "label": "Energy density", "value": "≥180 Wh/kg · ≥400 Wh/L" },
+        { "label": "Dimensions", "value": "580.22 × 75.22 × 216.31 mm" },
+        { "label": "Certifications", "value": "UL 1973, UL 9540A (June 2025), IEC 62619, UN 38.3" },
+        { "label": "Status", "value": "Mass production at Chongqing since June 2025" }
+      ],
+      "notes": ""
+    },
+    {
+      "product": "∞Cell 1300Ah — next-generation 8-hour LDES cell",
+      "specs": [
+        { "label": "Chemistry", "value": "LFP" },
+        { "label": "Capacity", "value": "1,300 Ah" },
+        { "label": "Cycle / design life", "value": "≥10,000 cycles; design life >25 years" },
+        { "label": "Energy density", "value": "≥190 Wh/kg · ≥406 Wh/L" },
+        { "label": "Design basis", "value": "20-ft container dimensions, international transport limits, 1,500 V DC architecture, 8-hour duration" },
+        { "label": "Status", "value": "Mass delivery targeted Q4 2026" }
+      ],
+      "notes": ""
+    },
+    {
+      "product": "∞Power 6.25 MWh containerized BESS (2h / 4h variants)",
+      "specs": [
+        { "label": "Energy", "value": "6.25 MWh in a standard 20-ft container (6,058 × 2,438 × 2,896 mm)" },
+        { "label": "Cells", "value": "4h variant: ∞Cell 1175Ah · 2h variant: ∞Cell 587Ah (8×1P416S; 587Ah cell: ≥11,000 cycles, ≈185 Wh/kg, 94.5% efficiency)" },
+        { "label": "System energy density", "value": "4h: ≥142 Wh/kg · ≥146 Wh/L; 2h: ≥130 Wh/kg · ≥145 Wh/L" },
+        { "label": "PCS compatibility", "value": "String or central PCS" },
+        { "label": "Certifications", "value": "UL 1973, UL 9540A, UL 9540, NFPA 855, UN 38.3" },
+        { "label": "Status", "value": "Launched April 2025; mass production H2 2025" }
+      ],
+      "notes": ""
+    },
+    {
+      "product": "∞Power 6.9 MWh 8-hour system",
+      "specs": [
+        { "label": "Energy", "value": "6.9 MWh (6,922 kWh); 55.2 MWh per 8-unit block" },
+        { "label": "Cell / configuration", "value": "∞Cell 1300Ah LFP; 4 × 1P416S; 0.125P; 1,331 V DC" },
+        { "label": "System energy density", "value": "≥135 Wh/kg · ≥160 Wh/L" },
+        { "label": "Cooling / protection", "value": "Liquid cooling; IP66; low-GWP refrigerant; altitude ≤4,000 m" },
+        { "label": "Safety", "value": "Multi-stage active fire detection; NFPA 855" },
+        { "label": "Status", "value": "Mass delivery targeted Q4 2026" }
+      ],
+      "notes": "Some system-level figures are from a third-party datasheet aggregator, not the official datasheet."
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Wu Zuyu (吴祖钰) — \"Jeff Wu\"",
+      "title": "Founder, Chairman & Executive Director (controlling shareholder)",
+      "background": [
+        "Founded Hithium December 2019; controls the company via Xiamen Haichen Technology Development / Zhuhai Haiheng (92% of the GP)",
+        "CATL engineer — Jan 2016–Feb 2019; ATL-lineage predecessor entity — Aug 2011–Dec 2015; first-named inventor on 67 CATL patents (2012–2018)",
+        "Sep 2023: arbitration found he breached his CATL non-compete; paid RMB 1M liquidated damages",
+        "MSc Chemical Engineering, Fuzhou University (2011); BSc Applied Chemistry, Shandong Normal University (2008); age 39 at the Oct 2025 filing"
+      ]
+    },
+    {
+      "name": "Wang Pengcheng (王鹏程)",
+      "title": "Co-founder, Executive Director & President / General Manager",
+      "background": [
+        "'Employee No. 1' — joined the founding team Dec 2019; holds ~4.71% directly plus 8% of the controlling GP",
+        "Partner at Hengtong Capital — Mar 2015–Nov 2019; ~6 years in a Fujian government body; engineer at Fujian Broadcasting & Television Network",
+        "BSc Information & Communication Engineering, Beijing Jiaotong University (2002); age 44 at filing"
+      ]
+    },
+    {
+      "name": "Dr. Yi Ziqi (易梓琦)",
+      "title": "Executive Director, Deputy GM & GM of the Global Solutions Center (technology lead; described as CTO in company materials)",
+      "background": [
+        "CATL engineer — Sep 2016–Sep 2017",
+        "PhD Materials Science, Huazhong University of Science & Technology (2015); BSc Materials Chemistry, Hubei University (2010); age 36 at filing"
+      ]
+    },
+    {
+      "name": "Pang Wenjie (庞文杰)",
+      "title": "Executive Director & Deputy GM (market strategy)",
+      "background": [
+        "CATL engineer — Mar 2016–Jun 2018 (plus a stint at a CATL predecessor)",
+        "MSc Mechanical Design & Theory, Jimei University (2015); BSc Mechanical Design & Manufacturing, Fujian University of Technology (2012); age 36 at filing"
+      ]
+    },
+    {
+      "name": "Hu Zhijia (胡志嘉)",
+      "title": "Deputy GM & Chief Operating Officer",
+      "background": ["Senior management (non-board) per the HKEX prospectus; detailed career history not published"]
+    },
+    {
+      "name": "Zhao Ruijin (赵瑞锦)",
+      "title": "Chief Financial Officer",
+      "background": ["Senior management (non-board) per the HKEX prospectus; detailed career history not published"]
+    },
+    {
+      "name": "Wu Liqing (吴丽卿)",
+      "title": "Deputy GM, Board Secretary & Joint Company Secretary",
+      "background": ["Senior management per the HKEX prospectus; detailed career history not published"]
+    },
+    {
+      "name": "James Boswell",
+      "title": "VP, North America Operations",
+      "background": ["Leads the Mesquite, Texas module + BESS assembly plant (10 GWh/yr, first shipments Aug 2025)"]
+    },
+    {
+      "name": "Sam Wang",
+      "title": "Sales Director (Europe deals spokesperson)",
+      "background": ["Company spokesperson on the Ukraine (KNESS, 2 GWh) and Eastern Europe (Solarpro, 2 GWh) supply agreements"]
+    }
+  ],
+  "financials": {
+    "currency": "CNY (RMB)",
+    "type": "private",
+    "periods": [
+      {
+        "period": "FY2023 (per HKEX prospectus)",
+        "metrics": [
+          { "name": "Revenue", "actual": "RMB 10.202B (+182% YoY from RMB 3.615B in FY2022)", "expected": "", "verdict": "inline", "result": "Private — no consensus benchmark" },
+          { "name": "Net result", "actual": "Net loss ~RMB 225M (after ~RMB 105M loss in FY2022)", "expected": "", "verdict": "inline", "result": "—" },
+          { "name": "Shipments", "actual": ">15 GWh — global No. 5 (InfoLink)", "expected": "", "verdict": "inline", "result": "—" }
+        ],
+        "commentary": "Hyper-growth phase: 2022–2024 shipment CAGR ~167%; overseas revenue still only ~1% of sales in 2023."
+      },
+      {
+        "period": "FY2024 (per HKEX prospectus)",
+        "metrics": [
+          { "name": "Revenue", "actual": "RMB 12.917B (~US$1.8B, +26–27% YoY)", "expected": "", "verdict": "inline", "result": "Private — no consensus benchmark" },
+          { "name": "Net result", "actual": "First net profit — ~RMB 288–318M reported (company-cited adjusted RMB 320M, +241%)", "expected": "", "verdict": "inline", "result": "Profit includes RMB 414M of government subsidies — ex-subsidy an operating loss of ~RMB 126M (media analysis of the prospectus)" },
+          { "name": "Gross margin", "actual": "17.9% (up from 11.3% in 2022)", "expected": "", "verdict": "inline", "result": "—" },
+          { "name": "Shipments", "actual": "35.1 GWh — global No. 3, ~11% share (behind CATL and EVE)", "expected": "", "verdict": "inline", "result": "—" },
+          { "name": "Overseas mix", "actual": "~RMB 3.7B, 28.6% of revenue (vs ~1% in 2023)", "expected": "", "verdict": "inline", "result": "—" }
+        ],
+        "commentary": "The overseas pivot drove margins: H1 2025 overseas gross margin ran ~30.5% per media summaries of the prospectus."
+      },
+      {
+        "period": "H1 2025 (latest published interim; FY2025 financials never published)",
+        "metrics": [
+          { "name": "Revenue", "actual": "RMB 6.971B (+224.6% YoY)", "expected": "", "verdict": "inline", "result": "Private — no consensus benchmark" },
+          { "name": "Net result", "actual": "Net profit \"exceeded RMB 100M\"; gross profit RMB 916M (up >1,000% YoY); operating cash flow >RMB 1B", "expected": "", "verdict": "inline", "result": "Company release figures" },
+          { "name": "Shipments", "actual": "30.0 GWh (+252.9% YoY)", "expected": "", "verdict": "inline", "result": "—" }
+        ],
+        "commentary": "FY2025 full-year: financials unpublished (the second HKEX application lapsed April 2026 before FY2025 results were filed), but third parties (InfoLink, SMM, ICC) ranked Hithium global Top 2 in both total and utility-scale ESS battery shipments for 2025 in a market of 612.39 GWh (+94.6%)."
+      }
+    ],
+    "commentary": "Private company — figures from HKEX prospectus filings and media summaries; no analyst consensus exists. Funding: Series B ~RMB 2.0B+ (Oct 2022), Series C >RMB 4.5B (~US$622M, Jul 2023); media valuation estimates RMB 25–30B (2025). Risk context flagged by financial media: three failed listing attempts (A-share withdrawn 2023; HKEX applications lapsed Sep 2025 and Apr 2026), 10+ CATL lawsuits claiming >RMB 240M, a partial equity freeze on the controlling shareholder's vehicle (Feb 2026, until Feb 2029), and FY2024 profitability's dependence on subsidies."
+  },
+  "sources": [
+    { "label": "Hithium official (EN) — products (cells)", "url": "https://en.hithium.com/products/", "accessed": "2026-08-07" },
+    { "label": "Hithium official — systems page", "url": "https://www.hithium.com/products/system.html", "accessed": "2026-08-07" },
+    { "label": "HKEX — Hithium application proof / prospectus (filed 27 Oct 2025)", "url": "https://www1.hkexnews.hk/app/sehk/2025/107807/documents/sehk25102700292.pdf", "accessed": "2026-08-07" },
+    { "label": "ESS News — Hithium files for Hong Kong listing (Mar 2025; FY2022–24 figures)", "url": "https://www.ess-news.com/2025/03/27/hithium-files-for-hong-kong-listing-as-global-demand-for-energy-storage-surges/", "accessed": "2026-08-07" },
+    { "label": "新浪科技 — 海辰储能IPO三度折戟 (May 2026; lapse + litigation context)", "url": "https://finance.sina.com.cn/tech/roll/2026-05-12/doc-inhxrshk9966609.shtml", "accessed": "2026-08-07" },
+    { "label": "财联社 — 港交所二次递表失效、股权冻结、宁德时代诉讼", "url": "https://www.cls.cn/detail/2365749", "accessed": "2026-08-07" },
+    { "label": "pv magazine — Global Top 2 utility-scale + H1 2025 results (company release)", "url": "https://www.pv-magazine.com/press-releases/hithium-secures-global-top-2-in-utility-scale-energy-storage-with-robust-h1-2025-financial-performance/", "accessed": "2026-08-07" },
+    { "label": "ESS News — InfoLink 2025 cell shipments: 612 GWh market, rankings", "url": "https://www.ess-news.com/2026/02/09/infolink-2025-energy-storage-cell-shipments-jump-95-to-612-gwh-as-market-flips-from-glut-to-tightness/", "accessed": "2026-08-07" },
+    { "label": "PR Newswire — ∞Cell 1175Ah mass production (kAh-class cell)", "url": "https://www.prnewswire.com/news-releases/hithium-pioneers-mass-production-of-the-worlds-first-kah-battery-cell-accelerating-scaled-deployment-of-long-duration-energy-storage-302479194.html", "accessed": "2026-08-07" },
+    { "label": "pv magazine — 1300Ah cell + 6.9 MWh 8-hour system (Jun 2026)", "url": "https://www.pv-magazine.com/2026/06/09/hithium-targets-8-hour-storage-with-1300-ah-cell-and-6-9-mwh-system/", "accessed": "2026-08-07" },
+    { "label": "ESS News — 587Ah cell + 6.25 MWh system launch (Apr 2025)", "url": "https://www.ess-news.com/2025/04/16/hithium-unveils-587-ah-cell-and-6-25mwh-storage-system/", "accessed": "2026-08-07" },
+    { "label": "PR Newswire — 4 GWh Saudi (SEC) LDES projects with ∞Cell 1175Ah", "url": "https://www.prnewswire.com/news-releases/hithiums-breakthrough-cell-1175ah-powers-landmark-4gwh-long-duration-energy-storage-project-in-saudi-arabia-302539663.html", "accessed": "2026-08-07" },
+    { "label": "Energy-Storage.News — first shipments from Texas BESS assembly plant", "url": "https://www.energy-storage.news/chinese-battery-manufacturer-hithium-ships-first-units-from-texas-bess-assembly-plant/", "accessed": "2026-08-07" },
+    { "label": "ESS News — €400M Spanish gigafactory (Navarre, Mar 2026)", "url": "https://www.ess-news.com/2026/03/11/hithium-to-invest-e400-million-in-spanish-mega-battery-factory/", "accessed": "2026-08-07" },
+    { "label": "睿财经 — 四名执董简历（三人曾任职宁德时代）", "url": "https://m.rccaijing.com/news-7310546055249721066.html", "accessed": "2026-08-07" },
+    { "label": "Hithium newsroom — Double Top 2 in 2025 shipments (Feb 2026)", "url": "https://en.hithium.com/newsroom/latest/details/162.html", "accessed": "2026-08-07" },
+    { "label": "Hithium newsroom — 100 GWh cumulative shipments (Aug 2025)", "url": "https://www.hithium.com/newsroom/activities/details/77.html", "accessed": "2026-08-07" },
+    { "label": "PR Newswire — sodium-ion ∞Cell N162Ah launch (Dec 2024)", "url": "https://www.prnewswire.com/news-releases/hithium-launches-the-first-specialized-sodium-ion-battery-for-utility-scale-energy-storage--cell-n162ah-302336013.html", "accessed": "2026-08-07" }
+  ],
+  "lastUpdated": "2026-08-06",
+  "profileVersion": 1
+}

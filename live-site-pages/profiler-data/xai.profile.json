@@ -1,0 +1,435 @@
+{
+ "schemaVersion": 6,
+ "slug": "xai",
+ "name": "xAI",
+ "legalName": "X.AI Corp. — since February 2, 2026 a wholly-owned SpaceX subsidiary (combined entity branded 'SpaceXAI')",
+ "categories": [
+  "hyperscaler"
+ ],
+ "hq": "Palo Alto, CA, USA (AI HQ); data centers Memphis, TN / Southaven, MS",
+ "founded": "2023",
+ "ownership": "private (SpaceX subsidiary; Musk-controlled; S-1 filed May 2026)",
+ "employees": ">22,000 (combined SpaceXAI; AI-segment split not published)",
+ "website": "https://x.ai",
+ "summary": "BOTTOM LINE UP FRONT: xAI is the most aggressive self-builder in AI infrastructure — the Colossus campuses in Memphis/Southaven reached ~1.0 GW of nameplate compute draw by March 2026 (0 GW in 2023), built almost entirely on self-deployed behind-the-meter gas generation buffered by the world's largest Tesla Megapack installation — and it no longer exists as a standalone company: SpaceX acquired it February 2, 2026 (xAI valued ~$250B) and filed an IPO S-1 that makes its economics public for the first time: the AI segment lost $6.4B from operations on ~$3.2B revenue in 2025. BACKGROUND: Founded March 2023; acquired X in March 2025 ($80B/$33B); raised a $20B Series E at ~$230B (January 2026, NVIDIA and Cisco in) weeks before the SpaceX merger. Colossus 1: 100,000 H100s live in 122 days, now >220,000 GPUs. Colossus II: gigawatt-class (per SemiAnalysis, the first), with GB200/GB300 clusters brought up in 91 and 64 days. Monetization turned a corner in May 2026: Anthropic signed cloud agreements at $1.25B/month through May 2029 (~$15B/yr) for Colossus capacity. The unresolved liability: the gas fleet — up to 35 unpermitted mobile turbines documented at Memphis, 27 alleged at Southaven in a federal NAACP Clean Air Act suit ($399M litigation accrual), against a permitted path of 41 permanent turbines (1.2 GW plant) and mobile-unit removal by July 2027.",
+ "ecosystemRole": "We assess xAI as the extreme case study in behind-the-fence power — the builder that proved gigawatt AI campuses can bypass the grid queue entirely, and the single largest battery-buffered AI deployment on earth. Basis: ~1.0 GW of compute powered 'almost entirely' by self-deployed generation (S-1), ~$731M of cumulative Tesla Megapack purchases smoothing GPU transients and enabling full grid-independence, and turbine procurement (~$3.7B of agreements in 2026 alone) that made xAI one of the largest mobile-turbine buyers anywhere. For power vendors, xAI defines both the opportunity (speed-at-any-cost procurement) and the risk template (permit litigation, community backlash, related-party procurement within the Musk complex). The Anthropic deal adds a second identity: Colossus is now also a merchant AI cloud.",
+ "productsAndServices": [
+  {
+   "name": "Colossus AI supercomputer campuses",
+   "description": "Colossus 1 (Memphis, former Electrolux site): 100,000 H100s in 122 days, doubled to 200,000 in 92 more; now >220,000 H100/H200/GB200 GPUs at ~130 MW+ compute. Colossus II (Memphis Tulane Rd + Southaven MS, defined in the S-1 as one coherent gigawatt-scale training cluster): ~110,000 GB200s (~210 MW) online in 91 days, 110,000 GB300s (220 MW) in 64 days, with >=220,000 more GB300s (>400 MW) next — designated for Grok 5 training. Combined ~1.0 GW nameplate compute draw; company claims >1M H100-equivalents across the fleet by end-2025.",
+   "positioning": "The fastest large-cluster builder on record (company-cited ~2-year industry benchmark for a 100 MW greenfield vs its 64-91-day cluster bring-ups); per-MW construction cost claimed 'considerably lower than industry benchmarks.'",
+   "soldThrough": "Historically internal (Grok training); now also merchant — the Anthropic cloud agreements at $1.25B/month through May 2029.",
+   "targetSegments": [
+    "Grok model training",
+    "External AI labs (Anthropic first)"
+   ],
+   "roadmap": "Musk targets: 1M GPUs at the Memphis facility by 2026; 50M H100-equivalents within 5 years; a next Memphis data center referencing up to 90 turbines; orbital compute framed as the strategic endgame (Anthropic reportedly interested in multi-GW orbital capacity)."
+  },
+  {
+   "name": "Behind-the-meter power stack (turbines + Megapacks)",
+   "description": "Self-designed, self-built generation: 69 temporary mobile turbines at Southaven (agreed removal August 2026 - July 2027 under a Mississippi DEQ order), a permitted 1.2 GW permanent 41-turbine gas plant under construction (Clean Air Act permit March 2026), SCR NOx controls on mobile units, plus the Stateline Power JV with Solaris Energy Infrastructure for off-grid supply. Turbine procurement 2026: $805M + $925M purchase agreements through 2029 plus a ~$2.0B mobile-turbine fleet acquisition. Buffering: >240 Megapacks at Colossus 1 alone — the S-1 claims the world's largest Megapack deployment and the first gigawatt-scale Megapack installation (2026) — enabling full off-grid operation during grid stress.",
+   "positioning": "The proof-of-concept for generation-plus-storage as the AI power architecture — and the sector's biggest related-party procurement story (Tesla Megapack purchases: $191M 2024, $506M 2025, $34M Q1 2026; another ~$269-295M by SpaceX in Q2 2026).",
+   "soldThrough": "Self-consumed; Stateline Power JV (Solaris 50.1%/CTC 49.9%) rents equipment long-term.",
+   "targetSegments": [
+    "Its own campuses"
+   ],
+   "roadmap": "Mobile-to-permanent transition through July 2027; grid supplements funded through MLGW/TVA partnerships (xAI pays network upgrades); $80M+ water recycling plant (~4.7B gallons/yr, ~9% aquifer-strain reduction)."
+  },
+  {
+   "name": "Grok models & the X platform (demand base)",
+   "description": "The Grok model line (Grok 3 through Grok 4.5, trained on tens of thousands of GB300s; Grok 5 in training), distributed through X (~550M combined MAUs; ~117M using Grok features), API/enterprise, and government channels (DoD $200M-ceiling frontier-AI contract; GSA $0.42/agency OneGov deal; reported classified-systems deployment). Terafab: a chip-manufacturing framework with Tesla and Intel targeting '1 TW/year of compute hardware' — agreed but not definitive.",
+   "positioning": "Third-to-fifth in consumer AI depending on metric (~15-18% US chatbot app share vs ChatGPT's ~45-53%); distribution via X, not model preference, drives adoption per press consensus.",
+   "soldThrough": "X subscriptions/ads, API, government contracts, and now wholesale compute (Anthropic).",
+   "targetSegments": [
+    "Consumers via X",
+    "Enterprises/government",
+    "AI labs as compute tenants"
+   ],
+   "roadmap": "Macrohard (agentic software platform with Tesla) in development; SpaceX IPO (reported ~$135/share, ~$75B raise) is the financing endgame."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-06-05",
+   "category": "order-win",
+   "headline": "Google to pay SpaceX-xAI $920M/month for ~110,000 NVIDIA GPUs at xAI data centers, October 2026 through June 2029 (~$30B)",
+   "read": "The lessor flywheel accelerates: after Anthropic took Colossus 1, a second frontier-lab rival becomes a capacity customer of the Musk complex.",
+   "source": "https://techcrunch.com/2026/06/05/google-will-pay-spacex-920m-per-month-for-compute/"
+  },
+  {
+   "date": "2026-05-20",
+   "category": "financial",
+   "headline": "SpaceX S-1 goes public — AI segment lost $6.4B from operations on ~$3.2B revenue in 2025",
+   "read": "First filing-grade look at xAI economics: segment operating losses of $1.56B (2024), $6.36B (2025), $2.47B (Q1 2026 alone), with Nameplate Compute Draw disclosed as a KPI (0→1.0 GW in 3 years). The IPO (reported ~$135/share, ~$75B raise) is the financing mechanism for the whole buildout.",
+   "source": "https://techcrunch.com/2026/05/20/xai-burned-6-4b-last-year-spacexs-ipo-filing-shows-why-the-spending-is-far-from-over/"
+  },
+  {
+   "date": "2026-05",
+   "category": "partnership",
+   "headline": "Anthropic signs cloud services agreements at $1.25B/month through May 2029 for Colossus capacity",
+   "read": "The single most important commercial event in xAI's history — ~$15B/yr of contracted compute revenue against an AI segment that booked $3.2B in all of 2025. Colossus stops being a cost center and becomes a merchant cloud; the 90-day termination right is the caveat. The same announcement floated Anthropic interest in 'multiple gigawatts' of orbital compute.",
+   "source": "https://x.ai/news/anthropic-compute-partnership"
+  },
+  {
+   "date": "2026-04-30",
+   "category": "capacity",
+   "headline": "~$2.0B mobile gas turbine fleet acquisition; $805M + $925M turbine purchase agreements through 2029 signed earlier in 2026",
+   "read": "~$3.7B of turbine commitments in four months makes xAI one of the largest mobile-turbine buyers anywhere — a demand shock in a market where every AIDC developer is chasing the same units. Bridge strategy: mobile units carry load until the permitted 1.2 GW permanent plant completes.",
+   "source": "https://www.sec.gov/Archives/edgar/data/0001181412/000162828026036936/spaceexplorationtechnologi.htm"
+  },
+  {
+   "date": "2026-04-14",
+   "category": "regulatory",
+   "headline": "NAACP/SELC file federal Clean Air Act suit over 27 allegedly unpermitted Southaven turbines; xAI records $399M litigation accrual",
+   "read": "The sector's defining environmental-justice case. Turbine counts by evidentiary status: 35 documented at Memphis (33 thermal-imaged operating), 15 permitted backup-only by Shelby County, 27 alleged at Southaven in the federal complaint, 41 permitted by MDEQ (March 2026). The $399M accrual says the company itself prices real exposure. Every behind-the-meter developer's permitting playbook is now shaped by this case.",
+   "source": "https://www.cnbc.com/2026/04/14/elon-musk-xai-memphis-data-centers.html"
+  },
+  {
+   "date": "2026-03",
+   "category": "capacity",
+   "headline": "Clean Air Act permit granted for permanent 1.2 GW, 41-turbine behind-the-meter gas plant at Southaven",
+   "read": "The permitted endgame for Colossus II power: mobile units out by July 2027 under the MDEQ agreed order, permanent plant in. S-1 language confirms the campus 'is capable of operating entirely' off self-built generation — the grid becomes the supplement, not the source.",
+   "source": "https://www.cnbc.com/2026/03/10/elon-musk-xai-permit-for-mississippi-plant-despite-pollution-concerns.html"
+  },
+  {
+   "date": "2026-02-02",
+   "category": "other",
+   "headline": "SpaceX acquires xAI (~$250B) — combined 'SpaceXAI' at ~$1.25T files for IPO",
+   "read": "Largest M&A deal ever reported; solves xAI's funding problem by attaching a $6B+/yr cash burn to SpaceX's balance sheet and IPO proceeds. Common-control accounting, no public independent fairness process — the related-party pattern (Tesla Megapacks, X data, Musk on all sides) is now a disclosed risk factor rather than a rumor.",
+   "source": "https://www.bloomberg.com/news/articles/2026-02-02/elon-musk-s-spacex-said-to-combine-with-xai-ahead-of-mega-ipo"
+  },
+  {
+   "date": "2026-01-06",
+   "category": "financial",
+   "headline": "Series E closes at $20B raised, ~$230B valuation — NVIDIA and Cisco among strategic investors",
+   "read": "Upsized from a $15B target; NVIDIA investing in its own largest merchant GPU buyer continues the circular-financing pattern visible across the AI buildout (cf. NVIDIA-OpenAI, NVIDIA-CoreWeave). Four weeks later the SpaceX merger made the round look like a bridge.",
+   "source": "https://x.ai/news/series-e"
+  },
+  {
+   "date": "2025-12",
+   "category": "capacity",
+   "headline": "Colossus II clusters brought online at record pace — 110,000 GB200s in 91 days, 110,000 GB300s in 64 days",
+   "read": "SemiAnalysis independently called Colossus II the first gigawatt-scale coherent training cluster, with ~460 MW of on-site gas generation documented across the two campuses. Fleet ended 2025 above 1M H100-equivalents (company claim). Build velocity — not model quality — is xAI's clearest verified edge.",
+   "source": "https://newsletter.semianalysis.com/p/xais-colossus-2-first-gigawatt-datacenter"
+  },
+  {
+   "date": "2025-11-19",
+   "category": "partnership",
+   "headline": "HUMAIN partnership: 500+ MW Saudi AI data-center network — xAI's largest facility outside the US, NVIDIA principal chip supplier (~18,000 GB300s first cluster)",
+   "read": "The Gulf expansion lands with PIF capital attached — trade reporting also cites a $3B HUMAIN investment in xAI.",
+   "source": "https://w.media/elon-musks-xai-to-build-500-mw-data-center-in-saudi-arabia/"
+  },
+  {
+   "date": "2025-08",
+   "category": "leadership",
+   "headline": "Executive churn: co-founder Igor Babuschkin, CFO Mike Liberatore (after ~3 months), and GC Robert Keele all exit in 2025",
+   "read": "Babuschkin left to found an AI-safety VC — read by press as a safety-culture signal. The xAI-v.-OpenAI trade-secrets suit that followed the departures has been dismissed twice. Post-merger, the executive layer is SpaceX's (Musk/Shotwell/Johnsen); xAI-specific leadership is no longer separately disclosed.",
+   "source": "https://techcrunch.com/2025/09/03/xais-cfo-is-the-latest-executive-to-leave-elon-musks-ai-firm/"
+  },
+  {
+   "date": "2025-07",
+   "category": "order-win",
+   "headline": "DoD awards xAI a $200M-ceiling frontier-AI contract; GSA OneGov deal follows at $0.42/agency",
+   "read": "Government traction despite the July 2025 Grok conduct incidents (which drew a Warren letter questioning the award). Axios later reported Grok deployment into classified systems (Feb 2026). Grok's antisemitic-output episode remains a live procurement-risk flag.",
+   "source": "https://www.gsa.gov/about-gsa/newsroom/news-releases/gsa-xai-partner-to-accelerate-federal-ai-adoption-09252025"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) xAI's core differentiator is speed-to-power, not model quality — behind-the-meter gas plus Megapack buffering lets it bypass multi-year interconnection queues entirely, and its 64-91-day cluster bring-ups are the fastest independently corroborated in the industry. Basis: S-1 KPI disclosures (0→1.0 GW nameplate compute draw in 3 years), SemiAnalysis technical verification of the gigawatt-scale coherent cluster, and TVA/MLGW grid allocations (~300 MW) covering only a fraction of campus load.",
+  "(High confidence) For power and storage vendors, xAI is simultaneously the best demand signal and the worst-risk template in AIDC. Basis: ~$3.7B of 2026 turbine commitments and ~$1B cumulative Megapack purchases prove procurement velocity; the NAACP federal suit, four different turbine counts with different evidentiary statuses, and a $399M self-recorded accrual prove the permitting and community-relations downside of the same playbook.",
+  "(Moderate confidence) The Anthropic deal (~$15B/yr) converts Colossus into a merchant cloud and roughly quintuples segment revenue run-rate — but concentration and the 90-day termination right make it fragile. We assess xAI's economics remain IPO-dependent: even at full Anthropic ramp, capex (+$9.6B in 2025, +$6.0B in Q1 2026 alone) outruns contracted revenue. Basis: S-1 figures; the ~$75B raise target is press-reported.",
+  "(Moderate confidence) Related-party procurement is structural, not incidental: Tesla Megapacks (~$731M-1B cumulative, figures vary by source), Tesla's equity stake, X data feeding Grok, and the common-control SpaceX merger with no publicly detailed fairness process. Vendors negotiating with SpaceXAI should assume Tesla gets first look at any storage scope. Basis: S-1 related-party disclosures, Tesla filings, CNBC/Electrek reporting.",
+  "(Low confidence) Combined-fleet claims beyond verified figures — 555,000+ GPUs / ~2 GW combined (Introl tracker), 1M GPUs at Memphis by end-2026, 50M H100-equivalents in 5 years, orbital gigawatts, and the 'Terafab' 1 TW/yr chip fab with Tesla and Intel — rest on Musk statements and industry trackers, not tier-1 verification. Treat as directional ambition, not plan-of-record."
+ ],
+ "relationships": [
+  {
+   "slug": "nvidia",
+   "type": "supplier",
+   "note": "Dominant compute supplier — plus up to $2B invested in the GPU-leasing SPV within the ~$20B Colossus 2 raise.",
+   "context": "NVIDIA supplies every xAI site (Colossus 1's 200,000+ H100/H200/GB200-class GPUs; Colossus 2's 300,000-550,000 GB200/GB300 target; ~18,000 GB300s in the first Saudi cluster) and committed up to $2B of equity to the special-purpose vehicle in xAI's ~$20B October 2025 raise — the SPV buys NVIDIA GPUs and leases them to xAI for ~5 years. NVIDIA financing demand for its own chips, in its purest form.",
+   "source": "SPV structure reporting (Oct 2025)",
+   "status": "active",
+   "scale": "up to $2B SPV equity; 500k+ GPU roadmap"
+  },
+  {
+   "slug": "tesla",
+   "type": "supplier",
+   "note": "Megapack supplier at every campus — and a $2B investor (January 2026).",
+   "context": "Tesla Energy supplies Megapack storage across xAI's build: 168 Megapacks at Colossus 1 (150MW integrated per MLGW), ~200 more (~1 GWh) planned buffering Colossus 2 alongside the gas fleet. In January 2026 Tesla disclosed a $2B investment in xAI on round terms (after the November 2025 shareholder advisory vote failed on abstentions), plus a framework agreement for evaluating AI collaborations.",
+   "source": "https://dataconomy.com/2026/01/29/tesla-defies-shareholder-vote-to-invest-2-billion-in-musks-xai/",
+   "status": "active",
+   "since": "2024",
+   "scale": "~1.15 GWh deployed/planned + $2B investment"
+  },
+  {
+   "slug": "google",
+   "type": "customer",
+   "note": "$920M/month for ~110,000 GPUs at xAI data centers — ~$30B through June 2029.",
+   "context": "Announced June 5, 2026: Google pays SpaceX-xAI $920M/month for ~110,000 NVIDIA GPUs from October 2026 through June 2029 as Gemini Enterprise bridge capacity — reduced-fee ramp through September 2026, termination right if delivery slips, mutual 90-day cancellation after 2026. With Anthropic's $1.25B/month for Colossus 1, the Musk complex is now landlord to two frontier-lab rivals.",
+   "source": "https://techcrunch.com/2026/06/05/google-will-pay-spacex-920m-per-month-for-compute/",
+   "status": "active",
+   "since": "2026-06",
+   "scale": "$920M/month (~$30B)"
+  },
+  {
+   "slug": "microsoft",
+   "type": "partner",
+   "note": "Grok 3 / Grok 3 Mini launched on Azure AI Foundry Models (Build 2025).",
+   "context": "May 19, 2025: Microsoft and xAI jointly launched Grok 3 and Grok 3 Mini on Azure AI Foundry — Grok served on Microsoft's enterprise infrastructure with GitHub Models availability. A distribution channel, not a compute purchase; Microsoft remains a competitor via its OpenAI stake.",
+   "source": "https://devblogs.microsoft.com/foundry/announcing-grok-3-and-grok-3-mini-on-azure-ai-foundry/",
+   "status": "active",
+   "since": "2025-05"
+  },
+  {
+   "slug": "voltagrid",
+   "type": "supplier",
+   "note": "Mobile gas fleet (~35 MW) bridged the Colossus 1 bring-up.",
+   "context": "Fourteen VoltaGrid mobile units (~35 MW of Jenbacher-engine generation) powered Colossus 1's 122-day, 100k-GPU bring-up in mid-2024 before grid power (MLGW/TVA) and Tesla Megapacks arrived. Bridge-scope, since superseded — permanent power now runs through the Solaris JV turbines, MLGW substations and Megapack buffering.",
+   "source": "Colossus bring-up coverage (Jun 2024)",
+   "status": "historical",
+   "since": "2024-06",
+   "scale": "~35 MW bridge"
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Colossus / Colossus II campuses",
+   "specs": [
+    {
+     "band": "Capacity",
+     "label": "Combined draw",
+     "value": "~1.0 GW (March 31, 2026); trajectory 0 GW (2023) → 0.3 GW (2024) → 0.8 GW (2025) → 1.0 GW"
+    },
+    {
+     "band": "Sites",
+     "label": "Colossus 1",
+     "value": "~100,000 H100s / ~130 MW in 122 days (workloads 19 days after first server delivery); doubled to 200,000 GPUs in 92 days; now >220,000 H100/H200/GB200"
+    },
+    {
+     "band": "Sites",
+     "label": "Colossus II",
+     "value": "~110,000 GB200s (~210 MW) in 91 days; 110,000 GB300s (220 MW) in 64 days; next phase ≥220,000 GB300s (>400 MW) for Grok 5 training"
+    },
+    {
+     "band": "Cooling",
+     "label": "Method",
+     "value": "advanced direct-to-chip liquid cooling for high rack density; brownfield retrofits of industrial shells"
+    },
+    {
+     "band": "Grid",
+     "label": "Interconnection",
+     "value": "TVA-approved 2×150 MW allocations (Memphis); Southaven campus in MISO territory on the former 640 MW Duke Energy plant site"
+    }
+   ]
+  },
+  {
+   "product": "Behind-the-meter power fleet",
+   "specs": [
+    {
+     "band": "Generation",
+     "label": "Permitted permanent plant",
+     "value": "1.2 GW / 41 turbines at Southaven (Clean Air Act permit March 2026), under construction"
+    },
+    {
+     "band": "Generation",
+     "label": "Mobile fleet",
+     "value": "69 temporary turbines at Southaven under MDEQ agreed order (removal Aug 2026 - Jul 2027); SemiAnalysis documented ~460 MW on-site gas across both campuses (12 SMT-130s Memphis; 7 Titan 350s Southaven)"
+    },
+    {
+     "band": "Emissions",
+     "label": "Controls & estimates",
+     "value": "SCR NOx controls on mobile units; SELC estimated 1,200-2,000 tons/yr NOx from the unpermitted Memphis fleet at its peak"
+    },
+    {
+     "band": "Storage",
+     "label": "Megapacks",
+     "value": ">240 Megapacks at Colossus 1; S-1 claims world's largest Megapack deployment and first gigawatt-scale Megapack installation (2026); enables full off-grid operation"
+    },
+    {
+     "band": "Water",
+     "label": "Recycling",
+     "value": "$80M+ recycle plant, ~4.745B gallons/yr, ~9% Memphis Aquifer strain reduction"
+    }
+   ]
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Elon Musk",
+   "photo": "images/execs/xai-musk.jpg",
+   "photoCredit": "U.S. Air Force / Trevor Cokley, Public domain, via Wikimedia Commons",
+   "title": "CEO, CTO & Chairman, SpaceX (founder of xAI)",
+   "background": [
+    "Founded xAI March 2023; drove the X acquisition (2025) and the SpaceX merger (2026) — controls both sides of every related-party transaction",
+    "Personally announces cluster milestones and compute targets on X; key-man risk is a named S-1 risk factor",
+    "Also CEO of Tesla — the Megapack supplier to xAI's campuses"
+   ]
+  },
+  {
+   "name": "Gwynne Shotwell",
+   "title": "President & COO, SpaceX",
+   "background": [
+    "SpaceX President/COO since 2008; the operational counterweight in the combined SpaceXAI entity",
+    "Post-merger, AI-segment operations report through the SpaceX executive structure"
+   ]
+  },
+  {
+   "name": "Bret Johnsen",
+   "title": "CFO, SpaceX",
+   "background": [
+    "SpaceX CFO since 2011; previously CFO at Mindspeed Technologies and senior finance roles at Broadcom",
+    "Owns the S-1/IPO process that now finances the AI buildout; xAI's own CFO seat churned twice in 2025 before the merger absorbed the function"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "AI segment of SpaceX (includes X platform); pre-merger xAI was private with no public reporting",
+  "periods": [
+   {
+    "period": "FY2025 (AI segment, per SpaceX S-1)",
+    "metrics": [
+     {
+      "name": "Segment revenue",
+      "actual": "$3,201M",
+      "expected": "n/a (first disclosure)",
+      "verdict": "inline",
+      "result": "Mostly X advertising/subscriptions/data licensing; AI-native revenue still small pre-Anthropic"
+     },
+     {
+      "name": "Segment operating loss",
+      "actual": "$(6,355)M",
+      "expected": "n/a",
+      "verdict": "inline",
+      "result": "~2x cash losses vs revenue; Bloomberg reported ~$1B/month burn"
+     },
+     {
+      "name": "Segment Adjusted EBITDA",
+      "actual": "$(1,237)M",
+      "expected": "n/a",
+      "verdict": "inline",
+      "result": "Gap vs operating loss reflects depreciation on the GPU fleet"
+     }
+    ],
+    "commentary": "First filing-grade view of xAI economics, disclosed via the SpaceX S-1 (public May 20, 2026). 2024 comparison: $2,620M revenue, $(1,561)M operating loss — the 2025 loss quadrupled as Colossus II built out."
+   },
+   {
+    "period": "Q1 2026 (AI segment)",
+    "metrics": [
+     {
+      "name": "Segment operating loss",
+      "actual": "$(2,469)M",
+      "expected": "n/a",
+      "verdict": "inline",
+      "result": "Annualizing near $10B before Anthropic revenue ramps (May-Jun 2026)"
+     },
+     {
+      "name": "Capex (SpaceX-wide, YoY increase)",
+      "actual": "+$5,967M",
+      "expected": "n/a",
+      "verdict": "inline",
+      "result": "Primarily data centers and related infrastructure"
+     }
+    ],
+    "commentary": "Third-party S-1 breakdowns put Q1 2026 segment revenue near $818M. The Anthropic agreements ($1.25B/month from mid-2026) should transform H2 2026 segment revenue; the reported ~$75B IPO raise is the funding bridge."
+   }
+  ]
+ },
+ "sources": [
+  {
+   "label": "TechCrunch — Google $920M/month for SpaceX-xAI compute",
+   "url": "https://techcrunch.com/2026/06/05/google-will-pay-spacex-920m-per-month-for-compute/",
+   "date": "2026-06-05"
+  },
+  {
+   "label": "SpaceX Form S-1 (consolidates xAI/X; infrastructure, KPIs, financials, related-party)",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001181412/000162828026036936/spaceexplorationtechnologi.htm",
+   "date": "2026-05-20"
+  },
+  {
+   "label": "TechCrunch — S-1 analysis: xAI burned $6.4B in 2025",
+   "url": "https://techcrunch.com/2026/05/20/xai-burned-6-4b-last-year-spacexs-ipo-filing-shows-why-the-spending-is-far-from-over/",
+   "date": "2026-05-20"
+  },
+  {
+   "label": "xAI — Anthropic compute partnership announcement",
+   "url": "https://x.ai/news/anthropic-compute-partnership",
+   "date": "2026-05"
+  },
+  {
+   "label": "CNBC — NAACP sues xAI over Memphis/Southaven turbines",
+   "url": "https://www.cnbc.com/2026/04/14/elon-musk-xai-memphis-data-centers.html",
+   "date": "2026-04-14"
+  },
+  {
+   "label": "SELC — press release and thermal-imaging documentation of Memphis turbines",
+   "url": "https://www.selc.org/press-release/civil-rights-group-sues-xai-for-illegal-pollution-from-data-center-power-plant/",
+   "date": "2026-04"
+  },
+  {
+   "label": "CNBC — MDEQ permits 41-turbine Mississippi plant",
+   "url": "https://www.cnbc.com/2026/03/10/elon-musk-xai-permit-for-mississippi-plant-despite-pollution-concerns.html",
+   "date": "2026-03-10"
+  },
+  {
+   "label": "xAI — xAI joins SpaceX announcement",
+   "url": "https://x.ai/news/xai-joins-spacex",
+   "date": "2026-02-02"
+  },
+  {
+   "label": "Bloomberg — SpaceX to combine with xAI ahead of mega IPO",
+   "url": "https://www.bloomberg.com/news/articles/2026-02-02/elon-musk-s-spacex-said-to-combine-with-xai-ahead-of-mega-ipo",
+   "date": "2026-02-02"
+  },
+  {
+   "label": "CNBC — Tesla sold $430M of Megapacks to xAI in 2025",
+   "url": "https://www.cnbc.com/2026/01/29/tesla-sold-430-million-worth-of-its-megapack-batteries-to-xai-in-2025.html",
+   "date": "2026-01-29"
+  },
+  {
+   "label": "Dataconomy — Tesla discloses $2B investment in xAI",
+   "url": "https://dataconomy.com/2026/01/29/tesla-defies-shareholder-vote-to-invest-2-billion-in-musks-xai/",
+   "date": "2026-01-29"
+  },
+  {
+   "label": "xAI — Series E announcement ($20B)",
+   "url": "https://x.ai/news/series-e",
+   "date": "2026-01-06"
+  },
+  {
+   "label": "SemiAnalysis — Colossus 2: first gigawatt datacenter (independent technical verification)",
+   "url": "https://newsletter.semianalysis.com/p/xais-colossus-2-first-gigawatt-datacenter",
+   "date": "2025-12"
+  },
+  {
+   "label": "w.media — xAI + HUMAIN 500 MW Saudi data center",
+   "url": "https://w.media/elon-musks-xai-to-build-500-mw-data-center-in-saudi-arabia/",
+   "date": "2025-11-20"
+  },
+  {
+   "label": "GSA — OneGov agreement with xAI",
+   "url": "https://www.gsa.gov/about-gsa/newsroom/news-releases/gsa-xai-partner-to-accelerate-federal-ai-adoption-09252025",
+   "date": "2025-09-25"
+  },
+  {
+   "label": "TechCrunch — xAI executive departures (CFO/GC/co-founder)",
+   "url": "https://techcrunch.com/2025/09/03/xais-cfo-is-the-latest-executive-to-leave-elon-musks-ai-firm/",
+   "date": "2025-09-03"
+  },
+  {
+   "label": "Microsoft — Grok 3 on Azure AI Foundry",
+   "url": "https://devblogs.microsoft.com/foundry/announcing-grok-3-and-grok-3-mini-on-azure-ai-foundry/",
+   "date": "2025-05-19"
+  },
+  {
+   "label": "xAI — Colossus page",
+   "url": "https://x.ai/colossus"
+  },
+  {
+   "label": "xAI — Memphis community pages (turbines, Megapacks, water, MLGW/TVA)",
+   "url": "https://x.ai/memphis"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 3
+}

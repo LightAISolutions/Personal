@@ -1,0 +1,501 @@
+{
+ "schemaVersion": 6,
+ "slug": "canadian-solar",
+ "name": "Canadian Solar (e-STORAGE)",
+ "shortName": "Canadian Solar",
+ "categories": [
+  "supplier"
+ ],
+ "website": "https://csestorage.com",
+ "headquarters": "Kitchener, Ontario, Canada",
+ "founded": 2001,
+ "employees": "Operations in 20+ countries (storage-arm headcount not disclosed)",
+ "ownership": {
+  "type": "public",
+  "ticker": "NASDAQ: CSIQ"
+ },
+ "summary": "BOTTOM LINE UP FRONT: Canadian Solar's e-STORAGE arm is the West-facing bridge case among Chinese-manufacturing BESS integrators — a NASDAQ-listed, Canadian-headquartered parent shipping a record 7.8 GWh of storage in 2025 (3.9 GWh into the US), holding a $3.5B contracted backlog, and restructuring itself around the FEOC rules by moving US manufacturing under a 75.1%-parent-owned vehicle (CS PowerTech) and opening a $712M cell-and-module plant in Shelbyville, Kentucky — whose actual production ramp remains publicly unconfirmed and is the single biggest swing factor in its US story. BACKGROUND: Founded 2001 by Dr. Shawn Qu; NASDAQ-listed since 2006. Three-arm structure: CSI Solar (China-listed manufacturing subsidiary), e-STORAGE (utility-scale BESS design, manufacture and integration; >20 GWh shipped cumulatively; 15 GWh/yr system plus 3 GWh/yr cell capacity company-claimed), and wholly-owned developer Recurrent Energy (80.6 GWh storage development pipeline, a captive channel and reference engine). FY2025: revenue $5.6B, net loss $104M as the module business absorbed the PV price collapse while storage became the profit engine at ~24% of revenue. A 2.5 GWh single order for a major unnamed US utility (March 2026) was explicitly framed as supporting data-center power demand — one of the largest AIDC-attributed BESS orders yet disclosed. Leadership changed in May 2026: e-STORAGE veteran Colin Parkin became group CEO, with Qu moving to Executive Chairman and CTO — storage now explicitly the strategic center of gravity.",
+ "ecosystemRole": "We assess e-STORAGE as the most instructive direct comparison for any Chinese containerized-BESS supplier attacking the US: it is what the FEOC-adaptation playbook looks like executed early and at scale — Western listing and governance, a domestic cell plant announced before the rules bit, a corporate restructuring (CS PowerTech, 75.1% parent-held) designed to clear foreign-entity ownership tests, and a captive developer (Recurrent) that manufactures its own demand. It ranks in Wood Mackenzie's 2026 global top-10 on bankability while sitting outside the volume top-5, and its 3.9 GWh 2025 US delivery volume makes it one of the largest actual movers of storage into the American grid. For the AIDC web specifically, its March 2026 2.5 GWh data-center-demand order shows where containerized BESS meets AI load: through a utility procurement, not a hyperscaler contract.",
+ "productsAndServices": [
+  {
+   "name": "SolBank 3.0 / 3.0 Plus (workhorse DC block)",
+   "description": "20-ft, 5.016 MWh DC block on 314 Ah LFP cells (12P416S, 4,992 cells); 2,350 kW (0.5P/2h) or 1,200 kW (0.25P/4h); RTE 93-94%; liquid-cooled. The Plus variant adds up to 12,000 cycles, 25-year design life, up to 4 years zero degradation and a ~10% LCOS-reduction claim. Passed CSA C800:25 large-scale fire testing (June 2025) with no unit-to-unit propagation. Behind essentially every 2025-2026 win, including the ~500-container data-center order.",
+   "positioning": "The volume product — competes with Tesla Megapack, Sungrow PowerTitan and Hithium ∞Power on delivered cost with a Western-governance wrapper; the 45% capacity step over SolBank 2.0 kept it competitive in the 5 MWh class.",
+   "soldThrough": "BESS supply + EPC + long-term service agreements (up to 20 years) to IPPs, utilities and developers (Aypa, Sunraycer, Apex, Strata, CIP, ENGIE, Drax, Colbún, Axpo)",
+   "targetSegments": "Utility-scale front-of-meter; grid-reliability procurements; since March 2026 explicitly data-center-driven grid capacity",
+   "roadmap": "Superseded at the flagship tier by SolBank 4.0 (6.25 MWh) during 2026-2027"
+  },
+  {
+   "name": "SolBank 4.0 (new flagship, 2026)",
+   "description": "6.25 MWh single power block; advanced LFP with cell-level precision management; intelligent thermal management with eco-friendly refrigerants; >15% project-level energy-density gain on 100 MWh layouts; up to 25-year lifecycle; factory pre-assembled to cut EPC cost. Full datasheet gated — cell Ah and power ratings unpublished.",
+   "positioning": "Matches the industry's move to 6+ MWh blocks (Hithium 6.25/6.9, Sungrow 6.9, Fluence 7.5-10, HyperStrong 12.8 modular).",
+   "soldThrough": "Same channel as SolBank 3.0",
+   "targetSegments": "Utility-scale",
+   "roadmap": "Listed as NEW on csestorage.com as of August 2026"
+  },
+  {
+   "name": "FlexBank 1.0 (modular open-frame, Sep 2025)",
+   "description": "8.36 MWh modular open-frame architecture: independent skid-mounted cabinets instead of a monolithic container, 314 Ah LFP, up to 20-year lifespan, heat barriers and three-level electrical protection between cabinets, PCS-agnostic. Deployment-ready 2026.",
+   "positioning": "The flexible/behind-the-meter form factor — company frames it as the foundation for next-generation cell technologies.",
+   "soldThrough": "Same channel; PCS-agnostic widens integrator partnerships",
+   "targetSegments": "Flexible siting and behind-the-meter applications, including data-center configurations",
+   "roadmap": "First deployments 2026"
+  },
+  {
+   "name": "EQ-S EMS, EPC and long-term services",
+   "description": "In-house energy management system bundled with PCS in turnkey scope; EPC, O&M, augmentation and LTSAs up to 20 years with performance guarantees. LTSAs are counted inside the $3.5B contracted backlog.",
+   "positioning": "The services attach is the margin and bankability story; 100+ financial institutions have banked the platform (company-claimed).",
+   "soldThrough": "Attached to system sales",
+   "targetSegments": "All utility-scale customers",
+   "roadmap": "Dedicated business-development and technology teams stood up for data-center fast-response requirements (Q1 2026 call)"
+  },
+  {
+   "name": "Recurrent Energy (captive developer/owner-operator)",
+   "description": "Wholly-owned global developer with 80.6 GWh of storage in development (Mar 2026), increasingly an owner-operator: Papago Storage AZ (1,200 MWh energized 2025) and Desert Bloom (600 MWh, 2026) under 20-year APS tolling agreements — billed as Arizona's largest standalone storage.",
+   "positioning": "Captive demand for e-STORAGE hardware and a reference-project engine; also the group's project-finance balance-sheet consumer ($3.8B of the group's $6.8B debt).",
+   "soldThrough": "Develops, owns and operates; sells projects and power",
+   "targetSegments": "US Southwest and Texas concentrations — data-center growth markets",
+   "roadmap": "5.0 GWh under construction and in backlog as of March 2026"
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "SolBank 3.0 (datasheet v1.64_NA, Mar 2026)",
+   "specs": [
+    {
+     "band": "Energy",
+     "label": "Nominal energy",
+     "value": "5,016 kWh per 20-ft HC container; 314 Ah LFP; 12P416S (4,992 cells)"
+    },
+    {
+     "band": "Electrical",
+     "label": "Power",
+     "value": "2,350 kW @0.5P (2h) / 1,200 kW @0.25P (4h); nominal 1,331.2 V (1,164.8-1,497.6 V)"
+    },
+    {
+     "band": "Performance",
+     "label": "Efficiency",
+     "value": "RTE 93% (2h) / 94% (4h); auxiliary 3 kVA standby, 40/23 kVA peak"
+    },
+    {
+     "band": "Physical",
+     "label": "Envelope",
+     "value": "6,058 x 2,438 x 2,896 mm; 43,000 kg; IP55/NEMA 3R (IP67 packs); -30°C to +55°C (derate above 45°C); 4,000 m; ≤75 dB(A) @1m; seismic Zone 4"
+    },
+    {
+     "band": "Compliance",
+     "label": "Certifications",
+     "value": "UL 1973, UL 9540, UL 9540A, UN 38.3/UN 3536; NFPA 855/69/72/70E (NFPA 68 optional)"
+    },
+    {
+     "band": "Safety",
+     "label": "Fire testing",
+     "value": "CSA C800:25 §9.7 large-scale fire test passed June 2025 (CSA Group, ESRG-verified): no unit-to-unit propagation, doors and louvers intact"
+    }
+   ],
+   "notes": "SolBank 3.0 Plus variant: same envelope, 2,400 kW (2h), 4,800 kWh rated DC, 12,000 cycles, 25-year design life, IEC 62619/63056/62477-1/62933-5-2/61000-6-2 added."
+  },
+  {
+   "product": "SolBank 4.0 (2026 flagship)",
+   "specs": [
+    {
+     "band": "Energy",
+     "label": "Per block",
+     "value": "6.25 MWh single power block"
+    },
+    {
+     "band": "Design",
+     "label": "Cell & thermal",
+     "value": "Advanced LFP with cell-level precision management; intelligent TMS with eco-friendly refrigerants"
+    },
+    {
+     "band": "Density",
+     "label": "Project level",
+     "value": ">15% project-level energy-density gain on 100 MWh layouts (side-by-side/back-to-back placement)"
+    },
+    {
+     "band": "Life",
+     "label": "Lifecycle",
+     "value": "Up to 25 years; factory pre-assembled to reduce EPC cost"
+    }
+   ],
+   "notes": "Full datasheet gated (by request); cell Ah and power ratings unpublished as of August 2026."
+  },
+  {
+   "product": "FlexBank 1.0 (Sep 2025)",
+   "specs": [
+    {
+     "band": "Energy",
+     "label": "Per system",
+     "value": "8.36 MWh modular open-frame; 314 Ah LFP"
+    },
+    {
+     "band": "Architecture",
+     "label": "Form factor",
+     "value": "Independent skid-mounted cabinets; heat barriers + three-level electrical protection + thermal-propagation prevention between cabinets; PCS-agnostic"
+    },
+    {
+     "band": "Life",
+     "label": "Lifespan",
+     "value": "Up to 20 years"
+    }
+   ],
+   "notes": "Configurable 2 MW/4h or 4 MW/2h per third-party launch coverage; deployment-ready 2026."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-06-25",
+   "category": "partnership",
+   "headline": "426 MWh DC / 95 MW contracted with an unnamed Florida electric utility — SolBank 3.0 plus PCS and EMS; installation 2H 2027, COD early 2028",
+   "read": "Second unnamed-utility win of 2026 — the direct-to-utility channel is becoming e-STORAGE's US signature alongside IPP supply.",
+   "source": "PRNewswire, 2026-06-25"
+  },
+  {
+   "date": "2026-06-24",
+   "category": "partnership",
+   "headline": "Apex Clean Energy orders 75 MW/381 MWh (Coldwater Storage, Michigan) with PCS and EQ-S EMS; deliveries early 2027",
+   "read": "A marquee independent developer choosing the full e-STORAGE stack including the in-house EMS — the turnkey scope is widening beyond bare DC blocks.",
+   "source": "PRNewswire, 2026-06-24"
+  },
+  {
+   "date": "2026-05-14",
+   "category": "other",
+   "headline": "Colin Parkin appointed CEO; founder Dr. Shawn Qu becomes Executive Chairman & CTO after 25 years; Q1 2026 beats (revenue $1.1B, storage 2.1 GWh vs 1.7-1.9 guided) but stock falls ~11% on cautious outlook",
+   "read": "An e-STORAGE veteran now runs the entire company — the clearest possible statement that storage is the strategic center; the 25.1% gross margin was flattered ~860bps by one-off tariff refunds.",
+   "source": "SEC 6-K, 2026-05-14; Investing.com"
+  },
+  {
+   "date": "2026-03-19",
+   "category": "financial",
+   "headline": "FY2025: revenue $5.6B, net loss $104M; record 7.8 GWh storage shipped (3.9 GWh US); Q4 revenue $1.2B missed ~$1.37B consensus by ~11% on storage delays and impairments",
+   "read": "The module business is the loss; storage is the engine — storage revenue $1.37B (~24% of group) with the backlog at a record $3.6B the same week.",
+   "source": "PRNewswire + pv-magazine-usa, 2026-03-19"
+  },
+  {
+   "date": "2026-03-17",
+   "category": "partnership",
+   "headline": "2.5 GWh (500 MW / 2,493 MWh DC) single order from a major unnamed US utility, explicitly framed as supporting US data-center power demand — ~500 SolBank 3.0 containers shipping March-July 2027",
+   "read": "One of the largest AIDC-attributed BESS orders disclosed by any supplier, and the template for how containerized storage actually reaches AI load: through a utility, not a hyperscaler. Cells stated to come from the 'global manufacturing network' — not Kentucky.",
+   "source": "PRNewswire, 2026-03-17"
+  },
+  {
+   "date": "2026-02-05",
+   "category": "partnership",
+   "headline": "Sunraycer Lupinus 1 & 2 (Franklin County, TX): 503 MWh DC with 10-year services; CODs Q2-Q3 2027",
+   "read": "Texas merchant storage keeps stacking — ERCOT remains the volume market for the US book.",
+   "source": "csestorage.com, 2026-02-05"
+  },
+  {
+   "date": "2025-12-24",
+   "category": "other",
+   "headline": "Colin Parkin promoted to President of Canadian Solar with a board seat; Dylan Marx (ex-Recurrent operations) appointed COO",
+   "read": "The succession sequence that culminated in May 2026 — both promotions came from the storage and project businesses, not modules.",
+   "source": "PRNewswire, 2025-12-24"
+  },
+  {
+   "date": "2025-12-01",
+   "category": "regulatory",
+   "headline": "US manufacturing consolidated under CS PowerTech: NASDAQ-listed parent holds 75.1%, China-listed CSI Solar retains 24.9% — explicitly to align with OBBBA FEOC/prohibited-foreign-entity rules and IRA domestic content",
+   "read": "The corporate-structure half of the FEOC answer: ownership tests addressed by moving US assets up to the Canadian parent; the content half still depends on non-Chinese cells.",
+   "source": "ess-news, 2025-12-01"
+  },
+  {
+   "date": "2025-11-12",
+   "category": "partnership",
+   "headline": "Skyview 2 (Ontario): 411 MW / 1,858 MWh DC for Potentia Renewables and the Algonquins of Pikwàkanagàn First Nation — largest SolBank delivery contract to date, under Ontario's LT1 procurement",
+   "read": "The largest single order in company history is Canadian, won on a government procurement — a reminder that the non-US West is where Chinese-manufactured content still competes freely.",
+   "source": "csestorage.com, 2025-11-12"
+  },
+  {
+   "date": "2025-10-01",
+   "category": "partnership",
+   "headline": "Aypa Power expands to 420 MW / 2,122 MWh across two Ontario projects with 20-year LTSAs",
+   "read": "Aypa is the anchor repeat customer (1.8 GWh US in March 2025, now Ontario) — the IPP relationship model working as designed.",
+   "source": "csestorage.com, 2025-10-01"
+  },
+  {
+   "date": "2025-09-04",
+   "category": "product-launch",
+   "headline": "FlexBank 1.0 launched at RE+: 8.36 MWh modular open-frame, PCS-agnostic",
+   "read": "A second form factor aimed at flexible siting — and the platform the company says its next-generation cells will land on.",
+   "source": "csestorage.com, 2025-09-04"
+  },
+  {
+   "date": "2025-06-03",
+   "category": "other",
+   "headline": "SolBank 3.0 passes CSA C800:25 large-scale fire testing with zero propagation to adjacent units",
+   "read": "Array-level burn validation matching what Hithium, HyperStrong and Prevalon have run — now table stakes for US permitting under NFPA 855.",
+   "source": "csestorage.com, 2025-06-03"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess e-STORAGE as running the most complete FEOC-adaptation playbook of any Chinese-manufacturing storage supplier: Western listing, the CS PowerTech 75.1% restructuring, a US cell plant, and a domestic developer arm. Basis: the December 2025 restructuring's explicit OBBBA framing, the Shelbyville plant scope (cells, not just modules), and the FY2026 guidance of 4.5-5.5 GWh into the US market.",
+  "(High confidence) We assess the Kentucky ramp as the single biggest swing factor in the US story. Basis: no independent confirmation of Shelbyville cell or module output exists in trade press through August 2026; the company's own March 2026 data-center order sources cells from the 'global manufacturing network'; and the Gotion precedent shows a US plant alone does not guarantee credit eligibility. Until Kentucky cells ship at volume, e-STORAGE's US sales carry the same tariff and material-assistance exposure as its Chinese peers.",
+  "(High confidence) We assess the storage arm as the group's profit engine carrying a loss-making module business. Basis: FY2025 storage revenue of $1.37B (~24% of group) against a $104M group net loss; record 7.8 GWh shipments; the elevation of two storage/project executives to CEO and COO; and a $3.5B contracted backlog versus collapsing module volumes (Q1 2026 modules -64% YoY).",
+  "(Moderate confidence) We assess the AIDC exposure as real but structurally indirect — utility-procured grid storage absorbing data-center load growth, anchored by the 2.5 GWh March 2026 order and the standing up of dedicated data-center response teams. No named hyperscaler or colocation customer exists; the company's own framing is front-of-meter and behind-the-meter data-center applications as a growth vector, not a booked segment.",
+  "(Moderate confidence) We assess balance-sheet risk as the quiet constraint on the growth story: $6.8B total debt (~$4.9B net) against a loss year and a $1.3B capex programme, with Q1 2026 margin quality flattered by one-off tariff refunds. The convertible issuance funding US manufacturing means the FEOC bet is being made with borrowed money — execution slippage in Kentucky compounds directly into the credit picture."
+ ],
+ "relationships": [
+  {
+   "slug": "tesla",
+   "type": "competitor",
+   "note": "SolBank competes with Megapack on delivered cost with a Western-governance wrapper."
+  },
+  {
+   "slug": "sungrow",
+   "type": "competitor",
+   "note": "PowerTitan is a named rival to SolBank in both the 5 MWh and the 6+ MWh block classes."
+  },
+  {
+   "slug": "hithium",
+   "type": "competitor",
+   "note": "∞Power competes with SolBank on delivered cost; both have run array-level large-scale fire testing now table stakes under NFPA 855.",
+   "source": "csestorage.com, 2025-06-03"
+  },
+  {
+   "slug": "hyperstrong",
+   "type": "competitor",
+   "note": "HyperBlock's 12.8 MWh modular block is part of the 6+ MWh race SolBank 4.0 answers; both carry array-level burn validation."
+  },
+  {
+   "slug": "fluence",
+   "type": "competitor",
+   "note": "Smartstack's 7.5–10 MWh skid is among the 6+ MWh blocks SolBank 4.0 was launched to match."
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Colin Parkin",
+   "title": "Chief Executive Officer (since May 14, 2026)",
+   "background": [
+    "20-year company veteran; President of e-STORAGE through its rise, then President of Canadian Solar (Dec 2025) with board seat",
+    "The face of nearly every e-STORAGE deal announcement 2024-early 2026",
+    "First storage-side executive to run the group"
+   ]
+  },
+  {
+   "name": "Dr. Shawn (Xiaohua) Qu",
+   "title": "Founder; Executive Chairman & Chief Technology Officer",
+   "background": [
+    "Founded Canadian Solar in 2001; Chairman & CEO for 25 years through May 2026",
+    "Now leads technology innovation and long-term R&D strategy"
+   ]
+  },
+  {
+   "name": "Dylan Marx",
+   "title": "Chief Operating Officer (since Dec 2025)",
+   "background": [
+    "13 years at Canadian Solar; Corporate VP of Operations",
+    "President of Operations & Maintenance at Recurrent Energy"
+   ]
+  },
+  {
+   "name": "Jeff Roy",
+   "title": "President of e-STORAGE (2026)",
+   "background": [
+    "At Canadian Solar since ~2010; prior VP e-STORAGE, GM, Director of Projects & Engineering (third-party-sourced background)",
+    "Tied Kentucky on-site cells to the domestic-content strategy at the plant announcement"
+   ]
+  },
+  {
+   "name": "Xinbo Zhu",
+   "title": "Chief Financial Officer",
+   "background": [
+    "Presented Q1 2026 results; detailed the $6.8B debt stack and $1.3B capex programme"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "public",
+  "periods": [
+   {
+    "period": "FY2024",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "$5.99B",
+      "expected": "n/a",
+      "verdict": "inline",
+      "result": "Gross margin 16.7%; net income $36.1M; 31.1 GW modules; 6.6 GWh storage (+500% YoY)"
+     }
+    ]
+   },
+   {
+    "period": "FY2025",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "$5.6B; net loss $(104.1)M",
+      "expected": "Q4 revenue $1.2B vs ~$1.37B consensus — an ~11% miss",
+      "verdict": "miss",
+      "result": "Storage the bright spot: record 7.8 GWh shipped (3.9 GWh US), storage revenue $1.37B; Q4 hit by storage delays, Recurrent project-sale timing and impairments",
+      "kpi": "revenue",
+      "usdMillions": 5600,
+      "fxBasis": "as reported"
+     },
+     {
+      "name": "Storage backlog",
+      "actual": "$3.6B record (Mar 2026)",
+      "expected": "n/a",
+      "verdict": "beat",
+      "result": "Backlog trajectory: $3.2B (Dec 2024) → $3.1B (Oct 2025) → $3.6B (Mar 2026) → $3.5B (May 2026)"
+     }
+    ],
+    "periodType": "annual",
+    "periodEnd": "2025-12-31"
+   },
+   {
+    "period": "Q1 2026 (latest interim)",
+    "metrics": [
+     {
+      "name": "Revenue / EPS",
+      "actual": "$1.08B; EPS $(0.71)",
+      "expected": "~13.75% revenue beat vs Zacks consensus; EPS beat vs $(1.06) consensus",
+      "verdict": "beat",
+      "result": "Gross margin 25.1% inflated ~860bps by IEEPA tariff-refund accruals; storage 2.1 GWh (+142% YoY, beat guidance); stock fell ~10.8% on cautious outlook. Q2 guidance: GM 13-15% as the refund benefit fades; FY2026 US targets 4.5-5.5 GWh storage"
+     }
+    ]
+   }
+  ],
+  "commentary": "Balance sheet at Mar 31, 2026: cash $1.9B against total debt $6.8B ($3.8B Recurrent project debt, $2.6B manufacturing, $0.4B converts) — net debt ~$4.9B; 2026 capex ~$1.3B funding US manufacturing. Q2 2026 results due August 27, 2026. Analyst consensus ~Hold with a wide $9-$30 target dispersion — treat point targets with caution."
+ },
+ "sources": [
+  {
+   "label": "Canadian Solar Q1 2026 results + CEO appointment (SEC 6-K)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1375877/000110465926060672/tm2614624d1_ex99-1.htm",
+   "date": "2026-05-14"
+  },
+  {
+   "label": "e-STORAGE — 426 MWh Florida utility order",
+   "url": "https://csestorage.com/e-storage-to-deliver-426-mwh-of-energy-storage-in-florida/",
+   "date": "2026-06-25"
+  },
+  {
+   "label": "e-STORAGE — 381 MWh Apex Clean Energy, Michigan",
+   "url": "https://www.prnewswire.com/news-releases/e-storage-to-supply-381-mwh-battery-storage-system-for-apex-clean-energy-in-michigan-302808539.html",
+   "date": "2026-06-24"
+  },
+  {
+   "label": "Wood Mackenzie — Global BESS Integrator 2026 Ranking (Canadian Solar top-10)",
+   "url": "https://www.woodmac.com/press-releases/global-bess-integrator-2026-ranking/",
+   "date": "2026-07-14"
+  },
+  {
+   "label": "Canadian Solar Q1 2026 earnings call transcript",
+   "url": "https://www.fool.com/earnings/call-transcripts/2026/05/14/canadian-solar-csiq-q1-2026-earnings-transcript/",
+   "date": "2026-05-14"
+  },
+  {
+   "label": "Canadian Solar Q4/FY2025 results",
+   "url": "https://www.prnewswire.com/news-releases/canadian-solar-reports-fourth-quarter-and-full-year-2025-results-302718570.html",
+   "date": "2026-03-19"
+  },
+  {
+   "label": "pv-magazine USA — Q4 2025 revenue misses analyst targets",
+   "url": "https://pv-magazine-usa.com/2026/03/19/canadian-solar-posts-1-2-billion-in-q4-revenue-missing-analyst-targets/",
+   "date": "2026-03-19"
+  },
+  {
+   "label": "e-STORAGE — 2.5 GWh BESS supporting US data-center power demand",
+   "url": "https://www.prnewswire.com/news-releases/e-storage-to-deliver-2-5-gwh-battery-energy-storage-system-supporting-us-data-center-power-demand-302714365.html",
+   "date": "2026-03-17"
+  },
+  {
+   "label": "SaurEnergy — 2026 guidance, CS PowerTech, US targets",
+   "url": "https://www.saurenergy.com/solar-energy-news/canadian-solar-eyes-up-to-7-gw-us-module-shipments-55-gwh-storage-after-biz-reset-11254458",
+   "date": "2026-03-23"
+  },
+  {
+   "label": "Morgan Lewis — How FEOC rules are reshaping storage tax-credit eligibility",
+   "url": "https://www.morganlewis.com/pubs/2026/03/how-feoc-rules-are-reshaping-energy-storage-tax-credit-eligibility",
+   "date": "2026-03"
+  },
+  {
+   "label": "e-STORAGE — Sunraycer Lupinus 503 MWh, Texas",
+   "url": "https://csestorage.com/e-storage-and-sunraycer-announce-503-mwh-battery-energy-storage-projects-in-texas/",
+   "date": "2026-02-05"
+  },
+  {
+   "label": "Parkin President / Marx COO appointments",
+   "url": "https://www.prnewswire.com/news-releases/canadian-solar-appoints-colin-parkin-as-president-and-dylan-marx-as-chief-operating-officer-302649077.html",
+   "date": "2025-12-24"
+  },
+  {
+   "label": "ess-news — CS PowerTech US manufacturing consolidation (75.1/24.9)",
+   "url": "https://www.ess-news.com/2025/12/01/canadian-solar-consolidates-us-manufacturing-under-parent-including-solar-and-storage/",
+   "date": "2025-12-01"
+  },
+  {
+   "label": "ess-news — InfoLink: Canadian Solar enters global ESS top ten",
+   "url": "https://www.ess-news.com/2025/12/05/global-ess-shipments-hit-286-gwh-as-tesla-and-chinese-heavyweights-out-front-infolink-says/",
+   "date": "2025-12-05"
+  },
+  {
+   "label": "e-STORAGE — Skyview 2 (Ontario) 1,858 MWh, largest SolBank contract",
+   "url": "https://csestorage.com/e-storage-to-deliver-1-86-gwh-dc-of-energy-storage-solutions-for-the-skyview-2-project-in-ontario-canada/",
+   "date": "2025-11-12"
+  },
+  {
+   "label": "Canadian Solar Q3 2025 results",
+   "url": "https://www.prnewswire.com/news-releases/canadian-solar-reports-third-quarter-2025-results-302614244.html",
+   "date": "2025-11-13"
+  },
+  {
+   "label": "e-STORAGE — Aypa Ontario 2.1 GWh expansion with 20-year LTSAs",
+   "url": "https://csestorage.com/e-storage-expands-partnership-with-aypa-power-through-2-1-gwh-of-ontario-battery-storage-projects/",
+   "date": "2025-10-01"
+  },
+  {
+   "label": "e-STORAGE — FlexBank 1.0 launch at RE+",
+   "url": "https://csestorage.com/e-storage-launches-flexbank-1-0-an-8-36-mwh-energy-storage-modular-battery/",
+   "date": "2025-09-04"
+  },
+  {
+   "label": "pv-magazine USA — WoodMac: Tesla 39% North America integrator share",
+   "url": "https://pv-magazine-usa.com/2025/08/07/tesla-remains-top-global-battery-energy-storage-system-integrator/",
+   "date": "2025-08-07"
+  },
+  {
+   "label": "Recurrent Energy — Papago Storage 1,200 MWh energized (Arizona)",
+   "url": "https://recurrentenergy.com/recurrent-energy-energizes-1200-mwh-storage-facility-in-arizona-ahead-of-peak-summer-demand/",
+   "date": "2025-06"
+  },
+  {
+   "label": "e-STORAGE — SolBank 3.0 passes CSA C800:25 large-scale fire testing",
+   "url": "https://csestorage.com/e-storages-solbank-3-0-successfully-passes-large-scale-fire-testing-lsft/",
+   "date": "2025-06-03"
+  },
+  {
+   "label": "e-STORAGE — Aypa Power 1.8 GWh DC across US markets",
+   "url": "https://www.prnewswire.com/news-releases/canadian-solars-e-storage-to-deliver-1-8-gwh-dc-of-energy-storage-systems-for-aypa-power-in-key-us-markets-302394486.html",
+   "date": "2025-03-06"
+  },
+  {
+   "label": "energy-storage.news — Kentucky plant: BESS and cells after EnerVenue exit",
+   "url": "https://www.energy-storage.news/canadian-solar-to-manufacture-bess-and-cells-at-kentucky-plant-after-enervenue-backs-out/",
+   "date": "2024-11-20"
+  },
+  {
+   "label": "Battery-Tech Network — Section 301 duties on Chinese ESS batteries to 25%",
+   "url": "https://battery-tech.net/battery-markets-news/u-s-raises-section-301-duties-on-chinese-ess-batteries/",
+   "date": "2026-01"
+  },
+  {
+   "label": "SolBank 3.0 datasheet v1.64_NA",
+   "url": "https://csestorage.com/wp-content/uploads/2025/06/CS-Datasheet_SolBank-3.0_v1.64_NA.pdf",
+   "date": "2026-03"
+  },
+  {
+   "label": "SolBank 4.0 product page",
+   "url": "https://csestorage.com/solbank-4-0/"
+  },
+  {
+   "label": "e-STORAGE media & PR archive",
+   "url": "https://csestorage.com/mediapr/"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 2
+}

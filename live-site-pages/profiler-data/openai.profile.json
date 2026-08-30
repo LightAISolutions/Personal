@@ -1,0 +1,491 @@
+{
+ "schemaVersion": 6,
+ "slug": "openai",
+ "name": "OpenAI",
+ "legalName": "OpenAI Group PBC (controlled by the nonprofit OpenAI Foundation)",
+ "categories": [
+  "hyperscaler"
+ ],
+ "hq": "San Francisco, CA, USA",
+ "founded": "2015",
+ "ownership": "private (Microsoft ~27% as-converted; Foundation ~26%; confidential S-1 filed June 2026)",
+ "employees": "not published",
+ "website": "https://openai.com",
+ "summary": "BOTTOM LINE UP FRONT: OpenAI is the anchor demand of the entire AI power buildout — CEO Sam Altman publicly acknowledged ~$1.4T of infrastructure commitments (~30 GW) around the October 2025 restructuring, and the company's own April 2026 update says the January-2025 target of 10 GW by 2029 has already been surpassed, with more than 3 GW added in a trailing 90-day window. BACKGROUND: Founded 2015 as a nonprofit; recapitalized October 28, 2025 into OpenAI Group PBC under the nonprofit OpenAI Foundation (~26%), with Microsoft at ~27% as-converted (~$135B); 800M+ weekly users as of October 2025; valuation $852B post-money after a $122B round closed March 2026 (SoftBank $30B, NVIDIA $30B, Amazon $50B reported — of which ~$35B contingent on an IPO by end-2028 or an AGI determination); a confidential S-1 was filed June 8, 2026. Reported FY2025 revenue ~$13.1B, annualized run-rate >$25B by February 2026, against reported Q1 2026 cash burn of $3.7B and projected cumulative burn well above $115B through 2029. The gap between announced (~30 GW) and operational (~0.3 GW at the Stargate flagship) is the defining execution question.",
+ "ecosystemRole": "We assess OpenAI as the demand signal that reprices everything else in this file: its commitments set the order books of Oracle (~$300B contract), CoreWeave (~$22.4B), Microsoft ($250B Azure), AWS ($38B + reported $100B expansion), NVIDIA (10 GW LOI), AMD (6 GW + warrant), Broadcom (10 GW custom accelerators), and Cerebras (750 MW) — and its Stargate campuses are where behind-the-fence power architectures get chosen at gigawatt scale (gas microgrids at Shackelford and Doña Ana, Bloom fuel cells via Oracle at Jupiter, DTE-plus-BESS in Michigan, majority-renewables-plus-BESS in Wisconsin). Basis: company announcements cross-checked against counterparty disclosures and independent site tracking. The dependency runs both ways: nearly every commitment is financed by counterparties borrowing against the revenue of an unprofitable private company — the circular-financing debate is, in large part, the OpenAI-solvency debate.",
+ "productsAndServices": [
+  {
+   "name": "Stargate (US AI-infrastructure program)",
+   "description": "The flagship buildout vehicle (announced January 2025: $500B over four years; SoftBank financial responsibility, OpenAI operational responsibility, Oracle and MGX equity partners). US sites: Abilene TX (flagship — 4 of 8 buildings active, ~0.3 GW live, 1.2 GW projected by Q4 2026), Shackelford County TX (2.0 GW, gas microgrid), Doña Ana County NM (2.2 GW, gas microgrids with Bloom fuel cells via Oracle), Milam County TX (1.2 GW, SB Energy), Port Washington WI (1.3 GW, ~70% solar/wind/battery), Saline Township MI (1.4 GW, DTE grid + batteries), Lordstown OH (server manufacturing), plus Project Camellia in Effingham County, GA (July 2026). International: Stargate UAE, Norway (hydropower-backed with Nscale/Aker), UK (Nscale/NVIDIA), and Korea memory-supply partnerships (Samsung, SK).",
+   "positioning": "Sites were chosen from 300+ proposals across 30+ states; company claims >8 GW planned and >$450B committed over three years pre-Georgia. Independent tracking (Epoch AI) confirms real steel at most sites but only ~0.3 GW operational — delivery is overwhelmingly ahead.",
+   "soldThrough": "Built by developer partners (Crusoe, Vantage, STACK, SB Energy, Related Digital); hardware largely Oracle-owned; capacity consumed by OpenAI.",
+   "targetSegments": [
+    "OpenAI training and inference",
+    "US sovereign-scale AI capacity"
+   ],
+   "roadmap": "Company statement: 10-GW-by-2029 already surpassed in commitments; >3 GW added in one 90-day window. A 1.2 GW SB Energy Texas campus partnership (January 2026) is the most explicit power-development tie-up."
+  },
+  {
+   "name": "Compute supply portfolio (cloud + silicon)",
+   "description": "Cloud: Microsoft (incremental $250B Azure commitment; right of first refusal removed), AWS ($38B initial, expanded by a reported $100B/8-year deal including ~2 GW of Trainium), Oracle (~$300B/5-year from 2027), CoreWeave (~$22.4B cumulative), Google Cloud (company-confirmed supplier). Silicon: NVIDIA (≥10 GW LOI, up to $100B progressive investment), AMD (6 GW Instinct with a 160M-share warrant), Broadcom (10 GW of OpenAI-designed accelerators, deployments 2026-2029), Cerebras (750 MW), AWS Trainium — plus its own Jalapeño inference ASIC (design-to-tape-out in nine months, initial deployment by end-2026).",
+   "positioning": "The widest multi-vendor compute strategy in the industry, explicitly diversifying away from single-supplier dependence — and converting suppliers into investors (NVIDIA, Amazon equity in the March 2026 round).",
+   "soldThrough": "Long-term purchase commitments; vendor-financing structures (NVIDIA invests as OpenAI deploys; AMD warrant reverses the flow).",
+   "targetSegments": [
+    "Frontier model training",
+    "Global inference serving 800M+ weekly users"
+   ],
+   "roadmap": "Total planned compute spend through 2030 revised from ~$600B up to $750B (WSJ, July 2026); custom-silicon share grows through the Broadcom program."
+  },
+  {
+   "name": "Models & products (the demand driver)",
+   "description": "ChatGPT (800M+ weekly users, most free), the API/platform business, Codex, Sora, and the Frontier agentic platform (now also on AWS/Bedrock). Model line has progressed to the GPT-5.6 family (Sol/Luna variants, August 2026); GPT-5.6 is the preferred model in Microsoft 365 Copilot.",
+   "positioning": "The revenue engine expected to eventually cover the commitments: reported run-rate >$25B annualized (February 2026) growing ~17% per two months — against reported quarterly burn of $3.7B.",
+   "soldThrough": "Consumer subscriptions, enterprise seats, API usage, and distribution partnerships.",
+   "targetSegments": [
+    "Consumers",
+    "Enterprises",
+    "Developers",
+    "Governments (US DOE MOU, national-security API carve-out)"
+   ],
+   "roadmap": "IPO groundwork: Reuters-reported target of up to $1T valuation and $60B+ raise; confidential S-1 filed June 2026 with internal disagreement on timing."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-07-22",
+   "category": "capacity",
+   "headline": "Planned compute spend raised to $750B through 2030 (from ~$600B); Project Camellia announced in Effingham County, Georgia",
+   "read": "The spend trajectory re-accelerated after a February trim — the number now moves quarterly with financing capacity, not demand doubt.",
+   "source": "https://finance.yahoo.com/technology/ai/articles/openai-lifts-planned-compute-spending-144917731.html"
+  },
+  {
+   "date": "2026-06-24",
+   "category": "product-launch",
+   "headline": "Jalapeño revealed — OpenAI's first custom inference ASIC with Broadcom; design-to-tape-out in nine months, initial deployment by end-2026",
+   "read": "The silicon-roadmap-owner phase begins: custom accelerators reshape the power envelope (and the vendor list) of future OpenAI racks.",
+   "source": "https://openai.com/index/openai-broadcom-jalapeno-inference-chip"
+  },
+  {
+   "date": "2026-06-08",
+   "category": "financial",
+   "headline": "Confidential S-1 filed — IPO groundwork at a reported up-to-$1T valuation; CFO reportedly favors 2027 and warned the company is not ready for public markets",
+   "read": "The Amazon tranche's IPO-by-2028 contingency makes the listing a financing necessity, not just an option.",
+   "source": "https://news.google.com/rss/search?q=OpenAI+confidential+S-1+IPO+filing"
+  },
+  {
+   "date": "2026-03-31",
+   "category": "financial",
+   "headline": "$122B round closed at $852B post-money — reported SoftBank $30B, NVIDIA $30B, Amazon $50B (~$35B IPO/AGI-contingent); first retail-channel participation (>$3B)",
+   "read": "Suppliers became shareholders at record scale — the equity round is also a vendor-financing instrument.",
+   "source": "https://openai.com/index/accelerating-the-next-phase-ai/"
+  },
+  {
+   "date": "2026-02-27",
+   "category": "partnership",
+   "headline": "AWS agreement expanded by a reported $100B over 8 years including ~2 GW of Trainium capacity; Frontier platform lands on AWS",
+   "read": "Amazon custom silicon enters the OpenAI mix — the clearest sign no single vendor, including NVIDIA, holds exclusive supply.",
+   "source": "https://openai.com/index/amazon-partnership"
+  },
+  {
+   "date": "2026-01-09",
+   "category": "capacity",
+   "headline": "SB Energy partnership for multi-gigawatt AI campuses including a 1.2 GW Texas facility",
+   "read": "The most explicit power-development tie-up: OpenAI contracting generation-side development directly rather than through cloud landlords.",
+   "source": "https://openai.com/index/stargate-sb-energy-partnership"
+  },
+  {
+   "date": "2025-11-05",
+   "category": "other",
+   "headline": "CFO 'federal backstop' remark at WSJ Tech Live triggered immediate walk-backs from Friar and Altman and a 'no federal bailout for AI' response from the White House AI czar",
+   "read": "A credibility incident that mapped the political limits of the financing model — vendor and equity markets, not government guarantees, must carry the $1.4T.",
+   "source": "https://news.google.com/rss/search?q=OpenAI+Sarah+Friar+backstop+government+guarantee"
+  },
+  {
+   "date": "2025-10-28",
+   "category": "other",
+   "headline": "Recapitalization completed: OpenAI Group PBC under the OpenAI Foundation; Microsoft ~27% (~$135B) with IP access through 2032 and AGI claims subject to an independent expert panel; incremental $250B Azure commitment",
+   "read": "The structure that unlocked everything after it — the mega-rounds, the S-1, and the commitment spree all followed within five months.",
+   "source": "https://openai.com/index/built-to-benefit-everyone/"
+  },
+  {
+   "date": "2025-10-27",
+   "category": "regulatory",
+   "headline": "OSTP filing: OpenAI recommends a US target of 100 GW/year of new energy capacity, citing the 'electron gap' with China (429 GW added in 2024 vs US 51 GW); discloses curtailable data-center design",
+   "read": "OpenAI as energy-policy actor: the filing asks for interconnection fast-tracks for storage and repowering — directly relevant to every BESS vendor in this file.",
+   "source": "https://cdn.openai.com/pdf/21b88bb5-10a3-4566-919d-f9a6b9c3e632/openai-ostp-rfi-oct-27-2025.pdf"
+  },
+  {
+   "date": "2025-09-23",
+   "category": "capacity",
+   "headline": "Five new US Stargate sites with Oracle and SoftBank — ~7 GW planned, >$400B over three years, 'ahead of schedule' on the $500B/10 GW commitment",
+   "read": "The announcement cadence that turned Stargate from a Texas project into a national program.",
+   "source": "https://openai.com/index/five-new-stargate-sites/"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess OpenAI's commitments, not its revenue, are what currently structure the AIDC power market. Basis: ~$1.4T/~30 GW acknowledged by the CEO; per-counterparty tallies corroborated across Reuters, company posts, and counterparty filings; Oracle, CoreWeave, AMD, and Broadcom order books and share prices all repriced on OpenAI announcements.",
+  "(High confidence) We assess the financing model is circular by construction and that this is its central fragility. Basis: NVIDIA invests up to $100B as OpenAI deploys NVIDIA systems; Amazon invests $50B while selling $138B of cloud; Oracle borrows (~$96B reported) against OpenAI receivables; Microsoft's equity-method losses ($4.1B in one quarter) imply ~$11.5B quarterly OpenAI losses. The same dollars appear as vendor revenue, OpenAI funding, and counterparty backlog — a structure that amplifies both directions.",
+  "(Moderate confidence) We assess the revenue trajectory is strong but structurally short of the commitments on any current curve. Basis: reported ~$25B annualized (February 2026) growing fast, versus $750B planned compute spend through 2030 and >$115B projected cumulative burn through 2029; the bridge is serial mega-raises and the IPO — which the Amazon tranche makes near-mandatory by 2028.",
+  "(Moderate confidence) We assess delivery risk is concentrated in the announced-to-operational gap. Basis: ~0.3 GW live at Abilene versus >9 GW projected by 2029 across Stargate; the Abilene expansion to 2.1 GW was reversed; every site depends on the same constrained turbine, transformer, and grid-queue resources documented elsewhere in this file.",
+  "(Low confidence) We assess governance and key-person risk remain material but currently dormant. Basis: the November 2023 board crisis as precedent, the reported CEO-CFO split on IPO timing, the Musk verdict resolved on timeliness rather than merits (appeal vowed), and a financing machine that press coverage consistently treats as inseparable from Altman personally."
+ ],
+ "relationships": [
+  {
+   "slug": "microsoft",
+   "type": "investor",
+   "note": "~27% owner and anchor cloud partner — $250B incremental Azure commitment, exclusivity gone.",
+   "context": "Microsoft holds ~27% of OpenAI Group PBC (~$135B) under the October 2025 restructuring; OpenAI committed an incremental $250B of Azure purchases while gaining multi-cloud freedom (ROFR removed; April 2026 made the IP license non-exclusive and capped the revenue share). The relationship is now one giant supplier among several — but still the largest single investor and compute commitment.",
+   "source": "https://blogs.microsoft.com/blog/2025/10/28/the-next-chapter-of-the-microsoft-openai-partnership/",
+   "status": "active",
+   "since": "2019",
+   "scale": "~27%; $250B Azure"
+  },
+  {
+   "slug": "oracle",
+   "type": "supplier",
+   "note": "Stargate anchor: ~$300B over five years from 2027, 4.5GW+ of capacity across five US sites.",
+   "context": "Oracle is a Stargate equity partner ($7B) and the anchor capacity supplier — the July 2025 4.5GW partnership grew into a WSJ-reported ~$300B five-year contract beginning 2027. Oracle is tenant/hardware owner at Abilene, Shackelford County TX, Doña Ana County NM, Port Washington WI and Saline Township MI, financing and overseeing construction of the Oracle-led sites.",
+   "source": "https://builtin.com/articles/openai-300b-cloud-deal-oracle-20250911",
+   "status": "active",
+   "since": "2025",
+   "scale": "~$300B / 5 years / 4.5GW+"
+  },
+  {
+   "slug": "nvidia",
+   "type": "supplier",
+   "note": "10 GW letter of intent with NVIDIA investing up to $100B progressively as capacity deploys.",
+   "context": "The September 2025 LOI: at least 10 GW of NVIDIA systems, first gigawatt on Vera Rubin in 2H 2026, with NVIDIA investing up to $100B as each GW deploys. Non-binding, and the anchor of the circular-financing critique — NVIDIA part-funding its own demand — but the defining GW-scale supply relationship of the buildout.",
+   "source": "https://openai.com/index/openai-nvidia-systems-partnership/",
+   "status": "announced",
+   "since": "2025-09",
+   "scale": "10 GW LOI; up to $100B"
+  },
+  {
+   "slug": "amazon",
+   "type": "supplier",
+   "note": "$38B seven-year AWS compute deal — hundreds of thousands of NVIDIA GPUs by end-2026.",
+   "context": "November 3, 2025: OpenAI's first big multi-cloud move after exclusivity ended — $38B over seven years for GB200/GB300-class capacity on AWS, expandable from 2027. April 2026 reporting adds a ~$100B eight-year expansion and AWS exclusivity for OpenAI's 'Frontier' enterprise platform (single-outlet, unconfirmed). Amazon is simultaneously Anthropic's anchor backer — supplier and rival-by-proxy at once.",
+   "source": "https://www.aboutamazon.com/news/aws/aws-open-ai-workloads-compute-infrastructure",
+   "status": "active",
+   "since": "2025-11",
+   "scale": "$38B / 7 years"
+  },
+  {
+   "slug": "coreweave",
+   "type": "supplier",
+   "note": "~$22.4B of cumulative capacity contracts — plus OpenAI's $350M equity stake in CoreWeave.",
+   "context": "The March 2025 master agreement (up to $11.9B, with OpenAI taking $350M of CoreWeave equity) was expanded by up to $4B (May 2025) and up to $6.5B (September 2025, running through May 2031) to ~$22.4B cumulative. Delivery includes 16,000+ GPUs at the Core Scientific Denton, TX campus.",
+   "source": "https://www.cnbc.com/2025/09/25/coreweave-openai-6point5-billion-deal.html",
+   "status": "active",
+   "since": "2025-03",
+   "scale": "~$22.4B cumulative"
+  },
+  {
+   "slug": "crusoe",
+   "type": "supplier",
+   "note": "Developer of Stargate Site 1 — the Abilene campus scaling to 8 buildings / 1.2GW.",
+   "context": "Crusoe develops and operates the Lancium Clean Campus at Abilene: Phase 1 (200+ MW) live ~September 2025 running Oracle OCI with GB200s; Phase 2 expands to ~4M sq ft and 1.2GW targeted end-2026, each building holding up to 50,000 GB200 NVL72s. The proof-of-concept site for the whole Stargate program.",
+   "source": "Stargate Abilene site record (Epoch AI tracker / DCD)",
+   "status": "active",
+   "since": "2024",
+   "scale": "1.2GW campus"
+  },
+  {
+   "slug": "vantage",
+   "type": "supplier",
+   "note": "Landlord of two Stargate giga-campuses — Frontier (1.4GW TX) and Lighthouse (902MW WI).",
+   "context": "Vantage builds and owns the two largest third-party Stargate campuses, leased through Oracle for OpenAI: Frontier in Shackelford County, TX ($25B+, off-grid on a 700MW VoltaGrid microgrid) and Lighthouse in Port Washington, WI ($15B+), financed by a record ~$38B bank package whose refinancing rides on the OpenAI complex's credit.",
+   "source": "https://vantage-dc.com/news/openai-oracle-and-vantage-data-centers-announce-stargate-data-center-site-in-wisconsin/",
+   "status": "active",
+   "since": "2025-08",
+   "scale": "2.3GW across two campuses"
+  },
+  {
+   "slug": "stack-infrastructure",
+   "type": "supplier",
+   "note": "Developer-owner of Project Jupiter — the 1GW+ Stargate campus in Santa Teresa, NM.",
+   "context": "STACK develops and owns Project Jupiter (with BorderPlex Digital Assets): up to $165B program value, an 18-year Oracle OCI lease with OpenAI as primary client, construction from September 2025 with initial operations targeted Q4 2026, powered by on-site gas microgrids.",
+   "source": "https://elpasomatters.org/2025/09/25/stargate-open-ai-oracle-project-jupiter-data-center-dona-ana-new-mexico-el-paso-texas/",
+   "status": "active",
+   "since": "2025-09",
+   "scale": "1GW+ campus"
+  },
+  {
+   "slug": "samsung-ct",
+   "type": "partner",
+   "note": "Stargate Korea: floating data centers jointly developed with Samsung C&T and Samsung Heavy Industries.",
+   "context": "October 2025: Samsung and SK joined Stargate — Samsung Electronics and SK hynix on advanced memory supply, and Samsung C&T + Samsung Heavy Industries jointly developing floating data centers with OpenAI, with the first US floating-DC engineering contract signed and initial installations planned for Texas.",
+   "source": "https://openai.com/index/samsung-and-sk-join-stargate/",
+   "status": "active",
+   "since": "2025-10"
+  },
+  {
+   "slug": "dpr",
+   "type": "supplier",
+   "note": "Leads the Stargate Abilene build (with Rosendin electrical and Southland/Brandt mechanical).",
+   "context": "ENR reports DPR Construction leading the Abilene delivery for Crusoe — a 1.2GW campus on a two-year schedule with a peak workforce approaching 5,000, Rosendin Electric as electrical prime and Southland/Brandt mechanical. The construction bench behind Stargate Site 1.",
+   "source": "ENR — Abilene data center project team",
+   "status": "active",
+   "scale": "1.2GW campus build"
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Stargate Abilene (Project Ludicrous)",
+   "specs": [
+    {
+     "band": "Campus",
+     "label": "Build",
+     "value": "8 buildings, 1,100 acres, 4M sq ft; 4 buildings active with GB200 racks"
+    },
+    {
+     "band": "Capacity",
+     "label": "Operational",
+     "value": "~0.3 GW operational (~250k H100-equivalents), 1.2 GW projected Q4 2026"
+    },
+    {
+     "band": "Power",
+     "label": "Sources",
+     "value": "ERCOT grid + on-site gas turbines (~360 MW reported; GE Vernova/Solar Turbines) + wind integration"
+    }
+   ]
+  },
+  {
+   "product": "Jalapeño inference ASIC (with Broadcom)",
+   "specs": [
+    {
+     "band": "Design",
+     "label": "Approach",
+     "value": "Blank-slate LLM-inference processor; design-to-tape-out in 9 months"
+    },
+    {
+     "band": "Status",
+     "label": "Silicon",
+     "value": "Engineering samples running GPT-5.3-Codex-Spark at target frequency/power"
+    },
+    {
+     "band": "Deployment",
+     "label": "Timeline & fabric",
+     "value": "Initial deployment by end-2026; Ethernet scale-out; first of a multi-generation platform"
+    }
+   ]
+  },
+  {
+   "product": "Compute commitments (announced GW)",
+   "specs": [
+    {
+     "band": "Silicon partners",
+     "label": "Commitments",
+     "value": "NVIDIA ≥10 GW; Broadcom 10 GW; AMD 6 GW; AWS ~2 GW Trainium; Cerebras 750 MW"
+    },
+    {
+     "band": "Sites",
+     "label": "Stargate",
+     "value": ">8 GW planned (pre-Georgia) + international (UAE 1 GW cluster, Norway 230 MW initial, UK)"
+    },
+    {
+     "band": "Grid posture",
+     "label": "Curtailability",
+     "value": "Curtailable data-center design company-stated (can reduce draw or return power at peak)"
+    }
+   ]
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Sam Altman",
+   "title": "Chief Executive Officer (co-founder)",
+   "photo": "images/execs/openai-altman.jpg",
+   "photoCredit": "首相官邸ホームページ / Office of the Prime Minister of Japan Official Website, CC BY 4.0, via Wikimedia Commons",
+   "background": [
+    "The financing machine's public face — press treats him as irreplaceable to the commitment structure",
+    "Acknowledged the ~$1.4T/~30 GW figure; stated goal of $1T/year infrastructure spend"
+   ]
+  },
+  {
+   "name": "Sarah Friar",
+   "title": "Chief Financial Officer",
+   "background": [
+    "Ex-Square/Nextdoor; owns the serial mega-raise cadence and IPO preparation",
+    "The November 2025 'backstop' walk-back and reported 2027-IPO caution define her public record"
+   ]
+  },
+  {
+   "name": "Greg Brockman",
+   "title": "President (co-founder)",
+   "photo": "images/execs/openai-brockman.jpg",
+   "photoCredit": "TechCrunch, CC BY 2.0, via Wikimedia Commons",
+   "background": [
+    "Infrastructure and compute-partnership lead across the NVIDIA/AMD/Broadcom deals"
+   ]
+  },
+  {
+   "name": "Jakub Pachocki",
+   "photo": "images/execs/openai-pachocki.jpg",
+   "photoCredit": "ICPCNews, CC BY 2.0, via Wikimedia Commons",
+   "title": "Chief Scientist",
+   "background": [
+    "Leads the research program the compute commitments exist to serve (GPT-5.x line)"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "reported-private (no audited public statements; press-reported figures)",
+  "periods": [
+   {
+    "period": "FY2025 (reported)",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "~$13.1B (WSJ-reported)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Run-rate ~$21.4B annualized exiting 2025 (The Information)"
+     },
+     {
+      "name": "Implied losses",
+      "actual": "~$11.5B in one quarter (implied from Microsoft's $4.1B equity-method share)",
+      "expected": "",
+      "verdict": "miss",
+      "result": "Microsoft 10-Q is the only hard public datapoint on OpenAI's P&L"
+     }
+    ],
+    "commentary": "Expectations honesty: OpenAI publishes no financials; everything here is press-reported or derived from counterparty SEC filings, flagged accordingly."
+   },
+   {
+    "period": "Q1 2026 (reported)",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "$5.7B (The Information)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Annualized >$25B by end-February 2026, +17% in two months"
+     },
+     {
+      "name": "Cash burn",
+      "actual": "$3.7B in the quarter (reported)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Cumulative burn projections: >$115B through 2029, with ~$111B reportedly added to the through-2030 forecast in February 2026"
+     }
+    ],
+    "commentary": "Funding: $40B at $300B (March 2025) → recapitalization at $500B (October 2025) → $122B at $852B post (March 2026). A reported >$21B quarterly net loss figure circulating from aggregators likely includes large non-cash items — treat with caution."
+   }
+  ]
+ },
+ "sources": [
+  {
+   "label": "WSJ via Yahoo — $750B compute spend",
+   "url": "https://finance.yahoo.com/technology/ai/articles/openai-lifts-planned-compute-spending-144917731.html",
+   "date": "2026-07-22"
+  },
+  {
+   "label": "Stargate scaling update (10 GW surpassed)",
+   "url": "https://openai.com/index/building-the-compute-infrastructure-for-the-intelligence-age/",
+   "date": "2026-04"
+  },
+  {
+   "label": "$122B round close at $852B",
+   "url": "https://openai.com/index/accelerating-the-next-phase-ai/",
+   "date": "2026-03-31"
+  },
+  {
+   "label": "AWS — OpenAI workloads compute infrastructure ($38B)",
+   "url": "https://www.aboutamazon.com/news/aws/aws-open-ai-workloads-compute-infrastructure",
+   "date": "2025-11-03"
+  },
+  {
+   "label": "Microsoft 10-Q (OpenAI equity-method losses)",
+   "url": "https://www.sec.gov/Archives/edgar/data/789019/000119312525256321/msft-20250930.htm",
+   "date": "2025-10-29"
+  },
+  {
+   "label": "Microsoft partnership next chapter ($250B Azure)",
+   "url": "https://openai.com/index/next-chapter-of-microsoft-openai-partnership/",
+   "date": "2025-10-28"
+  },
+  {
+   "label": "CNBC — recapitalization structure",
+   "url": "https://www.cnbc.com/2025/10/28/open-ai-for-profit-microsoft.html",
+   "date": "2025-10-28"
+  },
+  {
+   "label": "Microsoft — the next chapter of the Microsoft-OpenAI partnership",
+   "url": "https://blogs.microsoft.com/blog/2025/10/28/the-next-chapter-of-the-microsoft-openai-partnership/",
+   "date": "2025-10-28"
+  },
+  {
+   "label": "OSTP RFI filing (energy policy)",
+   "url": "https://cdn.openai.com/pdf/21b88bb5-10a3-4566-919d-f9a6b9c3e632/openai-ostp-rfi-oct-27-2025.pdf",
+   "date": "2025-10-27"
+  },
+  {
+   "label": "Vantage — OpenAI, Oracle and Vantage announce Stargate Wisconsin",
+   "url": "https://vantage-dc.com/news/openai-oracle-and-vantage-data-centers-announce-stargate-data-center-site-in-wisconsin/",
+   "date": "2025-10-22"
+  },
+  {
+   "label": "Broadcom collaboration (10 GW custom accelerators)",
+   "url": "https://openai.com/index/openai-and-broadcom-announce-strategic-collaboration/",
+   "date": "2025-10-13"
+  },
+  {
+   "label": "AMD strategic partnership (6 GW + warrant)",
+   "url": "https://openai.com/index/openai-amd-strategic-partnership/",
+   "date": "2025-10-06"
+  },
+  {
+   "label": "OpenAI — Samsung and SK join Stargate",
+   "url": "https://openai.com/index/samsung-and-sk-join-stargate/",
+   "date": "2025-10-01"
+  },
+  {
+   "label": "Reuters factbox — commitment tally",
+   "url": "https://finance.yahoo.com/news/factbox-openai-nvidia-firms-channel-122400217.html",
+   "date": "2025-10"
+  },
+  {
+   "label": "Tunguz — independent commitment tally",
+   "url": "https://tomtunguz.com/openai-hardware-spending-2025-2035/",
+   "date": "2025-10"
+  },
+  {
+   "label": "CNBC — CoreWeave-OpenAI $6.5B expansion (~$22.4B cumulative)",
+   "url": "https://www.cnbc.com/2025/09/25/coreweave-openai-6point5-billion-deal.html",
+   "date": "2025-09-25"
+  },
+  {
+   "label": "El Paso Matters — Project Jupiter (Stargate New Mexico)",
+   "url": "https://elpasomatters.org/2025/09/25/stargate-open-ai-oracle-project-jupiter-data-center-dona-ana-new-mexico-el-paso-texas/",
+   "date": "2025-09-25"
+  },
+  {
+   "label": "Five new Stargate sites",
+   "url": "https://openai.com/index/five-new-stargate-sites/",
+   "date": "2025-09-23"
+  },
+  {
+   "label": "NVIDIA systems partnership (10 GW / $100B)",
+   "url": "https://openai.com/index/openai-nvidia-systems-partnership/",
+   "date": "2025-09-22"
+  },
+  {
+   "label": "Built In — OpenAI $300B Oracle cloud deal",
+   "url": "https://builtin.com/articles/openai-300b-cloud-deal-oracle-20250911",
+   "date": "2025-09-11"
+  },
+  {
+   "label": "Stargate launch announcement",
+   "url": "https://openai.com/index/announcing-the-stargate-project/",
+   "date": "2025-01-21"
+  },
+  {
+   "label": "Epoch AI — Stargate site tracking",
+   "url": "https://epoch.ai/publications/openai-stargate-where-the-us-sites-stand"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 3
+}

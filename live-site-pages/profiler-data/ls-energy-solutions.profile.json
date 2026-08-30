@@ -1,0 +1,403 @@
+{
+ "schemaVersion": 6,
+ "slug": "ls-energy-solutions",
+ "name": "LS Energy Solutions",
+ "shortName": "LS-ES",
+ "categories": [
+  "supplier",
+  "integrator"
+ ],
+ "website": "https://www.ls-es.com",
+ "headquarters": "Charlotte, North Carolina, United States",
+ "founded": 2018,
+ "employees": "Not disclosed (private subsidiary)",
+ "ownership": "subsidiary (LS ELECTRIC, KRX: 010120 — LS Group; acquired the ex-Parker Hannifin grid-tie business in 2018)",
+ "summary": "BOTTOM LINE UP FRONT: LS Energy Solutions is the quiet Korean-owned option in US storage — a Charlotte-based integrator built on Parker Hannifin's grid-tie PCS heritage (in the business since 2008), carrying >1.5 GW / 2.6 GWh across 300+ projects, one transmission-scale flagship (Big Rock, 200 MW/400 MWh, CAISO commercial operations September 2025), and the cleanest structural FEOC story in the mid-tier — Korean parent, Korean tier-1 NMC cells, US-engineered PCS — which it conspicuously fails to market. Its 2026 collateral re-centers on string inverters, suggesting a strategic re-weighting toward PCS and services while the parent, LS ELECTRIC, runs one of the most aggressive AI-data-center power-equipment pushes in the US. BACKGROUND: Parker's Energy Grid Tie Division became LS-ES under LS ELECTRIC in 2018. Product set: AiON-ESS all-in-one AC blocks (0.94-3.5 MWh per container, tier-1 NMC from SK On and Samsung SDI, HVAC-cooled) and the in-house crown jewel — AiON-SIS third-generation string inverters (140 kVA, >98.5% peak) and the newer liquid-cooled MSSP GEN 2.0 (to 220 kW, >99%). Flagship economics run through Gore Street's Big Rock: 137 containers, 1,300+ string inverters, a 12-year ~$165M Resource Adequacy contract with Goldman's J. Aron, and LS-ES life-of-project services. No new-name project win has been announced since December 2024 — pipeline opacity is the biggest flag. Parent context matters: LS ELECTRIC opened its Bastrop, TX campus in April 2025 (+$240M by 2030), booked a string of US data-center power orders ($115M, $70M, $64M, $34M Bloom Energy hyperscale order in Wyoming), and holds a >KRW 7T backlog.",
+ "ecosystemRole": "We assess LS-ES as the structural beneficiary that hasn't cashed the check: post-FEOC, a Korean-cell, Korean-parent, US-PCS integrator is precisely what compliance-driven buyers say they want, yet the company markets safety and modularity instead and has announced no new US wins in over a year and a half. Its future in the AIDC web most plausibly runs through its parent: LS ELECTRIC is winning US data-center switchgear, transformer and microgrid orders quarter after quarter, has a Honeywell alliance naming both data centers and BESS, and exhibits utility-scale storage inverters under its own brand — making LS-ES the natural BESS attach to those wins. For a Chinese competitor, LS-ES defines the 'clean-provenance premium' segment: buyers who will pay above Chinese-content pricing for FEOC-robust supply but below what Tesla charges.",
+ "productsAndServices": [
+  {
+   "name": "AiON-ESS all-in-one AC blocks (Power / Energy Series)",
+   "description": "Containerized AC blocks with PCS and batteries in separate compartments. Power Series (1-hour): 0.98 MVA / 0.94 MWh rated AC energy per 24-ft container at 600 V, UL 9540, NFPA 855/69 compliant, grid-forming and black-start capable. Energy Series (2-4 hour): 2.31-2.57 MWh per unit on Samsung SDI (E4D) or SK On (M003A) tier-1 NMC; deployed at Big Rock at 1.5 MW/3.5 MWh per container. DC window 200-1,500 V; NEMA 3R; HVAC-cooled.",
+   "positioning": "A generation behind the 5-8 MWh liquid-cooled LFP standard on density and cost — sells instead on safety-by-design (compartmentalization), field-replaceable string architecture, NMC power density, and non-Chinese provenance.",
+   "soldThrough": "Direct to developers, municipal utilities, cooperatives and federal/military customers; life-of-project services attach",
+   "targetSegments": "Distribution-scale (5-40 MW), municipal/military microgrids; Big Rock is the lone transmission-scale flagship",
+   "roadmap": "No next-generation high-density container announced — a conspicuous product-roadmap gap"
+  },
+  {
+   "name": "String PCS: AiON-SIS and MSSP GEN 2.0 (in-house, Parker heritage)",
+   "description": "AiON-SIS third-generation bidirectional air-cooled string inverter: 116/140 kW-class units, 620-1,500 Vdc, 400/480/600 Vac, >98.5% max efficiency, patented AC+DC paralleling to 3 MVA blocks, optional grid-forming. MSSP GEN 2.0 liquid-cooled string inverter: 150/190/220 kW, 1,050-1,500 Vdc, >99% max efficiency, -20 to 50°C. Field-replaceable in minutes; low DC bus voltages via small aggregated battery groups.",
+   "positioning": "The genuine crown jewel — 2026 collateral leads with these, and LS ELECTRIC America exhibits them under the parent brand, pointing to a PCS-and-components future alongside (or instead of) full-wrap integration.",
+   "soldThrough": "Bundled in AiON-ESS; increasingly marketed standalone to other integrators and self-integrating IPPs",
+   "targetSegments": "BESS integrators, IPPs, microgrid builders",
+   "roadmap": "Marketed as backed by LS ELECTRIC's 40+ years of power electronics"
+  },
+  {
+   "name": "Life-of-project services",
+   "description": "Extended warranty, preventative and capacity maintenance, remote monitoring — the Big Rock scope. Claimed 1 GW+ incident-free operating record.",
+   "positioning": "The recurring-revenue and bankability instrument for a sub-scale integrator; paired with the $25B LS Group balance sheet in sales material.",
+   "soldThrough": "Attached to system sales",
+   "targetSegments": "All customers",
+   "roadmap": "Big Rock services run for the project's life"
+  },
+  {
+   "name": "Parent channel: LS ELECTRIC US data-center power platform",
+   "description": "Not an LS-ES product, but its most important channel: LS ELECTRIC's Bastrop, TX campus (opened April 2025; switchgear, transformers, distribution 'supplying local data centers'; +$240M by 2030), US order flow including ~$125M Samsung Taylor fab, $115M US data-center contract (Apr 2026), $70M Big Tech power deal and $64M data-center microgrid switchgear (May 2026), $34M Bloom Energy hyperscale order in Wyoming (Aug 2026), a Honeywell global alliance targeting data centers and BESS (Oct 2025), and an Infineon MoU on SiC-based DC power for AI data centers (Jul 2026).",
+   "positioning": "The plausible route by which LS-ES storage attaches to AI-campus electrical rooms — no joint DC+BESS project has been announced yet.",
+   "soldThrough": "Parent sales organization",
+   "targetSegments": "Hyperscale and colocation data centers",
+   "roadmap": "Chairman Koo Ja-kyun targets 'top four power companies in the US'"
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "AiON-ESS Power Series (1-hour AC block)",
+   "specs": [
+    {
+     "band": "Ratings",
+     "label": "Per container",
+     "value": "0.98 MVA nameplate / 0.88 MW rated / 0.94 MWh rated AC energy at BOL; 600 V 3-phase POI at PCS terminals"
+    },
+    {
+     "band": "Battery",
+     "label": "Cells",
+     "value": "UL 9540A-tested tier-1 NMC (SK On M003A / Samsung SDI E4D documented on the Energy Series)"
+    },
+    {
+     "band": "Physical",
+     "label": "Envelope",
+     "value": "24 ft x 5.5 ft container; NEMA 3R; min 8-ton HVAC; DC window 200-1,500 Vdc; -5 to 55°C (derate 2%/°C above 40°C)"
+    },
+    {
+     "band": "Compliance",
+     "label": "Certifications",
+     "value": "UL 9540 certified; NFPA 855 and NFPA 69 compliant (NFPA 68 optional); IEEE 1547, UL 1741-SA per site materials"
+    },
+    {
+     "band": "Grid",
+     "label": "Capability",
+     "value": "Grid-forming and black-start capable"
+    }
+   ],
+   "notes": "Energy Series (2-4 h): 2.573 MWh (SK) / 2.31 MWh (Samsung) per 2021 datasheet; deployed at Big Rock at 1.5 MW/3.5 MWh per container (137 containers)."
+  },
+  {
+   "product": "String PCS (AiON-SIS / MSSP GEN 2.0)",
+   "specs": [
+    {
+     "band": "AiON-SIS",
+     "label": "Ratings",
+     "value": "116/140 kW units (140 kVA building block); 620-1,500 Vdc; 400/480/600 Vac; >98.5% max efficiency (CEC >97.9%)"
+    },
+    {
+     "band": "AiON-SIS",
+     "label": "Architecture",
+     "value": "Patented AC+DC paralleling to 3 MVA blocks; air-cooled to 55°C; optional grid-forming; 19 x 10.4 x 33.2 in"
+    },
+    {
+     "band": "MSSP GEN 2.0",
+     "label": "Ratings",
+     "value": "150/190/220 kW liquid-cooled; 1,050-1,500 Vdc; 480/600/690 Vac; >99% max efficiency (CEC >98.5%); -20 to 50°C"
+    },
+    {
+     "band": "Serviceability",
+     "label": "Design",
+     "value": "Field-replaceable kW-scale string inverters (swap in minutes); separate PCS/battery compartments; AC augmentation by adding containers"
+    }
+   ],
+   "notes": "Parker Hannifin grid-tie heritage dating to 2008; marketed under LS ELECTRIC's 40+ years of power-electronics expertise."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-08-18",
+   "category": "partnership",
+   "headline": "Parent LS ELECTRIC wins a $34M Bloom Energy power order for a hyperscale data center in Wyoming (repeat order) and posts record Q2 2026 results (revenue ~KRW 1.58T, operating profit ~KRW 179B)",
+   "read": "The parent's data-center franchise keeps compounding — each such order is a potential BESS attach point LS-ES has yet to convert publicly.",
+   "source": "Seoul Economic Daily, 2026-08-18"
+  },
+  {
+   "date": "2026-07",
+   "category": "partnership",
+   "headline": "LS ELECTRIC signs an Infineon MoU on SiC-based DC power infrastructure for AI data centers and an LG Uplus partnership on AI-DC DC power",
+   "read": "The parent is positioning across the 800 VDC transition — the same architectural shift NVIDIA's papers define — while its storage arm stays silent on it.",
+   "source": "EnkiAI/trade press, Jul 2026"
+  },
+  {
+   "date": "2026-05-22",
+   "category": "partnership",
+   "headline": "Parent wins $64M of 38 kV switchgear for a US data-center microgrid and a $70M 'Big Tech' power deal",
+   "read": "Data-center microgrids are exactly where a BESS attach is most natural; the order went switchgear-only.",
+   "source": "Electrical Mirror, 2026-05-22"
+  },
+  {
+   "date": "2026-02-23",
+   "category": "product-launch",
+   "headline": "New 2026 collateral leads with string inverters (AiON-SIS + liquid-cooled MSSP GEN 2.0); LS ELECTRIC America exhibits utility-scale storage inverters at Intersolar NA",
+   "read": "The re-weighting toward PCS/components under the parent brand — good for margin and survival, but it muddies the one-stop-integrator pitch mid-sale.",
+   "source": "LS-ES brochure Feb 2026; AltEnergyMag, 2026-02-23"
+  },
+  {
+   "date": "2025-12-18",
+   "category": "other",
+   "headline": "LS-ES year-in-review calls 2025 its biggest year ever: Big Rock COD, Austin-area campus launch with LS ELECTRIC, Honeywell and Samsung C&T collaborations",
+   "read": "All true — and every item is either the one flagship or a parent initiative; no new-name LS-ES project win appears.",
+   "source": "LS-ES blog, 2025-12-18"
+  },
+  {
+   "date": "2025-10",
+   "category": "partnership",
+   "headline": "LS ELECTRIC and Honeywell form a global alliance explicitly targeting data centers and BESS",
+   "read": "A named channel through which LS-ES systems could reach data-center buyers with a US automation wrapper — the joint BESS deal hasn't materialized yet.",
+   "source": "Korea Herald/trade press, Oct 2025"
+  },
+  {
+   "date": "2025-09-04",
+   "category": "product-launch",
+   "headline": "Big Rock (200 MW/400 MWh, Imperial County, CA) enters CAISO commercial operations — 137 AiON-ESS containers, 1,300+ string inverters, LS-ES life-of-project services",
+   "read": "The bankability proof: energized January, RA revenue from summer under Gore Street's 12-year ~$165M J. Aron contract; LS-ES holds the service annuity.",
+   "source": "LS-ES PR/GlobeNewswire, 2025-09-04"
+  },
+  {
+   "date": "2025-04-14",
+   "category": "other",
+   "headline": "Parent opens the Bastrop, TX campus (58,925 sq ft; switchgear/transformers for local data centers; +$240M by 2030); LS-ES cites it as its Austin-area base for the regional storage market",
+   "read": "Physical co-location with the ERCOT data-center buildout — the geography is right even if the storage orders aren't visible yet.",
+   "source": "Community Impact/Asia Business Daily, Apr 2025"
+  },
+  {
+   "date": "2025-04",
+   "category": "financial",
+   "headline": "Gore Street sells ~$84M of ITCs across Big Rock and Dogfish — describing the US ITC monetization as its 'final' such sale",
+   "read": "De-risks the flagship's economics; also signals the anchor customer may not expand further in the US — concentration risk for LS-ES's reference book.",
+   "source": "Investegate/Gore Street, Apr 2025"
+  },
+  {
+   "date": "2024-12-05",
+   "category": "partnership",
+   "headline": "Citizens Energy / Wellesley Municipal Light Plant 4.99 MW/15 MWh (3-hour) completed — six battery and six inverter containers for peak shaving",
+   "read": "The last announced new-name project win as of August 2026 — twenty months of pipeline silence since.",
+   "source": "LS-ES PR, 2024-12-05"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess LS-ES's FEOC position as the cleanest structural story in the US mid-tier — Korean parent, documented Korean tier-1 cells (SK On, Samsung SDI), US-engineered PCS — and its failure to market it as a real commercial anomaly. Basis: no FEOC or non-Chinese-supply-chain marketing page, white paper or press release exists anywhere on its site or in trade press, while competitors with messier chains (Fluence, Prevalon) built entire campaigns on domestic content. Buyers screening for FEOC-robust supply must discover LS-ES on their own.",
+  "(High confidence) We assess the 2026 collateral shift toward string inverters as a strategic re-weighting from full-wrap integration toward PCS, components and services under the parent brand. Basis: the February 2026 brochure hierarchy, the parent exhibiting storage inverters at Intersolar NA, and the product economics — the AC-block line is a density generation behind the 5-8 MWh LFP standard and cannot win big merchant 4-hour projects on cost, while the PCS line is genuinely differentiated.",
+  "(Moderate confidence) We assess the realistic growth path as BESS attach to LS ELECTRIC's US data-center franchise rather than standalone merchant wins: the parent's order flow (Samsung Taylor, $115M/$70M/$64M data-center orders, Bloom hyperscale, Honeywell alliance naming BESS) creates entry points a Charlotte integrator could never open alone. No joint data-center-plus-BESS project has been announced — the thesis is unproven.",
+  "(Moderate confidence) We assess pipeline opacity as the biggest near-term flag: no new-name project announcement since December 2024, a services-and-milestones news flow since, and an anchor customer (Gore Street) that has signalled its US expansion may be done. Against that: the mid-tier shakeout (Powin's 2025 collapse) validates exactly the balance-sheet-backed, service-heavy posture LS-ES sells, and the $25B LS Group backing is real.",
+  "(Moderate confidence) We assess the NMC chemistry position as a niche differentiator with narrowing room: higher power density suits short-duration, power-dense applications (including data-center support), but US utility buyers increasingly spec LFP, and Korean NMC carries a structural cost premium even before tariffs. The absence of an announced next-generation container makes the integration business's five-year trajectory genuinely uncertain."
+ ],
+ "relationships": [
+  {
+   "slug": "samsung-sdi",
+   "type": "supplier",
+   "note": "Tier-1 NMC cells (E4D) in the AiON-ESS Energy Series.",
+   "context": "LS-ES's AiON-ESS Energy Series (2-4 hour, 2.31-2.57 MWh per unit) runs on Samsung SDI E4D or SK On M003A tier-1 NMC — the documented Korean cell chain behind what the dossier calls the cleanest structural FEOC story in the US mid-tier, deployed at Big Rock at 1.5 MW/3.5 MWh per container.",
+   "source": "https://www.ls-es.com/wp-content/uploads/2021/09/AiON-ESS-EnergySeries_SK_datasheet_092721.pdf",
+   "status": "active"
+  },
+  {
+   "slug": "bloom-energy",
+   "type": "other",
+   "note": "Parent-channel customer: LS ELECTRIC won a $34M Bloom hyperscale power order in Wyoming.",
+   "context": "August 2026: parent LS ELECTRIC won a $34M Bloom Energy power-equipment order for a hyperscale data center in Wyoming (a repeat order) — part of the parent's compounding US data-center franchise ($115M, $70M, $64M orders through 2026) that gives LS-ES potential BESS attach points it has yet to convert publicly.",
+   "source": "https://en.sedaily.com/finance/2026/08/18/ls-electric-wins-34-million-power-supply-deal-with-bloom",
+   "status": "active",
+   "since": "2026-08",
+   "scale": "$34M order (parent channel)"
+  },
+  {
+   "slug": "samsung-ct",
+   "type": "partner",
+   "note": "Collaboration named in LS-ES's 2025 year-in-review.",
+   "context": "LS-ES's 2025 year-in-review names Samsung C&T among its collaborations (with Honeywell and the Austin-area campus launch with LS ELECTRIC) — a Korean-ecosystem partnership channel; no specific project scope has been disclosed.",
+   "source": "https://www.ls-es.com/reflecting-on-one-of-our-biggest-years-ever-in-2025/",
+   "status": "active",
+   "since": "2025"
+  },
+  {
+   "slug": "fluence",
+   "type": "competitor",
+   "note": "Domestic-content marketing contrast: Fluence campaigns on the story LS-ES fails to tell.",
+   "context": "The dossier's anomaly: LS-ES has the cleanest structural FEOC position in the US mid-tier (Korean parent, Korean tier-1 cells, US-engineered PCS) yet markets none of it, while competitors with messier chains — Fluence, Prevalon — built entire campaigns on domestic content. Same buyer set, opposite commercial execution.",
+   "source": "Dossier competitive assessment — FEOC positioning",
+   "status": "active"
+  },
+  {
+   "slug": "tesla",
+   "type": "competitor",
+   "note": "The price ceiling of the clean-provenance segment LS-ES defines the floor of.",
+   "context": "For FEOC-robust supply, LS-ES defines the 'clean-provenance premium' segment: buyers who will pay above Chinese-content pricing but below what Tesla charges — making Tesla the price umbrella and the competitive ceiling for every LS-ES bid.",
+   "source": "Dossier competitive assessment — FEOC positioning",
+   "status": "active"
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Youn Seob 'Marcio' Lim",
+   "title": "President & CEO (since Jan 2024)",
+   "background": [
+    "30+ years at LS Electric Korea — power-equipment sales, then global solar/ESS sales 2017-2023",
+    "Relocated to Charlotte; his appointment re-Koreanized the top after the Fludder era",
+    "Chonnam National University EE"
+   ]
+  },
+  {
+   "name": "Richard Chleboski",
+   "title": "President (US)",
+   "background": [
+    "Co-founder of Evergreen Solar (CFO through IPO)",
+    "Ex-CFO of 24M Technologies and TeraDiode",
+    "MIT EE; Boston College MBA"
+   ]
+  },
+  {
+   "name": "Curt Feldman",
+   "title": "Vice President",
+   "background": [
+    "Parker Hannifin heritage — early US Li-ion storage projects",
+    "Commercial face on the Big Rock and Citizens Energy announcements"
+   ]
+  },
+  {
+   "name": "Steven Kang",
+   "title": "Director of Business Development & Sales",
+   "background": [
+    "LS Electric since 2016; Charlotte since 2019",
+    "Maintains the relationships with the major Korean battery vendors — the FEOC-relevant supply link"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "USD (LS-ES standalone undisclosed; parent reports KRW)",
+  "type": "private subsidiary of KRX-listed LS ELECTRIC (010120)",
+  "periods": [
+   {
+    "period": "LS-ES cumulative (2008-2026)",
+    "metrics": [
+     {
+      "name": "Installed base",
+      "actual": ">1.5 GW / 2.6 GWh across >300 projects; 40 AiON systems delivered; >15 storage technologies integrated (company-claimed, Feb 2026)",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "~+600 MW in the five years since the 2020 baseline of >900 MW — nearly all of it Big Rock"
+     }
+    ]
+   },
+   {
+    "period": "Parent LS ELECTRIC, Q2 2026",
+    "metrics": [
+     {
+      "name": "Results",
+      "actual": "Record quarter: revenue KRW 1.577T (~$1.15B); operating profit KRW 178.5B (~$130M); North America ~KRW 400B/quarter",
+      "expected": "n/a",
+      "verdict": "beat",
+      "result": "Cumulative order backlog >KRW 7T; ~KRW 1.3T North America sales in 2024; +$240M US capex committed by 2030 (Bastrop)"
+     }
+    ]
+   }
+  ],
+  "commentary": "LS-ES publishes no standalone revenue or headcount. Big Rock economics (customer side): Gore Street's 12-year fixed-price Resource Adequacy contract with J. Aron & Co. at >$14M/yr (~$165M), plus ~$84M of combined ITC sales — LS-ES retains life-of-project services. Big Rock's cell supplier was never publicly named."
+ },
+ "sources": [
+  {
+   "label": "Seoul Economic Daily — LS Electric $34M Bloom Energy hyperscale order; record Q2 2026",
+   "url": "https://en.sedaily.com/finance/2026/08/18/ls-electric-wins-34-million-power-supply-deal-with-bloom",
+   "date": "2026-08-18"
+  },
+  {
+   "label": "energy-storage.news — ees Europe 2026 launch roundup (LS-ES absent)",
+   "url": "https://www.energy-storage.news/ees-europe-2026-grid-forming-pcs-dc-coupling-ci-and-data-centre-solutions-among-product-launches-and-market-debuts/",
+   "date": "2026-06-25"
+  },
+  {
+   "label": "Electrical Mirror — $64M US data-center microgrid switchgear (parent)",
+   "url": "https://electricalmirror.net/ls-electric-secures-usd-64-million-contract-for-microgrid-infrastructure-at-u-s-data-center/",
+   "date": "2026-05-22"
+  },
+  {
+   "label": "AltEnergyMag — LS ELECTRIC America storage inverters at Intersolar NA 2026",
+   "url": "https://www.altenergymag.com/news/2026/02/23/ls-electric-america-highlighted-utility-scale-energy-storage-inverters-at-intersolar-north-america-2026/46801/",
+   "date": "2026-02-23"
+  },
+  {
+   "label": "LS-ES — overview brochure (installed-base figures, MSSP GEN 2.0)",
+   "url": "https://www.ls-es.com/wp-content/uploads/2026/02/LS-ES_Overview_Brochure_Digital_02_10_26.pdf",
+   "date": "2026-02-10"
+  },
+  {
+   "label": "LS-ES — 2025 year-in-review",
+   "url": "https://www.ls-es.com/reflecting-on-one-of-our-biggest-years-ever-in-2025/",
+   "date": "2025-12-18"
+  },
+  {
+   "label": "LS-ES/GlobeNewswire — Big Rock in CAISO commercial operations",
+   "url": "https://www.ls-es.com/ls-energy-solutions-in-commercial-operations-for-caiso-at-big-rock-200-mw-400-mwh-energy-storage-site/",
+   "date": "2025-09-04"
+  },
+  {
+   "label": "Investegate — Gore Street sale of US investment tax credits (~$84M)",
+   "url": "https://www.investegate.co.uk/announcement/rns/gore-street-energy-storage-fund--gsf/sale-of-us-investment-tax-credits/8828277",
+   "date": "2025-04"
+  },
+  {
+   "label": "Community Impact — LS Electric opens Bastrop production facility",
+   "url": "https://communityimpact.com/bastrop-cedar-creek/development/ls-electric-opens-first-north-american-production-facility-in-bastrop/",
+   "date": "2025-04"
+  },
+  {
+   "label": "energy-storage.news — GSF completes energisation of Big Rock",
+   "url": "https://www.energy-storage.news/gsf-completes-energisation-of-200mw-400mwh-california-bess/",
+   "date": "2025-01-22"
+  },
+  {
+   "label": "LS-ES — Citizens Energy / Wellesley 15 MWh completion",
+   "url": "https://www.ls-es.com/ls-energy-solutions-builds-battery-energy-storage-system-for-citizens-energy-corporation/",
+   "date": "2024-12-05"
+  },
+  {
+   "label": "energy-storage.news — Gore Street stackable RA contract for Big Rock",
+   "url": "https://www.energy-storage.news/gore-street-secures-stackable-resource-adequacy-contract-for-california-bess/",
+   "date": "2024-10-21"
+  },
+  {
+   "label": "LS-ES — Gore Street 200 MW/400 MWh partnership",
+   "url": "https://www.ls-es.com/ls-energy-solutions-and-gore-street-energy-storage-fund-partner-on-200-mw-400-mwh-energy-storage-project/",
+   "date": "2023-09-07"
+  },
+  {
+   "label": "LS-ES — Strata first AiON-ESS Energy Series deployment",
+   "url": "https://www.ls-es.com/ls-energy-solutions-announces-first-commercial-deployment-of-aion-ess-energy-series-with-strata-clean-energy",
+   "date": "2023-06-08"
+  },
+  {
+   "label": "LS-ES — Ameresco / US Army Fort Detrick microgrid BESS",
+   "url": "https://www.ls-es.com/ls-energy-solutions-partners-with-ameresco-to-provide-energy-storage-for-u-s-army-base-microgrid",
+   "date": "2022-05-12"
+  },
+  {
+   "label": "LS-ES — AiON-ESS Power Series datasheet (0523-v1)",
+   "url": "https://www.ls-es.com/wp-content/uploads/2023/05/AiON-ESS-Power_Series.pdf",
+   "date": "2023-05"
+  },
+  {
+   "label": "LS-ES — AiON-ESS Energy Series datasheet (SK/Samsung cells)",
+   "url": "https://www.ls-es.com/wp-content/uploads/2021/09/AiON-ESS-EnergySeries_SK_datasheet_092721.pdf",
+   "date": "2021-09"
+  },
+  {
+   "label": "Businesswire — Fludder CEO appointment (>900 MW base)",
+   "url": "https://www.businesswire.com/news/home/20201026005802/en/New-CEO-to-Take-LS-Energy-Solutions-to-the-Next-Level",
+   "date": "2020-10-26"
+  },
+  {
+   "label": "LS-ES — leadership team",
+   "url": "https://www.ls-es.com/our-leadership-team/"
+  },
+  {
+   "label": "LS-ES — homepage",
+   "url": "https://www.ls-es.com/"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 2
+}

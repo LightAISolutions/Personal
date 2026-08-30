@@ -1,0 +1,206 @@
+{
+ "schemaVersion": 1,
+ "id": "s154-listed-bess-suppliers--risk--2026-08-29",
+ "title": "§154-Listed BESS Suppliers — US Market-Access Risk",
+ "type": "risk",
+ "topic": "US market-access, policy, and counterparty risk across the covered FY2024 NDAA §154(b)-listed battery makers",
+ "generated": "2026-08-29",
+ "style": "intel-briefing",
+ "scope": {
+  "kind": "slugs",
+  "value": ["catl", "byd", "envision-energy", "eve-energy", "hithium"],
+  "rationale": "The five covered names on the FY2024 NDAA §154(b) list — the statutory perimeter of the US policy fence; Gotion is listed but not covered by a dossier."
+ },
+ "coverage": {
+  "companies": [
+   {"slug": "catl", "name": "CATL", "profileVersion": 5, "lastUpdated": "2026-08-29", "srcTotal": 44, "srcFirstPct": 32, "kpiNorm": true},
+   {"slug": "byd", "name": "BYD", "profileVersion": 5, "lastUpdated": "2026-08-29", "srcTotal": 33, "srcFirstPct": 15, "kpiNorm": true},
+   {"slug": "envision-energy", "name": "Envision Energy", "profileVersion": 2, "lastUpdated": "2026-08-29", "srcTotal": 24, "srcFirstPct": 25, "kpiNorm": false},
+   {"slug": "eve-energy", "name": "EVE Energy", "profileVersion": 3, "lastUpdated": "2026-08-29", "srcTotal": 16, "srcFirstPct": 44, "kpiNorm": true},
+   {"slug": "hithium", "name": "Hithium", "profileVersion": 6, "lastUpdated": "2026-08-29", "srcTotal": 51, "srcFirstPct": 45, "kpiNorm": true}
+  ],
+  "gaps": [
+   "Gotion is §154(b)-listed but has no dossier — the statutory set is six, this report covers five.",
+   "Statutory and tax mechanics (MACR floors, tariff stack, safe-harbor dates) are summarized from internal policy research — the Industry Guidance China-policy module — not from dossier citations; every such passage is inside an analysis-flagged section.",
+   "EVE's reported addition to the DoD §1260H list (Jun 2026, per Reuters as recorded in the dossier's developments) has no citable source entry in the dossier — treated throughout as reported, not established.",
+   "No cross-company financial comparison is drawn: the normalized-KPI overlay is not used (Envision carries none), and segment-level US revenue is not comparably disclosed by any of the five."
+  ],
+  "dataWindow": {"oldest": "2026-08-29", "newest": "2026-08-29"}
+ },
+ "bluf": "BOTTOM LINE UP FRONT: The US policy fence does not threaten the five covered §154-listed makers' growth — all five keep compounding outside it — but it decides HOW each one can touch the US market: through safe-harbored and merchant projects, US assembly as a tariff lever, or divest-to-comply structures. We assess the sharpest differentiator inside the set is financing and litigation posture, with Hithium the acute counterparty case and CATL the counter-case.",
+ "keyJudgments": [
+  {
+   "confidence": "high",
+   "cites": ["c18", "c19"],
+   "text": "We assess the policy fence bifurcates the five's US business into structures rather than direct sales: for 2026+ construction starts, systems built on their cells forfeit the storage ITC under the prohibited-foreign-entity rules that imported the §154(b) list into the tax code, leaving safe-harbored 2025 projects and merchant/tax-indifferent buyers as the addressable direct lanes."
+  },
+  {
+   "confidence": "high",
+   "cites": ["c2", "c3", "c4", "c10", "c16"],
+   "text": "We assess financing posture is the sharpest company-specific divergence in the set. CATL raised HK$41B in the largest IPO of 2025; Hithium has now failed three listing attempts (the second HKEX prospectus lapsed 27 Apr 2026 with no re-filing observed) and carries a controlling-shareholder equity freeze plus ~10 pending CATL suits; EVE's H-share prospectus lapsed once and was re-filed amid a CSRC probe. Counterparty-risk premium concentrates on the unlisted names."
+  },
+  {
+   "confidence": "moderate",
+   "cites": ["c20", "c21", "c11", "c24"],
+   "text": "We assess the divest-to-comply structure — AESC's US cell plant passing to Fixx Energy, feeding Fluence's domestic-content line and a 10 GWh Prevalon deal — is the only lane currently putting listed-maker technology inside FEOC-clean US supply chains at scale. Ford's CATL license is the only other working template, and the collapse of Hithium's Reliance licensing deal shows how fragile the license lane is."
+  },
+  {
+   "confidence": "moderate",
+   "cites": ["c5", "c19"],
+   "text": "We assess US assembly is a tariff lever, not a tax fix: Hithium's Texas plant has shipped since Aug 2025 and shortens delivery while cutting the dutiable base to cell value, but a listed maker's US output remains PFE-made for ITC purposes. Its value accrues to the merchant lane only."
+  },
+  {
+   "confidence": "high",
+   "cites": ["c13", "c9", "c12", "c1"],
+   "text": "We assess the fence redirects rather than caps growth: BYD's 11.275 GWh Masdar award, Hithium's Australia/Saudi/Europe run, CATL's 27.1% H1 2026 global ESS share and European sodium partnerships, and a 2025 cell market that nearly doubled to 612 GWh all sit outside US jurisdiction. The competitive cost of the fence is US reference fleets and bankability records, not volume."
+  },
+  {
+   "confidence": "moderate",
+   "cites": ["c8", "c7"],
+   "text": "We assess that in the one code-driven US category still open to contest (AI data-center buffering), the listed names are not setting terms: Hithium's AIDC line showed no named customers in the months after launch, and Jupiter Power — its US anchor account — planted domestic sodium supplier Peak Energy on precisely the chemistry Hithium markets as its next act."
+  }
+ ],
+ "sections": [
+  {
+   "id": "exposure",
+   "title": "The exposure map",
+   "kind": "table",
+   "read": "4 min",
+   "intro": "The five covered §154(b) names, their US positions, and the sharpest company-specific signal in each file. Statutory listing per the FY2024 NDAA §154(b) roster [c:c18]; the tax-code import of that roster per the FEOC rules [c:c19].",
+   "cols": ["Company", "Statutory position", "US footprint & live lanes", "Sharpest 2025-26 signal"],
+   "rows": [
+    ["CATL", "§154(b) by name [c:c18]", "No direct US BESS lane of note; technology enters via Ford's license-built LFP plant [c:c11]", "27.1% of global ESS batteries in H1 2026 (125 GWh) [c:c9]; HK$41B Hong Kong raise, the largest IPO of 2025 [c:c10]"],
+    ["BYD", "§154(b) by name [c:c18]", "US storage exposure minimal; growth concentrated in MENA/LatAm/Europe", "#1 global BESS supplier for 2025 per Benchmark (>60 GWh shipped) [c:c12]; 11.275 GWh Masdar round-the-clock award [c:c13]"],
+    ["Envision Energy", "§154(b) by name (as Envision/AESC) [c:c18]", "The set's only working FEOC-clean US lane: AESC's Smyrna TN plant, divested to Fixx Energy, feeds Fluence's domestic-content systems [c:c21] and a 10 GWh Prevalon deal [c:c20]", "AESC halted its Florence SC build citing policy/market uncertainty [c:c22] — the same policy stack cuts both ways"],
+    ["EVE Energy", "§154(b) by name [c:c18]", "US contracted demand was hit hard by Powin's Chapter 11 (25+ GWh of cumulative contracted demand) [c:c23]", "#3 global ESS cells FY2025, displaced from #2 by Hithium [c:c14]; H1 2026 profit guided +95-110% on the glut-to-tightness turn [c:c17]; LG/Tulip ITC §337 action opened a US patent front [c:c15]; H-share prospectus lapsed and re-filed [c:c16]"],
+    ["Hithium", "§154(b) by name [c:c18]", "Safe-harbored + merchant lanes via Jupiter Power (Trimount 2.8 GWh approved on Hithium 5.015 MWh units) [c:c6]; Texas assembly shipping since Aug 2025 [c:c5]", "Second HKEX prospectus lapsed 27 Apr 2026 — third failed listing attempt [c:c2]; ~10 pending CATL suits >RMB 240M and a controlling-shareholder equity freeze [c:c3]"]
+   ]
+  },
+  {
+   "id": "fence",
+   "title": "The fence, briefly",
+   "kind": "prose",
+   "read": "3 min",
+   "analysis": true,
+   "ps": [
+    "Four federal machines constrain the set, on four legal levers: tax (the prohibited-foreign-entity rules attached to the storage ITC, which incorporate the §154(b) roster by name [c:c19] [c:c18]), trade (the tariff stack on Chinese lithium-ion), defense procurement (the §154 DoD ban from Oct 1, 2027), and the domestic-content adder. The tax lever is decisive: a 2026-construction-start system on any of these five makers' cells fails the material-assistance cost floor and forfeits the entire ITC — a ~30%-of-capex swing. *(Assessment note: the cost-ratio arithmetic is summarized from internal policy research — the Industry Guidance China-policy module carries the mechanics with statutory citations; it is not re-derived from dossier sources here.)*",
+    "What the fence does not do is prohibit the sale. Safe-harbored 2025 construction starts keep their ITC, merchant and tax-indifferent buyers have no credit to lose, and none of the trade or tax levers touch the five's non-US business — which is where their 2025-26 growth actually happened [c:c1].",
+    "US soil does not cleanse the product: a listed maker's US-assembled output remains PFE-made for tax purposes [c:c19]. That is why Texas assembly functions as a tariff-and-logistics lever for the merchant lane [c:c5] while the only structure that has produced genuinely FEOC-clean US supply is ownership separation — the AESC/Fixx divestiture [c:c20]."
+   ]
+  },
+  {
+   "id": "counterparty",
+   "title": "The counterparty files",
+   "kind": "prose",
+   "read": "4 min",
+   "ps": [
+    "**Hithium** carries the set's acute file. The second HKEX prospectus lapsed on 27 Apr 2026 — the third failed listing attempt after the withdrawn A-share run and the lapsed March 2025 application — with no re-filing observed since [c:c2]. Chinese financial press reports ~10 pending CATL-initiated suits exceeding RMB 240M in claims and a controlling-shareholder equity freeze running to Feb 2029 [c:c3]. The lapsed prospectus itself is the primary public window into its financials [c:c4]. Against that: Top-2 2025 ESS cell shipments in a market that nearly doubled to 612 GWh [c:c1], the approved 2.8 GWh Trimount project anchoring its US fleet [c:c6], and a shipping Texas plant [c:c5].",
+    "**EVE Energy** is the swing file: the cycle turned violently in its favor — H1 2026 profit guided +95-110% [c:c17] — while its US-facing risk accumulated: the LG/Tulip patent action added an ITC Section 337 front [c:c15], the H-share prospectus lapsed and was re-filed amid a CSRC probe [c:c16], Powin's bankruptcy erased its largest US contracted position [c:c23], and its dossier records a reported addition to the DoD §1260H list (Jun 2026, per Reuters — reported, not established here).",
+    "**CATL** is the counter-case on financing — the HK$41B Hong Kong raise was the largest IPO of 2025 [c:c10] — and its US exposure is structurally different: technology reaches the US through Ford's license-built plant rather than through CATL-branded supply [c:c11]. **BYD** and **Envision** sit between: BYD's storage book is concentrated outside the US [c:c13] [c:c12], and Envision's US story is now the Fixx/AESC structure rather than its own brand [c:c20] [c:c21], with the Florence SC halt showing the cost side of the same policy stack [c:c22]."
+   ]
+  },
+  {
+   "id": "lanes",
+   "title": "The lanes that remain — as actually used",
+   "kind": "callout",
+   "read": "3 min",
+   "analysis": true,
+   "ps": [
+    "**1 — Safe-harbored pipeline.** The primary direct lane through 2027. Jupiter's Trimount (2.8 GWh on Hithium units, EFSB-approved Feb 2026) is the working example [c:c6].",
+    "**2 — Merchant / tax-indifferent buyers.** Nothing prohibits the sale; the seller must beat FEOC-clean rivals net of their ITC. Texas assembly helps this lane on duty base and delivery speed [c:c5] — and only this lane.",
+    "**3 — Divest-to-comply.** The structural escape that is actually producing US volume: AESC's Smyrna plant under Fixx Energy ownership supplies Fluence's domestic-content line (~50% of its US project cells) [c:c21] and a 3-year, 10 GWh Prevalon deal [c:c20].",
+    "**4 — License.** Ford's CATL-license plant is producing [c:c11]; Hithium's Reliance licensing deal collapsed and took the partner's cell program with it [c:c24]. One working template, one cautionary tale — treat every license pitch as contingent.",
+    "**5 — Non-US markets.** Where the growth is: Masdar's 11.275 GWh award [c:c13], CATL's H1 2026 share gains [c:c9], BYD's 2025 crown [c:c12]. The US fence costs reference fleets, not volume."
+   ]
+  }
+ ],
+ "indicators": [
+  {"date": "2026-08-29/30", "text": "BYD H1 2026 report (armed post-earnings refresh)", "confirms": "whether storage kept its margin profile through the price war — feeds Judgment 5"},
+  {"date": "by 2026-12-31", "text": "Treasury's year-end PFE regulations and entity tables", "confirms": "whether the licensing and divestiture structures (Judgments 3-4) survive tightened effective-control tests"},
+  {"date": "open", "text": "A Hithium HKEX re-filing (none observed since the 27 Apr 2026 lapse)", "confirms": "whether the financing constraint in Judgment 2 is easing or hardening"},
+  {"date": "H2 2026", "text": "EVE's H-share listing outcome and the CSRC probe's disposition", "confirms": "whether the set's second unlisted-path flag clears or joins Hithium's file"},
+  {"date": "before 2027-10-01", "text": "DFARS implementation detail for the §154 DoD ban", "confirms": "how far defense-adjacency risk reaches into contractor supply chains"},
+  {"date": "2026-2027", "text": "A second AESC-style divestiture by any listed maker", "confirms": "whether divest-to-comply becomes the set's standard US structure (Judgment 3)"}
+ ],
+ "limitations": [
+  "Statutory and tax mechanics are summarized from internal policy research (the Industry Guidance China-policy module), not re-derived from dossier citations — every such passage sits in an analysis-flagged section, and the two policy citations here (TrendForce on §154, Foley Hoag on the FEOC rules) carry the listing and the tax-code import, not the cost-ratio arithmetic.",
+  "Gotion is §154(b)-listed but uncovered — this report speaks for five of the statutory six.",
+  "Hithium's litigation and financing items rest on Chinese-language trade and financial press (Sina/CLS, Tencent News) as carried in its dossier; no English-language corroboration is cited.",
+  "EVE's reported DoD §1260H addition has no citable source entry in its dossier and is treated as reported, not established.",
+  "No cross-company financial comparison is drawn: the normalized-KPI overlay is unused (Envision carries none), and BESS-segment US revenue is not comparably disclosed by any of the five."
+ ],
+ "citations": [
+  {"id": "c1", "slug": "hithium", "company": "Hithium", "label": "ESS News — InfoLink 2025 cell shipments: 612 GWh market, rankings", "url": "https://www.ess-news.com/2026/02/09/infolink-2025-energy-storage-cell-shipments-jump-95-to-612-gwh-as-market-flips-from-glut-to-tightness/", "date": "2026-02-09", "party": "independent"},
+  {"id": "c2", "slug": "hithium", "company": "Hithium", "label": "Sina Tech / CLS — second HKEX prospectus lapsed Apr 27, 2026 (third failed listing attempt); no re-filing observed", "url": "https://finance.sina.com.cn/tech/roll/2026-05-12/doc-inhxrshk9966609.shtml", "date": "2026-05-12", "party": "independent"},
+  {"id": "c3", "slug": "hithium", "company": "Hithium", "label": "Tencent News — ~10 pending CATL-Hithium suits >RMB 240M; controlling-shareholder equity freeze (Feb 2026 - Feb 2029)", "url": "https://news.qq.com/rain/a/20260508A03FXV00", "date": "2026-05-08", "party": "independent"},
+  {"id": "c4", "slug": "hithium", "company": "Hithium", "label": "HKEX — Hithium application proof / prospectus (filed 27 Oct 2025)", "url": "https://www1.hkexnews.hk/app/sehk/2025/107807/documents/sehk25102700292.pdf", "date": "2025-10-27", "party": "disclosure"},
+  {"id": "c5", "slug": "hithium", "company": "Hithium", "label": "Energy-Storage.News — first shipments from Texas BESS assembly plant", "url": "https://www.energy-storage.news/chinese-battery-manufacturer-hithium-ships-first-units-from-texas-bess-assembly-plant/", "date": "2025-08", "party": "independent"},
+  {"id": "c6", "slug": "hithium", "company": "Hithium", "label": "Energy-Storage.News — Jupiter's Trimount 2.8 GWh wins Massachusetts EFSB approval (Hithium 5.015 MWh units)", "url": "https://www.energy-storage.news/jupiter-power-receives-approval-for-2-8gwh-massachusetts-bess/", "date": "2026-02-27", "party": "independent"},
+  {"id": "c7", "slug": "hithium", "company": "Hithium", "label": "Utility Dive — Jupiter Power signs sodium-ion supply with Peak Energy (720 MWh + up to 4 GWh reservation)", "url": "https://www.utilitydive.com/news/peak-energy-jupiter-sodium-ion-batteries/805784/", "date": "2025-11-18", "party": "independent"},
+  {"id": "c8", "slug": "hithium", "company": "Hithium", "label": "Hithium PR — AIDC solution US soft-launch at RE+ 2025 (8h + sodium 1h + AIDC lifespan model)", "url": "https://en.hithium.com/newsroom/latest/details/86.html", "date": "2025-09-10", "party": "company"},
+  {"id": "c9", "slug": "catl", "company": "CATL", "label": "CnEVPost — H1 2026 global ESS battery market share", "url": "https://cnevpost.com/2026/08/04/global-ess-battery-market-share-h1-2026/", "date": "2026-08-04", "party": "independent"},
+  {"id": "c10", "slug": "catl", "company": "CATL", "label": "CNBC — HKEX debut, biggest IPO of 2025", "url": "https://www.cnbc.com/2025/05/20/china-catl-hongkong-debut.html", "date": "2025-05-20", "party": "independent"},
+  {"id": "c11", "slug": "catl", "company": "CATL", "label": "electrive — Ford to produce first LFP cells in 2026 under CATL license", "url": "https://www.electrive.com/2026/06/18/ford-to-produce-first-lfp-cells-this-year-thanks-to-catl/", "date": "2026-06-18", "party": "independent"},
+  {"id": "c12", "slug": "byd", "company": "BYD", "label": "Energy-Storage.News — 2025 BESS shipments: BYD takes the crown (Benchmark)", "url": "https://www.energy-storage.news/2025-bess-cell-and-system-shipments-byd-takes-bess-crown-no-korean-firms-in-top-10-cell-suppliers/", "date": "2026-05", "party": "independent"},
+  {"id": "c13", "slug": "byd", "company": "BYD", "label": "ESS News — Masdar RTC 11.275 GWh HaoHan supply detail (Jul 2026)", "url": "https://www.ess-news.com/2026/07/13/byd-to-supply-11-275-gwh-for-masdars-abu-dhabi-rtc-project/", "date": "2026-07-13", "party": "independent"},
+  {"id": "c14", "slug": "eve-energy", "company": "EVE Energy", "label": "InfoLink via ESS News — FY2025 ESS cell ranking (EVE #3; market +95% to 612 GWh)", "url": "https://www.ess-news.com/2026/02/09/infolink-2025-energy-storage-cell-shipments-jump-95-to-612-gwh-as-market-flips-from-glut-to-tightness/", "date": "2026-02-09", "party": "independent"},
+  {"id": "c15", "slug": "eve-energy", "company": "EVE Energy", "label": "ESS News — LG/Tulip patent suit and ITC Section 337 complaint", "url": "https://www.ess-news.com/2026/07/27/lg-takes-eve-energy-patent-fight-to-us-court-trade-commission/", "date": "2026-07-27", "party": "independent"},
+  {"id": "c16", "slug": "eve-energy", "company": "EVE Energy", "label": "Gasgoo — HK prospectus lapse and re-filing", "url": "https://autonews.gasgoo.com/articles/news/eve-energy-responds-to-lapsed-hong-kong-prospectus-no-impact-on-ipo-timeline-2007794871366852609", "date": "2026-01-02", "party": "independent"},
+  {"id": "c17", "slug": "eve-energy", "company": "EVE Energy", "label": "EnergyTrend — H1 2026 profit alert (+95-110%)", "url": "https://www.energytrend.com/news/20260616-51606.html", "date": "2026-06-16", "party": "independent"},
+  {"id": "c18", "slug": "envision-energy", "company": "Envision Energy", "label": "TrendForce — NDAA FY24 §154 DoD battery ban naming six Chinese makers incl. Envision", "url": "https://www.trendforce.com/news/2024/01/22/news-six-companies-including-byd-and-catl-are-included-in-the-u-s-procurement-ban-list/", "date": "2024-01-22", "party": "independent"},
+  {"id": "c19", "slug": "envision-energy", "company": "Envision Energy", "label": "Foley Hoag — the prohibited-foreign-entity (FEOC) rules and battery storage", "url": "https://foleyhoag.com/news-and-insights/blogs/energy-and-climate-counsel/2026/july/the-prohibited-foreign-entity-(or-feoc)-rules-and-battery-storage/", "date": "2026-07-16", "party": "independent"},
+  {"id": "c20", "slug": "envision-energy", "company": "Envision Energy", "label": "Energy-Storage.News — AESC-Prevalon 10 GWh US domestic-content deal via Fixx structure", "url": "https://www.energy-storage.news/aesc-signs-10gwh-us-domestic-content-bess-cell-and-module-deal-with-system-integrator-prevalon/", "date": "2026-06-16", "party": "independent"},
+  {"id": "c21", "slug": "envision-energy", "company": "Envision Energy", "label": "ess-news — Fluence first US domestic-content shipments (~50% of US cells from AESC Smyrna)", "url": "https://www.ess-news.com/2025/09/05/fluence-announces-first-shipment-of-us-domestic-content-battery-storage-systems/", "date": "2025-09-05", "party": "independent"},
+  {"id": "c22", "slug": "envision-energy", "company": "Envision Energy", "label": "electrive — AESC halts Florence SC battery factory construction", "url": "https://www.electrive.com/2025/06/06/aesc-halts-battery-factory-construction-in-south-carolina/", "date": "2025-06-06", "party": "independent"},
+  {"id": "c23", "slug": "eve-energy", "company": "EVE Energy", "label": "ESS News — Powin Chapter 11 filing", "url": "https://www.ess-news.com/2025/06/11/us-battery-supplier-powin-files-for-bankruptcy/", "date": "2025-06-11", "party": "independent"},
+  {"id": "c24", "slug": "hithium", "company": "Hithium", "label": "Indian Chemical News — Reliance pauses cell push after Hithium licensing collapse (Jan 2026)", "url": "https://www.indianchemicalnews.com/battery/reliance-pauses-lithium-ion-battery-push-amid-china-tech-hurdle-says-report-28931", "date": "2026-01-12", "party": "independent"}
+ ],
+ "guidanceOverlays": [
+  {
+   "moduleId": "china-policy-stack-2026-08",
+   "sectionId": "levers",
+   "title": "Who the levers actually bite",
+   "ps": [
+    "Of the covered five on the §154(b) roster, **Hithium is the acute case**: captured by name and as a Chinese-organized company, with the thinnest balance sheet in the set — three failed listing attempts (the second HKEX prospectus lapsed 27 Apr 2026, no re-filing observed), a controlling-shareholder equity freeze to Feb 2029, and ~10 pending CATL suits. The tax lever's severity lands hardest where the financing cushion is thinnest.",
+    "**EVE** now carries a second statutory route per its dossier: a reported DoD §1260H addition (Jun 2026) — an independent SFE pathway on top of §154(b). **CATL and BYD** absorb the same levers on scale and non-US demand; **Envision** turned the defense lever's cost side into the set's only working FEOC-clean US lane by divesting AESC's Tennessee plant to Fixx Energy."
+   ]
+  },
+  {
+   "moduleId": "china-policy-stack-2026-08",
+   "sectionId": "interaction",
+   "title": "The interaction map, live",
+   "ps": [
+    "Every lane in this section has a named 2026 example among the covered five. Safe-harbored pipeline: Jupiter's Trimount — 2.8 GWh on Hithium 5.015 MWh units, EFSB-approved Feb 2026. Tariff engineering via US assembly: Hithium's Texas plant, shipping since Aug 2025 — duty on cell value, still PFE-made for tax. Compliant supply chain: AESC under Fixx ownership feeding Fluence's domestic-content line and a 10 GWh Prevalon deal. License: Ford/CATL producing; Hithium/Reliance collapsed.",
+    "The map's teaching point holds in practice: **no lane fixed the 2026+ ITC math for a listed maker's own brand** — the working structures either predate the fence (safe harbor), avoid the credit (merchant), or separate ownership (Fixx)."
+   ]
+  },
+  {
+   "moduleId": "bess-bankability-2026-08",
+   "sectionId": "counterparty",
+   "title": "Hithium's live file (Aug 2026)",
+   "ps": [
+    "**Tailwinds an IE credits:** Top-2 2025 ESS cell shipments in a 612 GWh market; the approved Trimount 2.8 GWh anchor project; a shipping Texas assembly plant; grid-forming deliveries compounding in Australia/Saudi/Europe.",
+    "**Headwinds an IE flags:** the second HKEX prospectus lapsed 27 Apr 2026 — the third failed listing attempt, with no re-filing observed; a controlling-shareholder equity freeze running to Feb 2029; ~10 pending CATL suits exceeding RMB 240M; prospectus-disclosed margin compression; and the FEOC overlay on all 2026+ US ITC projects.",
+    "**Peer flags in the same set:** EVE's lapsed-and-refiled H-share prospectus amid a CSRC probe, its LG/Tulip ITC §337 action, and a reported §1260H addition. **The counter-case:** CATL's HK$41B raise — financing strength is the widest spread inside the §154 set."
+   ]
+  },
+  {
+   "moduleId": "power-infra-aidc-2026-08",
+   "sectionId": "markets",
+   "title": "Where each listed maker actually sits",
+   "ps": [
+    "**Hithium:** merchant + safe-harbored only — the Jupiter fleet (Trimount approved) and urban NYC projects; zero regulated self-build presence. **Envision/AESC:** the set's only entry into the regulated, domestic-content lane — via the Fixx divestiture supplying Fluence (~50% of its US project cells) and Prevalon (10 GWh). **CATL:** reaches the US through Ford's license-built plant, not its own brand. **BYD/EVE:** effectively non-US stories for regulated purposes; EVE's largest US contracted position died with Powin's Chapter 11.",
+    "Account note: Jupiter — Hithium's US anchor — signed Peak Energy for sodium (720 MWh + up to 4 GWh reserved), planting a domestic supplier inside the account on the chemistry Hithium markets as its next act. Defending that account on economics, delivery record, and augmentation terms is the highest-leverage US sales action in the Hithium file."
+   ]
+  },
+  {
+   "moduleId": "utility-aidc-procurement-2026-08",
+   "sectionId": "channels",
+   "title": "Channel reality for the §154 set",
+   "ps": [
+    "For the covered listed makers, only two of the five channels are live in the US: **ERCOT merchant** and the merchant-adjacent safe-harbored pipeline (Jupiter/Trimount is the flagship). The three regulated channels — storage RFPs, all-source RFPs, and self-build — are effectively fenced for their branded product on prudence + FEOC grounds; the only listed-maker technology inside those channels arrives through the AESC/Fixx domestic-content structure.",
+    "The ride-through buffering channel is nominally open (no ITC at stake for many campus buyers) but contested: Hithium's AIDC line launched without named customers while the FEOC-clean AI-UPS category leader set the US terms. Qualify hard before spending pipeline time there."
+   ]
+  }
+ ]
+}

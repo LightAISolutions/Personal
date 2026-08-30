@@ -1,0 +1,284 @@
+{
+  "schemaVersion": 2,
+  "slug": "applied-digital",
+  "name": "Applied Digital",
+  "legalName": "Applied Digital Corporation (formerly Applied Blockchain, Inc.)",
+  "categories": ["developer"],
+  "hq": "Dallas, TX, USA",
+  "ticker": "NASDAQ: APLD",
+  "founded": "2021 (pivoted from Bitcoin hosting to AI-factory campuses; fiscal year ends May 31)",
+  "ownership": "public",
+  "employees": "Total not disclosed; 200+ per major campus",
+  "website": "https://www.applieddigital.com",
+  "summary": "BOTTOM LINE UP FRONT: Applied Digital holds the largest disclosed base-term lease backlog in the miner-pivot cohort — 1.4 GW of contracted critical IT across five 'AI Factory' campuses, ~$36B over 15-year take-or-pay base terms (~$86B if renewals exercise) — split between CoreWeave (400 MW, ~$11B, Polaris Forge 1 in Ellendale, ND) and a single unnamed 'high investment-grade US hyperscaler' that signed 810 MW / ~$20B across three campuses in FY2026 alone and now represents ~69% of the backlog. The identity of that hyperscaler has never been disclosed and no outlet has confirmed it. FY2026 (ended May 31): revenue $611.3M (+167%), adjusted EBITDA $107.2M, net loss $249.2M — with sell-side models so far behind the tenant-fit-out revenue that quarterly beats ran 46–148% above consensus. BACKGROUND: Dallas-based; founded 2021 out of Applied Blockchain; CEO Wes Cummins (ex-B. Riley & Co. president). The funding stack is the story's second half: $6.1B of project notes (9.25%/6.75%/7.00%), a $5B Macquarie perpetual preferred at 12.75% PIK with a 1.80x MOIC floor and 15% of the HPC equity, and debt that went $911M → ~$5.0B in one fiscal year. The GPU-cloud segment was spun out as ChronoScale (NASDAQ: CHRN, ~96% retained) in May 2026; 286 MW of legacy bitcoin hosting is retained. NVIDIA quietly exited its entire ~$177M equity stake in its Q4 2025 13F.",
+  "ecosystemRole": "We assess Applied Digital as the purest AI-factory landlord in this ecosystem — no GPU cloud (post-ChronoScale), no self-mining conversion story, just build-own-operate campuses on cheap northern-plains power leased for 15 years. For power-chain vendors it is a live, standardized procurement machine: the 'AI Factory franchise model' locks electrical and cooling partners into long-term supplier agreements, builds modular/prefab at PUE 1.18 with waterless direct-to-chip cooling (WUE ~0, 220+ days/year free cooling in North Dakota), and is marketing another 1.7 GW beyond the contracted 1.4 GW — plus a ~10% stake in Base Electron's planned 1.2 GW of gas generation and a $15M bet on Corintis microfluidic cold plates. Basis: company releases and trade coverage; derived lease economics run ~$1.65–1.83M per MW-year against ~$10M+/MW build costs.",
+  "productsAndServices": [
+    {
+      "name": "AI Factory campuses (HPC hosting — the core business)",
+      "category": "Data centers",
+      "description": "Build-own-operate campuses leased under ~15-year take-or-pay contracts: Polaris Forge 1 (Ellendale, ND — 400 MW to CoreWeave, ~$11B; 175 MW live as of July 2026), Polaris Forge 2 (Harwood, ND — 200 MW to an investment-grade hyperscaler, ~$5B, tenant ROFR on 800 MW more), Polaris Forge 3 (ND — 300 MW, ~$7.5B), Delta Forge 1 (Boyce, LA — 300 MW, ~$7.5B), and Delta Forge 2 (southern state — 210 MW, ~$5.2B) — the last three all with one unnamed 'high investment-grade' hyperscaler. The 'AI Factory franchise model' replicates a standardized design/construction/operations playbook campus to campus.",
+      "highlights": ["1.4 GW contracted critical IT; ~$36B base-term revenue, ~$86B with renewals; ~2.15 GW gross grid-connected power", "Q4 FY2026 net operating income at a 91% margin; management targets $1B annual NOI within five years, then $2B", "Delivery record: first 100 MW energized on schedule Q4 2025; second building (+75 MW) July 2026"],
+      "positioning": "Largest disclosed base-term backlog among the AI-DC landlords (vs Core Scientific ~$10.2B pre-AMD, TeraWulf $12.8B at YE25, IREN's $9.7B Microsoft deal); derived lease rates ~$1.65M (hyperscaler) to $1.83M (CoreWeave) per MW-year.",
+      "soldThrough": "15-year take-or-pay leases; project-level 144A notes and the Macquarie preferred finance construction against them.",
+      "targetSegments": ["Neoclouds (CoreWeave)", "One unnamed US high-IG hyperscaler (three campuses)", "Actively marketing 1.7 GW more across multiple states"],
+      "roadmap": "PF2 full 200 MW by 2027; Delta Forge 1 mid-2027; Polaris Forge 3 Aug 2027; Delta Forge 2 Q1 2028; PF1 fourth building (ELN-04, 150 MW) financed June 2026."
+    },
+    {
+      "name": "Legacy Data Center Hosting (bitcoin)",
+      "category": "Digital assets",
+      "description": "286 MW of bitcoin-mining hosting retained and running at full capacity: 106 MW Jamestown + 180 MW Ellendale, ND. FY2026 Q3 revenue $37.5M with ~$14M segment operating profit on only ~$120M of deployed assets.",
+      "highlights": ["Steady cash contributor — not a conversion story like the miner-pivots; no divestiture announced"],
+      "positioning": "A financing bridge, not the future: cash yield funds corporate overhead while AI Factory campuses absorb the balance sheet.",
+      "soldThrough": "Hosting contracts with mining customers.",
+      "targetSegments": ["Bitcoin miners"],
+      "roadmap": "No stated conversion or sale plans in company materials."
+    },
+    {
+      "name": "ChronoScale (spun-out GPU cloud, ~96% retained)",
+      "category": "GPU cloud",
+      "description": "The former Cloud Services segment — among the first to deploy NVIDIA H100s at scale in 2023, ~$75M TTM revenue — was separated in May 2026 via combination with EKSO Bionics and trades as ChronoScale Corporation (NASDAQ: CHRN); Applied Digital retained ~96–97%.",
+      "highlights": ["CEO framing: Applied Digital keeps 'long-duration contracts and predictable infrastructure returns'; ChronoScale takes the shorter-cycle cloud risk profile"],
+      "positioning": "The separation cleaned the landlord thesis — a public-market comp for what the pure-play lease book is worth without cloud volatility.",
+      "soldThrough": "Separate public entity; consolidated for now given the retained stake.",
+      "targetSegments": ["Enterprise and AI-native GPU compute customers"],
+      "roadmap": "Watch for deconsolidation or sell-down of the retained stake."
+    },
+    {
+      "name": "Power & cooling adjacencies",
+      "category": "Power & land",
+      "description": "A ~10% equity stake in Base Electron Corp. (1.2 GW of planned natural-gas generation), and a $15M investment leading Corintis' $25M round (Swiss microfluidic direct-to-chip cooling claiming up to 3x lower chip temperatures than standard cold plates).",
+      "highlights": ["Generation stake hedges grid-timing risk on the >5 GW extended power pipeline", "Corintis is an option on next-generation rack densities"],
+      "positioning": "Small positions, strategic signaling — the company keeps capex focused on buildings while optioning the power and cooling frontier.",
+      "soldThrough": "Minority investments.",
+      "targetSegments": ["Own campuses first"],
+      "roadmap": "Base Electron generation timeline undisclosed; Corintis tech not yet deployed at campus scale."
+    }
+  ],
+  "recentDevelopments": [
+    {
+      "date": "2026-07-27",
+      "category": "financial",
+      "headline": "FY2026: revenue $611.3M (+167%), adj. EBITDA $107.2M, net loss $249.2M; Q4 revenue $258.7M beat consensus by up to 148% (Zacks had $81.95M) on $152.4M of tenant fit-out; stock still fell on the debt load",
+      "read": "The quarter that crystallized the APLD paradox: massive beats driven by lumpy fit-out revenue nobody models, against a balance sheet that went from $911M to $5B of debt in twelve months.",
+      "source": "https://ir.applieddigital.com/news-events/press-releases/detail/159"
+    },
+    {
+      "date": "2026-07-01",
+      "category": "capacity",
+      "headline": "Second building delivered at Polaris Forge 1 — Building 2 Phase 1 (+75 MW) ready for service; campus live capacity 175 MW",
+      "read": "The delivery cadence keeps matching the promises — the execution reputation that unlocked three hyperscaler leases in four months.",
+      "source": "https://ir.applieddigital.com/news-events/press-releases/detail/157"
+    },
+    {
+      "date": "2026-06-09",
+      "category": "financial",
+      "headline": "$1.59B senior secured notes priced at par (7.00% due 2031) for PF1's fourth building; coupon trajectory across three project-note issues: 9.25% (Nov 2025, at 97) → 6.75% (Mar 2026, at 98) → 7.00% (par)",
+      "read": "The debt market repriced Applied Digital from high-yield speculation toward infrastructure credit in seven months — the same arc as the leases that back the notes.",
+      "source": "https://ir.applieddigital.com/news-events/press-releases/detail/156"
+    },
+    {
+      "date": "2026-06-08",
+      "category": "order-win",
+      "headline": "Delta Forge 2: 210 MW / ~$5.2B lease (fifth campus, new southern state) with the same high-IG hyperscaler — total contracted now 1.4 GW / ~$36B base (~$86B with renewals)",
+      "read": "Third lease from one still-unnamed counterparty in seven weeks — that hyperscaler now IS the backlog (~69%), a concentration the market can't underwrite without knowing the name.",
+      "source": "https://ir.applieddigital.com/news-events/press-releases/detail/154"
+    },
+    {
+      "date": "2026-05-20",
+      "category": "order-win",
+      "headline": "Polaris Forge 3: 300 MW / ~$7.5B lease (up to $18.2B with renewals) pushes contracted capacity past 1 GW; MDU power agreement still subject to regulatory approval",
+      "read": "The 1 GW milestone arrived with an asterisk — part of the contracted book still depends on utility regulatory clearance.",
+      "source": "https://ir.applieddigital.com/news-events/press-releases/detail/152"
+    },
+    {
+      "date": "2026-05-05",
+      "category": "other",
+      "headline": "ChronoScale separation completed — the GPU-cloud segment begins trading as CHRN; Applied Digital retains ~96–97%",
+      "read": "The landlord thesis purified: long-duration lease cash flows on one ticker, short-cycle cloud risk on another.",
+      "source": "https://ir.applieddigital.com/news-events/press-releases/detail/151"
+    },
+    {
+      "date": "2026-04-23",
+      "category": "order-win",
+      "headline": "Delta Forge 1 (Boyce, LA): 300 MW / ~$7.5B lease — the mystery hyperscaler's first southern campus; stock +25% on the week with the $300M Goldman bridge",
+      "read": "The franchise model proved portable out of North Dakota — and the spec-build risk taken at the January groundbreaking resolved in three months.",
+      "source": "https://ir.applieddigital.com/news-events/press-releases/detail/149"
+    },
+    {
+      "date": "2026-02-15",
+      "category": "other",
+      "headline": "NVIDIA's Q4 2025 13F reveals it exited its entire APLD stake (7.7M shares, ~$177M, held since the Sept 2024 $160M financing); shares fell ~8.4% after hours",
+      "read": "The single most negative un-announced datapoint of the period — the ecosystem kingmaker took its validation capital elsewhere even as the lease book compounded.",
+      "source": "https://www.tipranks.com/news/why-did-nvidia-sell-applied-digital-apld-and-buy-intel-new-13f-filing-reveals-changes"
+    },
+    {
+      "date": "2025-11-13",
+      "category": "financial",
+      "headline": "$2.35B 9.25% project notes priced (at 97) plus the second Macquarie preferred draw ($787.5M at 12.75% PIK); shares fell ~24% on the week",
+      "read": "The cost of building without an investment-grade balance sheet, priced in public: the market briefly asked whether the AI data-center debt party was over.",
+      "source": "https://ir.applieddigital.com/news-events/press-releases/detail/136"
+    },
+    {
+      "date": "2025-10-22",
+      "category": "order-win",
+      "headline": "First hyperscaler tenant: ~$5B, 15-year, 200 MW lease at Polaris Forge 2 with a US investment-grade hyperscaler holding a ROFR on the campus's other 800 MW",
+      "read": "The signing that ended the 18-month 'show me the lease' discount — and started the still-running guessing game about the tenant's identity.",
+      "source": "https://ir.applieddigital.com/news-events/press-releases/detail/132"
+    },
+    {
+      "date": "2025-06-02",
+      "category": "order-win",
+      "headline": "CoreWeave anchors Polaris Forge 1: ~$7B / 250 MW across two ~15-year leases (expanded to 400 MW / ~$11B on Aug 29)",
+      "read": "The deal that converted APLD from a story stock into a landlord with a bankable book — CoreWeave's own leveraged credit remains the caveat (later addressed with restructured guarantees and a $50M letter of credit).",
+      "source": "https://ir.applieddigital.com/news-events/press-releases/detail/123"
+    }
+  ],
+  "strategyRead": [
+    "(High confidence) We assess Applied Digital has executed the cleanest landlord conversion in the cohort: sell the cloud (ChronoScale), keep the bitcoin cash flow, and put every incremental dollar into 15-year take-or-pay leases. Basis: five campuses signed in 13 months, delivery milestones hit on schedule, and Q4 FY2026 NOI margin of 91% — the 'franchise model' language is corporate branding for a real, repeating playbook.",
+    "(High confidence) We assess counterparty concentration is the defining risk, in two layers. Basis: SEC filings show two customers = 100% of continuing revenue; the unnamed hyperscaler holds ~$25B (~69%) of the $36B backlog — an unverifiable credit until named — while CoreWeave (~31%) is itself a leveraged neocloud whose lease security Applied restructured with a $50M letter of credit, a tacit admission the landlord manages its anchor's credit risk.",
+    "(High confidence) We assess the capital structure is the price of speed and will define equity returns. Basis: ~$6.1B of project notes at 6.75–9.25%, the Macquarie preferred at 12.75% PIK with a 1.80x MOIC floor plus 15% of the HPC equity, shares outstanding up ~27% in a year, and a -$720M single-quarter FCF burn. The coupon compression across 2026 issues shows the market warming; the preferred remains the expensive tail that senior refinancing should eventually take out.",
+    "(Moderate confidence) We assess sell-side consensus is structurally unreliable for this name, making 'beats' and 'misses' poor signals. Basis: FY2026 revenue printed $611M against a Zacks full-year consensus that stood at $281M as late as April — tenant fit-out revenue (lumpy, pass-through-like) is the wedge; the market has learned to trade the debt line and NOI instead.",
+    "(Moderate confidence) We assess the next leg depends on power, not demand. Basis: 1.7 GW being marketed against a ~3 GW active / >5 GW extended utility-power pipeline, the Polaris Forge 3 MDU agreement still awaiting regulatory approval, and the Base Electron generation stake — the constraint the company itself hedges is grid timing. Collection gap: Delta Forge site states and the hyperscaler tenant identity remain undisclosed."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "AI Factory design (standardized across campuses)",
+      "specs": [
+        "Closed-loop, waterless, direct-to-chip liquid cooling; projected PUE 1.18; WUE near zero",
+        "North Dakota siting: 220+ days/year of free cooling; company-claimed $50–60M/yr electricity savings vs a comparable 100 MW facility, up to $2.7B over 30 years",
+        "Modular prefabricated construction with parallel building execution; dual-use training + inference; concurrently maintainable",
+        "Company framing: AI factories need 15–30x the power density of traditional data centers"
+      ],
+      "notes": "The Corintis investment (microfluidic cold plates, claimed 3x lower chip temperatures) is the hedge on next-generation rack density."
+    },
+    {
+      "product": "Campus roster (contracted state, mid-2026)",
+      "specs": [
+        "Polaris Forge 1, Ellendale ND: 400 MW CoreWeave; buildings 100+150+150 MW + ELN-04 (150 MW) financed; 175 MW live July 2026; campus scalable toward 1 GW",
+        "Polaris Forge 2, Harwood ND: 200 MW leased (IG hyperscaler), $3B campus, >900 acres, 1 GW design, tenant ROFR on 800 MW; full 200 MW by 2027",
+        "Polaris Forge 3 (ND): 300 MW / ~430 MW utility power; ops from Aug 2027; MDU power agreement pending regulatory approval",
+        "Delta Forge 1, Boyce LA: 430 MW campus, 300 MW leased, ops mid-2027; Delta Forge 2 (southern state): 210 MW, ops Q1 2028",
+        "Totals: 1.4 GW critical IT contracted / ~2.15 GW gross utility power; ~3 GW active + >5 GW extended power pipeline"
+      ],
+      "notes": "Derived economics: leases ~$1.65–1.83M per MW-year; debt raised per MW ≈ $9.4–10.8M — consistent with ~$10M+/MW all-in build cost."
+    },
+    {
+      "product": "Legacy bitcoin hosting",
+      "specs": [
+        "286 MW at full capacity: Jamestown ND 106 MW + Ellendale ND 180 MW",
+        "~$14M quarterly segment operating profit on ~$120M of deployed assets (FY26 Q3)"
+      ],
+      "notes": "Retained deliberately — high-yield cash on depreciated assets."
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Wes Cummins",
+      "title": "Chairman & Chief Executive Officer (co-founder)",
+      "photo": "images/execs/applied-digital-cummins.png",
+      "background": [
+        "President of B. Riley & Co. (2002–2011); analyst at Nokomis Capital (2012–2020); founded 272 Capital LP (2020), sold it to B. Riley Financial and served as President of B. Riley Asset Management until Feb 2024 — overlapping his APLD tenure, the nexus Wolfpack Research attacked in its 2023 short report",
+        "Board member, Sequans Communications and Vishay Precision Group; BSBA, Washington University in St. Louis",
+        "Signature line: 'the real constraint in this industry is execution'"
+      ]
+    },
+    {
+      "name": "Jason Zhang",
+      "title": "President & Co-founder (President since Jan 2026; CSO from Aug 2025)",
+      "photo": "images/execs/applied-digital-zhang.png",
+      "background": [
+        "Founded Valuefinder (2019, tech investment/advisory); investment teams at Sequoia Capital (AI, blockchain, digital infrastructure) and MSD Capital",
+        "B.A. economics, Harvard; credited as instrumental in strategic direction since the 2021 founding"
+      ]
+    },
+    {
+      "name": "Saidal Mohmand",
+      "title": "Chief Financial Officer",
+      "photo": "images/execs/applied-digital-mohmand.png",
+      "background": [
+        "EVP Finance at Applied Digital before the CFO seat; Director of Research at 272 Capital LP (Cummins' fund) — a governance datapoint bears track",
+        "Earlier research at GrizzlyRock Capital; B.B.A. Finance & Accountancy, Western Michigan",
+        "Owns the project-notes ladder, Macquarie preferred, and the $550M revolver"
+      ]
+    },
+    {
+      "name": "Laura Laltrello",
+      "title": "Chief Operating Officer (since Jan 2025)",
+      "photo": "images/execs/applied-digital-laltrello.png",
+      "background": [
+        "VP/GM Building Automation Services at Honeywell (global data-center clients); VP/GM Data Center Services at Lenovo",
+        "~20 years of data-center operations — brought in exactly when the delivery cadence became the investment case"
+      ]
+    },
+    {
+      "name": "Todd Gale",
+      "title": "Chief Development Officer",
+      "photo": "images/execs/applied-digital-gale.png",
+      "background": [
+        "45+ years in data-center design/engineering/construction; ex-VP Engineering at Flexential; ex-SVP at Terremark Worldwide",
+        "Designed North America's first Uptime Institute Tier IV Design Certified colocation data center"
+      ]
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "type": "public (fiscal year ends May 31)",
+    "periods": [
+      {
+        "period": "FY2025 (ended May 31, 2025)",
+        "metrics": [
+          {"name": "Revenue", "actual": "$144.2M continuing ops (+6%); Data Center Hosting $142.3M; Cloud reclassified to discontinued", "expected": "Q4: $42.9M MarketBeat consensus vs ~$51M printed", "verdict": "beat", "result": "The pre-lease year: Q3 FY2025 missed revenue by 16% and EPS by 48% — shares -32% in a week during the 'show me the lease' phase"},
+          {"name": "Net loss / Adj. EBITDA", "actual": "-$161.0M (-$0.80) / $19.6M", "expected": "", "verdict": "inline", "result": "Debt $688M, cash $121M, capex $682M at year-end — the last small-balance-sheet year"}
+        ],
+        "commentary": "Expectations honesty: Applied Digital issues no formal revenue/EPS guidance — management guides on capacity milestones and NOI targets, so consensus (Investing.com/Zacks/StockStory, named per quarter) is the only benchmark."
+      },
+      {
+        "period": "FY2026 (ended May 31, 2026)",
+        "metrics": [
+          {"name": "Revenue", "actual": "$611.3M (+167%): services $496.6M + rental $114.7M", "expected": "Zacks FY consensus stood at just $280.9M as late as April 2026", "verdict": "beat", "result": "Every quarter beat hugely — Q1 +~27% vs consensus, Q2 +46%, Q3 +68%, Q4 +148% (vs Zacks) — because models never caught the tenant fit-out revenue ($152.4M in Q4 alone)"},
+          {"name": "Profitability", "actual": "Net loss -$249.2M (-$0.91); adj. net income +$36.1M (+$0.11); adj. EBITDA $107.2M; NOI $90.4M at 91% margin", "expected": "Q4 GAAP EPS -$0.39 vs ~-$0.09 modeled", "verdict": "miss", "result": "GAAP losses widened on interest and preferred dividends even as adjusted figures turned positive"},
+          {"name": "Balance sheet", "actual": "Debt $911M → ~$5.0B in one year; cash + restricted $4.2B (largely construction/debt-service reserves); FY capex $2.87B; Q3 FCF -$720M in a single quarter", "expected": "", "verdict": "miss", "result": "Shares out 224.9M → 285.4M (+27%); stock fell after both the Q3 print (FCF burn) and Q4 (debt load) despite the beats"},
+          {"name": "Backlog", "actual": "1.4 GW / ~$36B base-term contracted (~$86B with renewals) across five campuses", "expected": "", "verdict": "beat", "result": "810 MW / ~$20.2B signed with one unnamed hyperscaler in FY2026 alone; CoreWeave ~$11B; actively marketing 1.7 GW more"}
+        ],
+        "commentary": "The market's verdict all year: believe the leases, fear the leverage. Street: 15 Buy / 2 Hold, average target ~$68–73 vs ~$30 — with Zacks a lone Strong Sell on 12x forward P/S."
+      },
+      {
+        "period": "Capital structure (as of mid-2026)",
+        "metrics": [
+          {"name": "Project notes", "actual": "$2.35B 9.25% due 2030 (at 97) + $2.15B 6.75% due 2031 (at 98) + $1.59B 7.00% due 2031 (par) — all 144A at campus-level opcos", "expected": "", "verdict": "inline", "result": "Coupon compression across seven months as delivery de-risked the story"},
+          {"name": "Macquarie perpetual preferred", "actual": "Up to $5.0B at 12.75% PIK/cash (+87.5bps yrs 5–6), 1.80x MOIC liquidation preference, 15% of HPC-segment common equity; ~$900M drawn, ~$4.1B available", "expected": "", "verdict": "inline", "result": "The expensive layer — institutional validation purchased at private-credit pricing"},
+          {"name": "Corporate", "actual": "$450M 2.75% converts (2024); $550M revolver at SOFR+225 (May 2026); Goldman bridges; $160M 2024 placement incl. NVIDIA & Related — NVIDIA exited the entire stake by Q4 2025 (13F)", "expected": "", "verdict": "inline", "result": "Next earnings: fiscal Q1 2027 scheduled Oct 14, 2026 (Investing.com; Street ~-$0.25 EPS / $111M revenue)"}
+        ],
+        "commentary": "Litigation state: the Wolfpack-era McConnell class action was stayed and administratively closed pending the motion to dismiss (Sep 2025); the derivative suit was dismissed in 2024."
+      }
+    ]
+  },
+  "sources": [
+    {"label": "Applied Digital FY2026 Q4/full-year results (SEC 8-K Ex-99.1)", "url": "https://www.sec.gov/Archives/edgar/data/1144879/000114487926000044/apldq426earningsreleaseasf.htm", "date": "2026-07-27"},
+    {"label": "Applied Digital — FY2026 results press release", "url": "https://ir.applieddigital.com/news-events/press-releases/detail/159", "date": "2026-07-27"},
+    {"label": "Applied Digital — second PF1 building delivered (175 MW live)", "url": "https://ir.applieddigital.com/news-events/press-releases/detail/157", "date": "2026-07-01"},
+    {"label": "Applied Digital — $1.59B 7.00% notes priced (ELN-04)", "url": "https://ir.applieddigital.com/news-events/press-releases/detail/156", "date": "2026-06-09"},
+    {"label": "Applied Digital — Delta Forge 2 210 MW lease (1.4 GW / ~$36B)", "url": "https://ir.applieddigital.com/news-events/press-releases/detail/154", "date": "2026-06-08"},
+    {"label": "StockTitan — Polaris Forge 3 lease, >1 GW milestone", "url": "https://www.stocktitan.net/news/APLD/applied-digital-reaches-significant-milestone-surpassing-1-gw-of-3t4jxvx210lc.html", "date": "2026-05-20"},
+    {"label": "Applied Digital — ChronoScale separation completed (CHRN)", "url": "https://ir.applieddigital.com/news-events/press-releases/detail/151", "date": "2026-05-05"},
+    {"label": "Applied Digital — Delta Forge 1 hyperscaler lease (~$7.5B)", "url": "https://ir.applieddigital.com/news-events/press-releases/detail/149", "date": "2026-04-23"},
+    {"label": "StockStory (Yahoo) — Q3 FY26: market keys on $720M FCF burn", "url": "https://finance.yahoo.com/markets/stocks/articles/why-applied-digital-apld-stock-001347220.html", "date": "2026-04-09"},
+    {"label": "TipRanks — NVIDIA exits entire APLD stake (13F)", "url": "https://www.tipranks.com/news/why-did-nvidia-sell-applied-digital-apld-and-buy-intel-new-13f-filing-reveals-changes", "date": "2026-02-15"},
+    {"label": "SEC 10-Q (period ended Nov 30, 2025) — concentration, dilution, debt detail", "url": "https://www.sec.gov/Archives/edgar/data/1144879/000114487926000006/apld-20251130.htm", "date": "2026-01"},
+    {"label": "GlobeNewswire — $2.35B 9.25% notes pricing", "url": "https://www.globenewswire.com/news-release/2025/11/14/3187967/0/en/", "date": "2025-11-14"},
+    {"label": "Motley Fool — why APLD shares got crushed (notes + Macquarie draw week)", "url": "https://www.fool.com/investing/2025/11/13/why-shares-of-applied-digital-are-getting-crushed", "date": "2025-11-13"},
+    {"label": "CNBC — $5B AI-factory lease with unnamed US hyperscaler", "url": "https://www.cnbc.com/2025/10/22/applied-digital-signs-5-billion-ai-factory-lease-with-us-based-hyperscaler.html", "date": "2025-10-22"},
+    {"label": "Applied Digital — Polaris Forge 2 $5B lease", "url": "https://ir.applieddigital.com/news-events/press-releases/detail/132", "date": "2025-10-22"},
+    {"label": "The Register — CoreWeave's $7B North Dakota deal sized (~48k Blackwell GPUs)", "url": "https://www.theregister.com/2025/06/02/coreweave_applied_digital_nd/", "date": "2025-06-02"},
+    {"label": "Applied Digital — 250 MW CoreWeave lease", "url": "https://ir.applieddigital.com/news-events/press-releases/detail/123", "date": "2025-06-02"},
+    {"label": "Applied Digital — North Dakota TCO report (PUE 1.18, WUE ~0)", "url": "https://ir.applieddigital.com/news-events/press-releases/detail/124", "date": "2025-06-17"},
+    {"label": "Applied Digital — Macquarie $5.0B perpetual-preferred partnership", "url": "https://ir.applieddigital.com/news-events/press-releases/detail/117", "date": "2025-01-14"},
+    {"label": "Yahoo Finance — Wolfpack Research short report coverage", "url": "https://finance.yahoo.com/news/applied-digital-shares-tumble-wolfpack-161511476.html", "date": "2023-07-06"},
+    {"label": "Robbins Geller — McConnell v. Applied Digital class-action page", "url": "https://www.rgrdlaw.com/cases-applied-digital-corporation-class-action-lawsuit-apld.html"},
+    {"label": "Applied Digital — AI Factories (campus/building table)", "url": "https://www.applieddigital.com/ai-factories"},
+    {"label": "Applied Digital — executive team", "url": "https://ir.applieddigital.com/company-information/executive-team"},
+    {"label": "Investing.com — APLD earnings calendar (Q1 FY27: Oct 14, 2026)", "url": "https://www.investing.com/equities/applied-blockchain-earnings"}
+  ],
+  "lastUpdated": "2026-08-21",
+  "profileVersion": 1
+}

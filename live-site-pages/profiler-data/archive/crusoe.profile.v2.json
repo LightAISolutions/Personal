@@ -1,0 +1,352 @@
+{
+  "schemaVersion": 2,
+  "slug": "crusoe",
+  "name": "Crusoe",
+  "legalName": "Crusoe Energy Systems LLC",
+  "categories": [
+    "neocloud",
+    "developer"
+  ],
+  "hq": "Denver, CO, USA",
+  "founded": "2018",
+  "ownership": "private (~$30B round in talks, July 2026)",
+  "employees": "not published",
+  "website": "https://www.crusoe.ai",
+  "summary": "BOTTOM LINE UP FRONT: Crusoe is the archetypal power-first AI data-center developer — builder of the Stargate Abilene flagship (1.2 GW for Oracle/OpenAI, first phase live within a year of groundbreaking) plus a new 900 MW Microsoft campus next door, with ~4.9 GW contracted against a claimed 40+ GW pipeline and a valuation that ran $2.8B → >$10B → ~$30B-in-talks within twenty months on ~$500M of estimated 2025 revenue. BACKGROUND: Founded 2018 as a flare-gas bitcoin miner; sold that business to NYDIG (March 2025) to become 'the energy-first AI factory company.' The energy stack is the deepest of any developer: 29 GE Vernova aeroderivative turbines (~1 GW), ~750 MW of Bergen reciprocating engines, a reported 4.5 GW Engine No. 1 gas JV, 5 GW of ON.energy medium-voltage battery UPS, 12 GWh of Form Energy iron-air storage, and two nuclear plays (Blue Energy gas-to-nuclear conversion up to 1.5 GW; Aalo microreactors). The counter-narrative is equally concrete: Oracle/OpenAI stopped expanding at Abilene (Microsoft took the orphaned ~700-900 MW), Google managed Crusoe off the 1.8 GW Wyoming project over cost/timeline concerns, and Texas permitting for its gas fleet runs through minor-permit pathways now under press scrutiny.",
+  "ecosystemRole": "We assess Crusoe as the purest test of whether 'energy-first' development is a durable business or a leveraged construction cycle — and as one of the most instructive buyer accounts in this file for power and storage vendors. Basis: its procurement list reads like this report's supplier index (GE Vernova turbines, Bergen engines, ON.energy MV-BESS at 5 GW — one of the largest battery-UPS commitments anywhere, Form Energy iron-air, Blue Energy and Aalo nuclear), and its build speed (200+ MW energized in under a year at Abilene) is the industry's proof that behind-the-fence generation beats the interconnection queue. The risk side is customer concentration in its most acute form: single-customer decisions reshaped the company twice in 2026 (Oracle/OpenAI halting Abilene expansion; Google ejecting it from Wyoming).",
+  "productsAndServices": [
+    {
+      "name": "AI-factory campus development (design-build-operate)",
+      "description": "The core business: Abilene Campus 1 (1.2 GW, 8 buildings, ~4M sq ft for Oracle/OpenAI — first phase live September 2025, each building sized for up to 50,000 GB200 NVL72s), Abilene Campus 2 (900 MW for Microsoft, two 336 MW-IT-load buildings, first energized mid-2027, bringing the site to 2.1 GW), Childress TX with Lancium (1.0 GW, construction from Q3 2026), plus two unnamed Texas campuses and one Missouri campus under contract, and a reported ~1.6 GW Meta agreement across Childress and Warrenton MO. Financing via JVs (Blue Owl/Primary Digital $15B at Abilene; $7.1B JPMorgan-led construction loan).",
+      "positioning": "The fastest large-scale builder in the sector — DCD's North American Data Center Project of the Year. The merchant-developer model (The Information: ~$30B capex through 2030 with ~$18B expected from selling development stakes) means Crusoe flips assets as much as it operates them.",
+      "soldThrough": "Anchor-tenant leases (Oracle 15-year at Abilene; Microsoft; Meta reported) via JV-owned buildings.",
+      "targetSegments": [
+        "Hyperscalers and frontier labs needing gigawatt campuses on compressed timelines"
+      ],
+      "roadmap": "Contracted ~4.9 GW; pipeline claimed >40 GW (an 8:1 aspiration ratio); Wyoming (1.8→10 GW ambition) lost to Google's direct management."
+    },
+    {
+      "name": "Behind-the-fence energy platform (Power Peninsula)",
+      "description": "The differentiator: 29 GE Vernova LM2500XPRESS turbines (~1 GW, SCR-equipped, 5-minute start), ~750 MW of Bergen Engines gas reciprocating units (deliveries through 2027, with Piller dynamic stabilization), a reported 4.5 GW Engine No. 1/GE Vernova gas JV, 5 GW of ON.energy 'AI UPS' medium-voltage BESS (commissioning 2026-27, ERCOT ride-through validated), 12 GWh of Form Energy iron-air 100-hour storage (from 2027), solar/wind/grid integration, and nuclear optionality (Blue Energy: gas bridge 2028 → nuclear 2031 at Port of Victoria; Aalo: 10 MWe reactor pilots toward 50 MWe plants by 2029).",
+      "positioning": "No other developer publishes an energy stack this deep — it is simultaneously the sector's biggest showcase for bridge-power vendors and its most gas-dependent 'clean' brand (the flare-gas identity was sold with the bitcoin business; carbon capture remains a plan).",
+      "soldThrough": "Owned/JV generation serving its own campuses; Power Peninsula multi-source integration.",
+      "targetSegments": [
+        "Its own campuses; >20 GW of energy projects claimed in development"
+      ],
+      "roadmap": "The Texas Tribune documented the permitting exposure: Abilene's plant runs on minor 'permit by rule' instruments, with a pending major permit for 41 more turbines that would rank among Texas's largest fossil plants."
+    },
+    {
+      "name": "Crusoe Cloud & modular (Spark, Edge Zones)",
+      "description": "GPU cloud (GB200/B200/H200/H100, AMD MI355X/MI300X; managed Kubernetes/Slurm; customers include Figure AI, Cursor, Together AI, Windsurf; 99.98% uptime cited) plus Crusoe Industries manufacturing (Arvada CO and Tulsa OK factories; Spark modular data centers, power distribution centers, switchgear) and Edge Zones (Spark-based cloud zones deployable in ~three months). The Redwood Materials microgrid (20 MW / second-life EV batteries + solar, 24 Spark units) is the flagship distributed deployment.",
+      "positioning": "Sacra frames CoreWeave as the scale neocloud and Crusoe as the energy-differentiated one; cloud bookings grew 5x in the first three quarters of 2025 — but the developer business, not cloud ARR, carries the valuation.",
+      "soldThrough": "Cloud contracts; modular product sales; sovereign deployments.",
+      "targetSegments": [
+        "AI-native startups and labs",
+        "Distributed/sovereign compute"
+      ],
+      "roadmap": "Brighton, CO modular factory (~$200M+) targets full operation Q3 2026 — the 'grab-and-go' pivot Forbes profiled."
+    }
+  ],
+  "recentDevelopments": [
+    {
+      "date": "2026-07-30",
+      "category": "partnership",
+      "headline": "Aalo Atomics partnership targets the first nuclear-powered AI factory — 10 MWe pilot at Idaho National Laboratory in 2027, 50 MWe plants at Crusoe sites by end-2029",
+      "read": "The second nuclear play in nine months; ON.energy's 5 GW AI-UPS deal landed nine days earlier — the energy stack keeps compounding.",
+      "source": "https://www.crusoe.ai/resources/newsroom/crusoe-and-aalo-atomics-form-strategic-partnership-with-goal-of-deploying-first-nuclear-powered-ai-factory"
+    },
+    {
+      "date": "2026-07-15",
+      "category": "capacity",
+      "headline": "Childress, TX campus with Lancium — 1.0 GW at full scale, construction from Q3 2026, for an unnamed hyperscaler (Meta per Bloomberg's ~1.6 GW two-site report)",
+      "read": "The Abilene partnership structure (Lancium land/energy, Crusoe design-build-operate) replicated — the model is productizing.",
+      "source": "https://www.crusoe.ai/resources/newsroom/crusoe-and-lancium-announce-1-gigawatt-ai-data-center-campus-in-childress-texas"
+    },
+    {
+      "date": "2026-07-02",
+      "category": "financial",
+      "headline": "Bloomberg: Crusoe in talks to raise ~$3B at ~$30B valuation — roughly triple the October 2025 Series E mark",
+      "read": "Against ~$500M estimated 2025 revenue, the discussed valuation is ~60x trailing — the entire mark hinges on a projected 4x revenue jump in 2026 from Stargate/Microsoft execution.",
+      "source": "https://www.bloomberg.com/news/articles/2026-07-02/crusoe-in-talks-to-raise-3-billion-in-round-that-may-triple-firm-s-value"
+    },
+    {
+      "date": "2026-06-10",
+      "category": "other",
+      "headline": "Wyoming exit: Google pushed Crusoe off the 1.8 GW Tallgrass project over construction-cost and timeline concerns; Crusoe had demobilized ~2 months before disclosure",
+      "read": "The sharpest independent counter to the execution story — no signed customer agreement ever existed, and the project continues without Crusoe as Google's Project Tembo.",
+      "source": "https://finance.yahoo.com/sectors/technology/articles/crusoe-exited-1-8-gw-180819575.html"
+    },
+    {
+      "date": "2026-06-03",
+      "category": "partnership",
+      "headline": "Bergen Engines ~750 MW reciprocating-engine agreement (438 MW firm + 310 MW LOI), deliveries through 2027, with Piller dynamic power stabilization",
+      "read": "Diversifies the generation stack beyond turbines — engines plus flywheel-class stabilization address the GPU transient problem at the generation side.",
+      "source": "https://www.crusoe.ai/resources/newsroom/bergen-engines-signs-approx-750mw-u-s-power-agreement-with-crusoe-for-ai-data-centers"
+    },
+    {
+      "date": "2026-03-27",
+      "category": "capacity",
+      "headline": "900 MW Abilene Campus 2 announced for Microsoft — two 336 MW-IT buildings, 900 MW on-site plant plus MV battery storage, first building mid-2027",
+      "read": "The silver lining of the Oracle/OpenAI expansion halt (Bloomberg, March 24): Microsoft leased the orphaned capacity — anchor churn resolved by an even bigger anchor.",
+      "source": "https://www.crusoe.ai/resources/newsroom/crusoe-announces-new-900-mw-ai-factory-campus-in-abilene-texas-to-support-microsoft-ai-infrastructure"
+    },
+    {
+      "date": "2026-03-24",
+      "category": "partnership",
+      "headline": "Form Energy: 12 GWh of iron-air batteries (up to 100-hour duration) from 2027; Redwood Materials microgrid expanded to 20 MW / 24 Spark units",
+      "read": "Long-duration storage enters the AI-campus stack — the 'Bring Your Own Capacity' framing turns multi-day storage into interconnection currency.",
+      "source": "https://www.crusoe.ai/resources/newsroom/form-energy-crusoe-announce-agreement-for-12-gigawatt-hours-of-iron-air-batteries-for-ai-data-centers"
+    },
+    {
+      "date": "2025-10-24",
+      "category": "financial",
+      "headline": "Series E: $1.375B at >$10B valuation (Valor and Mubadala co-led; NVIDIA, Fidelity, Founders Fund in); power pipeline claimed >45 GW",
+      "read": "The round that repriced the company 3.6x in ten months; an employee tender at ~$13B followed within weeks.",
+      "source": "https://www.crusoe.ai/resources/newsroom/crusoe-announces-series-e-funding"
+    },
+    {
+      "date": "2025-09-30",
+      "category": "capacity",
+      "headline": "Stargate Abilene phase 1 live on Oracle Cloud Infrastructure — first two buildings energized within one year of construction start",
+      "read": "The proof point the whole thesis rests on: gigawatt-class AI capacity delivered at behind-the-fence speed.",
+      "source": "https://www.crusoe.ai/resources/newsroom/crusoe-announces-flagship-abilene-data-center-is-live"
+    },
+    {
+      "date": "2025-03-25",
+      "category": "other",
+      "headline": "Bitcoin/flare-gas business sold to NYDIG (~135 employees transferred; lifetime: 2.7M tons GHG mitigated, ~22 Bcf gas kept from flaring)",
+      "read": "The founding identity divested — the climate story now rests on future carbon capture and nuclear, not current operations.",
+      "source": "https://www.crusoe.ai/resources/newsroom/nydig-to-acquire-crusoes-bitcoin-mining-operation-crusoe-to-scale-vertically"
+    }
+  ],
+  "strategyRead": [
+    "(High confidence) We assess Crusoe's genuine edge is time-to-power execution, demonstrated at scale. Basis: 200+ MW energized at Abilene within a year of groundbreaking, substation energized in under six months, 91-day-class build cadence industry-verified — capabilities no incumbent developer matched publicly in the same window.",
+    "(High confidence) We assess customer concentration is the defining fragility, proven twice in 2026. Basis: Oracle/OpenAI halted Abilene expansion (financing stalled, needs shifted per Bloomberg) and Google managed Crusoe off Wyoming — in both cases a single counterparty decision removed or reassigned gigawatt-scale work; Microsoft's arrival cured the first but confirmed the dependency structure.",
+    "(Moderate confidence) We assess the business is closer to a leveraged merchant developer than a cloud company, and the valuation marks assume otherwise. Basis: The Information's reported ~$30B capex / ~$18B stake-sale-proceeds plan, the ~60x trailing revenue multiple at the discussed $30B round, and Futuriom's 'construction kingpin' framing — cloud bookings grow fast but the economics run through asset flips and JV debt ($7.1B JPMorgan-led at Abilene alone).",
+    "(Moderate confidence) We assess the gas-heavy energy stack carries accumulating regulatory and reputational exposure. Basis: minor-permit pathways for the Abilene plant (Texas Tribune), a pending major permit that would rank among Texas's largest fossil plants, community cost-shifting reporting (85%/20-year abatements), and a 'clean' brand whose flare-gas substance was sold to NYDIG — the Form Energy/nuclear deals hedge the narrative but deliver post-2027.",
+    "(Low confidence) We assess the 40+ GW pipeline converts at well under half. Basis: the 8:1 pipeline-to-contract ratio, the Wyoming loss showing pipeline entries can evaporate pre-contract, and Microsoft's own public oversupply predictions — but conversion evidence is genuinely mixed (Meta's reported 1.6 GW and Childress landed within weeks of the Wyoming exit)."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "Abilene campuses",
+      "specs": [
+        {
+          "band": "Campus 1",
+          "label": "Configuration",
+          "value": "1.2 GW, 8 buildings, ~4M sq ft; each building up to 50,000 GB200 NVL72s"
+        },
+        {
+          "band": "Campus 1",
+          "label": "Power",
+          "value": "ERCOT grid + on-site plant + BESS/solar; GE Vernova SCR turbine backup (no diesel)"
+        },
+        {
+          "band": "Campus 2 (Microsoft)",
+          "label": "Configuration",
+          "value": "900 MW; two 336 MW critical-IT-load buildings"
+        },
+        {
+          "band": "Campus 2 (Microsoft)",
+          "label": "Power & schedule",
+          "value": "900 MW on-site plant + MV BESS; first building mid-2027"
+        },
+        {
+          "band": "Cooling",
+          "label": "Water use",
+          "value": "Closed-loop non-evaporative liquid cooling: ~1M gal initial fill/building, ~50,000 gal/yr maintenance"
+        }
+      ]
+    },
+    {
+      "product": "Energy fleet",
+      "specs": [
+        {
+          "band": "Turbines",
+          "label": "GE Vernova",
+          "value": "29× GE Vernova LM2500XPRESS (~35 MW each, ~1 GW, 5-min start, SCR)"
+        },
+        {
+          "band": "Reciprocating engines",
+          "label": "Bergen",
+          "value": "27× 12.5 MWe + 20× 5 MWe (~750 MW), Piller SHIELD-X stabilization"
+        },
+        {
+          "band": "Storage",
+          "label": "ON.energy AI UPS",
+          "value": "5 GW MV-BESS, ERCOT NOGRR 282/LLVRT validated, campus-duration ride-through"
+        },
+        {
+          "band": "Storage",
+          "label": "Form Energy",
+          "value": "12 GWh iron-air, up to 100-hour duration, from 2027"
+        }
+      ]
+    },
+    {
+      "product": "Modular (Crusoe Spark / Edge Zones)",
+      "specs": [
+        {
+          "band": "Manufacturing",
+          "label": "Factories",
+          "value": "Factory-built modular DCs from Arvada CO and Tulsa OK; Brighton CO factory ramping"
+        },
+        {
+          "band": "Deployment",
+          "label": "Edge Zones",
+          "value": "new cloud zones in ~3 months; MemoryAlloy claims up to 9.9x faster time-to-first-token"
+        },
+        {
+          "band": "Microgrid",
+          "label": "Redwood",
+          "value": "20 MW / second-life EV batteries + solar; 99.2% availability over first 7 months"
+        }
+      ]
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Chase Lochmiller",
+      "photo": "images/execs/crusoe-lochmiller.avif",
+      "title": "Co-founder, CEO & Chairman",
+      "background": [
+        "Ex-quant at Jump Trading and GETCO; MIT math/physics, Stanford MS CS",
+        "Publicly addressed demand concerns mid-2026 as the Wyoming exit and Abilene reshuffle landed"
+      ]
+    },
+    {
+      "name": "Cully Cavness",
+      "photo": "images/execs/crusoe-cavness.avif",
+      "title": "Co-founder, President & Chief Strategy Officer",
+      "background": [
+        "Upstream oil & gas and geothermal background — the energy half of the founding thesis",
+        "Middlebury geology; Oxford MBA"
+      ]
+    },
+    {
+      "name": "Michael Gordon",
+      "photo": "images/execs/crusoe-gordon.avif",
+      "title": "COO & CFO",
+      "background": [
+        "Ex-MongoDB COO/CFO, hired December 2025 — widely read as IPO preparation"
+      ]
+    },
+    {
+      "name": "John Adams",
+      "photo": "images/execs/crusoe-adams.avif",
+      "title": "SVP, Power Infrastructure",
+      "background": [
+        "Owns the generation fleet build-out (turbines, engines, BESS, nuclear partnerships)"
+      ]
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "type": "reported-private (estimates; no audited public statements)",
+    "periods": [
+      {
+        "period": "FY2024-FY2025 (estimates)",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "2024 ~$276M (+82%); 2025 ~$500M (Sacra estimates)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "2026 projected ~$2B (management projection via Sacra) — the 4x jump the valuation requires"
+          }
+        ],
+        "commentary": "Expectations honesty: Crusoe is private; all figures are Sacra/Notice.co estimates or press-reported. Debt stack: $225M Upper90, $750M Brookfield, $175M Victory Park, $7.1B JPMorgan-led Abilene construction loan (~$9.6B total JPMorgan Abilene lending reported)."
+      },
+      {
+        "period": "Valuation trajectory",
+        "metrics": [
+          {
+            "name": "Priced rounds",
+            "actual": "$2.8B (Series D, Dec 2024) → >$10B (Series E, Oct 2025)",
+            "expected": "",
+            "verdict": "beat",
+            "result": "Employee tender ~$13B (Nov 2025); secondary marks ~$23.6B (June 2026); ~$30B round in talks (July 2026, Bloomberg)"
+          }
+        ],
+        "commentary": "A ~10x mark-up in twenty months on unaudited financials. The Hustle Fund framing is the fair one: the valuation hinges on Stargate/Microsoft execution converting the 2026 revenue projection."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Crusoe — ON.energy 5 GW AI UPS",
+      "url": "https://www.crusoe.ai/resources/newsroom/crusoe-and-on-energy-to-deploy-5-gw-of-ai-ups-tm-at-multiple-hyperscale-campuses",
+      "date": "2026-07-21"
+    },
+    {
+      "label": "Texas Tribune — permitting investigation",
+      "url": "https://www.texastribune.org/2026/07/09/texas-data-centers-ai-power-plants-pollution-state-permits/",
+      "date": "2026-07-09"
+    },
+    {
+      "label": "Bloomberg — $30B round in talks",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-02/crusoe-in-talks-to-raise-3-billion-in-round-that-may-triple-firm-s-value",
+      "date": "2026-07-02"
+    },
+    {
+      "label": "Crusoe — contracted capacity ~4.9 GW",
+      "url": "https://www.crusoe.ai/resources/newsroom/crusoes-contracted-ai-infrastructure-capacity-approaches-5-gigawatts-across-data-centers-and-cloud",
+      "date": "2026-07"
+    },
+    {
+      "label": "Bloomberg via Yahoo — Wyoming exit",
+      "url": "https://finance.yahoo.com/sectors/technology/articles/crusoe-exited-1-8-gw-180819575.html",
+      "date": "2026-06-10"
+    },
+    {
+      "label": "Crusoe — Microsoft 900 MW campus",
+      "url": "https://www.crusoe.ai/resources/newsroom/crusoe-announces-new-900-mw-ai-factory-campus-in-abilene-texas-to-support-microsoft-ai-infrastructure",
+      "date": "2026-03-27"
+    },
+    {
+      "label": "Crusoe — Form Energy 12 GWh",
+      "url": "https://www.crusoe.ai/resources/newsroom/form-energy-crusoe-announce-agreement-for-12-gigawatt-hours-of-iron-air-batteries-for-ai-data-centers",
+      "date": "2026-03-24"
+    },
+    {
+      "label": "Bloomberg — Microsoft leases capacity dropped by Oracle/OpenAI",
+      "url": "https://www.bloomberg.com/news/articles/2026-03-24/microsoft-to-rent-texas-data-center-dropped-by-oracle-openai",
+      "date": "2026-03-24"
+    },
+    {
+      "label": "Crusoe — Series E announcement",
+      "url": "https://www.crusoe.ai/resources/newsroom/crusoe-announces-series-e-funding",
+      "date": "2025-10-24"
+    },
+    {
+      "label": "Crusoe — Abilene phase 1 live",
+      "url": "https://www.crusoe.ai/resources/newsroom/crusoe-announces-flagship-abilene-data-center-is-live",
+      "date": "2025-09-30"
+    },
+    {
+      "label": "Futuriom — merchant-developer analysis",
+      "url": "https://www.futuriom.com/articles/news/crusoe-cloud-company-or-construction-kingpin/2025/07",
+      "date": "2025-07"
+    },
+    {
+      "label": "Crusoe — Abilene 1.2 GW expansion",
+      "url": "https://www.crusoe.ai/resources/newsroom/crusoe-expands-ai-data-center-campus-in-abilene-to-1-2-gigawatts",
+      "date": "2025-03"
+    },
+    {
+      "label": "Crusoe — GE Vernova 29-turbine order",
+      "url": "https://www.crusoe.ai/resources/newsroom/ge-vernova-and-crusoe-announce-major-29-unit-gas-turbine-deal",
+      "date": "2025-01"
+    },
+    {
+      "label": "DCD — Blue Owl $3.4B JV",
+      "url": "https://www.datacenterdynamics.com/en/news/crusoe-signs-34bn-joint-venture-with-blue-owl/",
+      "date": "2024-12"
+    },
+    {
+      "label": "Sacra — Crusoe company profile (estimates)",
+      "url": "https://sacra.com/c/crusoe/"
+    }
+  ],
+  "lastUpdated": "2026-08-22",
+  "profileVersion": 2
+}

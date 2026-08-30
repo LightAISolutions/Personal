@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "xai",
+  "title": "xAI — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Own the data center or rent the cloud?",
+      "bullets": [
+        "An AI lab's make-or-buy question: renting cloud GPUs means paying a landlord's margin and competing for scarce allocation, but zero construction risk; owning means carrying capital, construction, and operations in exchange for control, cost, and speed at scale",
+        "The math turns on utilization and duration: for bursty or uncertain needs, renting wins easily; for a lab that will saturate hundreds of megawatts for years, the landlord's markup compounds into billions — the scale where owning starts to pay",
+        "Vertical integration buys freedom from other people's queues: a self-builder chooses its own sites, power strategy, hardware mix, and construction pace — no negotiating for allocation, no waiting behind another tenant's expansion",
+        "The price is concentrated risk: an owner carries the depreciation, the permits, the community relations, and the technology-obsolescence exposure that a renter quietly passes to its landlord — vertical integration converts a flexible expense into an illiquid bet"
+      ]
+    },
+    {
+      "heading": "Compressing the build: how months become days",
+      "bullets": [
+        "Conventional data-center delivery is sequential — design, permit, build, energize, commission, each waiting on the last; radical compression comes from running those phases in parallel and knowingly accepting the rework risk that sequencing exists to avoid",
+        "A brownfield shell is the biggest single shortcut: an abandoned factory already has structure, zoning, water, and road access — reusing it deletes a year of sitework and turns the project into an interior fit-out at industrial scale",
+        "Temporary infrastructure bridges every remaining gap: mobile generation while permanent power is permitted and built, rented cooling while chillers ship — the philosophy that a working cluster now plus retrofit later beats a perfect cluster in two years",
+        "Decision latency is the hidden schedule item: a single owner-operator who approves changes in hours removes the approval loops — owner, engineer, contractor, financier — that consume weeks on conventional projects; organizational structure is itself a construction technology"
+      ]
+    },
+    {
+      "heading": "Air permits: the law of what comes out of the stack",
+      "bullets": [
+        "US air law starts with the National Ambient Air Quality Standards (NAAQS) — federal limits on pollutant concentrations in outdoor air, including ozone, fine particulates, and nitrogen oxides — and regulates each combustion source by how much it adds to local air",
+        "Size thresholds decide the process: a 'major source' triggers rigorous pre-construction review with modeling, public comment, and best-available-control requirements; staying below thresholds — or claiming temporary status — permits far faster with far less scrutiny",
+        "Nitrogen oxides (NOx) are the data-center-relevant pollutant: gas turbines produce them, they drive ozone formation in already-burdened neighborhoods, and selective catalytic reduction (SCR — injecting ammonia across a catalyst in the exhaust) is the standard control",
+        "The live legal frontier is aggregation and duration: whether dozens of nominally mobile turbines operating together for months constitute one major stationary source is exactly the kind of question that lands in federal court — and its answer prices speed for every builder"
+      ]
+    },
+    {
+      "heading": "Real-time data: training on the present tense",
+      "bullets": [
+        "Standard training corpora are snapshots — web scrapes months old — so models arrive slightly frozen in the past; a live platform generates data about events as they unfold, a structurally different feed from any archive",
+        "Freshness matters most where the world changes fastest: news, markets, culture, and live conversation — a model with training or retrieval access to the present can answer questions that static-corpus rivals must decline or guess at",
+        "The flywheel: the platform produces data, the model trained on it powers features on the platform, the features drive usage, and usage produces more data — a loop where owning the venue and owning the model reinforce each other",
+        "The caveats are structural: platform text is noisy, adversarial (spam, bots, manipulation), and demographically skewed — refining a live feed into training-grade data is its own engineering discipline, and exclusive access invites both competitive and regulatory scrutiny"
+      ]
+    },
+    {
+      "heading": "Grid power vs your own power plant",
+      "bullets": [
+        "A single-tenant AI campus faces a choice the grid never used to pose: wait years for a utility connection delivering cheap, reliable, professionally maintained power — or generate on-site starting in months, at higher cost per megawatt-hour, with the operational burden in-house",
+        "The decision inputs: time-to-power, delivered cost per megawatt-hour, emissions and permitting exposure, and reliability engineering — the grid wins three of the four and loses the one an arms-race participant weighs most heavily",
+        "Batteries change the on-site equation: a large battery buffer absorbs the violent load swings of synchronized GPU training (which generators alone handle poorly), rides through generator trips, and lets an islanded campus run with grid-class stability entirely off-grid",
+        "The end-state is usually hybrid: on-site generation carries the campus while the interconnection matures, then the grid becomes primary with on-site as supplement — the sequencing, not the choice of technologies, is the actual strategic decision"
+      ]
+    },
+    {
+      "heading": "How big is that cluster, really?",
+      "bullets": [
+        "GPU count is the headline metric and the least comparable: chip generations differ several-fold in per-unit performance, so '200,000 GPUs' of mixed vintages says little — hence 'H100-equivalents,' restating a whole fleet in units of one reference chip",
+        "FLOPS (floating-point operations per second) measure theoretical arithmetic peak — but the figure depends on the precision format quoted and on whether the workload can actually keep the math units fed, so published FLOPS are ceilings, not throughput",
+        "Megawatts are the honest common denominator: power draw is physically measurable, vintage-agnostic, and hard to inflate — which is why operators, utilities, and analysts increasingly denominate AI capacity in megawatts and gigawatts rather than chips",
+        "'Coherent cluster' is the qualifier that matters for training: gigawatts scattered across disconnected sites cannot train one frontier model — what counts is capacity linked into a single fast fabric, one enormous machine rather than many medium ones"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "When does owning a data center beat renting cloud GPUs?",
+      "a": "When utilization and duration are both high: a lab that will saturate hundreds of megawatts for years watches the landlord's markup compound into billions, so owning pays. For bursty or uncertain demand, renting wins — the cloud's premium is the price of flexibility and someone else's construction risk."
+    },
+    {
+      "q": "What risks does a self-building AI lab take on that a cloud renter avoids?",
+      "a": "Depreciation on rapidly obsoleting hardware, construction and permitting exposure, community relations, and the operations burden of running power and cooling. Renting passes all of that to a landlord; owning converts a flexible operating expense into a concentrated, illiquid bet."
+    },
+    {
+      "q": "How does parallelizing design, permitting, and construction compress a build schedule?",
+      "a": "Conventional sequencing makes each phase wait for the last specifically to avoid rework. Running them concurrently overlaps months of waiting — at the accepted risk that a late design or permit change forces tearing out finished work. It's a deliberate trade of money and risk for time."
+    },
+    {
+      "q": "Why is an abandoned factory such a valuable starting point for an AI campus?",
+      "a": "The structure, industrial zoning, water, and road access already exist — deleting roughly a year of sitework and approvals. The project becomes an interior fit-out at industrial scale rather than greenfield construction, which is how record-speed cluster builds start ahead before day one."
+    },
+    {
+      "q": "What are the NAAQS?",
+      "a": "The National Ambient Air Quality Standards: federal limits on the concentration of pollutants — ozone, fine particulates, nitrogen oxides, and others — in outdoor air. Every combustion source is regulated by how much it contributes to local air relative to these limits."
+    },
+    {
+      "q": "Why does 'major source' status matter so much in air permitting?",
+      "a": "Crossing the major-source threshold triggers rigorous pre-construction review — air modeling, public comment, best-available-control technology. Below the threshold, or under temporary-equipment status, permitting is dramatically faster with less scrutiny. The classification, not the technology, often sets the project schedule."
+    },
+    {
+      "q": "What is selective catalytic reduction (SCR)?",
+      "a": "The standard control for nitrogen oxides from gas turbines: ammonia is injected into the exhaust stream across a catalyst, converting NOx into nitrogen and water. NOx matters because it drives ozone formation — the pollutant fights over data-center gas fleets are mostly NOx fights."
+    },
+    {
+      "q": "What legal question do fleets of 'mobile' gas turbines raise?",
+      "a": "Aggregation and duration: whether dozens of nominally temporary units operating together for months add up to a single major stationary source requiring full permits. The answer — being tested in federal court — effectively prices how much schedule advantage temporary-equipment status can legally buy."
+    },
+    {
+      "q": "What makes real-time platform data different from standard training corpora?",
+      "a": "Web-scrape corpora are months-old snapshots, so models arrive frozen slightly in the past. A live platform feeds events as they unfold — most valuable for news, markets, and culture. The costs: platform text is noisy, adversarial, and skewed, so refining it into training-grade data is real engineering."
+    },
+    {
+      "q": "Why do batteries make an off-grid AI campus viable?",
+      "a": "Synchronized GPU training swings load violently in milliseconds — generators alone respond too slowly and trip. A large battery buffer absorbs the swings, rides through generator failures, and gives an islanded campus grid-class stability. Storage is the component that turns a generator farm into a power system."
+    },
+    {
+      "q": "What is an 'H100-equivalent' and why do analysts use it?",
+      "a": "A fleet restated in units of one reference chip's performance, because raw GPU counts across mixed generations aren't comparable — vintages differ several-fold per unit. It's an imperfect normalization, but it lets a fleet of H100s, H200s, and newer racks be described as one number."
+    },
+    {
+      "q": "Why are megawatts becoming the standard measure of AI cluster scale — with what caveat?",
+      "a": "Power draw is physically measurable, vintage-agnostic, and hard to inflate, unlike chip counts or theoretical FLOPS. The caveat is coherence: gigawatts scattered across disconnected sites can't train one frontier model — only capacity linked into a single fast fabric counts as one machine."
+    }
+  ]
+}

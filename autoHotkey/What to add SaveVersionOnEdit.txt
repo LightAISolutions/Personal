@@ -1,0 +1,10 @@
+;Paste the following commented seccion into script, then Uncomment the / * * /
+/*
+;## START Auto Reload This Script And Save Version On Edit ##
+;
+#include %A_LineFile%\..\AutoReloadThisScriptAndSaveVersionOnEdit\AutoReloadThisScriptAndSaveVersionOnEdit.ahk
+AutoReloadThisScriptAndSaveVersionOnEdit()
+SetTimer(() => AutoReloadThisScriptAndSaveVersionOnEdit(), 1000)
+;
+;## END Auto Reload This Script And Save Version On Edit ##
+*/

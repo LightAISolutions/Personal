@@ -1,0 +1,450 @@
+{
+ "schemaVersion": 6,
+ "slug": "siemens-energy",
+ "name": "Siemens Energy",
+ "legalName": "Siemens Energy AG (rebranding to 'Omterra' — announced July 14, 2026, phase-in from late 2026)",
+ "categories": [
+  "supplier"
+ ],
+ "hq": "Munich, Germany",
+ "ticker": "ETR: ENR",
+ "founded": "2020 (spun off from Siemens AG)",
+ "ownership": "public",
+ "employees": "~106,000 (June 30, 2026)",
+ "website": "https://www.siemens-energy.com",
+ "summary": "BOTTOM LINE UP FRONT: Siemens Energy is one of the two Western giants (with GE Vernova) that gate the AIDC buildout's two scarcest inputs — gas turbines and grid equipment — and it is monetizing that chokehold at record levels: group backlog hit €162B at June 30, 2026, Gas Services booked €10.0B of orders in a single quarter (book-to-bill 2.65, 73 turbines = 15 GW) with US data centers the named driver, and Q3 FY26 delivered the highest quarterly group margin in company history (14.2%). The 500 MW SGT-800-based standard block co-developed with Eaton is its purpose-built AIDC onsite-power product. BACKGROUND: Spun off from Siemens AG in 2020, the company nearly collapsed in 2023 when Siemens Gamesa wind-turbine defects (15-30% of the newest onshore fleets) forced a €2.2B charge, a ~€4.5B net loss, and a €7.5B German federal counter-guarantee — a state rescue fully replaced by a €9B private bank facility in June 2025, two years early. The recovery since is one of Europe's great re-ratings (~593% three-year return; record €191.66 in April 2026), which cuts both ways: the stock trades near 70x earnings and fell on the Q3 FY26 beat. A rebrand to 'Omterra' was announced July 14, 2026 — the Siemens name is licensed and time-limited.",
+ "ecosystemRole": "We assess Siemens Energy as the AIDC sector's most complete grid-plus-generation supplier — the only vendor that can deliver the gas turbines, the transformers, the switchgear, the HVDC, and the grid-stability equipment for a gigawatt campus from one book. Basis: a top-3 global gas-turbine position (with GE Vernova and Mitsubishi Power, roughly two-thirds of turbines for plants under construction; note Mitsubishi held #1 MW share in 2022-23 per McCoy), Grid Technologies backlog of €51B with transformers as the biggest growth driver, and the Eaton alliance packaging a repeatable 500 MW grid-independent block that 'eliminates diesel backup gensets' and claims two years off time-to-power. Its capacity decisions are sector-wide constraints: large-frame slots are 'nearly full' for 2028, reservation fees are back for the first time since the early-2000s boom, and the +30-50% expansion in transformers and turbines over FY26-28 is the sector's supply-relief valve.",
+ "productsAndServices": [
+  {
+   "name": "Gas Services — turbine portfolio (2-593 MW)",
+   "description": "Full-line gas turbine OEM: heavy-duty HL class (SGT5-9000HL 593 MW / SGT6-9000HL 440 MW), H/F/E classes, industrial units (SGT-800 flagship, 45-62 MW), and aeroderivatives (SGT-A35). FY25: 194 turbines sold (vs 100 in FY24); Q3 FY26 booked 73 turbines (25 large, 48 industrial) totaling 15 GW. Medium-turbine annual capacity being lifted from ~50 to ~80 units; large-GT and transformer capacity each expanding +30-50% over FY26-28.",
+   "positioning": "Top-3 globally with GE Vernova and Mitsubishi Power; the SGT-800 is the workhorse of the data-center onsite-power segment (620 installations, >20M operating hours, 99.1% reliability); SGT6-9000HL is the direct 7HA.03 rival at >64% combined-cycle efficiency.",
+   "soldThrough": "Direct to utilities, IPPs, and data-center developers; long-term service agreements; slot-reservation fees now standard.",
+   "targetSegments": [
+    "Utilities",
+    "Data centers / AIDC campuses",
+    "IPPs",
+    "Industrial CHP"
+   ],
+   "roadmap": "Gas Services backlog €73B; large-frame slots nearly full through 2028; Charlotte, NC gas-turbine manufacturing resuming as part of the $1B US investment (Feb 2026)."
+  },
+  {
+   "name": "Grid Technologies — transformers, switchgear, HVDC, grid stability",
+   "description": "Power transformers 10 kV-800 kV / 10-1,300 MVA (incl. HVDC converter transformers), distribution transformers, GIS/AIS switchgear incl. the SF6-free 'Blue' portfolio and DC-GIS to ±550 kV, HVDC PLUS (VSC), E-STATCOM (marketed specifically for data-center load fluctuation), synchronous condensers, and the Qstor BESS / BlueVault storage lines. Q3 FY26: orders €5.4B (+28%), revenue +29%, margin 19.9%, backlog €51B — transformers the largest growth contributor, data centers a named driver.",
+   "positioning": "One of the few Western vendors addressing the transformer bottleneck (US Southeast lead times 36+ months; ~80% of US large power transformers imported) with domestic capacity: $150M Charlotte LPT plant (first units early 2026, full production 2027) and a new Mississippi HV switchgear plant.",
+   "soldThrough": "Direct to utilities, grid operators, and hyperscale campus developers; framework agreements.",
+   "targetSegments": [
+    "Transmission utilities",
+    "Data centers",
+    "Renewables interconnection",
+    "Industrial"
+   ],
+   "roadmap": "€220M Nuremberg transformer factory plus brownfield expansions (US, India, Croatia, Austria, Saudi Arabia, Brazil); ~1/3 of the €6B FY26-28 capex program goes to transformers/switchgear."
+  },
+  {
+   "name": "Modular on-site power for data centers (Eaton alliance)",
+   "description": "Standardized, repeatable grid-independent power blocks for campuses >100 MW: redundant SGT-800 turbines + battery storage, eliminating diesel backup gensets, 99.99%+ availability, ~50% CO2 reduction vs traditional approaches, claimed up to two years off time-to-power. The June 2025 Eaton alliance defines a 500 MW standard configuration — Siemens Energy supplies generation/storage, Eaton the grid-to-chip electrical stack (MV/LV switchgear, UPS, busway, racks).",
+   "positioning": "The direct competitive answer to GE Vernova's turbine-plus-electrification AIDC offers; differentiated by the diesel-elimination claim and SGT-800 fleet track record; hydrogen-ready (SGT-800 to 75 vol% H2).",
+   "soldThrough": "Joint go-to-market with Eaton; direct EPC-partnered delivery.",
+   "targetSegments": [
+    "Hyperscalers",
+    "AI cloud developers (neoclouds)",
+    "Colocation campuses"
+   ],
+   "roadmap": "Q3 FY26 Gas Services intake included 'large orders related to data centers' in the US; optional later grid connection and future hydrogen operation are the block's upgrade path."
+  },
+  {
+   "name": "Siemens Gamesa (wind) & Transformation of Industry",
+   "description": "Siemens Gamesa: onshore/offshore wind — Q3 FY26 was its first profitable quarter since FY2022 (+€75M before special items) after the 2023 blade/bearing quality crisis; 90% of the Indian wind business divested to a TPG-led group. Transformation of Industry: compression, electrolyzers, industrial steam turbines (to 1,900 MW), PEM fuel cells.",
+   "positioning": "Wind is the recovering drag, not the growth story — backlog €31B but segment FCF still negative (-€518M in the profitable Q3); TI is steady mid-margin industrial business.",
+   "soldThrough": "Direct and via developers/EPCs.",
+   "targetSegments": [
+    "Wind developers",
+    "Industrial decarbonization",
+    "Hydrogen projects"
+   ],
+   "roadmap": "Segment targeted to break even for full FY2026; onshore 4.X/5.X platforms gradually resuming after the defect halt."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-08-05",
+   "category": "financial",
+   "headline": "Q3 FY26: record orders (€17.9B), record revenue, highest quarterly group margin in company history (14.2%) — and the stock fell",
+   "read": "Net income €1.19B beat consensus by ~21%; Gas Services book-to-bill hit 2.65 with US data-center orders the named driver; Siemens Gamesa posted its first profitable quarter since FY2022. Shares slipped anyway — priced-to-perfection risk at ~70x earnings is the live debate, not execution.",
+   "source": "https://finance.yahoo.com/energy/articles/siemens-energy-beats-forecasts-ai-144126001.html"
+  },
+  {
+   "date": "2026-07-14",
+   "category": "other",
+   "headline": "Rebrand announced: Siemens Energy and Siemens Gamesa to unite as 'Omterra' from late 2026",
+   "read": "The Siemens trademark is licensed and time-limited; the rebrand asserts independence from the parent. Practical note for anyone tracking the vendor: name, branding, and possibly ticker references change within months.",
+   "source": "https://www.siemens-energy.com/global/en/home/press-releases/omterra-brand-announcement.html"
+  },
+  {
+   "date": "2026-02-03",
+   "category": "capacity",
+   "headline": "$1B US investment, 1,500+ jobs: Mississippi HV switchgear plant, Charlotte gas-turbine manufacturing resumption, Orlando AI grid lab with NVIDIA",
+   "read": "Aggressive localization against both the transformer bottleneck (~80% of US LPTs imported, 36+ month lead times) and tariff exposure. Charlotte LPT production starts 2026-27 — the US supply response lags the demand spike by design-build reality, not intent.",
+   "source": "https://www.siemens-energy.com/us/en/home/press-releases/siemens-energy-is-investing--1-billion-and-creating-highly-skill.html"
+  },
+  {
+   "date": "2025-11-20",
+   "category": "financial",
+   "headline": "Capital Market Day: FY28 margin target raised to 14-16%, €6B buyback, up to €10B shareholder returns, +30-50% capacity expansion in transformers and turbines",
+   "read": "The supply-side decision that matters most to the AIDC sector: Siemens Energy is the relief valve for turbine and transformer scarcity, and it chose measured expansion plus shareholder returns over a maximal capacity race — supporting pricing power but prolonging the bottleneck. Shares +8.4% to record highs on the day.",
+   "source": "https://www.marketscreener.com/news/siemens-energy-unveils-6-9-billion-buyback-programme-ce7d5eded981f525"
+  },
+  {
+   "date": "2025-11-14",
+   "category": "financial",
+   "headline": "FY25 results beat: orders €58.9B, net income €1.7B, first dividend in four years; 194 turbines sold vs 100 in FY24",
+   "read": "The turnaround completed all commitments two years after near-collapse. Citigroup: targets 'exceeded the already high market expectations.' The unit-sales doubling is the cleanest single measure of the gas-power demand shock.",
+   "source": "https://www.siemens-energy.com/us/en/home/press-releases/siemens-energy-fulfills-all-commitments---and-increases-mid-term.html"
+  },
+  {
+   "date": "2025-10-01",
+   "category": "order-win",
+   "headline": "Xcel Energy orders 10× SGT6-5000F (2,088 MW) for Texas — 'dispatchable power is no longer optional'",
+   "read": "Utility-scale validation of the F-class in the exact geography (Texas Panhandle) where data-center load growth is straining the grid; replaces retired coal with first deliveries in early 2026.",
+   "source": "https://www.siemens-energy.com/us/en/home/press-releases/Siemens-Energy-to-supply-ten-gas-turbines-to-Xcel-Energy.html"
+  },
+  {
+   "date": "2025-06-03",
+   "category": "partnership",
+   "headline": "Eaton alliance: joint fast-track data-center offering with a 500 MW SGT-800-based standard onsite-power block",
+   "read": "The productized AIDC play — grid-independent at day one, optional grid connection later, no diesel gensets, claimed two years off time-to-power. Pairs Siemens Energy generation with Eaton's grid-to-chip electrical stack; a direct structural answer to GE Vernova's AIDC push.",
+   "source": "https://www.siemens-energy.com/us/en/home/press-releases/eaton-and-siemens-energy-join-forces-to-provide-power-and-techno.html"
+  },
+  {
+   "date": "2025-06",
+   "category": "financial",
+   "headline": "€9B five-year facility from 23 international banks fully replaces the German federal counter-guarantee — state-rescue chapter closed two years early",
+   "read": "Removes the last overhang from the 2023 crisis. The speed of the exit (private banks re-underwriting the guarantee book) is the strongest external validation of the turnaround's credibility.",
+   "source": "https://www.energyconnects.com/news/utilities/2025/june/siemens-energy-ends-chapter-on-germany-s-7-5-billion-rescue/"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) Siemens Energy (with GE Vernova and Mitsubishi Power) effectively sets the AIDC sector's time-to-power floor: large-frame slots nearly full through 2028, reservation fees back for the first time since the early-2000s boom, and a deliberate +30-50% (not maximal) capacity expansion. Anyone selling into gas-powered AIDC campuses is planning around this company's delivery calendar. Basis: company CMD disclosures, POWER/Bloomberg supply-crunch reporting, Q3 FY26 book-to-bill 2.65.",
+  "(High confidence) The Eaton alliance's 500 MW SGT-800 block is the most productized onsite-power offering from any major OEM — a standardized, diesel-free, hydrogen-ready package aimed squarely at the behind-the-meter demand xAI, Crusoe, and the hyperscalers have validated. Basis: company-published alliance specification; Q3 FY26 US data-center orders confirm commercial traction.",
+  "(Moderate confidence) The grid side (Grid Technologies, €51B backlog, 19.9% margin) is the more durable franchise than gas turbines: transformer scarcity outlasts any single generation cycle, ~80% of installed transformer capacity in advanced economies reaches age limits by 2035, and Siemens Energy is one of only a handful of vendors localizing US production. Basis: company capacity disclosures and third-party lead-time data; the 2035 aging claim is company market framing.",
+  "(Moderate confidence) Valuation is the principal risk to reading momentum as strength: ~70x earnings, DCF fair-value estimates as low as €29 vs a ~€150-190 price, an €84-vs-€175 sell-side target chasm, and a stock that fell on a 21% earnings beat. If AIDC buildout pace slows, today's book-to-bill and capacity expansion become cyclical exposure — the same dynamic that burned turbine OEMs after the early-2000s gas boom. Basis: third-party analyst coverage; explicitly a market judgment, not an operational one.",
+  "(Low confidence) Wind remains the fragility: one profitable quarter after 15 straight losses, still-negative segment cash flow, and a defect history (15-30% of newest onshore fleets) that argues for caution on execution claims until several clean quarters accumulate. A wind relapse would not threaten the company as in 2023 (the guarantee structure is now private), but it would dent the FY28 margin path."
+ ],
+ "relationships": [
+  {
+   "slug": "eaton",
+   "type": "partner",
+   "note": "Alliance productizing a 500 MW SGT-800-based standard onsite-power block — diesel-free, claimed two years off time-to-power.",
+   "context": "June 2025: Eaton and Siemens Energy joined forces on a fast-track data-center offering — a repeatable 500 MW grid-independent block (SGT-800 fleet: 620 installations, >20M operating hours, 99.1% reliability; hydrogen-ready to 75 vol%) that 'eliminates diesel backup gensets', with Siemens Energy supplying generation/storage and Eaton the grid-to-chip electrical stack (MV/LV switchgear, UPS, busway, racks). The dossier rates it the most productized onsite-power offering from any major OEM — aimed squarely at the behind-the-meter demand xAI, Crusoe and the hyperscalers validated, and the direct structural answer to GE Vernova's AIDC push.",
+   "source": "https://www.siemens-energy.com/us/en/home/press-releases/eaton-and-siemens-energy-join-forces-t",
+   "status": "active",
+   "since": "2025-06",
+   "scale": "500 MW standard block"
+  },
+  {
+   "slug": "ge-vernova",
+   "type": "competitor",
+   "note": "The other Western giant gating AIDC's two scarcest inputs — gas turbines and grid equipment.",
+   "context": "Siemens Energy and GE Vernova (with Mitsubishi Power) supply roughly two-thirds of turbines for gas plants under construction and effectively set the AIDC sector's time-to-power floor: large-frame slots nearly full through 2028, reservation fees back for the first time since the early-2000s boom. Siemens Energy's Q3 FY26: €10.0B of Gas Services orders in one quarter (book-to-bill 2.65, 73 turbines = 15 GW) with US data centers the named driver, group backlog €162B; the SGT6-9000HL is the direct 7HA.03 rival.",
+   "source": "https://globalenergymonitor.org/research/leading-three-manufacturers-providing-two-thirds-turbi",
+   "status": "active"
+  },
+  {
+   "slug": "nvidia",
+   "type": "partner",
+   "note": "Orlando AI grid lab with NVIDIA within the $1B US investment.",
+   "context": "February 2026: Siemens Energy's $1B US investment (Mississippi HV switchgear plant, Charlotte gas-turbine manufacturing resumption and LPT production from 2026-27) includes an Orlando AI grid lab with NVIDIA — localization against the transformer bottleneck (~80% of US LPTs imported, 36+ month lead times) with an AI-grid research leg.",
+   "source": "https://www.siemens-energy.com/us/en/home/press-releases/siemens-energy-is-investing--1-billion",
+   "status": "active",
+   "since": "2026-02"
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "SGT-800 industrial gas turbine (AIDC workhorse)",
+   "specs": [
+    {
+     "band": "Ratings",
+     "label": "Output & efficiency",
+     "value": "45.3-62.5 MW(e) across five ratings; 38.4-41.1% simple-cycle efficiency; combined cycle to 60.6% (2x1: 182 MW)"
+    },
+    {
+     "band": "Fuel",
+     "label": "Hydrogen",
+     "value": "up to 75 vol% H2 dual-fuel DLE; TÜV SÜD H2-Ready certified plant concepts"
+    },
+    {
+     "band": "Emissions",
+     "label": "Levels",
+     "value": "NOx to 9 ppm, single-digit CO without water injection"
+    },
+    {
+     "band": "Fleet & service",
+     "label": "Record",
+     "value": "620 installations, >20M operating hours, 99.1% reliability (2024); 60,000 EOH overhaul intervals; 48-hour core-engine exchange option"
+    }
+   ]
+  },
+  {
+   "product": "SGT6-9000HL heavy-duty gas turbine (60 Hz flagship)",
+   "specs": [
+    {
+     "band": "Ratings",
+     "label": "Output & efficiency",
+     "value": "440 MW(e) simple cycle at >43.2% efficiency; combined cycle 1x1 655 MW / 2x1 1,310 MW at >64%"
+    },
+    {
+     "band": "Operability",
+     "label": "Flexibility",
+     "value": "Ramp rate 85 MW/min; turndown <40%; H2-ready to 50 vol%"
+    },
+    {
+     "band": "Emissions & design",
+     "label": "Combustion",
+     "value": "NOx ≤25 ppmvd (2 ppmvd with SCR); ACE combustion, 24:1 pressure ratio; 50 Hz sibling SGT5-9000HL: 593 MW"
+    }
+   ]
+  },
+  {
+   "product": "Grid Technologies key equipment",
+   "specs": [
+    {
+     "band": "Transformers",
+     "label": "Range",
+     "value": "Power transformers to 800 kV / 1,300 MVA incl. HVDC converter transformers; distribution transformers to 10 MVA (GEAFOL dry-type)"
+    },
+    {
+     "band": "Switchgear",
+     "label": "Range",
+     "value": "DC-GIS to ±550 kV / 5 kA; SF6-free 'Blue' GIS/AIS portfolio; containerized/mobile substations"
+    },
+    {
+     "band": "Grid stability & storage",
+     "label": "Portfolio",
+     "value": "E-STATCOM fast voltage response (marketed for data-center load fluctuation); synchronous condensers; HVDC PLUS (VSC); Qstor BESS and BlueVault containerized storage"
+    }
+   ]
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Dr.-Ing. Christian Bruch",
+   "title": "President & CEO (also Chief Sustainability Officer)",
+   "photo": "images/execs/siemens-energy-bruch.jpg",
+   "background": [
+    "Led the company from the 2023 near-collapse through the state-rescue exit to record FY25/FY26 results; announced the Omterra rebrand ('now is the right time to begin the transition to our own independent brand')",
+    "Framed the US buildout as a 'once-in-a-generation growth opportunity' at the February 2026 $1B investment announcement",
+    "Ex-Linde executive board member (engineering background)"
+   ]
+  },
+  {
+   "name": "Maria Ferraro",
+   "title": "CFO",
+   "photo": "images/execs/siemens-energy-ferraro.jpg",
+   "background": [
+    "Owns the raised FY26 guidance (~€4B net income, ~€8B FCF pre-tax) and the €10B shareholder-return program",
+    "Flagged Q4 FY26 seasonality on the record Q3 call — the caution note amid the momentum"
+   ]
+  },
+  {
+   "name": "Karim Amin",
+   "title": "Executive Board member — Gas Services",
+   "photo": "images/execs/siemens-energy-amin.jpg",
+   "background": [
+    "Oversees the segment at the center of the AIDC demand shock: €73B backlog, book-to-bill 2.65, capacity expansion from ~50 to ~80 medium turbines/year",
+    "Key sales lieutenants: Andreas Pistauer (Global Head of Sales, Gas Services — quoted on the Eaton alliance) and Luke Baker (Head of GS Sales North America — quoted on the Xcel order)"
+   ]
+  },
+  {
+   "name": "Tim Oliver Holt",
+   "title": "Executive Board member & Labor Director",
+   "photo": "images/execs/siemens-energy-holt.jpg",
+   "background": [
+    "Public face of the US transformer localization program (Charlotte LPT factory announcement)",
+    "With Siemens/Siemens Energy since 1969-era NC operations lineage; oversees service business"
+   ]
+  },
+  {
+   "name": "Vinod Philip",
+   "title": "Executive Board member; Sole Director, Siemens Gamesa Renewable Energy",
+   "photo": "images/execs/siemens-energy-philip.jpg",
+   "background": [
+    "Charged with completing the wind turnaround — first profitable quarter since FY2022 landed in Q3 FY26 on his watch",
+    "Oversaw the 90% divestiture of the Indian wind business to a TPG-led group"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "EUR",
+  "type": "public (fiscal year ends September 30)",
+  "periods": [
+   {
+    "period": "FY2024 (ended 2024-09-30)",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "€34,465M (+11%)",
+      "expected": "In line with estimates",
+      "verdict": "inline",
+      "result": "Growth across all segments"
+     },
+     {
+      "name": "EPS",
+      "actual": "€1.37",
+      "expected": "~€1.42 consensus",
+      "verdict": "miss",
+      "result": "Missed by ~3.6%; shares -5.7% in the following week"
+     },
+     {
+      "name": "Net income",
+      "actual": "€1,335M",
+      "expected": "vs €4.5B loss FY2023",
+      "verdict": "beat",
+      "result": "Swing to profit; profit before special items just €345M (1.0% margin) — wind still dragging"
+     }
+    ],
+    "commentary": "Turnaround year one: record €123B backlog and a tripled share price, but third-party framing (EPS miss, thin underlying margin) was more mixed than the company's 'all goals achieved' narrative."
+   },
+   {
+    "period": "FY2025 (ended 2025-09-30)",
+    "metrics": [
+     {
+      "name": "Orders",
+      "actual": "€58,928M (+19.4% comp.)",
+      "expected": "n/a",
+      "verdict": "beat",
+      "result": "Backlog €138B; Gas Services orders +42.9%"
+     },
+     {
+      "name": "Revenue",
+      "actual": "€39,077M (+15.2% comp.)",
+      "expected": "~$10.64B Q4 ADR consensus (beaten)",
+      "verdict": "beat",
+      "result": "Record; first quarter above €10B in Q4",
+      "kpi": "revenue",
+      "usdMillions": 44180.5,
+      "fxBasis": "EUR converted at 1.1306 USD/EUR (2025 calendar-year average, exchange-rates.org / x-rates.com)"
+     },
+     {
+      "name": "Net income",
+      "actual": "€1,685M (EPS €1.63)",
+      "expected": "Q4 ADR EPS $0.79 vs $0.31 consensus",
+      "verdict": "beat",
+      "result": "Stock +10% on results day; first dividend in four years (€0.70)"
+     }
+    ],
+    "commentary": "The beat-and-raise that reset the story: FY28 margin target lifted to 14-16%, €6B buyback announced at CMD, 194 turbines sold (vs 100 in FY24). Citigroup: targets 'exceeded already high expectations.'",
+    "periodType": "annual",
+    "periodEnd": "2025-09-30"
+   },
+   {
+    "period": "Q3 FY2026 (Apr-Jun 2026, reported 2026-08-05)",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "€11,447M (+18.5% comp.)",
+      "expected": "€11.24B consensus",
+      "verdict": "beat",
+      "result": "Record quarter; US 9M orders +70.9%"
+     },
+     {
+      "name": "Net income",
+      "actual": "€1,188M",
+      "expected": "€983M consensus (Visible Alpha)",
+      "verdict": "beat",
+      "result": "~21% beat; profit before special items €1,623M at 14.2% margin — company record"
+     },
+     {
+      "name": "Orders",
+      "actual": "€17,926M (book-to-bill 1.57)",
+      "expected": "n/a",
+      "verdict": "beat",
+      "result": "Backlog record €162B; Gas Services €10.0B orders at book-to-bill 2.65"
+     }
+    ],
+    "commentary": "FY26 guidance held at the raised level (revenue +14-16%, net income ~€4B, FCF pre-tax ~€8B, margin toward upper end of 10-12%). Shares slipped despite the beat — valuation, not execution, is the debate. Siemens Gamesa's first profitable quarter since FY2022 (+€75M PbSI) ended a 15-quarter loss streak."
+   }
+  ]
+ },
+ "sources": [
+  {
+   "label": "Siemens Energy — Q3 FY26 earnings release (record orders/revenue/margin, backlog €162B)",
+   "url": "https://assets.siemens-energy.com/dam/30018eed-275d-4e73-811e-b49d004cdc3d/2026-08-05-Earnings_Release_Q3_FY26_EN-pdf_Original%20file.pdf",
+   "date": "2026-08-05"
+  },
+  {
+   "label": "Yahoo Finance — Q3 FY26 beat coverage (AI demand driver)",
+   "url": "https://finance.yahoo.com/energy/articles/siemens-energy-beats-forecasts-ai-144126001.html",
+   "date": "2026-08-05"
+  },
+  {
+   "label": "Investing.com — Q3 FY26 consensus beat detail (Visible Alpha)",
+   "url": "https://ca.investing.com/news/stock-market-news/siemens-energy-q3-net-profit-revenue-beats-estimates-4776293",
+   "date": "2026-08-05"
+  },
+  {
+   "label": "Siemens Energy — Omterra rebrand announcement",
+   "url": "https://www.siemens-energy.com/global/en/home/press-releases/omterra-brand-announcement.html",
+   "date": "2026-07-14"
+  },
+  {
+   "label": "Siemens Energy — $1B US investment press release (Feb 2026)",
+   "url": "https://www.siemens-energy.com/us/en/home/press-releases/siemens-energy-is-investing--1-billion-and-creating-highly-skill.html",
+   "date": "2026-02-03"
+  },
+  {
+   "label": "Siemens Energy — CMD 2025 CEO presentation (capacity +30-50%, FY28 targets)",
+   "url": "https://assets.siemens-energy.com/dam/e79f8fab-3911-40bb-9297-b39b003ffd7f/251120_CMD-2025_CEO_FINAL-pdf_Original%20file.pdf",
+   "date": "2025-11-20"
+  },
+  {
+   "label": "Siemens Energy — Xcel Energy 10-turbine order press release",
+   "url": "https://www.siemens-energy.com/us/en/home/press-releases/Siemens-Energy-to-supply-ten-gas-turbines-to-Xcel-Energy.html",
+   "date": "2025-10-01"
+  },
+  {
+   "label": "Siemens Energy — Eaton alliance press release (500 MW SGT-800 data-center block)",
+   "url": "https://www.siemens-energy.com/us/en/home/press-releases/eaton-and-siemens-energy-join-forces-to-provide-power-and-techno.html",
+   "date": "2025-06-03"
+  },
+  {
+   "label": "Energy Connects — state-guarantee exit via €9B bank facility",
+   "url": "https://www.energyconnects.com/news/utilities/2025/june/siemens-energy-ends-chapter-on-germany-s-7-5-billion-rescue/",
+   "date": "2025-06"
+  },
+  {
+   "label": "Global Energy Monitor — big-three turbine manufacturer share",
+   "url": "https://globalenergymonitor.org/research/leading-three-manufacturers-providing-two-thirds-turbines-gas-fired-power-plants-under",
+   "date": "2025-04"
+  },
+  {
+   "label": "POWER Magazine — gas turbine supply crunch (slots, reservation fees)",
+   "url": "https://www.powermag.com/gas-powers-boom-sparks-a-turbine-supply-crunch/",
+   "date": "2025-02"
+  },
+  {
+   "label": "CNBC — 2023 Siemens Gamesa €2.2B charge and crisis context",
+   "url": "https://www.cnbc.com/2023/08/07/siemens-energy-books-2point4-billion-wind-turbine-hit-in-q3-2023-results.html",
+   "date": "2023-08-07"
+  },
+  {
+   "label": "Siemens Energy — SGT-800 product page",
+   "url": "https://www.siemens-energy.com/global/en/home/products-services/product/sgt-800.html"
+  },
+  {
+   "label": "Siemens Energy — SGT6-9000HL product page",
+   "url": "https://www.siemens-energy.com/global/en/home/products-services/product/sgt6-9000hl-heavy-duty-gas-turbine.html"
+  },
+  {
+   "label": "Siemens Energy — modular on-site power for data centers",
+   "url": "https://www.siemens-energy.com/global/en/home/products-services/product/modular-onsite-power-generation-data-center.html"
+  },
+  {
+   "label": "Capital.com — valuation debate and share-price history",
+   "url": "https://capital.com/en-int/analysis/siemens-energy-stock-forecast"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 3
+}

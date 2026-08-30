@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 2,
+  "slug": "vertiv",
+  "name": "Vertiv",
+  "legalName": "Vertiv Holdings Co",
+  "categories": ["supplier"],
+  "hq": "Columbus, OH, USA (Westerville)",
+  "ticker": "NYSE: VRT",
+  "founded": "1965 (as Liebert Corporation; Vertiv name 2016)",
+  "ownership": "public",
+  "employees": "~34,000",
+  "website": "https://www.vertiv.com",
+  "summary": "BOTTOM LINE UP FRONT: Vertiv is the pure-play benchmark for AI data-center power and cooling — roughly three-quarters or more of revenue is data-center, backlog reached $15.0B at end-2025 (+109% year over year, book-to-bill ~2.9x in Q4), and Dell'Oro ranks it in a statistical tie with Schneider Electric for #1 in global data-center physical infrastructure. The Q2 2026 print cracked the streak: a ~$100M revenue miss on supply-chain and project-timing issues cut the stock ~10-17% in a day despite raised guidance. BACKGROUND: Heritage dates to 1965 (Liebert, the pioneer of computer-room cooling); spun through Emerson Network Power to the Vertiv name in 2016; NYSE-listed 2020; ~34,000 employees, 130+ countries, executive chairman David Cote (ex-Honeywell), CEO Giordano Albertazzi. FY2025 revenue $10.2B (+27.7%). Named NVIDIA 800 VDC data-center power systems partner; full 800 VDC portfolio scheduled for 2H 2026.",
+  "ecosystemRole": "We assess Vertiv as the scale-and-win-rate yardstick every other power/cooling vendor in this file is measured against, and the cleanest public proxy for AI data-center capex sentiment. Basis: the highest data-center revenue concentration among large-caps (~75-80%), a top-share position in both power (top-5 with Schneider/ABB/Eaton/Delta) and thermal (Omdia top-3, ~6 points of share gained), and a stock that moves violently on AI-demand news (the DeepSeek scare cut it ~25-30% in days). For challengers like Megmeet and Sinexcel, Vertiv defines the incumbent product benchmark; for the 800 VDC transition, it is the incumbent with the most centralized-UPS content at risk and the most aggressive replacement roadmap.",
+  "productsAndServices": [
+    {
+      "name": "Critical power (Trinergy UPS, PowerDirect Rack, DC power)",
+      "description": "Trinergy is the flagship AI-class large UPS: 1,500-2,500 kVA blocks scalable to 20 MW, transformer-free IGBT double conversion, >=97% VFI efficiency (>=99% in Dynamic Online Mode), pitched explicitly at fluctuating AI loads. PowerDirect Rack (March 2025) is an OCP ORv3-compliant 50V DC power shelf covering 33-132 kW per rack with N+N redundancy, AC and HVDC input compatible. Plus switchgear, busway, static transfer switches, and power distribution.",
+      "positioning": "Top-5 global in data-center power and UPS; the Trinergy-class large-UPS franchise is exactly the content the 800 VDC architecture threatens, making the DC-rack portfolio the hedge.",
+      "soldThrough": "Direct and channel with heavy services attach (4,000+ field service engineers).",
+      "targetSegments": ["Hyperscale and colocation", "Enterprise and edge", "AI factories"],
+      "roadmap": "Full 800 VDC ecosystem — centralized rectifiers, DC busway, rack DC-DC converters, DC-compatible backup — releases 2H 2026, ahead of NVIDIA Kyber/Rubin Ultra (2027)."
+    },
+    {
+      "name": "Thermal management & liquid cooling (CoolChip CDUs, CoolLoop, chillers)",
+      "description": "CoolChip CDU family spans 70 kW to 2,300 kW (in-rack, in-row, perimeter; liquid-to-liquid and liquid-to-air) for direct-to-chip cooling; CoolLoop RDHx rear-door heat exchangers to 80 kW; free-cooling and Liebert AFC chillers; BiXin magnetic-bearing centrifugal chiller technology acquired 2024. Omdia ranks Vertiv top-3 in data-center thermal with share gains.",
+      "positioning": "The liquid-cooling M&A race centers on Vertiv (PurgeRite ~$1.0B fluid services, Strategic Thermal Labs, ThermoKey, BMarko) versus Eaton's $9.5B Boyd buy and Schneider's Motivair — Vertiv assembled equivalent scope in smaller pieces.",
+      "soldThrough": "Direct, OEM channels (ThermoKey), and services contracts including fluid commissioning (PurgeRite NearZero).",
+      "targetSegments": ["AI/HPC liquid-cooled deployments", "Retrofit air-to-liquid conversions"],
+      "roadmap": "GB300 NVL72 reference architecture (142 kW/rack) shipping; capacity doubling at the Italian chiller campus by end-2026."
+    },
+    {
+      "name": "Prefabricated infrastructure (OneCore, SmartRun)",
+      "description": "OneCore (August 2025): factory-assembled prefabricated data centers in 5-50 MW single blocks, 96-944 racks, integrating Trinergy UPS, CoolChip CDUs, and chillers under the Unify management platform. SmartRun (March 2025): modular overhead prefab integrating busbar, liquid-cooling piping, and containment — installs at roughly 1 MW+ per day, up to 85% faster than stick-build.",
+      "positioning": "Direct competitor to Eaton's Fibrebond/Flexnode stack and Schneider's EcoStruxure pods; four new/expanded Americas plants (two new South Carolina sites, ~7x infrastructure-solutions capacity when ramped) back the bet.",
+      "soldThrough": "Engineered-to-order project contracts.",
+      "targetSegments": ["Enterprise, colo, sovereign, neocloud data centers"],
+      "roadmap": "BMarko acquisition (April 2026) adds structural fabrication capacity for modular builds."
+    },
+    {
+      "name": "Energy storage (DynaFlex BESS, EnergyCore Grid)",
+      "description": "DynaFlex BESS: modular lithium (LFP) systems, 1.5-6 MW class, UL9540A-tested, 2 ms PCS response — peak shaving, demand management, diesel-generator replacement, hybrid power. EnergyCore Grid (December 2025, North America): utility-grade BESS scaling 1 MW to 200+ MW with integrated PCS and EMS, aimed at accelerating data-center grid interconnection, ancillary services, and black start.",
+      "positioning": "Puts Vertiv directly into the utility-scale BESS integrator space occupied by Fluence, Tesla, and Sungrow — but sold through the data-center relationship rather than the IPP channel.",
+      "soldThrough": "Direct to data-center operators and their energy partners.",
+      "targetSegments": ["Data centers facing interconnection queues", "Grid-interactive campuses"],
+      "roadmap": "EnergyCore Grid is the newest product line — deployment evidence is the thing to watch through 2026."
+    },
+    {
+      "name": "Monitoring, management & services (Unify, Avocent, 4,000+ field engineers)",
+      "description": "Unify consolidates real-time power/thermal management; Avocent embedded management, KVM, and serial consoles; Waylay NV acquisition (August 2025) adds generative-AI operational intelligence. Services span project, liquid-cooling and fluid management, UPS/battery, switchgear/busway, and digital services.",
+      "positioning": "The services moat: recurring revenue and installed-base lock-in that pure hardware challengers lack.",
+      "soldThrough": "Subscription and contract services.",
+      "targetSegments": ["Installed base across 130+ countries"],
+      "roadmap": "AI-driven operational intelligence (Waylay) folding into Unify."
+    }
+  ],
+  "recentDevelopments": [
+    {
+      "date": "2026-07-29",
+      "category": "financial",
+      "headline": "Q2 2026: EPS beat ($1.52 vs ~$1.43) but first revenue miss of the run ($3.27B vs ~$3.37B consensus); stock fell ~10-17% despite raised FY guidance",
+      "read": "Management blamed supply-chain congestion and multi-phase project timing, promising H2 resolution — the market repriced the 'can they execute at scale' question after a six-quarter beat streak.",
+      "source": "https://www.sec.gov/Archives/edgar/data/0001674101/000162828026050323/q22026exhibit991vrt07292026.htm"
+    },
+    {
+      "date": "2026-07-23",
+      "category": "order-win",
+      "headline": "NVIDIA DGX GB300 deployment at the Naval Postgraduate School — power distribution, SmartIT AI racks, liquid cooling in a retrofit facility",
+      "read": "A small but instructive win: the 'repeatable model' framing signals a federal/edge AI-retrofit playbook.",
+      "source": "https://www.vertiv.com/en-us/about/news-and-events/corporate-news/2026/vertiv-infrastructure-helps-bring-nvidia-ai-computing-capability-to-the-naval-postgraduate-school/"
+    },
+    {
+      "date": "2026-03-24",
+      "category": "capacity",
+      "headline": "Four new/expanded Americas plants — two new South Carolina facilities (~7x infrastructure-solutions capacity when ramped), Pennsylvania expansion, Mexicali +45%",
+      "read": "The prefab/modular capacity race against Eaton-Fibrebond and Schneider, onshore for tariff and hyperscaler-proximity reasons.",
+      "source": "https://www.vertiv.com/en-us/about/news-and-events/corporate-news/2026/vertiv-announces-expansion-of-manufacturing-capacity-spanning-infrastructure-solutions-power-and-rack-systems-to-meet-rising-demand/"
+    },
+    {
+      "date": "2026-02-11",
+      "category": "financial",
+      "headline": "Q4 2025: organic orders +~252% YoY, book-to-bill ~2.9x, backlog $15.0B (+109%); shares +14-20% on the print",
+      "read": "The order blowout that defined the bull case — backlog now spans 12-18 months of forward revenue.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1674101/000167410126000006/exhibit991vrt02112026.htm"
+    },
+    {
+      "date": "2025-12-04",
+      "category": "partnership",
+      "headline": "PurgeRite acquisition closed (~$1.0B) — liquid-cooling flushing/filtration services; EnergyCore Grid utility-grade BESS launched a day earlier",
+      "read": "Two moves in one week extending into cooling services and utility-scale storage — both adjacencies where the data-center relationship is the channel.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1674101/000167410125000031/exhibit991vrt-12042025.htm"
+    },
+    {
+      "date": "2025-10-13",
+      "category": "partnership",
+      "headline": "800 VDC platform designs advanced to engineering readiness with NVIDIA; engaged in early design for multiple gigawatt-scale AI-factory projects",
+      "read": "Vertiv's claim to the 800 VDC power-systems tier — the full portfolio ships 2H 2026, timed for Kyber/Rubin Ultra in 2027.",
+      "source": "https://www.vertiv.com/en-us/about/news-and-events/corporate-news/from-vision-to-readiness-vertiv-collaborates-with-nvidia-to-advance-800-vdc-platform-designs-to-power-the-next-generation-of-ai-factories/"
+    },
+    {
+      "date": "2025-08-05",
+      "category": "product-launch",
+      "headline": "OneCore prefabricated data center launched — 5-50 MW factory-assembled blocks integrating the full Vertiv stack",
+      "read": "The whole-building productization play; competes head-on with Eaton's modular data-hall push announced five months later.",
+      "source": "https://www.vertiv.com/en-in/about/news-and-insights/news-releases/vertiv-announces-vertiv-onecore-to-accelerate-deployment-of-scalable-prefabricated-infrastructure-for-ai-hpc-and-high-density-5-mw-data-centers/"
+    },
+    {
+      "date": "2025-06-11",
+      "category": "product-launch",
+      "headline": "Energy-efficient cooling + power reference architecture for NVIDIA GB300 NVL72 (142 kW/rack) with SimReady assets in Omniverse",
+      "read": "Reference-design-led selling matching Schneider's playbook — claims 1.5x AI performance, 50% faster builds, 30% less space.",
+      "source": "https://www.vertiv.com/en-us/about/news-and-insights/corporate-news/vertiv-develops-energy-efficient-cooling-and-power-reference-architecture-for-the-nvidia-gb300-nvl72/"
+    },
+    {
+      "date": "2025-03-18",
+      "category": "product-launch",
+      "headline": "AI infrastructure launch wave: PowerDirect Rack (ORv3 50V DC shelf), SmartRun prefab overhead system, CoolLoop RDHx, Unify management",
+      "read": "The rack-level DC power entry — Vertiv moving down into the shelf/BBU territory where Delta, LITEON, and Megmeet operate.",
+      "source": "https://www.vertiv.com/en-us/about/news-and-events/corporate-news/vertiv-unveils-new-systems-to-solve-speed-of-deployment-management-and-rack-power-and-cooling-challenges-for-ai-applications/"
+    }
+  ],
+  "strategyRead": [
+    "(High confidence) We assess Vertiv functions as the sector's leveraged proxy: its equity and orders amplify AI-capex sentiment in both directions. Basis: +14-20% on the Q4 2025 order blowout, -25-30% in days on the DeepSeek scare, -10-17% on a 3% revenue miss — against a business whose backlog ($15B) and book-to-bill (~2.9x) kept strengthening throughout.",
+    "(High confidence) We assess the #1 position is real but shared and contested. Basis: Dell'Oro places Schneider and Vertiv ~0.1 point apart at the top of data-center physical infrastructure; hyperscalers are deliberately multi-sourcing (Aaon and Modine ramping thermal, Eaton buying Boyd), and Delta-class ODM power vendors sit closer to the NVIDIA rack than any incumbent.",
+    "(Moderate confidence) We assess the 800 VDC transition is a net-content question Vertiv has not yet proven. Basis: independent analysis (SemiAnalysis) projects the architecture contracts the centralized UPS market — a core Vertiv franchise — while creating ~$11B power-rack and ~$13B solid-state-transformer markets; Vertiv's 2H 2026 DC portfolio is announced but no incumbent has yet named a shipping 800 VDC switchboard product.",
+    "(Moderate confidence) We assess execution, not demand, is the binding risk into 2027. Basis: the Q2 2026 revenue miss on supply-chain/project timing, five simultaneous plant expansions, five acquisitions integrating (Great Lakes, Waylay, PurgeRite, ThermoKey, BMarko, Strategic Thermal Labs), and the 2021-22 precedent — management underestimated inflation, produced a 37% one-day drop, and drew securities litigation that still defines the bear case's execution argument.",
+    "(Moderate confidence) We assess EnergyCore Grid signals convergence between data-center power vendors and the BESS integrator space. Basis: a 1 MW-200+ MW utility-grade product sold through data-center relationships attacks the interconnection-queue problem that Fluence/Tesla-class integrators serve from the IPP side — a lane-crossing move worth tracking for every storage vendor in this file."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "Trinergy UPS",
+      "specs": ["1,500 / 1,600 / 2,000 / 2,500 kVA-kW blocks, scalable to 20 MW", ">=97% VFI efficiency; >=99% Dynamic Online Mode", "Transformer-free 3-level IGBT double conversion; designed for fluctuating AI loads"]
+    },
+    {
+      "product": "PowerDirect Rack (ORv3 DC shelf)",
+      "specs": ["50V DC, 33-132 kW per rack, N+N redundancy", "AC and HVDC input compatible; ~2x power capacity vs traditional AC UPS in the same footprint"]
+    },
+    {
+      "product": "CoolChip CDU family",
+      "specs": ["70 kW / 121 kW / 600 kW / 1,350 kW / 2,300 kW models", "Liquid-to-liquid and liquid-to-air; in-rack, in-row, perimeter formats", "GB300 NVL72 reference design supports 142 kW racks"]
+    },
+    {
+      "product": "OneCore prefabricated data center",
+      "specs": ["5-50 MW single blocks; 96-944 racks", "-20°C to 55°C operation; 11-35 kV MV and 400-480V AC inputs", "Integrates Trinergy, CoolChip, Liebert AFC chillers under Unify"]
+    },
+    {
+      "product": "EnergyCore Grid BESS",
+      "specs": ["1 MW to 200+ MW utility-grade; LFP", "Integrated PCS + EMS; liquid-cooled IP55 outdoor enclosures", "UL 1973-listed, UL 9540A-tested; black-start capable"]
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Giordano Albertazzi", "photo": "images/execs/vertiv-albertazzi.jpg",
+      "title": "Chief Executive Officer",
+      "background": [
+        "Career Vertiv/Emerson Network Power executive; led EMEA before the CEO role",
+        "Owns the AI pivot: five acquisitions, five plant expansions, and the 800 VDC roadmap"
+      ]
+    },
+    {
+      "name": "David Cote",
+      "title": "Executive Chairman",
+      "background": [
+        "Former Honeywell chairman/CEO; the operating-system discipline behind Vertiv's margin expansion",
+        "Board re-elected 2026 with ~88% say-on-pay support"
+      ]
+    },
+    {
+      "name": "Craig Chamberlin", "photo": "images/execs/vertiv-chamberlin.png",
+      "title": "Chief Financial Officer",
+      "background": [
+        "CFO since November 2025; previously Wabtec Transit segment CFO (~$3B), 14 years at GE",
+        "Inherits the backlog-conversion and acquisition-integration accounting story"
+      ]
+    },
+    {
+      "name": "Scott Armul", "photo": "images/execs/vertiv-armul.jpg",
+      "title": "Chief Product & Technology Officer",
+      "background": [
+        "Formerly EVP Global Portfolio; public voice of the 800 VDC strategy",
+        "Cites 20+ years of ±400 VDC telecom/industrial DC deployments as Vertiv's DC pedigree"
+      ]
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "type": "fiscal-year (calendar)",
+    "periods": [
+      {
+        "period": "FY2024",
+        "metrics": [
+          {"name": "Revenue", "actual": "$8.01B", "expected": "beats all four quarters", "verdict": "beat", "result": "Q4 revenue +9.0% above consensus; full-year adjusted EPS $2.85 (+61%)"},
+          {"name": "Adjusted EPS", "actual": "$2.85", "expected": "Q4: $0.84 consensus vs $0.99 actual", "verdict": "beat", "result": "+17.9% Q4 surprise — but shares fell on soft Q1 2025 guidance"}
+        ],
+        "commentary": "Four-for-four beats, net leverage cut to ~1x. The pattern of 'beat the quarter, get punished on guidance' started here."
+      },
+      {
+        "period": "FY2025",
+        "metrics": [
+          {"name": "Revenue", "actual": "$10.23B (+27.7%)", "expected": "beats every quarter (+3.6% to +11.9%)", "verdict": "beat", "result": "Q4 revenue $2.88B in line; organic orders +252% YoY, backlog $15.0B"},
+          {"name": "Adjusted EPS", "actual": "$4.20 (+47%)", "expected": "beats of +5.8% to +24%", "verdict": "beat", "result": "Q3 EPS +24% surprise; Q4 +5.8%; initial FY2026 guide $5.97-6.07 later raised twice"}
+        ],
+        "commentary": "The blowout year: book-to-bill ~2.9x in Q4 and a backlog covering 12-18 months of revenue. Geographic caveat — growth was overwhelmingly Americas; APAC -9.6% and EMEA -8.2% in Q4."
+      },
+      {
+        "period": "Q2 2026 (latest interim)",
+        "metrics": [
+          {"name": "Revenue", "actual": "$3.27B (+24%)", "expected": "~$3.37B (consensus)", "verdict": "miss", "result": "~3% miss on supply-chain congestion and multi-phase project timing; first miss after six straight beats"},
+          {"name": "Adjusted EPS", "actual": "$1.52 (+60%)", "expected": "$1.42-1.43 (consensus)", "verdict": "beat", "result": "Fifth straight EPS beat; adjusted operating margin 22.6% (+410 bps); FY guide raised to $13.8-14.2B / $6.65-6.75"}
+        ],
+        "commentary": "EPS, margin, and free cash flow (+234%) all beat, guidance was raised — and the stock still fell ~10-17% in a session, capping a ~27% one-month drawdown. At least seven analysts cut targets while keeping Buy ratings. The debate: timing blip versus the first evidence of execution strain at scale."
+      }
+    ]
+  },
+  "sources": [
+    {"label": "Vertiv Q2 2026 results (8-K exhibit)", "url": "https://www.sec.gov/Archives/edgar/data/0001674101/000162828026050323/q22026exhibit991vrt07292026.htm", "date": "2026-07-29"},
+    {"label": "StockStory Q2 2026 verdict", "url": "https://stockstory.org/us/stocks/nyse/vrt/news/earnings/vertiv-nysevrt-reports-sales-below-analyst-estimates-in-q2-cy2026-earnings-stock-drops-104percent", "date": "2026-07-29"},
+    {"label": "Vertiv FY2025 results (8-K exhibit)", "url": "https://www.sec.gov/Archives/edgar/data/1674101/000167410126000006/exhibit991vrt02112026.htm", "date": "2026-02-11"},
+    {"label": "PurgeRite acquisition close (8-K)", "url": "https://www.sec.gov/Archives/edgar/data/1674101/000167410125000031/exhibit991vrt-12042025.htm", "date": "2025-12-04"},
+    {"label": "EnergyCore Grid BESS launch", "url": "https://www.vertiv.com/en-us/about/news-and-events/corporate-news/vertiv-launches-utility-grade-energy-storage-system-to-accelerate-data-center-interconnection-and-grid-resilience-in-north-america/", "date": "2025-12-03"},
+    {"label": "800 VDC engineering readiness with NVIDIA", "url": "https://www.vertiv.com/en-us/about/news-and-events/corporate-news/from-vision-to-readiness-vertiv-collaborates-with-nvidia-to-advance-800-vdc-platform-designs-to-power-the-next-generation-of-ai-factories/", "date": "2025-10-13"},
+    {"label": "SemiAnalysis — 800 VDC market analysis", "url": "https://newsletter.semianalysis.com/p/inside-the-800vdc-revolution-part", "date": "2025-10"},
+    {"label": "OneCore prefab launch", "url": "https://www.vertiv.com/en-in/about/news-and-insights/news-releases/vertiv-announces-vertiv-onecore-to-accelerate-deployment-of-scalable-prefabricated-infrastructure-for-ai-hpc-and-high-density-5-mw-data-centers/", "date": "2025-08-05"},
+    {"label": "Dell'Oro — Schneider and Vertiv tied for DCPI #1", "url": "https://www.delloro.com/news/data-center-physical-infrastructure-grew-17-percent-y-y-in-1q-2025-driven-by-ai-buildout/", "date": "2025-06"},
+    {"label": "PowerDirect Rack / SmartRun / Unify launch", "url": "https://www.vertiv.com/en-us/about/news-and-events/corporate-news/vertiv-unveils-new-systems-to-solve-speed-of-deployment-management-and-rack-power-and-cooling-challenges-for-ai-applications/", "date": "2025-03-18"},
+    {"label": "Vertiv Trinergy UPS product page", "url": "https://www.vertiv.com/en-us/products-catalog/critical-power/uninterruptible-power-supplies-ups/vertiv-trinergy/"},
+    {"label": "Rosen Law — 2022 securities class action", "url": "https://rosenlegal.com/case/vertiv-holdings-co/"}
+  ],
+  "lastUpdated": "2026-08-09",
+  "profileVersion": 1
+}

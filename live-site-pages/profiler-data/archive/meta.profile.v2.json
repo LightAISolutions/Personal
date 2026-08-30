@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 4,
+  "slug": "meta",
+  "name": "Meta Platforms, Inc.",
+  "shortName": "Meta",
+  "categories": [
+    "hyperscaler"
+  ],
+  "website": "https://www.meta.com",
+  "headquarters": "Menlo Park, CA, USA",
+  "founded": 2004,
+  "employees": "75,472 (June 30, 2026, −1% YoY after ~8,000-role reduction)",
+  "ownership": {
+    "type": "public",
+    "ticker": "NASDAQ: META"
+  },
+  "summary": "BOTTOM LINE UP FRONT: Meta is running the steepest AI-infrastructure escalation of any hyperscaler — capex guidance of $130–145B for 2026 (vs $39B actual in 2024), multi-gigawatt named campuses (Hyperion at 5 GW/$50B+, Prometheus ~1 GW, El Paso ~1 GW), and up to 6.6 GW of contracted nuclear — funded off-balance-sheet through JVs with Blue Owl and BlackRock while free cash flow collapsed to under $1B a quarter; it is the only member of the big four with no external cloud/AI revenue line to absorb the spend. BACKGROUND: Founded 2004; Family of Apps (3.60B daily users; ~98% of revenue is advertising), Reality Labs (Quest/Ray-Ban glasses, ~$4.6B quarterly losses), Meta Superintelligence Labs (Alexandr Wang, formed 2025), Llama models, and MTIA custom inference silicon. FY2025 revenue $200.97B (+22%), net income $60.46B.",
+  "ecosystemRole": "We assess Meta as the ecosystem's most aggressive single energy buyer relative to its size: >30 GW of clean energy contracted, ~7.7 GW of nuclear (Constellation Clinton 1.1 GW + the January 2026 TerraPower/Oklo/Vistra package of up to 6.6 GW), seven new gas plants plus three grid-scale batteries in the Entergy Louisiana package, and frontier bets (1 GW/100 GWh Noon Energy long-duration storage reservation; 1 GW space solar). Its BESS exposure runs through utility-side tolled storage (Enbridge Cowboy: 200 MW/1,600 MWh Tesla batteries) rather than on-campus deployment — no evidence of behind-the-meter BESS at Hyperion or Prometheus.",
+  "productsAndServices": [
+    {
+      "name": "AI Infrastructure & Superclusters",
+      "category": "Data centers · the capex story",
+      "description": "Named multi-GW campuses: Hyperion (Richland Parish, LA — 5 GW design, $50B+, ~2,250 acres, first multi-gigawatt AI training cluster; ~2 GW by 2030), Prometheus (New Albany, OH — ~1 GW supercluster, online 2026), El Paso TX (~1 GW by 2028), Lebanon IN (1 GW, $10B+), Kansas City (operational). Financing model: SPV/JV structures — Blue Owl (Hyperion: ~$27B, 80/20, $26B PIMCO debt) and BlackRock (El Paso: ~$14B, 80/20) — moving the build off Meta's balance sheet.",
+      "highlights": [
+        "Capex trajectory: $39.2B (2024) → $72.2B (2025) → $130–145B guided (2026), raised twice during 2026",
+        "Q2 2026 capex $31.1B consumed ~98% of operating cash flow; FCF fell to $784M (−91% YoY)",
+        "MTIA custom inference silicon deployed across 16 regions for ranking/ads; a reported multi-year Google TPU lease (confirmed at ~$10B Google Cloud agreement level) diversifies compute",
+        "Llama 4 line (Scout/Maverick/Behemoth ~2T params) plus the first Meta Superintelligence Labs model (Q1 2026)"
+      ],
+      "positioning": "Steepest YoY capex increase among the big four and the only one with no external AI/cloud revenue — Meta's return path is ads improvement and future superintelligence products, which is why its prints draw the most ROI skepticism (stock fell on both 2026 guidance raises)",
+      "soldThrough": "Internal capacity (no cloud resale); financed via JV lease structures",
+      "targetSegments": "Own AI training/inference for ads, apps, and superintelligence research",
+      "roadmap": "Hyperion full build ~2032; El Paso online 2028; first AI-optimized DC online 2026"
+    },
+    {
+      "name": "Energy Procurement Portfolio",
+      "category": "Power · what this app's readers sell into",
+      "description": "Over 30 GW of clean energy contracted; 100% renewable-matched since 2020. Nuclear: Constellation Clinton (1,121 MW, 20-yr, from 2027) plus the January 2026 package — TerraPower (2 Natrium units of 690 MW each + rights to six more, with 1.2 GW of molten-salt thermal storage capability), Oklo (up to 1.2 GW Aurora campus, ~2030), Vistra (2.1 GW existing-plant PPAs + 433 MW uprates, the largest corporate-backed uprates). Gas: seven new plants (~5.2 GW Phase 2 proposal + ~2.3 GW Phase 1) with Entergy Louisiana for Hyperion. Storage: three grid-scale batteries in the Entergy package; 50 MW/4-hr BESS paired with 190 MW NM solar; Enbridge Cowboy (365 MW solar + 200 MW/1,600 MWh Tesla BESS, tolled via the Wyoming utility); Noon Energy LDES reservation up to 1 GW/100 GWh (>100-hr, pilot 2028). PPAs: Invenergy (1,800 MW cumulative), AES (650 MW), Sage/XGS geothermal (300 MW combined), Overview space solar (up to 1 GW, ~2030).",
+      "highlights": [
+        "~7.7 GW total contracted nuclear — the largest corporate nuclear commitment",
+        "The Louisiana gas build-out is the ecosystem's highest-profile ratepayer controversy: LPSC challenges, a judge ordering Meta to reveal withheld demand evidence, and 15-yr Meta contracts vs 30-yr plant lives flagged by a dissenting commissioner",
+        "Storage posture: utility-side tolling and portfolio PPAs, not on-campus BESS — a gap suppliers pitch against"
+      ],
+      "positioning": "Second-largest corporate clean-energy buyer cohort with Amazon (combined 20.4 GW contracted in 2025 per BNEF); distinctive for frontier-technology reservations (LDES, space solar, Natrium storage)",
+      "soldThrough": "PPAs, utility tariffs (Entergy/ratepayer-protection pledge), tolling agreements, JV development",
+      "targetSegments": "Counterparties: utilities, IPPs, nuclear developers, storage developers",
+      "roadmap": "TerraPower units ~2032; Oklo ~2030; Noon pilot 2028; Entergy Phase 2 under LPSC review"
+    },
+    {
+      "name": "Family of Apps & Reality Labs",
+      "category": "Core business",
+      "description": "Facebook, Instagram, WhatsApp, Messenger, Threads — advertising engine funding everything else (Q2 2026 revenue $60.8B, +28%). Reality Labs: Quest headsets and Ray-Ban Meta glasses with persistent ~$4.6B quarterly operating losses; ~8,000-role reduction in May 2026 partly aimed at Reality Labs and framed as funding the AI pivot.",
+      "highlights": [
+        "Ad strength has so far absorbed the capex: Q2 2026 revenue beat consensus even as EPS missed on costs",
+        "FTC monopolization case: Meta won at trial (Nov 2025, Judge Boasberg); FTC appealed January 2026"
+      ],
+      "soldThrough": "Advertising auction platform",
+      "targetSegments": "Advertisers globally; 3.60B daily users"
+    }
+  ],
+  "recentDevelopments": [
+    {
+      "date": "2026-07-29",
+      "category": "financial",
+      "headline": "Q2 2026: revenue $60.8B (+28%) beat; EPS $6.18 missed ~$7.22 consensus on a 55% cost jump ($2.4B legal, $1.18B severance); capex floor raised to $130B; FCF $784M",
+      "read": "The quarter that crystallized the bear case: ads can fund the buildout, but free cash flow is gone and the market repriced accordingly (−8–10% after hours).",
+      "source": "https://www.cnbc.com/2026/07/29/meta-q2-earnings-report-2026.html"
+    },
+    {
+      "date": "2026-07-28",
+      "category": "partnership",
+      "headline": "BlackRock JV for the ~1 GW El Paso campus (~$14B, 80/20, $12.5B debt; Meta receives ~$1B distribution)",
+      "read": "The Blue Owl playbook repeated — Meta is industrializing off-balance-sheet AI-campus finance, keeping guidance-capex lower than economic capex.",
+      "source": "https://about.fb.com/news/2026/07/meta-announces-new-venture-with-blackrock-to-develop-data-center-in-el-paso/"
+    },
+    {
+      "date": "2026-07-13",
+      "category": "capacity",
+      "headline": "Richland Parish (Hyperion) expanded to 5 GW / $50B+; Entergy package confirmed: seven new gas plants + three grid-scale batteries + nuclear uprates",
+      "read": "The single largest AI-campus commitment in the covered set — and the one carrying the most regulatory and ratepayer friction.",
+      "source": "https://about.fb.com/news/2026/07/teachers-local-businesses-win-as-meta-expands-louisiana-data-center/"
+    },
+    {
+      "date": "2026-04-27",
+      "category": "partnership",
+      "headline": "Frontier energy reservations: Noon Energy LDES up to 1 GW/100 GWh (>100-hr; 25 MW pilot 2028) and Overview space solar up to 1 GW (~2030)",
+      "read": "Meta is buying options on post-lithium duration classes — a signal to LDES developers that hyperscaler demand extends beyond 4-hour BESS.",
+      "source": "https://about.fb.com/news/2026/04/powering-ai-strengthening-the-grid-space-solar-energy-and-long-duration-storage/"
+    },
+    {
+      "date": "2026-01-09",
+      "category": "partnership",
+      "headline": "Up to 6.6 GW of nuclear contracted: TerraPower (Natrium, ~2032), Oklo (~2030), Vistra (2.1 GW + 433 MW uprates)",
+      "read": "The largest corporate nuclear package — Natrium's built-in 1.2 GW thermal-storage capability is the adjacent-storage angle worth tracking.",
+      "source": "https://about.fb.com/news/2026/01/meta-nuclear-energy-projects-power-american-ai-leadership/"
+    },
+    {
+      "date": "2025-10-29",
+      "category": "financial",
+      "headline": "Q3 2025: revenue beat but a one-time $15.93B non-cash tax charge and 'notably larger 2026 capex' warning triggered a ~11% selloff",
+      "read": "The first market rebellion against the spending curve — every subsequent print has been judged against capex first, earnings second.",
+      "source": "https://investor.atmeta.com/investor-news/press-release-details/2025/Meta-Reports-Third-Quarter-2025-Results/default.aspx"
+    },
+    {
+      "date": "2025-10-21",
+      "category": "partnership",
+      "headline": "Blue Owl JV: ~$27B Hyperion development financing (80/20; $26B PIMCO debt; 4-yr leases + 16-yr residual guarantee)",
+      "read": "The template deal for AI-campus SPV finance — private credit is now load-bearing in hyperscale AI.",
+      "source": "https://about.fb.com/news/2025/10/meta-blue-owl-capital-develop-hyperion-data-center/"
+    },
+    {
+      "date": "2026-05-21",
+      "category": "order-win",
+      "headline": "Enbridge Cowboy Phase 1 (Wyoming): 365 MW solar + 200 MW/1,600 MWh Tesla-battery BESS serving Meta data centers via utility tolling (~$1.2B Enbridge investment)",
+      "read": "Meta's clearest BESS-linked deal — structured so the utility tolls the battery; Meta partnership with Enbridge now totals 1.6 GW.",
+      "source": "https://www.utilitydive.com/news/enbridge-meta-build-365-mw200-mw-solarstorage-project/820905/"
+    }
+  ],
+  "strategyRead": [
+    "(High confidence) We assess Meta is the highest-beta energy buyer in the covered set: no cloud revenue absorbs the spend, so its $130–145B capex and 6.6 GW nuclear package are bets that superintelligence-era products monetize — the FCF collapse to sub-$1B quarters is the measurable cost of that bet. Basis: filings and guidance evolution.",
+    "(Moderate confidence) We assess the SPV/JV financing model (Blue Owl, BlackRock — ~$41B of announced development cost moved off-balance-sheet) is now core strategy: it preserves reported capex optics and credit capacity while transferring residual-value risk to private capital; expect it on every subsequent gigawatt campus.",
+    "(Moderate confidence) We assess Meta's storage demand will remain utility-side rather than on-campus near-term: the Entergy batteries, the Enbridge tolling structure, and the absence of behind-the-meter BESS at its flagship campuses point to Meta buying grid firmness as a service — the sales channel for BESS suppliers is Meta's utility counterparties, not Meta directly.",
+    "(Moderate confidence) We assess the Louisiana gas controversy is the sector's regulatory bellwether: a judge compelling demand-evidence disclosure and commissioner dissent over stranded-asset risk are the template arguments that will follow every multi-GW campus — outcomes here shape how much firm generation vs storage gets built for AI load.",
+    "(Low confidence) The reported Google TPU purchase discussions (beyond the confirmed ~$10B cloud lease) are unconfirmed — if realized from 2027, they would mark the first hyperscaler-to-hyperscaler silicon dependency at scale."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "Named AI campuses",
+      "specs": [
+        {
+          "band": "Flagship",
+          "label": "Hyperion (Richland Parish, LA)",
+          "value": "5 GW design · $50B+ · ~2,250 acres · ~2 GW by 2030, full ~2032"
+        },
+        {
+          "band": "In build",
+          "label": "Prometheus (New Albany, OH)",
+          "value": "~1 GW supercluster · online 2026 · 200→400 MW behind-the-meter gas (Williams) + AEP transmission"
+        },
+        {
+          "band": "In build",
+          "label": "El Paso, TX",
+          "value": "~1 GW by 2028 · ~$14B BlackRock JV"
+        },
+        {
+          "band": "Announced",
+          "label": "Lebanon, IN",
+          "value": "1 GW · $10B+ · announced Feb 2026"
+        }
+      ]
+    },
+    {
+      "product": "Energy portfolio (storage-relevant)",
+      "specs": [
+        {
+          "band": "Nuclear",
+          "label": "Contracted",
+          "value": "~7.7 GW contracted (Clinton 1.12 GW + TerraPower/Oklo/Vistra up to 6.6 GW)"
+        },
+        {
+          "band": "Storage",
+          "label": "Grid-scale batteries",
+          "value": "3 in the Entergy LA package (MW undisclosed) · 50 MW/4-hr NM · 200 MW/1,600 MWh Enbridge Cowboy (tolled)"
+        },
+        {
+          "band": "Storage",
+          "label": "Long-duration",
+          "value": "Noon Energy reservation up to 1 GW / 100 GWh (>100-hr); 25 MW/2.5 GWh pilot 2028"
+        },
+        {
+          "band": "Gas",
+          "label": "Entergy LA",
+          "value": "~2.3 GW Phase 1 approved + ~5.2 GW Phase 2 proposed (7 plants)"
+        }
+      ],
+      "notes": "Meta's first-party posts omit MW for the Entergy batteries; Entergy's LPSC docket is the follow-up source."
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Mark Zuckerberg",
+      "photo": "images/execs/meta-zuckerberg.jpg",
+      "photoCredit": "Anthony Quintano from Westminster, United States, CC BY 2.0, via Wikimedia Commons",
+      "title": "Founder, Chairman & CEO",
+      "background": [
+        "Founded Facebook 2004; controls the company via super-voting shares",
+        "Personally announced Meta Superintelligence Labs and the Prometheus/Hyperion superclusters (July 2025)"
+      ]
+    },
+    {
+      "name": "Susan Li",
+      "title": "CFO",
+      "background": [
+        "Owns capex guidance and the Blue Owl/BlackRock JV financing structures"
+      ]
+    },
+    {
+      "name": "Alexandr Wang",
+      "photo": "images/execs/meta-wang.jpg",
+      "photoCredit": "Meta Platforms, Inc, CC BY-SA 4.0, via Wikimedia Commons",
+      "title": "Chief AI Officer — Meta Superintelligence Labs",
+      "background": [
+        "Founder/CEO — Scale AI (joined Meta 2025 with the $14B-class Scale deal)",
+        "Consolidated MSL leadership; unit ~3,000 people after cuts"
+      ]
+    },
+    {
+      "name": "Santosh Janardhan",
+      "title": "Head of Infrastructure",
+      "background": [
+        "Oversees global data centers and compute — the key counterpart for power/BESS suppliers"
+      ]
+    },
+    {
+      "name": "Andrew Bosworth",
+      "title": "CTO (Reality Labs)",
+      "photo": "images/execs/meta-bosworth.jpg",
+      "photoCredit": "UK Home Office, CC BY 2.0, via Wikimedia Commons",
+      "background": [
+        "Leads Reality Labs through its restructuring"
+      ]
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "type": "public",
+    "periods": [
+      {
+        "period": "Q2 2026 (latest)",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "$60.80B (+28%)",
+            "expected": "~$60.2B consensus",
+            "verdict": "beat",
+            "result": "ad engine intact"
+          },
+          {
+            "name": "Diluted EPS",
+            "actual": "$6.18",
+            "expected": "~$7.22 consensus",
+            "verdict": "miss",
+            "result": "~14% miss on 55% cost growth ($2.4B legal, $1.18B severance)"
+          },
+          {
+            "name": "Capex",
+            "actual": "$31.08B (quarter)",
+            "expected": "FY guide narrowed upward to $130–145B",
+            "verdict": "miss",
+            "result": "FCF $784M (−91% YoY); stock −8–10% after hours"
+          }
+        ],
+        "commentary": "Q3 2026 revenue guided $61–64B; FY expense guide $165–169B."
+      },
+      {
+        "period": "Q1 2026",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "$56.31B (+33%)",
+            "expected": "",
+            "verdict": "beat",
+            "result": ""
+          },
+          {
+            "name": "Net income",
+            "actual": "$26.77B (+61%)",
+            "expected": "",
+            "verdict": "beat",
+            "result": "flattered by an ~$8B tax benefit"
+          },
+          {
+            "name": "Capex guidance",
+            "actual": "raised to $125–145B",
+            "expected": "$115–135B prior",
+            "verdict": "miss",
+            "result": "stock fell >6% while peers rose on similar spend — Meta-specific ROI skepticism"
+          }
+        ],
+        "commentary": "First Meta Superintelligence Labs model released in the quarter."
+      },
+      {
+        "period": "FY2025",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "$200.97B (+22%)",
+            "expected": "Q4: $59.89B vs $58.59B est",
+            "verdict": "beat",
+            "result": "Q4 EPS $8.88 vs $8.23 est",
+            "kpi": "revenue",
+            "usdMillions": 200970,
+            "fxBasis": "as reported"
+          },
+          {
+            "name": "Net income",
+            "actual": "$60.46B (−3%)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "hit by the Q3 $15.93B one-time non-cash tax charge (OBBBA)"
+          },
+          {
+            "name": "Capex",
+            "actual": "$72.22B",
+            "expected": "$70–72B final guide",
+            "verdict": "inline",
+            "result": "initial FY2026 guide of $115–135B sent the stock +10% after hours in Jan 2026"
+          }
+        ],
+        "commentary": "FY2024 for reference: revenue $164.50B (+22%), net income $62.36B, capex $39.23B.",
+        "periodType": "annual",
+        "periodEnd": "2025-12-31"
+      }
+    ],
+    "commentary": "The only big-four member with no external AI/cloud revenue. Peer 2026 capex guides for context: Amazon ~$220B, Microsoft ~$190B (calendar), Alphabet $195–205B, Meta $130–145B — but Meta's is the steepest multiple of its 2024 base."
+  },
+  "sources": [
+    {
+      "label": "Meta — Q2 2026 results",
+      "url": "https://investor.atmeta.com/investor-news/press-release-details/2026/Meta-Reports-Second-Quarter-2026-Results/default.aspx",
+      "date": "2026-07-29"
+    },
+    {
+      "label": "CNBC — Q2 2026 earnings coverage",
+      "url": "https://www.cnbc.com/2026/07/29/meta-q2-earnings-report-2026.html",
+      "date": "2026-07-29"
+    },
+    {
+      "label": "Meta — BlackRock El Paso JV",
+      "url": "https://about.fb.com/news/2026/07/meta-announces-new-venture-with-blackrock-to-develop-data-center-in-el-paso/",
+      "date": "2026-07-28"
+    },
+    {
+      "label": "Meta — Richland Parish 5 GW expansion + Entergy package",
+      "url": "https://about.fb.com/news/2026/07/teachers-local-businesses-win-as-meta-expands-louisiana-data-center/",
+      "date": "2026-07-13"
+    },
+    {
+      "label": "Utility Dive — Enbridge/Meta Cowboy solar+storage",
+      "url": "https://www.utilitydive.com/news/enbridge-meta-build-365-mw200-mw-solarstorage-project/820905/",
+      "date": "2026-05-21"
+    },
+    {
+      "label": "Meta — space solar + Noon LDES reservations",
+      "url": "https://about.fb.com/news/2026/04/powering-ai-strengthening-the-grid-space-solar-energy-and-long-duration-storage/",
+      "date": "2026-04-27"
+    },
+    {
+      "label": "Meta — nuclear package (TerraPower/Oklo/Vistra)",
+      "url": "https://about.fb.com/news/2026/01/meta-nuclear-energy-projects-power-american-ai-leadership/",
+      "date": "2026-01-09"
+    },
+    {
+      "label": "Meta — Q4/FY2025 results",
+      "url": "https://investor.atmeta.com/investor-news/press-release-details/2026/Meta-Reports-Fourth-Quarter-and-Full-Year-2025-Results/default.aspx",
+      "date": "2026-01"
+    },
+    {
+      "label": "NPR — FTC antitrust trial ruling for Meta",
+      "url": "https://www.npr.org/2025/11/18/nx-s1-5495626/meta-ftc-instagram-whatsapp-antitrust-ruling",
+      "date": "2025-11-18"
+    },
+    {
+      "label": "Meta — Blue Owl Hyperion JV",
+      "url": "https://about.fb.com/news/2025/10/meta-blue-owl-capital-develop-hyperion-data-center/",
+      "date": "2025-10-21"
+    },
+    {
+      "label": "Meta — Constellation Clinton nuclear deal",
+      "url": "https://about.fb.com/news/2025/06/meta-constellation-partner-clean-energy-project/",
+      "date": "2025-06-03"
+    },
+    {
+      "label": "Meta — sustainability/energy portfolio page",
+      "url": "https://sustainability.atmeta.com/energy/"
+    },
+    {
+      "label": "Data Center Frontier — Hyperion/Prometheus ownership & power analysis",
+      "url": "https://www.datacenterfrontier.com/hyperscale/article/55310441/ownership-and-power-challenges-in-metas-hyperion-and-prometheus-data-centers"
+    },
+    {
+      "label": "UCS — judge orders Meta to explain gas demand",
+      "url": "https://www.ucs.org/about/news/judge-orders-meta-explain-new-gas-demand-hyperscale-louisiana-data-center"
+    }
+  ],
+  "lastUpdated": "2026-08-22",
+  "profileVersion": 2
+}

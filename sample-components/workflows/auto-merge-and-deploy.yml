@@ -1,0 +1,94 @@
+# =============================================================================
+# auto-merge-and-deploy.yml — minimal CI pipeline for the sample components
+# -----------------------------------------------------------------------------
+# What this does on every push to a `claude/*` branch:
+#   1. Fast-forwards the changes into `main`
+#   2. Deletes the `claude/*` branch
+#   3. Fires a webhook to the GAS web app to trigger self-update
+#      (doPost(action=deploy) → pullAndDeployFromGitHub())
+#
+# Drop this file into `.github/workflows/auto-merge-and-deploy.yml` in your new
+# repo. Replace the GAS_DEPLOYMENT_URL value (or set it as a repo variable) and
+# you're done.
+#
+# Developed by: LightAISolutions
+# =============================================================================
+
+name: Auto-merge claude branches and deploy GAS
+
+on:
+  push:
+    branches:
+      - 'claude/**'
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  merge:
+    # Only run when the push is to a claude/* branch (not main itself).
+    if: startsWith(github.ref, 'refs/heads/claude/')
+    runs-on: ubuntu-latest
+    outputs:
+      merged: ${{ steps.do-merge.outputs.merged }}
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge claude branch into main
+        id: do-merge
+        env:
+          CLAUDE_BRANCH: ${{ github.ref_name }}
+        run: |
+          git fetch origin "$CLAUDE_BRANCH"
+          git merge --no-ff "origin/$CLAUDE_BRANCH" -m "Auto-merge $CLAUDE_BRANCH into main [skip ci]"
+          git push origin main
+          echo "merged=true" >> "$GITHUB_OUTPUT"
+
+      - name: Delete the claude branch
+        if: steps.do-merge.outputs.merged == 'true'
+        env:
+          CLAUDE_BRANCH: ${{ github.ref_name }}
+        run: git push origin --delete "$CLAUDE_BRANCH"
+
+  deploy-gas:
+    # Runs after a successful merge, or directly on a push to main.
+    needs: [merge]
+    if: always() && (needs.merge.outputs.merged == 'true' || github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Read DEPLOYMENT_ID from sample.config.json
+        id: cfg
+        run: |
+          DEPLOYMENT_ID=$(jq -r '.DEPLOYMENT_ID' sample-components/sample.config.json)
+          echo "deployment_id=$DEPLOYMENT_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Fire GAS deploy webhook
+        env:
+          DEPLOYMENT_ID: ${{ steps.cfg.outputs.deployment_id }}
+        run: |
+          if [ -z "$DEPLOYMENT_ID" ] || [ "$DEPLOYMENT_ID" = "YOUR_DEPLOYMENT_ID" ] || [ "$DEPLOYMENT_ID" = "null" ]; then
+            echo "DEPLOYMENT_ID is unset/placeholder — skipping webhook (no-op on initial bootstrap)."
+            exit 0
+          fi
+          URL="https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec"
+          echo "Posting deploy webhook to $URL"
+          curl -sS -L -X POST "$URL" --data "action=deploy" --max-time 300 -o /tmp/gas-deploy-resp.txt
+          echo "GAS response:"
+          cat /tmp/gas-deploy-resp.txt

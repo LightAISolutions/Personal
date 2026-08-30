@@ -1,0 +1,473 @@
+{
+  "schemaVersion": 2,
+  "slug": "primoris",
+  "name": "Primoris",
+  "legalName": "Primoris Services Corporation",
+  "categories": [
+    "epc"
+  ],
+  "hq": "Dallas, TX, USA",
+  "ticker": "NYSE: PRIM",
+  "founded": "1960 (operating heritage via ARB Inc., California; public July 2008 via merger with blank-check company Rhapsody Acquisition Corp.)",
+  "ownership": "public",
+  "employees": "18,500+ (company, 2026)",
+  "website": "https://www.prim.com",
+  "summary": "BOTTOM LINE UP FRONT: Primoris is the AI buildout's 'outside-the-walls' contractor caught in a self-inflicted 2026 credibility crisis. The Dallas specialty contractor — #4 US solar contractor (3.22 GW installed in 2025, Solar Power World), a top-10 specialty firm with gas-generation EPC, T&D, and fiber capability — sells exactly what AI campuses need around the building: behind-the-meter gas power (a West Texas off-grid plant with Crusoe), utility infrastructure and duct banks (Meta Nebraska, $250M+; Northern Virginia), and, via the $422M PayneCrest acquisition (May 2026), inside-the-fence electrical distribution. But 2026 broke a two-year beat streak: after FY2025 revenue of $7.6B (+19%) and beats in all eight 2024-25 quarters, cost overruns on six renewables projects forced guidance cuts in May and June that slashed adjusted EPS ~57% (to $2.05-2.60 from $5.80-6.00 initial), the COO and Renewables president departed, the stock fell ~62% from its $205.50 high (market cap now ~$4.15B), and a securities class action (class period 2025-08-05 to 2026-06-22) is active. The counterweight: a record $13.9B backlog at June 30, 2026 ($8.2B MSA), $2.0B of Q2 Energy awards tied to power and data-center growth, and a new CEO (Koti Vadlamudi, 30-year Jacobs veteran, since November 2025) resetting project controls. Q3 2026 results expected ~November 2 (unconfirmed).",
+  "ecosystemRole": "The energy-infrastructure specialty contractor of the AI buildout's perimeter: utility-scale solar and BESS EPC, behind-the-meter gas generation, transmission/substations, duct banks, and fiber — everything that powers and connects a data center, sold to utilities, hyperscalers, and neocloud developers.",
+  "productsAndServices": [
+    {
+      "name": "Energy Segment — Renewables, Gas Generation & Industrial EPC",
+      "category": "Utility-scale power engineering-procurement-construction",
+      "description": "FY2025 revenue $5.0B. Utility-scale solar and battery-storage EPC (#4 US solar contractor, 3.22 GW installed in 2025), full EPC of natural-gas-fired generation including behind-the-meter and microgrid plants, industrial construction, heavy civil, pipeline services, and engineering. Renewables revenue ran $3.0B in 2025 but is guided down to ~$2.1B in 2026 after cost overruns on six projects forced a selectivity reset.",
+      "highlights": [
+        "West-Central Texas off-grid natural-gas power plant with Crusoe — dedicated AI-data-center power, the marquee behind-the-meter credential",
+        "$2.0B of new Energy-segment awards in Q2 2026 across gas generation, industrial construction, and electric services 'supporting power and data center growth'",
+        "Solar Power World #4 US solar contractor 2026 (3.22 GW in 2025); top-5 in the 2025 list (2.9 GW in 2024); Premier PV O&M/repowering unit at $55M backlog",
+        "Energy backlog $6.2B at June 30, 2026 ($3.5B fixed next-12-month)"
+      ],
+      "positioning": "One of the few contractors selling both sides of the AI-power equation — renewables-plus-storage AND gas generation — though the 2026 renewables overruns show the fixed-price EPC slice carries the portfolio's execution risk. Peer set: SOLV, Mortenson, Blattner (Quanta), MasTec Clean Energy on solar; gas-EPC competition from Kiewit and the OEM-aligned builders.",
+      "soldThrough": "Fixed-price and unit-price EPC contracts with IPPs, utilities, and data-center power developers; fixed-price is <15% of the total company portfolio",
+      "targetSegments": [
+        "Independent power producers",
+        "Utilities",
+        "AI/data-center power developers (Crusoe)",
+        "Industrial owners"
+      ],
+      "roadmap": "2026 renewables reset under interim leadership; gas-generation and data-center-adjacent awards driving the record backlog"
+    },
+    {
+      "name": "Utilities Segment — Power Delivery, Gas Operations & Communications",
+      "category": "Utility T&D, gas distribution, and fiber construction",
+      "description": "FY2025 revenue $2.7B. Recurring, MSA-heavy utility services: electric transmission and distribution and substations (Power Delivery), natural-gas utility distribution (Gas Operations), and fiber/telecom network construction (Communications). The segment is the margin-stability anchor — H2 2026 target gross margins of 10-12% versus 6-8% for Energy.",
+      "highlights": [
+        "Utilities backlog $7.7B at June 30, 2026; company-wide MSA backlog $8.2B of the $13.9B total — the recurring-revenue base",
+        "Margin-expansion driver in Q1 2026 even as renewables deteriorated",
+        "Duct-bank and manhole construction for data centers via R.B. Hinkle (Virginia): 11,000 linear ft of duct banks, 59 manholes on the IAD 350 Data Center"
+      ],
+      "positioning": "The stable two-thirds of the story: master-service-agreement work with utilities whose load growth is now driven by data-center interconnection — competing with Quanta, MasTec, and MYR Group at smaller scale",
+      "soldThrough": "Multi-year MSAs and unit-price contracts with electric, gas, and telecom utilities",
+      "targetSegments": [
+        "Electric utilities",
+        "Gas utilities",
+        "Telecom/fiber operators",
+        "Data-center developers (civil/duct-bank scope)"
+      ],
+      "roadmap": "Rate-base-funded T&D growth as utilities build for data-center load"
+    },
+    {
+      "name": "Data-Center Services Bundle (cross-segment)",
+      "category": "AI-campus perimeter infrastructure",
+      "description": "Primoris packages itself as 'the premier partner for powering data centers' — planning, building, and connecting natural gas, solar-plus-BESS, and power-delivery infrastructure, deliberately focused 'outside the walls': site preparation, gas power generation, utility infrastructure (T&D, substations, duct banks), medium-voltage and critical/rack power distribution, and fiber network construction. The May 2026 PayneCrest acquisition extends the bundle inside the fence.",
+      "highlights": [
+        "Meta Nebraska: three data-center facilities, $250M+ in contracts (utilities, telecom duct banks, MV/600V distribution)",
+        "Crusoe West Texas off-grid gas plant; IAD 350 Virginia duct-bank scope",
+        "~$1.7B of potential data-center projects cited in the 2025 pipeline (management commentary via third-party relay)",
+        "PayneCrest Electric ($422M announced; ~$399.5M at close): St. Louis electrical contractor, 600+ employees, 2026E revenue $350-370M, adj EBITDA $38-42M — explicit data-center-services rationale"
+      ],
+      "positioning": "Complements rather than competes with the building GCs (Turner, DPR, HITT build the shells; Primoris powers and connects them) — the same lane Quanta and MasTec are racing into with far larger balance sheets",
+      "soldThrough": "Direct contracts with hyperscalers and developers plus utility MSAs serving data-center load",
+      "targetSegments": [
+        "Hyperscalers (Meta)",
+        "Neocloud/AI power developers (Crusoe)",
+        "Colocation developers",
+        "Utilities serving DC corridors"
+      ],
+      "roadmap": "PayneCrest integration; converting the data-center pipeline into backlog under the new CEO's project-controls regime"
+    }
+  ],
+  "recentDevelopments": [
+    {
+      "date": "2026-08-18",
+      "category": "Risk",
+      "headline": "Securities class action advances: Hagens Berman's case covers PRIM purchasers 2025-08-05 to 2026-06-22, alleging 'woefully deficient' estimating and project-oversight processes; lead-plaintiff deadline 2026-09-21",
+      "read": "Plaintiff-firm advocacy, not findings — but the class period maps exactly onto the beat-streak quarters now recast as the run-up to the collapse, and multiple firms are circling.",
+      "source": "Hagens Berman case page; GlobeNewswire, 2026-08-18"
+    },
+    {
+      "date": "2026-08-04",
+      "category": "Financial",
+      "headline": "Q2 2026: net loss $(24.2)M, adjusted EPS $(0.27), adjusted EBITDA $11.4M (-92.6% YoY) — but a record $13.9B backlog; slashed FY2026 guidance reaffirmed; dividend maintained",
+      "read": "The quarter the overruns washed through: gross margin 4.9% vs 12.3% a year earlier. The record backlog is the entire bull case surviving the wreck.",
+      "source": "Primoris Q2 2026 release, 2026-08-04"
+    },
+    {
+      "date": "2026-06-22",
+      "category": "Financial",
+      "headline": "Business update slashes FY2026 adjusted EPS guidance ~57% to $2.05-2.60 (from $4.80-5.00) on six renewables projects with cost overruns; COO Jeremy Kinch departs the same day; stock falls ~28% (its worst day in over a year)",
+      "read": "The second cut in seven weeks converted a demand story into a project-controls story. Disclosed alongside: $2.0B of Q2 Energy awards for power/data-center growth — demand was never the problem.",
+      "source": "Primoris release + SEC 8-K, 2026-06-22; Investing.com, 2026-06-23"
+    },
+    {
+      "date": "2026-06-08",
+      "category": "Leadership",
+      "headline": "Renewables President Anthony Vorderbruggen departs effective immediately; Tim Healy (President, ARB Industrial) named interim",
+      "read": "The segment that caused the overruns loses its president two weeks before the guidance collapse is disclosed — accountability moving ahead of the announcement.",
+      "source": "Primoris release, 2026-06-08"
+    },
+    {
+      "date": "2026-05-05",
+      "category": "Financial",
+      "headline": "Q1 2026: adjusted EPS $0.59 vs ~$0.85 consensus and revenue $1.56B vs $1.73B expected — the first big miss after eight straight beats; FY guidance cut to $4.80-5.00; PayneCrest close confirmed",
+      "read": "The streak-breaker. In hindsight the first visible crack in the renewables cost-forecasting machinery.",
+      "source": "Primoris Q1 2026 release, 2026-05-05; Seeking Alpha"
+    },
+    {
+      "date": "2026-05-01",
+      "category": "M&A",
+      "headline": "Closes the PayneCrest Electric acquisition (announced 2026-03-31 at $422M; ~$399.5M at close): St. Louis electrical contractor, 600+ employees, 2026E revenue $350-370M, explicit data-center-services rationale",
+      "read": "Extends the outside-the-walls bundle inside the fence — MV and critical/rack power distribution. Funded with ~$400M of borrowings weeks before the guidance collapse.",
+      "source": "Primoris releases, 2026-03-31 and 2026-05-05"
+    },
+    {
+      "date": "2026-02-23",
+      "category": "Financial",
+      "headline": "FY2025 results: revenue $7.6B (+19%), adjusted EPS $5.62 (+45.8%), adjusted EBITDA $531.1M, backlog $11.9B; initial FY2026 guidance of $5.80-6.00 adjusted EPS",
+      "read": "The peak print — every 2025 quarter beat consensus, some by 40-55%. The initial FY2026 guide would survive ten weeks.",
+      "source": "Primoris Q4/FY2025 release, 2026-02-23"
+    },
+    {
+      "date": "2025-11-10",
+      "category": "Leadership",
+      "headline": "Koti Vadlamudi (30-year Jacobs veteran) becomes President & CEO, succeeding interim CEO/Chairman David King; joins the board",
+      "read": "An outside engineering-major operator brought in eight months after Tom McCormick's separation — hired, it turned out, into a project-controls crisis he inherited rather than caused.",
+      "source": "Primoris announcement PDF; Businesswire, 2025-10-07"
+    },
+    {
+      "date": "2025-11-03",
+      "category": "Financial",
+      "headline": "Q3 2025 record: revenue $2.18B (+32.1%), adjusted EPS $1.88 vs $1.35 consensus; guidance raised again; backlog $11.1B",
+      "read": "The biggest beat of the streak — later falling inside the class period as the allegation set's Exhibit A for what management 'should have known.'",
+      "source": "Primoris Q3 2025 release, 2025-11-03"
+    },
+    {
+      "date": "2025-03-14",
+      "category": "Leadership",
+      "headline": "CEO Tom McCormick separates from the company; Chairman David King steps in as interim President & CEO",
+      "read": "The start of the leadership churn: CEO out in March, permanent successor in November, COO and Renewables president gone by mid-2026.",
+      "source": "Primoris release listing, 2025-03-14; TipRanks/Globe & Mail recaps"
+    },
+    {
+      "date": "2025-02-24",
+      "category": "Financial",
+      "headline": "FY2024 results: revenue $6.4B (+11.4%), GAAP EPS $3.31, adjusted EBITDA $435.2M, record $508.3M operating cash flow, record $11.9B backlog",
+      "read": "The base year of the two-year growth run — all four 2024 quarters beat, with Q4 adjusted EPS 55% above consensus.",
+      "source": "Primoris Q4/FY2024 release, 2025-02-24"
+    },
+    {
+      "date": "2024-08-20",
+      "category": "Product",
+      "headline": "Premier PV, Primoris's solar O&M and repowering unit, reaches $55M backlog",
+      "read": "A small but strategic recurring-revenue layer on top of the installed solar fleet — the kind of aftermarket the EPC model usually leaves behind.",
+      "source": "Primoris release, 2024-08-20"
+    }
+  ],
+  "strategyRead": [
+    "1. (High confidence) We assess 2026 transformed Primoris's investment identity from momentum compounder to execution-credibility turnaround: eight consecutive beats through FY2024-25 gave way to two guidance cuts in seven weeks (cumulative ~57% off adjusted EPS), a COO and segment-president exit, and an active securities class action. The record $13.9B backlog and $2.0B of Q2 awards show demand intact — the doubt is entirely about whether the company can price and control fixed-price renewables work.",
+    "2. (High confidence) We assess the data-center strategy is deliberately perimeter-focused and real: named Meta Nebraska contracts ($250M+), the Crusoe off-grid gas plant, Virginia duct-bank scope, and the PayneCrest acquisition together give Primoris the most complete 'outside-the-walls' bundle among mid-cap specialty contractors — gas generation, T&D, duct bank, fiber, and now inside-the-fence electrical. It complements the building GCs rather than competing with them.",
+    "3. (Moderate confidence) We assess the overrun cluster is a renewables-EPC-specific control failure, not a company-wide one: the Utilities segment expanded margins through the same period, fixed-price work is under 15% of the total portfolio, and the six problem projects sit in exactly the slice (utility-scale solar EPC) where weather, labor productivity, and redesigns concentrate. That makes the fix organizational (estimating and cost-to-complete discipline) rather than structural — consistent with hiring a Jacobs-trained CEO.",
+    "4. (Moderate confidence) We assess the gas-generation franchise is quietly becoming the more valuable AI asset: behind-the-meter gas for AI campuses (Crusoe) has none of the renewables segment's IRA/tariff/interconnection policy exposure, and Q2 2026's $2.0B award flow leaned into gas generation and electric services. If renewables stays reset at ~$2.1B/yr, the mix shift does the de-risking on its own.",
+    "5. (Moderate confidence) We assess the balance-sheet sequencing was unlucky bordering on undisciplined: ~$400M borrowed for PayneCrest and $50M of buybacks executed at an average $111.29 — weeks before disclosures that took the stock to $77. Liquidity remains adequate ($958.9M total), but capital-allocation credibility is now bundled into the same repair job as project controls.",
+    "6. (Low confidence) We assess consensus (Buy, ~$120 average target — 55% above the price) is pricing a successful FY2027 normalization (~$4.79 consensus EPS, ~16x forward). That is plausible on the backlog but assumes no adverse class-action development and no third overrun disclosure; either would reset the multiple again. Q3 2026 results (~November 2, unconfirmed) are the next test."
+  ],
+  "technicalSpecs": [
+    {
+      "product": "Delivery fleet and contract-risk profile",
+      "specs": [
+        "Solar installed: ~3.22 GW in calendar 2025 (Solar Power World #4 US contractor); 2.9 GW in 2024 (top-5)",
+        "Backlog at 2026-06-30: $13.9B total — Utilities $7.7B, Energy $6.2B; MSA backlog $8.2B; next-12-month fixed: $2.3B Utilities + $3.5B Energy",
+        "Contract mix: average project size <$3M; fixed-price contracts <15% of the portfolio — yet the 2026 overruns came from the fixed-price renewables EPC slice",
+        "18,500+ employees across the US and Canada; PayneCrest adds 600+ electrical workers; R.B. Hinkle executes Virginia duct-bank/manhole scope",
+        "Data-center geographies: Nebraska (Meta), Northern Virginia (IAD corridor), West Texas (Crusoe off-grid gas)"
+      ],
+      "notes": "Crew counts are not publicly disclosed; cumulative solar install base not independently captured (multi-GW, low confidence)"
+    },
+    {
+      "product": "2026 margin and liquidity picture",
+      "specs": [
+        "Q2 2026 gross margin 4.9% vs 12.3% in Q2 2025 (renewables overruns); H2 2026 targets: Utilities 10-12%, Energy 6-8%",
+        "H1 2026: revenue $3.25B (-8.2%), net loss $(6.7)M, adjusted EPS $0.32 vs $2.66 prior-year H1",
+        "Liquidity at 2026-06-30: $218.2M cash + $740.7M revolver capacity = $958.9M; ~$400M borrowed for PayneCrest",
+        "Capital returns: $0.08/quarter dividend maintained; $50M of Q2 2026 buybacks at average $111.29 (vs ~$77 August price); $100M authorization through 2028-04-30"
+      ],
+      "notes": "FY2024 operating cash flow was a record $508.3M — the pre-crisis cash machine the turnaround is meant to restore"
+    }
+  ],
+  "decisionMakers": [
+    {
+      "name": "Koti Vadlamudi",
+      "title": "President & Chief Executive Officer, Director",
+      "photo": "images/execs/primoris-vadlamudi.jpg",
+      "background": [
+        "CEO since 2025-11-10; 30-year Jacobs veteran brought in from outside after Tom McCormick's March 2025 separation (Chairman David King served as interim for ~8 months)",
+        "Absorbed most COO duties after Jeremy Kinch's June 2026 departure — currently double-hatting while the search runs",
+        "Inherited, rather than caused, the renewables cost-overrun crisis; his project-controls reset is the turnaround thesis"
+      ]
+    },
+    {
+      "name": "Ken Dodgen",
+      "title": "Executive Vice President & Chief Financial Officer",
+      "photo": "images/execs/primoris-dodgen.jpg",
+      "background": [
+        "CFO through both the 2024-25 beat streak and the 2026 guidance collapse",
+        "Owns the estimating/cost-to-complete disclosure machinery now at the center of the securities class action's allegations"
+      ]
+    },
+    {
+      "name": "John M. Perisich",
+      "title": "Chief Legal and Administrative Officer",
+      "photo": "images/execs/primoris-perisich.jpg",
+      "background": [
+        "Long-tenured legal chief; now managing the active securities class action (class period 2025-08-05 to 2026-06-22, lead-plaintiff deadline 2026-09-21) and related plaintiff-firm actions"
+      ]
+    },
+    {
+      "name": "David King",
+      "title": "Chairman of the Board (former interim President & CEO, Mar-Nov 2025)",
+      "background": [
+        "Bridged the CEO gap between McCormick's separation and Vadlamudi's arrival",
+        "Board continuity anchor through the leadership churn — CEO, COO, and Renewables president all changed within 16 months"
+      ]
+    },
+    {
+      "name": "Tim Healy",
+      "title": "Interim President, Renewables (since 2026-06-08)",
+      "background": [
+        "Previously President of ARB Industrial; stepped in when Anthony Vorderbruggen departed effective immediately",
+        "Owns the reset of the segment that produced the six overrun projects — renewables revenue guided from $3.0B (2025) to ~$2.1B (2026) under a selectivity regime"
+      ]
+    }
+  ],
+  "financials": {
+    "currency": "USD",
+    "type": "public (NYSE: PRIM; market cap ~$4.15B at $77.18, 2026-08-21 close — ~62% below the $205.50 52-week high; consensus Buy, ~$120 average target)",
+    "periods": [
+      {
+        "period": "Q2 2026 (reported 2026-08-04)",
+        "metrics": [
+          {
+            "name": "Adjusted EPS",
+            "actual": "$(0.27)",
+            "expected": "~$(0.26) to $(0.35) (vendor sets conflict)",
+            "verdict": "mixed",
+            "result": "Roughly in-line-to-modest-beat on adjusted consensus depending on vendor; GAAP badly below — net loss $(24.2)M"
+          },
+          {
+            "name": "Revenue",
+            "actual": "$1.69B (-4.8%)",
+            "expected": "$1.77B",
+            "verdict": "miss",
+            "result": "Second consecutive revenue miss as renewables contracted"
+          },
+          {
+            "name": "Backlog",
+            "actual": "$13.9B (record)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "Up from $11.9B at year-end despite the crisis — $2.0B of Q2 Energy awards for power/data-center growth"
+          }
+        ],
+        "commentary": "Adjusted EBITDA $11.4M (-92.6% YoY); gross margin 4.9% vs 12.3%. The slashed FY2026 guidance ($2.05-2.60 adjusted EPS, $275-325M adjusted EBITDA) was reaffirmed, and the $0.08 dividend maintained. Guidance path this year: $5.80-6.00 (Feb) → $4.80-5.00 (May) → $2.05-2.60 (June)."
+      },
+      {
+        "period": "Q1 2026 (reported 2026-05-05)",
+        "metrics": [
+          {
+            "name": "Adjusted EPS",
+            "actual": "$0.59",
+            "expected": "~$0.85 (Zacks $0.84, FactSet $0.85, MarketBeat $0.87)",
+            "verdict": "miss",
+            "result": "-30% vs consensus — the first big miss after eight consecutive beats"
+          },
+          {
+            "name": "Revenue",
+            "actual": "$1.56B (-5.4%)",
+            "expected": "$1.73B",
+            "verdict": "miss",
+            "result": "Shares plunged; first FY2026 guidance cut to $4.80-5.00"
+          }
+        ],
+        "commentary": "The streak-breaker quarter. PayneCrest closed 2026-05-01 (~$399.5M)."
+      },
+      {
+        "period": "FY2025",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "$7.6B (+19%)",
+            "expected": "Beat consensus every quarter",
+            "verdict": "beat",
+            "result": "Q2 $1.89B vs $1.69B; Q3 $2.17B vs $1.83B; Q4 $1.90B vs $1.81B"
+          },
+          {
+            "name": "Adjusted EPS",
+            "actual": "$5.62 (+45.8%)",
+            "expected": "Beats of 36-56% in Q1-Q3",
+            "verdict": "beat",
+            "result": "Q1 $0.98 vs ~$0.72; Q2 $1.68 vs $1.08; Q3 $1.88 vs $1.35; Q4 $1.08 vs ~$1.01"
+          },
+          {
+            "name": "Adjusted EBITDA",
+            "actual": "$531.1M",
+            "expected": "",
+            "verdict": "inline",
+            "result": "Backlog $11.9B at year-end"
+          }
+        ],
+        "commentary": "The peak year — later recast by plaintiffs as the run-up: the class period opens with the Q2 2025 release (2025-08-05). GAAP diluted EPS $5.02."
+      },
+      {
+        "period": "FY2024",
+        "metrics": [
+          {
+            "name": "Revenue",
+            "actual": "$6.4B (+11.4%)",
+            "expected": "Beat all four quarters",
+            "verdict": "beat",
+            "result": "Q2 $1.56B vs $1.54B; Q3 $1.65B vs $1.58B; Q4 $1.74B vs $1.59B"
+          },
+          {
+            "name": "Adjusted EPS",
+            "actual": "~$3.86 (sum of quarters; low confidence)",
+            "expected": "Beats of 18-55% in Q2-Q4",
+            "verdict": "beat",
+            "result": "Q2 $1.04 vs $0.86; Q3 $1.22 vs ~$1.03; Q4 $1.13 vs ~$0.73-0.75 (+55% surprise)"
+          },
+          {
+            "name": "Operating cash flow",
+            "actual": "$508.3M (record)",
+            "expected": "",
+            "verdict": "inline",
+            "result": "GAAP EPS $3.31; adjusted EBITDA $435.2M; record $11.9B backlog"
+          }
+        ],
+        "commentary": "Next report: Q3 2026, estimated ~2026-11-02 (MarketBeat; Investing.com says Nov 9; not company-scheduled as of late August — PRIM typically announces ~2 weeks ahead). Q3 2026 consensus: $0.92 adjusted EPS."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "GlobeNewswire/Hagens Berman — PRIM securities class action investor alert (lead-plaintiff deadline 2026-09-21)",
+      "url": "https://www.globenewswire.com/news-release/2026/08/18/3346545/32716/en/",
+      "date": "2026-08-18"
+    },
+    {
+      "label": "Primoris — Q2 2026 results (net loss, record $13.9B backlog, guidance reaffirmed)",
+      "url": "https://ir.prim.com/news-and-events/news-releases/2026/08-04-2026-211542600",
+      "date": "2026-08-04"
+    },
+    {
+      "label": "Primoris — Business update: FY2026 guidance cut ~57%, COO departure, $2.0B Q2 awards",
+      "url": "https://ir.prim.com/news-and-events/news-releases/2026/06-22-2026-210520328",
+      "date": "2026-06-22"
+    },
+    {
+      "label": "Investing.com — Primoris stock tumbles 28% on slashed outlook, COO departure",
+      "url": "https://www.investing.com/news/stock-market-news/primoris-stock-tumbles-28-on-slashed-outlook-coo-departure-93CH-4753721",
+      "date": "2026-06-23"
+    },
+    {
+      "label": "SEC 8-K exhibit — Primoris business update (2026-06-22)",
+      "url": "https://www.sec.gov/Archives/edgar/data/0001361538/000136153826000017/prim-20260622xex99.htm",
+      "date": "2026-06-22"
+    },
+    {
+      "label": "Primoris — Leadership changes: Renewables president departs; Tim Healy interim",
+      "url": "https://ir.prim.com/news-and-events/news-releases/2026/06-08-2026-210514632",
+      "date": "2026-06-08"
+    },
+    {
+      "label": "Primoris — Q1 2026 results (first miss; guidance cut; PayneCrest closed)",
+      "url": "https://ir.prim.com/news-and-events/news-releases/2026/05-05-2026-211613921",
+      "date": "2026-05-05"
+    },
+    {
+      "label": "Seeking Alpha — Primoris plunges after earnings miss; guidance cut sparks alarm",
+      "url": "https://seekingalpha.com/news/4587044-primoris-services-plunges-after-earnings-miss-guidance-cut-sparks-alarm",
+      "date": "2026-05"
+    },
+    {
+      "label": "Primoris — PayneCrest Electric acquisition announced ($422M; data-center services rationale)",
+      "url": "https://ir.prim.com/news-and-events/news-releases/2026/03-31-2026-134516338",
+      "date": "2026-03-31"
+    },
+    {
+      "label": "Primoris — Q4/FY2025 results ($7.6B +19%, adj EPS $5.62, initial FY2026 guide)",
+      "url": "https://ir.prim.com/news-and-events/news-releases/2026/02-23-2026-211611532",
+      "date": "2026-02-23"
+    },
+    {
+      "label": "Primoris — Koti Vadlamudi appointed President & CEO (effective 2025-11-10)",
+      "url": "https://ir.prim.com/~/media/Files/P/Primoris-IR-v2/press-release/2025/psc-announces-koti-vadlamudi-ceo-11-10-2025.pdf",
+      "date": "2025-10-07"
+    },
+    {
+      "label": "Primoris — Q3 2025 record results (adj EPS $1.88 vs $1.35 consensus)",
+      "url": "https://ir.prim.com/news-and-events/news-releases/2025/11-03-2025-211811961",
+      "date": "2025-11-03"
+    },
+    {
+      "label": "Primoris — Q2 2025 record results (start of the later class period)",
+      "url": "https://ir.prim.com/news-and-events/news-releases/2025/08-04-2025-211559739",
+      "date": "2025-08-04"
+    },
+    {
+      "label": "Solar Power World — 2026 Top Solar Contractors (Primoris #4, 3.22 GW installed 2025)",
+      "url": "https://www.solarpowerworldonline.com/2026-top-solar-contractors/",
+      "date": "2026"
+    },
+    {
+      "label": "Primoris — Leadership-change release (Tom McCormick separation; David King interim)",
+      "url": "https://ir.prim.com/news-and-events/news-releases/2025/03-14-2025-200507604",
+      "date": "2025-03-14"
+    },
+    {
+      "label": "Primoris — Q4/FY2024 results ($6.4B, record $508.3M operating cash flow)",
+      "url": "https://ir.prim.com/news-and-events/news-releases/2025/02-24-2025-211548991",
+      "date": "2025-02-24"
+    },
+    {
+      "label": "Primoris — Premier PV reaches $55M backlog",
+      "url": "https://ir.prim.com/news-and-events/news-releases/2024/08-20-2024-211029780",
+      "date": "2024-08-20"
+    },
+    {
+      "label": "SEC 8-K — Primoris/Rhapsody Acquisition Corp merger (public-listing lineage)",
+      "url": "https://www.sec.gov/Archives/edgar/data/0001361538/000114420408010736/v104404_8k.htm",
+      "date": "2008"
+    },
+    {
+      "label": "Hagens Berman — Primoris securities class action case page",
+      "url": "https://www.hbsslaw.com/cases/primoris-services-corporation-prim-securities-class-action"
+    },
+    {
+      "label": "Primoris — Data Centers capability page (Meta Nebraska $250M+, Crusoe Texas, IAD 350)",
+      "url": "https://www.prim.com/capabilities/data-centers"
+    },
+    {
+      "label": "Primoris IR — Primoris at a Glance (18,500+ employees; contract mix; MSA backlog)",
+      "url": "https://ir.prim.com/investor-overview/primoris-at-a-glance"
+    },
+    {
+      "label": "Primoris — Leadership page (executive roster and photos)",
+      "url": "https://www.prim.com/about/leadership"
+    },
+    {
+      "label": "MarketBeat — PRIM earnings history and next-date estimate (~2026-11-02; Q3 consensus $0.92)",
+      "url": "https://www.marketbeat.com/stocks/NYSE/PRIM/earnings/"
+    },
+    {
+      "label": "Investing.com — PRIM earnings history (2024-2026 actual vs forecast)",
+      "url": "https://www.investing.com/equities/primoris-services-earnings"
+    },
+    {
+      "label": "StockAnalysis — PRIM statistics (market cap, 52-week range, analyst consensus)",
+      "url": "https://stockanalysis.com/stocks/prim/"
+    },
+    {
+      "label": "Seeking Alpha — PRIM: an emerging data center infrastructure play",
+      "url": "https://seekingalpha.com/article/4846646-prim-an-emerging-data-center-infrastructure-play"
+    }
+  ],
+  "lastUpdated": "2026-08-21",
+  "profileVersion": 1
+}

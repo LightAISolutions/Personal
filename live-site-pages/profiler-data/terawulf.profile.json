@@ -1,0 +1,538 @@
+{
+ "schemaVersion": 6,
+ "slug": "terawulf",
+ "name": "TeraWulf",
+ "legalName": "TeraWulf Inc.",
+ "categories": [
+  "developer"
+ ],
+ "hq": "Easton, MD, USA",
+ "ticker": "NASDAQ: WULF",
+ "founded": "2021 (Delaware; Beowulf Energy lineage to 1990; Lake Mariner operations from March 2022)",
+ "ownership": "public",
+ "employees": "141 full-time (Feb 2026, incl. Beowulf E&D)",
+ "website": "https://www.terawulf.com",
+ "summary": "BOTTOM LINE UP FRONT: TeraWulf has converted itself from a bitcoin miner into an AI-campus landlord faster than any peer — 839 MW of leased critical IT and ~$27B+ of contracted revenue as of the Q2 2026 deck, anchored by the 401 MW / 20-year / ~$19B Anthropic lease at Hawesville, KY (July 2026, ~$33B with extensions) on top of 378 MW of Fluidstack leases at Lake Mariner carrying $3.2B of Google credit backstops — credit support Google bought with warrants now equal to ~14% of the company pro forma. Those same warrants produce the GAAP distortion that defines the stock: a $939.9M Q2 2026 net loss, $755.7M of it a non-cash warrant mark-to-market, which the market shrugged off (shares fell under 1% on the print, +47% YTD at the time). BACKGROUND: Easton, MD; incorporated 2021 out of Paul Prager's Beowulf Energy lineage (1990). Flagship Lake Mariner campus sits on the former 700 MW Somerset coal plant on Lake Ontario (NYISO Zone A, ~90% zero-carbon grid, 90 MW NYPA allocation); the platform now spans five brownfield campuses totaling 3,630 MW gross / 2,921 MW critical IT. Legacy mining (~9.3 EH/s, 245 MW) is down to ~29% of revenue and shrinking. Per MarketBeat, six consecutive EPS misses — while the Street holds a Strong Buy consensus at roughly 2.3x the share price: the market prices contracted backlog, not the P&L.",
+ "ecosystemRole": "We assess TeraWulf as the cleanest test of the 'power landlord of AI' model (Bernstein's framing, June 2026): it monetizes brownfield power sites — energized substations, existing interconnects, cheap zero-carbon supply — into 10–20-year take-or-pay leases with AI tenants whose own credit is thin, papered over by investment-grade support (Google's ~$4.5B of backstops across the Fluidstack chain; Anthropic's lease with investment-grade credit support). For this ecosystem's power-chain vendors, TeraWulf is a live buildout: CB-series liquid-cooled buildings at Lake Mariner at ~$9.1M per critical-IT MW, 336 MW under construction, and Data Center Frontier flags long-lead electrical equipment — transformers, switchgear, chillers — as the choke point on the Anthropic schedule. Basis: company disclosures and independent trade coverage; the equity story (warrant dilution, related-party history) is separable from the vendor read-through.",
+ "productsAndServices": [
+  {
+   "name": "HPC/AI colocation leasing (WULF Compute)",
+   "category": "Data centers",
+   "description": "Build-to-suit, Tier III-aligned AI data-center leases of 10–20 years with annual escalators: Fluidstack at 378 MW critical IT across Lake Mariner's CB-3/CB-4/CB-5 (~$6.7B contracted, up to ~$16B with extensions, Google-backstopped), Anthropic at 401 MW at the Justified campus in Hawesville, KY (20 years, ~$19B initial term, ~$33B with two 5-year extensions), and Core42/G42 at 60 MW (delivered Jul 2025–Mar 2026, ~$1.1B over 10 years). Target ~85% site-NOI margin; build cost guided $8–10M per critical-IT MW ($9.1M actual at Lake Mariner in Q2 2026).",
+   "highlights": [
+    "839 MW leased critical IT; ~$27B+ contracted revenue; ~$1.5B average annual NOI (Q2 2026 deck)",
+    "Google credit support totals $3.2B at Lake Mariner (plus $1.3B at the exited Abernathy JV) in exchange for warrants — ~73.5M shares at $0.01, ~14% pro forma",
+    "102 MW energized at Lake Mariner as of July 2026; 438 contracted MW targeted energized by 1H 2027"
+   ],
+   "positioning": "Leads the miner-pivot cohort on contracted backlog ($12.8B at YE2025 before the $19B Anthropic add) vs Core Scientific ~$10.2B, Applied Digital ~$11B, Cipher ~$9.3B, IREN's $9.7B Microsoft deal; Bernstein tags WULF and Cipher the 'power landlords of AI'.",
+   "soldThrough": "Long-term triple/modified-gross leases to AI clouds and labs; project-level debt (WULF Compute LLC $3.2B 7.75% notes) secured by the leases.",
+   "targetSegments": [
+    "AI-cloud intermediaries (Fluidstack, Core42)",
+    "Frontier labs directly (Anthropic)",
+    "Target: 250–500 MW of new contracted capacity per year"
+   ],
+   "roadmap": "CB-4 first-hall revenue late Sep 2026, CB-5 first hall early 2027; Anthropic capacity 2H 2027 → full 401 MW early 2028."
+  },
+  {
+   "name": "Brownfield power-campus platform (five sites)",
+   "category": "Power & land",
+   "description": "The underlying asset base: former coal/smelter industrial sites with energized substations and existing high-voltage interconnects. Lake Mariner, Barker NY (600 MW critical IT design; ~500 MW grid interconnection expandable toward 750 MW; 90 MW NYPA allocation); Justified, Hawesville KY (former Century Aluminum smelter, ~480 MW, acquired Feb 2026 for ~$302M total consideration); Muskie, eastern KY (1+ GW gross, acquired May 2026, AEP building a 345 kV substation off the 765 kV network); Lake Hawkeye/Cayuga, Lansing NY (80-year ground lease, ~320 MW critical IT potential, 138 MW of sub-5¢/kWh power expected 2H 2026, planned 67 MW solar + 800 MWh BESS); Chesapeake, Morgantown MD (pending close, FERC-approved — 'Bring Your Own Generation' net-generator design: Phase I 500 MW generation + 250 MW battery + 500 MW data-center load).",
+   "highlights": [
+    "Platform totals 3,630 MW gross / 2,921 MW critical IT — 839 MW contracted + ~2.1 GW pipeline",
+    "Brownfield thesis: the substation and interconnect, not the building, are the scarce asset",
+    "~90% zero-carbon grid supply at the NY sites (NYISO Zone A) — contested by short-sellers over REC accounting"
+   ],
+   "positioning": "Power-first identity ('Power is the constraint. We control it.') against greenfield developers waiting in interconnection queues; the Abernathy TX JV exit (~$530M, ~20% IRR, July 2026) showed the platform can also recycle capital out of non-core geographies.",
+   "soldThrough": "Owned or long-term ground-leased sites; capacity leased through WULF Compute.",
+   "targetSegments": [
+    "AI tenants needing 100 MW+ blocks on 2027–2030 timelines"
+   ],
+   "roadmap": "Muskie initial 500 MW ramp Q4 2028 (+500 MW ~2030); Lake Hawkeye operations ~2029; Chesapeake ~2030."
+  },
+  {
+   "name": "Bitcoin self-mining (legacy, shrinking)",
+   "category": "Digital assets",
+   "description": "~49,400 miners / ~9.3 EH/s at YE2025 across 245 MW of legacy capacity at Lake Mariner. Digital-asset revenue fell from $47.6M in Q2 2025 to $12.8M in Q2 2026 (~29% of revenue) as buildings and power are progressively redeployed to HPC. The nuclear-powered Nautilus JV (Talen, 2¢/kWh) was exited in Oct 2024 at ~$92M / 3.4x MOIC to fund the first HPC buildings.",
+   "highlights": [
+    "Mining is now the bridge business funding nothing — HPC leases carry the story",
+    "No stated exit date; capacity converts as HPC demand claims the megawatts"
+   ],
+   "positioning": "Among miner-pivots, TeraWulf is furthest along in revenue mix: HPC hit 71% of revenue in Q2 2026 — first of the cohort to cross majority-HPC.",
+   "soldThrough": "Self-mining only (hosted mining not material).",
+   "targetSegments": [
+    "Opportunistic BTC production on already-owned power"
+   ],
+   "roadmap": "Progressive conversion; no committed fleet refresh disclosed since the 2024 S21 Pro upgrade plan."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-08-05",
+   "category": "financial",
+   "headline": "Q2 2026: revenue $44.8M with HPC leasing at $31.9M (71% of revenue, +52% QoQ); GAAP net loss $939.9M — $755.7M of it the non-cash Google-warrant mark-to-market; cash $3.0B; stock fell <1%",
+   "read": "The quarter that proved the mix shift is real and that GAAP optics will stay broken while the stock rises — every rally marks the warrants up through the P&L.",
+   "source": "https://investors.terawulf.com/news-events/press-releases/detail/144/terawulf-reports-second-quarter-2026-results"
+  },
+  {
+   "date": "2026-07-06",
+   "category": "order-win",
+   "headline": "Anthropic signs a 20-year, 401 MW lease at the Justified campus (Hawesville, KY) — ~$19B initial term, ~$33B with extensions, investment-grade credit support; same day, TeraWulf exits the Abernathy TX JV to Fluidstack for ~$530M (~20% IRR)",
+   "read": "Graduation day: from middleman tenancy (Fluidstack) to a direct frontier-lab lease, while recycling the one non-core-geography asset into wholly-owned Kentucky. The Anthropic-behind-Fluidstack chain that trade press mapped in Nov 2025 became explicit.",
+   "source": "https://investors.terawulf.com/news-events/press-releases/detail/142/terawulf-announces-anthropic-lease-at-justified-data-campus-and-sale-of-majority-interest-in-abernathy-joint-venture-to-fluidstack"
+  },
+  {
+   "date": "2026-05-26",
+   "category": "capacity",
+   "headline": "Acquires 1+ GW eastern Kentucky campus ('Muskie', EastPark Industrial Park, ~$231M) — Kentucky Power (AEP) building a 345 kV substation off the 765 kV network; initial 500 MW ramp targeted Q4 2028",
+   "read": "The pipeline replenishment move: with Lake Mariner effectively sold out, the next gigawatt has to come from new brownfields.",
+   "source": "https://investors.terawulf.com/news-events/press-releases/detail/141/terawulf-expands-infrastructure-platform-with-acquisition-of-1-gw-eastern-kentucky-hpc-campus"
+  },
+  {
+   "date": "2026-04-16",
+   "category": "financial",
+   "headline": "Closes ~$1.04B common stock offering at $19.00/share (Morgan Stanley lead) for Hawesville construction and bridge repayment",
+   "read": "Equity issued at 6x the 2024 lows — the dilution machine keeps running, but at progressively better prices.",
+   "source": "https://investors.terawulf.com/news-events/press-releases/detail/137/terawulf-announces-closing-of-common-stock-offering"
+  },
+  {
+   "date": "2026-02-26",
+   "category": "financial",
+   "headline": "FY2025: revenue $168.5M (mining $151.6M / HPC $16.9M), net loss $661.4M, cash $3.7B after raising $6.5B+ of capital during 2025; 522 MW contracted, $12.8B+ backlog",
+   "read": "The transition year on paper: nearly all revenue still mining, nearly all value contracted HPC — the gap the 2026-27 energization schedule has to close.",
+   "source": "https://investors.terawulf.com/news-events/press-releases/detail/132/terawulf-reports-fourth-quarter-and-full-year-2025-results"
+  },
+  {
+   "date": "2026-02-02",
+   "category": "capacity",
+   "headline": "Acquires the Hawesville, KY brownfield (former Century Aluminum smelter, ~480 MW — becomes Justified Data) and agrees to buy the Morgantown, MD generating station (becomes Chesapeake Data & Energy, 'bring your own generation' design)",
+   "read": "Two coal/smelter-legacy sites in one release — the brownfield playbook applied beyond New York, one grid-powered, one net-generator.",
+   "source": "https://investors.terawulf.com/news-events/press-releases/detail/129/terawulf-expands-digital-and-power-infrastructure-portfolio-with-strategic-acquisitions-in-kentucky-and-maryland"
+  },
+  {
+   "date": "2025-10-28",
+   "category": "partnership",
+   "headline": "168 MW Abernathy, TX joint venture with Fluidstack (TeraWulf 51%): ~$9.5B over a 25-year lease, $1.3B Google credit support; $1.3B of JV secured notes followed in December",
+   "read": "The Google-backstop template proved portable beyond Lake Mariner — and nine months later the position was sold at a ~20% IRR, showing the paper itself is liquid.",
+   "source": "https://investors.terawulf.com/news-events/press-releases/detail/121/terawulf-expands-strategic-partnership-with-fluidstack-through-new-168-mw-ai-compute-joint-venture"
+  },
+  {
+   "date": "2025-10-16",
+   "category": "financial",
+   "headline": "Prices $3.2B of 7.75% senior secured notes due 2030 at subsidiary WULF Compute LLC (Morgan Stanley sole bookrunner) to fund the Lake Mariner HPC buildout — secured by the Fluidstack leases and a pre-completion Google warrant pledge",
+   "read": "Project-finance-style debt against contracted leases — the capital structure the whole landlord model depends on, at a coupon that shows lenders still price execution risk.",
+   "source": "https://investors.terawulf.com/news-events/press-releases/detail/119/terawulf-inc-announces-pricing-of-3-2-billion-of-senior-secured-notes"
+  },
+  {
+   "date": "2025-08-18",
+   "category": "order-win",
+   "headline": "Fluidstack expands with the 160 MW CB-5 lease four days after the initial 200+ MW agreements — Lake Mariner Fluidstack total >360 MW, $6.7B contracted (~$16B with extensions); Google backstop rises to $3.2B, warrants to ~14% pro forma",
+   "read": "The August 2025 week that re-rated the company: two leases, a Google guarantee, and a stock that gained a third in a day. Google's economics — downside protection via backstop, upside via penny warrants — reveal how AI-buildout credit actually gets underwritten.",
+   "source": "https://investors.terawulf.com/news-events/press-releases/detail/114/terawulf-announces-fluidstack-expansion-with-160-mw-cb-5-lease-at-lake-mariner"
+  },
+  {
+   "date": "2025-05-27",
+   "category": "other",
+   "headline": "Acquires Beowulf Electricity & Data — CEO Prager's related-party services entity (~$52.4M base consideration, 94 employees internalized)",
+   "read": "Partial remediation of the governance critique at the center of the 2024 Grizzly/Hunterbrook short reports (>$100M of fees alleged to Prager-affiliated entities) — by buying the CEO's own service company.",
+   "source": "https://investors.terawulf.com/news-events/press-releases/detail/108/terawulf-acquires-beowulf-electricity-data-streamlining-corporate-structure"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess the business model is credit arbitrage on power scarcity: TeraWulf converts brownfield megawatts into long take-or-pay leases signed by thinly-capitalized AI intermediaries, then makes the paper bankable with third-party credit enhancement — Google's amortizing backstops (~$4.5B across the Fluidstack chain) and Anthropic's investment-grade-supported lease. Basis: SEC 8-K backstop mechanics (Google must assume the lease on Fluidstack default, subject to triggers), and the $3.2B project notes secured against exactly that support. The ~14% of pro forma equity granted to Google is the disclosed price of bankability.",
+  "(High confidence) We assess the July 2026 Anthropic lease materially de-risked the tenant chain. Basis: trade press had mapped Anthropic's $50B Fluidstack program onto TeraWulf's sites in Nov 2025; the direct 20-year lease made the end-tenant explicit and shifted concentration from a private middleman toward a frontier lab with investment-grade support — better credit, still narrow (two counterparty chains carry ~everything).",
+  "(High confidence) We assess GAAP results will remain structurally misleading in both directions while warrants are outstanding. Basis: $755.7M of the Q2 2026 loss was warrant mark-to-market that rises when the stock rises; MarketBeat logs six straight EPS misses against a Strong Buy consensus and a ~$36.64 average target vs ~$15.64 price. Anyone reading this company through EPS is reading the wrong line — contracted MW energized on schedule is the metric.",
+  "(Moderate confidence) We assess brownfield repeatability — not Lake Mariner — is the open execution question. Basis: Lake Mariner's ~$9.1M per critical-IT MW sits below Bernstein's revised $10–12M industry band, but Bernstein expects Kentucky at the high end, and Data Center Frontier flags 'minimal procurement buffer' on the 2H 2027 Anthropic schedule with transformers/switchgear/chillers as choke points; a $150M unplanned tenant fit-out contribution already appeared in the July 2026 lease amendments.",
+  "(Moderate confidence) We assess a residual governance discount persists by design of the ownership structure. Basis: the 2024 Grizzly and Hunterbrook short reports (related-party fees, zero-carbon branding disputes), the CEO's $39.4M 2025 compensation against a $661M loss year, a 9-member board with only 5 independents including a Prager family member, and a diluted share count (~613M) 23% above basic — partially remediated by the Beowulf E&D internalization, never fully resolved. Collection gap: no securities class action was ever filed; the 2024 law-firm investigations produced none that independent sources record."
+ ],
+ "relationships": [
+  {
+   "slug": "google",
+   "type": "investor",
+   "note": "~$4.5B of lease credit backstops bought with warrants now ~14% of the company pro forma.",
+   "context": "Google provides amortizing credit backstops across TeraWulf's Fluidstack lease chain — $3.2B behind the Lake Mariner leases (378 MW, ~$6.7B contracted, up to ~$16B with extensions) plus $1.3B behind the 168 MW Abernathy, TX JV — with SEC 8-K mechanics obliging Google to assume the lease on Fluidstack default. The warrants Google received equal ~14% of pro forma equity: the disclosed price of bankability, and the paper the $3.2B of 7.75% WULF Compute notes are secured against.\n\nThe dossier's frame: TeraWulf is credit arbitrage on power scarcity — brownfield megawatts converted into 10-20-year take-or-pay leases with thinly capitalized AI intermediaries, made bankable by Google's investment-grade support (and Anthropic's investment-grade-supported 401 MW/~$19B Hawesville lease).",
+   "source": "https://investors.terawulf.com/news-events/press-releases/detail/114/terawulf-announces-fluidst",
+   "status": "active",
+   "since": "2025-08",
+   "scale": "~$4.5B backstops; ~14% warrants"
+  },
+  {
+   "slug": "iren",
+   "type": "competitor",
+   "note": "Miner-pivot cohort rival — TeraWulf leads on contracted backlog.",
+   "context": "TeraWulf leads the miner-pivot cohort on contracted backlog ($12.8B at YE2025 before the $19B Anthropic add) against Core Scientific ~$10.2B, Applied Digital ~$11B, Cipher ~$9.3B and IREN's $9.7B Microsoft deal — Bernstein tags WULF and Cipher the 'power landlords of AI'.",
+   "source": "Miner-pivot cohort backlog comparison (Q2 2026 deck)",
+   "status": "active"
+  },
+  {
+   "slug": "core-scientific",
+   "type": "competitor",
+   "note": "Fellow power landlord in the miner-pivot cohort.",
+   "context": "Core Scientific's ~$10.2B contracted HPC book (CoreWeave leases) trails TeraWulf's backlog in the miner-pivot cohort — the same brownfield-power-to-AI-lease model with different tenant credit structures (CoreWeave direct vs Fluidstack-with-Google-backstop).",
+   "source": "Miner-pivot cohort backlog comparison (Q2 2026 deck)",
+   "status": "active"
+  },
+  {
+   "slug": "applied-digital",
+   "type": "competitor",
+   "note": "~$11B-backlog peer in the AI-landlord conversion race.",
+   "context": "Applied Digital's ~$11B contracted book (CoreWeave leases at Polaris Forge) sits beside TeraWulf's in the miner-pivot cohort — competing for the same AI-tenant demand, capital-markets capacity, and power-site scarcity.",
+   "source": "Miner-pivot cohort backlog comparison (Q2 2026 deck)",
+   "status": "active"
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Lake Mariner Data (Barker, NY — flagship, operating)",
+   "specs": [
+    {
+     "band": "Site",
+     "label": "Design & interconnection",
+     "value": "600 MW critical IT design on the former 700 MW Somerset coal plant; ~500 MW grid interconnection, expandable toward 750 MW pending NYISO approvals; 90 MW NYPA allocation (10-yr, from Feb 2022)"
+    },
+    {
+     "band": "Build state",
+     "label": "Energized & under construction",
+     "value": "102 MW energized as of July 2026 (WULF Den 2 + CB-1 16 + CB-2A/B 42 + CB-3 42); CB-4 and CB-5 at 168 MW each under construction (first halls late 2026 / early 2027)"
+    },
+    {
+     "band": "Cooling",
+     "label": "Design",
+     "value": "Closed-loop cooling using only a few gallons of utility water daily; direct-liquid-cooled Dell IR5000 racks in the Core42 deployment; target design PUE 1.25"
+    },
+    {
+     "band": "Economics",
+     "label": "Build cost",
+     "value": "~$9.1M per critical-IT MW actual (vs $8–10M guided; Bernstein industry band $10–12M)"
+    }
+   ],
+   "notes": "NYISO Zone A grid ~90% zero-carbon per company/site claims — the REC accounting behind 'zero-carbon' branding was contested by Hunterbrook (2024)."
+  },
+  {
+   "product": "Development pipeline (four campuses)",
+   "specs": [
+    {
+     "band": "Kentucky",
+     "label": "Justified, Hawesville",
+     "value": "~480 MW former smelter, 401 MW leased to Anthropic, delivery Q4 2027–1H 2028, TeraWulf capex est. $3–4B"
+    },
+    {
+     "band": "Kentucky",
+     "label": "Muskie, eastern KY",
+     "value": "1+ GW gross / ~800 MW critical IT; 345 kV AEP substation; initial 500 MW ramp Q4 2028, second 500 MW ~2030"
+    },
+    {
+     "band": "New York",
+     "label": "Lake Hawkeye (Cayuga), Lansing",
+     "value": "~320 MW critical IT potential (~2029); 138 MW at <$0.05/kWh expected 2H 2026; planned 67 MW solar + 800 MWh battery storage"
+    },
+    {
+     "band": "Maryland",
+     "label": "Chesapeake, Morgantown",
+     "value": "BYOG net-generator — Phase I 500 MW generation + 250 MW battery + 500 MW load; ~2030"
+    }
+   ],
+   "notes": "Platform total: 3,630 MW gross / 2,921 MW critical IT; 839 MW contracted; ~2.1 GW pipeline."
+  },
+  {
+   "product": "Legacy mining fleet",
+   "specs": [
+    {
+     "band": "Fleet",
+     "label": "Hash rate",
+     "value": "~49,400 miners, ~9.3 EH/s self-mining at YE2025 across 245 MW at Lake Mariner"
+    },
+    {
+     "band": "Financials",
+     "label": "Segment revenue",
+     "value": "Digital-asset revenue $12.8M in Q2 2026 (down from $47.6M in Q2 2025) — ~29% of revenue and falling"
+    }
+   ],
+   "notes": "Nautilus (Talen nuclear JV, 2¢/kWh) exited Oct 2024 at 3.4x MOIC to fund the first HPC buildings."
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Paul Prager",
+   "title": "Co-founder, Chairman & Chief Executive Officer",
+   "photo": "images/execs/terawulf-prager.jpg",
+   "background": [
+    "Founded Beowulf Energy 1990 — ~30 years in independent power development, O&M, and commodity trading before TeraWulf",
+    "U.S. Naval Academy graduate and alumnus trustee",
+    "2025 compensation $39.4M (incl. $15M bonus) per the 2026 proxy — a recurring governance flashpoint alongside the (since-internalized) Beowulf related-party service fees"
+   ]
+  },
+  {
+   "name": "Nazar Khan",
+   "title": "Co-founder & Chief Technology Officer",
+   "photo": "images/execs/terawulf-khan.jpg",
+   "background": [
+    "EVP at Beowulf 2002–2021 (acquisitions & development); TeraWulf COO through Dec 2024",
+    "Earlier investment banking/private equity at Evercore Partners; University of Pennsylvania"
+   ]
+  },
+  {
+   "name": "Patrick Fleury",
+   "title": "Chief Financial Officer (since May 2022)",
+   "photo": "images/execs/terawulf-fleury.jpg",
+   "background": [
+    "Founding member of the credit team at Platinum Equity; Managing Director at Blackstone/GSO Capital Partners",
+    "Senior roles at Jefferies and Satellite Asset Management; began in energy & power investment banking at Banc of America Securities",
+    "Architect of the 2025 capital cascade ($6.5B+ raised); joined the board of AI-cloud startup Corvex in 2026",
+    "Bowdoin College (economics/government, magna cum laude)"
+   ]
+  },
+  {
+   "name": "Kerri Langlais",
+   "title": "Chief Strategy Officer (since Feb 2021); Director",
+   "photo": "images/execs/terawulf-langlais.jpg",
+   "background": [
+    "Led M&A and financing at Beowulf 2010–2021",
+    "~A decade in Goldman Sachs Natural Resources investment banking; Boston College (honors, finance)"
+   ]
+  },
+  {
+   "name": "Sean Farrell",
+   "title": "Chief Operating Officer (since Nov 2024)",
+   "photo": "images/execs/terawulf-farrell.jpg",
+   "background": [
+    "12+ years in renewables and grid optimization at Siemens Gamesa / Siemens Energy",
+    "Owns the Lake Mariner CB-series delivery cadence and the Kentucky buildout; University of Colorado engineering"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "public",
+  "periods": [
+   {
+    "period": "FY2024",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "$140.1M (+102%)",
+      "expected": "no published FY-level consensus located",
+      "verdict": "inline",
+      "result": "Q4 2024 itself missed both lines (rev $35.0M vs ~$37.8M; EPS -$0.09 vs ~-$0.03, Investing.com/MarketBeat)"
+     },
+     {
+      "name": "Net income / Adj. EBITDA",
+      "actual": "-$72.4M / +$60.4M",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Still a bitcoin miner: 9.7 EH/s, 195 MW mining; $150M+ of buybacks"
+     }
+    ],
+    "commentary": "The last pure-mining year. The Nautilus nuclear JV exit (Oct 2024, ~$92M, 3.4x MOIC) funded the first HPC buildings."
+   },
+   {
+    "period": "FY2025",
+    "metrics": [
+     {
+      "name": "Revenue",
+      "actual": "$168.5M (mining $151.6M / HPC $16.9M)",
+      "expected": "Q4: ~$43.5M Zacks consensus vs $35.8M actual",
+      "verdict": "miss",
+      "result": "Q4 missed revenue by 17.7% and adj. EPS (-$0.28 vs -$0.13, Zacks); Q3 also missed revenue ($50.6M vs $56.3M MarketBeat)",
+      "kpi": "revenue",
+      "usdMillions": 168.5,
+      "fxBasis": "as reported"
+     },
+     {
+      "name": "Net loss",
+      "actual": "-$661.4M (warrant-charge heavy)",
+      "expected": "quarterly EPS consensus missed throughout",
+      "verdict": "miss",
+      "result": "Adj. EBITDA -$23.1M; the Google warrant marks began distorting GAAP from Q3 2025"
+     },
+     {
+      "name": "Capital & backlog",
+      "actual": "$6.5B+ raised in 2025; cash $3.7B at YE; 522 MW contracted; $12.8B+ backlog",
+      "expected": "",
+      "verdict": "beat",
+      "result": "$500M+$1.0B+$1.025B converts, $3.2B 7.75% project notes, Series A preferred converted"
+     },
+     {
+      "name": "Stock reaction pattern",
+      "actual": "Q3 print: EPS -$1.13 vs -$0.05 consensus — stock ROSE 2.6%",
+      "expected": "",
+      "verdict": "inline",
+      "result": "The market looked through warrant marks all year; shares +55.6% YTD into the February FY print"
+     }
+    ],
+    "commentary": "Expectations honesty: TeraWulf issues no revenue/EPS guidance — its 'guidance' is capacity milestones, $/MW build cost, and ~85% NOI targets, so consensus comparisons (Zacks/MarketBeat, cited per quarter) are the only benchmark available.",
+    "periodType": "annual",
+    "periodEnd": "2025-12-31"
+   },
+   {
+    "period": "H1 2026 (latest: Q2 reported Aug 5, 2026)",
+    "metrics": [
+     {
+      "name": "Q2 revenue",
+      "actual": "$44.8M — HPC $31.9M (71%, +52% QoQ) / mining $12.8M",
+      "expected": "$44.6M (Zacks) / $46.0M (MarketBeat)",
+      "verdict": "inline",
+      "result": "Slight beat or slight miss depending on consensus source — both cited; sixth straight adj. EPS miss (-$0.37 vs -$0.20 Zacks)"
+     },
+     {
+      "name": "Q2 GAAP net loss",
+      "actual": "-$939.9M (EPS -$1.94)",
+      "expected": "~-$0.24 consensus",
+      "verdict": "miss",
+      "result": "$755.7M non-cash Google-warrant fair-value charge; stock fell <1% — +47% YTD at the print"
+     },
+     {
+      "name": "Balance sheet (6/30/26)",
+      "actual": "Cash+restricted $3.0B; LT debt ~$3.0B + $1.1B current converts; warrant liabilities $1.8B; equity $147.5M",
+      "expected": "",
+      "verdict": "inline",
+      "result": "~499M shares out; ~613M estimated diluted; 1H capex $1.38B + $231M Muskie acquisition"
+     },
+     {
+      "name": "Contracted position",
+      "actual": "839 MW leased; ~$27B+ contracted revenue; ~$1.5B avg annual NOI",
+      "expected": "",
+      "verdict": "beat",
+      "result": "Anthropic ~$19B (Jul 2026) + Fluidstack $6.7B + Core42 ~$1.1B; Abernathy exited at ~$530M / ~20% IRR"
+     }
+    ],
+    "commentary": "Q3 2026 report estimated Monday Nov 9, 2026 (MarketBeat; consensus -$0.20) — not yet company-confirmed; the IR calendar was empty as of Aug 21."
+   }
+  ]
+ },
+ "sources": [
+  {
+   "label": "TeraWulf Q2 2026 results",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/144/terawulf-reports-second-quarter-2026-results",
+   "date": "2026-08-05"
+  },
+  {
+   "label": "TeraWulf Q2 2026 investor presentation (platform snapshot)",
+   "url": "https://d1io3yog0oux5.cloudfront.net/_9d1dd65b8677d01e404b878553665ead/terawulf/db/2396/23522/pdf/TeraWulf+Q2+2026+Investor+Presentation.pdf",
+   "date": "2026-08-05"
+  },
+  {
+   "label": "The Block — Bernstein reaffirms Outperform; $10–12M/MW capex; $150M fit-out",
+   "url": "https://www.theblock.co/post/410975/bernstein-reaffirms-terawulf-outperform-rating-as-hpc-revenue-hits-71-of-q2-total",
+   "date": "2026-08-06"
+  },
+  {
+   "label": "The Block — Q2 2026: HPC leasing 71% of revenue",
+   "url": "https://www.theblock.co/news/business/2026-08-05-terawulf-hpc-leasing-revenue-jumps-52-widening-lead-over-bitcoin-mining-410888",
+   "date": "2026-08-05"
+  },
+  {
+   "label": "Data Center Frontier — the $19B Anthropic lease tests the brownfield strategy",
+   "url": "https://www.datacenterfrontier.com/hyperscale/article/55389531/terawulfs-19b-anthropic-lease-puts-its-brownfield-ai-strategy-to-the-test",
+   "date": "2026-07-16"
+  },
+  {
+   "label": "TeraWulf — Anthropic lease at Justified + Abernathy JV sale",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/142/terawulf-announces-anthropic-lease-at-justified-data-campus-and-sale-of-majority-interest-in-abernathy-joint-venture-to-fluidstack",
+   "date": "2026-07-06"
+  },
+  {
+   "label": "DCD — Anthropic signs $19bn 20-year Kentucky lease",
+   "url": "https://www.datacenterdynamics.com/en/news/anthropic-signs-19bn-20-year-lease-for-kentucky-data-center-with-terawulf/",
+   "date": "2026-07-06"
+  },
+  {
+   "label": "TeraWulf — 1 GW eastern Kentucky (Muskie) acquisition",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/141/terawulf-expands-infrastructure-platform-with-acquisition-of-1-gw-eastern-kentucky-hpc-campus",
+   "date": "2026-05-26"
+  },
+  {
+   "label": "TeraWulf 2026 proxy (DEF 14A — bios, compensation, board)",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001083301/000108330126000077/wulf-20260428.htm",
+   "date": "2026-04"
+  },
+  {
+   "label": "TeraWulf — common stock offering closing (~$1.04B at $19.00)",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/137/terawulf-announces-closing-of-common-stock-offering",
+   "date": "2026-04-16"
+  },
+  {
+   "label": "TeraWulf Q4/FY2025 results",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/132/terawulf-reports-fourth-quarter-and-full-year-2025-results",
+   "date": "2026-02-26"
+  },
+  {
+   "label": "TeraWulf — Kentucky & Maryland acquisitions (Justified, Chesapeake)",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/129/terawulf-expands-digital-and-power-infrastructure-portfolio-with-strategic-acquisitions-in-kentucky-and-maryland",
+   "date": "2026-02-02"
+  },
+  {
+   "label": "Data Center Richness — Anthropic's $50B Fluidstack program mapped to TX/NY",
+   "url": "https://datacenterrichness.substack.com/p/massive-expansions-from-anthropic",
+   "date": "2025-11-12"
+  },
+  {
+   "label": "TeraWulf — Abernathy 168 MW Fluidstack JV",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/121/terawulf-expands-strategic-partnership-with-fluidstack-through-new-168-mw-ai-compute-joint-venture",
+   "date": "2025-10-28"
+  },
+  {
+   "label": "TeraWulf — $3.2B 7.75% senior secured notes pricing",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/119/terawulf-inc-announces-pricing-of-3-2-billion-of-senior-secured-notes",
+   "date": "2025-10-16"
+  },
+  {
+   "label": "TeraWulf — Fluidstack CB-5 expansion (Google backstop to $3.2B, ~14% warrants)",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/114/terawulf-announces-fluidstack-expansion-with-160-mw-cb-5-lease-at-lake-mariner",
+   "date": "2025-08-18"
+  },
+  {
+   "label": "SEC 8-K — Fluidstack/Google 200+ MW agreements (backstop mechanics)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1083301/000110465925078084/tm2523008d2_ex99-1.htm",
+   "date": "2025-08-14"
+  },
+  {
+   "label": "DCD — TeraWulf secures 200 MW Fluidstack lease, Google to take stake",
+   "url": "https://www.datacenterdynamics.com/en/news/cryptominer-terawulf-secures-200mw-lease-with-fluidstack-google-to-take-stake-in-company/",
+   "date": "2025-08-14"
+  },
+  {
+   "label": "TeraWulf — Beowulf Electricity & Data acquisition",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/108/terawulf-acquires-beowulf-electricity-data-streamlining-corporate-structure",
+   "date": "2025-05-27"
+  },
+  {
+   "label": "TeraWulf Q4/FY2024 results",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/103/terawulf-reports-fourth-quarter-and-full-year-2024-results",
+   "date": "2025-02-28"
+  },
+  {
+   "label": "TeraWulf — Core42 (G42) 70+ MW agreement",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/99/terawulf-to-deliver-over-70-mw-of-data-center-infrastructure-for-g42s-us-operations",
+   "date": "2024-12-23"
+  },
+  {
+   "label": "TeraWulf — Nautilus JV monetization (3.4x MOIC)",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/86/terawulf-monetizes-equity-interests-in-nautilus-joint-venture-to-fuel-expansion-of-hpcai-and-bitcoin-mining-at-flagship-lake-mariner-facility",
+   "date": "2024-10-03"
+  },
+  {
+   "label": "Grizzly Research — short report on related-party arrangements (adversarial source)",
+   "url": "https://grizzlyreports.com/beware-of-terawulf-we-believe-the-company-is-a-charade-to-enrich-insiders-at-the-cost-of-investors-and-backed-by-notorious-pump-and-dump-artists/",
+   "date": "2024-08-15"
+  },
+  {
+   "label": "Hunterbrook — zero-carbon branding investigation (adversarial source)",
+   "url": "https://hntrbrk.com/terawulf/",
+   "date": "2024-08-05"
+  },
+  {
+   "label": "MarketBeat — WULF earnings history & consensus tracker",
+   "url": "https://www.marketbeat.com/stocks/NASDAQ/WULF/earnings/"
+  },
+  {
+   "label": "TeraWulf — WULF Compute platform page",
+   "url": "https://www.terawulf.com/wulf-compute"
+  },
+  {
+   "label": "Lake Mariner Data — project overview",
+   "url": "https://www.lakemarinerdata.com/project-overview"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 3
+}

@@ -1,0 +1,521 @@
+{
+ "schemaVersion": 6,
+ "slug": "kiewit",
+ "name": "Kiewit",
+ "legalName": "Kiewit Corporation",
+ "categories": [
+  "epc"
+ ],
+ "hq": "Omaha, NE, USA",
+ "founded": "1884 (as Kiewit Brothers Masonry Contractors, Omaha)",
+ "ownership": "private",
+ "employees": "~34,500 (2025); Fortune 500 #247",
+ "website": "https://www.kiewit.com",
+ "summary": "BOTTOM LINE UP FRONT: Kiewit is the power picks-and-shovels play on the AI buildout — a 142-year-old, employee-owned Omaha EPC giant now stacking a ~11 GW AI-driven gas-generation book: EPC on Homer City, PA (up to 4.5 GW, seven GE Vernova 7HA.02 turbines — the largest US gas plant under construction, powering a >3,200-acre AI campus), the NRG/GE Vernova venture (~5.4 GW of CCGTs for data-center demand in ERCOT/PJM), and Oglethorpe's 1,425 MW Georgia plant, plus lead-constructor on Oklo's first Aurora fast reactor at Idaho National Laboratory and completion of the 339-mile, 1,250 MW Champlain Hudson Power Express HVDC line. ENR ranks it #4 (2026) at $15.3B of ENR-counted revenue ($18.2B company-total with reported net income of $1,315M — a ~7.2% margin extraordinary for E&C), with the most diversified mix in the top 10 (38% power, 29% transportation). Its data-center practice sells the campus ecosystem — generation, transmission, water, modularization, >80% self-performed — not interior fit-out (only 4% telecom mix). Kiewit and Bechtel were both named delivery contractors under the $550B US-Japan AI infrastructure framework (October 2025). Watch items: Maryland dropped Kiewit from the ~$1.2B Key Bridge Phase 2 rebuild (April 2026, pricing 'far exceeding' state estimates), and the record fixed-price gas-EPC book concentrates execution risk against a constrained turbine supply chain. Collection gaps: no public backlog figure, no audited statements, no leadership page; the 2025 net-income figure is aggregator-sourced (medium confidence).",
+ "ecosystemRole": "The electrons-and-infrastructure EPC of the AI era: while building GCs win the shells, Kiewit builds the gigawatt-class gas plants, HVDC lines, substations, water systems, and first SMRs that make AI campuses possible — self-performing more than 80% of the work with one of the industry's largest craft forces and equipment fleets.",
+ "productsAndServices": [
+  {
+   "name": "Power Generation EPC (the AI gas-power franchise)",
+   "category": "Gas-fired, combined-cycle & campus-scale generation EPC",
+   "description": "Kiewit Power Constructors and TIC (The Industrial Company, a wholly-owned subsidiary) deliver gas-fired generation at fleet scale: TIC cites >82,000 MW of gas-fired capacity delivered over the past decade including 35 combined-cycle projects. The AI cycle has stacked a ~11 GW book: Homer City (up to 4.5 GW), the NRG/GE Vernova venture (~5.4 GW), and Oglethorpe (1,425 MW).",
+   "highlights": [
+    "Homer City Energy Campus, PA: EPC for up to 4.5 GW — 7x GE Vernova 7HA.02 hydrogen-enabled turbines on the former coal-plant site, powering a >3,200-acre AI/HPC campus; >$10B initial capex, power targeted 2027, >1,000 workers on site — the largest gas plant under construction in the US",
+    "NRG + GE Vernova + Kiewit (TIC) venture: ~5.4 GW of CCGTs for data-center demand in ERCOT and PJM — 1.2 GW by 2029, 1.2 GW by 2030, ~3 GW 2030-32, with reserved GEV turbine slots",
+    "Oglethorpe Power (GA): TIC selected as EPC for a 1,425 MW combined-cycle plant (GE Vernova 7HA.03; COD 2029; ~1,200 peak workers)",
+    "Reference CCGT fleet: TVA Cumberland 1,450 MW, Three Rivers 1,250 MW, Magnolia Unit 1 705 MW"
+   ],
+   "positioning": "Reserved GE Vernova turbine slots plus proven 7HA-class EPC capability may be the tightest bottleneck asset in the AI-power complex — rivals can bid, but few can deliver gigawatt-class gas on 2027-29 schedules",
+   "soldThrough": "Fixed-price and progressive EPC contracts with developers, IPPs, utilities, and co-ops",
+   "targetSegments": [
+    "AI-campus power developers (Homer City)",
+    "IPPs (NRG)",
+    "Utilities and G&T co-ops (TVA, Oglethorpe)"
+   ],
+   "roadmap": "Homer City first power 2027; NRG venture waves through 2032; named contractor under the $550B US-Japan AI infrastructure framework (up to $332B earmarked for energy)"
+  },
+  {
+   "name": "Data Centers (campus-ecosystem delivery)",
+   "category": "Data-center core & shell, power, water and modularization",
+   "description": "The dedicated data-center practice sells the ecosystem around the campus: core & shell, power generation and transmission for campuses, water treatment, mission-critical MEP, modularized data centers, and greenfield campus delivery via progressive design-build and early contractor involvement — with >80% of work self-performed (company claim). Client names are not published.",
+   "highlights": [
+    "ENR classifies only ~4% of Kiewit's 2025 revenue as telecom/data-center building work — the AI exposure routes through the 38% power line instead",
+    "Modularization and off-site manufacturing emphasized across data-center and power delivery",
+    "The differentiation vs interior-heavy DC franchises (DPR, HITT, Turner): Kiewit sells generation, substations, and water — the scopes those GCs subcontract"
+   ],
+   "positioning": "A campus-infrastructure specialist rather than a shell/fit-out GC — complementary to (and occasionally competing with) the building cohort",
+   "soldThrough": "Progressive design-build, FEED-to-EPC conversion, early contractor involvement",
+   "targetSegments": [
+    "Hyperscalers and AI-campus developers (unnamed)",
+    "Colocation developers"
+   ],
+   "roadmap": "Scaling with the power book; anonymized project fleet suggests NDA-bound hyperscale work"
+  },
+  {
+   "name": "Transmission, HVDC & Substations",
+   "category": "Grid infrastructure EPC",
+   "description": "Transmission lines, distribution, substations and switchyards, including the marquee HVDC projects of the era: lead designer/GC on the completed 339-mile, 1,250 MW Champlain Hudson Power Express (Québec to NYC), and a ~$1.7B share (with Quanta) of Invenergy's Grain Belt Express — an 800-mile, 5,000 MW HVDC line billed as the largest transmission project in US history.",
+   "highlights": [
+    "CHPE completed June 2026: ~146 miles of terrestrial route plus the Astoria converter station; 2025 Trenchless Technology Project of the Year",
+    "Grain Belt Express Phase 1 construction targeted from 2026 (financing/political status fluid — verify before relying)",
+    "Multi-year utility programs, e.g., PacifiCorp distribution: ≥350 miles/year over five years"
+   ],
+   "positioning": "One of the few contractors with completed US HVDC converter-station delivery — the transmission class that moves gigawatts to load centers",
+   "soldThrough": "EPC and program contracts with utilities and transmission developers",
+   "targetSegments": [
+    "Transmission developers (Invenergy)",
+    "Utilities (PacifiCorp)",
+    "State clean-energy programs (NYSERDA)"
+   ],
+   "roadmap": "Data-center-driven transmission demand; Grain Belt execution pending financing clarity"
+  },
+  {
+   "name": "Nuclear (Kiewit Nuclear Solutions)",
+   "category": "Advanced-reactor and nuclear construction",
+   "description": "Kiewit Nuclear Solutions is lead constructor for Oklo's first Aurora powerhouse at Idaho National Laboratory (~75 MWe fast reactor; Sam Altman-backed developer): design, procurement, and construction management focused on non-nuclear scope; ~370 construction jobs; commissioning targeted late 2027-early 2028. Groundbreaking September 2025.",
+   "highlights": [
+    "One of the first US SMR construction seats — the Aurora is among the first advanced reactors to reach construction",
+    "No confirmed Kiewit role on TerraPower Natrium, BWXT, or X-energy programs (negative finding — the Oklo seat is the verified relationship)"
+   ],
+   "positioning": "First-mover constructor credential in the reactor class AI hyperscalers are underwriting",
+   "soldThrough": "Construction-management and EPC contracts with advanced-reactor developers",
+   "targetSegments": [
+    "SMR/advanced-reactor developers (Oklo)",
+    "DOE/national-lab programs"
+   ],
+   "roadmap": "Aurora commissioning 2027-28; follow-on Aurora units if the first executes"
+  },
+  {
+   "name": "Heavy Civil, Marine, Water & Industrial (diversified core)",
+   "category": "Infrastructure construction",
+   "description": "The most diversified book in ENR's top 10: transportation (29% of ENR-counted revenue — bridges, highways, transit, aviation), water/sewer/waste (14%), oil/gas/chemical including LNG delivery, mining, and marine — expanded by the January 2023 acquisition of Weeks Marine (with Healy Tibbitts and McNally), making Kiewit a major US dredging and marine contractor.",
+   "highlights": [
+    "Nine primary markets; in-house design via Kiewit Engineering Group; Mass. Electric Construction for electrical/transit systems",
+    "Key Bridge (Baltimore): won the $73M Phase 1 progressive design-build (Aug 2024) but was off-ramped from the ~$1.2B Phase 2 in April 2026 over pricing",
+    "Craft pipeline: Kiewit University training center (Omaha, 65,000 sq ft) trains >3,000 learners/year; ~$5B equipment fleet (third-party estimate, low confidence)"
+   ],
+   "positioning": "Cycle ballast at national scale — the diversification that kept Kiewit top-4 while pure-DC builders surged past on the AI wave",
+   "soldThrough": "Public procurement (design-build, CM/GC), private EPC",
+   "targetSegments": [
+    "State DOTs and transit authorities",
+    "Ports/marine owners",
+    "Municipal water",
+    "Energy/industrial owners"
+   ],
+   "roadmap": "Steady-state; growth capital concentrates on power, nuclear, and transmission"
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-06-16",
+   "category": "Project",
+   "headline": "Champlain Hudson Power Express completed: the 339-mile, 1,250 MW HVDC line from Québec to New York City, with Kiewit as lead designer/GC on ~146 miles of terrestrial route and the Astoria converter station",
+   "read": "A finished US HVDC mega-line is a rare credential — exactly the transmission class that data-center load growth will force more of.",
+   "source": "NYSERDA release, 2026-06-16"
+  },
+  {
+   "date": "2026-04-30",
+   "category": "Risk",
+   "headline": "Maryland 'off-ramps' Kiewit from the ~$1.2B Francis Scott Key Bridge Phase 2 rebuild after its price proposal 'far exceeded the state's independent cost estimates'; Kiewit completes Phase 1 through end-2026",
+   "read": "A public black eye on the nation's most-watched bridge job — but also a read on pricing discipline: Kiewit held its number in an escalating market ($2B estimate grown to $4.3-5.2B) rather than buy the work.",
+   "source": "CBS Baltimore, 2026-04-30; MDTA"
+  },
+  {
+   "date": "2026-05-27",
+   "category": "Recognition",
+   "headline": "ENR 2026 Top 400: #4 at $15.3B ENR-counted revenue — down from #3 despite growth, passed by STO Building Group's data-center surge; the most diversified mix in the top 10 (38% power, 29% transportation)",
+   "read": "The irony of the AI cycle: Kiewit slipped a rank because the building-side AI plays (STO, DPR, HITT, Mortenson) scaled faster than its power-side exposure — which is larger in dollars but recognized over longer EPC schedules.",
+   "source": "ENR 2026 Top 400 via The Job Walk, 2026-05-27"
+  },
+  {
+   "date": "2026-01-13",
+   "category": "Customer",
+   "headline": "Oglethorpe Power selects TIC (Kiewit) as EPC for a 1,425 MW combined-cycle plant in Monroe County, GA (GE Vernova 7HA.03; COD 2029; ~1,200 peak workers)",
+   "read": "The third leg of the gas-EPC stack — co-op load growth this time, the same 7HA-class delivery machine.",
+   "source": "Allstream Insiders, 2026-01-13"
+  },
+  {
+   "date": "2025-10-30",
+   "category": "Partnership",
+   "headline": "Kiewit and Bechtel named delivery contractors under the $550B US-Japan AI infrastructure framework, with up to $332B earmarked for energy infrastructure",
+   "read": "A geopolitical-scale demand pipeline naming exactly two US EPC firms — no specific projects yet, but the shortlist itself is the signal.",
+   "source": "Construction Dive, 2025-10-30"
+  },
+  {
+   "date": "2025-09-24",
+   "category": "Project",
+   "headline": "Oklo breaks ground on its first Aurora powerhouse at Idaho National Laboratory with Kiewit Nuclear Solutions as lead constructor (~75 MWe; commissioning targeted late 2027-early 2028)",
+   "read": "One of the first advanced-reactor construction starts in the country — Kiewit banked the SMR-constructor credential ahead of every building-GC rival.",
+   "source": "Oklo release, 2025-09-24; ANS, World Nuclear News"
+  },
+  {
+   "date": "2025-05-07",
+   "category": "Customer",
+   "headline": "Invenergy awards ~$1.7B to Quanta and Kiewit Energy Group for Grain Belt Express — the 800-mile, 5,000 MW HVDC line billed as the largest transmission project in US history (Phase 1 targeted from 2026)",
+   "read": "Paired with CHPE, this would make Kiewit the US HVDC incumbent — though the project's federal financing support turned turbulent in mid-2025; status needs re-verification before reliance.",
+   "source": "Kiewit release, 2025-05-07"
+  },
+  {
+   "date": "2025-04-02",
+   "category": "Customer",
+   "headline": "Homer City Energy Campus announced: Kiewit Power Constructors is EPC for up to 4.5 GW of gas generation (7x GE Vernova 7HA.02) powering a >3,200-acre AI/HPC campus on the former Pennsylvania coal-plant site — the largest gas plant under construction in the US",
+   "read": "The defining award of Kiewit's AI cycle: >$10B initial capex, first power targeted 2027, coal-to-AI site conversion as the template.",
+   "source": "Business Wire/GE Vernova, 2025-04-02; ENR"
+  },
+  {
+   "date": "2025-02-26",
+   "category": "Partnership",
+   "headline": "NRG, GE Vernova, and Kiewit (TIC) form a generation venture initially targeting ~5.4 GW of combined-cycle plants for data-center demand in ERCOT and PJM, with reserved turbine slots",
+   "read": "Turbine slots are the scarcest input in gas power; a standing venture with the OEM converts Kiewit's EPC bench into allocated capacity competitors can't match.",
+   "source": "EnergyChoiceMatters, 2025-02-26; Utility Dive; DCD"
+  },
+  {
+   "date": "2024-08",
+   "category": "Customer",
+   "headline": "Maryland awards Kiewit the $73M Phase 1 progressive design-build for the Francis Scott Key Bridge rebuild, with exclusive negotiating rights to Phase 2",
+   "read": "The marquee win that turned into the April 2026 off-ramp — a case study in progressive design-build's price-negotiation risk on politically charged public work.",
+   "source": "MDTA release; Construction Dive, August 2024"
+  },
+  {
+   "date": "2023-01-01",
+   "category": "M&A",
+   "headline": "Weeks Marine (with Healy Tibbitts and McNally International) joins Kiewit — a major expansion of the marine/dredging franchise",
+   "read": "Explains the 2022→2023 revenue step-up and adds coastal-infrastructure capability adjacent to LNG and port work.",
+   "source": "MarineLink, January 2023"
+  }
+ ],
+ "strategyRead": [
+  "1. (High confidence) We assess Kiewit is the purest power-side play on the AI buildout among top-tier contractors: a stacked ~11 GW gas-EPC book (Homer City 4.5 GW, NRG/GEV ~5.4 GW, Oglethorpe 1.4 GW), completed HVDC delivery (CHPE), the Oklo SMR constructor seat, and a data-center practice that sells campus power/water/shell rather than fit-out. Its 4% ENR telecom mix understates AI exposure that actually routes through the 38% power line.",
+  "2. (High confidence) We assess reserved GE Vernova 7HA turbine slots plus TIC's >82 GW gas-delivery track record constitute the scarcest capability set in the AI-power complex: turbine manufacturing capacity, not construction labor, gates gigawatt-class gas through 2030, and Kiewit sits inside the OEM's allocation via the NRG venture. This is a moat rival EPCs cannot quickly replicate.",
+  "3. (Moderate confidence) We assess the employee-ownership model (direct stock purchase by selected employees, book-value buy-back on departure — not a conventional ESOP) plus reported ~7.2% net margins reflect a disciplined risk-pricing culture: the Key Bridge off-ramp reads as Kiewit refusing to buy politically visible work below its price, accepting reputational cost to protect the margin engine that funds employee-owner returns. The net-income figure itself is aggregator-sourced and unverified (medium confidence).",
+  "4. (Moderate confidence) We assess the fixed-price gas-EPC concentration is the mirror-image risk of the moat: Homer City-class projects at >$10B campus scale against constrained turbine logistics and scarce craft amplify downside on any miss, and an AI-capex pause would strand the growth engine while the diversified book (transportation, water, marine) cushions but does not offset it.",
+  "5. (Moderate confidence) We assess Kiewit's opacity is strategic but increasingly costly analytically: no backlog disclosure, no leadership page, dual revenue series (company $18.2B vs ENR $15.3B for 2025 — methodology, not contradiction), and a Wikipedia article flagged for neutrality in January 2026. Counterparties get less visibility into a $18B firm than into public peers a third its size.",
+  "6. (Low confidence) We assess the US-Japan framework naming (with Bechtel) could become the largest demand channel of all — up to $332B for energy infrastructure — but no Kiewit projects have been assigned; treat it as optionality, not backlog."
+ ],
+ "relationships": [
+  {
+   "slug": "ge-vernova",
+   "type": "partner",
+   "note": "Standing generation venture (with NRG) holding reserved 7HA turbine slots — plus EPC on three GEV-powered gigawatt plants.",
+   "context": "February 2025: NRG, GE Vernova and Kiewit (TIC) formed a generation venture initially targeting ~5.4 GW of combined-cycle plants for data-center demand in ERCOT and PJM, with reserved turbine slots — converting Kiewit's EPC bench into allocated OEM capacity competitors can't match, since turbine slots (not construction labor) gate gigawatt-class gas through 2030.\n\nThe delivery record around it: Homer City, PA (EPC for up to 4.5 GW on seven GEV 7HA.02s — the largest US gas plant under construction, powering a >3,200-acre AI campus, first power targeted 2027) and Oglethorpe's 1,425 MW Georgia plant (GEV 7HA.03, COD 2029).",
+   "source": "https://www.energychoicematters.com/stories/20250226a.html",
+   "status": "active",
+   "since": "2025-02",
+   "scale": "~11 GW AI-driven gas EPC book"
+  },
+  {
+   "slug": "bechtel",
+   "type": "other",
+   "note": "Co-named delivery contractor under the $550B US-Japan AI infrastructure framework.",
+   "context": "October 2025: Kiewit and Bechtel were the two US EPC firms named delivery contractors under the $550B US-Japan AI infrastructure framework, with up to $332B earmarked for energy infrastructure. No Kiewit projects have been assigned — the dossier treats it as optionality, not backlog, but the two-firm shortlist itself is the signal.",
+   "source": "https://www.constructiondive.com/news/bechtel-kiewit-us-japan-ai-infrastructure-data-centers/804220/",
+   "status": "announced",
+   "since": "2025-10"
+  },
+  {
+   "slug": "mortenson",
+   "type": "competitor",
+   "note": "Building-side AI-cycle peer that scaled faster in the ENR rankings.",
+   "context": "Kiewit slipped to #4 in the ENR 2026 Top 400 despite growth because building-side AI plays (STO, DPR, HITT, Mortenson) scaled faster than its power-side exposure — which is larger in dollars but recognized over longer EPC schedules. Different lanes (power EPC vs data-center GC), same AI capex pool.",
+   "source": "https://thejobwalk.com/p/enr-releases-2026-top-400-the-data-behind-every-move-in-the-top-10",
+   "status": "active"
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Gas-generation EPC fleet",
+   "specs": [
+    {
+     "band": "Install base",
+     "label": "TIC (The Industrial Company)",
+     "value": ">82,000 MW of gas-fired capacity delivered over the past decade, including 35 combined-cycle projects (company claim)"
+    },
+    {
+     "band": "Flagship projects",
+     "label": "Homer City",
+     "value": "up to 4.5 GW — 7x GE Vernova 7HA.02 hydrogen-enabled turbines; first turbine deliveries 2026, power targeted 2027; >1,000 workers on site; largest US gas plant under construction"
+    },
+    {
+     "band": "Flagship projects",
+     "label": "NRG/GEV venture",
+     "value": "~5.4 GW of CCGTs in ERCOT/PJM — 1.2 GW by 2029, 1.2 GW by 2030, ~3 GW 2030-32; reserved turbine slots"
+    },
+    {
+     "band": "References",
+     "label": "CCGTs",
+     "value": "TVA Cumberland 1,450 MW, Three Rivers (IL) 1,250 MW, Magnolia Unit 1 (LA) 705 MW, plus Cass County Solar 195 MW with 34.5/138 kV substation"
+    }
+   ],
+   "notes": "Oglethorpe's 1,425 MW 7HA.03 plant (COD 2029) is co-op load-growth driven rather than explicitly data-center — the same delivery machine either way"
+  },
+  {
+   "product": "Operating model and self-perform capability",
+   "specs": [
+    {
+     "band": "Self-perform",
+     "label": "Share",
+     "value": ">80% of work self-performed (company claim — unusually high; underpins the schedule-control pitch)"
+    },
+    {
+     "band": "Structure",
+     "label": "Subsidiaries",
+     "value": "Kiewit Infrastructure Co./West, Kiewit Power Constructors, Kiewit Energy Group, Kiewit Nuclear Solutions, Kiewit Engineering Group (in-house design), TIC, Mass. Electric Construction, Weeks Marine/Healy Tibbitts/McNally (marine)"
+    },
+    {
+     "band": "Workforce",
+     "label": "Headcount & training",
+     "value": "~34,500 employees (2025); Kiewit University training center (Omaha, 65,000 sq ft, opened 2017) trains >3,000 learners/year"
+    },
+    {
+     "band": "Assets",
+     "label": "Equipment fleet",
+     "value": "~$5B equipment fleet (third-party credit-research estimate; low confidence — company does not publish fleet value)"
+    }
+   ],
+   "notes": "Employee ownership via direct stock purchase by selected employees with book-value-formula buy-back on departure — not a conventional ESOP; Peter Kiewit's 1979 will cemented the structure"
+  },
+  {
+   "product": "Transmission & HVDC delivery",
+   "specs": [
+    {
+     "band": "HVDC",
+     "label": "CHPE",
+     "value": "339-mile, 1,250 MW HVDC (Québec-NYC) — Kiewit lead designer/GC on ~146 terrestrial miles + the Astoria converter station; completed June 2026; 2025 Trenchless Technology Project of the Year"
+    },
+    {
+     "band": "HVDC",
+     "label": "Grain Belt Express",
+     "value": "~$1.7B Quanta/Kiewit award for the 800-mile, 5,000 MW HVDC line (Phase 1 targeted from 2026; financing status fluid)"
+    },
+    {
+     "band": "Distribution",
+     "label": "PacifiCorp program",
+     "value": "≥350 miles of distribution line per year over five years"
+    }
+   ],
+   "notes": "HVDC converter-station experience is rare among US contractors — the differentiating credential for the coming long-distance transmission cycle"
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Rick Lanoha",
+   "title": "President & Chief Executive Officer",
+   "background": [
+    "CEO since 2020-01-01 — the sixth CEO in the company's 140+ year history; joined Kiewit part-time in 1986",
+    "B.S. construction engineering, University of Nebraska-Omaha; field engineer (Southern California) → District Manager & President of Mass. Electric Construction (Boston, 2003) → Board 2009 → EVP Kiewit Industrial Group → President & COO 2016 → CEO",
+    "Founding member of the construction-industry CEO Advisory Council on suicide prevention; visible champion of the 'Under the Hat' craft mental-health program",
+    "No company-published leadership page or headshot library exists (kiewit.com/leadership returns 404) — photos omitted per protocol"
+   ]
+  },
+  {
+   "name": "Bruce Grewcock",
+   "title": "Executive Chairman (status as of 2026 unverified)",
+   "background": [
+    "CEO until the 2020-01-01 transition to Lanoha, then Executive Chairman ('I'm not going anywhere anytime soon')",
+    "Whether he still holds the chair as of 2026 could not be verified from public sources — flagged medium-low confidence"
+   ]
+  },
+  {
+   "name": "Trent Demulling",
+   "title": "Senior Vice President & Chief Financial Officer (aggregator-sourced; medium confidence)",
+   "background": [
+    "Oversees finance, accounting, internal audit, and employee benefits; chairman of the Kiewit Luminarium board",
+    "Sourced from third-party executive aggregators — Kiewit publishes no executive roster"
+   ]
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "private (employee-owned; no audited public statements, no backlog disclosure — figures from company magazine/releases, ENR surveys, and aggregators; two parallel revenue series exist)",
+  "periods": [
+   {
+    "period": "2025",
+    "metrics": [
+     {
+      "name": "Revenue (company total)",
+      "actual": "$18.2B",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Includes engineering, international, and non-contracting revenue; Fortune 500 #247"
+     },
+     {
+      "name": "Revenue (ENR-counted)",
+      "actual": "$15.3B — ENR Top 400 #4",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Slipped from #3 despite growth — passed by STO Building Group's data-center surge; most diversified mix in the top 10"
+     },
+     {
+      "name": "Net income",
+      "actual": "$1,315M (~7.2% margin; aggregator-sourced, medium confidence)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Extraordinary vs public E&C peers (typically 2-4%) — consistent with the self-perform, risk-priced model"
+     }
+    ],
+    "commentary": "Mix per ENR 2026 data: 38% power, 29% transportation, 14% water/sewer/waste, 8% industrial/petroleum, 7% building, 4% telecom. No public backlog figure exists — careers postings tout a 'large backlog' without quantification."
+   },
+   {
+    "period": "2023-2024",
+    "metrics": [
+     {
+      "name": "Revenue (company total)",
+      "actual": "$17.1B (2023) → ~$16.8-17.1B (2024, sources conflict)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "ENR-counted: $13.8B (2023) → $14.0B (2024); a slight 2024 dip in the company series is possible but unresolved"
+     }
+    ],
+    "commentary": "The 2022→2023 step-up ($13.7B → $17.1B) partly reflects the January 2023 Weeks Marine acquisition."
+   },
+   {
+    "period": "2019-2022 (arc)",
+    "metrics": [
+     {
+      "name": "Revenue (company total)",
+      "actual": "$10.3B (2019) → $12.1B (2021) → $13.7B (2022)",
+      "expected": "",
+      "verdict": "inline",
+      "result": "Steady compounding preceding the AI-power inflection"
+     }
+    ],
+    "commentary": "Employee-owner economics: retained earnings accrue to employee-shareholders via book-value stock; no external dividends, no outside capital. The structure dates to Peter Kiewit's 1979 will directing his controlling stake back to employee-managers."
+   }
+  ]
+ },
+ "sources": [
+  {
+   "label": "NYSERDA — Governor Hochul celebrates completion of Champlain Hudson Power Express",
+   "url": "https://www.nyserda.ny.gov/About/Newsroom/2026-Announcements/2026-06-16-Governor-Hochul-Celebrates-Completion-Of-Champlain-Hudson-Power-Express-Project",
+   "date": "2026-06-16"
+  },
+  {
+   "label": "The Job Walk — ENR 2026 Top 400 top-10 data (Kiewit #4, $15.3B; 38% power mix)",
+   "url": "https://thejobwalk.com/p/enr-releases-2026-top-400-the-data-behind-every-move-in-the-top-10",
+   "date": "2026-05-27"
+  },
+  {
+   "label": "CBS Baltimore — Maryland drops Kiewit from Key Bridge Phase 2 rebuild",
+   "url": "https://www.cbsnews.com/baltimore/news/maryland-key-bridge-rebuild-construction-company-federal-transportation/",
+   "date": "2026-04-30"
+  },
+  {
+   "label": "Allstream Insiders — Oglethorpe Power selects TIC (Kiewit) as EPC for 1,425 MW Monroe County plant",
+   "url": "https://allstreaminsiders.com/oglethorpe-power-selects-kiewit-subsidiary-the-industrial-company-tic-as-epc-partner-for-new-monroe-county-combined-cycle-plant/",
+   "date": "2026-01-13"
+  },
+  {
+   "label": "Construction Dive — Bechtel, Kiewit snare piece of $550B US-Japan AI infrastructure deal",
+   "url": "https://www.constructiondive.com/news/bechtel-kiewit-us-japan-ai-infrastructure-data-centers/804220/",
+   "date": "2025-10-30"
+  },
+  {
+   "label": "Oklo — Breaks ground on first Aurora powerhouse (Kiewit Nuclear Solutions lead constructor)",
+   "url": "https://oklo.com/newsroom/news-details/2025/Oklo-Breaks-Ground-on-First-Aurora-Powerhouse/default.aspx",
+   "date": "2025-09-24"
+  },
+  {
+   "label": "ANS Nuclear Newswire — Oklo selects Kiewit as lead constructor for first Aurora",
+   "url": "https://www.ans.org/news/2025-07-17/article-7203/",
+   "date": "2025-07-17"
+  },
+  {
+   "label": "Kiewit — Grain Belt Express awards ~$1.7B to Quanta and Kiewit (largest US transmission line)",
+   "url": "https://www.kiewit.com/newsroom/grain-belt-express-awards-1-7b-to-u-s-contractors-quanta-and-kiewit-to-build-largest-transmission-line-in-u-s-history/",
+   "date": "2025-05-07"
+  },
+  {
+   "label": "ENR — Kiewit to build record 4.5 GW gas power plant for PA data center complex (Homer City)",
+   "url": "https://www.enr.com/articles/60531",
+   "date": "2025-04"
+  },
+  {
+   "label": "GE Vernova — Homer City Redevelopment & Kiewit announce country's largest natural-gas-powered data center campus",
+   "url": "https://www.gevernova.com/news/press-releases/homer-city-redevelopment-kiewit-announce-country-largest-natural-gas-powered-data-center-support-ai-hpc-demand",
+   "date": "2025-04-02"
+  },
+  {
+   "label": "Utility Dive — NRG aims for 2026 next step in 5.4 GW gas deal with GE Vernova, Kiewit",
+   "url": "https://www.utilitydive.com/news/nrg-aims-for-2026-next-step-in-54-gw-gas-deal-with-ge-vernova-kiewit/805692/",
+   "date": "2025"
+  },
+  {
+   "label": "EnergyChoiceMatters — NRG/GE Vernova/Kiewit generation venture for data-center demand",
+   "url": "https://www.energychoicematters.com/stories/20250226a.html",
+   "date": "2025-02-26"
+  },
+  {
+   "label": "MDTA — Board approves progressive design-build contract for Key Bridge (Kiewit Phase 1)",
+   "url": "https://mdta.maryland.gov/blog-category/mdta-news-releases/mdta-board-approves-progressive-design-build-contract-francis",
+   "date": "2024-08"
+  },
+  {
+   "label": "ENR — 2024 Top 400 analysis (Kiewit $13.8B 2023 ENR-counted)",
+   "url": "https://www.enr.com/articles/58690",
+   "date": "2024-05"
+  },
+  {
+   "label": "MarineLink — Kiewit Corporation acquires Weeks Marine",
+   "url": "https://www.marinelink.com/news/kiewit-corporation-acquires-weeks-marine-502032",
+   "date": "2023-01"
+  },
+  {
+   "label": "Construction Dive — Scaffolding worker's body recovered after fall from Kiewit Texas oil rig",
+   "url": "https://www.constructiondive.com/news/scaffolding-workers-body-recovered-after-fall-from-kiewit-texas-oil-rig/633278/",
+   "date": "2022-10"
+  },
+  {
+   "label": "ENR — California wastewater-plant pipefitter death (Kiewit Infrastructure West)",
+   "url": "https://www.enr.com/articles/54353",
+   "date": "2022-06-23"
+  },
+  {
+   "label": "ENR — Canada drops criminal prosecution of Kiewit in jobsite fatality (Fitzpatrick case)",
+   "url": "https://www.enr.com/articles/52377",
+   "date": "2021-09-09"
+  },
+  {
+   "label": "Kiewit — Passing the Torch (Lanoha CEO transition; career history)",
+   "url": "https://www.kiewit.com/newsroom/passing-the-torch/",
+   "date": "2019-12"
+  },
+  {
+   "label": "Construction Dive — Kiewit awarded $45M in Los Angeles utility project dispute (LADWP/Scattergood)",
+   "url": "https://www.constructiondive.com/news/kiewit-awarded-45m-in-los-angeles-utility-project-dispute/525525/",
+   "date": "2018"
+  },
+  {
+   "label": "Kiewit — About (markets; employee ownership; ENR #4 self-citation)",
+   "url": "https://www.kiewit.com/about/"
+  },
+  {
+   "label": "Kiewit — Data centers market page (scopes; >80% self-perform claim)",
+   "url": "https://www.kiewit.com/our-markets/industrial/data-centers/"
+  },
+  {
+   "label": "Kiewit — Power market page (CCGT reference fleet; PacifiCorp program)",
+   "url": "https://www.kiewit.com/markets/power/"
+  },
+  {
+   "label": "Homer City Redevelopment — coal plant reopens as natural-gas facility (>1,000 workers)",
+   "url": "https://www.homercityredevelopment.com/post/former-homer-city-pa-coal-plant-officially-reopens-as-state-of-the-art-natural-gas-facility"
+  },
+  {
+   "label": "Business Roundtable — Rick Lanoha member profile",
+   "url": "https://www.businessroundtable.org/about-us/members/rick-lanoha"
+  },
+  {
+   "label": "Violation Tracker — Kiewit Infrastructure West OSHA penalty (Honolulu, 2025)",
+   "url": "https://violationtracker.goodjobsfirst.org/violation-tracker/hi-kiewit-infrastructure-west-co-1"
+  },
+  {
+   "label": "Wikipedia — Kiewit Corporation (revenue/net income infobox; neutrality flag Jan 2026)",
+   "url": "https://en.wikipedia.org/wiki/Kiewit_Corporation"
+  },
+  {
+   "label": "DCD — Homer City and Kiewit unveil 4.5 GW natural-gas-powered AI data center plans",
+   "url": "https://www.datacenterdynamics.com/en/news/homer-city-and-kiewit-unveil-plans-for-45gw-natural-gas-powered-ai-data-center-in-pennsylvania/"
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 3
+}

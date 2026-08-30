@@ -1,0 +1,421 @@
+{
+ "schemaVersion": 6,
+ "slug": "mainspring-energy",
+ "name": "Mainspring Energy",
+ "shortName": "Mainspring",
+ "categories": [
+  "supplier"
+ ],
+ "website": "https://www.mainspringenergy.com",
+ "headquarters": "Menlo Park, California, United States",
+ "founded": "2010 (as EtaGen, Stanford spin-out; renamed Mainspring Energy 2021)",
+ "employees": "~480-517 (aggregator-reported, Mar 2026)",
+ "ownership": "private — >$800M raised across rounds: Series D $95M (Apr 2021), Series E $290M (Sep 2022, Lightrock lead), Series F $258M (Apr 2025, General Catalyst lead). Investors include Khosla Ventures (earliest), Bill Gates/Gates Frontier, Amazon Climate Pledge Fund, DCVC, Temasek, CPP Investments, Shell Ventures, plus strategic corporates NextEra Energy, American Electric Power, and Chevron. Hired Goldman Sachs (Jun 2026) to explore an IPO — 'all options on the table, including SPAC.' A circulating 'NVIDIA backing' claim has no primary confirmation — treat as unverified and likely false.",
+ "summary": "BOTTOM LINE UP FRONT: Mainspring Energy sells the linear generator — a fourth category of onsite power distinct from engines, turbines, and fuel cells: a flameless uniform-compression reaction drives opposed magnets through copper coils on air bearings, producing 250 kW per unit (2.5 MW factory skids) at 46% LHV electrical efficiency with NOx under 1.5 ppm and no SCR, zero water, and software-switchable fuel flexibility (natural gas, biogas, propane, hydrogen; tested at 100% hydrogen and 100% ammonia). Its decisive 2025 break was legislative: OBBBA classifies linear generators as 'qualified fuel cell property,' earning a flat 30% ITC under §48E for post-2025 construction starts with no zero-GHG requirement — gas-fired operation qualifies — making Mainspring one of the bill's rare cleantech winners ('changed things overnight') and effectively FEOC-immune. The AIDC proof: a fully islanded greenfield AI data center running on its generators since summer 2025 with no diesel backup at all (customer and site undisclosed), an EdgeConneX deployment, and a ~$1B data-center pipeline (Jul 2026). The constraint is scale: today's Bay Area production plus a delayed ~$175M Pittsburgh plant (1,000 units/yr ≈ 250 MW/yr, $87M DOE grant under uncertainty) is small against GW-class AIDC procurement. Ex-Cummins chairman/CEO Tom Linebarger took the CEO seat in June 2026 with founder Shannon Miller as President.",
+ "ecosystemRole": "We assess Mainspring as the permitting-wedge player of the FEOC-immune onsite-generation cohort: where ERock, VoltaGrid, and ProEnergy fight on speed and block size, Mainspring wins where air quality forbids combustion competitors — sub-1.5 ppm NOx with no after-treatment permits in non-attainment areas that exclude diesel, recips, and turbines. It competes for the same AIDC capex line that would otherwise fund grid-plus-BESS, argues explicitly that batteries don't create energy, and has announced no storage pairing — an anti-BESS-attach posture that leaves the N+1/transient-coverage socket in its islanded microgrids formally unfilled. Its 30% ITC with zero China exposure is the cleanest policy contrast to an NDAA §154-named supplier in the entire competitive map.",
+ "productsAndServices": [
+  {
+   "name": "Linear generator (the platform)",
+   "description": "250 kW net AC per unit; standard commercial block is a 2.5 MW factory skid (10 units plus factory-integrated inverters, 100' × 60'); arrays scale '250 kW to 100+ MW.' Low-temperature flameless uniform compression — no spark, no flame, no crankshaft, no lubricating oil; direct electricity via linear magnets on air bearings. 46% electrical efficiency (LHV, net AC) claimed flat across turndown — a structural contrast to recips/turbines that lose efficiency at part load; ~80% in CHP mode. Fully dispatchable 0-100%, fast load-following, grid-parallel or islanded/microgrid-forming — positioned as able to ramp for variable AI workloads without batteries.",
+   "positioning": "Against Bloom (SOFC): better load-following, true software-switchable multi-fuel, no stack-degradation replacement cycle — but lower electrical efficiency and a far smaller installed base with no named hyperscaler logo. Against recips/turbines: near-zero NOx without SCR and higher part-load efficiency — the non-attainment-area wedge (a claimed ~46% of planned DC sites sit in non-attainment areas). Against grid-plus-BESS: sells generation, not shifting; interconnection wait is the enemy it monetizes.",
+   "soldThrough": "Direct sales; NextEra Energy Resources project-finance channel ($150M unit purchase + financing agreement, 2021 — funding customer PPAs); Schneider Electric fuel-flexible microgrid partnership (2024); reseller network incl. Puerto Rico/Caribbean",
+   "targetSegments": "AI data centers (bridge, prime, islanded), utilities (peaker alternative, T&D deferral), C&I resiliency (cold storage, grocery), biogas/RNG hosts (dairies, wastewater)",
+   "roadmap": "No larger single unit announced — scaling is replication of the 2.5 MW block; '>1 GW in late-stage development and operation' (company); Pittsburgh plant to add ~250 MW/yr when built; hydrogen/ammonia commercial exercise pending (Travis AFB multi-fuel pilot, Mar 2026)."
+  },
+  {
+   "name": "Data-center power solutions",
+   "description": "Onsite prime power in 'months, not years' against 3-7-year turbine lead times and multi-year interconnection queues; diesel-backup replacement; bridge or permanent power. Flagship (undisclosed customer): a greenfield AI data center online summer 2025, initially fully islanded on Mainspring generators with no diesel backup — a novel operating model — designed to scale to 'hundreds of MW.' EdgeConneX is the named first data-center deployment. ~$1B data-center pipeline as of July 2026, about half a dozen projects in active development (Apr 2025).",
+   "positioning": "The no-diesel islanded model is the boldest reliability claim in the cohort — if it holds at scale it collapses the backup-genset budget line entirely; Joe Kava (17-year VP of Google data centers) joined the strategic advisory board with a strong endorsement (advisory, not a contract).",
+   "soldThrough": "Direct + NextEra financing; Schneider channel",
+   "targetSegments": "AI/cloud data centers, especially in air-quality non-attainment areas",
+   "roadmap": "Watch for the first named hyperscale logo — the credibility gap vs Bloom/VoltaGrid in bake-offs; inbound interest from Europe/APAC/Middle East but zero non-US installs to date."
+  },
+  {
+   "name": "Utility & C&I fleet",
+   "description": "UMPA (Utah Municipal Power Agency): 48 MW greenfield dispatchable plant, COD 2027 — largest disclosed project and the utility-capacity beachhead, won on speed and no-SCR permitting. NextEra/FPL relationship (investor + $150M agreement + NapaSan biogas build); PG&E first utility client; AEP Oklahoma pilot MOU. C&I: Lineage cold storage (up to 150 units; 33 units across five Texas facilities — the ERCOT entry), Kroger (up to 30 stores), CalBio dairy biogas (5.3 MW across five CA sites, Feb 2026), US Air Force Travis AFB multi-fuel resilience pilot (six fuels incl. ammonia, Mar 2026), reported Amazon last-mile deployments.",
+   "positioning": "The C&I fleet is the reliability record the AIDC pitch stands on; the UMPA win shows the platform crossing into utility capacity procurement.",
+   "soldThrough": "Direct, NextEra project finance, utility programs",
+   "targetSegments": "Municipal utilities, cold chain, grocery, dairy/wastewater biogas, defense resilience",
+   "roadmap": "UMPA COD 2027; CalBio expansions; Travis AFB pilot results."
+  }
+ ],
+ "technicalSpecs": [
+  {
+   "product": "Linear generator platform",
+   "specs": [
+    {
+     "band": "Unit / block",
+     "label": "250 kW · 2.5 MW skid",
+     "value": "Single unit 20.5' × 8.5' × 9.5', 22 tons; 2.5 MW skid = 10 units + factory-integrated inverters on a 100' × 60' pad; arrays to 100+ MW"
+    },
+    {
+     "band": "Efficiency",
+     "label": "46% LHV net AC",
+     "value": "8,233 Btu/kWh HHV heat rate; ~80% CHP; efficiency claimed flat across turndown (part-load advantage vs recips/turbines)"
+    },
+    {
+     "band": "Emissions / water",
+     "label": "NOx <1.5 ppm, no SCR · zero water",
+     "value": "<0.05 lb/MWh NOx, no particulates, no after-treatment — permits in non-attainment areas where combustion competitors cannot; CEC demonstration report corroborates ultra-low NOx"
+    },
+    {
+     "band": "Fuel flexibility",
+     "label": "NG · biogas · propane · H2 (100% tested) · NH3 (100% tested)",
+     "value": "Software-switchable between fuels with no hardware change or downtime; world's-first 100% hydrogen (-2% efficiency, zero NOx) and 100% ammonia (+1% efficiency) runs announced Jun 2022; ammonia not yet a shipping product fuel"
+    }
+   ],
+   "notes": "No announced battery pairing anywhere in the platform — the company positions the linear generator's own ramping as the load-following solution. No public $/kW or LCOE figures."
+  },
+  {
+   "product": "Manufacturing & policy position",
+   "specs": [
+    {
+     "band": "Capacity today",
+     "label": "Bay Area production",
+     "value": "Menlo Park production; 'hundreds of MW in field operations' (Apr 2025); volume ramp is the binding constraint"
+    },
+    {
+     "band": "Pittsburgh plant",
+     "label": "~$175M · 1,000 units/yr ≈ 250 MW/yr",
+     "value": "~300,000 sq ft near Pittsburgh International Airport; $87M DOE grant (Oct 2024) + $8.6M PA package; ~600 permanent jobs; original timeline groundbreak 2025 / operating 2027 — DELAYED amid DOE grant uncertainty (reported Sep 2025); company says still committed"
+    },
+    {
+     "band": "ITC",
+     "label": "flat 30% under §48E",
+     "value": "OBBBA (Jul 2025) includes linear generators in 'qualified fuel cell property' for post-2025 starts: no zero-GHG requirement (gas qualifies), no prevailing-wage requirement; 100% value through 2033 starts, then 75%/50%/0% in 2034/35/36"
+    },
+    {
+     "band": "FEOC",
+     "label": "effectively immune",
+     "value": "US-designed, US-built, DOE-backed; fuel-cell-category PFE rules apply but with no Chinese-supply-chain dependence — marketed accordingly"
+    }
+   ],
+   "notes": "Even the PA plant at full rate (~250 MW/yr) is small against multi-GW AIDC orders — scale is the strategic question the IPO exploration is meant to answer."
+  }
+ ],
+ "recentDevelopments": [
+  {
+   "date": "2026-07-13",
+   "category": "market",
+   "headline": "POWER interview with CEO Linebarger; Latitude reports ~$1B data-center pipeline and the unnamed islanded AI DC running since summer 2025",
+   "read": "The pipeline number is real reported traction — but the flagship customer's anonymity is a conspicuous credibility gap against Bloom's named GW-scale logos.",
+   "source": "POWER Magazine / Latitude Media"
+  },
+  {
+   "date": "2026-06-23",
+   "category": "corporate",
+   "headline": "Axios: Mainspring hires Goldman Sachs to explore IPO — 'all options on the table, including SPAC'",
+   "read": "Public capital is the only visible route to GW-relevant manufacturing scale; expect an S-1 to finally expose revenue and unit economics.",
+   "source": "Axios Pro"
+  },
+  {
+   "date": "2026-06-10",
+   "category": "leadership",
+   "headline": "Tom Linebarger (ex-Cummins chairman/CEO) becomes CEO; founder Shannon Miller becomes President",
+   "read": "Hiring the man who ran the recip incumbent for a decade is a declaration of which war Mainspring intends to fight — and a classic pre-IPO operator installation.",
+   "source": "PRNewswire"
+  },
+  {
+   "date": "2026-03-04",
+   "category": "contract",
+   "headline": "US Air Force awards Travis AFB multi-fuel resilience pilot (natural gas, propane, biomethane, syngas, ammonia, hydrogen)",
+   "read": "Defense validation of the fuel-flexibility thesis; ammonia and syngas get their first operational exercise.",
+   "source": "PRNewswire"
+  },
+  {
+   "date": "2026-02-09",
+   "category": "contract",
+   "headline": "Utah Municipal Power Agency selects Mainspring for 48 MW dispatchable plant, operational 2027",
+   "read": "Largest disclosed project and the first true utility-capacity win — speed-to-power and no-SCR permitting beat conventional peakers.",
+   "source": "American Public Power Association / PRNewswire"
+  },
+  {
+   "date": "2026-02-23",
+   "category": "contract",
+   "headline": "CalBio expands dairy-biogas fleet to 5.3 MW across five California sites",
+   "read": "The RNG/biogas franchise keeps compounding — carbon-negative fuel credibility the gas-genset cohort lacks.",
+   "source": "PRNewswire"
+  },
+  {
+   "date": "2025-09-01",
+   "category": "operations",
+   "headline": "Post-OBBBA demand surge ('changed things overnight' — Miller); Pittsburgh factory simultaneously delayed on DOE grant uncertainty",
+   "read": "The defining tension: policy just supercharged demand while policy uncertainty stalls the capacity to serve it.",
+   "source": "Latitude Media / Pittsburgh Business Times"
+  },
+  {
+   "date": "2025-08-01",
+   "category": "leadership",
+   "headline": "Strategic Advisory Board formed — Joe Kava (ex-Google VP of data centers) headlines",
+   "read": "The strongest hyperscaler-adjacent endorsement available short of an actual hyperscaler contract.",
+   "source": "PRNewswire"
+  },
+  {
+   "date": "2025-07-01",
+   "category": "project",
+   "headline": "First full-scale greenfield AI data center online (summer 2025) — fully islanded on linear generators, no diesel backup; customer/location undisclosed",
+   "read": "If the no-diesel islanded model proves durable it rewrites the backup architecture — and removes a budget line BESS also competes for.",
+   "source": "Latitude Media"
+  },
+  {
+   "date": "2025-04-14",
+   "category": "financial",
+   "headline": "Series F $258M (General Catalyst lead; Amazon CPF, DCVC, Temasek); total raised >$800M; Linebarger and Bethany Mayer join board",
+   "read": "The war chest for the pre-IPO scale-up; NextEra/AEP/Chevron sit on the cap table as strategics.",
+   "source": "Bloomberg / PRNewswire"
+  },
+  {
+   "date": "2024-10-01",
+   "category": "corporate",
+   "headline": "DOE awards $87M for the Allegheny County PA plant (~$175M, 1,000 units/yr)",
+   "read": "The grant that made the 250 MW/yr plan bankable — now the grant's own uncertainty is the delay.",
+   "source": "PRNewswire / PA DCED"
+  }
+ ],
+ "strategyRead": [
+  "(High confidence) We assess Mainspring's OBBBA position as the single cleanest policy contrast to Hithium in the competitive map: a flat 30% ITC under §48E with no zero-GHG requirement and no Chinese-supply-chain exposure, versus escalating FEOC material-assistance ratios on storage from 2026. Its pitch to an AIDC CFO — '30% ITC, zero China risk, no interconnection wait' — competes for the exact capex line that would otherwise fund grid-plus-BESS.",
+  "(High confidence) The permitting wedge is structural, not marketing: sub-1.5 ppm NOx with no SCR admits Mainspring to non-attainment-area sites (a claimed ~46% of planned DC capacity) where diesel, recips, and turbines face hard limits. Where Hithium's customers face combustion-permitting walls, Mainspring is the FEOC-immune generation alternative most likely to appear in the bake-off.",
+  "(Medium confidence) Scale is the binding constraint that keeps Mainspring from converting category heat into category share: ~250 MW/yr of planned factory output against multi-GW procurement, a delayed plant, and no named hyperscaler logo. We expect the IPO/SPAC process to resolve this within 18 months or the moment passes to Bloom and the recovering recip/turbine incumbents.",
+  "(Medium confidence) The anti-BESS posture is explicit (batteries don't create energy; the linear generator's own ramping handles AI transients) but incomplete: its islanded no-diesel microgrids still carry N+1 and transient-coverage requirements that fast-response storage serves, and no storage partner has been announced. The socket exists; Mainspring's US-purist supply-chain narrative makes a Chinese-cell fill implausible — but the socket's existence is evidence for the hybrid end-state argument across the whole cohort.",
+  "(Low confidence) The 'NVIDIA backing' claim circulating in aggregator profiles has no primary confirmation and should be treated as false until an S-1 or filing proves otherwise — repeating it in customer-facing material would be an unforced error."
+ ],
+ "relationships": [
+  {
+   "slug": "amazon",
+   "type": "investor",
+   "note": "Amazon's Climate Pledge Fund joined the $258M Series F; reported last-mile linear-generator deployments.",
+   "context": "April 2025: Mainspring closed a $258M Series F led by General Catalyst with Amazon's Climate Pledge Fund, DCVC and Temasek participating (total raised >$800M; NextEra, AEP and Chevron sit on the cap table as strategics). The utility & C&I fleet section also carries reported Amazon last-mile deployments of the linear generator — investor first, early customer second.",
+   "source": "https://www.bloomberg.com/news/articles/2025-04-14/menlo-park-based-energy-startup-nabs-258-mil",
+   "status": "active",
+   "since": "2025-04"
+  },
+  {
+   "slug": "google",
+   "type": "other",
+   "note": "Joe Kava (17-year Google data-center VP) joined the strategic advisory board — endorsement, not a contract.",
+   "context": "August 2025: Mainspring formed a Strategic Advisory Board headlined by Joe Kava, ex-Google VP of data centers, with a strong endorsement of the no-diesel islanded reliability model — the strongest hyperscaler-adjacent endorsement available short of an actual hyperscaler contract, and explicitly advisory.",
+   "source": "Mainspring advisory-board announcement (Aug 2025)",
+   "status": "active",
+   "since": "2025-08"
+  },
+  {
+   "slug": "enchanted-rock",
+   "type": "competitor",
+   "note": "FEOC-immune onsite-generation cohort rival fighting on speed and block size.",
+   "context": "In the onsite-generation cohort, ERock, VoltaGrid and ProEnergy fight on speed and block size while Mainspring wins the permitting wedge — sub-1.5 ppm NOx with no after-treatment clears non-attainment areas that exclude diesel, recips and turbines.",
+   "source": "Dossier competitive assessment — onsite-generation cohort",
+   "status": "active"
+  },
+  {
+   "slug": "voltagrid",
+   "type": "competitor",
+   "note": "Speed-and-scale rival in the FEOC-immune onsite-generation cohort.",
+   "context": "VoltaGrid's mobile-fleet model competes for the same AI-campus bridge/prime power budgets; Mainspring's counter is air-permitting access (sub-1.5 ppm NOx, no after-treatment) in non-attainment areas where combustion competitors can't site.",
+   "source": "Dossier competitive assessment — onsite-generation cohort",
+   "status": "active"
+  },
+  {
+   "slug": "proenergy",
+   "type": "competitor",
+   "note": "Turbine-block rival in the onsite-generation cohort.",
+   "context": "ProEnergy fights on speed and block size in the same FEOC-immune generation cohort; Mainspring's permitting wedge (linear generators clearing air-quality regimes turbines can't) is the differentiation, plus a flat 30% §48E ITC with no Chinese-supply-chain exposure.",
+   "source": "Dossier competitive assessment — onsite-generation cohort",
+   "status": "active"
+  },
+  {
+   "slug": "hithium",
+   "type": "competitor",
+   "note": "The FEOC-immune generation alternative most likely to appear in bake-offs against Hithium-supplied storage.",
+   "context": "The dossier calls Mainspring's OBBBA position the single cleanest policy contrast to Hithium: a flat 30% ITC under §48E with no zero-GHG requirement and no Chinese-supply-chain exposure, versus escalating FEOC material-assistance ratios on storage from 2026. Where Hithium's customers face combustion-permitting walls, Mainspring is the alternative in the bake-off.",
+   "source": "Dossier competitive assessment — OBBBA policy contrast",
+   "status": "active"
+  },
+  {
+   "slug": "nvidia",
+   "type": "other",
+   "note": "The circulating 'NVIDIA backing' claim has no primary confirmation — treat as false until a filing proves otherwise.",
+   "context": "Aggregator profiles circulate an 'NVIDIA backing' claim for Mainspring that no primary source confirms. The dossier holds it at low confidence and warns that repeating it in customer-facing material would be an unforced error — recorded here so the claim is flagged, not endorsed.",
+   "source": "Dossier verification note",
+   "status": "announced"
+  }
+ ],
+ "decisionMakers": [
+  {
+   "name": "Tom Linebarger",
+   "title": "Chief Executive Officer (since Jun 10, 2026)",
+   "background": "Chairman/CEO of Cummins 2012-2022 (30 years at the company); ex-chair of the US-China Business Council; joined Mainspring's board in 2025 before taking the CEO seat — the operator installed to fight the recip incumbents and front an IPO."
+  },
+  {
+   "name": "Shannon Miller",
+   "title": "Founder & President (CEO 2010-2026)",
+   "background": "Stanford mechanical-engineering PhD; founded EtaGen out of a Stanford thermodynamics lab with funding from the Global Climate & Energy Project; led the company through Series F and the OBBBA win."
+  },
+  {
+   "name": "Matt Svrcek",
+   "title": "Co-founder & Chief Technology Officer",
+   "background": "Stanford PhD co-founder; owns the linear-generator platform architecture."
+  },
+  {
+   "name": "Adam Simpson",
+   "title": "Co-founder & Chief Commercial Officer",
+   "background": "Stanford PhD co-founder; runs the commercial engine across DC, utility, and C&I channels; board member."
+  },
+  {
+   "name": "Joe Kava",
+   "title": "Strategic Advisory Board",
+   "background": "17-year VP of data centers at Google; joined Aug 2025 with a strong public endorsement — the closest thing to a hyperscaler validation the company has."
+  }
+ ],
+ "financials": {
+  "currency": "USD",
+  "type": "private — no revenue disclosures; funding rounds and reported signals only",
+  "periods": [
+   {
+    "period": "Capital formation",
+    "metrics": [
+     {
+      "name": "Equity",
+      "actual": ">$800M total: Series D $95M (Apr 2021) + Series E $290M (Sep 2022, Lightrock) + Series F $258M (Apr 2025, General Catalyst) + earlier rounds",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "Khosla, Gates, Amazon CPF, Temasek, CPP; strategics NextEra, AEP, Chevron"
+     },
+     {
+      "name": "Valuation",
+      "actual": "undisclosed post-F; secondary ~$5.34/sh (Nasdaq Private Market, Jul 2026); pre-F aggregator range $451-661M — all soft",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "Goldman-run IPO/SPAC exploration (Jun 2026) implies step-up ambition"
+     }
+    ]
+   },
+   {
+    "period": "Commercial signals",
+    "metrics": [
+     {
+      "name": "Traction",
+      "actual": "~$1B data-center pipeline (Jul 2026); 'hundreds of MW in field operations' (Apr 2025); >1 GW late-stage development claimed; $150M NextEra agreement (2021); UMPA 48 MW (COD 2027)",
+      "expected": "n/a",
+      "verdict": "n/a",
+      "result": "No audited revenue until an S-1 appears; no public $/kW or LCOE"
+     }
+    ]
+   }
+  ],
+  "commentary": "The financial story is a race between the OBBBA-driven demand surge and manufacturing scale-up: >$800M raised, a delayed 250 MW/yr plant, and an IPO process opened precisely to fund the gap. A salestools.io claim of a '$150M Series E in September 2025' is a data error conflating the 2022 round."
+ },
+ "sources": [
+  {
+   "label": "POWER Magazine — The POWER Interview: Linebarger on making linear generators mainstream",
+   "url": "https://www.powermag.com/the-power-interview-mainspring-looks-to-make-linear-generators-mainstream/",
+   "date": "2026-07-13"
+  },
+  {
+   "label": "Latitude Media — One year inside Mainspring's data-center pipeline (~$1B)",
+   "url": "https://www.latitudemedia.com/news/one-year-inside-mainsprings-data-center-pipeline/",
+   "date": "2026-07"
+  },
+  {
+   "label": "Axios Pro — Mainspring taps Goldman Sachs to consider IPO",
+   "url": "https://www.axios.com/pro/climate-deals/2026/06/23/mainspring-energy-goldman-sachs-ipo-spac",
+   "date": "2026-06-23"
+  },
+  {
+   "label": "PRNewswire — Linebarger appointed CEO; Miller President",
+   "url": "https://www.prnewswire.com/news-releases/302796230.html",
+   "date": "2026-06-10"
+  },
+  {
+   "label": "PRNewswire — US Air Force Travis AFB multi-fuel pilot",
+   "url": "https://www.prnewswire.com/news-releases/302703516.html",
+   "date": "2026-03-04"
+  },
+  {
+   "label": "PRNewswire — CalBio expands to 5.3 MW across five CA sites",
+   "url": "https://www.prnewswire.com/news-releases/302693469.html",
+   "date": "2026-02-23"
+  },
+  {
+   "label": "American Public Power Association — UMPA selects Mainspring for 48 MW",
+   "url": "https://www.publicpower.org/periodical/article/utah-municipal-power-agency-selects-mainspring-48-mw-local-power-generation-project",
+   "date": "2026-02-09"
+  },
+  {
+   "label": "Latitude Media — Post-OBBB, this onsite power company has more interest than ever",
+   "url": "https://www.latitudemedia.com/news/post-obbb-this-onsite-power-company-has-more-interest-than-ever/",
+   "date": "2025-09-01"
+  },
+  {
+   "label": "Pittsburgh Business Times — $174M factory delayed amid DOE grant uncertainty",
+   "url": "https://www.bizjournals.com/pittsburgh/",
+   "date": "2025-09"
+  },
+  {
+   "label": "PRNewswire — Strategic Advisory Board incl. Joe Kava",
+   "url": "https://www.prnewswire.com/news-releases/302527256.html",
+   "date": "2025-08"
+  },
+  {
+   "label": "projectfinance.law — fuel-cell projects (incl. linear generators) eligible for ITC under §48E",
+   "url": "https://www.projectfinance.law/tax-equity-news/qa-fuel-cell-projects-eligible-for-itc-under-section-48e",
+   "date": "2025"
+  },
+  {
+   "label": "Gibson Dunn — OBBBA clean-energy tax provisions",
+   "url": "https://www.gibsondunn.com/focus-on-clean-energy-tax-provisions-in-the-one-big-beautiful-bill-act/",
+   "date": "2025-07"
+  },
+  {
+   "label": "Bloomberg — Menlo Park energy startup nabs $258M to power data centers (Series F)",
+   "url": "https://www.bloomberg.com/news/articles/2025-04-14/menlo-park-based-energy-startup-nabs-258-million-to-power-data-centers",
+   "date": "2025-04-14"
+  },
+  {
+   "label": "PRNewswire — DOE awards $87M grant for Allegheny County PA plant",
+   "url": "https://www.prnewswire.com/news-releases/302283226.html",
+   "date": "2024-10"
+  },
+  {
+   "label": "PRNewswire — Lineage Texas: 33 units across five facilities",
+   "url": "https://www.prnewswire.com/news-releases/302248791.html",
+   "date": "2024-09-18"
+  },
+  {
+   "label": "Utility Dive — Schneider Electric-Mainspring microgrid partnership",
+   "url": "https://www.utilitydive.com/news/schneider-electric-mainspring-energy-linear-generator-microgrid/711941/",
+   "date": "2024-03"
+  },
+  {
+   "label": "CEC — high-efficiency ultra-low-NOx linear generator demonstration report (CEC-500-2024-037)",
+   "url": "https://www.energy.ca.gov/sites/default/files/2024-05/CEC-500-2024-037.pdf",
+   "date": "2024-05"
+  },
+  {
+   "label": "IEEE Spectrum — The Omnivorous Generator",
+   "url": "https://ieeexplore.ieee.org/document/10061630/",
+   "date": "2023"
+  },
+  {
+   "label": "Utility Dive / PRNewswire — 100% hydrogen and 100% ammonia runs (world first)",
+   "url": "https://www.utilitydive.com/news/tests-show-fuel-flexible-linear-generators-use-hydrogen-ammonia/625827/",
+   "date": "2022-06-22"
+  },
+  {
+   "label": "PRNewswire — Series E final close $290M (Lightrock)",
+   "url": "https://www.prnewswire.com/news-releases/mainspring-closes-series-e-at-290-million-301626840.html",
+   "date": "2022-09-21"
+  },
+  {
+   "label": "TechCrunch / PRNewswire — launch + $150M NextEra Energy Resources agreement",
+   "url": "https://techcrunch.com/2021/03/09/mainspring-energy-launches-its-flexible-fuel-generator-with-a-150-million-nextera-energy-contract",
+   "date": "2021-03-09"
+  },
+  {
+   "label": "Mainspring — technology, product, data-center solutions, company pages",
+   "url": "https://www.mainspringenergy.com/technology",
+   "date": null
+  }
+ ],
+ "lastUpdated": "2026-08-29",
+ "profileVersion": 2
+}

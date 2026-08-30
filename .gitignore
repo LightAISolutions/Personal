@@ -1,0 +1,39 @@
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Playwright harness screenshots (scripts/playwright-harness.py) — local artifacts
+.playwright-screenshots/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node
+node_modules/
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log
+
+# AutoUpdate secrets — never commit the PAT
+autoHotkey/AutoUpdate.config.ini
+
+# AutoUpdate manual-targets scratchpad — local-only, per-machine paths
+autoHotkey/AutoUpdate.manual-targets.ini
+
+# AutoUpdate persisted local target paths — per-machine, populated by
+# auto-promotion when an intent matches a manifest entry, plus by the
+# "Edit Path…" button on the status table
+autoHotkey/AutoUpdate.localpaths.ini
+
+# Python bytecode from scripts/ tooling
+__pycache__/
+*.pyc

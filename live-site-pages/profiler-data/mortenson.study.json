@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "mortenson",
+  "title": "Mortenson — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "EPC vs GC: who owns the power plant problem",
+      "bullets": [
+        "A general contractor manages construction of a building someone else designed; an EPC (engineer-procure-construct) firm owns all three — design, equipment purchasing, and construction — and hands over a working plant, typical for power projects where the design IS the product",
+        "On a solar farm or battery plant the EPC self-performs most of the work with its own crews, unlike a building GC who subcontracts 80%+ of the labor — so EPC firms live or die on their own field productivity",
+        "'BOP' (balance of plant) means everything around the core generating equipment: foundations, roads, cabling, the substation — often contracted separately from the turbines or panels themselves",
+        "AI campuses blur the line: the same site needs a building (GC skills) and a gigawatt of power infrastructure (EPC skills) — which is why a contractor holding both franchises can sell a scope competitors must split"
+      ]
+    },
+    {
+      "heading": "Substations and voltage: why electricity changes clothes",
+      "bullets": [
+        "Power loses energy as heat in proportion to current squared — so long-distance transmission runs at very high voltage (115-765 kV) to keep current low, then steps down in stages for use; a substation is where the voltage changes",
+        "The transformer is the substation's heart: two coils of wire around an iron core that trade voltage for current; gigawatt-class substations use several massive main transformers, each a multi-year factory order and a truckload measured in hundreds of tons",
+        "345 kV is a transmission-class voltage — a campus fed at 345 kV is plugged into the bulk grid like a small city, not a customer; 'medium voltage' (roughly 1-35 kV) is the on-campus distribution layer between the substation and the buildings",
+        "A 1 GW substation delivered in about a year is fast: the critical path is transformer manufacturing slots and energization testing, not construction — reserving those slots early is the whole game"
+      ]
+    },
+    {
+      "heading": "MW vs MWh: reading solar and storage numbers",
+      "bullets": [
+        "MW (megawatts) measures power — the instantaneous flow, like a pipe's diameter; MWh (megawatt-hours) measures energy — the amount delivered over time, like the water that actually flowed",
+        "A battery rated 680 MW / 2,720 MWh can discharge at 680 MW for four hours (2,720 ÷ 680 = 4) — the ratio tells you the storage duration, and four hours is the standard grid-firming product",
+        "Solar projects quote MWdc (panel capacity) and MWac (inverter/grid capacity); panels are oversized relative to inverters (a DC:AC ratio around 1.2-1.4) so the plant holds peak output longer through the day",
+        "Batteries co-located with solar 'firm' it: they absorb midday surplus and discharge into the evening peak, converting an intermittent resource into something a grid operator can schedule"
+      ]
+    },
+    {
+      "heading": "Why AI campuses became power projects",
+      "bullets": [
+        "A single AI campus can draw 1+ GW — roughly a nuclear reactor's output — so the constraint on siting shifted from fiber and land to electricity: who can deliver a gigawatt, where, and how fast",
+        "Interconnection queues (the waiting line to plug new load or generation into the grid) run years in many regions, so developers increasingly build dedicated substations and even dedicated generation rather than waiting",
+        "The buildout splits into 'front-of-meter' (grid-supplied power through a utility interconnection) and 'behind-the-meter' (generation on the campus's own side of the meter — gas turbines, solar+storage) — many AI sites blend both",
+        "This is why wind/solar/storage EPC experience transfers directly: the crews, high-voltage engineering, OEM transformer relationships, and grid-interconnection know-how are the same whether the customer is a utility or a hyperscaler"
+      ]
+    },
+    {
+      "heading": "SCADA and grid controls: the software between plant and grid",
+      "bullets": [
+        "SCADA (supervisory control and data acquisition) is the software/hardware layer that monitors and operates a power plant remotely — every breaker position, temperature, and megawatt reading flows through it",
+        "An EMS (energy management system) sits above SCADA and decides what the plant should do: when the battery charges, how the solar plant curtails, how a microgrid islands from the grid during a disturbance",
+        "Grid operators impose strict compliance on these systems (cybersecurity, ride-through behavior during faults), so controls engineering is a specialized, certifiable discipline — not generic IT",
+        "'Open-architecture' controls avoid locking the plant to one battery or inverter vendor's software — valuable to owners who mix vendors across a fleet, and a reason contractors acquire controls firms rather than build from scratch"
+      ]
+    },
+    {
+      "heading": "Developer vs builder: entitlement and environmental review",
+      "bullets": [
+        "A developer originates a project — buys land, secures zoning ('entitlement'), power, and permits, then brings in an end user and a builder; a contractor that also develops can create its own future construction work",
+        "Environmental review (in Minnesota, an AUAR — Alternative Urban Areawide Review) makes a city study a project's water, power, traffic, and habitat impacts before approval; opponents can sue over a review they consider inadequate rather than fighting the project head-on",
+        "Data-center secrecy collides with review transparency: end users hide behind code names and NDAs, but courts and communities increasingly demand the true scale and tenant be disclosed — reviews get redone when they weren't",
+        "For contractors, self-developed land is a double-edged sword: it secures deal flow no bid process can take away, but it also attaches the community-opposition risk to the contractor's own name instead of the customer's"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "What's the difference between a GC and an EPC contractor?",
+      "a": "A GC manages construction of something others designed, subcontracting most labor. An EPC firm owns engineering, procurement, AND construction — it designs the plant, buys the equipment, builds it with its own crews, and hands over a working facility. Power projects are typically EPC; buildings are typically GC/CM."
+    },
+    {
+      "q": "What is the difference between a MW and a MWh?",
+      "a": "MW measures power — the instantaneous rate of energy flow. MWh measures energy — the total delivered over time. A 680 MW / 2,720 MWh battery can discharge at full power for 4 hours (2,720 ÷ 680). Power is the pipe's diameter; energy is the water that flowed."
+    },
+    {
+      "q": "Why is electricity transmitted at very high voltage and then stepped down?",
+      "a": "Resistive losses scale with current squared (I²R). Raising voltage lets the same power flow at lower current, slashing losses over distance. Transmission runs at 115-765 kV, then substations step it down in stages to medium voltage (~1-35 kV) for distribution and low voltage for use."
+    },
+    {
+      "q": "What does a transformer actually do?",
+      "a": "It trades voltage for current between two coils of wire wound around a shared iron core: the alternating current in one coil induces current in the other, at a voltage set by the ratio of coil turns. Same power in and out (minus small losses), different voltage — the device that makes the grid's voltage ladder possible."
+    },
+    {
+      "q": "Why do gigawatt-class substations take years to arrange but only about a year to build?",
+      "a": "The critical path is the main power transformers — few factories make them, order books run years, and each unit is a several-hundred-ton custom build. Site construction and energization testing are comparatively fast. Reserving transformer manufacturing slots early is the whole game."
+    },
+    {
+      "q": "What does it mean for a solar+storage plant to 'firm' its output?",
+      "a": "The battery absorbs midday solar surplus and discharges it into the evening peak, turning an intermittent resource into scheduled, dispatchable capacity a grid operator can count on. Four-hour duration is the standard firming product."
+    },
+    {
+      "q": "What is the DC:AC ratio on a solar farm and why is it above 1?",
+      "a": "Panels (DC capacity) are deliberately oversized relative to the inverters (AC grid capacity), typically 1.2-1.4x. The plant clips some output at midday peak but holds maximum AC output for more hours of the day, producing more sellable energy per grid connection."
+    },
+    {
+      "q": "What is an interconnection queue and why does it shape the AI buildout?",
+      "a": "The waiting line to plug new generation or large loads into the grid — studies and upgrades can take years in congested regions. That delay pushes AI-campus developers toward dedicated substations, behind-the-meter generation, and sites chosen for available power rather than available land."
+    },
+    {
+      "q": "What's the difference between front-of-meter and behind-the-meter power?",
+      "a": "Front-of-meter power comes through the utility's grid connection and meter. Behind-the-meter generation sits on the customer's own side — onsite turbines, solar, or batteries feeding the load directly. Big AI campuses often blend both: grid interconnection plus dedicated onsite generation."
+    },
+    {
+      "q": "What do SCADA and EMS systems do at a power plant?",
+      "a": "SCADA is the monitoring-and-control nervous system — every breaker, temperature, and megawatt flows through it for remote operation. The EMS sits above it making decisions: when the battery charges, how solar curtails, when a microgrid islands. 'Open-architecture' versions avoid locking the plant to one equipment vendor's software."
+    },
+    {
+      "q": "What is 'balance of plant' (BOP) on a wind or solar project?",
+      "a": "Everything around the core generating equipment: foundations, access roads, electrical collection cabling, and the substation. The turbine or panel supply contract is often separate — the BOP contractor builds the plant that makes the generators useful."
+    },
+    {
+      "q": "What does a developer do that a builder doesn't, and what is 'entitlement'?",
+      "a": "A developer originates the project: buys land, secures zoning approvals (entitlement), power, and permits, then brings in the end user and builder. Entitlement is the legal right to build a specific use at a specific scale on that land. A contractor that develops land creates its own future construction work — and inherits the community-opposition risk."
+    }
+  ]
+}

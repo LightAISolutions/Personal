@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "constellation-energy",
+  "title": "Constellation Energy — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Merchant power: selling electricity with no guaranteed customer",
+      "bullets": [
+        "Two ways to own a power plant: a regulated utility earns a state-approved return on what it builds, with customers obligated to pay through rates; a merchant generator has no captive customers and sells at whatever the wholesale market pays",
+        "Wholesale markets clear like an auction: every plant offers a price, the grid operator stacks offers cheapest-first until demand is met, and the last accepted offer sets the price all winners receive — low-cost plants pocket the gap between their cost and that clearing price",
+        "Merchant revenue is feast-or-famine — prices swing with gas, weather, and scarcity — so generators tame it with hedges: selling output years ahead through long-term contracts and running a retail supply business that locks in buyers on the other side",
+        "That is why 20-year data-center PPAs (power purchase agreements) are prized: a fixed-price contract converts volatile merchant revenue into bond-like cash flow, and the buyer pays a premium for the certainty — both sides are trading risk, not just electricity"
+      ]
+    },
+    {
+      "heading": "Capacity markets: paying power plants to exist",
+      "bullets": [
+        "Energy markets pay only for megawatt-hours actually generated — but a grid also needs plants standing ready for the worst hour of the year. Capacity markets pay generators for the promise of availability, whether or not they ever run",
+        "The mechanism is an auction held years in advance: the grid operator forecasts peak demand plus a reserve margin, generators offer their megawatts, and the auction clears at one price paid to every resource that committed",
+        "Why it exists: an energy-only market underpays plants that run rarely (the 'missing money' problem), so the peakers that only matter during heat waves would retire — capacity payments keep them solvent between emergencies",
+        "The politics: when demand surges, capacity auctions clear at record levels and the cost lands on every consumer's bill — windfalls to existing generators become legislative targets, making capacity revenue the most policy-exposed money in the power business"
+      ]
+    },
+    {
+      "heading": "Life extension: squeezing more from a paid-for reactor",
+      "bullets": [
+        "A US reactor's initial license runs 40 years — an administrative choice, not an engineering limit. License renewal adds 20 years, and subsequent renewal reaches 80, with regulators scrutinizing aging in the components that cannot be replaced, like the reactor vessel",
+        "An uprate raises licensed output from the same plant: the cheapest kind recaptures measurement margin — modern instruments gauge feedwater flow so precisely that the old uncertainty buffer becomes sellable power — while extended uprates swap turbines and equipment for gains up to ~20%",
+        "The economics are lopsided: uprate megawatts from an operating site cost a fraction of new construction, arrive years sooner, and inherit an existing grid interconnection, workforce, and licensed-operator bench",
+        "That makes life extension the quiet giant of clean supply: a relicensed, uprated reactor is the cheapest firm carbon-free energy available — every new-build technology has to beat that benchmark, and almost none can"
+      ]
+    },
+    {
+      "heading": "Restarting a shut reactor: what it actually takes",
+      "bullets": [
+        "A retired reactor is not demolished immediately — it can sit preserved for years. Restarting means proving to the regulator that every dormant safety system, cable, and pipe still meets its licensing basis after the shutdown years",
+        "The human rebuild rivals the hardware: a plant needs hundreds of staff including licensed reactor operators, whose training and examination pipeline takes years — restaffing begins long before any fuel arrives",
+        "The paper path: reinstating the operating license, amendments to load fresh fuel, inspections of preservation-era maintenance — plus grid position, where inheriting existing interconnection rights instead of joining a years-long queue is one of a restart's biggest hidden advantages",
+        "Why bother: a restart can deliver 800+ MW of firm clean power in roughly three to four years for low-single-digit billions — versus a decade and several times the cost for an equivalent new build. It is the fastest large nuclear anyone can buy"
+      ]
+    },
+    {
+      "heading": "Attribute markets: selling the greenness separately from the power",
+      "bullets": [
+        "Every clean megawatt-hour yields two products: the electricity, and a certificate — a REC (renewable energy certificate) or broader EAC (energy attribute certificate) — proving a clean MWh was generated. Buyers claim clean-energy use by retiring certificates even while physically consuming the local grid mix",
+        "The standard corporate practice is annual matching: buy enough certificates over a year to cover consumption. Critics note it ignores hours — solar certificates cannot make midnight consumption clean — which pushed the frontier to 24/7 hourly matching",
+        "Hourly matching pairs every hour of consumption with a clean MWh generated that same hour on the same grid. That flips the value hierarchy: always-on generation that covers nights and windless weeks becomes the scarce, premium product",
+        "For a seller of firm clean power, attributes are a second revenue stream and a moat: time-stamped certificates and hourly-matching platforms charge for exactly what variable renewables cannot provide — the premium is the market pricing that difference"
+      ]
+    },
+    {
+      "heading": "Baseload by design: how a reactor actually runs",
+      "bullets": [
+        "A reactor's costs are nearly all fixed — fuel is a small fraction — so every unsold megawatt-hour is margin thrown away. Economics push nuclear to run flat-out around the clock; well-run fleets sustain capacity factors above 90%",
+        "Physics agrees: rapid power swings stress fuel and build up xenon, a neutron-absorbing byproduct that accumulates after power drops and complicates the return to full output. Reactors can maneuver — they just pay for it",
+        "Load-following nuclear exists — grids with very high nuclear shares cycle reactors daily — but it sacrifices revenue and adds wear, so operators do it only where the grid leaves no choice; refueling outages every 18-24 months are the planned exception",
+        "This is why nuclear and data centers pair naturally: an AI campus draws nearly flat power around the clock, matching the output profile a reactor wants to produce — neither side needs the shaping that batteries and peakers exist to provide"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "What's the difference between a regulated utility and a merchant generator?",
+      "a": "A regulated utility earns a state-approved return on its investments, with captive customers paying through rates set in regulatory proceedings. A merchant generator has no guaranteed buyers — it sells into wholesale markets at prevailing prices, keeping the upside and eating the downside. Long-term contracts are how merchants manufacture their own certainty."
+    },
+    {
+      "q": "How does a wholesale power market set its price?",
+      "a": "Like an auction: every plant offers a price, the operator accepts offers cheapest-first until demand is covered, and the last accepted offer sets the clearing price paid to all winners. Low-cost generators earn the spread between their own costs and that marginal price — which is why cheap-to-run plants love expensive hours."
+    },
+    {
+      "q": "What does a capacity market pay for?",
+      "a": "Availability, not energy: generators commit years in advance to be ready at peak, and an auction clears one price per megawatt of that promise. It exists because an energy-only market underpays rarely-running plants — the 'missing money' problem — and would let the capacity needed for the worst hours quietly retire."
+    },
+    {
+      "q": "Why is capacity revenue politically exposed?",
+      "a": "Capacity costs flow onto every consumer's bill, and when demand surges the auctions clear at record prices — handing existing plants windfalls for doing nothing new. Visible bills plus passive windfalls invite legislative clawbacks, making capacity payments the revenue stream most vulnerable to politics rather than markets."
+    },
+    {
+      "q": "How can a reactor licensed for 40 years run to 80?",
+      "a": "The original 40-year term was administrative, not an engineering lifetime. License renewal adds 20 years and subsequent renewal another 20, contingent on aging-management review of irreplaceable components like the reactor vessel. Relicensing an operating plant is far cheaper than any form of replacement capacity."
+    },
+    {
+      "q": "What is a power uprate?",
+      "a": "An increase in a plant's licensed output from the same reactor. The cheapest version recaptures measurement uncertainty — modern instrumentation measures feedwater flow precisely enough to sell what was once safety buffer. Extended uprates replace turbines and other equipment for gains up to roughly 20%, adding megawatts at a fraction of new-build cost."
+    },
+    {
+      "q": "Why is restarting a shut reactor attractive despite the difficulty?",
+      "a": "Speed and cost: roughly three to four years and low-single-digit billions for 800+ MW of firm clean power, versus a decade and several times the cost to build new. The machine, the site, and often the interconnection rights already exist — the work is requalifying dormant systems and rebuilding the licensed workforce."
+    },
+    {
+      "q": "What are the hardest parts of a reactor restart that aren't hardware?",
+      "a": "People and paper. Licensed reactor operators take years to train and examine, so staffing begins long before fuel loading. Regulators must reinstate the license and approve amendments while inspecting how well the plant was preserved — a novel process, typically with organized opposition following every docket."
+    },
+    {
+      "q": "What is a REC or EAC?",
+      "a": "A certificate recording that one clean megawatt-hour was generated — the 'greenness' unbundled from the electricity itself. Buyers retire certificates to claim clean-energy use even though their physical power is the local grid mix. RECs cover renewables; EAC is the broader term that includes nuclear and other carbon-free sources."
+    },
+    {
+      "q": "What is 24/7 hourly matching and why does it favor always-on generation?",
+      "a": "Instead of matching annual totals, every hour of consumption is paired with a clean megawatt-hour generated that same hour on the same grid. Solar certificates cannot cover midnight, so flat, around-the-clock output becomes the premium product — exactly what an hourly-matched buyer would otherwise have to assemble from storage and overbuilding."
+    },
+    {
+      "q": "Why do nuclear plants run flat-out instead of following demand?",
+      "a": "Costs are nearly all fixed and fuel is cheap, so every unsold megawatt-hour is wasted margin. Physics reinforces it: power swings stress fuel and build up xenon, a neutron absorber that complicates returning to full power. Load-following is possible but costly — operators do it only where the grid forces them."
+    },
+    {
+      "q": "Why are data centers and nuclear plants natural partners?",
+      "a": "Their profiles match: an AI campus draws nearly constant power around the clock, and a reactor wants to produce exactly that — flat, firm output. The pairing needs none of the shaping (storage, peakers, overbuild) that variable renewables require, which is why 24/7 loads pay premiums for firm clean supply."
+    }
+  ]
+}

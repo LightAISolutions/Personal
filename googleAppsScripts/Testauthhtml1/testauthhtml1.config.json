@@ -1,0 +1,11 @@
+{
+  "TITLE": "Testauthhtml1 Title",
+  "DEPLOYMENT_ID": "YOUR_DEPLOYMENT_ID",
+  "SPREADSHEET_ID": "YOUR_SPREADSHEET_ID",
+  "SHEET_NAME": "Live_Sheet",
+  "MASTER_ACL_SPREADSHEET_ID": "YOUR_MASTER_ACL_SPREADSHEET_ID",
+  "ACL_SHEET_NAME": "Access",
+  "ACL_PAGE_NAME": "testauthhtml1",
+  "PORTAL_ICON": "🔐",
+  "PORTAL_DESCRIPTION": "Authentication testing environment with full security features."
+}

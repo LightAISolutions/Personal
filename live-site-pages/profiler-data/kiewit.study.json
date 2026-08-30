@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "slug": "kiewit",
+  "title": "Kiewit — Study Guide",
+  "lastUpdated": "2026-08-21",
+  "sections": [
+    {
+      "heading": "Combined-cycle gas: the machine powering the AI grid",
+      "bullets": [
+        "A combined-cycle plant runs two heat engines on one fuel: a gas turbine (essentially a jet engine bolted to a generator) burns natural gas, then its ~600°C exhaust boils water in a heat-recovery steam generator to spin a second, steam turbine — capturing energy a simple-cycle plant throws away",
+        "The efficiency gap is the whole story: simple-cycle converts ~35-40% of fuel energy to electricity; combined-cycle exceeds 60% in modern H-class plants — which is why baseload gas is combined-cycle and simple-cycle survives as fast-start peaking",
+        "'Heat rate' is the industry's efficiency yardstick — fuel energy in per kWh out; lower is better — and it decides which plants run first in the market's merit order every hour",
+        "H-class turbines (the current frontier: ~430-570 MW each) fire hotter, at higher pressure ratios, using advanced blade metallurgy and cooling; 'hydrogen-enabled' means the combustion system can co-fire hydrogen blends — a future-proofing option against carbon constraints, not a present fuel switch"
+      ]
+    },
+    {
+      "heading": "HVDC: why the biggest lines run on direct current",
+      "bullets": [
+        "AC dominates the grid because transformers make voltage changes easy — but over very long distances AC lines lose capacity to reactive effects, and underground/underwater AC cables become impractical beyond ~50-80 km because cable capacitance eats the line's capacity",
+        "HVDC sidesteps both: direct current has no reactive losses and no cable-length limit, so an HVDC line moves more power over more distance with less loss — the choice for 300+ mile links, submarine crossings, and buried urban routes",
+        "The price of DC is the converter station at each end: power-electronics halls that transform AC to DC and back, costing hundreds of millions each — so HVDC wins only when the line is long enough for its per-mile savings to repay the station cost",
+        "HVDC links are also asynchronous: the two ends don't need to be in phase, or even the same grid — which is how power flows between regions that could never be wired together in AC"
+      ]
+    },
+    {
+      "heading": "Advanced reactors: what's actually new about SMRs",
+      "bullets": [
+        "Conventional US reactors are large light-water plants (~1,000+ MW) built as one-off megaprojects; small modular reactors invert the model — smaller units (tens to hundreds of MW) meant to be factory-fabricated, shipped, and repeated, trading economies of scale for economies of series",
+        "'Fast' reactors (one advanced class) skip the moderator that slows neutrons in water-cooled designs: fast neutrons can burn fuel more completely and use different coolants (liquid metal), enabling compact cores and passive safety behaviors — at the cost of unfamiliar licensing and supply chains",
+        "The buildout bottleneck is regulatory and first-of-a-kind risk: every new design must clear the nuclear regulator, and someone must finance the first unit knowing it will cost more than every unit after — which is exactly the risk AI money (hyperscalers and their allies) has started underwriting for future clean firm power",
+        "For constructors, the prize is the learning curve: the firm that builds reactor #1 holds the execution knowledge for reactors #2 through #20 — an incumbency worth more than the first contract's margin"
+      ]
+    },
+    {
+      "heading": "Coal-to-AI: why dead power plants are prime real estate",
+      "bullets": [
+        "A retired coal plant's most valuable asset isn't the land — it's the grid interconnection: transmission lines, switchyard, and injection rights already exist at a scale (hundreds of MW to GW) that would take a greenfield site many queue-years to obtain",
+        "The rest of the inheritance compounds it: industrial zoning, water rights and intakes, rail access, a workforce accustomed to plant operations, and a community that welcomes replacement jobs and tax base rather than fighting a new industrial neighbor",
+        "That's why the era's signature projects convert coal sites into gas-powered AI campuses: the site brings the wires and the water, the new gas plant brings clean-enough firm power on a 2-3 year schedule, and the data center brings the economics that pay for it all",
+        "Brownfield conversion has its own scope — demolition, environmental remediation, foundation reuse assessments — construction work that heavy-civil EPCs are far better equipped for than building GCs"
+      ]
+    },
+    {
+      "heading": "The turbine queue: how machine slots became the market",
+      "bullets": [
+        "Three OEMs make virtually all heavy-duty gas turbines for the western market (GE Vernova, Siemens Energy, Mitsubishi Power); when AI demand spiked, their factory slots sold out years ahead — turbine delivery, not construction, now sets when new gas power can exist",
+        "Slot reservations became strategic assets: developers and EPCs pay to hold manufacturing positions before projects are even final, and a venture that bundles an OEM (turbines), an EPC (delivery), and an offtaker (demand) locks the whole chain competitors must assemble piecemeal",
+        "The queue reshapes competition among builders: an EPC holding reserved slots can promise 2027-29 power dates that rivals physically cannot, whatever their price — capability moats in this cycle are made of factory allocations as much as craft labor",
+        "Watch the secondary signals: turbine-order announcements are leading indicators of where AI campuses will appear two to three years later"
+      ]
+    },
+    {
+      "heading": "Progressive design-build: partnering with an exit ramp",
+      "bullets": [
+        "Progressive design-build hires the contractor early — before design exists — to develop scope and price collaboratively with the owner: phase one is paid design/preconstruction work; phase two (construction) is negotiated when the design matures",
+        "The owner's protection is the off-ramp: if the contractor's phase-two price exceeds the owner's independent estimates, the owner can decline, keep the design, and rebid construction — retaining leverage that pure negotiation lacks",
+        "For contractors the model is a double-edged sword: early involvement wins work without full price competition, but walking into an off-ramp on a politically visible project trades away reputation even when holding the price was the disciplined call",
+        "Reading an off-ramp event: it can mean the contractor over-priced, or that the owner's estimate lags a market where labor and materials have escalated — public statements rarely settle which; the rebid result eventually does"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "q": "How does a combined-cycle gas plant differ from simple-cycle?",
+      "a": "Combined-cycle runs two engines on one fuel: the gas turbine's ~600°C exhaust boils water to drive a second, steam turbine. Simple-cycle throws that heat away. Result: ~60%+ fuel-to-electricity efficiency vs ~35-40% — so baseload gas is combined-cycle; simple-cycle survives as fast-start peaking."
+    },
+    {
+      "q": "What is a plant's heat rate?",
+      "a": "Fuel energy consumed per kWh of electricity produced — the industry's efficiency yardstick (lower is better). Heat rate determines fuel cost per MWh and therefore where a plant sits in the market's merit order each hour."
+    },
+    {
+      "q": "What does 'hydrogen-enabled' mean on a modern gas turbine?",
+      "a": "The combustion system can co-fire hydrogen blended with natural gas, with a path toward higher blends later. It's future-proofing against carbon constraints — an option being purchased, not a fuel switch happening today."
+    },
+    {
+      "q": "Why do the longest transmission lines use HVDC instead of AC?",
+      "a": "DC has no reactive losses and no cable-length limit, so it moves more power over more distance — and it's the only practical choice for long submarine or underground cables, where AC capacitance would eat the line's capacity beyond ~50-80 km."
+    },
+    {
+      "q": "What is a converter station and why does it decide when HVDC makes sense?",
+      "a": "The power-electronics facility at each end of an HVDC link that converts AC to DC and back — costing hundreds of millions each. HVDC wins only when the line is long enough for its per-mile savings to repay the two stations; short links stay AC."
+    },
+    {
+      "q": "What does it mean that an HVDC link is 'asynchronous'?",
+      "a": "The two ends don't need to be in phase or even on the same grid — DC decouples them. That's how power moves between regions (or countries) whose AC systems could never be directly wired together."
+    },
+    {
+      "q": "What trade do small modular reactors (SMRs) make versus conventional nuclear plants?",
+      "a": "They trade economies of scale for economies of series: smaller factory-fabricated units, repeated many times, instead of one-off 1,000+ MW megaprojects. The bet is that repetition and factory quality beat size — once the first-of-a-kind unit clears licensing and cost overruns."
+    },
+    {
+      "q": "What makes a 'fast' reactor different from a light-water reactor?",
+      "a": "It skips the water moderator that slows neutrons: fast neutrons burn fuel more completely and permit different coolants (like liquid metal), compact cores, and passive safety behaviors — at the cost of unfamiliar licensing, fuels, and supply chains."
+    },
+    {
+      "q": "Why is a retired coal plant site so valuable to an AI-campus developer?",
+      "a": "The grid interconnection already exists — transmission lines, switchyard, injection rights at hundreds-of-MW-to-GW scale that a greenfield site would wait years in queue for. Plus industrial zoning, water rights, rail access, and a community that wants the replacement jobs."
+    },
+    {
+      "q": "Why did gas-turbine factory slots become strategic assets?",
+      "a": "Three OEMs make nearly all western heavy-duty turbines, and AI demand sold out their factories years ahead. Turbine delivery — not construction — now sets when new gas power can exist, so reserved slots let an EPC promise power dates rivals physically cannot match."
+    },
+    {
+      "q": "How does progressive design-build work, and what is the owner's 'off-ramp'?",
+      "a": "The contractor is hired early to develop scope and price collaboratively; construction (phase two) is negotiated once design matures. If the price exceeds the owner's independent estimates, the owner can decline, keep the design, and rebid — retaining pricing leverage to the end."
+    },
+    {
+      "q": "What does a very high self-perform rate (say >80%) tell you about a contractor?",
+      "a": "It employs its own craft crews and equipment for most scopes instead of subcontracting — giving direct control of schedule and quality, higher margins in good times, and a fixed-cost workforce exposure in downturns. It's the structural opposite of the broker-style CM model."
+    }
+  ]
+}
