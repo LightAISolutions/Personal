@@ -1,10 +1,10 @@
 blank_issues_enabled: false
 contact_links:
   - name: Support
-    url: https://github.com/LightAISolutions/Sales/blob/main/repository-information/SUPPORT.md
+    url: https://github.com/LightAISolutions/Personal/blob/main/repository-information/SUPPORT.md
     about: Check our support resources before opening an issue
   - name: Security Vulnerability
-    url: https://github.com/LightAISolutions/Sales/security/advisories/new
+    url: https://github.com/LightAISolutions/Personal/security/advisories/new
     about: Report security vulnerabilities privately (do not open a public issue)
 
 # Developed by: LightAISolutions

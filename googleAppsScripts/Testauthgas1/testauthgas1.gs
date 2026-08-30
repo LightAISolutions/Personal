@@ -1,11 +1,11 @@
-var VERSION = "v01.06g";
+var VERSION = "v01.00g";
 var TITLE = "Testauthgas1 Title";
 var GITHUB_OWNER  = "LightAISolutions";
-var GITHUB_REPO   = "lightaisolutions";
+var GITHUB_REPO   = "Personal";
 var GITHUB_BRANCH = "main";
 var FILE_PATH     = "googleAppsScripts/Testauthgas1/testauthgas1.gs";
 var DEPLOYMENT_ID = "YOUR_DEPLOYMENT_ID";
-var EMBED_PAGE_URL = "https://lightaisolutions.github.io/lightaisolutions/testauthgas1.html";
+var EMBED_PAGE_URL = "https://lightaisolutions.github.io/Personal/testauthgas1.html";
 
 // Derive the parent page's origin from EMBED_PAGE_URL for postMessage targeting.
 // postMessage calls from the GAS iframe to the parent page use this as the targetOrigin

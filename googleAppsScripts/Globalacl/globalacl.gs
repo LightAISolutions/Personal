@@ -1,11 +1,11 @@
-var VERSION = "v01.07g";
+var VERSION = "v01.00g";
 var TITLE = "Global ACL";
 var GITHUB_OWNER  = "LightAISolutions";
-var GITHUB_REPO   = "lightaisolutions";
+var GITHUB_REPO   = "Personal";
 var GITHUB_BRANCH = "main";
 var FILE_PATH     = "googleAppsScripts/Globalacl/globalacl.gs";
 var DEPLOYMENT_ID = "YOUR_DEPLOYMENT_ID";
-var EMBED_PAGE_URL = "https://lightaisolutions.github.io/lightaisolutions/globalacl.html";
+var EMBED_PAGE_URL = "https://lightaisolutions.github.io/Personal/globalacl.html";
 
 // Derive the parent page's origin from EMBED_PAGE_URL for postMessage targeting.
 // postMessage calls from the GAS iframe to the parent page use this as the targetOrigin

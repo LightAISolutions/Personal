@@ -1,11 +1,11 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
-title: "Sales"
+title: "Personal"
 abstract: "A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script embedding support."
 authors:
   - name: "LightAISolutions"
 type: software
 license: "All Rights Reserved"
-repository-code: "https://github.com/LightAISolutions/Sales"
-url: "https://lightaisolutions.github.io/Sales"
+repository-code: "https://github.com/LightAISolutions/Personal"
+url: "https://lightaisolutions.github.io/Personal"
 # Developed by: LightAISolutions

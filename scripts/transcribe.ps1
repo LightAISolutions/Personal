@@ -62,6 +62,6 @@ if ($failed -gt 0) {
   Write-Host "`n$failed file(s) failed." -ForegroundColor Red
   exit 1
 }
-Write-Host "`nDone. Transcripts are beside their audio — attach them with Profiler's 'File transcript' button." -ForegroundColor Green
+Write-Host "`nDone. Transcripts are beside their audio." -ForegroundColor Green
 
 # Developed by: LightAISolutions

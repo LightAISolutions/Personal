@@ -1,6 +1,6 @@
-# robots.txt for lightaisolutions.github.io/Sales
+# robots.txt for lightaisolutions.github.io/Personal
 User-agent: *
 Allow: /
 
-Sitemap: https://lightaisolutions.github.io/Sales/sitemap.xml
+Sitemap: https://lightaisolutions.github.io/Personal/sitemap.xml
 

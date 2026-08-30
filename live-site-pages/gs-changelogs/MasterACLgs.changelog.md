@@ -3,82 +3,10 @@
 All notable user-facing changes to this script are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [MasterACLgs.changelog-archive.md](MasterACLgs.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 13/50`
+`Sections: 0/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
-
-## [v01.13g] — 2026-08-27 04:09:00 PM EST — v03.03r
-
-### Changed
-- Minor internal improvements
-
-## [v01.12g] — 2026-08-17 03:36:35 AM EST — v02.62r
-
-### Changed
-- Clearer wording when the permission check finds nothing wrong with what the app asked for: it now points you at the list of what was actually granted, printed just above, instead of telling you to run a check you are already inside
-
-## [v01.11g] — 2026-08-17 03:23:38 AM EST — v02.61r
-
-### Changed
-- The permission check now shows what the app **asked for** alongside what it was **actually given**, in one run. A capability can be missing for two opposite reasons — it was never requested, or it was requested and never approved — and the fix differs, so seeing only one of the two lists could point at the wrong repair
-- The guidance that follows now reads those two lists against each other and names the specific repair, rather than listing general things to check
-
-## [v01.10g] — 2026-08-17 03:15:36 AM EST — v02.60r
-
-### Added
-- The app can now report, on demand, whether its permission to use Google services is actually in force — as opposed to merely having been requested. The two are separate, and only the first one determines whether anything works
-- When permission is incomplete, it produces a direct link to re-approve it, and names which capability each missing permission takes down
-
-## [v01.09g] — 2026-08-17 02:34:37 AM EST — v02.56r
-
-### Fixed
-- The specific reason the access list could not be read is now sent back to the page. It was already being worked out, but never delivered, so all four possible causes looked identical from the sign-in screen and could not be told apart
-
-## [v01.08g] — 2026-08-17 02:10:00 AM EST — v02.54r
-
-### Fixed
-- Sign-in now tells apart "this account is not on the access list" from "the access list could not be reached right now". The second is reported as a temporary service problem, and is retried automatically before sign-in gives up
-- A momentary failure to reach the access list is no longer remembered as a denial, so access is restored the moment the service recovers instead of several minutes later
-- These interruptions no longer count toward the failed-attempt lockout
-
-### Changed
-- The app now refreshes its entry in the shared access directory only when its version changes, instead of on every single page load. Less simultaneous writing to the shared directory means far fewer of the interruptions above
-
-## [v01.07g] — 2026-07-17 10:05:56 PM EST — v01.11r
-
-### Fixed
-- Sign-in now works reliably in any browser, including when multiple Google accounts are signed in
-
-## [v01.06g] — 2026-07-17 09:22:12 PM EST — v01.10r
-
-### Changed
-- Security and session settings aligned with the proven production configuration, including session activity logging
-
-## [v01.05g] — 2026-07-17 08:36:54 PM EST — v01.09r
-
-### Fixed
-- Sign-in no longer times out with a "service isn't responding" message
-
-## [v01.04g] — 2026-07-17 08:10:18 PM EST — v01.08r
-
-### Changed
-- Administrative tools now set up access management automatically and report connection health
-
-## [v01.03g] — 2026-07-17 07:47:16 PM EST — v01.07r
-
-### Changed
-- Administrative access tools now work without any setup steps
-
-## [v01.02g] — 2026-07-17 07:42:23 PM EST — v01.06r
-
-### Added
-- New administrative tools for managing user access
-
-## [v01.01g] — 2026-07-17 07:37:12 PM EST — v01.05r
-
-### Changed
-- Minor internal improvements
 
 Developed by: LightAISolutions

@@ -6,7 +6,7 @@
 ; on version mismatch; writes to configured target paths. Self-updating.
 ; ═══════════════════════════════════════════════════════════════════════════
 
-VERSION := "v01.01a"
+VERSION := "v01.00a"
 
 ; === GitHub configuration ===
 GITHUB_OWNER  := "LightAISolutions"

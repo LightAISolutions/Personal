@@ -13,8 +13,8 @@ These variables are the **single source of truth** for repo-specific values. Whe
 |----------|-------|------------------|-------------|
 | `YOUR_ORG_NAME` | LightAISolutions | README<br>CITATION.cff<br>REPO-ARCHITECTURE.md<br>issue template config | GitHub org or username that owns this repo.<br>Auto-detected from `git remote -v` on forks.<br>Frozen as a placeholder on the template repo so drift checks can detect forks and replace `LightAISolutions` with the fork's actual org |
 | `YOUR_ORG_LOGO_URL` | images/logo-placeholder.svg | `index.html`<br>template HTML | URL to the org's logo image.<br>Used in HTML pages for branded logos.<br>Replace with your org's actual logo URL after forking |
-| `YOUR_REPO_NAME` | Sales | README<br>CITATION.cff<br>REPO-ARCHITECTURE.md<br>issue template config | Name of this GitHub repository.<br>Auto-detected from `git remote -v` on forks.<br>Frozen as a placeholder on the template repo so drift checks can detect forks and replace `lightaisolutions` with the fork's actual name |
-| `YOUR_PROJECT_TITLE` | CHANGE THIS PROJECT TITLE TEMPLATE | `<title>` tag in<br>`index.html`<br>and template HTML | Human-readable project title shown in browser tabs.<br>Independent of the repo name — set this to whatever you want users to see as the page title |
+| `YOUR_REPO_NAME` | Personal | README<br>CITATION.cff<br>REPO-ARCHITECTURE.md<br>issue template config | Name of this GitHub repository.<br>Auto-detected from `git remote -v` on forks.<br>Frozen as a placeholder on the template repo so drift checks can detect forks and replace `lightaisolutions` with the fork's actual name |
+| `YOUR_PROJECT_TITLE` | Personal | `<title>` tag in<br>`index.html`<br>and template HTML | Human-readable project title shown in browser tabs.<br>Independent of the repo name — set this to whatever you want users to see as the page title |
 | `DEVELOPER_NAME` | LightAISolutions | LICENSE.md<br>README<br>CITATION.cff<br>FUNDING.yml<br>GOVERNANCE.md<br>CONTRIBUTING.md<br>PR template<br>"Developed by:" footers<br>(all files) | Name used for attribution, copyright, and branding throughout the repo.<br>On forks, defaults to the new org name unless explicitly overridden by the user |
 | `DEVELOPER_LOGO_URL` | images/logo-placeholder.svg | HTML pages<br>and templates | URL to the developer's logo.<br>Independent of `YOUR_ORG_LOGO_URL` and `SPLASH_LOGO_URL`.<br>Replace with your own logo URL after forking |
 | `IS_TEMPLATE_REPO` | No | CLAUDE.md<br>workflow deploy<br>job condition | Controls whether this repo is treated as the template or a fork.<br>Compared against the actual repo name from `git remote -v` — if they match, this is the template repo (drift checks, version bumps, and deployment are all skipped).<br>If `No` or doesn't match, it's a fork.<br>Drift checks set this to `No` as their first step |
@@ -330,20 +330,6 @@ If the user says **"reconcile"** (or similar: "reconcile multi-session", "end mu
 > **--- END OF VISUAL TEST COMMAND ---**
 ---
 
-## Profiler Command
-*If the user says **"profiler \<Company Name\>"** (or similar: "add \<Company\> to Profiler", "create a profile for \<Company\>", "generate a dossier for \<Company\>", "update the \<Company\> profile"), **"profiler note \<Company\>: \<text\>"** (or relays intel learned from contacts/events about a covered company — captured verbatim with a developer-rated 0–100 confidence score), **"profiler prep \<Company\>"** (or "prep me for \<Company\>", "teach me \<Company\>" — technology lesson plan: high-school-STEM baseline, teaches what the products do in their industry context; never company-trivia quizzing), or **"profiler report \<topic\>"** (or "generate a report on \<topic\>", explicit form "profiler report \<type\>: \<topic\>" with type ∈ macro/competitive/risk/opportunity — a point-in-time industry report synthesized from covered dossiers only, citing their sources with provenance tiers; snapshot JSON in `live-site-pages/profiler-data/reports/`, verified by `scripts/check-profiler-reports.py`): see `.claude/rules/profiler-app.md` — auto-injects when working on the Profiler app or its data (`live-site-pages/Profiler.html`, `live-site-pages/profiler-data/**`), and the full command bodies (research → profile JSON → registry → archival → commit; note capture; prep pack generation; report generation) are always available for on-demand invocation. Data schema single source of truth: `repository-information/PROFILER-SCHEMA.md`. Dossier prose writing-style registry (active style + named styles): `repository-information/PROFILER-STYLES.md`.*
-
----
-> **--- END OF PROFILER COMMAND ---**
----
-
-## Industry Guidance Command
-*If the user says **"industry guidance: \<document\>"** (or similar: "add this to Industry Guidance", "analyze this document for the guidance hub", or uploads an industry-wide document with that intent): see `.claude/rules/industry-guidance.md` — auto-injects when working on the guidance data or the Profiler app, and the full command body (source ingest → verified deep-read → analysis markdown → in-app module in Profiler.gs → admin-gated serving → versioning) is always available for on-demand invocation. The in-app hub is the "✦ Industry Guidance" button on the Profiler masthead, visible to the admin and contributor tiers per the Role + Access matrix in `.claude/rules/profiler-app.md`.*
-
----
-> **--- END OF INDUSTRY GUIDANCE COMMAND ---**
----
-
 ## Behavioral Rules
 *Full rules in `.claude/rules/behavioral-rules.md` (always-loaded, no path scope). Covers: Execution Style, Plan Mode Visibility, AskUserQuestion Visibility, Page-Scope Commands, Think Before Asserting, Chesterton's Fence, Rule Placement Autonomy, Backups Before Major Changes, Incremental Writing, Confidence Disclosure, User-Perspective Reasoning, Section Placement Guide, Web Search Confidence, Provenance Markers.*
 
@@ -370,9 +356,6 @@ Path-scoped rules files — loaded automatically when working on matching files.
 | `.claude/rules/workflows.md` | Merge conflict prevention, commit SHA tracking | — |
 | `.claude/rules/init-scripts.md` | Phantom edits, line ending safety | — |
 | `.claude/rules/dead-code-detection.md` | Dead-code analysis methodology — 6-step trace, indicators-present checklist, resource-abuse exemptions (path-scoped to HTML/GAS/workflows + user-triggered by "check for dead code" phrasing) | — |
-| `.claude/rules/industry-guidance.md` | Industry Guidance Command (document ingest → verified analysis → role-gated in-app study module), module JSON section kinds, access model, versioning (path-scoped to guidance data + Profiler app + user-triggered by "industry guidance: \<document\>" phrasing) | #1, #2 |
-| `.claude/rules/scraper-sources.md` | Scraper source roster — unavailable-outlet memory (blocked vs offline), mandatory live feed probe before adding any outlet, rejected workarounds (path-scoped to `Scraper.gs` / `Scraper.html`) | — |
-| `.claude/rules/profiler-app.md` | Profiler Command (company dossier research + profile generation), archival procedure, scheduled refreshes, data-vs-page versioning, recall design (path-scoped to Profiler app files + user-triggered by "profiler \<Company\>" phrasing) | — |
 
 ---
 > **--- END OF REFERENCE FILES ---**

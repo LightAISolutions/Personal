@@ -1,11 +1,11 @@
-var VERSION = "v01.13g";
+var VERSION = "v01.00g";
 var TITLE = "MasterACL";
 var GITHUB_OWNER  = "LightAISolutions";
-var GITHUB_REPO   = "Sales";
+var GITHUB_REPO   = "Personal";
 var GITHUB_BRANCH = "main";
 var FILE_PATH     = "googleAppsScripts/MasterACL/MasterACL.gs";
-var DEPLOYMENT_ID = "AKfycbxgxErSg_DfV7WjVvDQ4_LVkFAkON-86iJaNhQ3k50Hs-WbQ2KLskfRtnzSVlZNIHhc8Q";
-var EMBED_PAGE_URL = "https://lightaisolutions.github.io/Sales/MasterACL.html";
+var DEPLOYMENT_ID = "YOUR_DEPLOYMENT_ID";
+var EMBED_PAGE_URL = "https://lightaisolutions.github.io/Personal/MasterACL.html";
 
 // Derive the parent page's origin from EMBED_PAGE_URL for postMessage targeting.
 // postMessage calls from the GAS iframe to the parent page use this as the targetOrigin
@@ -23,7 +23,7 @@ var PARENT_ORIGIN = EMBED_PAGE_URL.replace(/^(https?:\/\/[^\/]+).*$/, '$1').toLo
 // AUTH CONFIG
 // ══════════════
 // Spreadsheet ID for project data (the GAS app reads/writes user data here).
-var SPREADSHEET_ID = "1kG2KftqfKOeYwBCEkxRpw-QBh9s-1-Dvy31sH037UvE";
+var SPREADSHEET_ID = "YOUR_SPREADSHEET_ID";
 var SHEET_NAME     = "Live_Sheet";
 // Master ACL spreadsheet — centralized access control for all GAS-powered pages.
 // Two tabs:
@@ -32,7 +32,7 @@ var SHEET_NAME     = "Live_Sheet";
 // UI element gating is handled client-side via data-requires-permission and data-requires-role attributes on HTML elements.
 // If configured, this replaces the old editor/viewer sharing-list check.
 // Leave as placeholder to fall back to SPREADSHEET_ID editor/viewer check.
-var MASTER_ACL_SPREADSHEET_ID = "1kG2KftqfKOeYwBCEkxRpw-QBh9s-1-Dvy31sH037UvE";
+var MASTER_ACL_SPREADSHEET_ID = "YOUR_MASTER_ACL_SPREADSHEET_ID";
 var ACL_SHEET_NAME = "Access";
 var ACL_PAGE_NAME  = "MasterACL";
 var PORTAL_ICON    = "📱";

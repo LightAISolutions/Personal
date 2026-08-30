@@ -7,11 +7,10 @@ paths:
   - "live-site-pages/testauthhtml1.html"
   - "live-site-pages/globalacl.html"
   - "live-site-pages/MasterACL.html"
-  - "live-site-pages/Profiler.html"
   - "live-site-pages/*-code.js.txt"
 # Path scope rationale: GAS rules auto-inject for .gs / .config.json / gs-versions
 # edits (directly GAS-related), plus for edits to the 3 GAS-backed HTML pages
-# from the GAS Projects table in this file (where [PC-GAS-CONFIG] #14's
+# from the GAS-backed HTML pages in the GAS Projects table in this file (where [PC-GAS-CONFIG] #14's
 # iframe-embed sync logic applies). The previous `live-site-pages/**/*.html`
 # glob over-scoped — text-compare/gas-project-creator/404.html
 # have no GAS backend, so injecting ~300 lines of GAS rules on every HTML edit
@@ -40,9 +39,6 @@ Each GAS project has a code file and a corresponding embedding page. Register th
 | Testauthhtml1 | `googleAppsScripts/Testauthhtml1/testauthhtml1.gs` | `googleAppsScripts/Testauthhtml1/testauthhtml1.config.json` | `live-site-pages/testauthhtml1.html` |
 | Globalacl | `googleAppsScripts/Globalacl/globalacl.gs` | `googleAppsScripts/Globalacl/globalacl.config.json` | `live-site-pages/globalacl.html` |
 | MasterACL | `googleAppsScripts/MasterACL/MasterACL.gs` | `googleAppsScripts/MasterACL/MasterACL.config.json` | `live-site-pages/MasterACL.html` |
-| Scraper | `googleAppsScripts/Scraper/Scraper.gs` | `googleAppsScripts/Scraper/Scraper.config.json` | `live-site-pages/Scraper.html` |
-| Receipts | `googleAppsScripts/Receipts/Receipts.gs` | `googleAppsScripts/Receipts/Receipts.config.json` | `live-site-pages/Receipts.html` |
-| Profiler | `googleAppsScripts/Profiler/Profiler.gs` | `googleAppsScripts/Profiler/Profiler.config.json` | `live-site-pages/Profiler.html` (inline note-box iframe — PROJECT OVERRIDE, not full-screen) |
 
 
 ## GAS Project Config (config.json)

@@ -11,7 +11,7 @@
 ; the ReloadHandler message.
 ; ═══════════════════════════════════════════════════════════════════════════
 
-VERSION := "v01.01a"
+VERSION := "v01.00a"
 
 #Include ReloadHandler.ahk
 
