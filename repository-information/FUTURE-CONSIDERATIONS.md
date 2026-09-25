@@ -15,8 +15,10 @@ Ideas and architectural considerations for when the project scales. These are no
 
 ## Reference
 
-- Consumer account: 20,000 script executions/day shared across ALL scripts
-- Workspace account: 100,000 script executions/day (5×)
-- Source: [Google Apps Script Quotas](https://developers.google.com/apps-script/guides/services/quotas)
+- Consumer account: **90 min/day total trigger runtime** shared across ALL scripts, **6 min** max per execution, 20,000 UrlFetch calls/day
+- Workspace account: **6 hr/day total trigger runtime**, 6 min max per execution, 100,000 UrlFetch calls/day
+- Simultaneous executions: 30 per user (both account types)
+- Google publishes **no daily cap on the total number of script or web-app executions** — the 20,000 / 100,000 figures are the UrlFetch quota, not an execution count. See [DATA-POLL-ARCHITECTURE.md](DATA-POLL-ARCHITECTURE.md) for how web-app `doGet()`/`doPost()` requests relate to the trigger-runtime cap
+- Source: [Google Apps Script Quotas](https://developers.google.com/apps-script/guides/services/quotas) (page updated 2026-09-03; values verified 2026-09-25)
 
 Developed by: LightAISolutions

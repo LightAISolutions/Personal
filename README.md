@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-09-25 07:29:06 PM EST` · Repo version: `v01.03r`
+Last updated: `2026-09-25 07:35:40 PM EST` · Repo version: `v01.04r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -228,7 +228,7 @@ Last updated: `2026-09-25 07:29:06 PM EST` · Repo version: `v01.03r`
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/PERSONAL-ASSISTANT-ROADMAP.md">PERSONAL-ASSISTANT-ROADMAP.md</a> — Personal assistant AI recommendations — architecture, phased roadmap, token-dump playbook
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/RULE-COST-AUDIT.md">RULE-COST-AUDIT.md</a>       — Rule cost audit — ranked table, trim-recommendation checklist (T1–T9), progress tracking
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/TODO.md">TODO.md</a>                 — [template · initialized] Actionable to-do items
-│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/FUTURE-CONSIDERATIONS.md">FUTURE-CONSIDERATIONS.md</a> — [template] Deferred architectural ideas for scale
+│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/FUTURE-CONSIDERATIONS.md">FUTURE-CONSIDERATIONS.md</a> — [template · modified] Deferred architectural ideas for scale
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/readme-qr-code.png">readme-qr-code.png</a>             — [template · initialized] QR code linking to this repo
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/REMINDERS.md">REMINDERS.md</a>            — [template] Reminders for Developer (developer's own notes)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/SESSION-CONTEXT.md">SESSION-CONTEXT.md</a>      — [template] Previous Session Context (Claude-written session log)

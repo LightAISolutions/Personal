@@ -6,11 +6,11 @@
 ; on version mismatch; writes to configured target paths. Self-updating.
 ; ═══════════════════════════════════════════════════════════════════════════
 
-VERSION := "v01.00a"
+VERSION := "v01.01a"
 
 ; === GitHub configuration ===
 GITHUB_OWNER  := "LightAISolutions"
-GITHUB_REPO   := "lightaisolutions"
+GITHUB_REPO   := "Personal"
 GITHUB_BRANCH := "main"
 
 ; === Polling configuration ===
