@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-08-30 03:24:05 AM EST` · Repo version: `v01.02r`
+Last updated: `2026-09-25 07:29:06 PM EST` · Repo version: `v01.03r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -224,6 +224,8 @@ Last updated: `2026-08-30 03:24:05 AM EST` · Repo version: `v01.02r`
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/HIPAA-CODING-REQUIREMENTS.md">HIPAA-CODING-REQUIREMENTS.md</a> — Complete HIPAA regulatory reference for coding (Security Rule, Privacy Rule, Breach Notification, 2025 NPRM, implementation checklist)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/IMPROVEMENTS.md">IMPROVEMENTS.md</a>         — [template · initialized] Potential improvements
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/KNOWN-CONSTRAINTS-AND-FIXES.md">KNOWN-CONSTRAINTS-AND-FIXES.md</a>    — Architectural constraints &amp; resolved bug fixes (GAS double-iframe, postMessage, HMAC, deploy webhook)
+│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/PERSONAL-ASSISTANT-RESEARCH.md">PERSONAL-ASSISTANT-RESEARCH.md</a> — Personal assistant AI landscape research (Sept 2026) — products, OSS agents, Claude surfaces &amp; rules, building blocks, security, use cases, stack limits
+│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/PERSONAL-ASSISTANT-ROADMAP.md">PERSONAL-ASSISTANT-ROADMAP.md</a> — Personal assistant AI recommendations — architecture, phased roadmap, token-dump playbook
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/RULE-COST-AUDIT.md">RULE-COST-AUDIT.md</a>       — Rule cost audit — ranked table, trim-recommendation checklist (T1–T9), progress tracking
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/TODO.md">TODO.md</a>                 — [template · initialized] Actionable to-do items
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/FUTURE-CONSIDERATIONS.md">FUTURE-CONSIDERATIONS.md</a> — [template] Deferred architectural ideas for scale
