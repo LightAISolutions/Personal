@@ -6,6 +6,46 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-09-25 09:26:20 PM EST
+**Repo version:** v01.04r
+**Branch:** `claude/charming-cori-pjkafh`
+
+**What we worked on:**
+
+- **v01.03r — Personal assistant AI research.** Six parallel research passes produced `repository-information/PERSONAL-ASSISTANT-RESEARCH.md` (Sept 2026 landscape, Claude subscription rules, building blocks, security, use-case scoring, stack limits) and `PERSONAL-ASSISTANT-ROADMAP.md` (hybrid architecture, phased roadmap, token-dump playbook). Key finding: **this `Personal` repo is public**, so nothing personal may ever be committed here
+- **v01.04r — two stale references fixed:** `autoHotkey/AutoUpdate.ahk` `GITHUB_REPO` now points at `Personal` instead of the template repo (root cause: `scripts/init-repo.sh` `REPLACE_FILES` omits that file); `FUTURE-CONSIDERATIONS.md` quota lines corrected (20k/day is UrlFetch; triggers get 90 min/day)
+- **Chief-of-Staff prototype build started** in a separate **private** repo, `LightAISolutions/AssistantBrain` (owner-created 09:15 PM; the GitHub integration may not create repos). Build runs in phases; Phase 0 (foundation spec + Apps Script core, gold email eval set, 2026 backfill) runs in this session. Backfill finished and pushed; foundation and eval set were still running when this was saved
+
+**Where we left off:**
+
+- **This session finishes Phase 0 by itself** (background workers + one-shot check-ins), pushes it to `AssistantBrain` `main`, then stands down. Keep it open (don't archive) until `AssistantBrain/BUILD-STATE.md` shows Phase 0 done
+- **Phase 1 runs in a new session started on the `AssistantBrain` repo** (not this one): model Opus 5.5, effort High, prompt `Read prompts/PHASE-1.md and execute it exactly.` It waits for Phase 0 automatically, then builds four feature packages in parallel (ledger + briefs, money & tax, capture + desktop, meeting dossiers). Phase 1 writes the Phase 2 prompt (triage + integration + switch-on guide; Fable 5.1 · Xhigh)
+- The authoritative tracker is `AssistantBrain/BUILD-STATE.md` (private) — this file only points to it
+
+**Key decisions made:**
+
+- All assistant code, memory and data live in the private `AssistantBrain` repo; `Personal` holds only generic research/plans
+- Architecture: Claude Code Routines as the brain + a separate Apps Script project as the always-on layer + Telegram for delivery/approvals + a Google Drive "mailbox" folder as the only bridge; drafts-only; two-lane (reader/actor) security enforced in code
+- Build sessions run with container-local deny rules (no Gmail/Calendar/Drive writes, no web/network egress); worker model + effort come from `.claude/agents/` definitions committed in `AssistantBrain`
+- GitHub repo names can't contain spaces → named `AssistantBrain`
+- A recurring hourly heartbeat trigger was refused by the auto-mode safety check; the build uses one-shot `send_later` check-ins instead
+
+**Active context:**
+
+- `Personal`: repo v01.04r · all pages v01.00w · AutoUpdate.ahk v01.01a (any copy already installed on the owner's PC still points at the template and needs one manual replacement)
+- Owner's weekly usage reset ≈ 07:00 AM EST 2026-09-26; after it: ~45-min switch-on via `AssistantBrain/docs/SWITCH-ON.md` (written in Phase 2), then a customization run
+- Toggles: START_OF_RESPONSE_BLOCK `On` · CHAT_BOOKENDS `Off` · TIMING_ESTIMATES `On` · END_OF_RESPONSE_BLOCK `On`
+
+**Recommendation for next session:**
+
+- Start a new Claude Code session on the **`LightAISolutions/AssistantBrain`** repo with **Opus 5.5 · effort High** and paste the Phase 1 prompt; it waits for Phase 0 to land, then builds the four feature packages in parallel and hands off Phase 2 on its own.
+
+**To continue:** type `Read prompts/PHASE-1.md and execute it exactly.`
+
+## Previous Sessions
+
+### 2026-08-30 03:23:29 AM EST
+
 **Date:** 2026-08-30 03:23:29 AM EST
 **Repo version:** v01.02r
 **Branch:** `claude/personal-repo-skeleton-2kr0cs`
@@ -52,9 +92,5 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - **Replace the stock landing page (`live-site-pages/index.html`) with real Personal content.** It is the front door of the now-live site and still carries the framework's boilerplate copy describing a GitHub Pages deployment template — it should introduce *your* Personal apps instead. This needs no external setup (no Google bootstrap, no secrets), it is a single unversioned page so the commit stays small, and it is the most visible remaining gap now that the skeleton, pipeline, and deploy chain are all proven working.
 
 **To continue:** type `rewrite the landing page for Personal`
-
-## Previous Sessions
-
-*(None yet)*
 
 Developed by: LightAISolutions
