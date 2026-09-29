@@ -1,6 +1,14 @@
 # Future Considerations
 
-Ideas and architectural considerations for when the project scales. These are not actionable to-dos — they are deferred decisions to revisit when the trigger conditions are met.
+Ideas, architectural considerations and potential future projects. These are not actionable to-dos — they are deferred decisions to revisit when the trigger conditions are met.
+
+## Potential Future Projects (in order of interest)
+
+1. **Personal knowledge wiki** — Claude compiles and maintains a private markdown wiki from your notes, saved sources and email (Karpathy's "LLM wiki" pattern; Noah Brier's open-source *claudesidian*), with periodic "wiki lint" passes for contradictions and stale entries. Natural home: the memory folders of the private `AssistantBrain` repo. Strong fit for spare weekly usage (compiling and linting are batch jobs). Trigger: once the Chief of Staff is switched on and its memory folders are in use
+2. **Career system — job scanning + tailored résumés** — scan job boards on a schedule, score postings against your profile, and draft tailored résumés and cover letters for the best matches (reference: santifer's open-source *career-ops*). Drafts only; you apply. Trigger: when a job search or career move is on the horizon
+3. **Survey Simon Willison's small single-page tools for inspiration** — ask Claude to review his ~234 single-page tools at `tools.simonwillison.net` and shortlist the ones worth recreating (or adapting) on this repo's GitHub Pages site. Trigger: the next time you want quick, small wins between larger projects
+4. **Windows power-user kit** — AutoHotkey-based command palette (Alfred-style launcher), screen-share privacy for client calls (hide chosen windows, clean desktop), and push-to-talk dictation through your local Whisper setup. Few AutoHotkey + Claude Code write-ups exist, so this is an open niche. Trigger: after the Chief of Staff's desktop capture pieces are in daily use
+5. **Health coach from wearable data** — a short daily push brief built from wearable exports (sleep, HRV, training load) rather than a dashboard. Trigger: once you own and regularly use a wearable
 
 ## Security & Defense
 

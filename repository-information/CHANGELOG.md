@@ -3,11 +3,31 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 4/100`
+`Sections: 5/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.05r] — 2026-09-29 07:17:22 AM EST
+
+> **Prompt:** "Save down in potential future projects, in order of interest:
+>
+> * Personal knowledge wiki
+> * Career system: job scanning, tailorer resumes
+> * Ask about Simon Willison's 234 small single-page tools to draw inspiration
+> * Windows power-user kit
+> * Health coach from wearable data once I actually own and use one"
+
+### Added
+- `repository-information/FUTURE-CONSIDERATIONS.md` — new "Potential Future Projects (in order of interest)" section listing the owner's five candidate projects, each with a one-line description (drawn from the 2026-09-25 research on what people build with Claude Code) and a trigger condition:
+  1. personal knowledge wiki
+  2. career system (job scanning + tailored résumés)
+  3. a Claude survey of Simon Willison's single-page tools for inspiration
+  4. Windows power-user kit
+  5. health coach from wearable data, once a wearable is owned and used
+  
+  The file's intro line was broadened to cover potential future projects.
 
 ## [v01.04r] — 2026-09-25 07:35:40 PM EST
 
