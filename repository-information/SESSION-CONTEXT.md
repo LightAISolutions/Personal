@@ -6,6 +6,41 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-09-30 07:30:47 PM EST
+**Repo version:** v01.06r
+**Branch:** `claude/project-thread-7dwkct` (Tour Guide project thread, Claude HQ environment)
+
+**What we worked on:**
+
+- New claude.ai project **"Tour Guide"** set up (repos `Personal` + `AssistantBrain`, environment Claude HQ). Project instructions: build reusable helper infrastructure in `Personal`; AssistantBrain is reference only; reuse its Apps Script / Telegram / Routines patterns; research autonomously; record model + effort per phase and keep CHANGELOG, version and session context current
+- **v01.06r — `repository-information/TOUR-GUIDE-BUILD-PLAN.md`**: phased plan (Phases 0–8) for the Tour Guide helper and a shared `helpers/` framework, with verified Maps/Places/Routes/Apps Script/Routines facts, model and effort per phase, environment and key needs, costs, risks and eight owner decisions
+
+**Where we left off:**
+
+- Plan pushed; nothing built. Waiting for the owner to review the plan and answer the §10 decisions in Phase 0
+
+**Key decisions made:**
+
+- The travel planning helper is now called **Tour Guide** and lives in `Personal` (framework + generic code) with a private `LightAISolutions/TourGuide` repo for persona, skills, memory and trip data (supersedes the 2026-09-29 note about starting it in `AssistantBrain`)
+- Visit durations come from research + calibration (no official Google API); route ordering uses our own solver because Google does not optimize transit waypoints
+- Tour Guide chatbot: separate Telegram bot, no permanent tick (shares the 90 min/day trigger budget with the Chief of Staff)
+
+**Active context:**
+
+- `Personal`: repo v01.06r · all pages v01.00w · AutoUpdate.ahk v01.01a
+- `AssistantBrain`: live, Phase 4 customization in progress (see its `BUILD-STATE.md`); not modified by the Tour Guide work
+- Toggles: START_OF_RESPONSE_BLOCK `On` · CHAT_BOOKENDS `Off` · TIMING_ESTIMATES `On` · END_OF_RESPONSE_BLOCK `On`
+
+**Recommendation for next session:**
+
+- Run **Phase 0** of `TOUR-GUIDE-BUILD-PLAN.md` in a new Tour Guide project session (Claude HQ, **Opus 5.5 · Medium**) with the private `TourGuide` repo created, a Google Cloud key for Places API (New) + Routes API, and a new BotFather token ready.
+
+**To continue:** type `Read repository-information/TOUR-GUIDE-BUILD-PLAN.md and run Phase 0 with me.`
+
+## Previous Sessions
+
+### 2026-09-29 07:35:54 AM EST
+
 **Date:** 2026-09-29 07:35:54 AM EST
 **Repo version:** v01.05r
 **Branch:** `claude/charming-cori-pjkafh`
@@ -38,45 +73,5 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - Start a new Claude Code session on the **`LightAISolutions/AssistantBrain`** repo with **Fable 5.1 · effort Xhigh** in **plan mode**, paste your Travel Guide requirements, and ask for a detailed action plan (architecture, phases, model/effort per phase, what you must do) to approve before anything is built.
 
 **To continue:** type `Plan only, don't build yet: here is how I want my Travel Guide to work — …` (then your details)
-
-## Previous Sessions
-
-### 2026-09-25 09:26:20 PM EST
-
-**Date:** 2026-09-25 09:26:20 PM EST
-**Repo version:** v01.04r
-**Branch:** `claude/charming-cori-pjkafh`
-
-**What we worked on:**
-
-- **v01.03r — Personal assistant AI research.** Six parallel research passes produced `repository-information/PERSONAL-ASSISTANT-RESEARCH.md` (Sept 2026 landscape, Claude subscription rules, building blocks, security, use-case scoring, stack limits) and `PERSONAL-ASSISTANT-ROADMAP.md` (hybrid architecture, phased roadmap, token-dump playbook). Key finding: **this `Personal` repo is public**, so nothing personal may ever be committed here
-- **v01.04r — two stale references fixed:** `autoHotkey/AutoUpdate.ahk` `GITHUB_REPO` now points at `Personal` instead of the template repo (root cause: `scripts/init-repo.sh` `REPLACE_FILES` omits that file); `FUTURE-CONSIDERATIONS.md` quota lines corrected (20k/day is UrlFetch; triggers get 90 min/day)
-- **Chief-of-Staff prototype build started** in a separate **private** repo, `LightAISolutions/AssistantBrain` (owner-created 09:15 PM; the GitHub integration may not create repos). Build runs in phases; Phase 0 (foundation spec + Apps Script core, gold email eval set, 2026 backfill) runs in this session. Backfill finished and pushed; foundation and eval set were still running when this was saved
-
-**Where we left off:**
-
-- **This session finishes Phase 0 by itself** (background workers + one-shot check-ins), pushes it to `AssistantBrain` `main`, then stands down. Keep it open (don't archive) until `AssistantBrain/BUILD-STATE.md` shows Phase 0 done
-- **Phase 1 runs in a new session started on the `AssistantBrain` repo** (not this one): model Opus 5.5, effort High, prompt `Read prompts/PHASE-1.md and execute it exactly.` It waits for Phase 0 automatically, then builds four feature packages in parallel (ledger + briefs, money & tax, capture + desktop, meeting dossiers). Phase 1 writes the Phase 2 prompt (triage + integration + switch-on guide; Fable 5.1 · Xhigh)
-- The authoritative tracker is `AssistantBrain/BUILD-STATE.md` (private) — this file only points to it
-
-**Key decisions made:**
-
-- All assistant code, memory and data live in the private `AssistantBrain` repo; `Personal` holds only generic research/plans
-- Architecture: Claude Code Routines as the brain + a separate Apps Script project as the always-on layer + Telegram for delivery/approvals + a Google Drive "mailbox" folder as the only bridge; drafts-only; two-lane (reader/actor) security enforced in code
-- Build sessions run with container-local deny rules (no Gmail/Calendar/Drive writes, no web/network egress); worker model + effort come from `.claude/agents/` definitions committed in `AssistantBrain`
-- GitHub repo names can't contain spaces → named `AssistantBrain`
-- A recurring hourly heartbeat trigger was refused by the auto-mode safety check; the build uses one-shot `send_later` check-ins instead
-
-**Active context:**
-
-- `Personal`: repo v01.04r · all pages v01.00w · AutoUpdate.ahk v01.01a (any copy already installed on the owner's PC still points at the template and needs one manual replacement)
-- Owner's weekly usage reset ≈ 07:00 AM EST 2026-09-26; after it: ~45-min switch-on via `AssistantBrain/docs/SWITCH-ON.md` (written in Phase 2), then a customization run
-- Toggles: START_OF_RESPONSE_BLOCK `On` · CHAT_BOOKENDS `Off` · TIMING_ESTIMATES `On` · END_OF_RESPONSE_BLOCK `On`
-
-**Recommendation for next session:**
-
-- Start a new Claude Code session on the **`LightAISolutions/AssistantBrain`** repo with **Opus 5.5 · effort High** and paste the Phase 1 prompt; it waits for Phase 0 to land, then builds the four feature packages in parallel and hands off Phase 2 on its own.
-
-**To continue:** type `Read prompts/PHASE-1.md and execute it exactly.`
 
 Developed by: LightAISolutions
