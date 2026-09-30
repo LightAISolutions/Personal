@@ -6,6 +6,43 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-09-30 07:55:53 PM EST
+**Repo version:** v01.07r
+**Branch:** `claude/project-thread-zn7wsu` (Tour Guide project thread, Claude HQ environment)
+
+**What we worked on:**
+
+- The owner objected that the Tour Guide plan was being written on Opus 5.5 · Medium; planning moved to a Fable 5.1 · Xhigh thread
+- The stopped Opus thread had already merged its draft as v01.06r. **v01.07r replaces it** at the same path (`repository-information/TOUR-GUIDE-BUILD-PLAN.md`), authored by a Fable 5.1 · Xhigh worker after this session fell back to Opus 5.5 · Xhigh
+- All web facts re-checked on official pages (Maps pricing and SKUs, Routes transit and matrix limits, caching terms, Apps Script quotas, routines, cloud environments, Grounding Lite MCP); Chromium for PDFs checked on the machine
+
+**Where we left off:**
+
+- Plan pushed; nothing built. Next is Phase 0 with the owner (13 decisions, private repo, Google Cloud key, bot token)
+
+**Key decisions made:**
+
+- Important phases run on Fable 5.1 (Xhigh for foundation and integration; High for Phase 0, the solver, brochure design and the two core skills); bulk building on Opus 5.5 · High/Medium
+- Chatbot has three lanes (instant Apps Script, optional Claude API fast lane off by default, deep routine via request envelopes + wake route); no permanent Apps Script tick
+- Routines attach only the private `TourGuide` repo with `helpers/` vendored from a `helpers-dist` branch; this repo gets a routine-mode guard in `CLAUDE.md`
+- Personal travel data never enters this public repo (three-home split + CI boundary check)
+
+**Active context:**
+
+- `Personal`: repo v01.07r · all pages v01.00w · AutoUpdate.ahk v01.01a
+- `AssistantBrain`: reference only, not modified
+- Toggles: START_OF_RESPONSE_BLOCK `On` · CHAT_BOOKENDS `Off` · TIMING_ESTIMATES `On` · END_OF_RESPONSE_BLOCK `On`
+
+**Recommendation for next session:**
+
+- Run **Phase 0** from `TOUR-GUIDE-BUILD-PLAN.md` §12 in a new Tour Guide session on Claude HQ with **Fable 5.1 · effort High**, with a private repo (or permission to create one), a restricted Maps key and a new bot token ready.
+
+**To continue:** type `Read repository-information/TOUR-GUIDE-BUILD-PLAN.md and run Phase 0 with me.`
+
+## Previous Sessions
+
+### 2026-09-30 07:30:47 PM EST
+
 **Date:** 2026-09-30 07:30:47 PM EST
 **Repo version:** v01.06r
 **Branch:** `claude/project-thread-7dwkct` (Tour Guide project thread, Claude HQ environment)
@@ -36,42 +73,5 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - Run **Phase 0** of `TOUR-GUIDE-BUILD-PLAN.md` in a new Tour Guide project session (Claude HQ, **Opus 5.5 · Medium**) with the private `TourGuide` repo created, a Google Cloud key for Places API (New) + Routes API, and a new BotFather token ready.
 
 **To continue:** type `Read repository-information/TOUR-GUIDE-BUILD-PLAN.md and run Phase 0 with me.`
-
-## Previous Sessions
-
-### 2026-09-29 07:35:54 AM EST
-
-**Date:** 2026-09-29 07:35:54 AM EST
-**Repo version:** v01.05r
-**Branch:** `claude/charming-cori-pjkafh`
-
-**What we worked on (since the 2026-09-25 save):**
-
-- **Chief-of-Staff build finished and switched on.** This session completed Phase 0 in the private `LightAISolutions/AssistantBrain` repo (foundation spec + Apps Script core, gold email eval set, 2026 backfill) and pushed it; Phases 1–2 ran in separate `AssistantBrain` sessions (Phase 1 merged four feature packages at 154/154 tests). The owner has since switched the assistant on and is waiting for its first scheduled run before doing the customization run
-- **v01.05r — ranked "Potential Future Projects"** added to `repository-information/FUTURE-CONSIDERATIONS.md`: (1) personal knowledge wiki, (2) career system (job scanning + tailored résumés), (3) a Claude survey of Simon Willison's single-page tools for inspiration, (4) Windows power-user kit, (5) health coach from wearable data once a wearable is in use — each with a trigger condition
-- **Next project chosen: a personal Travel Guide**, ahead of the knowledge wiki. The owner will write the implementation requirements in a new planning session and approve a detailed action plan before any building
-
-**Where we left off:**
-
-- Waiting on the Chief of Staff's first run → then the owner's customization run (profile, tax questionnaire, tuning) in an `AssistantBrain` session
-- Travel Guide: nothing built yet; the next step is a **plan-only** session (see recommendation)
-
-**Key decisions made:**
-
-- Travel Guide planning session: **Fable 5.1 · effort Xhigh**, started in **plan mode** so nothing is built before approval; build sessions afterwards can drop to Opus 5.5 · High for bulk implementation (the approach used for the Chief-of-Staff build)
-- Start it on the private `AssistantBrain` repo so the plan can reuse the assistant's architecture, data and delivery channel (the plan itself decides whether the guide lives there or in its own private repo) — personal travel data must never go in this public repo
-- Future projects are tracked in `FUTURE-CONSIDERATIONS.md` (ranked), not TODO.md
-
-**Active context:**
-
-- `Personal`: repo v01.05r · all pages v01.00w · AutoUpdate.ahk v01.01a
-- `AssistantBrain` (private) holds the assistant's code, memory, data and its own `BUILD-STATE.md`; nothing personal is stored in `Personal`
-- Toggles: START_OF_RESPONSE_BLOCK `On` · CHAT_BOOKENDS `Off` · TIMING_ESTIMATES `On` · END_OF_RESPONSE_BLOCK `On`
-
-**Recommendation for next session:**
-
-- Start a new Claude Code session on the **`LightAISolutions/AssistantBrain`** repo with **Fable 5.1 · effort Xhigh** in **plan mode**, paste your Travel Guide requirements, and ask for a detailed action plan (architecture, phases, model/effort per phase, what you must do) to approve before anything is built.
-
-**To continue:** type `Plan only, don't build yet: here is how I want my Travel Guide to work — …` (then your details)
 
 Developed by: LightAISolutions

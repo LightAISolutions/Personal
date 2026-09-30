@@ -3,11 +3,29 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 6/100`
+`Sections: 7/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.07r] — 2026-09-30 07:55:53 PM EST
+
+> **Prompt:** "why is the plan phase being done on Opus 5.5 Medium? Isn't this one of the most important phases? Shouldn't it be Fable 5.1 xhigh?"
+>
+> Project topic: "Create a helper that can understand my preferences (by reading everything from approved connectors), conduct deep web research (without requiring me to always give approval to continue), check how long an average tourist spends at a certain location, use google maps to optimize routes between points of interests, create lists to save unused but researched points of interest for later, write detailed personalized notes for each location, then use all that information to craft and recommend detailed action plans for each day that include general info (address, hours of operation, days closed, google reviews/stars, website), expected amount of time to spend doing [insert activities here], expected amount of time going from location to location via [insert optimal google map plan here], with some free time sprinkled here and there. The final output should be look like a beautiful travel brochure that took a travel agency's entire marketing & design team to create over months of work. I also want a chatbot that I can interact with in a similar manner to my Chief of Staff helper (Assistant Brain). However, I want this infrastructure to be implemented in my Personal repository, so I can build other helpers later."
+
+### Changed
+- `repository-information/TOUR-GUIDE-BUILD-PLAN.md` — replaced the v01.06r draft (written on Opus 5.5 · Medium) with a plan authored on Fable 5.1 · Xhigh. One plan remains at the same path; nothing is built yet
+  - Every web fact re-checked on official pages: Enterprise Place Details corrected to $20 per 1,000 ($25 is Enterprise + Atmosphere); Route Matrix supports `TRANSIT` with a 100-element cap; `optimizeWaypointOrder` caps at 25 stops and transit takes no intermediate waypoints; no Google API exposes visit duration; the 30-day coordinate-caching clause is marked as an inference to verify; routine limits, `/fire` header and Artifact republish rules cited; Google's Grounding Lite Maps MCP noted as an optional spike
+  - Chatbot redesigned as three lanes: instant Apps Script commands, an optional fast Claude API lane (off by default), and deep routine runs fed by request envelopes with a wake route instead of a polling tick, so it adds no trigger minutes next to Assistant Brain's
+  - Routines attach only the private helper repo (tools vendored from a `helpers-dist` branch) so this repo's development `CLAUDE.md` never loads in a routine; a routine-mode guard is added here as a backstop
+  - Reuse made explicit: the deploy workflow grows from this repo's clasp pilot plus Assistant Brain's deploy workflow; the auto-merge workflow is untouched; the Pages sign-in machinery is not used because the Tour Guide has no public page
+  - Assistant Brain's build process imported: per-role agent files with model and effort, per-phase prompt files, decisions and status per work package, worktrees, a build tracker, and session-context files in both repos
+  - Model and effort per phase: Phase 0 Fable 5.1 · High (was Opus 5.5 · Medium); foundation and integration Fable 5.1 · Xhigh; solver, brochure design and the two core research/planning skills Fable 5.1 · High; other building Opus 5.5 · High or Medium
+  - Chromium for brochure PDFs is pre-installed in this environment's image (checked on the machine), with a Phase 2c check inside a routine run
+  - Thirteen owner decisions with defaults, and a Phase 0 kickoff on Fable 5.1 · High
+- `README.md` — tree description for the plan updated
 
 ## [v01.06r] — 2026-09-30 07:30:47 PM EST
 

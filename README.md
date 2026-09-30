@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-09-30 07:30:47 PM EST` · Repo version: `v01.06r`
+Last updated: `2026-09-30 07:55:53 PM EST` · Repo version: `v01.07r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -227,7 +227,7 @@ Last updated: `2026-09-30 07:30:47 PM EST` · Repo version: `v01.06r`
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/PERSONAL-ASSISTANT-RESEARCH.md">PERSONAL-ASSISTANT-RESEARCH.md</a> — Personal assistant AI landscape research (Sept 2026) — products, OSS agents, Claude surfaces &amp; rules, building blocks, security, use cases, stack limits
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/PERSONAL-ASSISTANT-ROADMAP.md">PERSONAL-ASSISTANT-ROADMAP.md</a> — Personal assistant AI recommendations — architecture, phased roadmap, token-dump playbook
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/RULE-COST-AUDIT.md">RULE-COST-AUDIT.md</a>       — Rule cost audit — ranked table, trim-recommendation checklist (T1–T9), progress tracking
-│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/TOUR-GUIDE-BUILD-PLAN.md">TOUR-GUIDE-BUILD-PLAN.md</a> — Tour Guide helper + shared helper framework — phased build plan with model/effort per phase
+│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/TOUR-GUIDE-BUILD-PLAN.md">TOUR-GUIDE-BUILD-PLAN.md</a> — Tour Guide helper + shared helper framework — phased build plan (Fable 5.1 · Xhigh) with verified facts and model/effort per phase
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/TODO.md">TODO.md</a>                 — [template · initialized] Actionable to-do items
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/FUTURE-CONSIDERATIONS.md">FUTURE-CONSIDERATIONS.md</a> — [template · modified] Deferred architectural ideas + potential future projects (ranked)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/repository-information/readme-qr-code.png">readme-qr-code.png</a>             — [template · initialized] QR code linking to this repo
