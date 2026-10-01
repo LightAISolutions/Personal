@@ -54,6 +54,26 @@ Build `tools/integration-dryrun.mjs` (node, no network, scratch under `--out`, d
 Skills red-team (tests or dry-run checks, invented fixtures): a routine fire whose `text` is not `req_<id>` or names a missing request → the driver/SKILL path refuses; request payloads with hostile fields (destination with HTML or 500 characters, dates invalid, `picks` naming unknown slugs, `reason`/`lodging` carrying instructions, `seeds` that are URLs) → refused or neutralised, never executed as instructions; page text never into `profile/` or a shortlist line (skill level: `trip-research-record.mjs` composes items from structured fields only; `prefs-build` quarantines untrusted evidence); every envelope the skills write passes `node vendor/helpers/tools/envelope.mjs … --pack tour-guide`; `message`/`ask` replies escape or declare `html` correctly.
 
 ## 2 Findings
+Every attack has a test; outcome per attack in the WP status files (`helpers/status/WP-6a.md`, `WP-6b.md`, `WP-6c.md`). This section lists what was **fixed** and where the fix lives. Accepted risks are in §5.
+
+### 2.1 Pack gas (WP-6a, 51 tests in `helpers/tests/pack_tour-guide_redteam_*.test.js`)
+| # | Finding | Fix |
+|---|---|---|
+| A6b | A place name linked to any `https://` host — a lookalike login page would open from a tap on a shortlist line | `tgCmdHref` links only Google Maps hosts (`TG_CMD_MAPS_URL`); any other URL shows as text (`gas/10_commands.js`) |
+| A7 | Zero-width, bidi and control characters in brain strings could reorder or hide what the owner reads | `stripHidden` in `core/01_util.js`; every pack envelope is cleaned in place before validation (`tgEnvClean`, `gas/20_envelopes.js`); core `notice` and `reply` text and title too (`core/09_mailbox.js`) |
+| A8 | A `reply` with `html: true` was sent raw — a tag Telegram accepts (`<a href="https://lookalike">`) went through | `tgSafeHtml` (`core/05_telegram.js`): escape everything, re-open only Telegram's plain tags and `<a href="https://…">` without userinfo |
+| A14b | The core's built-in `drive_create_file` proposal would have reached the owner as a ✅ card from a Tour Guide routine | `registerProposalGuard('tg_pack_allowlist')` refuses every action not on the pack's (empty) `action_allowlist` |
+| B5b, B8b | A `ps:` tap with an unknown slug opened a notes request for an invented place; extra `:` segments on `pf/sl/tf/ps` still acted (`pf:<cid>:y:extra` decided) | Strict arity on the four prefixes; a plain `ps:` slug must be a stored place or on the last `/places` list |
+| E1b | Lane B: nested or attribute forms of the block tags (`</owner_</owner_message>message>`) rebuilt a closing tag after one strip | `tgChatStripTags` repeats until nothing changes, case-insensitive, attribute and whitespace forms (`gas/30_chat_api.js`) |
+| F2b | `/route A → B bike` silently routed "B bike" by transit | Unsupported modes are refused with a line (`TG_ROUTE_UNSUPPORTED`) |
+| G1–G3 | Plan inputs were truncated silently: 11 seeds, an 81-character seed, a 501-character lodging, dates out of order or in the past, a 21st booked line | Each is refused with a reason and the flow state is unchanged (`tgPlanDatesProblem`, `tgPlanSeedsProblem`, `tgPlanTextProblem`, `gas/12_flow_plan.js`; `/lodging` ≤ 300) |
+| I7 | A stored brochure id pointing outside the helper's Drive folder was attached — the script runs as the owner, so a forged id could send any file the owner can open; the same held for `reply.drive_file_ids` | `driveFileWhere(id)` in `core/09_mailbox.js` (walks ≤ 8 parent levels to the helper root): the core skips outside files with a `document_outside_root` audit; the pack's `/brochure` and 📄 button open a rebuild request instead (`tg_brochure_outside_root`) |
+| R4 | `H.envelope()` dated envelopes from the previous test file's clock, so `tools_bundle.test.js` failed when a 2027-clock file ran before it | `createMocks()` resets the harness default (`helpers/tests/harness/gas-mocks.js`) |
+
+### 2.2 Kits and engines (WP-6b)
+*(filled at merge)*
+
+### 2.3 Integration and skills (WP-6c)
 *(filled at merge)*
 
 ## 3 Cost and quota audit
@@ -135,6 +155,14 @@ One trip planned every two or three weeks: two research rounds and one plan ≈ 
 7. **Core audit.** (a) `tgSplit` never cuts inside a tag or an entity and closes the tags it cut through at the end of a chunk, reopening them at the start of the next; `tgClip` bounds `editMessageText` text (4,096) and document captions (1,024) the same way; `tgSend`, `tgEdit` and `tgSendDocument` retry once as plain text (`tgStripHtml`) when Telegram answers "can't parse entities" — `tests/core_telegram.test.js` (9 tests). (b) The Apps Script Maps service needs no OAuth scope: the scopes page (https://developers.google.com/apps-script/concepts/scopes) lists none for it, scopes are detected from the code, and the Maps service reference (https://developers.google.com/apps-script/reference/maps) speaks only of default quota allowances and `setAuthenticationByApiKey` for more — `helper.json` `scopes` stays `[]`.
 
 ## 5 Accepted risk
-*(filled at merge)*
+Left as is, with the reason; each has a test that pins the current behaviour.
+
+| # | Risk | Why accepted |
+|---|---|---|
+| A12b | A `reply` whose `in_reply_to` names no request is still delivered to the owner chat | It can only reach the owner, and the core cannot tell a pruned request from an invented one; dropping it would lose late answers after a 24-hour expiry |
+| B2b | A ✅ / ❌ tap on a live `prefs_review` batch counts after the 30-minute ✏️ window | The window covers only the capture of the next text as an edit; a confirm tap is the owner's own decision whenever it comes, and a closed batch refuses further taps |
+| C | Hostile text typed by the owner as an interview answer ("ignore previous instructions") travels as data in the `prefs` request | It is the owner's own words; the prefs kit treats it as owner text, never as an instruction, and the profile summary is written only by the brain's `profile_summary` envelope after review |
+| H3 | The owner's own text-less message (a sticker, a photo without a caption) gets the core's "I only read text here" nudge | One line, owner-only, no state change; every other non-message update is silent |
+| R5 | The brain-side payload schemas still accept any `https://` `maps_url` | The renderer links only Google Maps hosts, so a foreign URL is shown as text rather than costing the whole envelope; tightening the schema would make a routine's run fail on one bad link |
 
 Developed by: LightAISolutions

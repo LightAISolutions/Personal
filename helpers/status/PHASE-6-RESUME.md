@@ -13,7 +13,7 @@
 | Carried 1/3/4/5 Lane B prices, fires cap, R3 terms, trigger quotas — web-verified | done — TG-PHASE-6.md §4 |
 | 4 Cost and quota audit (`helpers/decisions/TG-PHASE-6.md` §3, §4) | done — every figure cited; `MAX_ROUTINE_FIRES_PER_DAY` → 24 recommended; R3 decided (gem_line without Google digits, WP-6b implements) |
 | 5 Switch-on guide `helpers/docs/TG-SWITCH-ON.md` | written (10 sections); re-read once more after the WP merges for anything they changed |
-| 6/7 Merges, checks, bookkeeping (v01.28r), TG-PHASE-7.md, remember session, single push | `helpers/prompts/TG-PHASE-7.md` written (Opus 5.5 · high, nine steps, rules); WP-6a reported done on `wp-6a` (51 tests, requests R1–R5 to review); merges, §2/§5, bookkeeping not started |
+| 6/7 Merges, checks, bookkeeping (v01.28r), TG-PHASE-7.md, remember session, single push | `helpers/prompts/TG-PHASE-7.md` written; **WP-6a merged** (`cdd91ad`) and its core requests R1–R4 applied (`89c987e`, 435 tests green, bundle + boundary clean); TG-PHASE-6.md §2.1 and §5 filled; waiting on WP-6b (`wp-6b`) and WP-6c (TourGuide); then §2.2/§2.3, suites in both repos, bookkeeping, remember session, single push |
 
 ## Log
 - 2026-10-01 (Fable 5.1 xhigh): Step 0 done; vendor re-pin pushed as draft PR #4. Personal has no commits yet beyond this note; everything in Personal stays local until the single bookkept push (a Personal push auto-merges into main). Worktrees `../wt-6a` and `../wt-6b` are local to the session container — if they are gone, re-run the WPs from the briefs in `helpers/decisions/TG-PHASE-6.md` §1.
