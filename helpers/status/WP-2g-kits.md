@@ -1,6 +1,6 @@
 # WP-2g-kits — Gem Funnel: Maps kit and research kit additions: status
 
-**State: done** (2026-10-01). Branch `wp-2g-kits`, worktree `/home/user/wt-4b-2g-kits` (from `origin/main` b308e52, v01.18r), never pushed. Defaults and reasons: `helpers/decisions/WP-2g-kits.md`. No live Google, Telegram or Drive call was made; Google's official pages were read with WebFetch (sources table in the decisions file).
+**State: done** (2026-10-01). Branch `wp-2g-kits`, worktree `/home/user/wt-4b-2g-kits` (started from `origin/main` b308e52, v01.18r; rebased onto c17cd68, v01.19r before the first commit — upstream changes touch no file of this WP), never pushed. Defaults and reasons: `helpers/decisions/WP-2g-kits.md`. No live Google, Telegram or Drive call was made; Google's official pages were read with WebFetch (sources table in the decisions file).
 
 ## Contract (hidden-gems-proposal.md §6, Maps kit and Research kit rows; brief items 1–7)
 | Item | State |
