@@ -1,0 +1,30 @@
+{
+  "id": "FixtureVelmoraMuseum01",
+  "location": { "latitude": 12.3456, "longitude": -45.6789 },
+  "formattedAddress": "1 Lantern Quay, Velmora, Fictional Isles",
+  "shortFormattedAddress": "1 Lantern Quay, Velmora",
+  "types": ["museum", "tourist_attraction", "point_of_interest", "establishment"],
+  "viewport": { "low": { "latitude": 12.344, "longitude": -45.68 }, "high": { "latitude": 12.347, "longitude": -45.677 } },
+  "displayName": { "text": "Velmora Lantern Museum", "languageCode": "en" },
+  "primaryType": "museum",
+  "primaryTypeDisplayName": { "text": "Museum", "languageCode": "en" },
+  "businessStatus": "OPERATIONAL",
+  "googleMapsUri": "https://maps.example.com/fixture/velmora-lantern-museum",
+  "timeZone": { "id": "Etc/GMT+3" },
+  "utcOffsetMinutes": -180,
+  "accessibilityOptions": { "wheelchairAccessibleEntrance": true },
+  "regularOpeningHours": {
+    "openNow": true,
+    "periods": [
+      { "open": { "day": 2, "hour": 10, "minute": 0 }, "close": { "day": 2, "hour": 18, "minute": 0 } },
+      { "open": { "day": 3, "hour": 10, "minute": 0 }, "close": { "day": 3, "hour": 18, "minute": 0 } }
+    ],
+    "weekdayDescriptions": ["Monday: Closed", "Tuesday: 10:00 AM – 6:00 PM", "Wednesday: 10:00 AM – 6:00 PM", "Thursday: Closed", "Friday: Closed", "Saturday: Closed", "Sunday: Closed"]
+  },
+  "currentOpeningHours": { "openNow": true, "weekdayDescriptions": ["Monday: Closed", "Tuesday: 10:00 AM – 6:00 PM"] },
+  "nationalPhoneNumber": "01 23 45",
+  "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+  "rating": 4.6,
+  "userRatingCount": 812,
+  "websiteUri": "https://velmora-museum.example.com/"
+}

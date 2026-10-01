@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": 403,
+    "message": "Requests to this API places.googleapis.com method google.maps.places.v1.Places.GetPlace are blocked.",
+    "status": "PERMISSION_DENIED"
+  }
+}
