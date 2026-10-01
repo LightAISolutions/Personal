@@ -4,7 +4,8 @@
  * /place, /places. Requests (Lane C, through tgOpenKindRequest with exactly the TG-PHASE-4B §5 fields): /replan, /notes,
  * /brochure (a resend when the PDF id is stored), /lodging (stored on the trip, sent with the next research round).
  * Renderer `core_start` (the interview offer after /start when no profile summary is cached).
- * Callbacks: `dy` (a day), `lt` (promote a Later item onto a day → replan), `ps` (a place: note · add · check),
+ * Callbacks: `dy` (a day), `lt` (promote a Later item onto a day → replan), `rs` (swap a rainy-day option in → replan),
+ * `ps` (a place: note · add · check),
  * `pl` (plan actions; other pack files add actions with tgCmdPlAction).
  * Every string from the brain or the owner is escaped (tgEscape / tgCmdHref); every message goes out through tgLines.
  */
@@ -177,11 +178,17 @@ function tgCmdDayMessages(trip, day, total) {
     if (!i) lines.push('<b>If it rains</b>');
     lines.push('☔ ' + tgCmdHref(r.maps_url, r.name) + ' <i>instead of ' + tgEscape(r.instead_of) + (typeof r.km === 'number' ? ', ' + tgEscape(r.km) + ' km away' : '') + '</i>');
   });
+  var rows = (Array.isArray(day.rain) ? day.rain : []).filter(function (r) { return r && r.slug && tgCmdRainStop(day, r); }).map(function (r) {
+    return [{ text: '☔ Swap in ' + truncate(String(r.name || r.slug), 40), data: cbEncode('rs', tk, day.n + '.' + day.rain.indexOf(r) + '.' + tgCmdTag(r.slug)) }];
+  });
   var nav = [];
   if (day.n > 1) nav.push({ text: '◀ Day ' + (day.n - 1), data: cbEncode('dy', tk, day.n - 1, 'e') });
   if (total && day.n < total) nav.push({ text: 'Day ' + (day.n + 1) + ' ▶', data: cbEncode('dy', tk, day.n + 1, 'e') });
-  return tgCmdMessages(lines, nav.length ? tgKeyboard([nav]) : null);
+  if (nav.length) rows.push(nav);
+  return tgCmdMessages(lines, rows.length ? tgKeyboard(rows) : null);
 }
+/** The stop a rainy-day option replaces (the digest names it, as the stop's own name), or null. */
+function tgCmdRainStop(day, r) { return (day.stops || []).filter(function (st) { return st && st.slug && st.name === r.instead_of; })[0] || null; }
 function tgCmdSendDay(chatId, trip, key) {
   var days = tgDigestDays(trip.slug), day = tgDigestDay(trip.slug, key);
   if (!day) {
@@ -497,6 +504,26 @@ registerCallback('lt', function (ctx) {
   if (ctx.messageId) tgApi('editMessageReplyMarkup', { chat_id: ctx.chatId, message_id: ctx.messageId, reply_markup: { inline_keyboard: [] } });
   tgOpenKindRequest('replan', { trip: trip.slug, dates: [day.date], promote: [e.place_slug], reason: 'promoted from the Later list', deliverables: tgCmdDeliverables(trip) },
     { text: 'promote ' + e.name + ' onto day ' + day.n, ack: '🔁 Putting <b>' + tgEscape(e.name) + '</b> on day ' + day.n + ' (' + tgCmdDate(day.date) + ') — replanning that day…' });
+});
+
+/** rs:<trip key>:<day n>.<i>.<tag> asks to confirm; …:y opens the replan that puts rainy-day option i on that day instead of its stop. */
+registerCallback('rs', function (ctx) {
+  var trip = tgCmdTripByKey(ctx.parts[0]);
+  var m = /^(\d{1,2})\.(\d)\.([0-9a-f]{4})$/.exec(String(ctx.parts[1] || ''));
+  var day = trip && m ? tgDigestDays(trip.slug)[parseInt(m[1], 10) - 1] : null;
+  var r = day && Array.isArray(day.rain) ? day.rain[parseInt(m[2], 10)] : null;
+  var stop = r ? tgCmdRainStop(day, r) : null;
+  if (!r || !stop || tgCmdTag(r.slug) !== m[3] || (ctx.parts[2] !== undefined && ctx.parts[2] !== 'y')) { ctx.answer('That day has changed — send /day again.'); return; }
+  if (ctx.parts[2] === undefined) {
+    ctx.answer('');
+    tgSend(ctx.chatId, 'Swap <b>' + tgEscape(r.name) + '</b> in for <b>' + tgEscape(stop.name) + '</b> on day ' + day.n + ' (' + tgCmdDate(day.date) + ')? ' + tgEscape(stop.name) + ' moves to your Later list.',
+      { keyboard: tgKeyboard([[{ text: '✅ Swap', data: cbEncode('rs', ctx.parts[0], ctx.parts[1], 'y') }]]) });
+    return;
+  }
+  ctx.answer('Replanning day ' + day.n);
+  if (ctx.messageId) tgApi('editMessageReplyMarkup', { chat_id: ctx.chatId, message_id: ctx.messageId, reply_markup: { inline_keyboard: [] } });
+  tgOpenKindRequest('replan', { trip: trip.slug, dates: [day.date], promote: [r.slug], demote: [stop.slug], reason: 'rain: ' + truncate(String(r.name), 120) + ' instead', deliverables: tgCmdDeliverables(trip) },
+    { text: 'rain swap ' + r.name + ' for ' + stop.name + ' on day ' + day.n, ack: '☔ Putting <b>' + tgEscape(r.name) + '</b> on day ' + day.n + ' instead of <b>' + tgEscape(stop.name) + '</b> — replanning that day…' });
 });
 
 /** ps:<place key>:n (full note) · a (add to the current trip's Later list) · c (fresh check). */

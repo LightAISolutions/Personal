@@ -3,11 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 34/100`
+`Sections: 35/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.34r] — 2026-10-01 07:48:38 PM EST
+
+> **Prompt:** "Question#16, rain should not change the plans, but I want Tour Guide to prepare alternative rain-friendly activities just in case." *(Phase 7 step 4, follow-up: swapping an option in)*
+
+### Added
+- **☔ Swap in buttons on `/day`** (`helpers/packs/tour-guide/gas/10_commands.js`): each rainy-day option whose stop is on that day gets a button; after a confirm it opens a `replan` of that date that promotes the option and demotes the stop it replaces (the stop moves to the Later list). New callback `rs`, with stale and malformed taps refused
+- Test for the swap flow in `pack_tour-guide_gas_commands.test.js`
+
+### Changed
+- `helpers/packs/tour-guide/README.md` and `helpers/decisions/TG-PHASE-7.md` F14 describe the button
 
 ## [v01.33r] — 2026-10-01 07:46:02 PM EST
 

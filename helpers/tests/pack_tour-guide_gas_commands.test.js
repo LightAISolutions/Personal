@@ -1,6 +1,6 @@
 'use strict';
 // Tour Guide pack — gas/10_commands.js: core_start, /profile, /trip, /today, /day, /later, /place, /places, /replan,
-// /notes, /brochure, /lodging and the dy · lt · ps · pl callbacks. Trips, places and wording are invented ("Port Sorrel").
+// /notes, /brochure, /lodging and the dy · lt · rs · ps · pl callbacks. Trips, places and wording are invented ("Port Sorrel").
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const H = require('./harness/gas-mocks');
@@ -160,6 +160,37 @@ test('/trip, /day, /today and the dy buttons', () => {
   ctx.__TEST_NOW = '2027-05-20T15:00:00Z';
   say(ctx, state, '/today');
   assert.match(last(state), /Port Sorrel ended Thu 13 May\. How was it\? \/review/);
+});
+
+test('/day rain swap buttons: confirm, then a replan that promotes the option and demotes the stop it replaces', () => {
+  const { ctx, state } = fresh();
+  ctx.tgTripUpsert({ slug: TRIP, title: 'Port Sorrel', destination: 'Port Sorrel' });
+  const d = digest();
+  d.days[0].rain = [{ slug: 'rope-loft', name: 'Rope <Loft>', instead_of: 'Lantern <Museum>', km: 0.8, maps_url: maps('FixtureR') },
+    { slug: 'net-shed', name: 'Net Shed', instead_of: 'Harbour Walk', km: 1.1, maps_url: maps('FixtureN') }];
+  assert.equal(deliver(ctx, state, 'plan_digest', d).processed, 1);
+  ctx.settingSet(ctx.TG_SETTINGS.CURRENT_TRIP, TRIP, 'test');
+  say(ctx, state, '/day 1');
+  const tag = ctx.tgCmdTag('rope-loft');
+  assert.deepEqual(lastKbData(state), ['rs:port-sorrel:1.0.' + tag, 'dy:port-sorrel:2:e'], 'only an option whose stop is on the day gets a button');
+  assert.ok(lastKbData(state).every(CB_OK));
+  tap(ctx, state, 'rs:port-sorrel:1.0.' + tag);
+  assert.match(last(state), /Swap <b>Rope &lt;Loft&gt;<\/b> in for <b>Lantern &lt;Museum&gt;<\/b> on day 1 \(Wed 12 May\)\? Lantern &lt;Museum&gt; moves to your Later list\./);
+  assert.deepEqual(lastKbData(state), ['rs:port-sorrel:1.0.' + tag + ':y']);
+  assert.equal(reqOf(state, 'replan').length, 0, 'nothing happens before the confirm');
+  tap(ctx, state, 'rs:port-sorrel:1.0.' + tag + ':y', 67);
+  const r = reqOf(state, 'replan');
+  assert.equal(r.length, 1);
+  assert.deepEqual({ trip: r[0].trip, dates: r[0].dates, promote: r[0].promote, demote: r[0].demote, reason: r[0].reason, deliverables: r[0].deliverables },
+    { trip: TRIP, dates: ['2027-05-12'], promote: ['rope-loft'], demote: ['lantern-museum'], reason: 'rain: Rope <Loft> instead', deliverables: ['plan'] });
+  assert.match(answers(state).pop(), /Replanning day 1/);
+  tap(ctx, state, 'rs:port-sorrel:1.1.' + ctx.tgCmdTag('net-shed') + ':y');
+  assert.match(answers(state).pop(), /That day has changed/);
+  tap(ctx, state, 'rs:port-sorrel:1.0.ffff:y');
+  assert.match(answers(state).pop(), /That day has changed/);
+  tap(ctx, state, 'rs:port-sorrel:1.0.' + tag + ':x');
+  assert.match(answers(state).pop(), /That day has changed/);
+  assert.equal(reqOf(state, 'replan').length, 1);
 });
 
 test('/later and the lt buttons: pick a day, promote through a replan request, stale lists refused', () => {
