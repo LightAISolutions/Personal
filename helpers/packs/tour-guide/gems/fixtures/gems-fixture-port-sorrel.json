@@ -1,0 +1,5266 @@
+{
+  "v": 1,
+  "description": "Invented gem-evidence pool for Port Sorrel (Fictional Isles), the transit-city fixture's harbour: every place, id, source ref, review time and coordinate is made up. Used by helpers/tests/pack_tour-guide_gems.test.js.",
+  "today": "2027-04-30",
+  "trip": {
+    "id": "port-sorrel-spring-2027",
+    "dates": [
+      "2027-05-12",
+      "2027-05-13",
+      "2027-05-14"
+    ],
+    "day_start": "09:00",
+    "day_end": "18:00",
+    "modes": [
+      "TRANSIT",
+      "WALK"
+    ],
+    "timezone": "Etc/GMT+2"
+  },
+  "anchors": [
+    {
+      "id": "harbour-lane-guesthouse",
+      "name": "Harbour Lane Guesthouse (lodging)",
+      "lat": 36.41,
+      "lng": -33.8
+    },
+    {
+      "id": "central-station",
+      "name": "Central Station",
+      "lat": 36.42,
+      "lng": -33.79
+    },
+    {
+      "id": "old-quay",
+      "name": "Old Quay square",
+      "lat": 36.405,
+      "lng": -33.81
+    }
+  ],
+  "screen_options": {
+    "off_track_minutes": 25,
+    "avoid_types": [
+      "night_club"
+    ],
+    "rating_floor": 4.3
+  },
+  "profile": {
+    "interests": {
+      "museum": "high",
+      "viewpoint": "high",
+      "market": "normal",
+      "shop": "low"
+    },
+    "likes_types": [
+      "bakery",
+      "wine_bar"
+    ],
+    "price_max": 3
+  },
+  "rough_edges": [
+    "cash_only",
+    "no_english_menu"
+  ],
+  "aggregate_counts": {
+    "restaurant": 140,
+    "cafe": 60,
+    "bar": 35,
+    "museum": 18,
+    "park": 9,
+    "market": 6,
+    "viewpoint": 4,
+    "shop": 22,
+    "church": 5
+  },
+  "carriers": {
+    "chain_repeated": [
+      "FixtureGemAnchorCoffeeCo",
+      "FixtureGemAnchorCoffeeCo2",
+      "FixtureGemAnchorCoffeeCo3"
+    ],
+    "chain_listed": "FixtureGemBurgerKingHarbour",
+    "not_operational": "FixtureGemMillQuarterPrintWorks",
+    "low_rating": "FixtureGemQuaysideGrill",
+    "too_few_ratings": "FixtureGemTidewaterBakehouse",
+    "too_few_waived_by_mentions": "FixtureGemThreeLanternsTasca",
+    "closed_all_dates": "FixtureGemWeekendFishAuction",
+    "too_far": "FixtureGemCapeLanternLighthouseCafe",
+    "avoided_type": "FixtureGemNeonReefClub",
+    "mass_tourism": "FixtureGemGrandHarbourAquarium",
+    "unproven": "FixtureGemPebbleStreetRamen",
+    "tourist_oriented": "FixtureGemSunsetTerraceSeafood",
+    "owner_seeds": [
+      "FixtureGemOakHollowPastry",
+      "FixtureGemBrannocBankCiderHouse"
+    ],
+    "gem_candidates": [
+      "FixtureGemFigTreeCourtyard",
+      "FixtureGemLanternmakersWorkshop",
+      "FixtureGemSignalHillAllotmentCafe",
+      "FixtureGemTidewaterBoathouseGallery",
+      "FixtureGemMillQuarterGinRoom"
+    ],
+    "by_date_hours": "FixtureGemMoonlitPierWalk",
+    "unknown_hours": "FixtureGemUnknownHoursNoodleBar",
+    "over_two_thousand": [
+      "FixtureGemHarbourClockCafe",
+      "FixtureGemSignalHillSummitDeck",
+      "FixtureGemGrandHarbourAquarium"
+    ]
+  },
+  "pool": [
+    {
+      "place_id": "FixtureGemAnchorCoffeeCo",
+      "name": "Anchor Coffee Co",
+      "types": [
+        "cafe",
+        "coffee_shop"
+      ],
+      "primary_type": "cafe",
+      "category": "cafe",
+      "rating": 4.4,
+      "rating_count": 320,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.414,
+        "lng": -33.797
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 19,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemAnchorCoffeeCo2",
+      "name": "Anchor Coffee Co",
+      "types": [
+        "cafe",
+        "coffee_shop"
+      ],
+      "primary_type": "cafe",
+      "category": "cafe",
+      "rating": 4.4,
+      "rating_count": 280,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.422,
+        "lng": -33.806
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 19,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemAnchorCoffeeCo3",
+      "name": "Anchor Coffee Co",
+      "types": [
+        "cafe",
+        "coffee_shop"
+      ],
+      "primary_type": "cafe",
+      "category": "cafe",
+      "rating": 4.4,
+      "rating_count": 410,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.402,
+        "lng": -33.789
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 19,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemBurgerKingHarbour",
+      "name": "Burger King Harbour",
+      "types": [
+        "restaurant",
+        "fast_food_restaurant"
+      ],
+      "primary_type": "restaurant",
+      "category": "restaurant",
+      "rating": 4.3,
+      "rating_count": 900,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.412,
+        "lng": -33.794
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_INEXPENSIVE"
+    },
+    {
+      "place_id": "FixtureGemMillQuarterPrintWorks",
+      "name": "Mill Quarter Print Works",
+      "types": [
+        "museum"
+      ],
+      "primary_type": "museum",
+      "category": "museum",
+      "rating": 4.6,
+      "rating_count": 120,
+      "business_status": "CLOSED_TEMPORARILY",
+      "location": {
+        "lat": 36.425,
+        "lng": -33.791
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemQuaysideGrill",
+      "name": "Quayside Grill",
+      "types": [
+        "restaurant",
+        "seafood_restaurant"
+      ],
+      "primary_type": "restaurant",
+      "category": "restaurant",
+      "rating": 3.9,
+      "rating_count": 640,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.406,
+        "lng": -33.809
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_MODERATE"
+    },
+    {
+      "place_id": "FixtureGemTidewaterBakehouse",
+      "name": "Tidewater Bakehouse",
+      "types": [
+        "bakery",
+        "cafe"
+      ],
+      "primary_type": "bakery",
+      "category": "cafe",
+      "rating": 4.8,
+      "rating_count": 9,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.416,
+        "lng": -33.814
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 14,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 14,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 14,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 14,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 14,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 14,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 14,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemThreeLanternsTasca",
+      "name": "Three Lanterns Tasca",
+      "types": [
+        "restaurant"
+      ],
+      "primary_type": "restaurant",
+      "category": "restaurant",
+      "rating": 4.9,
+      "rating_count": 12,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.399,
+        "lng": -33.796
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 1,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "local"
+      ],
+      "local_mentions": [
+        {
+          "ref": "L003",
+          "language": "pt",
+          "kind": "local-language"
+        },
+        {
+          "ref": "L007.2",
+          "language": "pt",
+          "kind": "local-language"
+        }
+      ],
+      "price_level": "PRICE_LEVEL_INEXPENSIVE",
+      "friction": [
+        "cash_only",
+        "no_english_menu"
+      ]
+    },
+    {
+      "place_id": "FixtureGemWeekendFishAuction",
+      "name": "Weekend Fish Auction",
+      "types": [
+        "market",
+        "food_market"
+      ],
+      "primary_type": "market",
+      "category": "market",
+      "rating": 4.7,
+      "rating_count": 210,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.404,
+        "lng": -33.802
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 11,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 11,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemCapeLanternLighthouseCafe",
+      "name": "Cape Lantern Lighthouse Cafe",
+      "types": [
+        "cafe"
+      ],
+      "primary_type": "cafe",
+      "category": "cafe",
+      "rating": 4.8,
+      "rating_count": 95,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.75,
+        "lng": -33.78
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemNeonReefClub",
+      "name": "Neon Reef Club",
+      "types": [
+        "night_club",
+        "bar"
+      ],
+      "primary_type": "night_club",
+      "category": "bar",
+      "rating": 4.5,
+      "rating_count": 400,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.413,
+        "lng": -33.804
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 21,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 21,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 21,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 21,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 21,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 21,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 21,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemGrandHarbourAquarium",
+      "name": "Grand Harbour Aquarium",
+      "types": [
+        "aquarium",
+        "tourist_attraction"
+      ],
+      "primary_type": "aquarium",
+      "category": "museum",
+      "rating": 4.6,
+      "rating_count": 4800,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.408,
+        "lng": -33.811
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 19,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste",
+        "local"
+      ],
+      "local_mentions": [
+        {
+          "ref": "L010",
+          "language": "en",
+          "kind": "editorial"
+        }
+      ],
+      "mass_tourism_rank": 2,
+      "price_level": "PRICE_LEVEL_EXPENSIVE"
+    },
+    {
+      "place_id": "FixtureGemPebbleStreetRamen",
+      "name": "Pebble Street Ramen",
+      "types": [
+        "ramen_restaurant",
+        "restaurant"
+      ],
+      "primary_type": "ramen_restaurant",
+      "category": "restaurant",
+      "rating": 4.9,
+      "rating_count": 30,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.419,
+        "lng": -33.798
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 21,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "quiet"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_INEXPENSIVE",
+      "reviews": [
+        {
+          "publish_time": "2027-03-05T10:00:00Z",
+          "rating": 5
+        },
+        {
+          "publish_time": "2027-03-19T18:30:00Z",
+          "rating": 5
+        },
+        {
+          "publish_time": "2027-04-02T12:15:00Z",
+          "rating": 5
+        },
+        {
+          "publish_time": "2027-04-14T20:00:00Z",
+          "rating": 5
+        },
+        {
+          "publish_time": "2027-04-25T13:45:00Z",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "place_id": "FixtureGemSunsetTerraceSeafood",
+      "name": "Sunset Terrace Seafood",
+      "types": [
+        "seafood_restaurant",
+        "restaurant"
+      ],
+      "primary_type": "seafood_restaurant",
+      "category": "restaurant",
+      "rating": 4.4,
+      "rating_count": 1500,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.405,
+        "lng": -33.812
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste",
+        "quiet"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_EXPENSIVE",
+      "signals": {
+        "english_only_menu": true,
+        "tourist_pricing": true
+      }
+    },
+    {
+      "place_id": "FixtureGemOakHollowPastry",
+      "name": "Oak Hollow Pastry",
+      "types": [
+        "bakery",
+        "cafe"
+      ],
+      "primary_type": "bakery",
+      "category": "cafe",
+      "rating": 4.7,
+      "rating_count": 12,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.417,
+        "lng": -33.792
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 15,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "owner_seed"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_INEXPENSIVE"
+    },
+    {
+      "place_id": "FixtureGemBrannocBankCiderHouse",
+      "name": "Brannoc Bank Cider House",
+      "types": [
+        "bar",
+        "pub"
+      ],
+      "primary_type": "bar",
+      "category": "bar",
+      "rating": 4.6,
+      "rating_count": 210,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.428,
+        "lng": -33.796
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "owner_seed",
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_MODERATE"
+    },
+    {
+      "place_id": "FixtureGemFigTreeCourtyard",
+      "name": "Fig Tree Courtyard",
+      "types": [
+        "restaurant"
+      ],
+      "primary_type": "restaurant",
+      "category": "restaurant",
+      "rating": 4.7,
+      "rating_count": 180,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.401,
+        "lng": -33.793
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste",
+        "local"
+      ],
+      "local_mentions": [
+        {
+          "ref": "L003",
+          "language": "pt",
+          "kind": "local-language"
+        },
+        {
+          "ref": "L007.2",
+          "language": "pt",
+          "kind": "local-language"
+        }
+      ],
+      "price_level": "PRICE_LEVEL_MODERATE",
+      "friction": [
+        "no_english_menu"
+      ],
+      "reviews": [
+        {
+          "publish_time": "2024-06-11T10:00:00Z",
+          "rating": 5
+        },
+        {
+          "publish_time": "2025-02-20T18:30:00Z",
+          "rating": 4
+        },
+        {
+          "publish_time": "2025-11-02T12:15:00Z",
+          "rating": 5
+        },
+        {
+          "publish_time": "2026-08-14T20:00:00Z",
+          "rating": 5
+        },
+        {
+          "publish_time": "2027-03-25T13:45:00Z",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "place_id": "FixtureGemLanternmakersWorkshop",
+      "name": "Lanternmakers Workshop",
+      "types": [
+        "gift_shop",
+        "store"
+      ],
+      "primary_type": "gift_shop",
+      "category": "shop",
+      "rating": 4.8,
+      "rating_count": 95,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.421,
+        "lng": -33.788
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "local"
+      ],
+      "local_mentions": [
+        {
+          "ref": "L004",
+          "language": "pt",
+          "kind": "local-language"
+        },
+        {
+          "ref": "L012",
+          "language": "en",
+          "kind": "editorial"
+        }
+      ],
+      "price_level": "PRICE_LEVEL_MODERATE"
+    },
+    {
+      "place_id": "FixtureGemSignalHillAllotmentCafe",
+      "name": "Signal Hill Allotment Cafe",
+      "types": [
+        "cafe"
+      ],
+      "primary_type": "cafe",
+      "category": "cafe",
+      "rating": 4.6,
+      "rating_count": 60,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.431,
+        "lng": -33.809
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "local",
+        "quiet"
+      ],
+      "local_mentions": [
+        {
+          "ref": "L005",
+          "language": "pt",
+          "kind": "local-language"
+        },
+        {
+          "ref": "L015.1",
+          "language": "en",
+          "kind": "community"
+        }
+      ],
+      "friction": [
+        "cash_only"
+      ]
+    },
+    {
+      "place_id": "FixtureGemTidewaterBoathouseGallery",
+      "name": "Tidewater Boathouse Gallery",
+      "types": [
+        "art_gallery"
+      ],
+      "primary_type": "art_gallery",
+      "category": "museum",
+      "rating": 4.7,
+      "rating_count": 140,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.415,
+        "lng": -33.819
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "local"
+      ],
+      "local_mentions": [
+        {
+          "ref": "L006",
+          "language": "pt",
+          "kind": "local-language"
+        }
+      ]
+    },
+    {
+      "place_id": "FixtureGemMoonlitPierWalk",
+      "name": "Moonlit Pier Walk",
+      "types": [
+        "scenic_spot"
+      ],
+      "primary_type": "scenic_spot",
+      "category": "viewpoint",
+      "rating": 4.5,
+      "rating_count": 75,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.398,
+        "lng": -33.806
+      },
+      "hours": {
+        "by_date": {
+          "2027-05-12": [
+            {
+              "open": "06:00",
+              "close": "23:00"
+            }
+          ],
+          "2027-05-13": [
+            {
+              "open": "06:00",
+              "close": "23:00"
+            }
+          ],
+          "2027-05-14": []
+        }
+      },
+      "streams": [
+        "quiet"
+      ],
+      "local_mentions": [
+        {
+          "ref": "L015.3",
+          "language": "en",
+          "kind": "community"
+        }
+      ]
+    },
+    {
+      "place_id": "FixtureGemSaltmarshReadingRoom",
+      "name": "Saltmarsh Reading Room",
+      "types": [
+        "library",
+        "museum"
+      ],
+      "primary_type": "library",
+      "category": "museum",
+      "rating": 4.6,
+      "rating_count": 48,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.424,
+        "lng": -33.803
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "quiet"
+      ],
+      "local_mentions": [
+        {
+          "ref": "L012",
+          "language": "en",
+          "kind": "editorial"
+        }
+      ]
+    },
+    {
+      "place_id": "FixtureGemHarbourClockCafe",
+      "name": "Harbour Clock Cafe",
+      "types": [
+        "cafe"
+      ],
+      "primary_type": "cafe",
+      "category": "cafe",
+      "rating": 4.5,
+      "rating_count": 2600,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.411,
+        "lng": -33.802
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 20,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [
+        {
+          "ref": "L008",
+          "language": "pt",
+          "kind": "local-language"
+        }
+      ],
+      "price_level": "PRICE_LEVEL_MODERATE"
+    },
+    {
+      "place_id": "FixtureGemOldQuayBookbinders",
+      "name": "Old Quay Bookbinders",
+      "types": [
+        "book_store"
+      ],
+      "primary_type": "book_store",
+      "category": "shop",
+      "rating": 4.9,
+      "rating_count": 26,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.403,
+        "lng": -33.81
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "quiet"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemUnknownHoursNoodleBar",
+      "name": "Unknown Hours Noodle Bar",
+      "types": [
+        "restaurant"
+      ],
+      "primary_type": "restaurant",
+      "category": "restaurant",
+      "rating": 4.6,
+      "rating_count": 88,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.413,
+        "lng": -33.786
+      },
+      "hours": null,
+      "streams": [
+        "quiet"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_INEXPENSIVE"
+    },
+    {
+      "place_id": "FixtureGemChapeloftheTides",
+      "name": "Chapel of the Tides",
+      "types": [
+        "church"
+      ],
+      "primary_type": "church",
+      "category": "church",
+      "rating": 4.7,
+      "rating_count": 1900,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.407,
+        "lng": -33.791
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [
+        {
+          "ref": "L013",
+          "language": "en",
+          "kind": "editorial"
+        }
+      ]
+    },
+    {
+      "place_id": "FixtureGemBrannocMarketHall",
+      "name": "Brannoc Market Hall",
+      "types": [
+        "market"
+      ],
+      "primary_type": "market",
+      "category": "market",
+      "rating": 4.5,
+      "rating_count": 1200,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.426,
+        "lng": -33.799
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 15,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemMillQuarterGinRoom",
+      "name": "Mill Quarter Gin Room",
+      "types": [
+        "bar"
+      ],
+      "primary_type": "bar",
+      "category": "bar",
+      "rating": 4.8,
+      "rating_count": 150,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.423,
+        "lng": -33.793
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "local"
+      ],
+      "local_mentions": [
+        {
+          "ref": "L009",
+          "language": "pt",
+          "kind": "local-language"
+        }
+      ],
+      "price_level": "PRICE_LEVEL_EXPENSIVE",
+      "friction": [
+        "no_reservations"
+      ]
+    },
+    {
+      "place_id": "FixtureGemSorrelKelpKitchen",
+      "name": "Sorrel Kelp Kitchen",
+      "types": [
+        "restaurant"
+      ],
+      "primary_type": "restaurant",
+      "category": "restaurant",
+      "rating": 4.6,
+      "rating_count": 230,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.414,
+        "lng": -33.807
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 1,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_MODERATE"
+    },
+    {
+      "place_id": "FixtureGemRopeWalkTaverna",
+      "name": "Rope Walk Taverna",
+      "types": [
+        "restaurant"
+      ],
+      "primary_type": "restaurant",
+      "category": "restaurant",
+      "rating": 4.5,
+      "rating_count": 520,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.404,
+        "lng": -33.788
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_MODERATE"
+    },
+    {
+      "place_id": "FixtureGemHarbourStepsBistro",
+      "name": "Harbour Steps Bistro",
+      "types": [
+        "restaurant"
+      ],
+      "primary_type": "restaurant",
+      "category": "restaurant",
+      "rating": 4.4,
+      "rating_count": 800,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.412,
+        "lng": -33.815
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_EXPENSIVE"
+    },
+    {
+      "place_id": "FixtureGemCinderLaneGrill",
+      "name": "Cinder Lane Grill",
+      "types": [
+        "restaurant"
+      ],
+      "primary_type": "restaurant",
+      "category": "restaurant",
+      "rating": 4.7,
+      "rating_count": 70,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.429,
+        "lng": -33.801
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_MODERATE"
+    },
+    {
+      "place_id": "FixtureGemDocksideDumplings",
+      "name": "Dockside Dumplings",
+      "types": [
+        "restaurant"
+      ],
+      "primary_type": "restaurant",
+      "category": "restaurant",
+      "rating": 4.5,
+      "rating_count": 350,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.4,
+        "lng": -33.803
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 21,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_INEXPENSIVE"
+    },
+    {
+      "place_id": "FixtureGemSaffronRowSupperClub",
+      "name": "Saffron Row Supper Club",
+      "types": [
+        "restaurant"
+      ],
+      "primary_type": "restaurant",
+      "category": "restaurant",
+      "rating": 4.8,
+      "rating_count": 110,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.418,
+        "lng": -33.784
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_VERY_EXPENSIVE"
+    },
+    {
+      "place_id": "FixtureGemBlueDoorSoupHouse",
+      "name": "Blue Door Soup House",
+      "types": [
+        "restaurant"
+      ],
+      "primary_type": "restaurant",
+      "category": "restaurant",
+      "rating": 4.6,
+      "rating_count": 45,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.427,
+        "lng": -33.789
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 1,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 16,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_INEXPENSIVE"
+    },
+    {
+      "place_id": "FixtureGemTramStopEspresso",
+      "name": "Tram Stop Espresso",
+      "types": [
+        "cafe"
+      ],
+      "primary_type": "cafe",
+      "category": "cafe",
+      "rating": 4.6,
+      "rating_count": 160,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.416,
+        "lng": -33.796
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_INEXPENSIVE"
+    },
+    {
+      "place_id": "FixtureGemLanternLaneTeaRooms",
+      "name": "Lantern Lane Tea Rooms",
+      "types": [
+        "tea_house",
+        "cafe"
+      ],
+      "primary_type": "tea_house",
+      "category": "cafe",
+      "rating": 4.7,
+      "rating_count": 330,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.406,
+        "lng": -33.795
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_MODERATE"
+    },
+    {
+      "place_id": "FixtureGemSignalHillKiosk",
+      "name": "Signal Hill Kiosk",
+      "types": [
+        "cafe"
+      ],
+      "primary_type": "cafe",
+      "category": "cafe",
+      "rating": 4.3,
+      "rating_count": 25,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.433,
+        "lng": -33.812
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_INEXPENSIVE"
+    },
+    {
+      "place_id": "FixtureGemPierNineRoastery",
+      "name": "Pier Nine Roastery",
+      "types": [
+        "coffee_shop"
+      ],
+      "primary_type": "coffee_shop",
+      "category": "cafe",
+      "rating": 4.8,
+      "rating_count": 480,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.397,
+        "lng": -33.809
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_MODERATE"
+    },
+    {
+      "place_id": "FixtureGemOldTownWineCellar",
+      "name": "Old Town Wine Cellar",
+      "types": [
+        "wine_bar"
+      ],
+      "primary_type": "wine_bar",
+      "category": "bar",
+      "rating": 4.7,
+      "rating_count": 290,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.408,
+        "lng": -33.797
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 1,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_EXPENSIVE"
+    },
+    {
+      "place_id": "FixtureGemTidewaterTapRoom",
+      "name": "Tidewater Tap Room",
+      "types": [
+        "pub"
+      ],
+      "primary_type": "pub",
+      "category": "bar",
+      "rating": 4.4,
+      "rating_count": 650,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.419,
+        "lng": -33.816
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_MODERATE"
+    },
+    {
+      "place_id": "FixtureGemFogbellCocktailBar",
+      "name": "Fogbell Cocktail Bar",
+      "types": [
+        "bar"
+      ],
+      "primary_type": "bar",
+      "category": "bar",
+      "rating": 4.6,
+      "rating_count": 1100,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.411,
+        "lng": -33.792
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_EXPENSIVE"
+    },
+    {
+      "place_id": "FixtureGemSorrelClockmakersMuseum",
+      "name": "Sorrel Clockmakers Museum",
+      "types": [
+        "museum"
+      ],
+      "primary_type": "museum",
+      "category": "museum",
+      "rating": 4.6,
+      "rating_count": 420,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.414,
+        "lng": -33.789
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemHarbourSignalMuseum",
+      "name": "Harbour Signal Museum",
+      "types": [
+        "museum"
+      ],
+      "primary_type": "museum",
+      "category": "museum",
+      "rating": 4.7,
+      "rating_count": 760,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.403,
+        "lng": -33.806
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemRopeLoftStudioGallery",
+      "name": "Rope Loft Studio Gallery",
+      "types": [
+        "art_gallery"
+      ],
+      "primary_type": "art_gallery",
+      "category": "museum",
+      "rating": 4.8,
+      "rating_count": 38,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.422,
+        "lng": -33.785
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemTidewaterBotanicGlasshouse",
+      "name": "Tidewater Botanic Glasshouse",
+      "types": [
+        "botanical_garden"
+      ],
+      "primary_type": "botanical_garden",
+      "category": "park",
+      "rating": 4.6,
+      "rating_count": 980,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.43,
+        "lng": -33.804
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemBrannocBankOrchardWalk",
+      "name": "Brannoc Bank Orchard Walk",
+      "types": [
+        "park"
+      ],
+      "primary_type": "park",
+      "category": "park",
+      "rating": 4.7,
+      "rating_count": 130,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.434,
+        "lng": -33.794
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemFishermensGarden",
+      "name": "Fishermens Garden",
+      "types": [
+        "garden"
+      ],
+      "primary_type": "garden",
+      "category": "park",
+      "rating": 4.5,
+      "rating_count": 55,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.396,
+        "lng": -33.799
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 20,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemSignalHillSummitDeck",
+      "name": "Signal Hill Summit Deck",
+      "types": [
+        "observation_deck"
+      ],
+      "primary_type": "observation_deck",
+      "category": "viewpoint",
+      "rating": 4.8,
+      "rating_count": 3500,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.435,
+        "lng": -33.81
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemQuarryEdgeLookout",
+      "name": "Quarry Edge Lookout",
+      "types": [
+        "scenic_spot"
+      ],
+      "primary_type": "scenic_spot",
+      "category": "viewpoint",
+      "rating": 4.7,
+      "rating_count": 95,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.437,
+        "lng": -33.786
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemSaffronRowNightMarket",
+      "name": "Saffron Row Night Market",
+      "types": [
+        "market"
+      ],
+      "primary_type": "market",
+      "category": "market",
+      "rating": 4.6,
+      "rating_count": 720,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.417,
+        "lng": -33.787
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemPrintersAlleyFlea",
+      "name": "Printers Alley Flea",
+      "types": [
+        "flea_market"
+      ],
+      "primary_type": "flea_market",
+      "category": "market",
+      "rating": 4.5,
+      "rating_count": 64,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.426,
+        "lng": -33.811
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 15,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": []
+    },
+    {
+      "place_id": "FixtureGemKelpPressCeramics",
+      "name": "Kelp Press Ceramics",
+      "types": [
+        "home_goods_store"
+      ],
+      "primary_type": "home_goods_store",
+      "category": "shop",
+      "rating": 4.9,
+      "rating_count": 41,
+      "business_status": "OPERATIONAL",
+      "location": {
+        "lat": 36.401,
+        "lng": -33.813
+      },
+      "hours": {
+        "periods": [
+          {
+            "open": {
+              "day": 2,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "streams": [
+        "taste"
+      ],
+      "local_mentions": [],
+      "price_level": "PRICE_LEVEL_MODERATE"
+    }
+  ]
+}
