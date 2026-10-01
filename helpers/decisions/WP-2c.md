@@ -1,0 +1,30 @@
+# WP-2c — Brochure kit · decisions
+
+> Branch `wp-2c`, agent `hb-builder-fable` (Fable 5.1 · high), 2026-10-01 (EST). Brief: `helpers/prompts/TG-PHASE-2.md` §2 row 2c; paths: SPEC §16.
+> This file is public. The fixture is an invented trip (Vellmoor, Ostenia) on `example.com` / `example.org`; it names no real place, person, id or secret.
+
+Every default the WP chose, numbered so the coordinator can overrule by number.
+
+| # | Decision | Default chosen | Why |
+|---|---|---|---|
+| 1 | Default page size | **US Letter**; A4 supported (`--page a4`) with identical margins (0.62 / 0.62 / 0.72 / 0.62 in) | The owner prints in the US; shared margins mean a layout proven on one size holds on the other (verified: both 12 pages on the sample) |
+| 2 | Typeface | **Bitstream Charter**, X11 Type 1 → WOFF2 (`convert-charter.py`, fontTools), embedded as data URIs; `--no-fonts` → system serif stack | A real text serif with a free licence (notice kept in `assets/fonts/NOTICE-charter.txt`), available offline, four faces ≈ 100 KB; Georgia/Palatino system stacks render differently per machine and the PDF must look the same everywhere |
+| 3 | Design direction | Editorial magazine: white paper, cream cover and asides, terracotta + slate-blue accents, per-day hue rotation, hairlines, numbered badges, large numerals, generous margins | "A travel agency's whole design team" reads as print tradition, not a web dashboard; the day hue ties rail, sketch, tab and cards together so the reader never loses which day they are in |
+| 4 | Cover art | Generative SVG: contour rings seeded by the trip title, a constellation of the trip's stops in the day hues, seeded dots; a `cover_image` replaces it when given | Beautiful without any image asset and never a stock photo; deterministic per trip, so rebuilds are stable |
+| 5 | Route sketch | Schematic SVG per day from coordinates: equirectangular fit, curved dashed legs by mode, numbered stop badges, inn marker, scale bar, north arrow; caption says "scale bar only" | The brief forbids map tiles at render time and the Maps terms forbid re-drawing Google's maps; a schematic that is honest about being one is the right artefact |
+| 6 | Pagination | In-browser paginator run by Playwright (`lib/paginate.mjs`): fixed-size sheets, folios, page numbers, day tabs, "p. N" cross-refs, widow control, column-major two-column fill with balancing, near-fit compaction (`tight`, `tight tight2`) | CSS `@page` alone cannot give running folios, cross-references or balanced columns in Chromium; measuring in the browser gives exact fits. The HTML keeps a print-CSS fallback for browsers' own Print |
+| 7 | Near-fit compaction thresholds | Spill ≤ 30 % of a page triggers re-setting; two steps (tighter gaps; then 0.9 zoom on dense parts); otherwise the normal setting is kept | Stops a lone dinner row or a colophon from making a near-empty page without ever squeezing a genuinely full section |
+| 8 | Playwright resolution | `createRequire` → `playwright`, then the global paths of the routine image; Chromium at `/opt/pw-browsers/chromium` (`BROCHURE_CHROMIUM` override, `BROCHURE_ALLOW_DEFAULT_CHROMIUM` opt-in); never `playwright install` | Routines run on the same image as this build, so the global copy is there; elsewhere the kit degrades to HTML-only with exit code 3 and a clear message rather than downloading a browser |
+| 9 | Routine fallback | `build` writes the HTML before trying the PDF and returns 3 when the PDF step is unavailable | The HTML is the self-contained artefact the routine can always deliver; the PDF is the print bonus |
+| 10 | Attribution policy | Google Maps logo (`assets/google-maps-logo.svg`) + data statement, per-review author credit with review link, Google-sourced fields marked on cards, trip- and place-level source ledgers with access dates; block auto-appears when any Google field is present (`attribution.google` forces it) | Places API policies read 2026-10-01 (`developers.google.com/maps/documentation/places/web-service/policies`) |
+| 11 | Validation | Own JSON-Schema-subset validator (type, enum, pattern, min/max, required, additionalProperties, $ref, anyOf) + semantic checks; errors as JSON-pointer paths | Zero dependencies in the kit; the subset covers the schema fully and the error text is more readable than a generic validator's |
+| 12 | Escaping and links | Every string through `esc()`; `safeUrl()` admits http(s)/mailto only, unsafe URLs vanish including their display text; `<script` in output is a hard error; images only from disk or `data:` with size caps (2 MB / 12 MB) and SVG script refusal | Model text is web-sourced; the document must be safe to open anywhere and must never fetch |
+| 13 | Asset directory | `helpers/kits/brochure/assets/` holds the fonts and the logo (committed binaries ≈ 100 KB) | Self-contained output needs local sources; data URIs are generated at run time so no base64 lands in git (boundary check stays clean) |
+| 14 | CLI form | `node helpers/kits/brochure/index.mjs <cmd>`; options after positionals; exit codes 0/1/2/3 | Coordinator correction (WP-2a finding): Node does not run a directory's `index.mjs` |
+| 15 | Tests | 4 files under `helpers/tests/kit_brochure_*.test.js` (CJS + `await import`, house style); the PDF part of the CLI test returns early when `pdfAvailable()` is false | Green on GitHub CI without a browser, full coverage on the routine image |
+| 16 | Model caps | ≤ 31 days per trip; `short` strings ≤ 300, `text` ≤ 4000; excerpts clipped where they render (rail notes 400, editorial 240, quoted reviews 260 chars) | Keeps every section paginable and the document inside the private-Artifact size limit |
+| 17 | Screen rendering | Same document flows responsively (single column under 760 px); the paged layout only exists after the paginator runs | "Beautiful on screen too" without a second renderer |
+
+Rating the sample: open `/home/user/wt-2c-out/sample-brochure.pdf` (or `cover.png`, `day-spread.png`, `place-cards.png`). The bar is "would hand to a friend"; the owner's verdict belongs in `helpers/decisions/TG-PHASE-2.md`.
+
+Developed by: LightAISolutions
