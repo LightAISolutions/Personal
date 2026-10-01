@@ -195,6 +195,35 @@ function tgPlanParseDates(text) {
   if (tgCmdDaysBetween(start, end) + 1 > TG_PLAN_SPAN_MAX_DAYS) return null;
   return { start: start, end: end };
 }
+/**
+ * Owner input checks (WP-6a, red-team G). Each returns '' when the input is fine, else the line telling the owner why it
+ * was not taken; the flow then answers with that line and leaves its state as it was (nothing is truncated silently).
+ */
+var TG_PLAN_BOOKED_MAX = 20;       // booked lines a research request carries (the research schema's maxItems)
+/** Dates the owner typed: two dates in order, not before today, at most TG_PLAN_SPAN_MAX_DAYS days. */
+function tgPlanDatesProblem(text) {
+  var m = (String(text || '').match(/\d{4}-\d{2}-\d{2}/g) || []);
+  if (m.length === 2 && m[1] < m[0]) return 'The end date (' + tgEscape(m[1]) + ') is before the start (' + tgEscape(m[0]) + ') — send them as <code>start to end</code>.';
+  var d = tgPlanParseDates(text);
+  if (!d) return 'I could not read those dates (one or two dates, at most ' + TG_PLAN_SPAN_MAX_DAYS + ' days).';
+  if (d.start < isoDateLocal()) return 'That trip would start in the past (' + tgCmdDate(d.start) + ') — send dates from today on.';
+  return '';
+}
+/** The seed names of one message before any trimming (same split as tgPlanSeedsFrom). */
+function tgPlanSeedsRaw(text) {
+  return String(text || '').split(/[\n,;]+/).map(function (s) { return s.replace(/\s+/g, ' ').trim(); })
+    .filter(function (s) { return !!s && s.charAt(0) !== '/'; });
+}
+function tgPlanSeedsProblem(text) {
+  var raw = tgPlanSeedsRaw(text);
+  if (raw.length > TG_PLAN_SEEDS_MAX) return 'At most ' + TG_PLAN_SEEDS_MAX + ' places per message (you sent ' + raw.length + ') — nothing was added; send them in parts.';
+  var long = raw.filter(function (s) { return s.length > TG_PLAN_SEED_CHARS; })[0];
+  if (long) return 'Place names stay under ' + TG_PLAN_SEED_CHARS + ' characters — “' + tgEscape(long.slice(0, 40)) + '…” is longer; nothing was added.';
+  return '';
+}
+function tgPlanTextProblem(text, max) {
+  return String(text || '').length > max ? 'Please keep it under ' + max + ' characters (that was ' + String(text).length + ') — nothing was saved.' : '';
+}
 function tgPlanSeedsFrom(text) {
   return String(text || '').split(/[\n,;]+/).map(function (s) { return s.replace(/\s+/g, ' ').trim(); })
     .filter(function (s) { return !!s && s.charAt(0) !== '/'; }).slice(0, TG_PLAN_SEEDS_MAX)
@@ -249,10 +278,10 @@ function tgPlanConfirmStep(state, note) {
   lines.push('Tap ✅ ✏️ ❌ on the lines above (untapped lines count as ✅), then <b>Continue</b>. Anything to add? Just type it.');
   return { prompt: lines.join('\n'), keyboard: [[{ text: '▶️ Continue', value: 'go' }]], expect: 'any', state: state };
 }
-function tgPlanEditStep(state, n) {
+function tgPlanEditStep(state, n, note) {
   var f = (state.facts || []).filter(function (x) { return String(x.n) === String(n); })[0];
   state.edit = String(n);
-  return { prompt: '✏️ Send the corrected line for <b>' + tgEscape(n) + '</b>' + (f ? ' — now: <i>' + tgEscape(f.text) + '</i>' : '') + '.',
+  return { prompt: (note ? '⚠️ ' + note + '\n' : '') + '✏️ Send the corrected line for <b>' + tgEscape(n) + '</b>' + (f ? ' — now: <i>' + tgEscape(f.text) + '</i>' : '') + '.',
     keyboard: [[{ text: '↩️ Back', value: 'back' }]], expect: 'any', state: state };
 }
 function tgPlanAskStep(state, note) {
@@ -414,12 +443,21 @@ registerFlow('plan', {
       if (v === 'back') { state.edit = null; return tgPlanConfirmStep(state); }
       if (v === 'go') { state.edit = null; state.asks = tgPlanAsks(state); return tgPlanAskStep(state); }
       if (text && state.edit) {
+        var ef = (state.facts || []).filter(function (x) { return String(x.n) === String(state.edit); })[0];
+        var bad = tgPlanTextProblem(text, TG_PLAN_FACT_CHARS) || (ef && ef.kind === 'dates' && /\d{4}-\d{2}-\d{2}/.test(text) ? tgPlanDatesProblem(text) : '');
+        if (bad) return tgPlanEditStep(state, state.edit, bad);
         var n = state.edit;
         state.edit = null;
         tgChoiceSet(state.trip, TG_PLAN_INTAKE_RUN, 'fact', n, 'e', truncate(text, TG_PLAN_FACT_CHARS));
         return tgPlanConfirmStep(state, '✏️ Noted for ' + tgEscape(n) + ': <i>' + tgEscape(truncate(text, 200)) + '</i>');
       }
       if (text) {
+        var bad2 = tgPlanTextProblem(text, TG_PLAN_FACT_CHARS);
+        if (!bad2 && (state.facts || []).length >= TG_PLAN_FACTS_MAX) bad2 = 'That is ' + TG_PLAN_FACTS_MAX + ' lines already — drop one (❌) before adding more.';
+        if (!bad2 && tgPlanConfirmed(state).filter(function (f) { return TG_PLAN_BOOKED_KINDS.indexOf(f.kind) >= 0; }).length >= TG_PLAN_BOOKED_MAX) {
+          bad2 = 'That is ' + TG_PLAN_BOOKED_MAX + ' booked lines already — the research takes no more; drop one (❌) first.';
+        }
+        if (bad2) return tgPlanConfirmStep(state, '⚠️ ' + bad2);
         var nn = 'x' + ((state.facts || []).length + 1);
         state.facts.push({ n: nn, kind: 'other', text: truncate(text, TG_PLAN_FACT_CHARS) });
         return tgPlanConfirmStep(state, '📝 Added: <i>' + tgEscape(truncate(text, 200)) + '</i>');
@@ -431,10 +469,14 @@ registerFlow('plan', {
       if (v === 'skip' && k !== 'dates') { state.asks.shift(); return tgPlanAskStep(state); }
       if (text) {
         if (k === 'dates') {
-          var d = tgPlanParseDates(text);
-          if (!d) return tgPlanAskStep(state, 'I could not read those dates (one or two dates, at most ' + TG_PLAN_SPAN_MAX_DAYS + ' days).');
-          state.answers.dates = d;
-        } else state.answers[k] = truncate(text, TG_PLAN_ANSWER_CHARS);
+          var dp = tgPlanDatesProblem(text);
+          if (dp) return tgPlanAskStep(state, dp);
+          state.answers.dates = tgPlanParseDates(text);
+        } else {
+          var ap = tgPlanTextProblem(text, TG_PLAN_ANSWER_CHARS);
+          if (ap) return tgPlanAskStep(state, '⚠️ ' + ap);
+          state.answers[k] = text;
+        }
         state.asks.shift();
         return tgPlanAskStep(state);
       }
@@ -447,7 +489,10 @@ registerFlow('plan', {
         return tgPlanResearchMore(state, v);
       }
       if (v === 'seeds' && state.seeds_pending.length) return tgPlanResearchMore(state, 'seeds');
-      if (text) return tgPlanAddSeeds(state, tgPlanSeedsFrom(text));
+      if (text) {
+        var sp = tgPlanSeedsProblem(text);
+        return sp ? tgPlanChooseStep(state, '⚠️ ' + sp) : tgPlanAddSeeds(state, tgPlanSeedsFrom(text));
+      }
       return tgPlanSame(state);
     }
     return tgPlanSame(state);
@@ -490,7 +535,7 @@ function tgPlanRunTrip(chatId, run) {
 // tf:<trip key>:<n>:y|e|n — a trip fact tap; it counts only inside the plan flow of that trip (✏️ asks for the line).
 registerCallback('tf', function (ctx) {
   var trip = tgCmdTripByKey(ctx.parts[0]), n = String(ctx.parts[1] || ''), v = String(ctx.parts[2] || '');
-  if (!n || ['y', 'e', 'n'].indexOf(v) < 0) { ctx.answer('Unknown button'); return; }
+  if (ctx.parts.length !== 3 || !n || ['y', 'e', 'n'].indexOf(v) < 0) { ctx.answer('Unknown button'); return; }   // exact shape (WP-6a B8)
   var f = tgPlanActive(ctx.chatId);
   if (!trip || !f || f.state.trip !== trip.slug || f.state.stage !== 'confirm' || f.state.ask) {
     ctx.answer('Send /plan ' + truncate(trip ? (trip.destination || trip.title || trip.slug) : '<destination>', 60) + ' to confirm these.');
@@ -511,7 +556,7 @@ registerCallback('tf', function (ctx) {
 registerCallback('sl', function (ctx) {
   var run = String(ctx.parts[0] || ''), key = String(ctx.parts[1] || ''), v = String(ctx.parts[2] || '');
   var m = /^([a-z])(\d{1,3})$/.exec(key);
-  if (!run || !m || !TG_PLAN_TAP[v]) { ctx.answer('Unknown button'); return; }
+  if (ctx.parts.length !== 3 || !run || !m || !TG_PLAN_TAP[v]) { ctx.answer('Unknown button'); return; }   // exact shape (WP-6a B8)
   var trip = tgPlanRunTrip(ctx.chatId, run);
   if (!trip) { ctx.answer('That shortlist is gone.'); return; }
   var items = tgShortlistItems(trip, run), bySlot = {};
@@ -560,6 +605,8 @@ registerCommand('/plan', function (ctx) {
 
 registerCommand('/seed', function (ctx) {
   var names = tgPlanSeedsFrom(ctx.args);
+  var sp = tgPlanSeedsProblem(ctx.args);
+  if (sp && tgPlanActive(ctx.chatId)) { ctx.reply('⚠️ ' + sp); return null; }
   if (!tgPlanActive(ctx.chatId)) { ctx.reply('Seeds go with a /plan in progress — start one with <code>/plan &lt;destination&gt;</code>.'); return null; }
   if (!names.length) { ctx.reply('Send <code>/seed &lt;place&gt;, &lt;place&gt;</code> — places you already want in the plan.'); return null; }
   return flowResume(ctx.chatId, { type: 'resume', event: 'seed', names: names });

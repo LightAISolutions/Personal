@@ -16,10 +16,16 @@ var TG_CMD_MODES = { WALK: 'walk', TRANSIT: 'transit', DRIVE: 'drive' };
 
 /* ==================== shared helpers ==================== */
 
-/** An escaped link: <a href="url">text</a> when url is a plain https URL of reasonable length, else the escaped text. */
+/**
+ * Google Maps hosts a place link may point at (WP-6a, red-team A6): the name of a place is a link only when it opens Google
+ * Maps — a brain link to any other host (a lookalike login page, `google.com.example.net`, `google.com@example.net`) is
+ * shown as plain text, so a tap on a place name never leaves Maps.
+ */
+var TG_CMD_MAPS_URL = /^https:\/\/((www\.)?google\.(com|[a-z]{2}|co\.[a-z]{2}|com\.[a-z]{2})\/maps([\/?#]|$)|maps\.google\.(com|[a-z]{2}|co\.[a-z]{2}|com\.[a-z]{2})([\/?#]|$)|maps\.app\.goo\.gl\/|goo\.gl\/maps\/)\S*$/;
+/** An escaped link: <a href="url">text</a> when url is a Google Maps https URL of reasonable length, else the escaped text. */
 function tgCmdHref(url, text) {
   var t = tgEscape(text), u = String(url || '');
-  if (!/^https:\/\/\S+$/.test(u) || u.length > TG_CMD_URL_MAX) return t;
+  if (!TG_CMD_MAPS_URL.test(u) || u.length > TG_CMD_URL_MAX) return t;
   return '<a href="' + tgEscape(u).replace(/"/g, '&quot;') + '">' + t + '</a>';
 }
 /** 45 → "45 min", 90 → "1 h 30", 120 → "2 h". */
@@ -312,10 +318,17 @@ function tgCmdPlaceKeys(slugs) {
 }
 function tgCmdPlaceByKey(key) {
   key = String(key || '');
-  if (key.charAt(0) !== '.') return tgPlacesGet(key) || { slug: key, name: key };
+  var p = safeJsonParse(settingGet(TG_CMD_PLACES_LAST, '[]')), list = p.ok && Array.isArray(p.value) ? p.value : [];
+  if (key.charAt(0) !== '.') {
+    // A plain key is a slug this bot offered: a place in the repository, or one of the last /place · /places answer
+    // (a plan stop that has no Places row yet). Any other slug is a forged or stale button (WP-6a, red-team B).
+    if (!/^[a-z0-9][a-z0-9-]{0,63}$/.test(key)) return null;
+    var known = tgPlacesGet(key);
+    if (known) return known;
+    return list.indexOf(key) >= 0 ? { slug: key, name: key } : null;
+  }
   var m = /^\.(\d+)\.([0-9a-f]{4})$/.exec(key);
   if (!m) return null;
-  var p = safeJsonParse(settingGet(TG_CMD_PLACES_LAST, '[]')), list = p.ok && Array.isArray(p.value) ? p.value : [];
   var slug = list[parseInt(m[1], 10)];
   if (!slug || tgCmdTag(slug) !== m[2]) return null;
   return tgPlacesGet(slug) || { slug: slug, name: slug };
@@ -390,9 +403,37 @@ registerCommand('/notes', function (ctx) {
     ack: '📝 Writing ' + (payload.places ? payload.places.length + ' note' + (payload.places.length === 1 ? '' : 's') : 'the place notes') + '…' + (missing.length ? ' (not in the plan: ' + tgEscape(missing.join(', ')) + ')' : '') });
 }, 'write the place notes of the current trip: /notes [names]');
 
-/** Resend the stored brochure PDF; without one (or when Drive refuses), ask the brain to build it. */
+/**
+ * Where a Drive file sits: 'in' (inside the helper's own folder, <drive_root>/…, found within TG_CMD_DRIVE_DEPTH parent
+ * levels), 'outside' (anywhere else in the owner's Drive) or 'missing' (Drive refuses the id). The brochure id comes
+ * from the brain (plan_digest.drive.brochure_pdf) and the script runs as the owner, so without this check a forged id
+ * could make the bot attach any other file the owner can open — WP-6a, red-team I.
+ */
+var TG_CMD_DRIVE_DEPTH = 8;
+function tgCmdDriveWhere(fileId) {
+  var file;
+  try { file = DriveApp.getFileById(String(fileId)); } catch (e) { return 'missing'; }
+  try {
+    var rootId = getRootFolder().getId(), level = [], depth = 0;
+    var it = file.getParents();
+    while (it.hasNext()) level.push(it.next());
+    while (level.length && depth < TG_CMD_DRIVE_DEPTH) {
+      var up = [];
+      for (var i = 0; i < level.length; i++) {
+        if (level[i].getId() === rootId) return 'in';
+        var p = level[i].getParents();
+        while (p.hasNext() && up.length < 20) up.push(p.next());
+      }
+      level = up; depth++;
+    }
+  } catch (e2) { return 'outside'; }
+  return 'outside';
+}
+/** Resend the stored brochure PDF; without one (or when Drive refuses, or the id points outside the helper's folder), ask the brain to build it. */
 function tgCmdBrochure(chatId, trip, chat) {
-  if (trip.drive_brochure_pdf) {
+  var where = trip.drive_brochure_pdf ? tgCmdDriveWhere(trip.drive_brochure_pdf) : '';
+  if (where === 'outside') auditFail('tg_brochure_outside_root', String(trip.drive_brochure_pdf), { trip: trip.slug });
+  if (where === 'in' || where === 'missing') {   // a missing file still goes through tgSendDocument (its document_not_found audit) and falls back below
     var cap = '📄 <b>' + tgCmdTitle(trip) + '</b>' + (trip.verified_on ? ' · checked on ' + tgEscape(trip.verified_on) : '');
     var r = tgSendDocument(chatId, { driveFileId: trip.drive_brochure_pdf, caption: cap });
     if (r && r.ok) return r;
@@ -413,7 +454,8 @@ registerCommand('/lodging', function (ctx) {
     ctx.reply(trip.lodging && trip.lodging.text ? 'Staying: ' + tgEscape(trip.lodging.text) + '\nChange it with <code>/lodging &lt;where&gt;</code>.' : 'Where are you staying? <code>/lodging &lt;name, area or address&gt;</code>');
     return;
   }
-  var text = truncate(ctx.args.replace(/\s+/g, ' ').trim(), 300), lodging = { text: text };
+  var text = ctx.args.replace(/\s+/g, ' ').trim(), lodging = { text: text };
+  if (text.length > 300) { ctx.reply('🏨 Please keep it under 300 characters (that was ' + text.length + ') — nothing was saved.'); return; }   // WP-6a G
   var n = /(\d{1,2})\s*nights?\b/i.exec(text);
   if (n) lodging.nights = parseInt(n[1], 10);
   tgTripUpsert({ slug: trip.slug, lodging: lodging });
@@ -469,6 +511,7 @@ registerCallback('lt', function (ctx) {
 
 /** ps:<place key>:n (full note) · a (add to the current trip's Later list) · c (fresh check). */
 registerCallback('ps', function (ctx) {
+  if (ctx.parts.length !== 2) { ctx.answer('Unknown button'); return; }   // exact shape (WP-6a B8)
   var p = tgCmdPlaceByKey(ctx.parts[0]), what = ctx.parts[1];
   if (!p) { ctx.answer('That list has changed — search again.'); return; }
   var trip = tgTripCurrent();
