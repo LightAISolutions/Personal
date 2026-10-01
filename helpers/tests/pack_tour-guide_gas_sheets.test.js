@@ -40,7 +40,7 @@ test('ensureSheets creates the six pack tabs with the contract columns', () => {
   const head = (n) => sheet(ctx, n).getRange(1, 1, 1, sheet(ctx, n).getLastColumn()).getValues()[0];
   assert.deepEqual(head('Trips'), ['slug', 'title', 'destination', 'start', 'end', 'status', 'build_id', 'verified_on', 'drive_plan',
     'drive_brochure_html', 'drive_brochure_pdf', 'updated_at', 'lodging', 'review_offered_at']);
-  assert.deepEqual(head('DayPlans'), ['slug', 'date', 'theme', 'stops_json', 'legs_json', 'warnings_json', 'part']);
+  assert.deepEqual(head('DayPlans'), ['slug', 'date', 'theme', 'stops_json', 'legs_json', 'warnings_json', 'part', 'rain_json']);
   assert.deepEqual(head('Later'), ['slug', 'place_slug', 'name', 'reason']);
   assert.deepEqual(head('Places'), ['slug', 'name', 'destination', 'area', 'category', 'tags', 'status', 'last_trip', 'last_researched',
     'last_verified', 'note_line', 'maps_url', 'history_json']);
@@ -123,6 +123,20 @@ test('plan digest: days, day lookup, Trips fields, Later replaced but owner addi
   ctx.tgLaterAdd('port-sorrel-spring-2027', { place_slug: 'rope-loft-studio', name: 'Rope Loft Studio', reason: 'rainy day' });
   assert.equal(ctx.tgLaterList('port-sorrel-spring-2027').filter((l) => l.place_slug === 'rope-loft-studio')[0].reason, 'rainy day');
   assert.throws(() => ctx.tgLaterAdd('port-sorrel-spring-2027', { place_slug: 'Not A Slug' }), /place_slug/);
+});
+
+test('plan digest: rain swaps round-trip; a DayPlans tab made before rain_json gets the column on the next store', () => {
+  const { ctx } = fresh();
+  const tab = sheet(ctx, 'DayPlans');
+  tab.getRange(1, 8, 1, 1).setValues([['']]);
+  const rain = [{ slug: 'lantern-museum', name: 'Lantern Museum', instead_of: 'Signal Hill Lookout', km: 1.1, maps_url: maps('FixtureC') }];
+  const d = digest();
+  d.days[0].rain = rain;
+  ctx.tgDigestStore(d);
+  assert.ok(tab.getRange(1, 1, 1, tab.getLastColumn()).getValues()[0].includes('rain_json'));
+  const days = ctx.tgDigestDays('port-sorrel-spring-2027');
+  assert.deepEqual(J(days[0].rain), rain);
+  assert.deepEqual(J(days[1].rain), []);
 });
 
 test('plan digest: a day over the 50 000-character cell limit is split across part rows and read back whole', () => {

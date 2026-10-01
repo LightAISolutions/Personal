@@ -2,7 +2,8 @@
  * Tour Guide brochure-map — DayPlan → brochure day. Stops keep arrive/depart/minutes/activity/booked; legs map the
  * Routes travel mode to the brochure's (TRANSIT→transit, WALK→walk, DRIVE→drive, anything else→other) and carry the
  * transit `line`; meals at "lodging" name the lodging; warn/alert warnings go to the day's "Mind" block, info
- * warnings become a note on their stop (or stay as an info line when they name no stop of the day).
+ * warnings become a note on their stop (or stay as an info line when they name no stop of the day); `rain_swaps` become
+ * the day's "If it rains" alternatives.
  */
 import { clip, compact, SHORT, TEXT } from './brochure-map-text.mjs';
 
@@ -28,6 +29,12 @@ function defaultTheme(stops, cards) {
   return clip(names.join(' and ') + (stops.length > 2 ? ', and more' : ''), SHORT);
 }
 
+export const RAIN_TITLE = 'If it rains';
+/** "Instead of Green Park · 1.1 km away" (+ "· check the hours" when Google has none for that date). */
+function rainNote(r, cards) {
+  const other = cards[r.instead_of] && cards[r.instead_of].name;
+  return clip([other ? `Instead of ${other}` : '', Number.isFinite(r.km) ? `${r.km} km away` : '', r.hours === 'unknown' ? 'check the hours' : ''].filter(Boolean).join(' · '), SHORT);
+}
 /**
  * mapDay(dayPlan, { placesBySlug, cards, lodgingName }) → brochure day.
  * cards: brochure places already built (keys = slugs); lodgingName(slug) → the lodging's name.
@@ -65,12 +72,14 @@ export function mapDay(dp, { placesBySlug, cards, lodgingName }) {
   }
   warnings.sort((a, b) => SEVERITY_RANK[a.severity] - SEVERITY_RANK[b.severity]);
   for (const s of stops) if (notes.has(s.place)) s.note = clip(notes.get(s.place).join(' '), TEXT);
+  const swaps = (dp.rain_swaps || []).filter((r) => cards[r.place]).slice(0, 3).map((r) => compact({ place: r.place, note: rainNote(r, cards) }));
   return compact({
     date: dp.date,
     theme: clip(dp.theme, SHORT) || defaultTheme(dp.stops, cards),
     lodging: clip(lodgingName(dp.lodging_end), SHORT),
     stops, legs, meals, free,
     warnings: warnings.slice(0, LIMITS.warnings),
+    alternatives: swaps.length ? { title: RAIN_TITLE, items: swaps } : undefined,
     verified_on: dp.verified_on
   });
 }

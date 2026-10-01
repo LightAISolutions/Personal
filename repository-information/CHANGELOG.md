@@ -3,11 +3,25 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 33/100`
+`Sections: 34/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.33r] — 2026-10-01 07:46:02 PM EST
+
+> **Prompt:** "Question#16, rain should not change the plans, but I want Tour Guide to prepare alternative rain-friendly activities just in case." *(Phase 7 step 4, the interview)*
+
+### Added
+- **Rainy-day swaps** (`helpers/packs/tour-guide/planner/planner-rain.mjs`): every planned day with an outdoor stop gets up to 2 `rain_swaps` — indoor places not on the plan (the Place's `indoor` flag, else its category), open or of unknown hours that date, within reach of one of the day's outdoor stops by its travel mode, nearest first, each offered on one day only; skipped and rejected places never appear; no API call. `replanDays` keeps a kept day's swaps and gives a rebuilt day fresh ones
+- DayPlan schema `rain_swaps` and plan checks (known place, not scheduled, offered once, next to a stop of its day)
+- **Brochure "If it rains" aside** (`helpers/kits/brochure/`): day `alternatives` (title, 1–3 items with an optional note), rendered with an umbrella icon and a map link; the brochure-map fills it from the day's swaps ("Instead of X · 1.2 km away · check the hours")
+- **Plan digest and `/day`** (`helpers/packs/tour-guide/gas/`): the plan_digest day carries optional `rain` (validated), DayPlans stores it in a new `rain_json` column (added on first use, no setup re-run), and `/day` lists it under "If it rains"
+- Tests: `pack_tour-guide_planner_rain.test.js` plus brochure-map, sheets, commands and envelope cases
+
+### Changed
+- `helpers/packs/tour-guide/README.md` documents the swaps and the digest field; `helpers/decisions/TG-PHASE-7.md` F14 fixed; `helpers/status/PHASE-7-RESUME.md` log line
 
 ## [v01.32r] — 2026-10-01 07:33:01 PM EST
 

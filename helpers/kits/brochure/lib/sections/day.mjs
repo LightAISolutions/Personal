@@ -1,7 +1,7 @@
 /**
  * Brochure kit — a day spread: the big numeral and theme, the day's statistics, a timeline rail of stops, legs,
  * meals and free time in clock order, and an aside with the day's map (a real Google map when the build fetched one,
- * otherwise the drawn route sketch), the night's lodging and any warnings.
+ * otherwise the drawn route sketch), the night's lodging, any alternatives (e.g. "If it rains") and any warnings.
  */
 import { esc, attr, join, clip } from '../escape.mjs';
 import { longDate, shortDate, duration, distance } from '../format.mjs';
@@ -50,9 +50,10 @@ function aside(d, i, ctx) {
   const { locale } = ctx;
   const l = d.lodging;
   const lodging = l ? `<div class="aside-block"><p class="eyebrow">The night</p><p>${icon('bed', 13)}<b>${esc(l.name)}</b>${l.address ? `<br>${esc(l.address)}` : ''}${l.maps_url ? `<br>${link(l.maps_url, 'map ↗', ' class="small"')}` : ''}${l.note ? `<br><span class="muted">${esc(clip(l.note, 220))}</span>` : ''}</p></div>` : '';
+  const alts = d.alternatives ? `<div class="aside-block"><p class="eyebrow">${esc(clip(d.alternatives.title, 60))}</p>${d.alternatives.items.map((x) => `<p>${icon('umbrella', 13)}<b>${esc(x.place.name)}</b>${x.place.maps_url ? ` ${link(x.place.maps_url, 'map ↗', ' class="small"')}` : ''}${x.note ? `<br><span class="muted">${esc(clip(x.note, 160))}</span>` : ''}</p>`).join('')}</div>` : '';
   const warnings = d.warnings.length ? `<div class="aside-block"><p class="eyebrow">Mind</p><div class="warnings">${d.warnings.map((w) => `<p class="warning ${attr(w.severity || 'warn')}">${icon(w.severity === 'info' ? 'info' : 'warn', 13)}<span>${esc(clip(w.text, 260))}</span></p>`).join('')}</div></div>` : '';
   const verified = d.verified_on ? `<p class="aside-block verified">Hours and bookings checked ${esc(shortDate(d.verified_on, locale))}.</p>` : '';
-  return `<aside class="day-aside" data-pg="aside">${daySketch(d, i, ctx)}${lodging}${warnings}${verified}</aside>`;
+  return `<aside class="day-aside" data-pg="aside">${daySketch(d, i, ctx)}${lodging}${alts}${warnings}${verified}</aside>`;
 }
 function stats(d, locale) {
   const s = d.stats;

@@ -28,7 +28,7 @@ var TG_PLACE_OWN = ['slug', 'name', 'area', 'category', 'tags', 'status', 'last_
 
 registerSheet(TG_SHEETS.TRIPS, ['slug', 'title', 'destination', 'start', 'end', 'status', 'build_id', 'verified_on', 'drive_plan',
   'drive_brochure_html', 'drive_brochure_pdf', 'updated_at', 'lodging', 'review_offered_at']);
-registerSheet(TG_SHEETS.DAYS, ['slug', 'date', 'theme', 'stops_json', 'legs_json', 'warnings_json', 'part']);
+registerSheet(TG_SHEETS.DAYS, ['slug', 'date', 'theme', 'stops_json', 'legs_json', 'warnings_json', 'part', 'rain_json']);
 registerSheet(TG_SHEETS.LATER, ['slug', 'place_slug', 'name', 'reason']);
 registerSheet(TG_SHEETS.PLACES, ['slug', 'name', 'destination', 'area', 'category', 'tags', 'status', 'last_trip', 'last_researched',
   'last_verified', 'note_line', 'maps_url', 'history_json']);
@@ -129,7 +129,7 @@ function tgTripCurrent() {
 }
 
 /* ---------------- DayPlans + Later (plan_digest) ---------------- */
-var TG_DAY_JSON_COLS = ['stops_json', 'legs_json', 'warnings_json'];
+var TG_DAY_JSON_COLS = ['stops_json', 'legs_json', 'warnings_json', 'rain_json'];
 function _tgChunks(s) {
   if (s.length <= TG_CELL_MAX) return [s];
   var out = [];
@@ -142,6 +142,7 @@ function _tgDayRows(slug, day) {
   cols.stops_json = _tgChunks(toJson(day.stops || []));
   cols.legs_json = _tgChunks(toJson(day.legs || []));
   cols.warnings_json = _tgChunks(toJson(day.warnings || []));
+  cols.rain_json = _tgChunks(toJson(day.rain || []));
   TG_DAY_JSON_COLS.forEach(function (c) { parts = Math.max(parts, cols[c].length); });
   var rows = [];
   for (var p = 0; p < parts; p++) {
@@ -170,6 +171,8 @@ function tgDigestStore(p) {
   if (days.length && (!prev || !prev.end)) trip.end = String(days[days.length - 1].date);
   tgTripUpsert(trip);
 
+  // A tab made before rain_json existed gets the column now (setup is not re-run on every deploy).
+  if (sheetHeaders(getSheet(TG_SHEETS.DAYS)).indexOf('rain_json') < 0) ensureSheets();
   var old = storeFind(TG_SHEETS.DAYS, function (r) { return tgShStr(r.slug) === slug; }).map(function (r) { return r._row; });
   if (old.length) storeDeleteRows(TG_SHEETS.DAYS, old);
   var rows = 0;
@@ -186,7 +189,7 @@ function tgDigestStore(p) {
   keep.forEach(function (r) { storeAppend(TG_SHEETS.LATER, r); });
   return { trip: slug, days: days.length, rows: rows, later: (p.later || []).length, kept_owner_later: keep.length };
 }
-/** The stored days of a trip, in date order: [{ date, n (1-based), theme, stops[], legs[], warnings[] }]. */
+/** The stored days of a trip, in date order: [{ date, n (1-based), theme, stops[], legs[], warnings[], rain[] }]. */
 function tgDigestDays(slug) {
   slug = tgShStr(slug);
   var byDate = {};
@@ -199,7 +202,7 @@ function tgDigestDays(slug) {
     var joined = {};
     TG_DAY_JSON_COLS.forEach(function (c) { joined[c] = parts.map(function (r) { return tgShStr(r[c]); }).join(''); });
     return { date: date, n: i + 1, theme: tgShStr(parts[0].theme), stops: tgShJson(joined.stops_json, []),
-      legs: tgShJson(joined.legs_json, []), warnings: tgShJson(joined.warnings_json, []) };
+      legs: tgShJson(joined.legs_json, []), warnings: tgShJson(joined.warnings_json, []), rain: tgShJson(joined.rain_json, []) };
   });
 }
 /** One day by number (1-based, number or numeric string) or by date 'YYYY-MM-DD'; null when absent. */

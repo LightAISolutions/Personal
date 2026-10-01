@@ -184,6 +184,15 @@ export function checkPlan(p) {
       if (scheduled.has(it.place)) e(`/later/${i}/items/${j}/place`, `"${it.place}" is both scheduled and in a Later list`);
     });
   });
+  // Rainy-day swaps: a known place, not scheduled anywhere, offered on one day only, next to an outdoor stop of that day.
+  const offered = new Map();
+  p.days.forEach((d, i) => (d.rain_swaps || []).forEach((r, j) => {
+    const at = `/days/${i}/rain_swaps/${j}`;
+    if (!keys.has(r.place)) e(at + '/place', `unknown place "${r.place}"`);
+    if (scheduled.has(r.place)) e(at + '/place', `"${r.place}" is a rain swap but is scheduled`);
+    if (offered.has(r.place)) e(at + '/place', `"${r.place}" is already a rain swap on ${offered.get(r.place)}`); else offered.set(r.place, d.date);
+    if (!d.stops.some((s) => s.place === r.instead_of)) e(at + '/instead_of', `"${r.instead_of}" is not a stop of ${d.date}`);
+  }));
   // Owner choices (planTrip input.choices): picks were the whole pool, so a place the owner did not pick may stay a
   // plain candidate outside every day and every list; skipped places are rejected; kept-for-later ones are never scheduled.
   const ch = p.choices || null;

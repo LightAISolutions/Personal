@@ -7,6 +7,7 @@
  *   estimateBudget(input) → budget               (no API call; what planTrip would spend and whether the ledger allows it)
  * TRANSIT legs Google has no route for are estimated from distance (trip.transit_fallback, planner-legs.mjs) and the
  * day carries a `transit_estimated` warning; DRIVE / WALK are unchanged.
+ * Each built day with an outdoor stop may carry `rain_swaps`: up to two nearby indoor places off the plan (planner-rain.mjs).
  * `maps` is a Maps-kit client (createMapsClient); every unit it spends is counted by its ledger before sending.
  * Contract (entities, codes, warnings): helpers/packs/tour-guide/README.md. Design and limits: helpers/decisions/WP-3b.md.
  */
@@ -19,6 +20,7 @@ import { normalizeChoices, applyChoices, choiceStatus, OWNER_CHOICE_REASON } fro
 import { createRng } from './planner-rng.mjs';
 import { dateIn } from './planner-time.mjs';
 import { withRailEstimates } from './planner-rail.mjs';
+import { rainSwaps } from './planner-rain.mjs';
 
 export { PlanBudgetError, SKU } from './planner-budget.mjs';
 export { solveDay, WEIGHT, MAX_STOPS } from './planner-solve.mjs';
@@ -31,6 +33,7 @@ export { withRailEstimates, railEstimate, railLine, rideMinutes, walkMinutes, RA
 export { normalizeChoices, applyChoices, POOL_STATUSES, CHOICE_LISTS, OWNER_CHOICE_REASON } from './planner-choices.mjs';
 export { transitFallback, estimateTransit, TRANSIT_FALLBACK_DEFAULT, ROUTE_FACTOR } from './planner-legs.mjs';
 export { TRANSIT_ESTIMATED_TEXT } from './planner-day.mjs';
+export { rainSwaps, isIndoor, MAX_SWAPS, SWAP_KM, INDOOR_CATEGORIES, OUTDOOR_CATEGORIES } from './planner-rain.mjs';
 
 const fail = (m) => { throw new Error('planner: ' + m); };
 
@@ -73,6 +76,7 @@ async function build(ctx, input, { dates, pool, prior, ch = null }) {
   const poolIds = new Set(pool.map((c) => c.id));
   const allDays = prior ? prior.days.map((d) => (dates.includes(d.date) ? built.find((b) => b.date === d.date) : JSON.parse(JSON.stringify(d)))) : built;
   const scheduled = new Set(allDays.flatMap((d) => d.stops.map((s) => s.place)));
+  addRainSwaps(allDays, dates, { places: input.places, snapshots: ctx.snapshots, exclude: new Set([...scheduled, ...(ch ? ch.skip : [])]) });
   const extra = ch && ch.explicit ? {
     refresh: new Set([...ch.keep, ...ch.skip]),
     kept: input.places.filter((p) => ch.keep.has(p.id)).map((p) => ({ id: p.id, place_id: p.place_id, reason: OWNER_CHOICE_REASON }))
@@ -96,6 +100,25 @@ async function build(ctx, input, { dates, pool, prior, ch = null }) {
   };
   if (ch) plan.choices = { picks: [...ch.effective.picks].sort(), later: [...ch.effective.later].sort(), skip: [...ch.effective.skip].sort() };
   return plan;
+}
+
+/**
+ * Rainy-day swaps (planner-rain.mjs) on every re-built date; a kept day keeps its swaps except a place now scheduled or
+ * skipped, and a place is offered on one day only (kept days claim theirs first).
+ */
+function addRainSwaps(allDays, dates, { places, snapshots, exclude }) {
+  const used = new Set(), byDate = allDays.slice().sort((a, b) => a.date.localeCompare(b.date));
+  for (const d of byDate) {
+    if (dates.includes(d.date) || !d.rain_swaps) continue;
+    d.rain_swaps = d.rain_swaps.filter((r) => !exclude.has(r.place) && !used.has(r.place));
+    d.rain_swaps.forEach((r) => used.add(r.place));
+    if (!d.rain_swaps.length) delete d.rain_swaps;
+  }
+  for (const d of byDate) {
+    if (!dates.includes(d.date)) continue;
+    const swaps = rainSwaps({ day: d, places, snapshots, exclude, used });
+    if (swaps.length) d.rain_swaps = swaps; else delete d.rain_swaps;
+  }
 }
 
 export async function planTrip(input) {

@@ -57,7 +57,24 @@
               }
             }
           },
-          "warnings": { "type": "array", "maxItems": 20, "items": { "type": "string", "minLength": 1, "maxLength": 200 } }
+          "warnings": { "type": "array", "maxItems": 20, "items": { "type": "string", "minLength": 1, "maxLength": 200 } },
+          "rain": {
+            "type": "array",
+            "maxItems": 2,
+            "description": "Rainy-day swaps: indoor places off the plan near an outdoor stop of this day (the DayPlan's rain_swaps).",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["slug", "name", "instead_of", "km", "maps_url"],
+              "properties": {
+                "slug": { "$ref": "#/$defs/slug" },
+                "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+                "instead_of": { "type": "string", "minLength": 1, "maxLength": 120, "description": "The name of the outdoor stop it would replace." },
+                "km": { "type": "number", "minimum": 0, "maximum": 100 },
+                "maps_url": { "$ref": "#/$defs/url" }
+              }
+            }
+          }
         }
       }
     },

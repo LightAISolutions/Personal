@@ -62,6 +62,7 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
     for (const x of d.meals || []) want(x.at);
     for (const l of d.legs || []) { want(l.from); want(l.to); }
     for (const w of d.warnings || []) want(w.place);
+    for (const r of d.rain_swaps || []) want(r.place);
   }
   for (const l of plan.later || []) for (const it of l.items || []) want(it.place);
   if (order.length > 200) throw new Error(`brochure-map: ${order.length} places; the brochure takes at most 200`);

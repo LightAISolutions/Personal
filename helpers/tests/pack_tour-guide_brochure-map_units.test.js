@@ -105,4 +105,21 @@ test('renderPlanPdf: HTML always; a PDF only when Playwright and Chromium are pr
   assert.equal(fs.readFileSync(out).subarray(0, 4).toString(), '%PDF');
 });
 
+test('rain swaps: mapped to the day\'s "If it rains" alternatives with a note, rendered in the aside', async () => {
+  const { bm, kit, sampleInput } = await loadAll();
+  const input = sampleInput();
+  input.plan.days[1].rain_swaps = [{ place: 'ember-hall', place_id: input.places.find((p) => p.id === 'ember-hall').place_id, instead_of: 'lark-hill', km: 1.2, hours: 'unknown' }, { place: 'ghost', place_id: 'FixtureGhost0001', instead_of: 'lark-hill', km: 0.4, hours: 'open' }];
+  const m = bm.toBrochureModel(input);
+  assert.deepEqual(kit.validate(m), []);
+  assert.deepEqual(kit.semanticErrors(m), []);
+  const alt = m.days[1].alternatives;
+  assert.equal(alt.title, 'If it rains');
+  assert.deepEqual(alt.items.map((x) => x.place), ['ember-hall'], 'an unknown place is dropped');
+  assert.match(alt.items[0].note, /^Instead of .+ · 1\.2 km away · check the hours$/);
+  assert.equal(m.days[0].alternatives, undefined, 'a day without swaps has none');
+  const html = bm.renderPlan(input).html;
+  assert.match(html, /If it rains/);
+  assert.match(html, /1\.2 km away/);
+});
+
 // Developed by: LightAISolutions

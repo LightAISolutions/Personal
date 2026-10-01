@@ -41,6 +41,7 @@ export function semanticErrors(m) {
     (d.meals || []).forEach((x, j) => { if (x.place && !key(x.place)) push(`${p}/meals/${j}/place`, `unknown place "${x.place}"`); if (x.end && minutesBetween(x.start, x.end) === null) push(`${p}/meals/${j}`, 'ends before it starts'); });
     (d.free || []).forEach((x, j) => { if (minutesBetween(x.start, x.end) === null) push(`${p}/free/${j}`, 'ends before it starts'); });
     (d.warnings || []).forEach((x, j) => { if (x.place && !key(x.place)) push(`${p}/warnings/${j}/place`, `unknown place "${x.place}"`); });
+    ((d.alternatives && d.alternatives.items) || []).forEach((x, j) => { if (!key(x.place)) push(`${p}/alternatives/items/${j}/place`, `unknown place "${x.place}"`); });
   });
   (m.later || []).forEach((l, i) => l.items.forEach((it, j) => { if (it.place && !key(it.place)) push(`/later/${i}/items/${j}/place`, `unknown place "${it.place}"`); }));
   return errs;
@@ -95,7 +96,8 @@ export function prepare(input) {
     const starts = timeline.map((t) => t.start).filter((t) => t !== null), ends = timeline.map((t) => t.end ?? t.start).filter((t) => t !== null);
     const stats = { stops: stops.length, visitMin: stops.reduce((a, s) => a + s.minutes, 0), walkMin: sum((l) => l.mode === 'walk'), transitMin: sum((l) => l.transit), driveMin: sum((l) => ['drive', 'taxi', 'bike'].includes(l.mode)), firstStart: starts.length ? Math.min(...starts) : null, lastEnd: ends.length ? Math.max(...ends) : null };
     for (const t of timeline) if ((t.kind === 'stop' || t.kind === 'meal') && t.place && !cardSeen.has(t.place.id)) { cardSeen.add(t.place.id); cardOrder.push({ place: t.place, day: i + 1, n: t.kind === 'stop' ? t.n : null, mealKind: t.kind === 'meal' ? t.meal : null }); }
-    return { ...d, index: i + 1, weekday: WEEKDAYS[parseDate(d.date).getUTCDay()], lodging, stops, meals, free, legs, timeline, stats, warnings: d.warnings || [] };
+    const alternatives = d.alternatives ? { title: d.alternatives.title || 'If it rains', items: d.alternatives.items.map((x) => ({ ...x, place: places[x.place] })) } : null;
+    return { ...d, index: i + 1, weekday: WEEKDAYS[parseDate(d.date).getUTCDay()], lodging, stops, meals, free, legs, timeline, stats, warnings: d.warnings || [], alternatives };
   });
   const later = (m.later || []).map((l) => ({ ...l, items: l.items.map((it) => ({ ...it, place: it.place ? places[it.place] : null })) }));
   const hasImg = (x) => Boolean(x && typeof x.src === 'string' && x.src.trim());

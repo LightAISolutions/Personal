@@ -40,7 +40,7 @@ const digest = (over = {}) => ({ v: 1, kind: 'plan_digest', trip: TRIP, build_id
   days: [{ date: '2027-05-12', theme: 'Harbour', stops: [{ n: 1, slug: 'lantern-museum', name: 'Lantern <Museum>', arrive: '10:00', depart: '11:00',
     minutes: 60, maps_url: maps('FixtureA'), note_line: 'Start upstairs & look down.' }],
   legs: [{ from: 'lodging', to: 'lantern-museum', mode: 'WALK', minutes: 9, maps_url: maps('FixtureLeg') }, { from: 'lantern-museum', to: 'lodging', mode: 'TRANSIT', minutes: 20 }],
-  warnings: ['Closes <early> on Wednesdays.'] },
+  warnings: ['Closes <early> on Wednesdays.'], rain: [{ slug: 'rope-loft', name: 'Rope <Loft>', instead_of: 'Harbour Walk', km: 0.8, maps_url: maps('FixtureR') }] },
   { date: '2027-05-13', theme: 'Free', stops: [], legs: [], warnings: [] }],
   later: [{ slug: 'signal-hill-lookout', name: 'Signal Hill Lookout', reason: 'owner_choice' }],
   drive: { plan: 'fixtureDrivePlanFile01', brochure_html: null, brochure_pdf: null }, ...over });
@@ -127,7 +127,7 @@ test('/trip, /day, /today and the dy buttons', () => {
   assert.match(t, /<b>1\.<\/b> 10:00–11:00 <a href="[^"]+">Lantern &lt;Museum&gt;<\/a> · 1 h/);
   assert.match(t, /<i>Start upstairs &amp; look down\.<\/i>/);
   assert.match(t, /<i>↳ 20 min transit back to your lodging<\/i>/);
-  assert.match(t, /⚠️ Closes &lt;early&gt; on Wednesdays\./);
+  assert.match(t, /⚠️ Closes &lt;early&gt; on Wednesdays\.\n<b>If it rains<\/b>\n☔ <a href="[^"]+">Rope &lt;Loft&gt;<\/a> <i>instead of Harbour Walk, 0\.8 km away<\/i>/);
   assert.deepEqual(lastKbData(state), ['dy:port-sorrel:2:e']);
   say(ctx, state, '/day 2027-05-13');
   assert.match(last(state), /Day 2 of 2 · Thu 13 May<\/b> — Free\n<i>A free day\.<\/i>/);
