@@ -75,9 +75,12 @@ export function duration(state, specs) {
  * without re-reading pages: the kit does no matching — the caller maps its own place → refs and reads the tags here.
  * Filters: `source_kind` (one of SOURCE_KINDS, or 'untagged') and `language` (exact canonical tag, or its primary
  * subtag: 'ja' matches 'ja' and 'ja-JP'). Runs written before these tags existed read as untagged.
+ * `distinct: 'publisher'` keeps one row per publisher key (the first), so fifty posts on one host count once: a caller
+ * that turns these rows into local-mention counts must not let volume on a single site move a score.
  */
-export function mentions(state, { source_kind, language } = {}) {
+export function mentions(state, { source_kind, language, distinct } = {}) {
   if (source_kind != null && source_kind !== 'untagged' && !SOURCE_KINDS.includes(source_kind)) throw usage(`source kind filter must be one of ${SOURCE_KINDS.join(', ')}, untagged`);
+  if (distinct != null && distinct !== 'publisher') throw usage(`distinct must be 'publisher' (got ${JSON.stringify(distinct)})`);
   const lang = language != null && language !== '' ? sourceTags({ language }).language : null;
   const rows = [];
   for (const e of state.ledger) {
@@ -86,8 +89,11 @@ export function mentions(state, { source_kind, language } = {}) {
     if (e.kind === 'fetch') { if (!e.injection_suspect) rows.push({ ref: e.id, kind: 'fetch', url: e.url, domain: e.domain, publisher: e.publisher, ...tags, official: e.official }); continue; }
     e.results.forEach((r, i) => { if (!r.injection_suspect) rows.push({ ref: `${e.id}.${i + 1}`, kind: 'snippet', url: r.url, domain: r.domain, publisher: r.publisher, ...tags, official: false }); });
   }
-  return rows.filter((m) => (source_kind == null || (source_kind === 'untagged' ? m.source_kind === null : m.source_kind === source_kind))
+  const out = rows.filter((m) => (source_kind == null || (source_kind === 'untagged' ? m.source_kind === null : m.source_kind === source_kind))
     && (lang == null || m.language === lang || (m.language || '').split('-')[0] === lang));
+  if (distinct !== 'publisher') return out;
+  const seen = new Set();
+  return out.filter((m) => { const key = m.publisher || m.domain || m.url; if (seen.has(key)) return false; seen.add(key); return true; });
 }
 
 /** Counts of usable, non-flagged search and fetch entries per source kind (searches count once, not per result). */

@@ -28,7 +28,11 @@ export const INJECTION_PATTERNS = [
   /\bmark\b.{0,40}\b(confirmed|approved)\b/i,
   /\b(owner|user)\s+(has\s+)?(confirmed|approved|agreed|wants\s+you)/i,
   /<\/?(script|iframe|system|instructions?)\b/i,
-  /\b(run|execute)\b.{0,20}\b(command|tool|script|code)\b/i
+  /\b(run|execute)\b.{0,20}\b(command|tool|script|code)\b/i,
+  // Second-language instruction injection (WP-6b red team): "ignore / forget / bypass … instructions / rules" in French,
+  // German, Spanish, Italian, Portuguese and Dutch, and "note / attention to AI assistants" in the same languages.
+  /\b(ignorez|ignorer|ignorent|oubliez?|oublie|contournez|ignorier(?:e|en|t|st)|vergiss|vergessen sie|umgeh(?:e|en)|missachte(?:n)?|ignor[aá](?:r|d|lo|las)?|olvid[ae]|ignorate|dimentica(?:te)?|esque[cç]a|esquecer|negeer|vergeet)\b[^.\n]{0,40}\b(instructions?|consignes|directives|r[èe]gles|anweisung(?:en)?|instruktionen|regeln|vorgaben|instrucciones|reglas|istruzioni|regole|instru[cç][oõ]es|regras|instructies|regels)\b/i,
+  /\b(note|message|attention|instructions?|consignes?|hinweis|achtung|nachricht|nota|atenci[oó]n|aviso|avviso|attenzione|atenção)\s+(aux?|pour|an|f[üu]r|a|para|per|ai|agli|alle)\s+(les\s+|tous les\s+|die\s+|alle\s+|los\s+|las\s+|todos los\s+|gli\s+|os\s+|todos os\s+)?(assistants?\s+(ia|d'ia|virtuels)|ia|llms?|ki[- ]?assistenten|ki|asistentes?\s+(de\s+)?ia|assistenti\s+(di\s+)?ia|assistentes?\s+(de\s+)?ia|ai[- ]assistenten)\b/i
 ];
 
 export function injectionReasons(text) {

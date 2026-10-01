@@ -103,11 +103,14 @@ nearest anchor at the fastest of `modes` — WALK 4.5, TRANSIT 15, DRIVE 30 km/h
 `FLAG_LABELS` gives display words. Reviews are read for their publish times only.
 
 ### Stage 5 — `gemLine`, `selectShortlist`, `gemsNotChosenList`
-- `gemLine(record, { category_median_count?, max = 200 })` → one sentence from clauses in this order: `4.7 from 180 ratings
-  where peers typically have 1,900` · `named by two local-language guides, one local editorial list and a community thread`
-  · `one of your own seeds` · `on a mass-tourism top-ten list` · the friction words (`cash only`, `no English menu`, …) ·
-  the flag words. Clauses are dropped from the end until the line fits; only when the first clause alone is too long is it
-  cut with `…`. Built from numbers and source kinds and counts only — this module never sees review or page text.
+- `gemLine(record, { category_median_count?, max = 200 })` → one sentence from clauses in this order: a words-only rating
+  clause built from our own bands (`exceptionally well rated by far fewer reviewers than its peers` — `ratingBand` ×
+  `peerComparison`, never a Google digit: no rating value, no rating count, no peer-median number; Maps Platform ToS
+  §3.2.3(b), Service Specific Terms §3 and §14.3 — R3, Phase 6 terms review) · `named by two local-language guides, one
+  local editorial list and a community thread` · `one of your own seeds` · `on a mass-tourism top-ten list` · the friction
+  words (`cash only`, `no English menu`, …) · the flag words. Clauses are dropped from the end until the line fits; only
+  when the first clause alone is too long is it cut with `…`. Built from our own words and source kinds and counts only —
+  this module never sees review or page text.
 - `selectShortlist(scored, { appetite, per_group = { activities: 8, food: 6 }, decided = [], group_of = groupOf })` →
   `{ groups: [{ id, items: [{ …record, rank }], gems_wanted, gems_shown, floor_met }], not_shown: [{ place_id, slug, group,
   gem_score, gem, reason }], excluded }`. Per group the 💎 floor (`gemFloorFor`: 1 → 0+0, 2 → 1+1, 3 → 2+2, 4 → 3+2, 5 → 4+3)

@@ -49,7 +49,7 @@ function card(c, m) {
   const badge = c.n ? `<span class="badge">${c.n}</span>` : `<span class="badge meal">${icon(MEAL_ICON[c.mealKind] || 'fork', 12)}</span>`;
   const gp = c.photo ? p.google_photo : null;
   const credit = gp ? `<figcaption class="photo-credit">Photo${gp.author ? ` by ${link(gp.author_url, esc(clip(gp.author, 60)))}` : ''} · Google Maps</figcaption>` : (p.image && p.image.credit ? `<figcaption class="photo-credit">${esc(p.image.credit)}</figcaption>` : '');
-  const img = c.image ? `<figure class="card-fig"><img class="card-img${c.photo ? ' gphoto' : ''}" src="${c.image}" alt="${attr((c.photo ? gp && gp.alt : p.image && p.image.alt) || p.name)}">${credit}</figure>` : '';
+  const img = c.image ? `<figure class="card-fig"><img class="card-img${c.photo ? ' gphoto' : ''}" src="${attr(c.image)}" alt="${attr((c.photo ? gp && gp.alt : p.image && p.image.alt) || p.name)}">${credit}</figure>` : '';
   const edit = p.editorial ? `<p class="card-edit">${esc(clip(p.editorial, 240))} <span class="tiny">— Google Maps</span></p>` : '';
   return `<article class="card" id="place-${attr(p.id)}" style="${hueStyle(c.day - 1)}">${img}<div class="card-head">${badge}<div><p class="card-day">Day ${c.day}${p.category ? ` · ${esc(p.category)}` : ''}</p><h3>${esc(p.name)}</h3>${p.tagline ? `<p class="card-tag">${esc(clip(p.tagline, 140))}</p>` : ''}</div></div>${edit}${metaList(p, m)}${notes(p, m)}${review(p)}${sources(p)}</article>`;
 }

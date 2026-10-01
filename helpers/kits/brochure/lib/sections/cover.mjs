@@ -55,7 +55,7 @@ export function cover(ctx) {
   const nDays = m.days.length;
   const img = t.cover_image ? ctx.img.resolve(t.cover_image, 'cover image') : '';
   return `<section class="sec sec-cover" data-pg="sheet" data-bleed data-folio="">
-<div class="cover-art">${img ? `<img src="${img}" alt="${attr(t.cover_image.alt || '')}" style="width:100%;height:100%;object-fit:cover;opacity:.9">` : coverArt(m)}</div>
+<div class="cover-art">${img ? `<img src="${attr(img)}" alt="${attr(t.cover_image.alt || '')}" style="width:100%;height:100%;object-fit:cover;opacity:.9">` : coverArt(m)}</div>
 <div class="cover-days"><b>${nDays}</b>${nDays === 1 ? 'day' : 'days'}<br>${esc(dateRange(t.start_date, t.end_date, locale))}</div>
 <div class="cover-text">
 <p class="eyebrow">${t.destination ? `<b>${esc(t.destination)}</b>${t.country ? ` · ${esc(t.country)}` : ''}` : 'A trip'}${t.prepared_for ? ` · prepared for ${esc(t.prepared_for)}` : ''}</p>
