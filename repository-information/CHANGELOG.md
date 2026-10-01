@@ -3,11 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 30/100`
+`Sections: 31/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.30r] — 2026-10-01 06:50:29 PM EST
+
+> **Prompt:** "I am working on the Tour Guide - setup now. Give me step by step instructions" *(Phase 7 switch-on, steps 0–2 with the owner: deploy, setup page, pairing)*
+
+### Changed
+- `helpers/decisions/TG-PHASE-7.md`: live findings F4–F7 (where to type the `clasp@2` login, the `/exec` URL lives under Manage deployments, set `WEBAPP_URL` before `printSetupUrl()` and never screenshot the setup line, setup page worked first time) and the owner's switch-on choices (free trial with a budget alert, Personal `production` environment for the deploy secrets, own time zone, 24 fires a day, the routines' environment)
+- `helpers/status/PHASE-7-RESUME.md`: steps 0–2 done, step 3 (routines) in progress
 
 ## [v01.29r] — 2026-10-01 04:45:03 PM EST
 
