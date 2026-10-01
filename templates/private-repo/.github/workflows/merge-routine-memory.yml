@@ -1,0 +1,40 @@
+# Merge routine memory into main.
+# Every routine run commits its memory notes — log/, quarantine/ and the pack's memory directories ({{MEMORY_DIRS}}),
+# see CLAUDE.md ROUTINE MODE — and pushes them to its own claude/* branch. This workflow merges those branches into
+# main; without it they would pile up unmerged. scripts/merge-routine-memory.sh merges a branch ONLY if every changed
+# path is a memory path; development-session branches are skipped untouched and left for the owner. Daily logs merge
+# line by line (.gitattributes: log/*.md merge=union). Merged branches are deleted.
+# Pushes made with GITHUB_TOKEN do not trigger other workflows.
+name: Merge routine memory
+
+on:
+  push:
+    branches: ['claude/**']
+  workflow_dispatch:   # manual sweep of every claude/* branch
+
+concurrency:
+  group: merge-routine-memory
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Merge memory-only claude/* branches
+        env:
+          BRANCH: ${{ github.event_name == 'push' && github.ref_name || '' }}
+        run: |
+          git config user.name "{{HELPER_NAME}}-memory[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # The script always comes from main, never from the pushed branch; until it reaches main there is nothing to run.
+          if [ ! -f scripts/merge-routine-memory.sh ]; then echo "merge script not on main yet — nothing to do"; exit 0; fi
+          bash scripts/merge-routine-memory.sh "$BRANCH"
+
+# Developed by: LightAISolutions
