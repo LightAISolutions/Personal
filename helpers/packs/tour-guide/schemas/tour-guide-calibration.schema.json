@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-calibration.schema.json",
+  "title": "Tour Guide calibration state (estimator)",
+  "description": "Per-category tap counts from 'longer / shorter / about right'. factor = clamp(1 + 0.1·(longer − shorter), 0.7, 1.4); about_right counts but does not move it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["v", "categories"],
+  "properties": {
+    "v": { "const": 1 },
+    "categories": {
+      "type": "object",
+      "maxProperties": 100,
+      "propertyNames": { "pattern": "^[a-z][a-z0-9-]{0,31}$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["longer", "shorter", "about_right", "factor"],
+        "properties": {
+          "longer": { "type": "integer", "minimum": 0 },
+          "shorter": { "type": "integer", "minimum": 0 },
+          "about_right": { "type": "integer", "minimum": 0 },
+          "factor": { "type": "number", "minimum": 0.7, "maximum": 1.4 }
+        }
+      }
+    }
+  }
+}
