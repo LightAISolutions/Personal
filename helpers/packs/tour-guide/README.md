@@ -1,6 +1,6 @@
 # Tour Guide pack — `helpers/packs/tour-guide/`
 
-The engine behind the Tour Guide helper: it turns a trip, its researched places and the owner's profile into day plans, Later lists and a brochure. Everything here is a plain Node ESM library with no build step and no runtime npm dependency; the Apps Script feature pack (`gas/`) arrives in Phase 5 and the brain side (skills and routine prompts) lives in the private repo and calls this pack through `vendor/helpers/packs/tour-guide/`.
+The engine behind the Tour Guide helper: it turns a trip, its researched places and the owner's profile into day plans, Later lists and a brochure. Everything here is a plain Node ESM library with no build step and no runtime npm dependency; the Apps Script feature pack (`gas/`, the Telegram chatbot — below) is bundled with the core, and the brain side (skills and routine prompts) lives in the private repo and calls this pack through `vendor/helpers/packs/tour-guide/`.
 
 | Directory | What it holds | Contract |
 |---|---|---|
@@ -12,7 +12,7 @@ The engine behind the Tour Guide helper: it turns a trip, its researched places 
 | `brochure-map/` | Maps a Plan onto the brochure kit's model and renders it | below |
 | `gems/` | The Gem Funnel's engine (proposal §4 stages 2–5): screening, the gem score and 💎 rule, evidence flags, the "why it's a gem" line, shortlist floors and the "Gems not chosen" Later list — pure functions, no calls | below |
 | `fixtures/` | Two invented trips with recorded Maps answers in the real API shapes, used by every test | below |
-| `gas/` | Empty until Phase 5 (the chatbot feature pack) | — |
+| `gas/` | The Telegram chatbot: commands, flows, envelope handlers, sheets, Lane B, `/route` (Phase 5) | below |
 
 Data contract v1 (plan §4.4): `Trip`, `Place`, `GoogleSnapshot` (the Maps kit's shape, content build-scoped), `VisitEstimate`, `PlaceNote`, `Calibration`, `DayPlan`, `LaterList`, `Plan` and a `profile-excerpt`. Clock values are local to `trip.timezone` as `HH:MM`; dates are `YYYY-MM-DD`; ids are our own slugs, Google place ids live in `place_id`.
 
@@ -168,15 +168,38 @@ const placeFields = gems.toPlaceFields(record);                                 
 - Shortlist: 💎 floor by appetite (1 → none, 2 → 1 + 1, 3 → 2 + 2, 4 → 3 + 2, 5 → 4 + 3), `decided` excluded, `floor_met: false` when the pool had too few gems. Unproven places are never shown as 💎.
 - Persisted projections carry only our own numbers and notes; reviews are read in-run for their dates only; distances run to our own anchors, never a polygon test on Google coordinates. Defaults and reasons: `helpers/decisions/WP-2g-engine.md`; full contract: `gems/README.md`.
 
+## Chatbot — `gas/`
+
+Apps Script files bundled after the core in file-name order (`node helpers/tools/bundle.mjs tour-guide`); registries only, no core file is touched. Contract and per-file owners: `helpers/decisions/TG-PHASE-5.md` §1; reasons: `helpers/decisions/WP-5{a,b,c}.md`.
+
+| File | What it does |
+|---|---|
+| `00_common.js` | Request routing (`research → RESEARCH`, `plan · replan → PLAN`, `notes → NOTES`, `brochure → BROCHURE`, `prefs → PREFS`, `places → PLACES`, `message · ask → CHAT`), `tgOpenKindRequest`, `tgSlug`, `tgLines`, shared Settings keys |
+| `10_commands.js` | `/profile /trip /today /day /later /place /places /replan /notes /brochure /lodging`; the `/start` interview offer (`core_start`); callbacks `dy lt ps pl` |
+| `11_flow_interview.js` | `/interview [section\|all\|restart]` — the preference interview (flow `interview`) → a `prefs` request with `payload.interview` |
+| `12_flow_plan.js` | `/plan <destination>`, `/seed` — intake → confirm facts → research → shortlist rounds → plan (flow `plan`); renderers `tg_trip_facts`, `tg_shortlist`, `tg_plan_digest`; callbacks `tf sl` |
+| `13_flow_review.js` | `/review [trip]` and the daily `tg_review_offer` (the day after a trip ends, once) — 👍 👎 + visit-length taps → a `prefs` request with `payload.review`; callback `rv` |
+| `20_envelopes.js` | Handlers for the six pack envelope types (validate → store → the active `plan` flow, else the renderer); prefs review buttons `pf:<cid>:y\|e\|n` with ✏️ capture (`tg_capture_pf_edit`) → a `prefs` request with `payload.decisions`; the `tour_guide` snapshot in `state.json` |
+| `21_sheets.js` | Tabs `Trips DayPlans Later Places Choices Shortlist` and their storage API (no Google fields are ever stored) |
+| `30_chat_api.js` | Lane B (`tg_lane_b`): free text answered directly through the Claude API — **off by default**; `/smart on\|off` toggles it, `/status` shows the mode (`core_status`) |
+| `31_route.js` | `/route A → B [mode]` through the Apps Script Maps service |
+| `40_interview_bank.js` | Generated from `kits/prefs/presets/travel.interview.json` by the bundler (`--check` fails when stale) — never edit |
+
+**Answer lanes.** Free text normally becomes a `message` request answered by the CHAT routine (Lane C, inside the subscription). Lane B answers in the chat at once through the Claude API, paid per use: it runs only when the owner has sent `/smart on` (or, before any `/smart`, `CHAT_API_ENABLED=true`) **and** `CLAUDE_API_KEY` is set.
+
+**Script Properties the pack reads** (besides the core's): `CLAUDE_API_KEY` (secret; redacted from every log as an `*_API_KEY`), `CHAT_API_ENABLED` (default `false`), `CHAT_API_MODEL`, `CHAT_API_MODEL_LOOKUP`, `CHAT_API_MAX_PER_DAY`, and one `ROUTINE_FIRE_URL_<NAME>` / `ROUTINE_FIRE_TOKEN_<NAME>` pair per routine (`CHAT RESEARCH PLAN NOTES BROCHURE PREFS PLACES`). Consider raising `MAX_ROUTINE_FIRES_PER_DAY` to 20–24: a full `/plan` uses 4–6 fires.
+
+**Trigger minutes** (measured in the mocks, `helpers/decisions/WP-5c.md` §M): a `/plan` with one extra shortlist round ≈ 45 s of one-off triggers; a typical day ≈ 0.5–1.5 of the 90 trigger-minutes, a heavy day 2.5–3. Webhook and wake-route runs are web-app executions and cost none.
+
 ## Tests
 
-`node --test helpers/tests/` runs the pack's suites: `pack_tour-guide_schemas`, `_estimator`, `_later`, `_fixtures`, `_planner` (a small invented world of its own, `pack_tour-guide_planner_world.js`), `_planner_transit-fallback`, `_choices`, `_payloads`, `_gems`, `_brochure-map`, `_brochure-map_units` and `_integration`. No test touches the network: Maps answers come from the fixture responder through the Maps kit's mock transport, and the PDF step runs only where `pdfAvailable()` is true (never in CI).
+`node --test helpers/tests/` runs the pack's suites: `pack_tour-guide_schemas`, `_estimator`, `_later`, `_fixtures`, `_planner` (a small invented world of its own, `pack_tour-guide_planner_world.js`), `_planner_transit-fallback`, `_choices`, `_payloads`, `_gems`, `_brochure-map`, `_brochure-map_units`, `_integration`, and the chatbot's `pack_tour-guide_gas_{commands,interview,plan,review,envelopes,sheets,chat,route,e2e}` (the e2e runs the interview, the `/plan` journey, places, the review and the wake fallbacks against the Apps Script mocks). No test touches the network: Maps answers come from the fixture responder through the Maps kit's mock transport, and the PDF step runs only where `pdfAvailable()` is true (never in CI).
 
 ## What the pack never does
 
 - Call Google without a Maps-kit client whose ledger counts every unit first; `planTrip` refuses to start a plan whose estimated SKUs exceed the ledger's ceiling (`PlanBudgetError`) unless the caller allows it.
 - Keep Google content beyond the build: snapshots are read for the plan and the brochure of one build; only `place_id` and (for ≤ 30 days) coordinates are kept, per the Maps kit's rules.
 - Store or read anything of the owner's: every file here is generic or invented; the owner's trips, places and profile live in the private repo and reach the engine as function arguments.
-- Send messages, write to Drive or run a routine: the brain side (Phase 4) and the chatbot pack (Phase 5) do that through the framework's envelope and mailbox contracts.
+- Send messages, write to Drive or run a routine outside the framework's contracts: the chatbot (`gas/`) does it only through the core's Telegram, mailbox, request and routine-fire functions.
 
 Developed by: LightAISolutions

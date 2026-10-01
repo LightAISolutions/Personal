@@ -47,3 +47,32 @@ The prefs kit reads owner decisions as a `prefs_decisions` document (`helpers/ki
 
 ### 1.9 Lane B toggle (owner's answer to the Lane B question, 2026-10-01 10:07 UTC)
 The owner asked for both lanes with the free one as the default and a toggle to switch on Claude API answers. So: Lane C (routines, free within the subscription) is the default; **`/smart on|off`** (WP-5c) stores `Settings.tg_smart`; Lane B is on when `tg_smart` is `on` — or, when `tg_smart` was never set, when the property `CHAT_API_ENABLED` is `true` (default false) — **and** `CLAUDE_API_KEY` is set. `/smart on` without the key stores nothing and names the property to set; `/smart` alone shows the mode. `/status` shows `Answers: free (routines)` or `Answers: smart (Claude API, paid per use)` through `core_status`. The core's `redactSecrets()` now redacts every `*_API_KEY` property value (coordinator change to `core/01_util.js`, WP-5c request).
+
+## 2. Coordinator defaults and deviations accepted
+- **`/start` and `/status` hooks.** The core owns both commands; two generic renderer hooks (`core_start`, `core_status`, SPEC §5) let a pack add its first step and a status line, so no pack re-registers a core command.
+- **`*_API_KEY` redaction.** `redactSecrets()` redacts the exact value of every property whose name ends in `_API_KEY` (pack keys such as `CLAUDE_API_KEY`); SPEC §4 says so.
+- **Free-text capture order.** Message handlers run in name order; capture handlers are `tg_capture_*` so they sort before `tg_lane_b`. WP-5a needed none (its text answers go through core flows, which the router reads first); WP-5b's ✏️ edit capture is `tg_capture_pf_edit`.
+- **Review decisions travel as `prefs.decisions`** (§1.8). The brain side was added by this coordinator in the private repo: `prefs-build-ingest.mjs --decisions` (branch `claude/project-thread-m0kbpq`, PR #3), tested on an invented interview fixture (one confirm applied, a non-owner document refused with a reply and exit 1, the journey dry run still clean).
+- **WP-5a deviations** (`decisions/WP-5a.md` 1–8): owner seeds matched by folded name (the shortlist schema has no seed field); `sl:<run>:<group><n>:w|l|s` because item numbers restart per group; `tf` taps count only inside that trip's plan flow; review ratings ride the core's `fl` buttons (a 64-char slug cannot fit a `rv` callback), `rv` only for the daily offer; the plan digest never re-sends the PDF the `reply` already delivered; missing-fact questions are the second half of stage `confirm`.
+- **WP-5b defaults** (`decisions/WP-5b.md` 1–17): DayPlans `part` column for days over the cell limit; shortlist run keys ≤ 12 chars (the brain's id, else `r` + 11 hex of a hash); owner-added Later rows survive a new digest; a `places_digest` carrying any Google field is refused whole.
+- **WP-5c defaults** (`decisions/WP-5c.md` 1–14): Lane B per-day usage counter and `CHAT_API_MAX_PER_DAY` cap, `CHAT_API_MODEL` override, `/route` through the Apps Script Maps service with modes walk · transit · drive; default Lane B model `claude-sonnet-5-5`, `claude-haiku-4-5-20251001` for trivial lookups, 60 calls a day — the per-token prices in the file are unverified and Phase 6 checks them.
+- **Test harness.** Mock Drive dates now follow the test clock (WP-5c request), so date-based pruning in tests sees test time.
+
+## 3. Trigger minutes (measured in the mocks, `decisions/WP-5c.md` §M)
+| Case | One-off trigger runs | Trigger time (≈ 5 s a run) |
+|---|---|---|
+| `/plan` with one *More options* round (4 requests, 4 fires) | 9 | ≈ 45 s |
+| Lane B answer | 0 | 0 |
+| Lane C answered on time | 2 | ≈ 10 s |
+| Lane C slow, wake lost | 3 | ≈ 15 s |
+| Lane C never answered (24 h expiry) | ≈ 26 | ≈ 2.2 min, once |
+
+A typical day ≈ 0.5–1.5 of the 90 trigger-minutes, a heavy day 2.5–3; webhook and wake-route runs are web-app executions and cost none. Tour Guide and Assistant Brain still fit one account. The core's `MAX_ROUTINE_FIRES_PER_DAY` (12) is the tighter limit: a full `/plan` uses 4–6 fires — Phase 6 sets the recommended value in the switch-on guide.
+
+## 4. Lane B — the owner's answer
+Asked once in the thread (default off). The owner answered 2026-10-01 10:07 UTC: build both, the free option as the default, with a toggle to switch on Claude API answers. Built as §1.9: `/smart on|off`, `/status` line, key required.
+
+## 5. Carried to Phase 6
+The `/smart` red-team and cost line; the recommended `MAX_ROUTINE_FIRES_PER_DAY`; WP-4d R2 (`floor_reason`, not adopted) and R3 (`gem_line` rating digits, rendered as the brain writes them — Phase 6's terms review decides); re-pinning the private repo's `vendor/helpers/` to this phase's dist; confirming the owner merged private-repo PR #3.
+
+Developed by: LightAISolutions
