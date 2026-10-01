@@ -28,6 +28,15 @@ Library use: `import { renderHtml, renderPdf, pdfAvailable, validate, prepare, p
 `renderPdf(html, outPath, { page, shotsDir, shots, scale }) → { pages, warnings, shots }`.
 `addGoogleImages(model, { client, maps, photos, routes, photoWidth, maxPhotos }) → { model, stats, warnings }` (async).
 
+## Google Maps links on every leg
+
+Every leg links to Google Maps directions for that hop (`lib/directions.mjs`, Maps URLs: no key, no billing), built
+from both ends' coordinates and place ids (`lodging` ends use the night's lodging). Walk, bike and drive legs open
+that mode; transit, train and ferry legs open transit; **taxi legs open the train options** ("by train ↗"), because
+the Routes API returns no transit routes in some countries (Japan among them) while the Google Maps app does. A leg's
+own `maps_url` wins; a leg without coordinates at both ends gets no link. `directionsUrl(from, to, mode)` is exported
+for other surfaces (Telegram).
+
 ## Real Google maps and place photos
 
 `addGoogleImages` is the one build step that talks to Google, through a maps-kit client (`--google` builds one from
