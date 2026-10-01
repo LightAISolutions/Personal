@@ -181,7 +181,7 @@ test('A7 invisible and bidi unicode (U+200B, U+202E, U+FEFF, U+2066, U+0007) in 
   assert.ok(!/[‮​]/.test(JSON.stringify(t.ctx.tgPlacesSearch('clock', { limit: 3 }))), 'and the Places tab stores the clean text');
 });
 
-test('A8 reply with html:true and hostile HTML (<script>, an unknown tag, an unbalanced <b>) → the core sends it raw; Telegram\'s "can\'t parse entities" makes the core strip the tags and resend as plain text (core fallback; allow-list = REQUEST)', () => {
+test('A8 reply with html:true and hostile HTML (<script>, an unknown tag, an unbalanced <b>) → the core allow-lists the tags (tgSafeHtml): script and blink become visible text; the unbalanced <b> still trips Telegram and is resent plain (FIXED by R1)', () => {
   const t = fresh();
   say(t, 'what is on tomorrow?');
   const reqId = t.ctx.storeAll('Requests').slice(-1)[0].id;
@@ -193,8 +193,9 @@ test('A8 reply with html:true and hostile HTML (<script>, an unknown tag, an unb
   const sent = sends(t).slice(n);
   assert.equal(sent.length, 2, 'one refused HTML send, one plain resend');
   assert.equal(sent[0].parse_mode, 'HTML');
+  assert.equal(sent[0].text, '&lt;script&gt;alert(1)&lt;/script&gt;&lt;blink&gt;Ferry&lt;/blink&gt; <b>leaves at 10', 'only the allow-listed tag survives as a tag');
   assert.equal(sent[1].parse_mode, undefined, 'the resend has no parse_mode');
-  assert.equal(sent[1].text, 'alert(1)Ferry leaves at 10', 'tags stripped');
+  assert.equal(sent[1].text, '<script>alert(1)</script><blink>Ferry</blink> leaves at 10', 'the owner sees the brain\'s literal text, no tag executes');
   assert.equal(J(t.ctx.getRequest(reqId)).status, 'answered');
   // Without the html flag the same text is escaped and Telegram never sees a tag.
   t.state.fetch.responder = null;

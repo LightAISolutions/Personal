@@ -80,6 +80,8 @@ PASS = already safe · FIXED = pack code changed, the test proves it · ACCEPTED
 | I7 | stored id outside the helper's Drive folder | FIXED — never attached; audit + rebuild request. Core `reply.drive_file_ids` → REQUEST R3 |
 
 ## Requests to other owners
+> **Architect, at merge (Phase 6):** R1 (`tgSafeHtml`), R2 (`stripHidden` in `core/01_util.js`, used by the pack's `tgEnvClean`), R3 (`driveFileWhere` in `core/09_mailbox.js`, used by the pack's `tgCmdDriveWhere`) and R4 (`createMocks()` resets the harness default; the interim hygiene test removed) are applied on the session branch with tests in `core_telegram.test.js` and `core_mailbox.test.js`; A8 is now FIXED. R5 stays optional (the renderer already links only Google Maps hosts). B2b and A12b stay accepted — `helpers/decisions/TG-PHASE-6.md` §2 and §5.
+
 **R1 — architect / core (`core/09_mailbox.js`, `core/05_telegram.js`): allow-list brain HTML for `reply` with `html:true`.**
 Today the text is sent raw. Telegram refuses an unknown tag, and the core's fallback then resends it as plain text, so that case is safe. But a tag Telegram accepts goes through as the brain wrote it, for example `<a href="https://lookalike.example">`.
 ```diff

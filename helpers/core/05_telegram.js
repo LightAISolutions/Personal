@@ -45,6 +45,18 @@ function tgStripHtml(html) {
   return String(html === undefined || html === null ? '' : html).replace(/<[^>]*>/g, '')
     .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&amp;/g, '&');
 }
+/**
+ * Brain-written HTML reduced to Telegram's tag set (a `reply` with `html: true`): everything is escaped, then the plain
+ * formatting tags and `<a href="https://…">` are re-opened. A tag Telegram would accept but the brain should not send —
+ * `<tg-emoji>`, an attribute on `<b>`, a link with userinfo (an `@` before the host) or a non-https scheme —
+ * stays visible text. Unbalanced tags still reach Telegram's 400 and the plain-text retry handles them (Phase 6 red-team A8).
+ * Which hosts a place link may open is the pack's decision (Tour Guide links only Google Maps).
+ */
+var TG_SAFE_TAG_RE = /&lt;(\/?)(b|strong|i|em|u|ins|s|strike|del|code|pre|blockquote|tg-spoiler)&gt;/g;
+var TG_SAFE_LINK_RE = /&lt;a href="(https:\/\/(?:[^"<>\s&@]|&amp;){1,400})"&gt;/g;
+function tgSafeHtml(s) {
+  return tgEscape(s).replace(TG_SAFE_TAG_RE, '<$1$2>').replace(TG_SAFE_LINK_RE, '<a href="$1">').replace(/&lt;\/a&gt;/g, '</a>');
+}
 /** A copy of `params` for the plain-text retry: parse_mode dropped, `field` stripped of HTML. Never mutates the first attempt's object. */
 function _tgPlainRetry(params, field) {
   var plain = {};

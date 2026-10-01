@@ -14,6 +14,31 @@ function getRootFolder() {
   setProp(PROP.ROOT_FOLDER_ID, folder.getId());
   return folder;
 }
+/**
+ * Where a Drive file sits relative to the helper's own folder: 'in' (a descendant of getRootFolder(), found within
+ * DRIVE_WHERE_DEPTH parent levels), 'outside' (anywhere else in the owner's Drive) or 'missing' (Drive refuses the id).
+ * The brain lane names files by id and the script runs as the owner, so a file is attached to the chat only when it is
+ * 'in' — otherwise a forged id could make the bot send any file the owner can open (Phase 6 red-team I7 / R3).
+ */
+var DRIVE_WHERE_DEPTH = 8, DRIVE_WHERE_FANOUT = 20;
+function driveFileWhere(fileId) {
+  var file;
+  try { file = DriveApp.getFileById(String(fileId)); } catch (e) { return 'missing'; }
+  try {
+    var rootId = getRootFolder().getId(), level = [], depth = 0, it = file.getParents();
+    while (it.hasNext()) level.push(it.next());
+    while (level.length && depth < DRIVE_WHERE_DEPTH) {
+      var up = [];
+      for (var i = 0; i < level.length; i++) {
+        if (level[i].getId() === rootId) return 'in';
+        var p = level[i].getParents();
+        while (p.hasNext() && up.length < DRIVE_WHERE_FANOUT) up.push(p.next());
+      }
+      level = up; depth++;
+    }
+  } catch (e2) { return 'outside'; }
+  return 'outside';
+}
 function _childFolder(parent, name) {
   var it = parent.getFoldersByName(name);
   return it.hasNext() ? it.next() : parent.createFolder(name);
@@ -173,8 +198,10 @@ function pruneMailbox() {
   return trashed;
 }
 
+/** Text fields are cleaned of hidden characters in place (validate and handle share the object) before the checks. */
 function _textPayloadErrors(p, max) {
   var errs = [];
+  if (typeof p.text === 'string') p.text = stripHidden(p.text);
   if (typeof p.text !== 'string' || !p.text.trim()) errs.push('text required');
   else if (p.text.length > max) errs.push('text > ' + max + ' chars');
   return errs;
@@ -183,6 +210,7 @@ function _textPayloadErrors(p, max) {
 registerEnvelopeHandler('notice', {
   validate: function (p) {
     var errs = _textPayloadErrors(p, 4000);
+    if (typeof p.title === 'string') p.title = stripHidden(p.title);
     if (p.title !== undefined && (typeof p.title !== 'string' || p.title.length > 120)) errs.push('title invalid');
     if (p.level !== undefined && ['info', 'warn'].indexOf(p.level) < 0) errs.push('level must be info|warn');
     return errs;
@@ -198,7 +226,8 @@ registerEnvelopeHandler('notice', {
  * Core envelope: reply — the brain's answer to a request (envelope in_reply_to = request id).
  * payload {text (≤4000), html?: boolean, drive_file_ids?: { <label>: <Drive file id> }}. Sent to the owner as a Telegram
  * reply to the message that opened the request; each Drive file then follows as a document captioned with its label
- * (tgSendDocument — over-size files arrive as a link).
+ * (tgSendDocument — over-size files arrive as a link). `html: true` text goes through tgSafeHtml (Telegram's plain tags
+ * and https links only); a file outside the helper's Drive folder is never attached (`document_outside_root`).
  */
 function _driveFileIdsErrors(ids) {
   var errs = [];
@@ -222,7 +251,7 @@ registerEnvelopeHandler('reply', {
   handle: function (env) {
     var p = env.payload;
     var req = getRequest(env.in_reply_to);
-    var html = p.html ? p.text : tgEscape(p.text);
+    var html = p.html ? tgSafeHtml(p.text) : tgEscape(p.text);
     var opts = req && req.tg_message_id ? { replyTo: req.tg_message_id } : {};
     var chat = req && req.tg_chat_id ? req.tg_chat_id : tgOwnerChatId();
     var r = chat ? tgSend(chat, html, opts) : tgSendOwner(html, opts);
@@ -230,6 +259,7 @@ registerEnvelopeHandler('reply', {
     if (isPlainObject(p.drive_file_ids) && chat) {
       Object.keys(p.drive_file_ids).forEach(function (label) {
         docs++;
+        if (driveFileWhere(p.drive_file_ids[label]) === 'outside') { auditFail('document_outside_root', p.drive_file_ids[label], { label: label }); return; }
         var d = tgSendDocument(chat, { driveFileId: p.drive_file_ids[label], caption: tgEscape(label), silent: true });
         if (d && d.ok) docsOk++;
       });

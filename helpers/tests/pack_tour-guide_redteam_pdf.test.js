@@ -151,11 +151,4 @@ test('I7 a stored brochure id that points outside the helper\'s Drive folder →
   assert.equal(t.ctx.tgCmdDriveWhere('fixtureMissingFile01'), 'missing');
 });
 
-test('suite hygiene: reset the harness clock to wall time so later files that build envelopes without a clock (tools_bundle) are not dated 2027', () => {
-  // H.envelope() takes created_at from the most recent loadGas() clock; this file runs on fixed 2027 dates.
-  const { ctx } = H.loadGas({ pack: 'hello' });
-  assert.ok(Math.abs(new Date(H.envelope('greeting', {}).created_at).getTime() - Date.now()) < 60000);
-  assert.ok(ctx.HELPER);
-});
-
 // Developed by: LightAISolutions

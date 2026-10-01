@@ -404,31 +404,11 @@ registerCommand('/notes', function (ctx) {
 }, 'write the place notes of the current trip: /notes [names]');
 
 /**
- * Where a Drive file sits: 'in' (inside the helper's own folder, <drive_root>/…, found within TG_CMD_DRIVE_DEPTH parent
- * levels), 'outside' (anywhere else in the owner's Drive) or 'missing' (Drive refuses the id). The brochure id comes
- * from the brain (plan_digest.drive.brochure_pdf) and the script runs as the owner, so without this check a forged id
- * could make the bot attach any other file the owner can open — WP-6a, red-team I.
+ * Where a Drive file sits — the core's driveFileWhere: 'in' (inside the helper's own folder), 'outside' or 'missing'.
+ * The brochure id comes from the brain (plan_digest.drive.brochure_pdf) and the script runs as the owner, so without
+ * this check a forged id could make the bot attach any other file the owner can open — WP-6a, red-team I.
  */
-var TG_CMD_DRIVE_DEPTH = 8;
-function tgCmdDriveWhere(fileId) {
-  var file;
-  try { file = DriveApp.getFileById(String(fileId)); } catch (e) { return 'missing'; }
-  try {
-    var rootId = getRootFolder().getId(), level = [], depth = 0;
-    var it = file.getParents();
-    while (it.hasNext()) level.push(it.next());
-    while (level.length && depth < TG_CMD_DRIVE_DEPTH) {
-      var up = [];
-      for (var i = 0; i < level.length; i++) {
-        if (level[i].getId() === rootId) return 'in';
-        var p = level[i].getParents();
-        while (p.hasNext() && up.length < 20) up.push(p.next());
-      }
-      level = up; depth++;
-    }
-  } catch (e2) { return 'outside'; }
-  return 'outside';
-}
+function tgCmdDriveWhere(fileId) { return driveFileWhere(fileId); }
 /** Resend the stored brochure PDF; without one (or when Drive refuses, or the id points outside the helper's folder), ask the brain to build it. */
 function tgCmdBrochure(chatId, trip, chat) {
   var where = trip.drive_brochure_pdf ? tgCmdDriveWhere(trip.drive_brochure_pdf) : '';

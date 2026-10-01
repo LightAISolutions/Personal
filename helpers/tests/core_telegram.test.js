@@ -124,4 +124,22 @@ test('tgSendDocument: the caption is clipped tag-safe to the caption limit and r
   assert.ok(second.document, 'the file goes out again with the plain caption');
 });
 
+test('tgSafeHtml keeps Telegram\'s plain tags and https links and shows everything else as text (red-team A8 / R1)', () => {
+  const { ctx } = fresh();
+  assert.equal(ctx.tgSafeHtml('<b>Day 2</b> · <i>rain</i> · <code>09:30</code>'), '<b>Day 2</b> · <i>rain</i> · <code>09:30</code>');
+  assert.equal(ctx.tgSafeHtml('<a href="https://maps.app.goo.gl/x?q=1&z=2">map</a>'), '<a href="https://maps.app.goo.gl/x?q=1&amp;z=2">map</a>');
+  const userinfo = 'https://google.com' + '@' + 'evil.example/login';   // built at runtime: the boundary check reads a literal as an e-mail address
+  assert.equal(ctx.tgSafeHtml('<a href="' + userinfo + '">Open</a>'), '&lt;a href="' + userinfo + '"&gt;Open</a>', 'userinfo in the host is not a link');
+  assert.equal(ctx.tgSafeHtml('<a href="javascript:alert(1)">x</a>'), '&lt;a href="javascript:alert(1)"&gt;x</a>');
+  assert.equal(ctx.tgSafeHtml('<script>alert(1)</script> <tg-emoji emoji-id="1">x</tg-emoji> <b class="y">z</b>'), '&lt;script&gt;alert(1)&lt;/script&gt; &lt;tg-emoji emoji-id="1"&gt;x&lt;/tg-emoji&gt; &lt;b class="y"&gt;z</b>');
+  assert.equal(ctx.tgSafeHtml('5 < 6 & 7 > 3'), '5 &lt; 6 &amp; 7 &gt; 3');
+});
+
+test('stripHidden removes controls, bidi marks, zero-width space and the BOM but keeps ZWJ sequences and newlines (red-team A7 / R2)', () => {
+  const { ctx } = fresh();
+  assert.equal(ctx.stripHidden('pa‮id​ ﻿\u0007ok\nnext'), 'paid ok\nnext');
+  assert.equal(ctx.stripHidden('\u{1F468}‍\u{1F469}‍\u{1F467} ن‌ت'), '\u{1F468}‍\u{1F469}‍\u{1F467} ن‌ت');
+  assert.equal(ctx.stripHidden(null), '');
+});
+
 // Developed by: LightAISolutions

@@ -81,15 +81,12 @@ function tgEnvSize(errs, p) { var n = toJson(p).length; if (n > TG_ENV_DIGEST_MA
 function tgEnvDone(errs) { return errs.length > TG_ENV_MAX_ERRORS ? errs.slice(0, TG_ENV_MAX_ERRORS).concat(['… ' + (errs.length - TG_ENV_MAX_ERRORS) + ' more']) : errs; }
 
 /**
- * Invisible and direction-changing characters (C0/C1 controls except tab, newline and CR; bidi embeddings, overrides and
- * isolates; zero-width space; word joiner and invisible operators; BOM). A brain string carrying them could reorder or
- * hide text in the chat (WP-6a, red-team A7), so every pack envelope is cleaned in place before validation — the
- * validators, the Sheet and the chat only ever see the cleaned strings. ZWNJ/ZWJ (U+200C/U+200D) stay: scripts and emoji
- * sequences need them.
+ * Invisible and direction-changing characters (the core's stripHidden set: controls, bidi marks and isolates, zero-width
+ * space, word joiner, BOM) could reorder or hide text in the chat (WP-6a, red-team A7), so every pack envelope is cleaned
+ * in place before validation — the validators, the Sheet and the chat only ever see the cleaned strings.
  */
-var TG_ENV_HIDDEN = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F\u061C\u200B\u200E\u200F\u202A-\u202E\u2060-\u2064\u2066-\u2069\uFEFF]/g;
 function tgEnvClean(v) {
-  if (typeof v === 'string') return v.replace(TG_ENV_HIDDEN, '');
+  if (typeof v === 'string') return stripHidden(v);
   if (Array.isArray(v)) { for (var i = 0; i < v.length; i++) v[i] = tgEnvClean(v[i]); return v; }
   if (isPlainObject(v)) { Object.keys(v).forEach(function (k) { v[k] = tgEnvClean(v[k]); }); return v; }
   return v;

@@ -139,4 +139,31 @@ test('mailboxWriteRequest validates kind; pruneMailbox trashes stale requests an
   assert.deepEqual(names(state, 'archive/processed'), []);
 });
 
+test('reply html goes through tgSafeHtml, hidden characters are stripped from notice and reply text, and a Drive file outside the helper folder is never attached (R1–R3)', () => {
+  const { ctx, state } = fresh();
+  H.configureRoutine(ctx, state);
+  const open = ctx.openRequest({ kind: 'ask', text: 'files?', chat: { chat_id: 777, message_id: 7 } });
+  const inside = state.drive.putFile('Hello/Trips/demo', 'plan.pdf', '%PDF-1.7 inside', 'application/pdf');
+  const outside = state.drive.putFile('Elsewhere/Private', 'statement.pdf', '%PDF-1.7 not ours', 'application/pdf');
+  const userinfo = 'https://lookalike.example' + '@' + 'evil.test/';   // built at runtime: the boundary check reads a literal as an e-mail address
+  H.putEnvelope(state, H.envelope('reply', {
+    text: 'See <a href="' + userinfo + '">the plan</a> and <b>da\u202Ey 2</b>', html: true,
+    drive_file_ids: { plan: inside.getId(), statement: outside.getId(), gone: 'fixtureMissingFile000' },
+  }, { in_reply_to: open.id }));
+  assert.equal(J(ctx.pollFromBrain()).processed, 1);
+  const sent = state.fetch.telegram('sendMessage');
+  assert.equal(sent[0].json.text, 'See &lt;a href="' + userinfo + '"&gt;the plan</a> and <b>day 2</b>');
+  const docs = state.fetch.telegram('sendDocument');
+  assert.equal(docs.length, 1, 'only the file inside Hello/ is attached; the outside file is skipped, the missing one audited');
+  const ev = ctx.storeAll('AuditLog');
+  assert.ok(ev.some((x) => x.event === 'document_outside_root' && x.detail_json.includes('"statement"')));
+  assert.ok(ev.some((x) => x.event === 'document_not_found'));
+  assert.equal(ctx.driveFileWhere(inside.getId()), 'in');
+  assert.equal(ctx.driveFileWhere(outside.getId()), 'outside');
+  assert.equal(ctx.driveFileWhere('fixtureMissingFile000'), 'missing');
+  H.putEnvelope(state, H.envelope('notice', { text: 'to​day⁦ fine', title: 'He‮ads up' }));
+  assert.equal(J(ctx.pollFromBrain()).processed, 1);
+  assert.equal(state.fetch.lastTelegramText(), 'ℹ️ <b>Heads up</b>\ntoday fine');
+});
+
 // Developed by: LightAISolutions

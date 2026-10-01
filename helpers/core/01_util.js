@@ -119,4 +119,14 @@ function redactSecrets(s) {
   return s;
 }
 
+/**
+ * Invisible and direction-changing characters: C0/C1 controls except tab, newline and CR; the Arabic letter mark; the
+ * zero-width space; left-to-right / right-to-left marks; bidi embeddings, overrides and isolates; the word joiner and the
+ * invisible operators; the BOM. Text from the brain lane carrying them could reorder or hide what the owner reads
+ * (Phase 6 red-team A7), so every envelope string is cleaned before it is validated. ZWNJ and ZWJ (U+200C, U+200D)
+ * stay: scripts and emoji sequences need them.
+ */
+var HIDDEN_CHARS_RE = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F\u061C\u200B\u200E\u200F\u202A-\u202E\u2060-\u2064\u2066-\u2069\uFEFF]/g;
+function stripHidden(s) { return String(s === undefined || s === null ? '' : s).replace(HIDDEN_CHARS_RE, ''); }
+
 // Developed by: LightAISolutions
