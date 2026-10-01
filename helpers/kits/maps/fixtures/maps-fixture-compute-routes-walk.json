@@ -1,0 +1,18 @@
+{
+  "routes": [
+    {
+      "distanceMeters": 1240,
+      "duration": "1032s",
+      "staticDuration": "1032s",
+      "polyline": { "encodedPolyline": "fixture_polyline_walk" },
+      "legs": [
+        {
+          "distanceMeters": 1240,
+          "duration": "1032s",
+          "startLocation": { "latLng": { "latitude": 12.3456, "longitude": -45.6789 } },
+          "endLocation": { "latLng": { "latitude": 12.3512, "longitude": -45.6701 } }
+        }
+      ]
+    }
+  ]
+}
