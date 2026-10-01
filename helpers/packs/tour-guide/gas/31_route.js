@@ -103,7 +103,9 @@ function tgRouteResolve(place, trip) {
     var lod = trip.lodging; if (typeof lod === 'string') { var j = safeJsonParse(lod); lod = j.ok ? j.value : null; }
     if (lod && lod.text) return String(lod.text);
   }
-  if (trip.destination && p.indexOf(',') < 0 && p.toLowerCase().indexOf(String(trip.destination).toLowerCase()) < 0) return p + ', ' + trip.destination;
+  var dest = String(trip.destination || '');
+  if (/^[a-z0-9]+(-[a-z0-9]+)+$/.test(dest)) dest = dest.replace(/-/g, ' '); // a slug-like destination reads better as words
+  if (dest && p.indexOf(',') < 0 && p.toLowerCase().indexOf(dest.toLowerCase()) < 0) return p + ', ' + dest;
   return p;
 }
 
