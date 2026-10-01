@@ -1,10 +1,12 @@
 /**
  * Brochure kit — a day spread: the big numeral and theme, the day's statistics, a timeline rail of stops, legs,
- * meals and free time in clock order, and an aside with the route sketch, the night's lodging and any warnings.
+ * meals and free time in clock order, and an aside with the day's map (a real Google map when the build fetched one,
+ * otherwise the drawn route sketch), the night's lodging and any warnings.
  */
 import { esc, attr, join, clip } from '../escape.mjs';
 import { longDate, shortDate, duration, distance } from '../format.mjs';
 import { routeSketch, sketchLegend } from '../sketch.mjs';
+import { daySequence, mapFigure, mapCredit } from '../mapframe.mjs';
 import { icon, MODE_LABEL, MEAL_ICON } from '../icons.mjs';
 import { hueStyle, hueOf, timeCell, clockPlain, pageRef, link, hoursFrag, metaLine, sep } from './common.mjs';
 
@@ -34,28 +36,21 @@ function freeRow(t, locale) {
 }
 const ROW = { stop: stopRow, leg: legRow, meal: mealRow, free: freeRow };
 
-function daySketch(d, i) {
-  const points = [], legs = [];
-  const idx = new Map();
-  const add = (key, p, extra) => { if (!idx.has(key)) { idx.set(key, points.length); points.push({ lat: p.lat, lng: p.lng, ...extra }); } return idx.get(key); };
-  if (d.lodging) add('lodging', d.lodging, { kind: 'lodging', label: 'inn' });
-  let prev = d.lodging ? 0 : null, mode = 'walk';
-  for (const t of d.timeline) {
-    if (t.kind === 'leg') { mode = t.mode; if (t.to === 'lodging' && d.lodging && prev !== 0) { legs.push({ from: prev, to: 0, mode }); prev = 0; } continue; }
-    if (!t.place || !Number.isFinite(t.place.lat)) continue;
-    const k = add(t.place.id, t.place, { kind: t.kind === 'stop' ? 'stop' : 'meal', n: t.n });
-    if (prev !== null && prev !== k) legs.push({ from: prev, to: k, mode });
-    prev = k; mode = 'walk';
-  }
+function daySketch(d, i, ctx) {
+  const { points, pairs } = daySequence(d);
+  const legs = pairs.map((q) => ({ from: q.from, to: q.to, mode: q.mode }));
   const modes = [...new Set(legs.map((l) => l.mode))];
+  const src = d.map_image ? ctx.img.resolve(d.map_image, `Day ${d.index} map`) : '';
+  if (src) return mapFigure({ src, image: d.map_image, points, hue: hueOf(i), title: `Day ${d.index} map`, caption: `<span class="legend-item"><svg viewBox="0 0 28 8" width="28" height="8" aria-hidden="true"><path d="M1 4H27" stroke="${hueOf(i)}" stroke-width="2.6" stroke-linecap="round"/></svg>the day's route</span><span class="legend-item">${mapCredit(d.map_image)}</span>` });
   return `<figure class="sketch-fig">${routeSketch({ points, legs, w: 245, h: 190, hue: hueOf(i), title: `Day ${d.index} route sketch` })}<figcaption class="legend">${sketchLegend(modes, hueOf(i))}<span class="legend-item">scale bar only</span></figcaption></figure>`;
 }
-function aside(d, i, locale) {
+function aside(d, i, ctx) {
+  const { locale } = ctx;
   const l = d.lodging;
   const lodging = l ? `<div class="aside-block"><p class="eyebrow">The night</p><p>${icon('bed', 13)}<b>${esc(l.name)}</b>${l.address ? `<br>${esc(l.address)}` : ''}${l.maps_url ? `<br>${link(l.maps_url, 'map ↗', ' class="small"')}` : ''}${l.note ? `<br><span class="muted">${esc(clip(l.note, 220))}</span>` : ''}</p></div>` : '';
   const warnings = d.warnings.length ? `<div class="aside-block"><p class="eyebrow">Mind</p><div class="warnings">${d.warnings.map((w) => `<p class="warning ${attr(w.severity || 'warn')}">${icon(w.severity === 'info' ? 'info' : 'warn', 13)}<span>${esc(clip(w.text, 260))}</span></p>`).join('')}</div></div>` : '';
   const verified = d.verified_on ? `<p class="aside-block verified">Hours and bookings checked ${esc(shortDate(d.verified_on, locale))}.</p>` : '';
-  return `<aside class="day-aside" data-pg="aside">${daySketch(d, i)}${lodging}${warnings}${verified}</aside>`;
+  return `<aside class="day-aside" data-pg="aside">${daySketch(d, i, ctx)}${lodging}${warnings}${verified}</aside>`;
 }
 function stats(d, locale) {
   const s = d.stats;
@@ -68,7 +63,7 @@ export function day(d, i, ctx) {
   const folio = `Day ${d.index} · ${shortDate(d.date, locale)}`;
   return `<section class="sec sec-day" data-pg="section" data-folio="${attr(folio)}" data-tab="${attr(`Day ${d.index}`)}" style="${hueStyle(i)}">
 <header class="day-head" data-pg="block" data-keep><div class="day-n">${d.index}</div><div class="day-titles"><p class="eyebrow">Day <b>${WORDS[d.index] || d.index}</b> · ${esc(longDate(d.date, locale))}</p><h2>${esc(d.theme)}</h2>${d.summary ? `<p class="day-summary">${esc(clip(d.summary, 400))}</p>` : ''}</div>${stats(d, locale)}</header>
-${aside(d, i, locale)}
+${aside(d, i, ctx)}
 <div class="rail" data-pg="split" data-cont="${attr(`Day ${d.index}, continued`)}">${d.timeline.map((t) => (ROW[t.kind] || (() => ''))(t, locale)).join('\n')}</div>
 </section>`;
 }

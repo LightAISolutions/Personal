@@ -7,7 +7,8 @@
  * Note: `createConnection` is honoured only when no `agent` is given (agent:false would silently connect DIRECTLY,
  * bypassing the proxy and its credential injection — seen in the first live smoke, decisions WP-2a).
  * The transport never logs; callers must not log `req.headers` (they may carry a caller-supplied key).
- * transport(req) → Promise<{ status, headers, text, ms }>, req = { method, url, headers, body, timeoutMs }.
+ * transport(req) → Promise<{ status, headers, text, bytes, ms }>, req = { method, url, headers, body, timeoutMs }
+ * (`bytes` is the raw body — the Static Maps client reads PNGs from it; `text` is its UTF-8 reading).
  */
 import http from 'node:http';
 import https from 'node:https';
@@ -62,7 +63,7 @@ export function createHttpsTransport({ env = process.env } = {}) {
       const req = https.request(opts, (res) => {
         const chunks = [];
         res.on('data', (c) => chunks.push(c));
-        res.on('end', () => { if (socket) socket.destroy(); resolve({ status: res.statusCode, headers: res.headers, text: Buffer.concat(chunks).toString('utf8'), ms: Date.now() - started }); });
+        res.on('end', () => { if (socket) socket.destroy(); const bytes = Buffer.concat(chunks); resolve({ status: res.statusCode, headers: res.headers, text: bytes.toString('utf8'), bytes, ms: Date.now() - started }); });
         res.on('error', (e) => reject(new MapsRequestError('NETWORK', `maps: response error (${e.code || e.message})`)));
       });
       req.once('timeout', () => req.destroy(new MapsRequestError('TIMEOUT', `maps: request to ${u.hostname} timed out after ${timeoutMs} ms`)));

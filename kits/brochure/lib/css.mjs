@@ -96,6 +96,12 @@ const DAY = `
 .day-stats dd{margin:0;font-variant-numeric:tabular-nums;text-align:right}
 .day-aside{display:grid;gap:.9rem;align-content:start}
 .sketch-fig .sketch{width:100%;height:auto}
+.gmap{position:relative;border:1px solid #e2dbcf;border-radius:3px;overflow:hidden;background:#f6f1e7}
+.gmap img{display:block;width:100%;height:100%;object-fit:cover}
+.gmap-marks{position:absolute;inset:0;width:100%;height:100%}
+.map-fig{margin:0}
+.map-fig figcaption{margin-top:.4rem}
+.glance-map .gmap{width:100%}
 .sketch-fig figcaption{margin-top:.4rem}
 .aside-block{font-size:var(--s-1);line-height:1.4}
 .aside-block .eyebrow{margin-bottom:.2rem}
@@ -165,7 +171,10 @@ const CARDS = `
 .card-rev .by{display:block;margin-top:.2rem;font-size:var(--s-2);color:var(--muted);font-style:normal}
 .card-rev .by a{color:var(--sea);border-bottom-color:var(--sea-soft)}
 .card-day{font-size:var(--s-3);letter-spacing:.14em;text-transform:uppercase;color:var(--hue);margin-top:.2rem}
-.card-img{width:100%;aspect-ratio:3/2;object-fit:cover;margin-bottom:.6rem;filter:saturate(.9)}
+.card-fig{margin:0 0 .6rem}
+.card-img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;filter:saturate(.9)}
+.card-img.gphoto{aspect-ratio:5/2}
+.photo-credit{font-size:var(--s-2);color:var(--muted);font-style:italic;margin-top:.2rem;line-height:1.3}
 .pref{color:var(--sea);border-bottom-color:var(--sea-soft);white-space:nowrap}
 .card-edit{font-size:var(--s-1);color:var(--ink2);line-height:1.4;margin-bottom:.4rem}
 .card-edit .tiny{color:var(--faint)}

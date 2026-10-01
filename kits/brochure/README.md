@@ -15,6 +15,7 @@ node helpers/kits/brochure/index.mjs render   model.json out.html        [--page
 node helpers/kits/brochure/index.mjs pdf      in.html    out.pdf         [--page letter|a4] [--shots DIR]
 node helpers/kits/brochure/index.mjs build    model.json outdir/         [--page …] [--shots [DIR]] [--name NAME]
 node helpers/kits/brochure/index.mjs sample   outdir/    [--page a4]     (builds the invented fixture, with shots)
+… render|build|sample … --google [--ledger PATH]   (real Google maps, place photos and route lines first)
 ```
 
 Options go after the positionals. Exit codes: **0** ok · **1** usage or runtime error · **2** the model failed
@@ -25,6 +26,23 @@ unavailable (Playwright or Chromium missing) — the HTML has still been written
 Library use: `import { renderHtml, renderPdf, pdfAvailable, validate, prepare, pageSpec } from '…/index.mjs'`.
 `renderHtml(model, { page, baseDir, embedFonts }) → { html, warnings, model }` (throws `ModelError`);
 `renderPdf(html, outPath, { page, shotsDir, shots, scale }) → { pages, warnings, shots }`.
+`addGoogleImages(model, { client, maps, photos, routes, photoWidth, maxPhotos }) → { model, stats, warnings }` (async).
+
+## Real Google maps and place photos
+
+`addGoogleImages` is the one build step that talks to Google, through a maps-kit client (`--google` builds one from
+`MAPS_STATIC_KEY` and a usage ledger). It returns a **new** model; the input is untouched. In order:
+
+1. **Route lines.** Each walk/drive/bike/transit leg without a `polyline` gets one from Compute Routes, so route lines follow streets. A leg Google cannot route keeps a straight line.
+2. **Maps.** One Maps Static API image per day (260×320 at scale 2) and one for the whole trip (420×300). Each is requested at a **centre and zoom the kit computes** (`lib/mapframe.mjs`: Web Mercator `fitView` over every marker and route point, extra bottom padding so Google's logo and copyright stay clear). Google draws the routes in the day's colour and business pins are hidden. The renderer projects the brochure's own numbered badges, meal rings and lodging house onto the image exactly, so a Google map and a drawn sketch carry the same markers.
+3. **Photos.** Each place with a `google_photo.name` and no own `image` gets that Place Photo, credited on the card as "Photo by <author> · Google Maps" with the author's link. The place's own image always wins.
+
+Images are inlined as data URIs (nothing is fetched at render or view time and nothing outlives the build). Any
+failure (no key, quota, HTTP error) becomes a warning and the drawn sketch / no photo / straight line remains. The
+sources page states that the maps are Google Maps with markers added, and the colophon credits "Maps © Google".
+Street View is never used: Google forbids it in print. Model fields: `trip.map_image` / `days[].map_image`
+`{src*, alt, credit, view {center, zoom, width, height}}` (without `view` no markers are overlaid),
+`places.*.google_photo` `{name, src, author, author_url, width_px, height_px, alt}`, `days[].legs[].polyline`.
 
 ## The model
 

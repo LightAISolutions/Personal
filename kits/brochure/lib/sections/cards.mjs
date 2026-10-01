@@ -1,5 +1,6 @@
 /**
- * Brochure kit — place cards, one per place in order of first appearance: what it is, the practical line (hours,
+ * Brochure kit — place cards, one per place in order of first appearance: a photo (the place's own image, or a Google
+ * place photo credited to its author), what it is, the practical line (hours,
  * rating, price, links — Google-sourced fields are marked), then the notes written for these travellers, one
  * review with its author credited, and the sources behind the notes.
  */
@@ -46,14 +47,23 @@ function sources(p) {
 function card(c, m) {
   const p = c.place;
   const badge = c.n ? `<span class="badge">${c.n}</span>` : `<span class="badge meal">${icon(MEAL_ICON[c.mealKind] || 'fork', 12)}</span>`;
-  const img = c.image ? `<img class="card-img" src="${c.image}" alt="${attr(c.place.image && c.place.image.alt || '')}">` : '';
+  const gp = c.photo ? p.google_photo : null;
+  const credit = gp ? `<figcaption class="photo-credit">Photo${gp.author ? ` by ${link(gp.author_url, esc(clip(gp.author, 60)))}` : ''} · Google Maps</figcaption>` : (p.image && p.image.credit ? `<figcaption class="photo-credit">${esc(p.image.credit)}</figcaption>` : '');
+  const img = c.image ? `<figure class="card-fig"><img class="card-img${c.photo ? ' gphoto' : ''}" src="${c.image}" alt="${attr((c.photo ? gp && gp.alt : p.image && p.image.alt) || p.name)}">${credit}</figure>` : '';
   const edit = p.editorial ? `<p class="card-edit">${esc(clip(p.editorial, 240))} <span class="tiny">— Google Maps</span></p>` : '';
   return `<article class="card" id="place-${attr(p.id)}" style="${hueStyle(c.day - 1)}">${img}<div class="card-head">${badge}<div><p class="card-day">Day ${c.day}${p.category ? ` · ${esc(p.category)}` : ''}</p><h3>${esc(p.name)}</h3>${p.tagline ? `<p class="card-tag">${esc(clip(p.tagline, 140))}</p>` : ''}</div></div>${edit}${metaList(p, m)}${notes(p, m)}${review(p)}${sources(p)}</article>`;
 }
 export function cards(ctx) {
   const { m } = ctx;
   if (!m.cards.length) return '';
-  const items = m.cards.map((c) => card({ ...c, image: c.place.image ? ctx.img.resolve(c.place.image, c.place.name) : '' }, m));
+  // the place's own image wins; otherwise a Google place photo fetched for this build (credited with its author)
+  const pic = (p) => {
+    const own = p.image ? ctx.img.resolve(p.image, p.name) : '';
+    if (own) return { image: own, photo: false };
+    const g = p.google_photo && p.google_photo.src ? ctx.img.resolve(p.google_photo.src, `${p.name} photo`) : '';
+    return { image: g, photo: Boolean(g) };
+  };
+  const items = m.cards.map((c) => card({ ...c, ...pic(c.place) }, m));
   return `<section class="sec sec-cards" data-pg="section" data-folio="The places">
 ${secHead(`<b>${m.cards.length}</b> places · in order of appearance`, 'The places', 'Numbers match the day timelines')}
 <div class="cards" data-pg="cols">${items.join('\n')}</div>

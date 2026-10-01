@@ -16,6 +16,21 @@ const { elements } = await maps.computeRouteMatrix({ origins, destinations, trav
 
 Waypoints are `{ placeId }`, `{ lat, lng }` or `{ address }`. Results are normalized (`durationSec`, `distanceMeters`, `legs`, `optimizedOrder`, matrix `elements` with global `originIndex` / `destinationIndex`). Errors are typed with a stable `code`: `SKU_CEILING` (`MapsBudgetError`, nothing was sent), `BAD_INPUT` (`MapsInputError`, nothing was sent), `AUTH` / `QUOTA` / `UPSTREAM` / `HTTP_<n>` / `NETWORK` / `TIMEOUT` / `PROXY_REFUSED` / `BAD_JSON` (`MapsRequestError`).
 
+## Static maps and place photos (Phase 2e, for the brochure)
+
+```js
+const maps = createMapsClient({ ledgerPath });                 // staticKey defaults to env MAPS_STATIC_KEY
+maps.hasStaticKey();                                           // false → callers fall back to a drawn sketch
+const { bytes } = await maps.staticMap({ width: 260, height: 320, scale: 2, center: { lat, lng }, zoom: 15,
+  paths: [{ polyline: route.polyline, color: '0xB5482DE6', weight: 4 }], styles: ['feature:poi.business|visibility:off'] });
+const { bytes: jpg, authorAttributions } = await maps.placePhoto(place.photos[0], { maxWidthPx: 900 });
+```
+
+- **Static maps.** `staticMapUrl(spec)` builds and validates the URL with **no key** (sides ≤ 640, scale 1|2, zoom 0–21, markers, encoded paths, styles); past `URL_MAX_CHARS` it lowers path precision and then simplifies points, noting what it did. The egress proxy injects no key for `maps.googleapis.com` (a header key answers 403), so `staticMap` appends `key=` from `MAPS_STATIC_KEY` at send time only; without a key it refuses with `NO_KEY` and sends nothing. The keyed URL is never returned or logged and errors are redacted. Optional URL signing: `MAPS_STATIC_SIGNING_SECRET`.
+- **Place photos.** `photos[]` sits in the IDs-only tier, so every Details mask lists it. `placePhoto` does `GET /v1/{name}/media?skipHttpRedirect=true` (one Photos unit, key injected by the proxy) and then downloads the returned `photoUri`. It returns the bytes **and** `authorAttributions`, which must be shown with the photo. Photo names expire and are not cached.
+- **Build-scoped.** Images are inlined into the build's output and never written to a reusable cache. **Street View is not offered**: Google forbids it in print.
+- **Offline.** The mock transport draws stand-in PNGs (`stubFromStaticUrl`, `stubPhotoPng`) so tests and `--mock` runs need no network.
+
 ## Field masks and SKUs (one call = one SKU)
 
 Callers choose a **tier name**, never a field list; the masks are frozen constants in `lib/maps-masks.mjs` (`node helpers/kits/maps/index.mjs masks` prints them). Masks are cumulative, and a test proves each one's highest field tier equals its name, so every request bills exactly one known SKU.
@@ -26,6 +41,9 @@ Callers choose a **tier name**, never a field list; the masks are frozen constan
 | Text Search | `ids_only` · `pro` · `enterprise` (there is no non-ID Essentials Text Search) | ∞ · 5,000 · 1,000 | 2,000 (loop guard) · 4,000 · 800 |
 | Compute Routes | Essentials; **Pro** when `optimizeWaypointOrder`, 11–25 intermediates, or `TRAFFIC_AWARE*` | 10,000 · 5,000 | 8,000 · 4,000 |
 | Compute Route Matrix (per **element**) | Essentials; Pro with `TRAFFIC_AWARE*` | 10,000 · 5,000 | 8,000 · 4,000 |
+
+| Maps Static API (`staticMap`) | Static Maps | 10,000 | 8,000 |
+| Place Photo (`placePhoto`, the `/media` lookup; the image download is not billed) | Place Details Photos | 1,000 | 800 |
 
 Not exposed (so no call can bill Enterprise or turn Pro by accident): two-wheeler routing, tolls, traffic on polylines, location modifiers (heading, side of road, vehicle stopover), `via` waypoints. Prices per SKU are in `lib/maps-skus.mjs` (pricing page of 2026-09-28).
 
@@ -72,6 +90,9 @@ node helpers/kits/maps/index.mjs details <placeId> [--tier T] [--store F --build
 node helpers/kits/maps/index.mjs search  <query> [--tier T] [--page-size N]        --live --ledger <file>
 node helpers/kits/maps/index.mjs route   --json '<computeRoutes spec>'              --live --ledger <file>
 node helpers/kits/maps/index.mjs matrix  --json '<computeRouteMatrix spec>'         --live --ledger <file>
+node helpers/kits/maps/index.mjs static-url <spec.json>                            # URL without a key, no network
+node helpers/kits/maps/index.mjs static-map <spec.json> <out.png>                  --live --ledger <file> | --mock
+node helpers/kits/maps/index.mjs photo   <photoName> <out> [--max-width N]         --live --ledger <file> | --mock
 node helpers/kits/maps/index.mjs smoke  [--live --ledger <file>]   # 1 Text Search Pro + 1 Place Details Enterprise + 1 Compute Routes (WALK)
 ```
 
@@ -79,10 +100,10 @@ Use the file path (`index.mjs`): Node does not run a directory's `index.mjs`. Ne
 
 ## What it never does
 
-Free-form field masks · Enterprise route features · calls past a ceiling · keys in code, config, logs or errors · caching Places content beyond the build or lat/lng beyond 30 days · writing anything into a public repo · retries (a failed call is reported; the caller decides).
+Free-form field masks · Street View images · Enterprise route features · calls past a ceiling · keys in code, config, logs or errors · caching Places content beyond the build or lat/lng beyond 30 days · writing anything into a public repo · retries (a failed call is reported; the caller decides).
 
 ## Files
 
-`index.mjs` (exports + CLI) · `lib/maps-errors.mjs` · `maps-skus.mjs` (SKU table, ceilings) · `maps-masks.mjs` · `maps-ledger.mjs` · `maps-transport.mjs` · `maps-http.mjs` (guarded call) · `maps-places.mjs` · `maps-routes.mjs` · `maps-urls.mjs` · `maps-snapshots.mjs` · `maps-client.mjs` · `maps-cli.mjs` · `maps-mock-transport.mjs` (fixture transport for tests and the offline smoke) · `fixtures/maps-fixture-*.json` (hand-written, invented city "Velmora", real API shapes). Tests: `helpers/tests/kit_maps_*.test.js`.
+`index.mjs` (exports + CLI) · `lib/maps-errors.mjs` · `maps-skus.mjs` (SKU table, ceilings) · `maps-masks.mjs` · `maps-ledger.mjs` · `maps-transport.mjs` · `maps-http.mjs` (guarded call) · `maps-places.mjs` · `maps-routes.mjs` · `maps-urls.mjs` · `maps-snapshots.mjs` · `maps-static.mjs` (Maps Static API) · `maps-photos.mjs` (Place Photos) · `maps-polyline.mjs` (encode/decode/simplify) · `maps-png-stub.mjs` (offline stand-in PNGs) · `maps-client.mjs` · `maps-cli.mjs` · `maps-mock-transport.mjs` (fixture transport for tests and the offline smoke) · `fixtures/maps-fixture-*.json` (hand-written, invented city "Velmora", real API shapes). Tests: `helpers/tests/kit_maps_*.test.js`.
 
 Developed by: LightAISolutions

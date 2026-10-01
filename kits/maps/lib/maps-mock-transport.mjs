@@ -6,6 +6,7 @@
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { stubFromStaticUrl, stubPhotoPng } from './maps-png-stub.mjs';
 
 export const FIXTURES_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'fixtures');
 export function fixture(name) { return JSON.parse(readFileSync(join(FIXTURES_DIR, `maps-fixture-${name}.json`), 'utf8')); }
@@ -15,11 +16,17 @@ export function fixtureResponder(req) {
   const u = new URL(req.url);
   const body = req.body ? (typeof req.body === 'string' ? JSON.parse(req.body) : req.body) : null;
   if (u.hostname === 'places.googleapis.com' && u.pathname.endsWith(':searchText')) return { status: 200, body: fixture('text-search-pro') };
+  if (u.hostname === 'places.googleapis.com' && /^\/v1\/places\/[^/]+\/photos\/[^/]+\/media$/.test(u.pathname)) return { status: 200, body: { name: u.pathname.slice(4, -6), photoUri: 'https://photos.example.com/fixture/' + u.pathname.split('/')[5] + '?w=' + (u.searchParams.get('maxWidthPx') || '') } };
+  if (u.hostname === 'photos.example.com') { const w = Number(u.searchParams.get('w')) || 1200; return { status: 200, contentType: 'image/png', bytes: stubPhotoPng({ width: Math.min(w, 1200), height: Math.round(Math.min(w, 1200) * 2 / 3), seed: u.pathname.length }) }; }
   if (u.hostname === 'places.googleapis.com' && u.pathname.startsWith('/v1/places/')) return { status: 200, body: fixture('place-details-enterprise') };
   if (u.pathname.endsWith('v2:computeRoutes')) {
     if (body?.travelMode === 'TRANSIT') return { status: 200, body: fixture('compute-routes-transit') };
     if (body?.optimizeWaypointOrder) return { status: 200, body: fixture('compute-routes-optimized') };
     return { status: 200, body: fixture('compute-routes-walk') };
+  }
+  if (u.hostname === 'maps.googleapis.com' && u.pathname === '/maps/api/staticmap') {
+    if (!u.searchParams.get('key')) return { status: 403, contentType: 'text/plain', body: 'The Google Maps Platform server rejected your request. You must use an API key to authenticate each request to Google Maps Platform APIs.' };
+    return { status: 200, contentType: 'image/png', bytes: stubFromStaticUrl(req.url) };
   }
   if (u.pathname.endsWith('v2:computeRouteMatrix')) {
     const O = body.origins.length, D = body.destinations.length, out = [];
@@ -29,13 +36,15 @@ export function fixtureResponder(req) {
   return { status: 404, body: { error: { code: 404, message: 'fixture: no route for ' + u.pathname, status: 'NOT_FOUND' } } };
 }
 
-/** createMockTransport(responder = fixtureResponder) → transport with `.calls` (method, url, headers, body). */
+/** createMockTransport(responder = fixtureResponder) → transport with `.calls` (method, url, headers, body). A responder
+ * answers { status, body } (JSON or string) or { status, bytes, contentType } for binary answers such as a static map. */
 export function createMockTransport(responder = fixtureResponder) {
   const calls = [];
   const transport = async (req) => {
     calls.push({ method: req.method, url: req.url, headers: { ...req.headers }, body: req.body ? JSON.parse(JSON.stringify(req.body)) : null });
     const r = await responder(req, calls.length);
-    return { status: r.status, headers: { 'content-type': 'application/json' }, text: typeof r.body === 'string' ? r.body : JSON.stringify(r.body), ms: 1 };
+    const text = r.bytes ? r.bytes.toString('utf8') : typeof r.body === 'string' ? r.body : JSON.stringify(r.body);
+    return { status: r.status, headers: { 'content-type': r.contentType || 'application/json' }, text, bytes: r.bytes || Buffer.from(text, 'utf8'), ms: 1 };
   };
   transport.calls = calls;
   return transport;

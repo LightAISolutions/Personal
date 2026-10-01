@@ -6,7 +6,7 @@
  * follows the current SKU page.
  */
 const DETAILS_FIELDS = {
-  essentials: ['id', 'location', 'formattedAddress', 'shortFormattedAddress', 'types', 'viewport'],
+  essentials: ['id', 'photos', 'location', 'formattedAddress', 'shortFormattedAddress', 'types', 'viewport'], // photos: IDs-only field, carried by every mask (Place Photos, WP-2e)
   pro: ['displayName', 'primaryType', 'primaryTypeDisplayName', 'businessStatus', 'googleMapsUri', 'timeZone', 'utcOffsetMinutes', 'accessibilityOptions'],
   enterprise: ['regularOpeningHours', 'currentOpeningHours', 'nationalPhoneNumber', 'priceLevel', 'priceRange', 'rating', 'userRatingCount', 'websiteUri'],
   enterprise_atmosphere: ['editorialSummary', 'reviewSummary', 'reviews', 'goodForChildren', 'servesVegetarianFood', 'reservable', 'restroom', 'outdoorSeating']
@@ -40,7 +40,7 @@ export const ROUTE_MATRIX_MASK = 'originIndex,destinationIndex,status,condition,
 /** Tier of one Places field name (with or without the `places.` prefix), or null if the kit does not know it. */
 export function fieldTier(field) {
   const f = field.replace(/^places\./, '');
-  if (f === 'nextPageToken' || f === 'id') return 'ids_only';
+  if (f === 'nextPageToken' || f === 'id' || f === 'photos') return 'ids_only';
   for (const [t, list] of Object.entries(DETAILS_FIELDS)) if (list.includes(f)) return t;
   return null;
 }

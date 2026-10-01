@@ -11,13 +11,15 @@ export const SKUS = Object.freeze({
   'places.details.pro': { label: 'Place Details Pro', unit: 'request', free: 5000, usdPer1000: 17 },
   'places.details.enterprise': { label: 'Place Details Enterprise', unit: 'request', free: 1000, usdPer1000: 20 },
   'places.details.enterprise_atmosphere': { label: 'Place Details Enterprise + Atmosphere', unit: 'request', free: 1000, usdPer1000: 25 },
+  'places.details.photos': { label: 'Place Details Photos (one media request per photo)', unit: 'request', free: 1000, usdPer1000: 7 },
   'places.text_search.ids_only': { label: 'Text Search Essentials (IDs Only)', unit: 'request', free: Infinity, usdPer1000: 0 },
   'places.text_search.pro': { label: 'Text Search Pro', unit: 'request', free: 5000, usdPer1000: 32 },
   'places.text_search.enterprise': { label: 'Text Search Enterprise', unit: 'request', free: 1000, usdPer1000: 35 },
   'routes.compute_routes.essentials': { label: 'Compute Routes Essentials', unit: 'request', free: 10000, usdPer1000: 5 },
   'routes.compute_routes.pro': { label: 'Compute Routes Pro', unit: 'request', free: 5000, usdPer1000: 10 },
   'routes.route_matrix.essentials': { label: 'Compute Route Matrix Essentials', unit: 'element', free: 10000, usdPer1000: 5 },
-  'routes.route_matrix.pro': { label: 'Compute Route Matrix Pro', unit: 'element', free: 5000, usdPer1000: 10 }
+  'routes.route_matrix.pro': { label: 'Compute Route Matrix Pro', unit: 'element', free: 5000, usdPer1000: 10 },
+  'static_maps': { label: 'Static Maps (Maps Static API)', unit: 'request', free: 10000, usdPer1000: 2 }
 });
 
 /** 80 % of the free cap; the unlimited IDs-only SKU gets a loop guard instead (2,000 requests a month). */

@@ -51,4 +51,13 @@ test('render writes one self-contained HTML file; build without Playwright retur
   assert.doesNotMatch(p.stderr, /warning: .*taller than a page/);
 });
 
+test('--google refuses to run without a usage ledger and writes nothing', () => {
+  const dir = tmp();
+  const out = path.join(dir, 'x.html');
+  const r = spawnSync(process.execPath, [CLI, 'render', FIXTURE, out, '--google'], { encoding: 'utf8', env: { ...process.env, MAPS_USAGE_LEDGER: '', MAPS_STATIC_KEY: '' } });
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /usage ledger/);
+  assert.ok(!fs.existsSync(out));
+});
+
 // Developed by: LightAISolutions

@@ -40,7 +40,29 @@ export function curve([x1, y1], [x2, y2], bow = 0.12) {
   const cx = (x1 + x2) / 2 - (dy / len) * len * bow, cy = (y1 + y2) / 2 + (dx / len) * len * bow;
   return `M${x1.toFixed(1)} ${y1.toFixed(1)}Q${cx.toFixed(1)} ${cy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`;
 }
-const HOUSE = 'M-6 1.5V-2.5L0 -7.5L6 -2.5V1.5Q6 3 4.5 3H-4.5Q-6 3 -6 1.5Z';
+export const HOUSE = 'M-6 1.5V-2.5L0 -7.5L6 -2.5V1.5Q6 3 4.5 3H-4.5Q-6 3 -6 1.5Z';
+
+/**
+ * markersSvg(points, xy, { hue, ink, halo }) → the numbered badges, meal rings and lodging houses, in drawing order.
+ * Shared by the route sketch and the overlay on a real map (`halo` puts a paper-coloured outline under labels).
+ */
+export function markersSvg(points, xy, { hue = '#b2492f', ink = '#1c1a17', halo = false } = {}) {
+  const has = (p) => p && Number.isFinite(p.lat) && Number.isFinite(p.lng);
+  const ring = halo ? ' paint-order="stroke" stroke="#fffdf8" stroke-width="3" stroke-linejoin="round"' : '';
+  const drawn = [];
+  let out = '';
+  points.forEach((p) => {
+    if (!has(p)) return;
+    const [x, y] = xy(p);
+    if (p.kind === 'lodging' && drawn.some((d) => Math.hypot(d[0] - x, d[1] - y) < 2 && d[2] === 'lodging')) return;
+    drawn.push([x, y, p.kind]);
+    const c = p.hue || hue;
+    if (p.kind === 'lodging') out += `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><path d="${HOUSE}" fill="#fff" stroke="${ink}" stroke-width="1.3" stroke-linejoin="round"/>${p.label ? `<text x="9" y="3.5" font-size="8.5" font-style="italic" fill="${ink}"${ring}>${esc(p.label)}</text>` : ''}</g>`;
+    else if (p.kind === 'meal') out += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.6" fill="#fff" stroke="${c}" stroke-width="1.4"/>`;
+    else out += `<g><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8.5" fill="${c}" stroke="#fff" stroke-width="1.5"/><text x="${x.toFixed(1)}" y="${(y + 3.3).toFixed(1)}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">${esc(p.n ?? '')}</text></g>`;
+  });
+  return out;
+}
 
 /**
  * routeSketch({ points:[{lat,lng,kind:'stop'|'lodging'|'meal',n,label,hue}], legs:[{from,to,mode,hue}], w,h, hue, frame })
@@ -64,17 +86,7 @@ export function routeSketch({ points = [], legs = [], w = 320, h = 230, hue = '#
     const width = l.mode === 'ferry' ? 2.4 : l.mode === 'walk' ? 1.9 : 1.6;
     out += `<path d="${curve([x1, y1], [x2, y2], i % 2 ? 0.1 : -0.1)}" fill="none" stroke="${l.hue || hue}" stroke-width="${width}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''} stroke-opacity=".9"/>`;
   });
-  const drawn = [];
-  points.forEach((p) => {
-    if (!has(p)) return;
-    const [x, y] = P.xy(p);
-    if (p.kind === 'lodging' && drawn.some((d) => Math.hypot(d[0] - x, d[1] - y) < 2 && d[2] === 'lodging')) return;
-    drawn.push([x, y, p.kind]);
-    const c = p.hue || hue;
-    if (p.kind === 'lodging') out += `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><path d="${HOUSE}" fill="#fff" stroke="${ink}" stroke-width="1.3" stroke-linejoin="round"/>${p.label ? `<text x="9" y="3.5" font-size="8.5" font-style="italic" fill="${ink}">${esc(p.label)}</text>` : ''}</g>`;
-    else if (p.kind === 'meal') out += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.6" fill="#fff" stroke="${c}" stroke-width="1.4"/>`;
-    else out += `<g><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8.5" fill="${c}" stroke="#fff" stroke-width="1.5"/><text x="${x.toFixed(1)}" y="${(y + 3.3).toFixed(1)}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">${esc(p.n ?? '')}</text></g>`;
-  });
+  out += markersSvg(points, (p) => P.xy(p), { hue, ink });
   const sc = niceScale(P.metersPerUnit, w * 0.22);
   if (sc) out += `<g stroke="${ink}" stroke-width="1"><path d="M${pad - 14} ${h - 13}h${sc.units.toFixed(1)}M${pad - 14} ${h - 16}v6M${(pad - 14 + sc.units).toFixed(1)} ${h - 16}v6"/></g><text x="${pad - 14}" y="${h - 19}" font-size="7.5" fill="${ink}">${sc.label}</text>`;
   out += `<g transform="translate(${w - 18} 20)"><path d="M0 -9L3 2L0 0L-3 2Z" fill="${ink}"/><text x="0" y="12" text-anchor="middle" font-size="7.5" fill="${ink}">N</text></g>`;
