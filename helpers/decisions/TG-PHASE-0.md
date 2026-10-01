@@ -1,6 +1,6 @@
 # Phase 0 — Setup and decisions (Tour Guide build)
 
-> Session: Tour Guide project thread, Claude HQ environment, **Fable 5.1 · effort high**, 2026-09-30 (EST). Plan: `repository-information/TOUR-GUIDE-BUILD-PLAN.md` v01.07r, kickoff §12.
+> Session: Tour Guide project thread, Claude HQ environment, **Fable 5.1 · effort high**, 2026-09-30 (EST). Plan: `repository-information/TOUR-GUIDE-BUILD-PLAN.md` v01.07r, kickoff §12. **Phase 0 closed 2026-09-30** — the owner confirmed all thirteen defaults ("defaults") and completed the four owner actions.
 > Status key: **default** = the plan's default is assumed because the owner did not object; **confirmed** = the owner said so; **changed** = the owner chose otherwise (the choice is written in the row).
 > This file is public. It names no trip, place, person or account.
 
@@ -9,18 +9,18 @@
 | # | Decision | Chosen | Status | Notes |
 |---|---|---|---|---|
 | 1 | Private repo | `LightAISolutions/TourGuide`, **created by the owner**, one private repo per helper from `helpers/templates/private-repo/` | confirmed (repo exists, private, seeded) | The GitHub connector's `create_repository` returned `403 Resource not accessible by integration` this session, so the session cannot create it (fact 14 resolved: the integration cannot create repos). The owner creates it, attaches it to the Tour Guide project, and the session verifies it is private before pushing the §4.2 skeleton |
-| 2 | Separate Telegram bot | Yes, a dedicated Tour Guide bot with its own pairing | default | Token stays with the owner until Phase 7; it is never pasted into a session or a repo |
-| 3 | Seed preferences from Assistant Brain's profile | Yes, travel-relevant lines only, once, confirmed line by line in Telegram | default | Runs inside `prefs-build` (Phase 4/7); Assistant Brain itself is not modified |
-| 4 | Google Maps Takeout import | Yes, once, in Phase 7 | default | Export dropped into Drive by the owner; no connector reaches it |
-| 5 | Brochure delivery | HTML + PDF in Drive, plus one private Artifact per trip published by the owner in Phase 7 and refreshed by `brochure-build` | default | Artifact must stay a single self-contained page (fact 9) |
-| 6 | Lane B fast chat via the Claude API | Built in Phase 5 behind `CHAT_API_ENABLED=false`; switched on only if Phase 8 shows Lane C is too slow | default | Paid per token outside the subscription |
-| 7 | How the private repo gets the tools | `git subtree` pin of the `helpers-dist` branch at `vendor/helpers/`; Phase 1 measures clone-at-run and may switch | default | |
-| 8 | Grounding Lite MCP spike | Yes, in Phase 2a, time-boxed to one session; never replaces the Places/Routes client | default | |
-| 9 | Migrate Assistant Brain onto the framework | Not in this build; decide after the Tour Guide has run for a few weeks | default | |
-| 10 | Separate "TG routines" environment | No; routines run in Claude HQ; revisit in Phase 8 | default | |
-| 11 | Routine models | Opus 5.5 everywhere; Fable 5.1 for `trip-research` on trips that matter | default | Set per routine in the claude.ai editor in Phase 7 (model selector, no effort control) |
-| 12 | Third-party visit-duration scraper | Off; research triangulation is the source | default | |
-| 13 | Pilot trip for Phase 7 | Owner's pick at Phase 7: the next real trip, or a sample city if none is planned | default (owner picks later) | The trip is never named in this repo |
+| 2 | Separate Telegram bot | Yes, a dedicated Tour Guide bot with its own pairing | confirmed (owner said "defaults") | Token stays with the owner until Phase 7; it is never pasted into a session or a repo |
+| 3 | Seed preferences from Assistant Brain's profile | Yes, travel-relevant lines only, once, confirmed line by line in Telegram | confirmed (owner said "defaults") | Runs inside `prefs-build` (Phase 4/7); Assistant Brain itself is not modified |
+| 4 | Google Maps Takeout import | Yes, once, in Phase 7 | confirmed (owner said "defaults") | Export dropped into Drive by the owner; no connector reaches it |
+| 5 | Brochure delivery | HTML + PDF in Drive, plus one private Artifact per trip published by the owner in Phase 7 and refreshed by `brochure-build` | confirmed (owner said "defaults") | Artifact must stay a single self-contained page (fact 9) |
+| 6 | Lane B fast chat via the Claude API | Built in Phase 5 behind `CHAT_API_ENABLED=false`; switched on only if Phase 8 shows Lane C is too slow | confirmed (owner said "defaults") | Paid per token outside the subscription |
+| 7 | How the private repo gets the tools | `git subtree` pin of the `helpers-dist` branch at `vendor/helpers/`; Phase 1 measures clone-at-run and may switch | confirmed (owner said "defaults") | |
+| 8 | Grounding Lite MCP spike | Yes, in Phase 2a, time-boxed to one session; never replaces the Places/Routes client | confirmed (owner said "defaults") | |
+| 9 | Migrate Assistant Brain onto the framework | Not in this build; decide after the Tour Guide has run for a few weeks | confirmed (owner said "defaults") | |
+| 10 | Separate "TG routines" environment | No; routines run in Claude HQ; revisit in Phase 8 | confirmed (owner said "defaults") | |
+| 11 | Routine models | Opus 5.5 everywhere; Fable 5.1 for `trip-research` on trips that matter | confirmed (owner said "defaults") | Set per routine in the claude.ai editor in Phase 7 (model selector, no effort control) |
+| 12 | Third-party visit-duration scraper | Off; research triangulation is the source | confirmed (owner said "defaults") | |
+| 13 | Pilot trip for Phase 7 | Owner's pick at Phase 7: the next real trip, or a sample city if none is planned | confirmed (owner said "defaults"; picks the trip at Phase 7) | The trip is never named in this repo |
 
 ## 2. Owner actions from the Phase 0 row of §6
 
@@ -29,7 +29,7 @@
 | Create private `LightAISolutions/TourGuide` and attach it to the Tour Guide project | **done** 2026-09-30 — owner created and attached it; session verified private + empty and pushed the skeleton to `main` (owner's choice on a decision card) | Done |
 | Google Cloud project with **Places API (New)** and **Routes API** enabled; key restricted to those two APIs; per-API daily caps; budget alert | **done** 2026-09-30 except the daily caps: the account is on the Google Cloud **free trial**, which refuses quota edits, so the console caps are **deferred to Phase 7** (after upgrading the account). Guards in force now: key restricted to the two APIs, budget alert, the trial's own spending wall, and the Maps kit's SKU hard stop from Phase 2a | Phase 2a live smoke calls; Phase 7 sets the caps |
 | Add the key to Claude HQ as an **API credential** for hosts `places.googleapis.com` and `routes.googleapis.com`, header `X-Goog-Api-Key` if the dialog allows it | **done** 2026-09-30 — the owner's screenshot shows the credential with both hosts. **Fact 10 inference resolved:** the cloud-environments doc (read this session) says a credential's custom header row takes any header **Name** with the **Prefix** cleared, so `X-Goog-Api-Key` is supported as a bare-value header | Phase 2a makes the first live call (a credential applies only to sessions started after it was added, so this Phase 0 session cannot test it; a probe was also blocked by the sandbox's auto-mode classifier) |
-| BotFather → new bot token | **open** — owner creates it and keeps it for Phase 7 | Phase 7 switch-on |
+| BotFather → new bot token | **done** 2026-09-30 — owner created the bot and keeps the token for Phase 7; neither the token nor the bot's name is recorded in this repo's build files | Phase 7 switch-on |
 
 ## 3. Session decisions (not in §10)
 

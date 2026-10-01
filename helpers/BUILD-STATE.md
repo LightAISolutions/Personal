@@ -11,12 +11,12 @@
 | `LightAISolutions/AssistantBrain` (private) | Reference only. Read for patterns and generic code; **never modified** by this build |
 | Claude HQ environment (`Claude HQ - full network access`) | Build sessions and, by default, the routines. Maps API credential **added by the owner 2026-09-30** for hosts `places.googleapis.com` and `routes.googleapis.com` (custom header `X-Goog-Api-Key`, empty prefix). Applies to sessions started after it was added; first live call is Phase 2a |
 | Google Cloud Maps project | **Created 2026-09-30**: Places API (New) + Routes API enabled, key restricted to both, budget alert. **Per-API daily caps deferred** — the account is on the Google Cloud free trial, which does not allow quota edits; set them at Phase 7 switch-on once the account is upgraded (the trial itself cannot bill beyond its credit) |
-| Telegram bot token | **Owner to create** in BotFather; held by the owner until Phase 7 |
+| Telegram bot token | **Created by the owner 2026-09-30** in BotFather; held by the owner until Phase 7 (never pasted into a session or a repo) |
 
 ## Phases
 | Phase | What | Model · effort | Prompt | Status |
 |---|---|---|---|---|
-| 0 | Setup + decisions | Fable 5.1 · high | plan §12 | **in progress** 2026-09-30 — decisions recorded with defaults (`decisions/TG-PHASE-0.md`); private repo created, attached and seeded; Maps key credential added; owner actions still open: bot token, objections to the defaults |
+| 0 | Setup + decisions | Fable 5.1 · high | plan §12 | **done** 2026-09-30 — all thirteen decisions confirmed as defaults by the owner (`decisions/TG-PHASE-0.md`); private repo created, attached and seeded; Maps key credential added; bot token created and held by the owner |
 | 1 | Helper framework foundation (`helpers/core`, `tools/`, `templates/private-repo/`, setup page, `SPEC.md`, `.claude/agents/hb-*.md`, `helpers-ci.yml`, `helpers-dist.yml`, `deploy-helper.yml`, routine-mode guard in `CLAUDE.md`) | Fable 5.1 · xhigh | `prompts/TG-PHASE-1.md` | not started |
 | 2 | Shared kits: 2a Maps · 2b Research · 2c Brochure · 2d Prefs | coordinator Opus 5.5 · high; 2a Opus 5.5 · high; 2b Opus 5.5 · medium; 2c Fable 5.1 · high; 2d Opus 5.5 · medium | `prompts/TG-PHASE-2.md` (written by Phase 1) | not started |
 | 3 | Tour Guide engine (`packs/tour-guide`: schemas, estimator, planner + solver, Later lists, fixtures) | solver Fable 5.1 · high; rest Opus 5.5 · high | written by Phase 2 | not started |
@@ -38,8 +38,9 @@ Finish priority if usage runs short: 1 → 2a → 3 → 4 (`plan-days`, `trip-re
 - 2026-09-30 — session read the plan, confirmed no `TourGuide` repo exists and that the GitHub integration cannot create one (403), recorded all thirteen §10 decisions with their defaults, wrote `prompts/TG-PHASE-1.md`, prepared the private-repo skeleton, and asked the owner for the repo, the Maps key credential and the bot token.
 - 2026-09-30 (later) — owner added the Maps key to Claude HQ as an API credential (both hosts, `X-Goog-Api-Key` header); console quota caps deferred because the free trial blocks quota edits.
 - 2026-09-30 (later) — owner created `LightAISolutions/TourGuide` and attached it; session verified it is private and empty and pushed the skeleton to `main` (owner chose `main` over the session branch for the first commit of an empty repo).
+- 2026-09-30 (close) — owner created the bot token (kept by the owner) and confirmed all thirteen defaults ("defaults"); Phase 0 closed.
 
 ## Next
-Owner: create the bot token (keep it), and object to any of the thirteen defaults or say "defaults". Then this Phase 0 thread marks Phase 0 done and closes. Phase 1 starts in a **new session** on **Fable 5.1 · xhigh**: "Read helpers/prompts/TG-PHASE-1.md and execute it exactly."
+Phase 0 is done. Start Phase 1 in a **new session** on **Fable 5.1 · xhigh**: "Read helpers/prompts/TG-PHASE-1.md and execute it exactly." Phase 1 writes `prompts/TG-PHASE-2.md` and updates this file.
 
 Developed by: LightAISolutions

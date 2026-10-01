@@ -3,11 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 10/100`
+`Sections: 11/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.11r] — 2026-09-30 10:05:26 PM EST
+
+> **Prompt:** "1. bot token created for JonTourGuideBot.
+> 2. defaults"
+
+### Changed
+- `helpers/BUILD-STATE.md` — Phase 0 marked **done** (2026-09-30): bot token created and held by the owner, all thirteen decisions confirmed as defaults; Next now points at Phase 1 (new session, Fable 5.1 · xhigh, `helpers/prompts/TG-PHASE-1.md`)
+- `helpers/decisions/TG-PHASE-0.md` — decisions 2–13 moved from "default" to "confirmed"; BotFather action marked done (token and bot name stay out of this repo); header records the Phase 0 close
+- `repository-information/SESSION-CONTEXT.md` — Phase 0 complete; recommendation is to start Phase 1
 
 ## [v01.10r] — 2026-09-30 09:10:27 PM EST
 
