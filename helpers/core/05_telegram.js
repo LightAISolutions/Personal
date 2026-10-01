@@ -1,6 +1,8 @@
 /**
  * Helpers core — Telegram client.
- * Conventions: parse_mode HTML + tgEscape() on ALL untrusted text; messages split at LIMITS.TG_SPLIT_AT;
+ * Conventions: parse_mode HTML + tgEscape() on ALL untrusted text; messages split at LIMITS.TG_SPLIT_AT (tgSplit: never inside a
+ * tag or entity, open tags closed and reopened across chunks); single-message fields clipped with tgClip; when Telegram still
+ * refuses the HTML, every sender retries once as plain text (tgStripHtml);
  * callback_data ≤ 64 bytes encoded as "<prefix>:<part>:<part>"; always answerCallbackQuery.
  * Automatic messages go ONLY to the owner chat (tgSendOwner). Never send to any other chat id.
  * Files: tgSendDocument / tgSendOwnerDocument (multipart sendDocument, ≤ LIMITS.DOCUMENT_MAX_BYTES, else the Drive link).
@@ -38,20 +40,73 @@ function _tgCall(method, options) {
 function tgEscape(s) {
   return String(s === undefined || s === null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
-/** Split on newlines (then hard) so every chunk is ≤ max chars. */
+/** Plain-text fallback for when Telegram refuses the HTML ("can't parse entities"): tags removed, escapes restored. */
+function tgStripHtml(html) {
+  return String(html === undefined || html === null ? '' : html).replace(/<[^>]*>/g, '')
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+}
+/** A copy of `params` for the plain-text retry: parse_mode dropped, `field` stripped of HTML. Never mutates the first attempt's object. */
+function _tgPlainRetry(params, field) {
+  var plain = {};
+  for (var k in params) if (Object.prototype.hasOwnProperty.call(params, k)) plain[k] = params[k];
+  delete plain.parse_mode;
+  plain[field] = tgStripHtml(params[field]);
+  return plain;
+}
+var TG_HTML_TAG_RE = /<(\/?)([a-zA-Z][a-zA-Z0-9-]*)(\s[^<>]*)?>/g;
+/** The tags still open at the end of an HTML fragment, outermost first: [{ name, raw }]. A closing tag closes its nearest
+ *  open match and everything opened after it (as a parser would). */
+function _tgOpenTags(html) {
+  var stack = [], m;
+  TG_HTML_TAG_RE.lastIndex = 0;
+  while ((m = TG_HTML_TAG_RE.exec(html))) {
+    var name = m[2].toLowerCase();
+    if (m[1]) { for (var i = stack.length - 1; i >= 0; i--) if (stack[i].name === name) { stack.length = i; break; } }
+    else if (!/\/\s*>$/.test(m[0])) stack.push({ name: name, raw: m[0] });
+  }
+  return stack;
+}
+/** Where to cut `text` so the piece is ≤ max: at the last newline (then space) past the midpoint, else hard — but never
+ *  inside a tag (<…>) or an entity (&…;), which Telegram would reject. */
+function _tgCutPoint(text, max) {
+  if (max < 1) max = 1;
+  var cut = text.lastIndexOf('\n', max);
+  if (cut < max * 0.5) cut = text.lastIndexOf(' ', max);
+  if (cut < max * 0.5) cut = max;
+  var lt = text.lastIndexOf('<', cut - 1);
+  if (lt >= 0) { var gt = text.indexOf('>', lt); if (gt === -1 || gt >= cut) cut = lt; }
+  var amp = text.lastIndexOf('&', cut - 1);
+  if (amp >= 0 && cut - amp <= 8) { var semi = text.indexOf(';', amp); if (semi === -1 || semi >= cut) cut = amp; }
+  return cut > 0 ? cut : max;
+}
+/** Split HTML into chunks of ≤ max chars: on newlines (then spaces, then hard), never inside a tag or an entity; tags
+ *  left open at a cut are closed at the end of the chunk and reopened at the start of the next, so every chunk parses. */
 function tgSplit(text, max) {
   max = max || LIMITS.TG_SPLIT_AT;
   text = String(text || '');
-  var chunks = [];
-  while (text.length > max) {
-    var cut = text.lastIndexOf('\n', max);
-    if (cut < max * 0.5) cut = text.lastIndexOf(' ', max);
-    if (cut < max * 0.5) cut = max;
-    chunks.push(text.slice(0, cut));
-    text = text.slice(cut).replace(/^\n/, '');
+  var chunks = [], carry = '';
+  while (carry.length + text.length > max) {
+    var room = max - carry.length, piece, open, closers;
+    for (var attempt = 0; attempt < 4; attempt++) {
+      var cut = _tgCutPoint(text, room);
+      piece = text.slice(0, cut);
+      open = _tgOpenTags(carry + piece);
+      closers = open.map(function (t) { return '</' + t.name + '>'; }).reverse().join('');
+      if (carry.length + piece.length + closers.length <= max || room - closers.length < 1) break;
+      room -= closers.length;
+    }
+    chunks.push(carry + piece + closers);
+    carry = open.map(function (t) { return t.raw; }).join('');
+    text = text.slice(piece.length).replace(/^\n/, '');
   }
-  if (text.length || !chunks.length) chunks.push(text);
+  if (text.length || !chunks.length) chunks.push(carry + text);
   return chunks;
+}
+/** One message's worth of HTML: ≤ max chars with every open tag closed and '…' when something was cut. */
+function tgClip(html, max) {
+  html = String(html === undefined || html === null ? '' : html);
+  if (html.length <= max) return html;
+  return tgSplit(html, max - 1)[0] + '…';
 }
 
 /** Build an inline keyboard from rows of {text, data} or {text, url}. Validates callback_data ≤ 64 bytes. */
@@ -93,8 +148,7 @@ function tgSend(chatId, html, opts) {
     if (i === chunks.length - 1 && opts.keyboard) params.reply_markup = opts.keyboard;
     last = tgApi('sendMessage', params);
     if (!last.ok && /can't parse entities/i.test(String(last.description || ''))) {
-      delete params.parse_mode; params.text = chunks[i].replace(/<[^>]+>/g, '');
-      last = tgApi('sendMessage', params);
+      last = tgApi('sendMessage', _tgPlainRetry(params, 'text'));
     }
   }
   return last;
@@ -105,9 +159,14 @@ function tgSendOwner(html, opts) {
   return tgSend(chat, html, opts);
 }
 function tgEdit(chatId, messageId, html, keyboard) {
-  var params = { chat_id: chatId, message_id: messageId, text: truncate(html, LIMITS.TG_MAX_CHARS), parse_mode: 'HTML', disable_web_page_preview: true };
+  var text = tgClip(html, LIMITS.TG_MAX_CHARS);
+  var params = { chat_id: chatId, message_id: messageId, text: text, parse_mode: 'HTML', disable_web_page_preview: true };
   params.reply_markup = keyboard || { inline_keyboard: [] };
-  return tgApi('editMessageText', params);
+  var r = tgApi('editMessageText', params);
+  if (!r.ok && /can't parse entities/i.test(String(r.description || ''))) {
+    r = tgApi('editMessageText', _tgPlainRetry(params, 'text'));
+  }
+  return r;
 }
 function tgAnswerCallback(callbackQueryId, text, showAlert) {
   var p = { callback_query_id: callbackQueryId };
@@ -143,10 +202,14 @@ function tgSendDocument(chatId, spec) {
   }
   if (name && typeof blob.setName === 'function') blob.setName(name);
   var params = { chat_id: String(chatId), document: blob };
-  if (spec.caption) { params.caption = truncate(String(spec.caption), LIMITS.DOCUMENT_CAPTION_CHARS); params.parse_mode = 'HTML'; }
+  if (spec.caption) { params.caption = tgClip(String(spec.caption), LIMITS.DOCUMENT_CAPTION_CHARS); params.parse_mode = 'HTML'; }
   if (spec.replyTo) params.reply_to_message_id = String(spec.replyTo);
   if (spec.silent) params.disable_notification = 'true';
-  return tgApiMultipart('sendDocument', params);
+  var r = tgApiMultipart('sendDocument', params);
+  if (!r.ok && params.parse_mode && /can't parse entities/i.test(String(r.description || ''))) {
+    r = tgApiMultipart('sendDocument', _tgPlainRetry(params, 'caption'));
+  }
+  return r;
 }
 function tgSendOwnerDocument(spec) {
   var chat = tgOwnerChatId();
