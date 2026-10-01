@@ -3,7 +3,7 @@
 # see CLAUDE.md ROUTINE MODE — and pushes them to its own claude/* branch. This workflow merges those branches into
 # main; without it they would pile up unmerged. scripts/merge-routine-memory.sh merges a branch ONLY if every changed
 # path is a memory path; development-session branches are skipped untouched and left for the owner. Daily logs merge
-# line by line (.gitattributes: log/*.md merge=union). Merged branches are deleted.
+# line by line and the Maps usage ledger sums both sides (.gitattributes). Merged branches are deleted.
 # Pushes made with GITHUB_TOKEN do not trigger other workflows.
 name: Merge routine memory
 
@@ -33,6 +33,9 @@ jobs:
         run: |
           git config user.name "{{HELPER_NAME}}-memory[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # log/maps-usage-ledger.json: both sides' spend is summed (.gitattributes merge=maps-ledger) instead of conflicting.
+          git config merge.maps-ledger.name "maps usage ledger: sum both sides' spend"
+          git config merge.maps-ledger.driver "node scripts/merge-maps-ledger.mjs %O %A %B"
           # The script always comes from main, never from the pushed branch; until it reaches main there is nothing to run.
           if [ ! -f scripts/merge-routine-memory.sh ]; then echo "merge script not on main yet — nothing to do"; exit 0; fi
           bash scripts/merge-routine-memory.sh "$BRANCH"
