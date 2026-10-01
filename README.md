@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-09-30 07:55:53 PM EST` · Repo version: `v01.07r`
+Last updated: `2026-09-30 08:20:41 PM EST` · Repo version: `v01.08r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -204,6 +204,14 @@ Last updated: `2026-09-30 07:55:53 PM EST` · Repo version: `v01.07r`
 │       └── <a href="https://github.com/LightAISolutions/Personal/blob/main/tests/offensive-security/GAS-HIPAA-COMPLIANCE-ANALYSIS.md">GAS-HIPAA-COMPLIANCE-ANALYSIS.md</a>  — [template] GAS HIPAA compliance analysis under Workspace BAA
 │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/tests/defensive-security">defensive-security/</a>    — Defensive security validation tests (Playwright)
 │       └── <a href="https://github.com/LightAISolutions/Personal/blob/main/tests/defensive-security/test_01_csp_headers_validation.py">test_01_csp_headers_validation.py</a> — CSP &amp; security headers validation across all pages
+│
+<b>─── Helper Framework ─────────────────────────────────────────────────────────</b>
+├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers">helpers/</a>                   — Reusable helper framework (Tour Guide build; plan in repository-information/TOUR-GUIDE-BUILD-PLAN.md)
+│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/BUILD-STATE.md">BUILD-STATE.md</a>          — Phase tracker for the Tour Guide build (generic progress only)
+│   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/decisions">decisions/</a>              — One decisions file per phase / work package
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-0.md">TG-PHASE-0.md</a>       — Phase 0: the thirteen owner decisions, owner actions, session findings
+│   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/prompts">prompts/</a>                — The prompt each phase's session starts from
+│       └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-1.md">TG-PHASE-1.md</a>       — Phase 1 kickoff: helper framework foundation (Fable 5.1 · Xhigh)
 │
 <b>─── Repository Information ───────────────────────────────────────────────────</b>
 ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/repository-information">repository-information/</a>    — [template]

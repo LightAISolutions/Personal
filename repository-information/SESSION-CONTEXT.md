@@ -6,6 +6,43 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-09-30 08:20:41 PM EST
+**Repo version:** v01.08r
+**Branch:** `claude/project-thread-20mnqb` (Tour Guide project thread, Claude HQ environment, Fable 5.1 · High)
+
+**What we worked on:**
+
+- Phase 0 of the Tour Guide build (plan §12 kickoff): all thirteen §10 decisions recorded with their defaults in `helpers/decisions/TG-PHASE-0.md`, owner to object in the thread
+- `helpers/BUILD-STATE.md` (phase tracker) and `helpers/prompts/TG-PHASE-1.md` (Phase 1 kickoff on Fable 5.1 · Xhigh) written
+- Private-repo skeleton (§4.2) prepared in the session scratchpad, not yet pushed: `LightAISolutions/TourGuide` does not exist and the GitHub connector cannot create it (403)
+
+**Where we left off:**
+
+- Waiting on the owner for: the private `TourGuide` repo (create + attach to the Tour Guide project), the Maps key added to Claude HQ as an API credential, and a new BotFather token (owner keeps it); plus any objection to the thirteen defaults
+- When the repo exists and is private, the Phase 0 thread pushes the skeleton as its first commit and marks Phase 0 done in `helpers/BUILD-STATE.md`
+- Do not start Phase 1 in this thread
+
+**Key decisions made:**
+
+- Private repo is owner-created (connector cannot create repos); session verifies it is private before pushing
+- Decisions were presented in one message rather than one at a time (thread round trips are slow); defaults assumed until the owner objects
+- `REPO-ARCHITECTURE.md` gets its `helpers/` node in Phase 1, not Phase 0 (one mermaid regeneration)
+- Phase 1 runs as a single architect session on this repo's branch and push conventions; worktrees start in Phase 2
+
+**Active context:**
+
+- `Personal`: repo v01.08r · all pages v01.00w · AutoUpdate.ahk v01.01a · `helpers/` holds only build-process files
+- `AssistantBrain`: reference only, not modified
+- Toggles: START_OF_RESPONSE_BLOCK `On` · CHAT_BOOKENDS `Off` · TIMING_ESTIMATES `On` · END_OF_RESPONSE_BLOCK `On`
+
+**Recommendation for next session:**
+
+- Once the owner has created the private repo, added the Maps credential and the bot token, start **Phase 1** in a new Tour Guide session on **Fable 5.1 · effort Xhigh** from `helpers/prompts/TG-PHASE-1.md`.
+
+**To continue:** type `Read helpers/prompts/TG-PHASE-1.md and execute it exactly.`
+
+## Previous Sessions
+
 **Date:** 2026-09-30 07:55:53 PM EST
 **Repo version:** v01.07r
 **Branch:** `claude/project-thread-zn7wsu` (Tour Guide project thread, Claude HQ environment)
@@ -38,40 +75,3 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - Run **Phase 0** from `TOUR-GUIDE-BUILD-PLAN.md` §12 in a new Tour Guide session on Claude HQ with **Fable 5.1 · effort High**, with a private repo (or permission to create one), a restricted Maps key and a new bot token ready.
 
 **To continue:** type `Read repository-information/TOUR-GUIDE-BUILD-PLAN.md and run Phase 0 with me.`
-
-## Previous Sessions
-
-### 2026-09-30 07:30:47 PM EST
-
-**Date:** 2026-09-30 07:30:47 PM EST
-**Repo version:** v01.06r
-**Branch:** `claude/project-thread-7dwkct` (Tour Guide project thread, Claude HQ environment)
-
-**What we worked on:**
-
-- New claude.ai project **"Tour Guide"** set up (repos `Personal` + `AssistantBrain`, environment Claude HQ). Project instructions: build reusable helper infrastructure in `Personal`; AssistantBrain is reference only; reuse its Apps Script / Telegram / Routines patterns; research autonomously; record model + effort per phase and keep CHANGELOG, version and session context current
-- **v01.06r — `repository-information/TOUR-GUIDE-BUILD-PLAN.md`**: phased plan (Phases 0–8) for the Tour Guide helper and a shared `helpers/` framework, with verified Maps/Places/Routes/Apps Script/Routines facts, model and effort per phase, environment and key needs, costs, risks and eight owner decisions
-
-**Where we left off:**
-
-- Plan pushed; nothing built. Waiting for the owner to review the plan and answer the §10 decisions in Phase 0
-
-**Key decisions made:**
-
-- The travel planning helper is now called **Tour Guide** and lives in `Personal` (framework + generic code) with a private `LightAISolutions/TourGuide` repo for persona, skills, memory and trip data (supersedes the 2026-09-29 note about starting it in `AssistantBrain`)
-- Visit durations come from research + calibration (no official Google API); route ordering uses our own solver because Google does not optimize transit waypoints
-- Tour Guide chatbot: separate Telegram bot, no permanent tick (shares the 90 min/day trigger budget with the Chief of Staff)
-
-**Active context:**
-
-- `Personal`: repo v01.06r · all pages v01.00w · AutoUpdate.ahk v01.01a
-- `AssistantBrain`: live, Phase 4 customization in progress (see its `BUILD-STATE.md`); not modified by the Tour Guide work
-- Toggles: START_OF_RESPONSE_BLOCK `On` · CHAT_BOOKENDS `Off` · TIMING_ESTIMATES `On` · END_OF_RESPONSE_BLOCK `On`
-
-**Recommendation for next session:**
-
-- Run **Phase 0** of `TOUR-GUIDE-BUILD-PLAN.md` in a new Tour Guide project session (Claude HQ, **Opus 5.5 · Medium**) with the private `TourGuide` repo created, a Google Cloud key for Places API (New) + Routes API, and a new BotFather token ready.
-
-**To continue:** type `Read repository-information/TOUR-GUIDE-BUILD-PLAN.md and run Phase 0 with me.`
-
-Developed by: LightAISolutions

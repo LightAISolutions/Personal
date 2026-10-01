@@ -3,11 +3,26 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 7/100`
+`Sections: 8/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.08r] — 2026-09-30 08:20:41 PM EST
+
+> **Prompt:** "Start Phase 0 in a new session on Fable 5.1 High, using the kickoff in section 12 of the plan."
+
+### Added
+- `helpers/` — new top-level tree for the reusable helper framework; Phase 0 of the Tour Guide build (Fable 5.1 · High) adds its build-process files only, no code
+  - `helpers/BUILD-STATE.md` — phase tracker (repos and environments, the eight phases with model and effort, conventions, Phase 0 log, next step)
+  - `helpers/decisions/TG-PHASE-0.md` — all thirteen §10 decisions recorded with their defaults (owner to object), the four owner actions and their status, session-level decisions (decisions presented in one message; `REPO-ARCHITECTURE.md` deferred to Phase 1; private-repo skeleton contents) and what Phase 0 verified
+  - `helpers/prompts/TG-PHASE-1.md` — the Phase 1 kickoff prompt (Fable 5.1 · Xhigh): orient, scrub-report owner gate before any Assistant Brain code is copied into this public repo, the foundation deliverables with their contracts, subtree-vs-clone measurement, done-when, repo bookkeeping, Phase 2 hand-off
+
+### Changed
+- `README.md` — new "Helper Framework" group in the tree for `helpers/`
+- `repository-information/SESSION-CONTEXT.md` — Phase 0 session saved; the private `TourGuide` repo, the Maps key credential and the bot token are the open owner actions
+- Findings recorded for the plan: the GitHub integration cannot create repositories (`create_repository` returned 403), so the private repo is owner-created (plan fact 14 resolved)
 
 ## [v01.07r] — 2026-09-30 07:55:53 PM EST
 
