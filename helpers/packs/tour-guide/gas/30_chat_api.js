@@ -148,12 +148,20 @@ var TG_CHAT_SYSTEM = [
   'Otherwise answer in plain text, no markdown, at most 900 characters: lead with the answer, name days as weekday and date, times as HH:MM, and say when something is an estimate.'
 ].join('\n');
 
+/** The owner's text with every opening or closing owner_message / trip_context tag removed, repeatedly. */
+function tgChatStripTags(text) {
+  var q = String(text), prev;
+  do { prev = q; q = q.replace(/<\s*\/?\s*(owner_message|trip_context)\b[^>]*>/gi, ''); } while (q !== prev);
+  return q;
+}
 /** One Messages API call. Never throws; returns { ok, text?, deep?, model, usage?, code?, error?, ms }. */
 function tgChatAsk(question, contextJson, pick) {
   // The blocks stay data: "<" inside the context JSON becomes \u003c (still valid JSON) and the owner's text cannot
-  // carry the block tags, so neither can close its block early and pose as a new one.
+  // carry the block tags, so neither can close its block early and pose as a new one. The tag strip repeats until
+  // nothing changes (a nested "</owner_</owner_message>message>" would otherwise rebuild the tag) and also takes
+  // attribute forms ("</owner_message x>") — WP-6a, red-team E.
   var ctxText = String(contextJson).replace(/</g, '\\u003c');
-  var q = String(question).replace(/<\/?\s*(owner_message|trip_context)\s*>/gi, '');
+  var q = tgChatStripTags(question);
   var body = {
     model: pick.model, max_tokens: pick.max_tokens, system: TG_CHAT_SYSTEM,
     messages: [{ role: 'user', content: '<trip_context>\n' + ctxText + '\n</trip_context>\n<owner_message>\n' + q + '\n</owner_message>' }]
