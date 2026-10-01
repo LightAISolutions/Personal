@@ -6,6 +6,35 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-10-01 01:56:30 AM EST
+**Repo version:** v01.14r
+**Branch:** `claude/tg-phase-3-2udjs1` (Tour Guide project, thread "Tour Guide Phase 3", coordinator Fable 5.1 · high)
+
+**What we worked on**
+- Tour Guide Phase 3 per `helpers/prompts/TG-PHASE-3.md`: the `helpers/packs/tour-guide/` engine. WP-3a (schemas, estimator, Later lists, fixtures) and WP-3c (brochure map) built by `hb-builder-opus` agents in worktrees; WP-3b (planner + Held-Karp solver) built by the coordinator; all merged, 206 tests, bundle check and boundary check clean, no live calls
+- Cross-WP integration test on both fixtures; pack README; both fixture brochures rendered to the project's shared folder as a preview
+- Wrote `helpers/decisions/TG-PHASE-3.md`, updated `helpers/BUILD-STATE.md`, wrote `helpers/prompts/TG-PHASE-4.md`
+
+**Where we left off**
+- Phase 3 pushed as v01.14r. Nothing is owed by the owner for Phase 3; the owner's Phase 2 brochure rating and the Google-content question (hours/ratings in a delivered brochure) stay open and are carried into Phase 4's owner-input step
+
+**Key decisions made**
+- Booked stops are exempt from the solver's wait cap (the plan may go there first and wait for the booking)
+- Fixture travel times are the single source of truth: every leg the planner emits must match the fixture's answer within a minute
+- `REPO-ARCHITECTURE.md` unchanged (its `helpers/` node already lists `packs/`)
+- Phase 4 request kinds `research, plan, replan, notes, brochure, prefs` + free-text `chat`; `show_google_content` defaults to true until the owner answers
+
+**Active context**
+- `helpers-dist` carries the pack after this merge; the TourGuide private repo is still at its Phase 0 skeleton and receives the template + first `vendor/helpers/` pin in Phase 4; AssistantBrain reference only
+- Worktrees `wt-3a/b/c` are local only (branches `wp-3a/b/c`, never pushed)
+
+**Recommendation for next session**
+- Start Phase 4 in a new session on Fable 5.1 · high
+
+**To continue:** type `Read helpers/prompts/TG-PHASE-4.md and execute it exactly.`
+
+## Previous Sessions
+
 **Date:** 2026-10-01 01:12:03 AM EST
 **Repo version:** v01.13r
 **Branch:** `claude/tg-phase-2-svjmub` (Tour Guide project, thread "Tour Guide Phase 2", coordinator Opus 5.5 · high)
@@ -30,43 +59,3 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - Start Phase 3 in a new session on Fable 5.1 · high (after any brochure changes the owner asks for)
 
 **To continue:** type `Read helpers/prompts/TG-PHASE-3.md and execute it exactly.`
-
-## Previous Sessions
-
-**Date:** 2026-09-30 11:33:51 PM EST
-**Repo version:** v01.12r
-**Branch:** `claude/project-thread-c84ih5` (Tour Guide project thread, Claude HQ environment, Fable 5.1 · xhigh)
-
-**What we worked on:**
-
-- **Phase 1 of the Tour Guide build is complete** (`helpers/prompts/TG-PHASE-1.md`): the public helper framework under `helpers/` — Apps Script core (15 files, manifest-driven), tools (`bundle.mjs`, `envelope.mjs`, `new-helper.mjs`, `boundary-check.mjs`), the private-repo template, the hello pack, 14 test suites (54 tests), `SPEC.md` v1 (18 sections), `README.md`
-- Build process files: `.claude/agents/hb-architect.md` / `hb-builder-fable.md` / `hb-builder-opus.md` / `hb-reader.md`, `.github/workflows/helpers-ci.yml` / `helpers-dist.yml` / `deploy-helper.yml`, the routine-mode guard at the top of `CLAUDE.md`, `helpers/dist/` ignored
-- Scrub report (15 rows) posted as the owner gate and approved before the copied core landed in a commit; subtree vs clone-at-run measured, subtree stays (SPEC §15, decisions §2)
-- `helpers/decisions/TG-PHASE-1.md`, `helpers/BUILD-STATE.md` (Phase 1 done) and `helpers/prompts/TG-PHASE-2.md` written
-
-**Where we left off:**
-
-- Everything pushed as v01.12r; the merge to `main` runs `helpers-ci` and publishes the `helpers-dist` branch for the first time — Phase 2's first check is that the branch exists on GitHub
-- Phase 2 (four shared kits + coordinator) runs in a **new session** on Opus 5.5 · high
-
-**Key decisions made:**
-
-- `hb-builder-opus` runs at effort high (the Agent tool cannot override effort per call); the Phase 2 coordinator may add an `hb-builder-opus-medium.md` for 2b/2d
-- `helpers-dist` carries only `core/ tools/ kits/ packs/ templates/ tests/ SPEC.md README.md`; `BUILD-STATE.md`, `decisions/`, `prompts/`, `status/`, `dist/` stay out
-- Deploy secrets `CLASPRC_JSON`, `<HELPER>_SCRIPT_ID`, `<HELPER>_DEPLOYMENT_ID` are named, not created; the `production` environment is created by the owner at Phase 7 with a `main`-only branch rule
-- The private-repo template reaches `TourGuide` in Phase 4 together with the first `vendor/helpers/` pin; neither `TourGuide` nor `AssistantBrain` received a commit in Phase 1
-- Recommended `property_prefix: ""` for the Tour Guide pack so Script Property names read exactly as plan §7
-- `REPO-ARCHITECTURE.md` has no `<details>` copy blocks under any diagram (the CLAUDE.md rule describes them); left as found, flagged
-
-**Active context:**
-
-- `Personal`: repo v01.12r · all pages v01.00w · AutoUpdate.ahk v01.01a · `helpers/` = framework v1 (`CORE_VERSION` 1.0.0, hello pack 0.1.0)
-- `TourGuide` (private): skeleton only, `main` at the Phase 0 seed commit
-- `AssistantBrain`: reference only, not modified
-- Toggles: START_OF_RESPONSE_BLOCK `On` · CHAT_BOOKENDS `Off` · TIMING_ESTIMATES `On` · END_OF_RESPONSE_BLOCK `On`
-
-**Recommendation for next session:**
-
-- Start **Phase 2** in a new Tour Guide session on **Opus 5.5 · effort high** from `helpers/prompts/TG-PHASE-2.md` (first check: the `helpers-dist` branch exists on GitHub after the v01.12r merge).
-
-**To continue:** type `Read helpers/prompts/TG-PHASE-2.md and execute it exactly.`

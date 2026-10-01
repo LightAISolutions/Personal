@@ -3,11 +3,34 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 13/100`
+`Sections: 14/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.14r] — 2026-10-01 01:56:30 AM EST
+
+> **Prompt:** "Read helpers/prompts/TG-PHASE-3.md and execute it exactly."
+
+### Added
+- `helpers/packs/tour-guide/` — the Tour Guide engine pack (Phase 3): `helper.json` manifest (name `tour-guide`, Drive root `TourGuide`, memory dirs `trips places profile`, `timezone` default `America/New_York`, empty `gas/` until Phase 5) and a pack README that walks the data flow
+- `helpers/packs/tour-guide/schemas/` — JSON Schemas for `trip`, `place`, `google-snapshot`, `visit-estimate`, `place-note`, `calibration`, `day-plan`, `later-list`, `plan`, `profile-excerpt`, plus cross-field and date checks; `validate(entity, kind)` → `{ ok, errors }`
+- `helpers/packs/tour-guide/estimator/` — visit-duration estimator: `buildEstimate` from notes, snapshot and category defaults, `chooseMinutes` by pace, calibration state with `createCalibration` / `applyTap` / `calibrationFactor`
+- `helpers/packs/tour-guide/later/` — saved-for-later lists: `createLists`, `addItem`, `promote` (returns `affected_days`), `demote`
+- `helpers/packs/tour-guide/fixtures/` — two invented trips on reserved domains (`transit-city`, three TRANSIT days; `driving-loop`, four DRIVE days), eight JSON parts each, a Maps mock responder that replays the Route Matrix and Compute Routes answers, `fixtureTravel` for the expected pair answer
+- `helpers/packs/tour-guide/planner/` — `planTrip`, `replanDays`, `estimateBudget`, `PlanBudgetError`, `hoursOn`, `dateRange`: candidates by date, one Route Matrix per day, Held-Karp with time windows / bookings / lunch slot, real legs pair by pair with a re-solve on the real times, Google cross-check, warnings (`hours_unknown`, `tight_connection`, `over_long_day`, `order_disagreement`), Later codes (`too_far`, `closed_business`, `outside_day`, `day_full`), SKU budget checked against the ledger ceiling before any call, deterministic by seed
+- `helpers/packs/tour-guide/brochure-map/` — `toBrochureModel`, `renderPlan`, `renderPlanPdf`: Plan → brochure-kit model (days, cards with hours today and one credited review, Later lists, practical blocks, Google attribution) → HTML / PDF
+- `helpers/tests/pack_tour-guide_*.test.js` + `pack_tour-guide_planner_world.js` — 58 new tests (206 in the suite, 1 skipped live smoke), including the cross-WP integration test that checks the Phase 3 property set on both fixtures end to end
+- `helpers/status/WP-3a.md` … `WP-3c.md`, `helpers/decisions/WP-3a.md` … `WP-3c.md` — per-package status and defaults
+- `helpers/decisions/TG-PHASE-3.md` — coordinator defaults, ownership-map extension, solver design and limits, requests carried to later phases
+- `helpers/prompts/TG-PHASE-4.md` — Phase 4 kickoff for the brain side in the private repo
+
+### Changed
+- `helpers/templates/private-repo/CLAUDE.md` — the memory-directories line no longer double-wraps the rendered list in backticks
+- `helpers/tests/tools_bundle.test.js` — asserts the `hello` pack is listed rather than that it is the only pack
+- `helpers/BUILD-STATE.md` — Phase 3 done, Phase 3 log, next step (Phase 4)
+- `README.md` — tree entries for every new file
 
 ## [v01.13r] — 2026-10-01 01:12:03 AM EST
 
