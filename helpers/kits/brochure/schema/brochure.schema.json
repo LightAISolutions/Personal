@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/helpers/kits/brochure/brochure.schema.json",
+  "title": "Brochure model v1",
+  "description": "Input of the brochure kit. Phase 3's planner maps Trip / DayPlan / Place / PlaceNote / LaterList / GoogleSnapshot (plan §4.4) into this shape. Dates are YYYY-MM-DD and times HH:MM in the trip's local wall clock. Every string is treated as untrusted text and escaped by the renderer.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "trip", "days", "places"],
+  "properties": {
+    "version": { "const": 1 },
+    "trip": { "$ref": "#/$defs/trip" },
+    "days": { "type": "array", "minItems": 1, "maxItems": 31, "items": { "$ref": "#/$defs/day" } },
+    "places": { "type": "object", "description": "Keyed by the place's local id (the key stops refer to).", "propertyNames": { "pattern": "^[A-Za-z0-9_-]{1,64}$" }, "additionalProperties": { "$ref": "#/$defs/place" }, "maxProperties": 200 },
+    "later": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/laterList" } },
+    "practical": { "type": "array", "maxItems": 30, "items": { "$ref": "#/$defs/practicalSection" } },
+    "attribution": { "$ref": "#/$defs/attribution" }
+  },
+  "$defs": {
+    "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "time": { "type": "string", "pattern": "^([01]?\\d|2[0-3]):[0-5]\\d$" },
+    "text": { "type": "string", "maxLength": 4000 },
+    "short": { "type": "string", "maxLength": 300 },
+    "url": { "type": "string", "maxLength": 2000 },
+    "image": {
+      "type": "object", "additionalProperties": false, "required": ["src"],
+      "properties": {
+        "src": { "type": "string", "maxLength": 20000000, "description": "Path relative to the model file, or a data:image/… URI. Remote URLs are dropped with a warning." },
+        "alt": { "$ref": "#/$defs/short" },
+        "credit": { "$ref": "#/$defs/short" }
+      }
+    },
+    "trip": {
+      "type": "object", "additionalProperties": false,
+      "required": ["title", "destination", "start_date", "end_date"],
+      "properties": {
+        "title": { "$ref": "#/$defs/short" },
+        "subtitle": { "$ref": "#/$defs/short", "description": "An italic second line on the cover, e.g. 'Three days, slowly'." },
+        "destination": { "$ref": "#/$defs/short" },
+        "country": { "$ref": "#/$defs/short" },
+        "start_date": { "$ref": "#/$defs/date" },
+        "end_date": { "$ref": "#/$defs/date" },
+        "timezone": { "type": "string", "maxLength": 64, "description": "IANA zone, shown in practical info only." },
+        "locale": { "type": "string", "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$", "description": "BCP 47 tag for date and number formatting; default en-US." },
+        "travelers": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/short" } },
+        "prepared_for": { "$ref": "#/$defs/short" },
+        "pace": { "type": "string", "enum": ["relaxed", "normal", "packed"] },
+        "day_start": { "$ref": "#/$defs/time" },
+        "day_end": { "$ref": "#/$defs/time" },
+        "intro": { "$ref": "#/$defs/text", "description": "One or two paragraphs for the 'at a glance' page (blank line = paragraph break)." },
+        "cover_image": { "$ref": "#/$defs/image" },
+        "lodging": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/lodging" } },
+        "build_id": { "type": "string", "maxLength": 64 },
+        "built_on": { "$ref": "#/$defs/date" },
+        "verified_on": { "$ref": "#/$defs/date" }
+      }
+    },
+    "lodging": {
+      "type": "object", "additionalProperties": false, "required": ["name"],
+      "properties": {
+        "name": { "$ref": "#/$defs/short" },
+        "address": { "$ref": "#/$defs/short" },
+        "from": { "$ref": "#/$defs/date" },
+        "to": { "$ref": "#/$defs/date" },
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lng": { "type": "number", "minimum": -180, "maximum": 180 },
+        "maps_url": { "$ref": "#/$defs/url" },
+        "note": { "$ref": "#/$defs/text" },
+        "check_in": { "$ref": "#/$defs/time" },
+        "check_out": { "$ref": "#/$defs/time" }
+      }
+    },
+    "day": {
+      "type": "object", "additionalProperties": false, "required": ["date", "stops"],
+      "properties": {
+        "date": { "$ref": "#/$defs/date" },
+        "theme": { "$ref": "#/$defs/short", "description": "The day's headline, e.g. 'Old town and the quays'." },
+        "summary": { "$ref": "#/$defs/text" },
+        "lodging": { "$ref": "#/$defs/short", "description": "Name of the night's lodging (matched against trip.lodging by name for the route sketch)." },
+        "stops": { "type": "array", "minItems": 1, "maxItems": 14, "items": { "$ref": "#/$defs/stop" } },
+        "legs": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/leg" } },
+        "meals": { "type": "array", "maxItems": 8, "items": { "$ref": "#/$defs/meal" } },
+        "free": { "type": "array", "maxItems": 8, "items": { "$ref": "#/$defs/freeBlock" } },
+        "warnings": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/warning" } },
+        "verified_on": { "$ref": "#/$defs/date" }
+      }
+    },
+    "stop": {
+      "type": "object", "additionalProperties": false, "required": ["place", "arrive", "depart"],
+      "properties": {
+        "place": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$", "description": "Key into `places`." },
+        "arrive": { "$ref": "#/$defs/time" },
+        "depart": { "$ref": "#/$defs/time" },
+        "activity": { "$ref": "#/$defs/short", "description": "What you do there, e.g. 'museum highlights', 'full loop walk'." },
+        "minutes": { "type": "integer", "minimum": 0, "maximum": 1440, "description": "Planned visit length; derived from arrive/depart when absent." },
+        "note": { "$ref": "#/$defs/text", "description": "A one-line excerpt shown on the rail; the full note lives on the place card." },
+        "booked": { "$ref": "#/$defs/short", "description": "Ticket or reservation reference text, e.g. 'Timed entry 10:30, booked'." }
+      }
+    },
+    "leg": {
+      "type": "object", "additionalProperties": false, "required": ["mode", "minutes"],
+      "properties": {
+        "from": { "$ref": "#/$defs/endpoint" },
+        "to": { "$ref": "#/$defs/endpoint" },
+        "mode": { "type": "string", "enum": ["walk", "transit", "drive", "bike", "ferry", "taxi", "train", "other"] },
+        "minutes": { "type": "integer", "minimum": 0, "maximum": 1440 },
+        "distance_m": { "type": "number", "minimum": 0 },
+        "depart_at": { "$ref": "#/$defs/time" },
+        "arrive_at": { "$ref": "#/$defs/time" },
+        "maps_url": { "$ref": "#/$defs/url" },
+        "line": { "$ref": "#/$defs/short", "description": "Transit line or service name, e.g. 'Tram 4 toward Harbour Baths'." },
+        "note": { "$ref": "#/$defs/short" }
+      }
+    },
+    "endpoint": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$", "description": "A place key, or the literal `lodging`." },
+    "meal": {
+      "type": "object", "additionalProperties": false, "required": ["kind", "start"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["breakfast", "coffee", "lunch", "snack", "dinner", "drinks"] },
+        "start": { "$ref": "#/$defs/time" },
+        "end": { "$ref": "#/$defs/time" },
+        "place": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$", "description": "Optional place key (rendered as a stop-like card)." },
+        "name": { "$ref": "#/$defs/short", "description": "Free-text venue or suggestion when there is no place key." },
+        "note": { "$ref": "#/$defs/short" },
+        "maps_url": { "$ref": "#/$defs/url" }
+      }
+    },
+    "freeBlock": {
+      "type": "object", "additionalProperties": false, "required": ["start", "end"],
+      "properties": { "start": { "$ref": "#/$defs/time" }, "end": { "$ref": "#/$defs/time" }, "note": { "$ref": "#/$defs/short" } }
+    },
+    "warning": {
+      "type": "object", "additionalProperties": false, "required": ["text"],
+      "properties": {
+        "severity": { "type": "string", "enum": ["info", "warn", "alert"] },
+        "text": { "$ref": "#/$defs/short" },
+        "place": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$" }
+      }
+    },
+    "place": {
+      "type": "object", "additionalProperties": false, "required": ["name"],
+      "properties": {
+        "name": { "$ref": "#/$defs/short" },
+        "category": { "$ref": "#/$defs/short", "description": "Our own category, e.g. 'Museum', 'Viewpoint', 'Bakery'." },
+        "tagline": { "$ref": "#/$defs/short", "description": "One italic line under the name." },
+        "address": { "$ref": "#/$defs/short" },
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lng": { "type": "number", "minimum": -180, "maximum": 180 },
+        "hours": { "type": "array", "maxItems": 7, "items": { "$ref": "#/$defs/short" }, "description": "Seven weekday lines as Google formats them ('Monday: 10:00 AM – 6:00 PM'), or fewer free-text lines." },
+        "hours_today": { "$ref": "#/$defs/short", "description": "The line that applies on the day of the visit; shown on the rail." },
+        "closed_days": { "type": "array", "maxItems": 7, "items": { "$ref": "#/$defs/short" } },
+        "rating": { "type": "number", "minimum": 0, "maximum": 5 },
+        "review_count": { "type": "integer", "minimum": 0 },
+        "price_level": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "website": { "$ref": "#/$defs/url" },
+        "phone": { "$ref": "#/$defs/short" },
+        "maps_url": { "$ref": "#/$defs/url", "description": "Google Maps link for the place (googleMapsUri)." },
+        "place_id": { "type": "string", "maxLength": 300, "description": "Google place id — kept forever; the rest of the Google fields come from the build's snapshot." },
+        "business_status": { "type": "string", "enum": ["OPERATIONAL", "CLOSED_TEMPORARILY", "CLOSED_PERMANENTLY"] },
+        "editorial": { "$ref": "#/$defs/text", "description": "Google's editorial summary, if any (attributed)." },
+        "image": { "$ref": "#/$defs/image" },
+        "note": { "$ref": "#/$defs/placeNote" },
+        "reviews": { "type": "array", "maxItems": 3, "items": { "$ref": "#/$defs/review" } },
+        "sources": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/source" } },
+        "fetched_on": { "$ref": "#/$defs/date", "description": "When the Google fields were fetched (snapshot date)." }
+      }
+    },
+    "placeNote": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "why_you": { "$ref": "#/$defs/text" },
+        "what_to_do": { "$ref": "#/$defs/text" },
+        "what_to_skip": { "$ref": "#/$defs/text" },
+        "best_time": { "$ref": "#/$defs/text" },
+        "tickets": { "$ref": "#/$defs/text" },
+        "accessibility": { "$ref": "#/$defs/text" },
+        "pairings": { "type": "array", "maxItems": 8, "items": { "$ref": "#/$defs/short" }, "description": "Place keys or free text: what goes well nearby." },
+        "food": { "$ref": "#/$defs/text" }
+      }
+    },
+    "review": {
+      "type": "object", "additionalProperties": false, "required": ["author", "text"],
+      "properties": {
+        "author": { "$ref": "#/$defs/short" },
+        "author_url": { "$ref": "#/$defs/url" },
+        "author_photo": { "$ref": "#/$defs/image" },
+        "rating": { "type": "number", "minimum": 0, "maximum": 5 },
+        "text": { "$ref": "#/$defs/text" },
+        "when": { "$ref": "#/$defs/short", "description": "Relative time as Google gives it ('3 months ago')." },
+        "url": { "$ref": "#/$defs/url", "description": "googleMapsUri of the review (required by the attribution policy when space allows)." }
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false, "required": ["url"],
+      "properties": {
+        "title": { "$ref": "#/$defs/short" },
+        "url": { "$ref": "#/$defs/url" },
+        "accessed": { "$ref": "#/$defs/date" },
+        "supports": { "$ref": "#/$defs/short", "description": "What the source was used for, e.g. 'visit duration', 'ticket price'." }
+      }
+    },
+    "laterList": {
+      "type": "object", "additionalProperties": false, "required": ["name", "items"],
+      "properties": {
+        "name": { "$ref": "#/$defs/short" },
+        "description": { "$ref": "#/$defs/text" },
+        "items": { "type": "array", "minItems": 1, "maxItems": 40, "items": { "$ref": "#/$defs/laterItem" } }
+      }
+    },
+    "laterItem": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "place": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$" },
+        "name": { "$ref": "#/$defs/short", "description": "Used when there is no place key." },
+        "reason": { "$ref": "#/$defs/short", "description": "Why it was not scheduled: 'closed on the Tuesday', 'too far from day 2'." },
+        "note": { "$ref": "#/$defs/text" }
+      },
+      "anyOf": [{ "required": ["place"] }, { "required": ["name"] }]
+    },
+    "practicalSection": {
+      "type": "object", "additionalProperties": false, "required": ["title"],
+      "properties": {
+        "title": { "$ref": "#/$defs/short" },
+        "text": { "$ref": "#/$defs/text" },
+        "items": { "type": "array", "maxItems": 30, "items": { "anyOf": [{ "$ref": "#/$defs/short" }, { "$ref": "#/$defs/labelled" }] } }
+      }
+    },
+    "labelled": { "type": "object", "additionalProperties": false, "required": ["label", "text"], "properties": { "label": { "$ref": "#/$defs/short" }, "text": { "$ref": "#/$defs/text" }, "url": { "$ref": "#/$defs/url" } } },
+    "attribution": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "google": { "type": "boolean", "description": "Force the Google Maps attribution block on or off; by default it appears when any place carries Google-sourced fields." },
+        "sources": { "type": "array", "maxItems": 100, "items": { "$ref": "#/$defs/source" }, "description": "Trip-level research ledger (place-level sources are listed with their place)." },
+        "generator": { "$ref": "#/$defs/short", "description": "e.g. 'Tour Guide · brochure-build'." },
+        "note": { "$ref": "#/$defs/text" }
+      }
+    }
+  }
+}
