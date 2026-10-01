@@ -1,6 +1,6 @@
 /**
  * Tour Guide planner — day plans over Google Maps (plan §5.4). Library only; the brain's `plan-days` skill drives it.
- *   planTrip({ trip, places, snapshots, estimates, notes?, profile, calibration?, maps, build_id, now, seed?, chooseMinutes? }) → Plan
+ *   planTrip({ trip, places, snapshots, estimates, notes?, profile, calibration?, maps, build_id, now, seed?, chooseMinutes?, railEstimates? }) → Plan
  *   replanDays(plan, dates, input) → Plan        (every other day is byte-identical; Later items outside the pool are kept)
  *   estimateBudget(input) → budget               (no API call; what planTrip would spend and whether the ledger allows it)
  * `maps` is a Maps-kit client (createMapsClient); every unit it spends is counted by its ledger before sending.
@@ -13,6 +13,7 @@ import { budgetFor, PlanBudgetError, SKU } from './planner-budget.mjs';
 import { mergeLater } from './planner-later.mjs';
 import { createRng } from './planner-rng.mjs';
 import { dateIn } from './planner-time.mjs';
+import { withRailEstimates } from './planner-rail.mjs';
 
 export { PlanBudgetError, SKU } from './planner-budget.mjs';
 export { solveDay, WEIGHT, MAX_STOPS } from './planner-solve.mjs';
@@ -21,6 +22,7 @@ export { assign, FAR_KM, CAP, dayCapacity } from './planner-assign.mjs';
 export { prepare, buildDays, lodgingForNight, modeFor, PACE } from './planner-input.mjs';
 export { localToIso, weekdayOf, dateRange, toMin, hm } from './planner-time.mjs';
 export { DIDNT_FIT, NEXT_TIME } from './planner-later.mjs';
+export { withRailEstimates, railEstimate, railLine, rideMinutes, walkMinutes, RAIL, STATION_TYPES } from './planner-rail.mjs';
 
 const fail = (m) => { throw new Error('planner: ' + m); };
 
@@ -45,8 +47,10 @@ async function build(ctx, input, { dates, pool, prior }) {
   if (!budget.within_ceiling && !input.allowOverBudget) throw new PlanBudgetError(budget);
   const built = [], dropped = unassigned.slice();
   const usage = { matrix_elements: 0, route_calls: 0 };
+  // Where Google has no transit route (Japan), TRANSIT legs become station-based train estimates (planner-rail.mjs).
+  const maps = input.railEstimates === false ? input.maps : withRailEstimates(input.maps, { points: [...pool.map((c) => ({ placeId: c.place_id, ...(c.loc || {}) })), ...days.flatMap((d) => [d.lodging_start, d.lodging_end])] });
   for (const day of days) {
-    const r = await planDay({ ctx, day, cands: byDate[day.date], maps: input.maps, build_id: String(input.build_id), seed: ctx.seed, verified_on: ctx.today });
+    const r = await planDay({ ctx, day, cands: byDate[day.date], maps, build_id: String(input.build_id), seed: ctx.seed, verified_on: ctx.today });
     built.push(r.dayPlan);
     dropped.push(...r.dropped);
     usage.matrix_elements += r.usage.matrix_elements; usage.route_calls += r.usage.route_calls;
