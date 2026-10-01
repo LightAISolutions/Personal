@@ -94,7 +94,9 @@
         "contradicts": { "type": "array", "maxItems": 300, "items": { "$ref": "#/$defs/claimId" } },
         "injection_suspect": { "type": "boolean" },
         "injection_reasons": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/injectionReason" } },
-        "note": { "type": "string", "maxLength": 300 }
+        "note": { "type": "string", "maxLength": 300 },
+        "source_kind": { "enum": ["editorial", "community", "local-language", null], "description": "Optional caller tag (record-search / record-fetch --source-kind); absent in runs written before WP-2g-kits" },
+        "language": { "type": ["string", "null"], "maxLength": 35, "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{1,8})*$", "description": "Optional BCP 47 tag of the source's language (--language), canonical form" }
       }
     },
     "claim": {

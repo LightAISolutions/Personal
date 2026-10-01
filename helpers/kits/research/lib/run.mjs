@@ -3,7 +3,7 @@
 import { randomUUID } from 'node:crypto';
 import { readFileSync, writeFileSync, renameSync, existsSync } from 'node:fs';
 import { normalizeBudgets, checkSpend, remaining, isoSeconds, usage, MAX_REFUSED_RECORDS } from './budget.mjs';
-import { entryId, searchEntry, fetchEntry, apiEntry, refusedEntry } from './ledger.mjs';
+import { entryId, searchEntry, fetchEntry, apiEntry, refusedEntry, SOURCE_KINDS, sourceTags } from './ledger.mjs';
 import { upsertClaim, labelClaim, resolveRef, LABELS } from './claims.mjs';
 import { durationRange, parseMinutes } from './duration.mjs';
 import { sanitizeLine } from './sanitize.mjs';
@@ -68,6 +68,35 @@ export function duration(state, specs) {
   return durationRange(mentions);
 }
 
+/**
+ * mentions(state, { source_kind?, language? }) → [{ ref, kind, url, domain, publisher, source_kind, language, official }]
+ * Every USABLE web source of the run (status ok, not injection_suspect): one row per fetch (ref `L004`) and one per search
+ * result (ref `L002.3`, tagged like its search). Lets a caller count local mentions per place from the refs it kept,
+ * without re-reading pages: the kit does no matching — the caller maps its own place → refs and reads the tags here.
+ * Filters: `source_kind` (one of SOURCE_KINDS, or 'untagged') and `language` (exact canonical tag, or its primary
+ * subtag: 'ja' matches 'ja' and 'ja-JP'). Runs written before these tags existed read as untagged.
+ */
+export function mentions(state, { source_kind, language } = {}) {
+  if (source_kind != null && source_kind !== 'untagged' && !SOURCE_KINDS.includes(source_kind)) throw usage(`source kind filter must be one of ${SOURCE_KINDS.join(', ')}, untagged`);
+  const lang = language != null && language !== '' ? sourceTags({ language }).language : null;
+  const rows = [];
+  for (const e of state.ledger) {
+    if (e.status !== 'ok' || (e.kind !== 'search' && e.kind !== 'fetch')) continue;
+    const tags = { source_kind: e.source_kind ?? null, language: e.language ?? null };
+    if (e.kind === 'fetch') { if (!e.injection_suspect) rows.push({ ref: e.id, kind: 'fetch', url: e.url, domain: e.domain, publisher: e.publisher, ...tags, official: e.official }); continue; }
+    e.results.forEach((r, i) => { if (!r.injection_suspect) rows.push({ ref: `${e.id}.${i + 1}`, kind: 'snippet', url: r.url, domain: r.domain, publisher: r.publisher, ...tags, official: false }); });
+  }
+  return rows.filter((m) => (source_kind == null || (source_kind === 'untagged' ? m.source_kind === null : m.source_kind === source_kind))
+    && (lang == null || m.language === lang || (m.language || '').split('-')[0] === lang));
+}
+
+/** Counts of usable, non-flagged search and fetch entries per source kind (searches count once, not per result). */
+export function sourceKindCounts(state) {
+  const out = Object.fromEntries(SOURCE_KINDS.concat('untagged').map((k) => [k, 0]));
+  for (const e of state.ledger) if (e.status === 'ok' && (e.kind === 'search' || e.kind === 'fetch') && !e.injection_suspect) out[e.source_kind ?? 'untagged']++;
+  return out;
+}
+
 export function summary(state, now) {
   const flagged = state.ledger.filter((e) => e.injection_suspect)
     .map((e) => ({ id: e.id, kind: e.kind, url: e.url, rules: [...new Set(e.injection_reasons.map((r) => r.rule))] }));
@@ -77,7 +106,8 @@ export function summary(state, now) {
     budgets: state.budgets, counters: state.counters, remaining: remaining(state, now),
     refused: state.ledger.filter((e) => e.status === 'refused').map((e) => ({ id: e.id, kind: e.kind, note: e.note })),
     errors: state.ledger.filter((e) => e.status === 'error').map((e) => e.id),
-    injection_flagged: flagged, labels: report.labels, not_ready: report.not_ready, ready: report.ready
+    injection_flagged: flagged, labels: report.labels, not_ready: report.not_ready, ready: report.ready,
+    source_kinds: sourceKindCounts(state)
   };
 }
 

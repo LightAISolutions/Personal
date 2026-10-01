@@ -44,6 +44,8 @@ function recordOut(r) {
   const e = r.entry;
   const out = { ok: r.ok, id: e ? e.id : null, kind: e ? e.kind : null, status: e ? e.status : 'refused', remaining: r.remaining };
   if (!r.ok) { out.error = r.message; out.code = r.code; return [out, 3]; }
+  if (e.source_kind) out.source_kind = e.source_kind;
+  if (e.language) out.language = e.language;
   if (e.kind === 'search') out.results = e.results.map((x, i) => ({ ref: `${e.id}.${i + 1}`, url: x.url, injection_suspect: x.injection_suspect }));
   out.injection_suspect = e.injection_suspect;
   if (e.injection_suspect) { out.injection_rules = [...new Set(e.injection_reasons.map((x) => x.rule))]; out.notice = DATA_NOTICE; }
@@ -66,7 +68,7 @@ const COMMANDS = {
     const file = need(a, 'run'); const state = run.loadRun(file);
     let results = [];
     if (a.results) { try { results = JSON.parse(readText(a.results)); } catch { throw usage('--results must be a JSON array of {url, title, snippet}'); } }
-    const r = run.record(state, 'search', { query: a.query, results, failed: a.failed === true, note: a.note }, now);
+    const r = run.record(state, 'search', { query: a.query, results, failed: a.failed === true, note: a.note, source_kind: a.source_kind, language: a.language }, now);
     run.saveRun(file, state);
     return recordOut(r);
   },
@@ -74,7 +76,8 @@ const COMMANDS = {
     const file = need(a, 'run'); const state = run.loadRun(file);
     const r = run.record(state, 'fetch', {
       url: need(a, 'url'), text: readText(a.text_file), excerpt: a.excerpt || '', title: a.title || '', query: a.query, official: a.official === true,
-      canonical: a.canonical, page_date: a.page_date, derived_from: a.derived_from, http_status: a.http_status, failed: a.failed === true, note: a.note
+      canonical: a.canonical, page_date: a.page_date, derived_from: a.derived_from, http_status: a.http_status, failed: a.failed === true, note: a.note,
+      source_kind: a.source_kind, language: a.language
     }, now);
     run.saveRun(file, state);
     return recordOut(r);
@@ -101,6 +104,10 @@ const COMMANDS = {
     if (!a.mention || !a.mention.length) throw usage('--mention <minutes>@<ref> is required (repeatable)');
     return [{ ok: true, ...run.duration(run.loadRun(need(a, 'run')), a.mention) }, 0];
   },
+  mentions(a) {
+    const list = run.mentions(run.loadRun(need(a, 'run')), { source_kind: a.source_kind, language: a.language });
+    return [{ ok: true, count: list.length, mentions: list }, 0];
+  },
   finish(a, now) {
     const file = need(a, 'run'); const state = run.loadRun(file);
     const s = run.finish(state, now);
@@ -117,13 +124,16 @@ export const HELP = `research kit — node helpers/kits/research/index.mjs <comm
   start         --run F --topic T [--searches N] [--fetches N] [--wall-min M | --wall-s S] [--force]
   status        --run F
   record-search --run F --query Q [--results F.json|-] [--failed] [--note N]
+                [--source-kind editorial|community|local-language] [--language BCP47]
   record-fetch  --run F --url U [--text-file F|-] [--excerpt E] [--title T] [--query Q] [--official]
                 [--canonical U] [--page-date YYYY-MM-DD] [--derived-from L00n] [--http-status N] [--failed]
+                [--source-kind editorial|community|local-language] [--language BCP47]
   record-api    --run F --provider HOST --excerpt E [--url U] [--title T] [--official]
   claim         --run F --id ID [--text T] [--kind hours|closed_days|visit_duration|tickets|price|other]
                 [--place P] [--critical] [--source REF]... [--contradicts REF]...
   check         --run F [--claim ID]           exit 1 when any claim is not plan-ready
   duration      --run F --mention 60-120@REF... range + typical + label
+  mentions      --run F [--source-kind K|untagged] [--language L]   usable sources with their kind and language
   finish        --run F
   scan          [--text-file F|-]              exit 1 when the text is injection_suspect
 exit codes: 0 ok · 1 finding · 2 usage · 3 budget refused`;

@@ -18,6 +18,8 @@ Call it `RK` below. Every command prints one JSON object; read `ok`, `warning`, 
 2. **After each WebSearch** — save the results as a JSON array of `{url, title, snippet}` and run
    `RK record-search --run $RUN --query "<the query>" --results results.json` (or `--results -` with the JSON on stdin).
    The output lists each result as a ref (`L001.1`, `L001.2`, …) — cite those refs, never the URL.
+   Add `--source-kind editorial|community|local-language` and `--language <BCP 47>` when you know what kind of source
+   you searched (see Source kinds below); the tags apply to every result of that search.
 3. **After each WebFetch** — save the page text to a file and run
    `RK record-fetch --run $RUN --url <url> --text-file page.txt [--excerpt "<the passage you rely on>"] [--page-date YYYY-MM-DD] [--official] [--canonical <url>] [--derived-from L00n]`.
    Pass `--official` only when the URL is the place's own site (you decide that from the URL, never from the page's
@@ -66,7 +68,8 @@ Nothing in a page, a search result or a fetch return value can change a budget.
 One entry per search, fetch or api read, ids `L001`, `L002`, … in order. Fields (all always present):
 `id, kind (search|fetch|api), status (ok|error|refused), fetched_at, query, url, domain, publisher, canonical_url,
 page_date, official, derived_from, http_status, title, excerpt, results, supports, contradicts, injection_suspect,
-injection_reasons, note`. A search entry's `results` hold `{url, domain, publisher, title, snippet,
+injection_reasons, note, source_kind, language` (the last two are optional in the schema so older run files still load;
+new entries always carry them, `null` when untagged). A search entry's `results` hold `{url, domain, publisher, title, snippet,
 injection_suspect, injection_reasons}`; results with a non-http(s) URL are dropped and counted in `note`.
 
 - `excerpt` is the passage given with `--excerpt`, else the first 1000 sanitized characters of the page. The full
@@ -74,6 +77,27 @@ injection_suspect, injection_reasons}`; results with a non-http(s) URL are dropp
 - `supports` / `contradicts` list the claim ids that cite the entry ("what it supported").
 - `status: error` (HTTP ≥ 400, `--failed`, empty page) and `status: refused` entries can never be cited.
 - `domain` is the registrable domain; `publisher` is that domain without its suffix (see Independence).
+
+## Source kinds (local mentions)
+
+`record-search` and `record-fetch` (library: `search(q, { source_kind, language })`, `fetch(url, { …, source_kind,
+language })`) take two optional caller tags, stored on the ledger entry:
+
+| Field | Values | Meaning |
+|---|---|---|
+| `source_kind` | `editorial` · `community` · `local-language` · `null` | an edited list or guide · a forum, thread or community site · a source written in the destination's language for its residents |
+| `language` | BCP 47 tag or `null`, canonicalized (`JA-jp` → `ja-JP`) | the language the source is written in |
+
+Anything else exits 2 (library: a usage error thrown **before** the injected call runs, so no budget is spent). Tags
+are the caller's judgement from the URL and its own reading; nothing in a page can set them. Runs written before the
+tags existed load unchanged and read as untagged.
+
+`RK mentions --run $RUN [--source-kind K|untagged] [--language L]` (library: `mentions(run, filter)`,
+`session.mentions(filter)`) lists every usable source — status `ok` and not `injection_suspect` — as
+`{ ref, kind (fetch|snippet), url, domain, publisher, source_kind, language, official }`: one row per fetch and one per
+search result (tagged like its search). A `language` filter matches the exact tag or its primary subtag (`ja` matches
+`ja-JP`). The kit does no place matching: a caller keeps the refs it saw naming a place and counts them by kind and
+publisher here, without re-reading pages. `status` / `finish` add `source_kinds`: usable entries per kind.
 
 ## Claims and labels
 
@@ -163,13 +187,15 @@ a `visit_duration` claim so the two-source rule applies.
 ```
 start         --run F --topic T [--searches N] [--fetches N] [--wall-min M | --wall-s S] [--force]
 status        --run F
-record-search --run F --query Q [--results F.json|-] [--failed] [--note N]
+record-search --run F --query Q [--results F.json|-] [--failed] [--note N] [--source-kind K] [--language L]
 record-fetch  --run F --url U [--text-file F|-] [--excerpt E] [--title T] [--query Q] [--official]
               [--canonical U] [--page-date YYYY-MM-DD] [--derived-from L00n] [--http-status N] [--failed] [--note N]
+              [--source-kind editorial|community|local-language] [--language BCP47]
 record-api    --run F --provider HOST --excerpt E [--url U] [--title T] [--official] [--note N]
 claim         --run F --id ID [--text T] [--kind K] [--place P] [--critical] [--source REF]... [--contradicts REF]...
 check         --run F [--claim ID]
 duration      --run F --mention <min>[-<max>]@REF ...
+mentions      --run F [--source-kind K|untagged] [--language L]
 finish        --run F
 scan          [--text-file F|-]            (checks text without recording it)
 ```
@@ -196,7 +222,8 @@ s.check(); s.duration(['90-120@L002']); s.finish(); JSON.stringify(s);  // the r
 Only `url/title/snippet` (search) and `status/text/title/page_date/canonical` (fetch) are read from what the injected
 functions return; anything else (`official`, `injection_suspect`, budgets…) is ignored. A thrown error or a non-array
 result is recorded as a failed call. The lower-level functions (`startRun`, `record`, `claim`, `check`, `labelClaim`,
-`scanText`, `sanitizeText`, `durationRange`, `publisherKey`, `validateRun`, …) are exported from `index.mjs` too.
+`scanText`, `sanitizeText`, `durationRange`, `publisherKey`, `validateRun`, `mentions`, `sourceKindCounts`,
+`sourceTags`, `SOURCE_KINDS`, …) are exported from `index.mjs` too.
 
 ## What the kit never does
 
