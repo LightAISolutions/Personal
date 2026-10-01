@@ -34,8 +34,29 @@ Budget: the Apps Script consumer quota is 90 trigger-minutes per day; only **tim
 
 Lane B uses no trigger time but holds the webhook for the Claude call (≤ ~25 s). If another update arrives while the lock is held, the core defers it to `queueTrigger` (+1 min, one short trigger run). That is rare and costs seconds.
 
-**/plan** (measured in `pack_tour-guide_gas_e2e.test.js`, see §M.2): about 3 brain requests per trip (research, then one per More round, then plan). Each one schedules +3 and +10, and the hourly guard is shared (one at a time, cache `sweep:hourly`). One planned trip with one More round is ≈ 4 requests → ≈ 8–10 trigger runs → **≈ 1 trigger-minute**.
+**/plan** (measured in `pack_tour-guide_gas_e2e.test.js`, see §M.2): one brain request per step (intake, research, one per More round, plan). Each one schedules +3 and +10, and the hourly guard is shared (one at a time, cache `sweep:hourly`). One planned trip with one More round is 4 requests → 9 trigger runs → **≈ 45 s, under 1 trigger-minute**.
 
-**Daily estimate:** typical ≈ 3–6 Lane C requests plus the daily jobs ≈ 0.5–1.5 min. A heavy planning day (a full `/plan` plus 10 deep questions) ≈ 2.5–3 min. Both stay far below Assistant Brain's 12–24 and the 90 cap, so Tour Guide and Assistant Brain together fit on one account even if they share a quota. The main lever is free-by-default (§1.9): `/smart on` moves quick questions out of the trigger path entirely, but they are paid per use. Usage is tracked in Settings `tg_chat_usage`, and `/smart` shows today's count and dollar estimate.
+**Daily estimate:** typical ≈ 3–6 Lane C requests plus the daily jobs ≈ 0.5–1.5 min. A heavy planning day (a full `/plan` plus 10 deep questions) ≈ 2.5–3 min, but past the default routine fire cap (§M.2). Both stay far below Assistant Brain's 12–24 and the 90 cap, so Tour Guide and Assistant Brain together fit on one account even if they share a quota. The main lever is free-by-default (§1.9): `/smart on` moves quick questions out of the trigger path entirely, but they are paid per use. Usage is tracked in Settings `tg_chat_usage`, and `/smart` shows today's count and dollar estimate.
+
+### M.2 `/plan` measured end to end
+Test `e2e /plan` in `helpers/tests/pack_tour-guide_gas_e2e.test.js`. It uses the real pack files and the core, with a spy on `scheduleOneOff`; every one-off whose time has come is fired minute by minute while the routine "works". Journey: `/plan Harbor Town` → intake answered at minute 8, with its wake call lost (the +10 sweep delivers it) → fact edit, dates, flight skipped → research answered at +12 through the wake route → round 1, ➕ More options → round 2 at +9 through the wake route → Done choosing → plan answered at +14 through a direct poll, plus the core `reply` with two Drive files → 120 more minutes so every leftover fallback fires.
+
+| Measured | Value |
+|---|---|
+| Brain requests (Requests sheet) | 4 (research `intake`, research `new`, research `more`, `plan`), all `answered` |
+| Routine fires | 4 (one per request; the daily cap is 12 across all routines) |
+| One-off trigger runs | **9**: `+3`/`+10` × 4 plus one shared hourly `+60`. Every scheduled one-off ran exactly once; no trigger left behind |
+| Wake-route runs (web app, no trigger time) | 3 |
+| Trigger time at ≈ 5 s per run | ≈ 45 s |
+
+Only the +10 of the intake did useful work, because its wake was lost. The other 8 runs are cheap no-op sweeps (a folder listing, no open request). The hourly run happened once: it was scheduled by the first sweep while the intake was still open, and nothing was open when it ran.
+
+**Daily cap on routine fires.** `MAX_ROUTINE_FIRES_PER_DAY` defaults to 12 across all of this helper's routines. A full `/plan` uses 4 (5–6 with more rounds), so the "heavy day" of §M (a full `/plan` plus 10 deep questions, 14 fires) passes the cap. From the 13th request of the day, the owner sees "⏳ Saved — the routine could not be fired right now (daily_cap)…". The request stays open until the next fire or until it expires after 24 h; meanwhile the shared hourly guard keeps running (≤ 24 runs ≈ 2 min, once per day, however many requests are stuck). Recommendation, recorded as a request in `helpers/status/WP-5c.md`: the Tour Guide setup notes should tell the owner to set `MAX_ROUTINE_FIRES_PER_DAY` to 20–24 if they plan several trips a day. That stays within the routine plan's own daily limit, and the trigger-minute cost is unchanged (≈ 2 runs per request).
+
+### M.3 What the e2e also showed
+- The throttled wake (two wakes within `WAKE_MIN_INTERVAL_SEC` = 15 s) schedules `wakeTrigger` +1, and that run delivers the envelope a minute later (test `e2e refusals and wake fallbacks`).
+- A refused envelope (a shortlist item with `rating`, a place with `hours`) is moved to `archive/rejected` and audited as `envelope_rejected` with the field named. The owner is not messaged, the request stays `open` and the flow keeps waiting, so the brain's corrected envelope still lands.
+- `tg_review_offer` runs inside the first sweep of the day after the trip ends, offers once (never again on later days), and the fl-button review ends in exactly one `prefs` request with `payload.review` (the stop-order items with `rating` and an optional `calibration`). The trip becomes `done`.
+
 
 Developed by: LightAISolutions
