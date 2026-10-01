@@ -25,3 +25,6 @@ Developed by: LightAISolutions
 - Phase 4b TourGuide branch merged into TourGuide main (PR #2); TourGuide work rebases onto main.
 - Coordinator: core `core_status` renderer hook + `*_API_KEY` redaction (with tests), `TG_SETTINGS.SMART`, contract §1.6 (`tg_capture_*` naming, `/smart`, `core_status`) and §1.9 (Lane B toggle). Tests 305 pass / 1 skipped; bundle and boundary clean.
 - Next: WP branches merge the session branch; resume WP-5a/5b/5c; TourGuide `--decisions` test + docs.
+- 11:25 UTC: WP-5a/5b/5c resumed (5c also builds `/smart` + `core_status`). TourGuide `--decisions` tested on an invented fixture (applied 1, refused doc → reply + exit 1, journey dry run 0 failures), documented, pushed (rebased on main) → PR LightAISolutions/TourGuide#3.
+- WP-5b done and merged (3396f32): 327 pass / 1 skipped, bundle + boundary clean; R1 (payloads test guard) accepted.
+- WP-5a done and merged (9134e80): 350 pass / 1 skipped, bundle + boundary clean. Deviations 1–8 in decisions/WP-5a.md accepted (review ratings ride core fl buttons; rv only for the offer).
