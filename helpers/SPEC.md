@@ -151,6 +151,8 @@ Pack files (`helpers/packs/<name>/gas/*.js`) load after every core file and exte
 | `registerEnvelopeObserver` | `(name, fn(env, result))` | After any envelope handler returned without throwing |
 | `registerHelp` | `(line)` | Extra `/help` line not tied to a command |
 
+Renderer names the core itself looks up: **`core_start`** — `fn({chatId}) → '' | html | {html, keyboard?}`, sent after the `/start` greeting and after pairing (`startExtras()` in `core/11_commands_builtin.js`; a throw is audited `start_extras_error`). A pack uses it to offer its first step (the tour-guide pack offers the interview).
+
 Core helpers a pack may call: `tgSendOwner(html, opts)`, `tgSend(chatId, html, opts)` (owner chat only — the core never messages anyone else), `tgSendDocument(chatId, {driveFileId | blob, filename?, caption?, replyTo?, silent?})` / `tgSendOwnerDocument(spec)` (Telegram `sendDocument` multipart, ≤ `DOCUMENT_MAX_BYTES`; a larger Drive file is sent as its link and audited `document_too_large`), `tgEscape(text)` (mandatory on every untrusted string; parse mode is HTML), `tgKeyboard(rows)`, `flowStart(chatId, name, seed)` / `flowActive(chatId)` / `flowResume(chatId, input)` / `flowCancel(chatId)` (§5 `registerFlow`), `enqueue()`, `proposeAction(spec)`, `openRequest(spec)`, `fireRoutine(name, text)`, `settingGet/settingSet`, `storeAppend/storeFind/storeUpdate/...` (§8), `audit(event, ref, detail)`, `getProp(propName('MY_KEY'))` for pack-specific properties, `HELPER.*`, `LIMITS.*`.
 
 ## 6. Web-app routes and the wake contract

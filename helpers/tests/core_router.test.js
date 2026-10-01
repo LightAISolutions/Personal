@@ -164,4 +164,22 @@ test('when the script lock is busy the update is deferred to the queue and handl
   assert.equal(ctx.queueDepth(), 0);
 });
 
+test('core_start renderer: its message follows /start and pairing; a throwing renderer is audited, not fatal', () => {
+  const { ctx, state } = H.loadGas();
+  H.bootstrap(ctx, state);
+  const k = state.props[ctx.PROP.WEBHOOK_SECRET];
+  ctx.doPost(H.postEvent('tg', { k }, H.tgUpdate({ text: '/start' })));
+  assert.match(state.fetch.lastTelegramText(), /is paired to this chat/);
+  let mode = 'obj';
+  ctx.registerRenderer('core_start', () => { if (mode === 'throw') throw new Error('boom'); return mode === 'obj' ? { html: 'Next: <b>step</b>', keyboard: ctx.tgKeyboard([[{ text: 'Go', data: 'x:1' }]]) } : ''; });
+  ctx.doPost(H.postEvent('tg', { k }, H.tgUpdate({ text: '/start' })));
+  assert.equal(state.fetch.lastTelegramText(), 'Next: <b>step</b>');
+  mode = '';
+  ctx.doPost(H.postEvent('tg', { k }, H.tgUpdate({ text: '/start' })));
+  assert.match(state.fetch.lastTelegramText(), /is paired to this chat/);
+  mode = 'throw';
+  ctx.doPost(H.postEvent('tg', { k }, H.tgUpdate({ text: '/start' })));
+  assert.ok(ctx.storeAll('AuditLog').some((r) => r.event === 'start_extras_error'));
+});
+
 // Developed by: LightAISolutions

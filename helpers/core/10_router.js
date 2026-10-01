@@ -84,6 +84,7 @@ function handleTelegramMessage(msg) {
       delProp(PROP.PAIR_CODE);
       audit('owner_paired', String(from.id), { username: from.username || '' });
       tgSend(chatId, '✅ Paired. This chat is now the owner channel for ' + tgEscape(HELPER.display_name) + '. Send /help to see commands.');
+      startExtras(chatId);
     } else if (!seenOnce('tgstranger:' + String(from.id || ''))) { auditFail('tg_unpaired_ignored', String(from.id || ''), null); }
     return null;
   }
