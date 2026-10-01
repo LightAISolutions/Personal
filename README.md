@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-01 04:13:42 AM EST` · Repo version: `v01.24r`
+Last updated: `2026-10-01 04:44:25 AM EST` · Repo version: `v01.25r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -223,21 +223,29 @@ Last updated: `2026-10-01 04:13:42 AM EST` · Repo version: `v01.24r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/11_commands_builtin.js">11_commands_builtin.js</a> — Built-in Telegram commands (/start /help /ping /id /status /pending /expire /ask /wake)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/12_wake.js">12_wake.js</a>          — Wake route, sweeps, requests (req_&lt;id&gt;.json) and one-off triggers
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/13_routines.js">13_routines.js</a>      — Claude Code Routine fire client with the daily cap
-│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/14_setup.js">14_setup.js</a>         — Owner setup page (?route=setup&amp;k=ADMIN_SECRET) and printSetupUrl()
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/14_setup.js">14_setup.js</a>         — Owner setup page (?route=setup&amp;k=ADMIN_SECRET) and printSetupUrl()
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/15_flows.js">15_flows.js</a> — Multi-step conversations: registerFlow, Flows tab, fl callbacks, /cancel, pause/resume, expiry (WP-1b)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/decisions">decisions/</a>              — One decisions file per phase / work package
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-0.md">TG-PHASE-0.md</a>       — Phase 0: the thirteen owner decisions, owner actions, session findings
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-1.md">TG-PHASE-1.md</a>       — Phase 1: scrub report (owner gate), subtree decision, every default chosen
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-2.md">TG-PHASE-2.md</a>       — Phase 2: coordinator defaults, findings, brochure rating
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-3.md">TG-PHASE-3.md</a>   — Phase 3: coordinator defaults, ownership-map extension, solver design and limits, requests carried
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-4.md">TG-PHASE-4.md</a>   — Phase 4: coordinator defaults, request-kind contract, payloads, Drive and memory layout, drivers, routine table, "For Phase 4b"
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-4B.md">TG-PHASE-4B.md</a> — Phase 4b: coordinator defaults, flows and documents as built, the six payload schemas, request kinds (final table), Gem Funnel and transit fallback as built, what changed vs the Phase 4 delta, requests carried
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-1b.md">WP-1b.md</a> — WP-1b core flows + document delivery: defaults (step shape, claim order, expiry, size fallback)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2a.md">WP-2a.md</a>            — WP-2a Maps kit: defaults, Maps terms finding, credential header, live smoke results
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2b.md">WP-2b.md</a>            — WP-2b Research kit: defaults (budgets, independence, labels, scanner)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2c.md">WP-2c.md</a>            — WP-2c Brochure kit: defaults, design rationale, Playwright for routines
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2d.md">WP-2d.md</a>            — WP-2d Prefs kit: defaults (formats, review payload, invariants)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2e.md">WP-2e.md</a> — WP-2e real Google maps and place photos in the brochure: defaults, terms, costs
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2f.md">WP-2f.md</a> — WP-2f prefs interview: defaults (vocabulary dimensions, bank shape, answer shapes, supersede rule, profile summary)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2g-engine.md">WP-2g-engine.md</a> — WP-2g engine (Gem Funnel): score weights, 💎 rule, floors, evidence flags, what is build-scoped
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2g-kits.md">WP-2g-kits.md</a> — WP-2g kits (Gem Funnel): Nearby Search tiers, minRating steps, Places Aggregate, research mentions and source kinds
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-3a.md">WP-3a.md</a>        — WP-3a schemas / estimator / Later / fixtures: defaults and fixture design
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-3b.md">WP-3b.md</a>        — WP-3b planner + solver: defaults, solver limits, the booked-stop wait rule
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-3c.md">WP-3c.md</a>        — WP-3c brochure map: defaults, what the brochure shows and hides
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-3d.md">WP-3d.md</a> — WP-3d engine choices, statuses and payload schemas: defaults (choice lists, status enum, digest caps)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-3e.md">WP-3e.md</a> — WP-3e transit fallback: defaults (20 km/h + 12 min, route factor 1.3, one warning per day)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4a.md">WP-4a.md</a>        — WP-4a trip-research + plan-days: defaults, the Phase 4 delta (statuses, choices, chaining, shortlist, intake)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4b.md">WP-4b.md</a>        — WP-4b prefs-build + place-notes + brochure-build: defaults, interview answers
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4c.md">WP-4c.md</a>        — WP-4c chat + trip-check + routine table: defaults (request check, hand-offs, Enterprise tier, change codes)
@@ -288,15 +296,21 @@ Last updated: `2026-10-01 04:13:42 AM EST` · Repo version: `v01.24r`
 │   │   │       └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/schema/brochure.schema.json">brochure.schema.json</a> — The brochure input model
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/maps">maps/</a>               — Places API (New) + Routes API client: fixed masks, SKU ledger with a hard stop, snapshot purge, Maps URLs
 │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/maps/fixtures">fixtures/</a>       — Hand-written responses in the real API shapes (invented city)
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/fixtures/maps-fixture-aggregate-count.json">maps-fixture-aggregate-count.json</a> — Places Aggregate, INSIGHT_COUNT
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/fixtures/maps-fixture-aggregate-places.json">maps-fixture-aggregate-places.json</a> — Places Aggregate, INSIGHT_PLACES
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/fixtures/maps-fixture-compute-routes-optimized.json">maps-fixture-compute-routes-optimized.json</a> — Compute Routes with optimizeWaypointOrder
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/fixtures/maps-fixture-compute-routes-transit.json">maps-fixture-compute-routes-transit.json</a> — Compute Routes, TRANSIT
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/fixtures/maps-fixture-compute-routes-walk.json">maps-fixture-compute-routes-walk.json</a> — Compute Routes, WALK
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/fixtures/maps-fixture-error-403.json">maps-fixture-error-403.json</a> — An upstream 403 error body
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/fixtures/maps-fixture-nearby-search-enterprise.json">maps-fixture-nearby-search-enterprise.json</a> — Nearby Search, Enterprise mask
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/fixtures/maps-fixture-place-details-atmosphere.json">maps-fixture-place-details-atmosphere.json</a> — Place Details, Enterprise + Atmosphere mask
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/fixtures/maps-fixture-place-details-enterprise.json">maps-fixture-place-details-enterprise.json</a> — Place Details, Enterprise mask
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/fixtures/maps-fixture-route-matrix.json">maps-fixture-route-matrix.json</a> — Compute Route Matrix elements
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/fixtures/maps-fixture-text-search-enterprise.json">maps-fixture-text-search-enterprise.json</a> — Text Search, Enterprise mask
 │   │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/fixtures/maps-fixture-text-search-pro.json">maps-fixture-text-search-pro.json</a> — Text Search, Pro mask
-│   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/index.mjs">index.mjs</a>       — Library exports + CLI (masks, usage, purge, url, details, search, route, matrix, smoke --live)
+│   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/index.mjs">index.mjs</a>       — Library exports + CLI (masks, usage, purge, url, details, search, nearby, aggregate, route, matrix, smoke --live)
 │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/maps/lib">lib/</a>            — Implementation, one concern per file
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-aggregate.mjs">maps-aggregate.mjs</a> — Places Aggregate (computeInsights): circle areas, type filters, count and place-id insights
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-cli.mjs">maps-cli.mjs</a> — Command-line front end; network commands need --live and a ledger
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-client.mjs">maps-client.mjs</a> — createMapsClient(): every method goes through the SKU ledger
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-errors.mjs">maps-errors.mjs</a> — Typed errors with stable codes (SKU_CEILING, BAD_INPUT, AUTH, QUOTA, …)
@@ -318,19 +332,25 @@ Last updated: `2026-10-01 04:13:42 AM EST` · Repo version: `v01.24r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/prefs">prefs/</a>              — Connector-reader pattern: evidence → held notes (quarantine) → owner review → confirmed profile
 │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/prefs/fixtures">fixtures/</a>       — Invented evidence and decisions
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/fixtures/decisions-sample.json">decisions-sample.json</a> — Sample owner decisions
-│   │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/fixtures/evidence-sample.json">evidence-sample.json</a> — Sample evidence, with one planted injection
-│   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/index.mjs">index.mjs</a>       — Library exports + CLI (check, ingest, review, apply)
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/fixtures/evidence-sample.json">evidence-sample.json</a> — Sample evidence, with one planted injection
+│   │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/fixtures/interview-answers-sample.json">interview-answers-sample.json</a> — Invented interview answers, with one planted injection
+│   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/index.mjs">index.mjs</a>       — Library exports + CLI (check, ingest, review, apply, interview)
 │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/prefs/lib">lib/</a>            — Implementation, one concern per file
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/lib/candidates.mjs">candidates.mjs</a> — Groups evidence into candidate preferences with support and conflicts
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/lib/confirmed-prefs.mjs">confirmed-prefs.mjs</a> — The owner's decision ledger and the confirmed-preferences document (size-capped)
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/lib/decisions.mjs">decisions.mjs</a> — Owner decisions: the only input that can change the profile
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/lib/evidence.mjs">evidence.mjs</a> — Evidence records: validation, hashed source refs, sanitized excerpts, injection flag
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/lib/held-notes.mjs">held-notes.mjs</a> — One Markdown held note per candidate in a caller-named directory
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/lib/interview-bank.mjs">interview-bank.mjs</a> — Question bank: load and validate against the schema and the vocabulary
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/lib/interview.mjs">interview.mjs</a> — Interview answers: three input shapes, supersede, bank warnings, profile summary
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/lib/review.mjs">review.mjs</a>  — The ✅ / ✏️ / ❌ review payload, sized for Telegram
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/lib/util.mjs">util.mjs</a>    — Hashing, normalization, slugs, text sanitizing, token estimate
 │   │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/lib/vocab.mjs">vocab.mjs</a>   — Caller-supplied preference vocabulary
 │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/prefs/presets">presets/</a>        — Named vocabularies
-│   │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/presets/travel.vocab.json">travel.vocab.json</a> — Travel vocabulary (pace, interests, food, budget, mobility, crowds, …)
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/presets/travel.interview.json">travel.interview.json</a> — Travel interview question bank (39 questions, 13 sections)
+│   │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/presets/travel.vocab.json">travel.vocab.json</a> — Travel vocabulary (22 dimensions: pace, food, climate, … hidden-gem appetite)
+│   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/prefs/schemas">schemas/</a> — JSON Schema for interview question banks
+│   │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/schemas/travel.interview.schema.json">travel.interview.schema.json</a> — Question-bank schema (2020-12 subset)
 │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/prefs/README.md">README.md</a>       — Contract: flow, commands, file formats, invariants, what the core and routines must do
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/research">research/</a>           — Research-run contract: budgets, source ledger, two-source rule, confidence labels, injection handling
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/research/fixtures">fixtures/</a>       — Invented pages on reserved domains
@@ -398,6 +418,23 @@ Last updated: `2026-10-01 04:13:42 AM EST` · Repo version: `v01.24r`
 │   │       │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/fixtures/transit-city/tg-fixture-transit-city-routes.json">tg-fixture-transit-city-routes.json</a> — Route Matrix + Compute Routes answers the responder replays
 │   │       │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/fixtures/transit-city/tg-fixture-transit-city-snapshots.json">tg-fixture-transit-city-snapshots.json</a> — Google snapshots in the Maps kit shape (hours, rating)
 │   │       │       └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/fixtures/transit-city/tg-fixture-transit-city-trip.json">tg-fixture-transit-city-trip.json</a> — The trip: dates, lodging, mode, bookings
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/gems">gems/</a> — Gem Funnel engine (WP-2g): screening, gem score and 💎 rule, evidence flags, gem line, shortlist floors, "Gems not chosen" — pure functions
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/gems/fixtures">fixtures/</a> — Invented pool for the funnel tests
+│   │       │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/fixtures/gems-fixture-port-sorrel.json">gems-fixture-port-sorrel.json</a> — An invented town's candidate pool
+│   │       │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/fixtures/index.mjs">index.mjs</a> — Fixture loader
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/gems-chains.mjs">gems-chains.mjs</a> — Chain detection from repeated names
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/gems-flags.mjs">gems-flags.mjs</a> — Evidence flags: unproven, tourist-oriented, closed-day conflict
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/gems-geo.mjs">gems-geo.mjs</a> — Distances and minutes to the nearest anchor
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/gems-hours.mjs">gems-hours.mjs</a> — Opening windows and closed dates
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/gems-line.mjs">gems-line.mjs</a> — The "why it's a gem" line
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/gems-project.mjs">gems-project.mjs</a> — toPlaceFields, toShortlistFields, assertNoGoogleFields
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/gems-record.mjs">gems-record.mjs</a> — Pool record: normalizeRecord, fromSearchResult, streams, categories
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/gems-score.mjs">gems-score.mjs</a> — Gem score (fit, quality, obscurity, localness, practicality) and the 💎 rule
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/gems-screen.mjs">gems-screen.mjs</a> — Stage-2 screening with drop reasons
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/gems-select.mjs">gems-select.mjs</a> — Shortlist floors by appetite and the "Gems not chosen" list
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/gems-weights.mjs">gems-weights.mjs</a> — Weights, floors, rough-edge tokens
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/index.mjs">index.mjs</a> — Gem Funnel exports
+│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/README.md">README.md</a> — Contract: the funnel in call order, the pool record, what stays build-scoped
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/gas">gas/</a>            — Pack-side Apps Script (empty until Phase 5)
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/.gitkeep">.gitkeep</a>        — Keeps the directory
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/helper.json">helper.json</a>     — Pack manifest: name, drive root, memory dirs, timezone default
@@ -406,9 +443,10 @@ Last updated: `2026-10-01 04:13:42 AM EST` · Repo version: `v01.24r`
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/later/later-lists.mjs">later-lists.mjs</a> — createLists, addItem
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/later/later-moves.mjs">later-moves.mjs</a> — promote (→ affected_days) and demote
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/planner">planner/</a>        — Day planner + exact solver (WP-3b): matrix → order → real legs → DayPlan
-│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/index.mjs">index.mjs</a>       — planTrip, replanDays, estimateBudget, PlanBudgetError, hoursOn, dateRange
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/index.mjs">index.mjs</a>       — planTrip (choices, rail estimates, transit fallback), replanDays, estimateBudget, PlanBudgetError, hoursOn, dateRange
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-assign.mjs">planner-assign.mjs</a> — Assigns candidates to dates by hours, bookings and geography
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-budget.mjs">planner-budget.mjs</a> — SKU budget estimate and the ceiling check before any call
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-choices.mjs">planner-choices.mjs</a> — The owner's choices (picks, later, skip) applied to the pool before planning (WP-3d)
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-day.mjs">planner-day.mjs</a> — One date end to end: matrix, solve, real legs, retime, cross-check
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-geo.mjs">planner-geo.mjs</a> — Haversine distances and the too_far rule
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-hours.mjs">planner-hours.mjs</a> — Opening windows per date from the snapshot; earliestFit
@@ -430,9 +468,15 @@ Last updated: `2026-10-01 04:13:42 AM EST` · Repo version: `v01.24r`
 │   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-later-list.schema.json">tour-guide-later-list.schema.json</a> — LaterList
 │   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-place-note.schema.json">tour-guide-place-note.schema.json</a> — PlaceNote
 │   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-place.schema.json">tour-guide-place.schema.json</a> — Place
+│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-places-digest.schema.json">tour-guide-places-digest.schema.json</a> — places_digest payload
 │   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-plan.schema.json">tour-guide-plan.schema.json</a> — Plan (days, Later lists, budget, usage)
+│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-plan-digest.schema.json">tour-guide-plan-digest.schema.json</a> — plan_digest payload
+│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-prefs-review.schema.json">tour-guide-prefs-review.schema.json</a> — prefs_review payload (the prefs kit's review)
 │   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-profile-excerpt.schema.json">tour-guide-profile-excerpt.schema.json</a> — Profile excerpt
+│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-profile-summary.schema.json">tour-guide-profile-summary.schema.json</a> — profile_summary payload
+│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-shortlist.schema.json">tour-guide-shortlist.schema.json</a> — shortlist payload (one /plan round)
 │   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-trip.schema.json">tour-guide-trip.schema.json</a> — Trip
+│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-trip-facts.schema.json">tour-guide-trip-facts.schema.json</a> — trip_facts payload (intake)
 │   │           └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-visit-estimate.schema.json">tour-guide-visit-estimate.schema.json</a> — VisitEstimate
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/prompts">prompts/</a>                — The prompt each phase's session starts from
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-1.md">TG-PHASE-1.md</a>       — Phase 1 kickoff: helper framework foundation (Fable 5.1 · Xhigh)
@@ -447,13 +491,19 @@ Last updated: `2026-10-01 04:13:42 AM EST` · Repo version: `v01.24r`
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/README.md">README.md</a>               — Framework overview, "how to add a helper", the public/private rules
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/SPEC.md">SPEC.md</a>                 — Framework contract v1 — envelope, mailbox, wake route, manifest, registries, properties, sheet, limits, ownership map
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/status">status/</a>                 — One status file per work package
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-1b.md">WP-1b.md</a> — WP-1b progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2a.md">WP-2a.md</a>            — WP-2a progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2b.md">WP-2b.md</a>            — WP-2b progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2c.md">WP-2c.md</a>            — WP-2c progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2d.md">WP-2d.md</a>            — WP-2d progress and requests to the coordinator
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2f.md">WP-2f.md</a> — WP-2f progress and requests to the coordinator
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2g-engine.md">WP-2g-engine.md</a> — WP-2g engine progress and requests to the coordinator
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2g-kits.md">WP-2g-kits.md</a> — WP-2g kits progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-3a.md">WP-3a.md</a>        — WP-3a progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-3b.md">WP-3b.md</a>        — WP-3b progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-3c.md">WP-3c.md</a>        — WP-3c progress and requests to the coordinator
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-3d.md">WP-3d.md</a> — WP-3d progress and requests to the coordinator
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-3e.md">WP-3e.md</a> — WP-3e progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4a.md">WP-4a.md</a>        — WP-4a progress, dry runs and requests (generic copy from the private repo)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4b.md">WP-4b.md</a>        — WP-4b progress, dry runs and requests (generic copy from the private repo)
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4c.md">WP-4c.md</a>        — WP-4c progress, dry runs, memory-merge experiment and requests (generic copy from the private repo)
@@ -489,6 +539,7 @@ Last updated: `2026-10-01 04:13:42 AM EST` · Repo version: `v01.24r`
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/tests">tests/</a>                  — node --test suites + in-memory Apps Script mocks
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_config.test.js">core_config.test.js</a> — 00_config.js — manifest merge, prefixed property names, time zone, secret redaction
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_executor.test.js">core_executor.test.js</a> — 07_executor.js + 08_actions_builtin.js — proposals, ✅ gate, dedupe, expiry, cap
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_flows.test.js">core_flows.test.js</a> — 15_flows.js + tgSendDocument — three-step flow, expiry, /cancel, interrupt, pause + resume, document size fallback
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_mailbox.test.js">core_mailbox.test.js</a> — 09_mailbox.js — envelope validation, dispatch, archive folders, dedupe, snapshot, pruning
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_queue.test.js">core_queue.test.js</a>  — 06_queue.js — one worker trigger per enqueue, retries, dead letters, pruning
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_registry.test.js">core_registry.test.js</a> — 02_registry.js — validation, duplicates, allowlist gating
@@ -506,6 +557,7 @@ Last updated: `2026-10-01 04:13:42 AM EST` · Repo version: `v01.24r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_sketch.test.js">kit_brochure_sketch.test.js</a> — Brochure kit: route sketch projection and drawing
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_validate.test.js">kit_brochure_validate.test.js</a> — Brochure kit: schema and semantic checks on the model
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_maps_client.test.js">kit_maps_client.test.js</a> — Maps kit: masks bill their SKU, Places and Routes calls, matrix caps
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_maps_gems.test.js">kit_maps_gems.test.js</a> — Maps kit: Nearby Search, minRating, atmosphere tier, Places Aggregate, new SKUs
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_maps_ledger.test.js">kit_maps_ledger.test.js</a> — Maps kit: SKU ledger and hard stop
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_maps_static_photos.test.js">kit_maps_static_photos.test.js</a> — Maps kit: Static Maps (key handling, limits, signing) and Place Photos
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_maps_transport.test.js">kit_maps_transport.test.js</a> — Maps kit: proxy tunnel transport, no key leaks; live smoke (skipped unless asked)
@@ -513,19 +565,25 @@ Last updated: `2026-10-01 04:13:42 AM EST` · Repo version: `v01.24r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_prefs_cli.test.js">kit_prefs_cli.test.js</a> — Prefs kit: CLI end to end
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_prefs_evidence.test.js">kit_prefs_evidence.test.js</a> — Prefs kit: evidence validation, sanitizing, injection flag
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_prefs_flow.test.js">kit_prefs_flow.test.js</a> — Prefs kit: the five invariants (no owner word, no profile entry)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_prefs_interview.test.js">kit_prefs_interview.test.js</a> — Prefs kit: vocabulary, question bank and the interview command
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_research_cli.test.js">kit_research_cli.test.js</a> — Research kit: CLI end to end
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_research_core.test.js">kit_research_core.test.js</a> — Research kit: budgets, ledger, two-source rule, labels, durations
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_research_injection.test.js">kit_research_injection.test.js</a> — Research kit: hostile pages are flagged and change nothing
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_research_sources.test.js">kit_research_sources.test.js</a> — Research kit: source kinds, languages and mentions
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_hello.test.js">pack_hello.test.js</a>  — The hello pack extends the core through registries only and runs end to end
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_brochure-map.test.js">pack_tour-guide_brochure-map.test.js</a> — Tour Guide pack: plan → brochure model → kit-valid HTML on both fixtures
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_brochure-map_units.test.js">pack_tour-guide_brochure-map_units.test.js</a> — Tour Guide pack: brochure-map unit checks (hours, cards, later, text)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_choices.test.js">pack_tour-guide_choices.test.js</a> — Tour Guide pack: owner choices on planTrip, statuses, "Saved by you"
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_estimator.test.js">pack_tour-guide_estimator.test.js</a> — Tour Guide pack: estimates, calibration taps, bounds
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_fixtures.test.js">pack_tour-guide_fixtures.test.js</a> — Tour Guide pack: fixtures validate, responder replays every pair
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_gems.test.js">pack_tour-guide_gems.test.js</a> — Tour Guide pack: the Gem Funnel on the invented pool
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_integration.test.js">pack_tour-guide_integration.test.js</a> — Tour Guide pack: fixtures → estimator → planner → schemas → brochure, the Phase 3 property set
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_later.test.js">pack_tour-guide_later.test.js</a> — Tour Guide pack: Later lists, promote / demote
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_payloads.test.js">pack_tour-guide_payloads.test.js</a> — Tour Guide pack: the six payload schemas and validatePayload
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_planner.test.js">pack_tour-guide_planner.test.js</a> — Tour Guide pack: solver and planner properties on a generated world
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_rail.test.js">pack_tour-guide_rail.test.js</a> — Tour Guide pack: station-based train estimates where Google has no transit
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_planner_world.js">pack_tour-guide_planner_world.js</a> — Generated planner world (seeded cities, hours, bookings) used by the planner tests
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_planner_transit-fallback.test.js">pack_tour-guide_planner_transit-fallback.test.js</a> — Tour Guide pack: distance estimates when Google has no transit route
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_schemas.test.js">pack_tour-guide_schemas.test.js</a> — Tour Guide pack: every schema accepts its fixture and rejects hostile shapes
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_boundary.test.js">tools_boundary.test.js</a> — Plants a fake secret and a personal-data path; the boundary check must fail on them
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_bundle.test.js">tools_bundle.test.js</a> — Manifest validation, bundle layout, appsscript.json, CLI, bundle runs in the mocks

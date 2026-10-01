@@ -357,3 +357,5 @@ test('toPlaceFields / toShortlistFields: exactly the WP-3d field names, our own 
   // every exported constant the tests depend on is a number or frozen object, not a literal in the code
   assert.ok(Object.isFrozen(g.WEIGHTS_BASE) && Object.isFrozen(g.GEM_RULE) && Object.isFrozen(g.OBSCURITY_BANDS) && Object.isFrozen(g.GEM_FLOORS));
 });
+
+// Developed by: LightAISolutions

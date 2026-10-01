@@ -272,3 +272,5 @@ test('reply envelopes may carry drive_file_ids: validated, then sent as captione
   assert.match(processed[processed.length - 1].detail_json, /documents\\":2,\\"documents_sent\\":2/);
   assert.equal(ctx.getRequest(req.id).status, 'answered');
 });
+
+// Developed by: LightAISolutions

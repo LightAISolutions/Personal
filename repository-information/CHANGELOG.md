@@ -3,11 +3,27 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 25/100`
+`Sections: 26/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.25r] — 2026-10-01 04:44:25 AM EST
+
+> **Prompt:** "Read helpers/prompts/TG-PHASE-4B.md in LightAISolutions/Personal and execute it exactly."
+
+### Added
+- **Core (WP-1b)**: `helpers/core/15_flows.js` — multi-step conversations (`registerFlow`, `flowStart` / `flowActive` / `flowResume` / `flowCancel`, the `Flows` tab, `fl` callback prefix, `/cancel`, pause/resume, expiry in the sweep); `tgSendDocument` / `tgSendOwnerDocument` (Telegram documents ≤ 50 MB, link fallback) and `reply.payload.drive_file_ids` sent as silent captioned documents; SPEC §2 / §5 / §8 / §18; `tests/core_flows.test.js`
+- **Prefs kit (WP-2f)**: travel vocabulary at 22 dimensions (climate, hidden-gem appetite, off-track minutes, rough edges, …), the interview question bank `presets/travel.interview.json` (39 questions, 13 sections) with `schemas/travel.interview.schema.json`, the `interview` command (three input shapes, supersede rule, bank warnings, plain-text profile summary); `tests/kit_prefs_interview.test.js`
+- **Engine (WP-3d)**: `planner/planner-choices.mjs` — `planTrip` honours the owner's `choices` (`picks`, `later` → "Saved by you", `skip`); trip status enum `intake · researched · choosing · planned · delivered · done`; Place `destination`, `history[]`, `last_researched`, `last_verified`; shortlist `seen_before`, `changes`, `dims`; the six payload schemas `tour-guide-{shortlist,trip-facts,plan-digest,profile-summary,prefs-review,places-digest}.schema.json`, `PAYLOAD_KINDS`, `validatePayload`; the manifest's `envelope_types`; `tests/pack_tour-guide_{choices,payloads}.test.js`
+- **Engine (WP-3e)**: transit fallback — `trip.transit_fallback { kmh, overhead_min, source, note }`, distance estimates (`estimateTransit`, `transitFallback`, route factor 1.3) for TRANSIT legs Google cannot route, `estimated` legs and one `transit_estimated` warning per day, chained after the v01.24r rail estimates; `tests/pack_tour-guide_planner_transit-fallback.test.js`
+- **Gem Funnel (WP-2g, plan amendment v01.25r)**: Maps kit `searchNearby` (Pro / Enterprise / Atmosphere), Text Search `minRating` and `enterprise_atmosphere`, Places Aggregate `computeInsights` (`lib/maps-aggregate.mjs`), five SKUs and five fixtures; research kit `mentions` with `source_kind` and `language`; the engine `packs/tour-guide/gems/` (screening, gem score and 💎 rule, evidence flags, gem line, shortlist floors by appetite, "Gems not chosen" Later list, `toPlaceFields` / `toShortlistFields`) with an invented fixture town; `tests/kit_maps_gems.test.js`, `kit_research_sources.test.js`, `pack_tour-guide_gems.test.js`
+- Plan §5.2, §5.9 step 3, §11d and decisions 22–26 (the Gem Funnel) in `repository-information/TOUR-GUIDE-BUILD-PLAN.md`; `helpers/decisions/TG-PHASE-4B.md`, `helpers/decisions/WP-{1b,2f,2g-kits,2g-engine,3d,3e}.md`, `helpers/status/WP-{1b,2f,2g-kits,2g-engine,3d,3e}.md`
+
+### Changed
+- `helpers/prompts/TG-PHASE-4B.md` (WP-2g, WP-3e, `gems_only` / `seeds`, the funnel in WP-4d) and `helpers/prompts/TG-PHASE-5.md` (the `FINALIZE (Phase 4b)` block filled with the real names and paths; `pf` registered by the pack; the interview-bank bundle step as a Phase 5 task); `helpers/BUILD-STATE.md` (rows 1b, 2f, 3d done, rows 2g and 3e added, Phase 4b log, Next); `helpers/packs/tour-guide/README.md` (choices, transit fallback, gems, payload table); `helpers/kits/{maps,prefs,research}/README.md`; `helpers/decisions/WP-2a.md` default 1 pointer; later-list codes `owner_choice`, `not_shown`; fixtures and tests moved from trip status `draft` to `intake`
+- 302 tests passing (1 skipped), bundle `--check` and boundary check clean; no live Google, Telegram or Drive call in this phase
 
 ## [v01.24r] — 2026-10-01 04:13:42 AM EST
 
