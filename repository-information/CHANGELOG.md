@@ -3,11 +3,30 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 16/100`
+`Sections: 17/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.17r] — 2026-10-01 03:24:20 AM EST
+
+> **Prompt:** "The sample itself looks great! However, I want the attached map to actually be a screenshot of Google map in the final product." · "Or 9/10, 10/10 once the map is fixed." · "I completed steps 1-8 above"
+
+### Added
+- Brochure kit: real Google maps. `lib/google-images.mjs` (`addGoogleImages`) fetches a Maps Static API image per day and one for the trip at a centre and zoom the kit computes, Compute Routes lines for legs without one, and Google place photos; everything is inlined as data URIs and the input model is never changed. `lib/mapframe.mjs` fits and projects (Web Mercator) so the brochure's own numbered badges, meal rings and lodging house sit exactly on the Google map, with Google's logo and copyright kept clear
+- Brochure kit: `--google [--ledger PATH]` on `render` / `build` / `sample`; model fields `trip.map_image` / `days[].map_image` (with `view`), `places.*.google_photo`, `days[].legs[].polyline`
+- Place cards show the Google photo credited "Photo by <author> · Google Maps"; the sources page and colophon state that the maps are Google Maps with markers added
+- Maps kit (from the Phase 2 thread's saved work): Maps Static API builder and client (`MAPS_STATIC_KEY` appended at send time, never logged; `NO_KEY` refusal; URL length reducer; optional signing), Place Photos, encoded polylines, offline stand-in PNGs, `static-url` / `static-map` / `photo` CLI commands, Static Maps and Place Details Photos SKUs with 80 % ceilings
+- Tests: `kit_maps_static_photos.test.js`, `kit_brochure_google_images.test.js`, a `--google` guard in `kit_brochure_cli.test.js` (225 in all)
+- `helpers/decisions/WP-2e.md` — choices, Google attribution and print terms, costs
+
+### Changed
+- Brochure kit: without `MAPS_STATIC_KEY`, or when any Google call fails, the drawn route sketch, no photo and straight lines remain (with a warning). Google photos use a 5:2 strip so long cards fit one page; the owner's own images keep 3:2
+- `helpers/kits/brochure/README.md`, `helpers/kits/maps/README.md`, `helpers/decisions/TG-PHASE-2.md` (rating 9/10 recorded, requests for Phase 4b/5), `helpers/BUILD-STATE.md` (MAPS_STATIC_KEY, Phase 2 log), `README.md` tree
+
+### Fixed
+- Maps kit stand-in PNG read only part of an encoded polyline that contained `|`
 
 ## [v01.16r] — 2026-10-01 03:16:38 AM EST
 

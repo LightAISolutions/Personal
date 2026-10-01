@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-01 03:16:38 AM EST` · Repo version: `v01.16r`
+Last updated: `2026-10-01 03:24:20 AM EST` · Repo version: `v01.17r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -234,6 +234,7 @@ Last updated: `2026-10-01 03:16:38 AM EST` · Repo version: `v01.16r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2b.md">WP-2b.md</a>            — WP-2b Research kit: defaults (budgets, independence, labels, scanner)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2c.md">WP-2c.md</a>            — WP-2c Brochure kit: defaults, design rationale, Playwright for routines
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2d.md">WP-2d.md</a>            — WP-2d Prefs kit: defaults (formats, review payload, invariants)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2e.md">WP-2e.md</a> — WP-2e real Google maps and place photos in the brochure: defaults, terms, costs
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-3a.md">WP-3a.md</a>        — WP-3a schemas / estimator / Later / fixtures: defaults and fixture design
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-3b.md">WP-3b.md</a>        — WP-3b planner + solver: defaults, solver limits, the booked-stop wait rule
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-3c.md">WP-3c.md</a>        — WP-3c brochure map: defaults, what the brochure shows and hides
@@ -260,8 +261,10 @@ Last updated: `2026-10-01 03:16:38 AM EST` · Repo version: `v01.16r`
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/escape.mjs">escape.mjs</a>  — Escaping and URL safety: model text is always data
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/fonts.mjs">fonts.mjs</a>   — Embeds the Charter faces as data URIs
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/format.mjs">format.mjs</a>  — Dates, times and durations on the trip's wall clock
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/google-images.mjs">google-images.mjs</a> — Build step: Google static maps, place photos and route lines inlined into a copy of the model
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/icons.mjs">icons.mjs</a>   — Inline SVG glyphs
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/images.mjs">images.mjs</a>  — Inlines local images; remote URLs dropped with a warning
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/mapframe.mjs">mapframe.mjs</a> — Web Mercator fit and projection; brochure markers drawn over a Google map
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/model.mjs">model.mjs</a>   — Model preparation: schema, semantic checks, merged day timelines
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/paginate.mjs">paginate.mjs</a> — In-browser paginator that re-homes blocks into fixed-size sheets
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/pdf.mjs">pdf.mjs</a>     — PDF step: Chromium via the global Playwright, one PDF page per sheet
@@ -275,7 +278,7 @@ Last updated: `2026-10-01 03:16:38 AM EST` · Repo version: `v01.16r`
 │   │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/sections/glance.mjs">glance.mjs</a> — The trip at a glance
 │   │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/sections/later.mjs">later.mjs</a> — Saved for later lists with reasons
 │   │   │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/sections/practical.mjs">practical.mjs</a> — Practical information blocks
-│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/sketch.mjs">sketch.mjs</a>  — Route sketch drawn as SVG from coordinates (no map tiles)
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/sketch.mjs">sketch.mjs</a>  — Route sketch drawn as SVG from coordinates (fallback without a Google map) and the shared markers
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/tokens.mjs">tokens.mjs</a>  — Design tokens: type scale, ink, accent, day hues
 │   │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/validate.mjs">validate.mjs</a> — Minimal JSON Schema validator
 │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/README.md">README.md</a>       — Contract: model schema, commands, pagination, attribution rules, what routines need (Playwright)
@@ -299,10 +302,14 @@ Last updated: `2026-10-01 03:16:38 AM EST` · Repo version: `v01.16r`
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-ledger.mjs">maps-ledger.mjs</a> — Monthly SKU usage ledger in a caller-named JSON file
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-masks.mjs">maps-masks.mjs</a> — The only field masks the kit sends, one per tier
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-mock-transport.mjs">maps-mock-transport.mjs</a> — In-memory transport over the fixtures (tests, offline smoke)
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-photos.mjs">maps-photos.mjs</a> — Place Photos (New): media lookup, image download, author attribution
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-places.mjs">maps-places.mjs</a> — Place Details and Text Search
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-png-stub.mjs">maps-png-stub.mjs</a> — Offline stand-in PNGs for static maps and photos (tests, --mock)
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-polyline.mjs">maps-polyline.mjs</a> — Encoded polylines: encode, decode, simplify
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-routes.mjs">maps-routes.mjs</a> — Compute Routes and Compute Route Matrix (caps, chunking, SKU choice)
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-skus.mjs">maps-skus.mjs</a> — SKU table: free monthly caps, list prices, default ceilings
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-snapshots.mjs">maps-snapshots.mjs</a> — GoogleSnapshot records and the terms-driven purge
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-static.mjs">maps-static.mjs</a> — Maps Static API: keyless URL builder, length reducer, signing, keyed fetch
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-transport.mjs">maps-transport.mjs</a> — Zero-dependency HTTPS transport through the HTTPS_PROXY tunnel
 │   │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/lib/maps-urls.mjs">maps-urls.mjs</a> — Google Maps URLs: directions, place and whole-day links
 │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/maps/README.md">README.md</a>       — Contract: library, masks and SKUs, the hard stop, snapshot purge per the Maps terms, CLI
@@ -488,11 +495,13 @@ Last updated: `2026-10-01 03:16:38 AM EST` · Repo version: `v01.16r`
 │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/harness/gas-mocks.js">gas-mocks.js</a>    — In-memory Apps Script mocks + loader (Properties, Cache, Lock, Drive, Spreadsheet, UrlFetch, triggers)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/index.js">index.js</a>            — Loads every *.test.js in this directory
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_cli.test.js">kit_brochure_cli.test.js</a> — Brochure kit: CLI exit codes, build without Playwright
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_google_images.test.js">kit_brochure_google_images.test.js</a> — Brochure kit: Google maps, photos, projection and overlay
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_render.test.js">kit_brochure_render.test.js</a> — Brochure kit: self-contained render, hostile strings escaped
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_sketch.test.js">kit_brochure_sketch.test.js</a> — Brochure kit: route sketch projection and drawing
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_validate.test.js">kit_brochure_validate.test.js</a> — Brochure kit: schema and semantic checks on the model
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_maps_client.test.js">kit_maps_client.test.js</a> — Maps kit: masks bill their SKU, Places and Routes calls, matrix caps
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_maps_ledger.test.js">kit_maps_ledger.test.js</a> — Maps kit: SKU ledger and hard stop
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_maps_static_photos.test.js">kit_maps_static_photos.test.js</a> — Maps kit: Static Maps (key handling, limits, signing) and Place Photos
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_maps_transport.test.js">kit_maps_transport.test.js</a> — Maps kit: proxy tunnel transport, no key leaks; live smoke (skipped unless asked)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_maps_urls_snapshots.test.js">kit_maps_urls_snapshots.test.js</a> — Maps kit: Maps URLs and the snapshot purge
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_prefs_cli.test.js">kit_prefs_cli.test.js</a> — Prefs kit: CLI end to end

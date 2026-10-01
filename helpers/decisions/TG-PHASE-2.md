@@ -33,7 +33,7 @@
 
 Sample: an invented 3-day trip, 12 pages, US Letter (`node helpers/kits/brochure/index.mjs sample <dir>`). Posted in the Phase 2 thread on 2026-10-01 with the question "would you hand it to a friend?".
 
-**Rating: pending at push time.** Following the owner's standing instruction, the phase finished every part that does not depend on the answer. If the owner asks for changes, 2c is iterated in a follow-up push and this section is updated.
+**Rating: 9/10** (owner, 2026-10-01): "The sample itself looks great! However, I want the attached map to actually be a screenshot of Google map in the final product … 10/10 once the map is fixed." WP-2e (`decisions/WP-2e.md`) replaced the drawn route maps with Maps Static API images carrying the brochure's own markers, and added Google place photos to the cards. A live sample of a real city went to the owner for the re-rating.
 
 ## 4. Requests carried to later phases
 
@@ -46,6 +46,8 @@ Sample: an invented 3-day trip, 12 pages, US Letter (`node helpers/kits/brochure
 | Phase 4 | Routines building brochures need the global Playwright and Chromium at `/opt/pw-browsers/chromium` (the build image); `build` returns 3 with the HTML written when the PDF step is unavailable | WP-2c |
 | Phase 5 (core + pack) | Register the `pf` callback-data prefix (`pf:<cid>:y\|e\|n`); capture the ✏️ reply as the replacement value; HTML-escape review item text; send decisions as a `request` envelope with `payload.kind: "prefs_decisions"`; add a `prefs_review` envelope type to SPEC | WP-2d |
 | Phase 6 (red-team) | Core `14_setup.js` and `core_setup.test.js` contain raw invisible characters; replace them with escapes | Coordinator decision 6 |
+| Phase 4b / 5 (pack) | Carry Google photo names (`photos[0]` name + author) in the tour-guide snapshot and map them to `google_photo` in `toBrochureModel`; keep the planner's route polylines on legs; the `brochure-build` routine runs the kit with `--google` (needs `MAPS_STATIC_KEY` in the routine environment and the usage ledger) | WP-2e |
+| Owner (before any sale or wide distribution) | Google prohibits Maps as the core of printed guide books; private itineraries are read as supplemental use (WP-2e) | WP-2e |
 | Phase 7 | Optional: add the Grounding Lite host to the Maps credential if the engine wants it | F5 |
 
 ## 5. Ownership note

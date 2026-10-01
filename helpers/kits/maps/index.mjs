@@ -15,6 +15,10 @@ export { placeDetails, textSearch } from './lib/maps-places.mjs';
 export * from './lib/maps-routes.mjs';
 export * from './lib/maps-urls.mjs';
 export * from './lib/maps-snapshots.mjs';
+export * from './lib/maps-polyline.mjs';
+export { staticMapRequest, staticMapUrl, signStaticMapUrl, staticMap, STATIC_MAPS_BASE, STATIC_MAPS_SKU, STATIC_MAX_SIDE, URL_MAX_CHARS } from './lib/maps-static.mjs';
+export { stubMapPng, stubFromStaticUrl, stubPhotoPng, encodePng } from './lib/maps-png-stub.mjs';
+export { placePhoto, normalizeAttributions, PHOTOS_SKU, PHOTO_NAME_RE, PHOTO_MAX_PX } from './lib/maps-photos.mjs';
 export { createMapsClient } from './lib/maps-client.mjs';
 export { createMockTransport, fixtureResponder, fixture } from './lib/maps-mock-transport.mjs';
 

@@ -10,7 +10,7 @@ import { parseDate, parseTime, daySpan, minutesBetween, addDays } from './format
 export class ModelError extends Error {
   constructor(errors) { super('brochure model invalid:\n' + formatErrors(errors)); this.name = 'ModelError'; this.errors = errors; }
 }
-export const GOOGLE_FIELDS = ['hours', 'hours_today', 'rating', 'review_count', 'website', 'maps_url', 'place_id', 'business_status', 'editorial', 'reviews', 'phone', 'price_level'];
+export const GOOGLE_FIELDS = ['hours', 'hours_today', 'rating', 'review_count', 'website', 'maps_url', 'place_id', 'business_status', 'editorial', 'reviews', 'phone', 'price_level', 'google_photo'];
 
 /** Semantic checks → [{path, message}]. */
 export function semanticErrors(m) {
@@ -96,8 +96,10 @@ export function prepare(input) {
     return { ...d, index: i + 1, weekday: WEEKDAYS[parseDate(d.date).getUTCDay()], lodging, stops, meals, free, legs, timeline, stats, warnings: d.warnings || [] };
   });
   const later = (m.later || []).map((l) => ({ ...l, items: l.items.map((it) => ({ ...it, place: it.place ? places[it.place] : null })) }));
-  const anyGoogle = Object.values(places).some((p) => p.google);
-  const attribution = { ...(m.attribution || {}), google: m.attribution && m.attribution.google !== undefined ? m.attribution.google : anyGoogle, reviews: Object.values(places).flatMap((p) => (p.reviews || []).map((r) => ({ ...r, place: p }))) };
+  const hasImg = (x) => Boolean(x && typeof x.src === 'string' && x.src.trim());
+  const google = { maps: hasImg(m.trip.map_image) || days.some((d) => hasImg(d.map_image)), photos: Object.values(places).some((p) => hasImg(p.google_photo)) };
+  const anyGoogle = Object.values(places).some((p) => p.google) || google.maps;
+  const attribution = { ...(m.attribution || {}), google: m.attribution && m.attribution.google !== undefined ? m.attribution.google : anyGoogle, reviews: Object.values(places).flatMap((p) => (p.reviews || []).map((r) => ({ ...r, place: p }))), ...google };
   return { trip: m.trip, locale, places, days, cards: cardOrder, later, practical: m.practical || [], attribution, span: daySpan(m.trip.start_date, m.trip.end_date), dates: Array.from({ length: daySpan(m.trip.start_date, m.trip.end_date) }, (_, i) => addDays(m.trip.start_date, i)) };
 }
 

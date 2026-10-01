@@ -48,6 +48,7 @@
         "day_end": { "$ref": "#/$defs/time" },
         "intro": { "$ref": "#/$defs/text", "description": "One or two paragraphs for the 'at a glance' page (blank line = paragraph break)." },
         "cover_image": { "$ref": "#/$defs/image" },
+        "map_image": { "$ref": "#/$defs/mapImage", "description": "A Google static map of the whole trip (Maps Static API, fetched during the build and inlined). When present it replaces the overview sketch; attribution is added by the renderer." },
         "lodging": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/lodging" } },
         "build_id": { "type": "string", "maxLength": 64 },
         "built_on": { "$ref": "#/$defs/date" },
@@ -81,6 +82,7 @@
         "meals": { "type": "array", "maxItems": 8, "items": { "$ref": "#/$defs/meal" } },
         "free": { "type": "array", "maxItems": 8, "items": { "$ref": "#/$defs/freeBlock" } },
         "warnings": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/warning" } },
+        "map_image": { "$ref": "#/$defs/mapImage", "description": "A Google static map of this day's route (Maps Static API, fetched during the build and inlined). When present it replaces the day's route sketch." },
         "verified_on": { "$ref": "#/$defs/date" }
       }
     },
@@ -108,7 +110,8 @@
         "arrive_at": { "$ref": "#/$defs/time" },
         "maps_url": { "$ref": "#/$defs/url" },
         "line": { "$ref": "#/$defs/short", "description": "Transit line or service name, e.g. 'Tram 4 toward Harbour Baths'." },
-        "note": { "$ref": "#/$defs/short" }
+        "note": { "$ref": "#/$defs/short" },
+        "polyline": { "type": "string", "maxLength": 20000, "description": "Google encoded polyline of the leg (Routes API encodedPolyline). Drawn on the static maps; a straight segment is used when absent." }
       }
     },
     "endpoint": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$", "description": "A place key, or the literal `lodging`." },
@@ -158,10 +161,42 @@
         "business_status": { "type": "string", "enum": ["OPERATIONAL", "CLOSED_TEMPORARILY", "CLOSED_PERMANENTLY"] },
         "editorial": { "$ref": "#/$defs/text", "description": "Google's editorial summary, if any (attributed)." },
         "image": { "$ref": "#/$defs/image" },
+        "google_photo": { "$ref": "#/$defs/googlePhoto" },
         "note": { "$ref": "#/$defs/placeNote" },
         "reviews": { "type": "array", "maxItems": 3, "items": { "$ref": "#/$defs/review" } },
         "sources": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/source" } },
         "fetched_on": { "$ref": "#/$defs/date", "description": "When the Google fields were fetched (snapshot date)." }
+      }
+    },
+    "mapImage": {
+      "type": "object", "additionalProperties": false, "required": ["src"],
+      "description": "A fetched map image. With `view` (the centre, zoom and size the image was requested at, in the Static Maps API's logical pixels) the renderer projects the brochure's own markers onto it; without it the image is shown as is.",
+      "properties": {
+        "src": { "type": "string", "maxLength": 20000000 },
+        "alt": { "$ref": "#/$defs/short" },
+        "credit": { "$ref": "#/$defs/short" },
+        "view": {
+          "type": "object", "additionalProperties": false, "required": ["center", "zoom", "width", "height"],
+          "properties": {
+            "center": { "type": "object", "additionalProperties": false, "required": ["lat", "lng"], "properties": { "lat": { "type": "number", "minimum": -85, "maximum": 85 }, "lng": { "type": "number", "minimum": -180, "maximum": 180 } } },
+            "zoom": { "type": "integer", "minimum": 0, "maximum": 21 },
+            "width": { "type": "integer", "minimum": 1, "maximum": 640 },
+            "height": { "type": "integer", "minimum": 1, "maximum": 640 }
+          }
+        }
+      }
+    },
+    "googlePhoto": {
+      "type": "object", "additionalProperties": false,
+      "description": "A Place Photo (New). `name` is the photo resource (places/…/photos/…) the build fetches through the maps kit; `src` is the fetched image (path or data URI) and is what the renderer shows. The author credit is shown with the photo (Places policy).",
+      "properties": {
+        "name": { "type": "string", "pattern": "^places/[A-Za-z0-9_-]{1,300}/photos/[A-Za-z0-9_-]{1,400}$" },
+        "src": { "type": "string", "maxLength": 20000000 },
+        "alt": { "$ref": "#/$defs/short" },
+        "author": { "$ref": "#/$defs/short" },
+        "author_url": { "$ref": "#/$defs/url" },
+        "width_px": { "type": "integer", "minimum": 1 },
+        "height_px": { "type": "integer", "minimum": 1 }
       }
     },
     "placeNote": {

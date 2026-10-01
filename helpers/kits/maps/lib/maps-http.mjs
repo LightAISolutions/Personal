@@ -21,7 +21,8 @@ function googleMessage(text) {
  */
 export async function guardedCall(ctx, { sku, units = 1, method, url, mask, body = null }) {
   ctx.ledger.reserve(sku, units); // throws MapsBudgetError → nothing sent
-  const headers = { 'Content-Type': 'application/json', 'X-Goog-FieldMask': mask };
+  const headers = { 'Content-Type': 'application/json' };
+  if (mask) headers['X-Goog-FieldMask'] = mask; // photo media has no mask
   if (ctx.apiKey) headers['X-Goog-Api-Key'] = ctx.apiKey;
   let res;
   try {

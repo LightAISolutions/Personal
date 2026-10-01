@@ -10,6 +10,8 @@ import { PLACE_DETAILS_MASKS, TEXT_SEARCH_MASKS, ROUTE_MASKS, ROUTE_MATRIX_MASK,
 import { SKUS, DEFAULT_CEILINGS, parseCeilingsEnv } from './maps-skus.mjs';
 import { openSnapshotStore, toSnapshot } from './maps-snapshots.mjs';
 import { directionsUrl, placeUrl } from './maps-urls.mjs';
+import { staticMapRequest } from './maps-static.mjs';
+import { readFileSync, writeFileSync } from 'node:fs';
 
 export const USAGE = `usage: node helpers/kits/maps/index.mjs <command> [options]
   masks                                         print the fixed field masks and their SKUs
@@ -21,13 +23,18 @@ export const USAGE = `usage: node helpers/kits/maps/index.mjs <command> [options
   route   --json '<computeRoutes spec>' --live --ledger P
   matrix  --json '<computeRouteMatrix spec>' --live --ledger P
   smoke   [--live --ledger P]                   1 Text Search + 1 Place Details + 1 Compute Routes (offline: fixtures)
-env: MAPS_USAGE_LEDGER (ledger path), MAPS_SKU_CEILINGS ("sku=n,sku=n"), MAPS_SNAPSHOT_STORE (store path)`;
+  photo   <photoName> <out> [--max-width N] --live --ledger P   one Place Photo (SKU places.details.photos); --mock offline
+  static-url <spec.json>                        Maps Static API URL for a spec, no key, no network (length + reductions)
+  static-map <spec.json> <out.png> --live --ledger P   fetch one static map (SKU static_maps); --mock draws a stand-in offline
+env: MAPS_USAGE_LEDGER (ledger path), MAPS_SKU_CEILINGS ("sku=n,sku=n"), MAPS_SNAPSHOT_STORE (store path),
+     MAPS_STATIC_KEY (Maps Static API key, sent as key= — the proxy injects none), MAPS_STATIC_SIGNING_SECRET (optional)`;
 
 export function parseArgs(argv) {
   const out = { _: [] };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--live') out.live = true;
+    else if (a === '--mock') out.mock = true;
     else if (a.startsWith('--')) out[a.slice(2)] = argv[++i];
     else out._.push(a);
   }
@@ -110,6 +117,33 @@ export async function runCli(argv) {
         if (cmd === 'search') print((await c.textSearch(a._.slice(1).join(' '), { tier: a.tier, pageSize: a['page-size'] ? Number(a['page-size']) : undefined })));
         if (cmd === 'route') print((await c.computeRoutes(json(a.json))));
         if (cmd === 'matrix') print((await c.computeRouteMatrix(json(a.json))));
+        return 0;
+      }
+      case 'photo': {
+        if (!a._[1] || !a._[2]) { console.error(USAGE); return 2; }
+        let client;
+        if (a.mock) client = createMapsClient({ transport: createMockTransport(), allowMemoryLedger: true, env: {} });
+        else { if (!needLive(a)) return 2; client = liveClient(a); }
+        const r = await client.placePhoto(a._[1], { maxWidthPx: a['max-width'] ? Number(a['max-width']) : undefined });
+        writeFileSync(a._[2], r.bytes);
+        console.error(`${a.mock ? 'stand-in' : 'fetched'} ${r.contentType} (${r.bytes.length} bytes) → ${a._[2]}; photo by ${r.authorAttributions.map((x) => x.displayName || 'unnamed').join(', ') || 'unknown'}`);
+        return 0;
+      }
+      case 'static-url': {
+        if (!a._[1]) { console.error(USAGE); return 2; }
+        const r = staticMapRequest(JSON.parse(readFileSync(a._[1], 'utf8')));
+        print({ url: r.url, chars: r.url.length, pixels: `${r.pixelWidth}x${r.pixelHeight}`, notes: r.notes });
+        return 0;
+      }
+      case 'static-map': {
+        if (!a._[1] || !a._[2]) { console.error(USAGE); return 2; }
+        const spec = JSON.parse(readFileSync(a._[1], 'utf8'));
+        let client;
+        if (a.mock) client = createMapsClient({ transport: createMockTransport(), allowMemoryLedger: true, staticKey: 'mock', env: {} });
+        else { if (!needLive(a)) return 2; client = liveClient(a); if (!client.hasStaticKey()) { console.error('refused: MAPS_STATIC_KEY is not set (the egress proxy injects no key for maps.googleapis.com)'); return 2; } }
+        const r = await client.staticMap(spec);
+        writeFileSync(a._[2], r.bytes);
+        console.error(`${a.mock ? 'stand-in' : 'fetched'} ${r.width}x${r.height} ${r.contentType} (${r.bytes.length} bytes) → ${a._[2]}${r.notes.length ? '; ' + r.notes.join('; ') : ''}`);
         return 0;
       }
       case 'smoke': {
