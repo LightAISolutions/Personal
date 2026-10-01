@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-01 02:50:57 AM EST` · Repo version: `v01.15r`
+Last updated: `2026-10-01 03:32:47 AM EST` · Repo version: `v01.16r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -427,7 +427,8 @@ Last updated: `2026-10-01 02:50:57 AM EST` · Repo version: `v01.15r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-4.md">TG-PHASE-4.md</a>   — Phase 4 kickoff: private repo, memory, trip-research and plan-days (Fable 5.1 · high; rest Opus 5.5 · high)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-4-DELTA.md">TG-PHASE-4-DELTA.md</a> — Phase 4 delta for the running session: plan picks/later/skip/deliverables, shortlist, intake, interview answers, hand-off to 4b
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-4B.md">TG-PHASE-4B.md</a>  — Phase 4b kickoff: core flows + document delivery, prefs interview, engine choices and envelope types, skill deltas (Fable 5.1 · high)
-│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-5.md">TG-PHASE-5.md</a>       — Phase 5 kickoff: Telegram commands, /interview and /plan flows, envelope handlers, sheets (Opus 5.5 · high)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-5.md">TG-PHASE-5.md</a>       — Phase 5 kickoff: Telegram commands, /interview and /plan flows, envelope handlers, sheets (Opus 5.5 · high)
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-9.md">TG-PHASE-9.md</a>       — Phase 9 kickoff (draft, finalized by Phase 8): the Tour Guide app as a Telegram Mini App — core route + signed launch data, app operations, generic data-free shell (Fable 5.1 · high; route Opus 5.5 · high)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/README.md">README.md</a>               — Framework overview, "how to add a helper", the public/private rules
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/SPEC.md">SPEC.md</a>                 — Framework contract v1 — envelope, mailbox, wake route, manifest, registries, properties, sheet, limits, ownership map
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/status">status/</a>                 — One status file per work package

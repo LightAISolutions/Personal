@@ -3,11 +3,31 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 15/100`
+`Sections: 16/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.16r] — 2026-10-01 03:32:47 AM EST
+
+> **Prompt:** "Also, I gave one example of how I could interact with the Tour Guide helper and all its functions (via the /plan Tokyo, Japan command to the chatbot), but I want you to create a new thread on Fable 5.1 high or xhigh (your choice) to think about other ways to allow me to interact with all the tools you are building now. I'm also considering having you create a web app that allows Tour Guide to gather information from me about my upcoming trip at a location I provide (ie: Tokyo, Japan) and display the finished travel brochures. I want to have a personal repository of places that Tour Guide has researched, so that all that effort is not wasted. Who knows? Even the best plans go wrong or maybe I will decide on the fly that I want to change my itinerary. Either way, I will be able to browse through this repository to find an alternative. Also, if I ask Tour Guide to plan two different itineraries for the same location at two different points in time, Tour Guide will be able to go through the existing repository places to check if they are still in business, and if so, what has changed about them since we last looked at them.
+>
+> Given the context above, i want you to evaluate different options and recommend me a way to interact with Tour Guide to allow it to best generate a travel plan that I will enjoy. Also, you may need to update the Tour Guide plan accordingly."
+
+### Added
+- `helpers/prompts/TG-PHASE-9.md` — Phase 9 kickoff (a draft Phase 8 finalizes, or Phase 6 if the owner pulls the app forward): the Tour Guide app as a Telegram Mini App — core `registerRoute` (fifteenth registry; the four built-in routes stay fixed), `tgVerifyInitData` (HMAC-SHA256 keyed by the bot token, 24-hour window, owner id, constant-time compare), `tgSetMenuButton`, `APP_SHELL_URL` and `MAX_APP_CALLS_PER_DAY` (WP-9a, coordinator Fable 5.1 · high); the pack's `?route=app` operations that reuse the chat's request and callback paths plus a menu-button setup step and `web_app` buttons (WP-9b, Opus 5.5 · high); the generic data-free shell `live-site-pages/helper-app.html` under this repo's page conventions with only Telegram's script, no key, sandboxed brochure frame, Playwright screenshots (WP-9c, Fable 5.1 · high); Step 0 verifies the GitHub Pages → Apps Script cross-origin inference before any WP starts; a security review of route and shell before the merge
+
+### Changed
+- `repository-information/TOUR-GUIDE-BUILD-PLAN.md` — amended for the interaction surfaces: new §5.10 (the places repository — one note per place with a per-trip history, re-check before re-research with `RECHECK_DAYS` 90, own dated claims only and no Google field stored; the learning loop — shortlist ✅ 🔖 ❌ and post-trip `/review` taps become preference evidence, positives confirm, negatives held until support 2), new §5.11 (seven interaction options compared, the Tour Guide app chosen as Phase 9 with its screens, launch, hosting and trust model, and the one inference to verify), §4 diagram and §4.1 layout (app surface, `?route=app`, `trip-check` re-checks, places digests), §4.2 repository naming, §4.4 Place history fields plus PlaceCheck · PlacesDigest · ChoiceEvidence, §5.1 and §5.5 learning-loop sentences, §5.9 `/places` and `/review` with the journey re-checking known places first, §6 rows 3 / 4b / 5 / 6 / 8 extended and a new Phase 9 row with model and effort, §8 two cost bullets, §9 four risk rows, §10 decisions 18–21, new §11c, §12 next steps
+- `helpers/BUILD-STATE.md` — rows 3d / 4b / 5 / 8 extended, new row 9 (the Tour Guide app, not started), finish priority, v01.16r amendment log, Next
+- `helpers/prompts/TG-PHASE-4B.md` — WP-3d: Place gains `destination`, `history[]`, `last_researched`, `last_verified`; shortlist items gain `seen_before`, `changes[]`, `dims[]`; sixth payload schema `places_digest` (rejects Google fields); WP-4d: re-check before re-research, the `places` request kind answered by `trip-check`, choice evidence and `places_digest` from `plan-days`, `review` prefs, a second `/plan` for the same fixture destination in the dry run
+- `helpers/prompts/TG-PHASE-5.md` — `/places [query]` and `/review [trip]` commands, `places_digest` handler and `Places` tab, repository counts in the snapshot, `ps` / `rv` callback prefixes, e2e additions, red-team of `/places` output, pointer to the Phase 9 draft for Phase 6
+- `README.md` — tree entry for the new prompt file
+- `repository-information/SESSION-CONTEXT.md` — session context saved
+
+### Fixed
+- `helpers/prompts/TG-PHASE-4B.md`, `helpers/prompts/TG-PHASE-5.md` — pipes inside code spans on table rows are escaped so the work-package tables render as tables
 
 ## [v01.15r] — 2026-10-01 02:50:57 AM EST
 

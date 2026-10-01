@@ -6,6 +6,33 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-10-01 03:32:47 AM EST
+**Repo version:** v01.16r
+**Branch:** `claude/tg-interaction-design-awq6bh` (Tour Guide project, thread "Ways to interact with Tour Guide", Fable 5.1 · high)
+
+**What we worked on**
+- Evaluated seven ways to interact with Tour Guide (chat commands, a standalone web app, a Telegram Mini App, Drive, the Sheet, inline mode, an Artifact) and recommended: Telegram stays the front door; the places repository and the learning loop land in Phase 4b and Phase 5; the Tour Guide app (Telegram Mini App) becomes Phase 9 after the pilot
+- Amended `repository-information/TOUR-GUIDE-BUILD-PLAN.md` (new §5.10 places repository + learning loop, new §5.11 interaction options and the app, §4 architecture and data model, §5.9 `/places` and `/review`, §6 rows and Phase 9, §8–§10, new §11c, §12), `helpers/BUILD-STATE.md`, `helpers/prompts/TG-PHASE-4B.md`, `helpers/prompts/TG-PHASE-5.md`; wrote `helpers/prompts/TG-PHASE-9.md` (draft, finalized by Phase 8)
+
+**Where we left off**
+- Amendment pushed as v01.16r. Phase 4 is still running in its own thread; `TG-PHASE-4.md` and `TG-PHASE-4-DELTA.md` were left untouched and no new delta was needed (the repository fields land in Phase 4b because `tg-memory.mjs` is the sole reader/writer of `places/`)
+- Decision 19 (when to build the app: after Phase 8 by default, or right after Phase 6) was put to the owner as a card in the thread; the plan records the default
+
+**Key decisions made**
+- Decisions 18–21 at their defaults: 18 the app, yes — a generic data-free shell on this repo's Pages plus `?route=app` with signed launch data; 19 after the pilot; 20 the repository is Phase 4's `places/<slug>.md` with a per-trip history, re-check before re-research (`RECHECK_DAYS` 90), own claims only and no Google field stored (place names flagged as an open point for Phase 6's terms review); 21 the learning loop from shortlist and post-trip taps, negatives held until support 2
+- The shell is a standalone top-level page `live-site-pages/helper-app.html` (not a subdirectory) so the `<basename>html.version.txt` convention holds
+- No `registerRoute` exists yet; Phase 9 adds it as the fifteenth registry with the four built-in routes not overridable
+
+**Active context**
+- Phase 2 thread owns the Maps Static brochure change; AssistantBrain reference only; the TourGuide private repo was not touched by this session
+
+**Recommendation for next session**
+- When Phase 4 hands off, start Phase 4b in a new session on Fable 5.1 · high (its prompt now carries the places-repository fields and the sixth envelope type)
+
+**To continue:** type `Read helpers/prompts/TG-PHASE-4B.md and execute it exactly.`
+
+## Previous Sessions
+
 **Date:** 2026-10-01 02:50:57 AM EST
 **Repo version:** v01.15r
 **Branch:** `claude/tg-plan-telegram-vision-610o9x` (Tour Guide project, thread "Amend plan for Telegram vision", Fable 5.1 · xhigh)
@@ -30,33 +57,3 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - When Phase 4 hands off, start Phase 4b in a new session on Fable 5.1 · high
 
 **To continue:** type `Read helpers/prompts/TG-PHASE-4B.md and execute it exactly.`
-
-## Previous Sessions
-
-**Date:** 2026-10-01 01:56:30 AM EST
-**Repo version:** v01.14r
-**Branch:** `claude/tg-phase-3-2udjs1` (Tour Guide project, thread "Tour Guide Phase 3", coordinator Fable 5.1 · high)
-
-**What we worked on**
-- Tour Guide Phase 3 per `helpers/prompts/TG-PHASE-3.md`: the `helpers/packs/tour-guide/` engine. WP-3a (schemas, estimator, Later lists, fixtures) and WP-3c (brochure map) built by `hb-builder-opus` agents in worktrees; WP-3b (planner + Held-Karp solver) built by the coordinator; all merged, 206 tests, bundle check and boundary check clean, no live calls
-- Cross-WP integration test on both fixtures; pack README; both fixture brochures rendered to the project's shared folder as a preview
-- Wrote `helpers/decisions/TG-PHASE-3.md`, updated `helpers/BUILD-STATE.md`, wrote `helpers/prompts/TG-PHASE-4.md`
-
-**Where we left off**
-- Phase 3 pushed as v01.14r. Nothing is owed by the owner for Phase 3; the owner's Phase 2 brochure rating and the Google-content question (hours/ratings in a delivered brochure) stay open and are carried into Phase 4's owner-input step
-
-**Key decisions made**
-- Booked stops are exempt from the solver's wait cap (the plan may go there first and wait for the booking)
-- Fixture travel times are the single source of truth: every leg the planner emits must match the fixture's answer within a minute
-- `REPO-ARCHITECTURE.md` unchanged (its `helpers/` node already lists `packs/`)
-- Phase 4 request kinds `research, plan, replan, notes, brochure, prefs` + free-text `chat`; `show_google_content` defaults to true until the owner answers
-
-**Active context**
-- `helpers-dist` carries the pack after this merge; the TourGuide private repo is still at its Phase 0 skeleton and receives the template + first `vendor/helpers/` pin in Phase 4; AssistantBrain reference only
-- Worktrees `wt-3a/b/c` are local only (branches `wp-3a/b/c`, never pushed)
-
-**Recommendation for next session**
-- Start Phase 4 in a new session on Fable 5.1 · high
-
-**To continue:** type `Read helpers/prompts/TG-PHASE-4.md and execute it exactly.`
-
