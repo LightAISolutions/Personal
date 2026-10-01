@@ -7,7 +7,7 @@
 | Thing | State |
 |---|---|
 | `LightAISolutions/Personal` (public) | Framework home: everything under `helpers/`. Changes land through `claude/*` branches and `.github/workflows/auto-merge-claude.yml`; one push per interaction (Pre-Push Checklist) |
-| `LightAISolutions/TourGuide` (private) | **Created by the owner and attached to the Tour Guide project 2026-09-30.** Verified private; the Phase 0 session pushed the §4.2 skeleton as the first commit on `main` (14 files, no personal data; `helpers/decisions/TG-PHASE-0.md` §3). Phase 1's template replaces the stub files |
+| `LightAISolutions/TourGuide` (private) | **Created by the owner and attached to the Tour Guide project 2026-09-30.** Verified private; the Phase 0 session pushed the §4.2 skeleton as the first commit on `main` (14 files, no personal data; `helpers/decisions/TG-PHASE-0.md` §3). Untouched in Phase 1; the template in `helpers/templates/private-repo/` replaces the stub files in **Phase 4**, together with the first `vendor/helpers/` pin of `helpers-dist` |
 | `LightAISolutions/AssistantBrain` (private) | Reference only. Read for patterns and generic code; **never modified** by this build |
 | Claude HQ environment (`Claude HQ - full network access`) | Build sessions and, by default, the routines. Maps API credential **added by the owner 2026-09-30** for hosts `places.googleapis.com` and `routes.googleapis.com` (custom header `X-Goog-Api-Key`, empty prefix). Applies to sessions started after it was added; first live call is Phase 2a |
 | Google Cloud Maps project | **Created 2026-09-30**: Places API (New) + Routes API enabled, key restricted to both, budget alert. **Per-API daily caps deferred** — the account is on the Google Cloud free trial, which does not allow quota edits; set them at Phase 7 switch-on once the account is upgraded (the trial itself cannot bill beyond its credit) |
@@ -17,7 +17,7 @@
 | Phase | What | Model · effort | Prompt | Status |
 |---|---|---|---|---|
 | 0 | Setup + decisions | Fable 5.1 · high | plan §12 | **done** 2026-09-30 — all thirteen decisions confirmed as defaults by the owner (`decisions/TG-PHASE-0.md`); private repo created, attached and seeded; Maps key credential added; bot token created and held by the owner |
-| 1 | Helper framework foundation (`helpers/core`, `tools/`, `templates/private-repo/`, setup page, `SPEC.md`, `.claude/agents/hb-*.md`, `helpers-ci.yml`, `helpers-dist.yml`, `deploy-helper.yml`, routine-mode guard in `CLAUDE.md`) | Fable 5.1 · xhigh | `prompts/TG-PHASE-1.md` | not started |
+| 1 | Helper framework foundation (`helpers/core`, `tools/`, `templates/private-repo/`, setup page, `SPEC.md`, `.claude/agents/hb-*.md`, `helpers-ci.yml`, `helpers-dist.yml`, `deploy-helper.yml`, routine-mode guard in `CLAUDE.md`) | Fable 5.1 · xhigh | `prompts/TG-PHASE-1.md` | **done** 2026-10-01 — scrub report approved by the owner; core, tools, template, hello pack, 54 tests, SPEC v1, agents, three workflows, guard; subtree decision measured (`decisions/TG-PHASE-1.md`). `helpers-dist` publishes on the merge of v01.12r — confirm the branch exists on GitHub at the start of Phase 2 |
 | 2 | Shared kits: 2a Maps · 2b Research · 2c Brochure · 2d Prefs | coordinator Opus 5.5 · high; 2a Opus 5.5 · high; 2b Opus 5.5 · medium; 2c Fable 5.1 · high; 2d Opus 5.5 · medium | `prompts/TG-PHASE-2.md` (written by Phase 1) | not started |
 | 3 | Tour Guide engine (`packs/tour-guide`: schemas, estimator, planner + solver, Later lists, fixtures) | solver Fable 5.1 · high; rest Opus 5.5 · high | written by Phase 2 | not started |
 | 4 | Brain side in the private repo (routine `CLAUDE.md`, skills, memory dirs, routine prompts, vendored helpers) | `trip-research` + `plan-days` Fable 5.1 · high; rest Opus 5.5 · high | written by Phase 3 | not started |
@@ -40,7 +40,12 @@ Finish priority if usage runs short: 1 → 2a → 3 → 4 (`plan-days`, `trip-re
 - 2026-09-30 (later) — owner created `LightAISolutions/TourGuide` and attached it; session verified it is private and empty and pushed the skeleton to `main` (owner chose `main` over the session branch for the first commit of an empty repo).
 - 2026-09-30 (close) — owner created the bot token (kept by the owner) and confirmed all thirteen defaults ("defaults"); Phase 0 closed.
 
+## Phase 1 log
+- 2026-10-01 — session read the plan and the first helper's generic files (read only), wrote the scrub report (15 rows, `decisions/TG-PHASE-1.md` §1) and posted it in the thread as the owner gate; built `helpers/core/` (15 files), `tools/` (bundle, envelope, new-helper, boundary-check), `templates/private-repo/` (15 files), the hello pack and 14 test suites (54 tests) while waiting; measured subtree vs clone-at-run (subtree stays, SPEC §15).
+- 2026-10-01 — wrote `helpers/SPEC.md` (18 sections) and `helpers/README.md`, the four `.claude/agents/hb-*.md`, `helpers-ci.yml`, `helpers-dist.yml` (dist procedure tested in a scratch repo), `deploy-helper.yml`, the routine-mode guard at the top of `CLAUDE.md`; Step 4 checks green (tests, bundle `--check`, boundary check, secret/PII/provenance greps empty outside the owner's prompt file; AB and TourGuide received no commits).
+- 2026-10-01 — owner approved the scrub report; Phase 1 pushed as v01.12r; `prompts/TG-PHASE-2.md` written.
+
 ## Next
-Phase 0 is done. Start Phase 1 in a **new session** on **Fable 5.1 · xhigh**: "Read helpers/prompts/TG-PHASE-1.md and execute it exactly." Phase 1 writes `prompts/TG-PHASE-2.md` and updates this file.
+Phase 1 is done. Start Phase 2 in a **new session** on **Opus 5.5 · high**: "Read helpers/prompts/TG-PHASE-2.md and execute it exactly." The coordinator fans out the four kits (2a–2d) in worktrees with the `hb-*` agents, merges, pushes once, writes `prompts/TG-PHASE-3.md` and updates this file. First check: `helpers-dist` exists on GitHub (published by the merge of v01.12r); if not, run the "Helpers dist" workflow by hand before any private-repo work.
 
 Developed by: LightAISolutions

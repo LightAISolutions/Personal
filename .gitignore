@@ -37,3 +37,6 @@ autoHotkey/AutoUpdate.localpaths.ini
 # Python bytecode from scripts/ tooling
 __pycache__/
 *.pyc
+
+# Local Apps Script bundles written by helpers/tools/bundle.mjs (CI builds them in a temp dir)
+helpers/dist/

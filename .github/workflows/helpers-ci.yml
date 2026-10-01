@@ -1,0 +1,49 @@
+# Helpers CI — tests, bundle check and the public-repo boundary check for helpers/ (helpers/SPEC.md §14).
+# Runs on every push and pull request that touches helpers/ or this file. Read-only token, no secrets:
+# safe on a public repo. The boundary test (helpers/tests/tools_boundary.test.js) plants a fake secret and a
+# personal-data path in a temp tree and asserts boundary-check.mjs fails on them; the real tree must pass.
+name: Helpers CI
+
+on:
+  push:
+    paths:
+      - 'helpers/**'
+      - '.github/workflows/helpers-ci.yml'
+  pull_request:
+    paths:
+      - 'helpers/**'
+      - '.github/workflows/helpers-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: helpers-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test, bundle check, boundary check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run the test suites
+        run: node --test helpers/tests/
+
+      - name: Check every pack bundles
+        run: node helpers/tools/bundle.mjs --all --check
+
+      - name: Boundary check (no secrets, PII or personal-data paths in helpers/)
+        run: node helpers/tools/boundary-check.mjs
+
+# Developed by: LightAISolutions

@@ -1,0 +1,148 @@
+# Deploy helper — bundles every pack under helpers/packs/ and pushes it to its Apps Script project with clasp,
+# then redeploys the pack's PINNED deployment so the /exec URL (Telegram webhook, wake URL) never changes.
+# From this repo's clasp-deploy-pilot.yml and the first helper's deploy workflow (helpers/SPEC.md §14).
+#
+# Runs only for main: on workflow_run of "Auto-merge Claude branches" (its GITHUB_TOKEN push to main never
+# fires a plain push: workflow), on a direct push to main touching the bundled files, and by hand. Never on
+# pull requests — this repo is public and the job holds credentials. The deploy job uses the `production`
+# environment; the owner restricts that environment to the main branch and keeps the secrets there.
+#
+# Secrets (named here, created by the owner when a helper is switched on — SPEC §14, §17):
+#   CLASPRC_JSON             the contents of ~/.clasprc.json from `clasp login` (shared by every helper)
+#   <HELPER>_SCRIPT_ID       Apps Script project id of the pack          e.g. HELLO_SCRIPT_ID, TOURGUIDE_SCRIPT_ID
+#   <HELPER>_DEPLOYMENT_ID   the pinned web-app deployment id             e.g. HELLO_DEPLOYMENT_ID
+# <HELPER> is the pack name upper-cased with non-alphanumerics removed. A pack with no script id (or no
+# CLASPRC_JSON) is skipped green with a notice; a pack with a script id but no deployment id is pushed, not deployed.
+name: Deploy helper
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'helpers/core/**'
+      - 'helpers/packs/**'
+      - 'helpers/tools/bundle.mjs'
+      - '.github/workflows/deploy-helper.yml'
+  workflow_run:
+    workflows: ['Auto-merge Claude branches']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-helper
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: Test gate
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Tests, bundle check, boundary check
+        run: |
+          node --test helpers/tests/
+          node helpers/tools/bundle.mjs --all --check
+          node helpers/tools/boundary-check.mjs
+
+  discover:
+    name: List packs
+    needs: test
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.packs.outputs.matrix }}
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Build the matrix from helpers/packs/*/helper.json
+        id: packs
+        run: |
+          set -euo pipefail
+          matrix=$(for f in helpers/packs/*/helper.json; do
+            name=$(jq -r '.name' "$f")
+            secret=$(printf '%s' "$name" | tr '[:lower:]' '[:upper:]' | tr -cd 'A-Z0-9')
+            jq -cn --arg pack "$name" --arg secret "$secret" '{pack: $pack, secret: $secret}'
+          done | jq -cs '{include: .}')
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "packs: $matrix"
+
+  deploy:
+    name: Deploy ${{ matrix.pack }}
+    needs: discover
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    env:
+      SCRIPT_ID: ${{ secrets[format('{0}_SCRIPT_ID', matrix.secret)] }}
+      DEPLOYMENT_ID: ${{ secrets[format('{0}_DEPLOYMENT_ID', matrix.secret)] }}
+      CLASPRC_JSON: ${{ secrets.CLASPRC_JSON }}
+    steps:
+      - name: Gate on secrets
+        id: gate
+        run: |
+          if [ -z "$SCRIPT_ID" ] || [ -z "$CLASPRC_JSON" ]; then
+            echo "::notice::${{ matrix.pack }}: ${{ matrix.secret }}_SCRIPT_ID or CLASPRC_JSON is not set — skipping deploy"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout main
+        if: steps.gate.outputs.skip != 'true'
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Set up Node
+        if: steps.gate.outputs.skip != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Bundle ${{ matrix.pack }}
+        if: steps.gate.outputs.skip != 'true'
+        run: node helpers/tools/bundle.mjs "${{ matrix.pack }}" --out "$RUNNER_TEMP/dist"
+
+      - name: Write clasp credentials
+        if: steps.gate.outputs.skip != 'true'
+        run: |
+          umask 077
+          printf '%s' "$CLASPRC_JSON" > "$HOME/.clasprc.json"
+          printf '{"scriptId":"%s","rootDir":"."}' "$SCRIPT_ID" > "$RUNNER_TEMP/dist/.clasp.json"
+
+      - name: clasp push
+        if: steps.gate.outputs.skip != 'true'
+        working-directory: ${{ runner.temp }}/dist
+        run: npx --yes @google/clasp@2 push --force
+
+      - name: clasp deploy (pinned deployment)
+        if: steps.gate.outputs.skip != 'true'
+        working-directory: ${{ runner.temp }}/dist
+        run: |
+          if [ -z "$DEPLOYMENT_ID" ]; then
+            echo "::warning::${{ matrix.pack }}: ${{ matrix.secret }}_DEPLOYMENT_ID is not set — pushed, not deployed"
+            exit 0
+          fi
+          npx --yes @google/clasp@2 deploy --deploymentId "$DEPLOYMENT_ID" --description "GitHub Actions ${GITHUB_SHA::7}"
+
+      - name: Remove clasp credentials
+        if: always()
+        run: rm -f "$HOME/.clasprc.json" "$RUNNER_TEMP/dist/.clasp.json"
+
+# Developed by: LightAISolutions

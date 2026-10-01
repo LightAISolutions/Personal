@@ -3,11 +3,36 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 11/100`
+`Sections: 12/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.12r] — 2026-09-30 11:33:51 PM EST
+
+> **Prompt:** "Start Phase 1"
+
+### Added
+- `helpers/core/` — generic Apps Script core (15 files) generalized from the first helper after the owner-approved scrub report: config from a pack manifest (`HELPER.*`, prefixed Script Properties, `LIMITS`), extension registries as the only extension point, Sheet store + audit log, Telegram client, queue with one-off worker triggers, executor (proposal → owner ✅ → allowlisted action), Drive mailbox relay, web-app router (`?route=tg|wake|setup`), wake route with no permanent tick, routine fire client, owner setup page
+- `helpers/tools/` — `bundle.mjs` (manifest validation, one Apps Script project from core + pack `gas/`, `--check`, `--all`), `envelope.mjs` (same CLI as the first helper, `--pack` adds manifest types), `new-helper.mjs` (scaffolds a pack and a private repo from the template), `boundary-check.mjs` + `boundary-allowlist.txt` (fails on secrets, PII and personal-data paths; CI gate)
+- `helpers/templates/private-repo/` — dual-mode `CLAUDE.md`, skills and routines READMEs, trimmed `remember-session` skill, memory dirs, `.gitattributes` union merge, `merge-routine-memory.yml` + script, `DEV-SESSION.md` with the `/update-helpers` pin bump, `vendor/helpers/` first-pin instructions
+- `helpers/packs/hello/` — the smallest pack (extra envelope type, command, message handler, snapshot provider, daily job, setup step) that bundles and runs in the mocks
+- `helpers/tests/` — 14 `node --test` suites (54 tests) + in-memory Apps Script mocks; the boundary test plants a fake secret and a personal-data path and asserts the check fails
+- `helpers/SPEC.md` — framework contract v1 in 18 sections (three homes, envelope v1, mailbox and requests, manifest, registries, routes and wake contract, properties, sheet, triggers, routines, executor, setup page, tools, CI/dist/deploy, vendoring procedure with the measured subtree decision, file-ownership map for Phase 2, how a new helper is added, limits)
+- `helpers/README.md` — framework overview, quick start, how to add a helper, the public/private rules
+- `.claude/agents/hb-architect.md`, `hb-builder-fable.md`, `hb-builder-opus.md`, `hb-reader.md` — build agents with model, effort and (reader) `disallowedTools`
+- `.github/workflows/helpers-ci.yml` (tests + bundle check + boundary check on pushes and PRs touching `helpers/`), `helpers-dist.yml` (publishes `helpers/` as the `helpers-dist` branch after each merge to `main`, via `workflow_run` of the auto-merge workflow), `deploy-helper.yml` (matrix over `helpers/packs/*/helper.json`, test gate, `production` environment on `main` only, `umask 077`, credential cleanup; secrets `CLASPRC_JSON`, `<HELPER>_SCRIPT_ID`, `<HELPER>_DEPLOYMENT_ID` named, not created)
+- `helpers/decisions/TG-PHASE-1.md` — scrub report (15 rows, owner-approved), subtree-vs-clone measurement, every default chosen
+- `helpers/prompts/TG-PHASE-2.md` — Phase 2 kickoff for the four shared kits and their coordinator
+
+### Changed
+- `CLAUDE.md` — three-line routine-mode guard at the very top: a session started by a Claude Code Routine ignores this file and follows the attached helper repo's `CLAUDE.md`
+- `.gitignore` — `helpers/dist/` (local bundles)
+- `helpers/BUILD-STATE.md` — Phase 1 marked **done**; Phase 1 log; Next points at Phase 2 (new session, Opus 5.5 · high, `helpers/prompts/TG-PHASE-2.md`)
+- `repository-information/REPO-ARCHITECTURE.md` — flowchart gains the Helper Framework subgraph (`helpers/`, `hb-*` agents, the three workflows, the `helpers-dist` branch) with edges from the auto-merge flow; mermaid.live URL regenerated and verified
+- `README.md` — tree expanded for every file under `helpers/`, the four agent files and the three workflows
+- `repository-information/SESSION-CONTEXT.md` — Phase 1 complete; recommendation is to start Phase 2
 
 ## [v01.11r] — 2026-09-30 10:05:26 PM EST
 

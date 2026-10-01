@@ -1,0 +1,15 @@
+{
+  "name": "hello",
+  "display_name": "Hello Helper",
+  "description": "The smallest pack: proves the registries, mailbox, wake route and bundler end to end in the mocks.",
+  "drive_root": "Hello",
+  "producer": "hello-core",
+  "property_prefix": "HELLO",
+  "version": "0.1.0",
+  "timezone": "Etc/UTC",
+  "inbound_routine": "CHAT",
+  "envelope_types": ["greeting"],
+  "action_allowlist": [],
+  "memory_dirs": ["notes"],
+  "scopes": []
+}

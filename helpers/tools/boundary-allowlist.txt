@@ -1,0 +1,15 @@
+# helpers/tools/boundary-check.mjs allowlist — one rule per line, "#" comments.
+#   domain <domain>      e-mail addresses at this domain are fixtures, not people (reserved / documentation domains only)
+#   literal <string>     this exact string is allowed wherever it appears
+#   path <prefix>        paths under this prefix (relative to helpers/) are not scanned
+#   deny <regex>         an extra pattern that must never appear (case-sensitive JavaScript regex)
+domain example.com
+domain example.org
+domain example.net
+domain example.invalid
+domain users.noreply.github.com
+literal noreply@anthropic.com
+path dist/
+path node_modules/
+path prompts/
+deny ShadowAISolutions

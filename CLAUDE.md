@@ -1,3 +1,7 @@
+> **Routine-mode guard:** if this session was started by a Claude Code Routine (a scheduled, API-fired or one-off run), ignore the rest of this file.
+> Follow the attached helper repo's `CLAUDE.md` (its ROUTINE MODE section) instead; this repo is only the framework source that repo's `vendor/helpers/` was vendored from.
+> No session checklist, no chat bookends, no edits and no commits here during a routine run.
+
 # Claude Code Instructions
 
 > **⚠️ MANDATORY FIRST ACTIONS — REFERENCE CARD ⚠️**

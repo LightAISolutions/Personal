@@ -4,7 +4,7 @@
 
 ## 1. Flowchart — System Overview
 
-> [Open in mermaid.live — Flowchart](https://mermaid.live/edit#pako:eNq1Wf1u28gRf5UFDzgk11Bycpfc2cC1oClaUk3bgkinDUxDWJEjcuMVl9hd2tHFAfoQfZf-30fpkxS7_BAlkjolverP5cxvvmdnVp-NkEVgnBkxx1mC_PMgRQghkS-Lg8CYQ8YEkYxvztAMuGAppoFRkKlfRDiEkrBUM2_PGxAjeATKMuDob4w_rCh7agKo38h5f9ekGyKb4jwCZLMIAuN-l9o-vwuMUBMMf0BLjtMwaRGNnPfINP_8HBhZLpLAeEb2-ZYC0qhHWXs6tEfoP__4J8K5ZOYaeAxmIWywWVN0J2GdUSwB_ftfiKREEkzJbxDd79u065jmF38-HY-d-efAmOUiQZKhypi_BMaXfVuVFRVLJ4428wOIZ-RNrIU9cezLz4Fhs_WaSHUUBOmviGIhzYyzEISAqC2nZt2ijRzX8Z2F51uuo6NDQQIiaQKcSIgqxwfpC_FAMqQ99bIVh13ga_aM3lvudGT5zufA8IA_QoRImgI3RchJJoMgFZtU4k_oEVPSoWnFXuOduzf25V1gXGBCEc9THbwlZeFDEKRaK_Q9iiCjbKOULdRGGQehpbdV3pGgXXHlzMfKB1cajaSSoTUmaYtT0-mA3c4UwsKbWHeBcZtFWEIQpLtRMEMdo4FIcAtpy6_hRtOLi7vAsBMIH1BMJIrIatXO-enFRZn0lDyCKYgEM8MxiCEKE5zGEKlCmFljx1tcuNb4LjD0Z7P8in5FkudwCHgQiybW2PIWI2fm3nzQKaKcrM7QI8EozDlFsxvPb-FtuQrrikw7n_d5sybY5uHv1f_WyBJBSVvo0_4qCoyRrlqUlYVZRPm5h72_i4yJnORLNFPORYVb1pDKdt_bwm7914qdZEGQNiFb1rrT9yo_XfIIyCNFrpE4kZgIRnPVhcQgJjLJlwPChts-ft-vj3abwj3GXid9JJylykaBXmgdX_Y3RHfeSgd_5mqxd4FRd9h7FGOhyuUjhNIMOWDJ-CCRa6rqWGXZrPiG7OJbu5R9x_OtW38ytrzXHfgShMS5TGIsXtfAPgiJrFwm6HU_4MS_cg8hKrAuSMXXhTt2b84t17I7vUDZElMc0q3t-gRZttul4d99--ZqZs2dTv0-SdV3Msyhod4nieziEPmM0TbqleX5zrxbvyssJHDLdmvA-mQX6EC9MBZTQFaWCeTpe0Bsb9r7r8qkRTPmB8Idi862tBPgQ7Hd4--3zUswhwjNQbCch_Bthl3f_NW5_OC6uxoNUvYRHja0Xcne9WiXVLA8jcSwRajsXLx35t4uubLRfAQuVOtoc429Dp5YHODQcmy3Q0pxm1AWd8vZ54lFL0d_DPZbagUnhscPdKpFXd-o3NhVaCLX1EqjMRZ-eWblkhV3vpkylTG6MAbyk5puXugWUAt9IjJhuVTTZtJRzDN38ZUSj5CHynLrlll246vpdae5qievSUrWmJbWmdVHUy0Tg4-ikqxadPXtoJzDUo6WURjXtqo_L-oLhKUrEh-oTNu1bkfO4mqvqorjwTpSqpQ3FSKpkDzXdSzaZs9vXWevcAblMMNzCmKooDB9whthUoYjiNCfUIZlYoqQZRAhTdUxaF9OXbcHWDwQSgtkkj6yB7ykgJ7KZQwVXzs0dWY3qsx3MXm9EA7KatehaI-M1nhuXXl9zCZJV4yvsfLSMCI45nhdaJgBN2E7TyDMw4RICGXOAVWUHfY7vj-9Hvd5AKQkaSwGHwVLlRQ1RP9Q7HiYUvbUtQio3eVi6u5dd-UgNewf5rWbd9ckFOeYR8empSrnCZMPsDmQktbkUhXOTbEqNHVUnWzNIrIiEN1rGwuw4bZNDHDyoN3AAdIVARqhLKfUXGIBUeGWXBPyY3X-_Wt7ej31F549n878vbupYB2q7muqFBkIvVeyFEyRMIlWjD9se7POmc5-svAc_3bWDS5A5pnZmChLIaqBVJW7IhSQHjQ7JdjebDGxvEm3ADVV5apBicxMsEhKfNubqUQy37x9h9QxKugOGFHPgn1jYM_oUs9ofeNZB18jJsgc6BVIBz8CVXECMR4PVUSCIOWQUazmlzdvtKOEflSp-uJeiuzlSnWPVTJClm30w4fytdpWUnjSjRtlxX7z3B7d_2ek7cz-zVC7Y_o3w-xO0wXM3nVYodU1XUyP-rmlI5NfVst4023_F2DtxT8UuXbqH4pa-7iM0n46VbiwXkIk9IMFWXG8hn5PthPpaJCG19ROXfHpJyhRElc78CGynqo4TLyf-D0adOR2H-7uinmItifV6-efMricxDFwgQTQVXnzHMzob-DfTdyvAGjn51cw76VhNVJUrBxwhJYbRV2_lBaUzRfAgvZJDRSiIlUoBWW9wlWE5VyGMkYpSePO9DqGqSfZvoZ1P_WO0rUjEY-T2ZWWx3B2Jel23TvY2IsVqHnZ7CtR_qUiNxT0vxIrQunZdz_h05Po9FXIKONn361WqyaZLqWC7t275fId7qGrs6mghdXbH9-e9NA2n_Nr-lN8WmOfnJw06fWz-jHADUcV1KsV_vnNux7Y-rY8graRtMeQ17NISRzC6Y_RLz3Eeg07hrDYq46hbM5SBfnPv5yenIYNvxmvjDXwNSaRcWZ8DgyZgLorzgIjghXOqQyML8YrPYJ5mzQ0ztRz_CujaCmjYvcpDr_8F8dPmYE) — *interactive editor with pan, zoom, and export*
+> [Open in mermaid.live — Flowchart](https://mermaid.live/edit#pako:eNq1Wf1u47gRfxVCBxz2I7Kze93cJcC1UGTFdldJDEvZdhEFBi3REmNaFEjKWd9mgT5E36X_91H6JAVJSZYtyedsr_knADXzmw_ODGfGX42QRsi4MGIGswT4l0EKAAA8n-uDwJiijHIsKNtcgAlinKaQBIYmk38RZigUmKaKeXtegxigNSI0Qwz8jbLlgtCnOoD8Gzif7ut0fWATmEcI2DRCgfGwS21f3gdGqAj6b8CcwTRMGkQD5xMwzT8_B0aW8yQwnoF9uaVAadShrD3u2wPwn3_8E8BcUHOFWIxMLay3WRFwL9AqI1Ag8O9_AZxigSHBv6HoYd-mXcfUv_jT8XDoTL8GxiTnCRAUlMb8JTC-7dsqrShZWnGUmZ8RfwbeyJrZI8f--DUwbLpaYSGPgiD9FRDIhZkxGiLOUdSUU7Fu0QaO6_jOzPMt11G3Q5BAAKcJYligqHR8kL7iS5wB5anXjXvYBb6hz-CT5Y4Hlu98DQwPsTWKAE5TxEweMpyJIEj5JhXwC1hDgls0LdkrvEv31v54HxhXEBPA8lRd3pzQcBkEqdIK_AgilBG6kcpqtUHGEFfSmyrvSFCuuHamQ-mDa4WGU0HBCuK0wano1IXdTSTCzBtZ94Fxl0VQoCBId2_BDNUd9XgCG0hbfgU3GF9d3QeGnaBwCWIsQIQXi2bMj6-uiqAneI1MjgUyMxgj3gdhAtMYRTIRJtbQ8WZXrjW8Dwz12Sy-gl-BYDk6BNyLeR1raHmzgTNxbz-rEJFOlmdgjSEIc0bA5NbzG3hbLm2djrTLaZc3K4JtHP5e_m-NLBCktJk67c6iwBiorAVZkZj6lp872LuryBCLUT4HE-lcoN2yQqlo1r0t7NZ_jbsTNAjSOmTDWnf8Scani9cIeFjHGo4TATGnJJdViPdiLJJ83sO0v63jD936KLdJ3GPsddI1ZjSVNnLwSun4ursgutNGOPgTV4m9D4yqwj6AGHKZLo8oFGbIEBSU9RKxIjKPZZRN9Ddg62_NVPYdz7fu_NHQ8t614AvEBcxFEkP-rgL2ERfAykUC3nUDjvxr9xCiBGuDlHxtuEP39tJyLbvVC4TOIYEh2dquToBlu20a_t23b68n1tRp1e-LkHUngwzV1PsigK0PgU8paaJeW57vTNv1u4ZcIGbZbgVYnewCHcgXSmOCgJVlHHjqHeDbl_bhRZE0q9_5geuOeWtZ2rngQ3e7x99tm5dAhiIwRZzmLETfZ9jN7V-dj59dd1ejXkof0XJDmpns3Qx2STnN04j3G4TSztknZ-rtkksbzTViXJaOJtfQa-GJ-QEOJcd2W6To14TQuF3OPk_MOzm672C_pJZwvH98QydL1M2tjI1dhUZiRaw0GkLuF2dWLqh-882UyohRidETX2R380qVgEroExYJzYXsNpOWZJ64sxdKPEIeKNKtXWZRja_HN63mypq8wileQVJYZ5YfTTlM9B55KVmW6PLbQTmHpRwtQxvXtKo7LqoHhKYLHB_ITNu17gbO7Hovq_RxbxVJVYqXCuCUC5arPOZNs6d3rrOXOL2imWE5QbwvoSB5ghtuEgojFIG3IIMiMXlIMxQBRdXSaH8cu24HMF9iQjQyTtd0CecEgadiGAP6a4umzuRWpvkuJqsGwl6R7eoqmi2jNZxa114Xs4nTBWUrKL3UjzCMGVxpDTPETLTtJwBkYYIFCkXOECgpW-x3fH98M-zyABICpzHvPXKaSimyiX6jZzxICH1qGwTk7HI1dveeu6KR6nc388rNu2MSiHPIomPDUqbziIol2hwISWv0USbOrR4V6jrKSraiEV5gFD0oGzVYf1smejBZKjcwhNIFRiQCWU6IOYccRdotuSJkx-r8-8_2-Gbszzx7Op74e2-TZu3L6mvKEOlxNVfSFJk8oQIsKFtua7OKmdZ6MvMc_27SDs6RyDOz1lEWQmQBKTN3gQkCqtFslWB7k9nI8kbtAmRXlcsCxTMzgTwp8G1vIgPJfP_hDMhjoOkOGFH1gl1tYEfrUvVoXe1ZC1_tToDZUyOQuvwIyYzjgLK4L28kCFKGMgJl__L-vXIUV0uVsi7uhUhLgIwQkbudKwZXSNYeNacn6lC-48duT0aOO9GtR8UbpK9CylD_BAhKCe-fgCUW8l8Gw6X8v33uT1QXJ_97E8furVqyfnQ5s4bOjS9FlOUDxnKy6Sdz801R7KuqdALmOSYRYvwEMAQj1DKGFDrP7PFWbTPEcqEksZRK4C2Y52kkA1BN-W_BXLZskG30QTfqYOz5NdwIc1EiZ_mcYJ5UbgaQA5EgUKctKtTrrmlQi7kPDL1DMTVvKaHQ-a0cyHmmBue-JgTytuUNnKgxGtCUbFqEjD1_djm1buzRng21BdMapRGVTfR8AzKG17LGaVL9ohz2TbFBqeS0hGqtrJUtV5kOIc02akcny4IcrFP0pHoMkOlR_Lk5Zf7PSNvx8ruhdifK74bZHfw0zF7nVqJVz48edNRmsKXovi73RnW3_V-AlRf_UOTKqX8oauXj4pb2w6nERas5irjareGFLKPdnmwG0tEgNa_J9U_Jp7alvCAu1zWHyDqy4jDxfuB3aNAS2124u9uQQ7QdoV5tKovLZTiOEeOAI7IomqSDEf0d_LuB-wKAZny-gHkvDMvut2SVjxuYbyR1tdTXlPVltaZ9kr0vL0kliqastg0lYTFCgIwSgtO4NbyOYeoItpew7ofeUbq2BOJxMtvC8hjOtiDdbiYOFnY9rdcfmzYl9C9Oxe9mQNA8THAa1xq151o7o1mKRX1x9cVYOZM_xbzieSjno9d1NvkUv4hxpxEpXKWxtmGNECiaHf3DRFPYHotuXHqrR141Kl2yyoZwy4pJBDjiatdVk1b2EFxsCFI_QS4wIRc__Amen0bnJyEllF38sFgs6mSqGGm6s7P5_Ax20FX5qGnR4sNPH047aOu_3VX05_C8wj49Pa3Tq9_QjgGuhZqmXizgz-_POmCrfuMI2lraH0NeDR4FcYjOf4p-6SBWO5djCPUS5RjK-uCkyX_-5fz0POzwWxl8mvT9GTw777rnWqfaFRbGibFCbAVxZFwYXwNDJEi-4xeyR1_AnIjA-GacqEnO26ShcSF_1TsxdLkf6BWKPvz2X74A7bA) — *interactive editor with pan, zoom, and export*
 
 ```mermaid
 graph TB
@@ -97,6 +97,16 @@ graph TB
             GAS_MASTERACL["[template] MasterACL.gs"]
             INIT_SCRIPT -.->|"auto-detects org/repo\nreplaces 22 files"| CLAUDE_MD
         end
+        subgraph "Helper Framework — helpers/"
+            direction TB
+            HELPERS["helpers/\n(core/, tools/, kits/, packs/, templates/, tests/, SPEC.md)"]
+            HB_AGENTS[".claude/agents/hb-*.md\n(architect, builders, reader)"]
+            HELPERS_CI["helpers-ci.yml\n(tests + bundle check + boundary check)"]
+            HELPERS_DIST["helpers-dist.yml\n(publish helpers/ as the helpers-dist branch)"]
+            DEPLOY_HELPER["deploy-helper.yml\n(bundle + clasp push/deploy per pack, main only)"]
+            DIST_BRANCH["helpers-dist branch\n(vendored by private helper repos)"]
+            HELPERS_DIST --> DIST_BRANCH
+        end
     end
 
     TPL_AUTH -.->|"copy to create\nnew auth pages"| TESTAUTHGAS1_PAGE
@@ -128,6 +138,12 @@ graph TB
     HTML_VERS -.->|"version polling"| TEXTCOMPARE_PAGE
     HTML_VERS -.->|"version polling"| MASTERACL_PAGE
     TPL_NOAUTH -.->|"copy to create\nnew noauth pages"| TEXTCOMPARE_PAGE
+    CB -->|"push touching helpers/"| HELPERS_CI
+    MERGE -.->|"workflow_run (success)"| HELPERS_DIST
+    MERGE -.->|"workflow_run (success)"| DEPLOY_HELPER
+    HELPERS -.->|"tree published"| HELPERS_DIST
+    HELPERS -.->|"bundle.mjs per pack"| DEPLOY_HELPER
+    HB_AGENTS -.->|"build sessions"| HELPERS
 
     style DEV fill:#4a90d9,color:#fff
     style LIVE fill:#66bb6a,color:#fff
@@ -141,6 +157,8 @@ graph TB
     style RULES fill:#ce93d8,color:#000
     style SKILLS fill:#ce93d8,color:#000
     style INIT_SCRIPT fill:#78909c,color:#fff
+    style HELPERS fill:#26a69a,color:#fff
+    style DIST_BRANCH fill:#66bb6a,color:#fff
 ```
 
 ## 2. Sequence Diagram — Deploy & Runtime Flows

@@ -1,0 +1,20 @@
+# Dependencies and build output
+node_modules/
+dist/
+
+# OS and editor files
+.DS_Store
+
+# Local-only files and environment
+*.local
+.env
+.env.*
+
+# Scratch directories. Routines keep envelope payloads, fetched pages and other scratch files OUTSIDE the repo
+# (CLAUDE.md ROUTINE MODE); these entries are a second guard in case one lands inside it.
+scratch/
+.scratch/
+tmp/
+.tmp/
+
+# Developed by: LightAISolutions

@@ -1,0 +1,83 @@
+# Helpers dist — publishes helpers/ as the `helpers-dist` branch, the framework tree private helper repos pin
+# with `git subtree` at vendor/helpers/ (helpers/SPEC.md §14–15).
+#
+# Triggers: the auto-merge workflow pushes to main with GITHUB_TOKEN and "[skip ci]", which never fires a plain
+# push: workflow, so this runs on workflow_run of "Auto-merge Claude branches" (success only), on a direct push
+# to main touching helpers/, and by hand. It always publishes from main.
+#
+# The branch carries the framework files only: core/, tools/, kits/, packs/, templates/, tests/, SPEC.md, README.md.
+# Build bookkeeping (BUILD-STATE.md, decisions/, prompts/, status/) and local bundles (dist/) are left out.
+# One fast-forward commit per change — "helpers-dist: publish helpers/ @ <sha>" — and none when the tree is
+# unchanged. The tests and the boundary check run first; a red tree is never published.
+name: Helpers dist
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'helpers/**'
+      - '.github/workflows/helpers-dist.yml'
+  workflow_run:
+    workflows: ['Auto-merge Claude branches']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: helpers-dist
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish helpers/ to helpers-dist
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Tests and boundary check
+        run: |
+          node --test helpers/tests/
+          node helpers/tools/boundary-check.mjs
+
+      - name: Build the dist tree and push helpers-dist
+        run: |
+          set -euo pipefail
+          git config user.name "helpers-dist[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          src=$(git rev-parse HEAD)
+
+          # Build the tree from helpers/ in a throwaway index; the working tree and the real index stay untouched.
+          export GIT_INDEX_FILE="$(mktemp)"
+          git read-tree "HEAD:helpers"
+          git rm --cached -r -q --ignore-unmatch BUILD-STATE.md decisions prompts status dist
+          tree=$(git write-tree)
+          unset GIT_INDEX_FILE
+
+          parent=""
+          if git fetch -q origin helpers-dist 2>/dev/null; then parent=$(git rev-parse FETCH_HEAD); fi
+          if [ -n "$parent" ] && [ "$(git rev-parse "$parent^{tree}")" = "$tree" ]; then
+            echo "::notice::helpers-dist already carries this tree (${parent:0:7}) — nothing to publish"
+            exit 0
+          fi
+
+          msg="helpers-dist: publish helpers/ @ ${src:0:7}"
+          if [ -n "$parent" ]; then
+            commit=$(git commit-tree "$tree" -p "$parent" -m "$msg")
+          else
+            commit=$(git commit-tree "$tree" -m "$msg")
+          fi
+          git push origin "$commit:refs/heads/helpers-dist"
+          echo "::notice::published helpers-dist ${commit:0:7} from main ${src:0:7}"
+
+# Developed by: LightAISolutions

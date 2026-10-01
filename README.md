@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-09-30 10:05:26 PM EST` · Repo version: `v01.11r`
+Last updated: `2026-09-30 11:33:51 PM EST` · Repo version: `v01.12r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -208,10 +208,88 @@ Last updated: `2026-09-30 10:05:26 PM EST` · Repo version: `v01.11r`
 <b>─── Helper Framework ─────────────────────────────────────────────────────────</b>
 ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers">helpers/</a>                   — Reusable helper framework (Tour Guide build; plan in repository-information/TOUR-GUIDE-BUILD-PLAN.md)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/BUILD-STATE.md">BUILD-STATE.md</a>          — Phase tracker for the Tour Guide build (generic progress only)
+│   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/core">core/</a>                   — Generic Apps Script core; tools/bundle.mjs concatenates it with a pack
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/00_config.js">00_config.js</a>        — HELPER manifest merge, prefixed property names, LIMITS, envelope types, sheets
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/01_util.js">01_util.js</a>          — Shared helpers: time, strings, JSON, ids, truncation
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/02_registry.js">02_registry.js</a>      — Extension registries — the only way a pack extends the core
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/03_store.js">03_store.js</a>         — Sheet store: header-mapped rows, settings, daily counters
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/04_audit.js">04_audit.js</a>         — AuditLog writer (audit / auditFail, once-per-key notices)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/05_telegram.js">05_telegram.js</a>      — Telegram client: send, split, escape, inline buttons, callback data
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/06_queue.js">06_queue.js</a>         — Queue + one-off worker trigger: retries, dead letters, pruning
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/07_executor.js">07_executor.js</a>      — Proposals → PendingActions → owner ✅ → allowlisted action
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/08_actions_builtin.js">08_actions_builtin.js</a> — Built-in action drive_create_file (validate / preview / execute)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/09_mailbox.js">09_mailbox.js</a>       — Drive mailbox relay: envelope validation, dispatch, archive, snapshot
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/10_router.js">10_router.js</a>        — Web-app router: ?route=tg / wake / setup, health JSON
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/11_commands_builtin.js">11_commands_builtin.js</a> — Built-in Telegram commands (/start /help /ping /id /status /pending /expire /ask /wake)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/12_wake.js">12_wake.js</a>          — Wake route, sweeps, requests (req_&lt;id&gt;.json) and one-off triggers
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/13_routines.js">13_routines.js</a>      — Claude Code Routine fire client with the daily cap
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/14_setup.js">14_setup.js</a>         — Owner setup page (?route=setup&amp;k=ADMIN_SECRET) and printSetupUrl()
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/decisions">decisions/</a>              — One decisions file per phase / work package
-│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-0.md">TG-PHASE-0.md</a>       — Phase 0: the thirteen owner decisions, owner actions, session findings
-│   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/prompts">prompts/</a>                — The prompt each phase's session starts from
-│       └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-1.md">TG-PHASE-1.md</a>       — Phase 1 kickoff: helper framework foundation (Fable 5.1 · Xhigh)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-0.md">TG-PHASE-0.md</a>       — Phase 0: the thirteen owner decisions, owner actions, session findings
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-1.md">TG-PHASE-1.md</a>       — Phase 1: scrub report (owner gate), subtree decision, every default chosen
+│   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs">packs/</a>                  — One directory per helper: manifest + pack-side Apps Script
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/hello">hello/</a>              — The smallest pack — proves the registries and the test harness
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/hello/gas">gas/</a>            — Pack-side Apps Script, appended to the core by the bundler
+│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/hello/gas/hello.js">hello.js</a>    — greeting envelope, /hello, message handler, snapshot, daily job, setup step
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/hello/helper.json">helper.json</a>     — Pack manifest (fields in helpers/SPEC.md §4)
+│   │       └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/hello/README.md">README.md</a>       — What the hello pack registers and how to bundle and test it
+│   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/prompts">prompts/</a>                — The prompt each phase's session starts from
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-1.md">TG-PHASE-1.md</a>       — Phase 1 kickoff: helper framework foundation (Fable 5.1 · Xhigh)
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-2.md">TG-PHASE-2.md</a>       — Phase 2 kickoff: shared kits 2a–2d in worktrees (coordinator Opus 5.5 · high)
+│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/README.md">README.md</a>               — Framework overview, "how to add a helper", the public/private rules
+│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/SPEC.md">SPEC.md</a>                 — Framework contract v1 — envelope, mailbox, wake route, manifest, registries, properties, sheet, limits, ownership map
+│   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates">templates/</a>              — Skeletons copied by tools/new-helper.mjs
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo">private-repo/</a>       — Skeleton of a helper's private repo ({{…}} placeholders filled by new-helper.mjs)
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/.gitattributes">.gitattributes</a>  — log/*.md merge=union so daily logs merge line by line
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/.github">.github/</a>
+│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/.github/workflows">workflows/</a>
+│   │       │       └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/.github/workflows/merge-routine-memory.yml">merge-routine-memory.yml</a> — Merges memory-only claude/* branches into main
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/.gitignore">.gitignore</a>      — Scratch files and secrets never committed
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/CLAUDE.md">CLAUDE.md</a>       — Dual-mode: ROUTINE MODE (persona, two-lane rules, mailbox, memory) / development
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/log">log/</a>            — Append-only daily logs, one line per routine run
+│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/log/.gitkeep">.gitkeep</a>    — Keeps the directory
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/quarantine">quarantine/</a>     — Notes derived from untrusted content, awaiting owner promotion
+│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/quarantine/.gitkeep">.gitkeep</a>    — Keeps the directory
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/README.md">README.md</a>       — What lives in the private repo and where the framework comes from
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/repository-information">repository-information/</a> — Development-session files
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/repository-information/BUILD-STATE.md">BUILD-STATE.md</a> — Pointer to the framework tracker
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/repository-information/DEV-SESSION.md">DEV-SESSION.md</a> — Development rules + the /update-helpers pin bump
+│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/repository-information/SESSION-CONTEXT.md">SESSION-CONTEXT.md</a> — Saved by remember-session
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/routines">routines/</a>       — One &lt;name&gt;.prompt.md per routine
+│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/routines/README.md">README.md</a>   — The text pasted into the routine editor, one file per routine
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/scripts">scripts/</a>
+│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/scripts/merge-routine-memory.sh">merge-routine-memory.sh</a> — Memory-only merge rules used by the workflow
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/skills">skills/</a>         — One SKILL.md per routine
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/skills/README.md">README.md</a>   — How skills are named and what each must state
+│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/skills/remember-session">remember-session/</a>
+│   │       │       └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/skills/remember-session/SKILL.md">SKILL.md</a> — Trimmed remember-session for development sessions (no version bookkeeping)
+│   │       └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/vendor">vendor/</a>
+│   │           └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/vendor/helpers">helpers/</a>    — Pinned copy of helpers-dist (git subtree)
+│   │               └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/vendor/helpers/README.md">README.md</a> — Placeholder with the first-pin and /update-helpers instructions
+│   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/tests">tests/</a>                  — node --test suites + in-memory Apps Script mocks
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_config.test.js">core_config.test.js</a> — 00_config.js — manifest merge, prefixed property names, time zone, secret redaction
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_executor.test.js">core_executor.test.js</a> — 07_executor.js + 08_actions_builtin.js — proposals, ✅ gate, dedupe, expiry, cap
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_mailbox.test.js">core_mailbox.test.js</a> — 09_mailbox.js — envelope validation, dispatch, archive folders, dedupe, snapshot, pruning
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_queue.test.js">core_queue.test.js</a>  — 06_queue.js — one worker trigger per enqueue, retries, dead letters, pruning
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_registry.test.js">core_registry.test.js</a> — 02_registry.js — validation, duplicates, allowlist gating
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_router.test.js">core_router.test.js</a> — 10_router.js + 11_commands_builtin.js — webhook auth, pairing, commands, free text → request, callbacks, lock
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_setup.test.js">core_setup.test.js</a>  — 14_setup.js — admin-secret gate, every setup action, pack steps
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_store.test.js">core_store.test.js</a>  — 03_store.js + 04_audit.js — header-mapped rows, settings, daily counters, pack sheets
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_wake.test.js">core_wake.test.js</a>   — 12_wake.js + 13_routines.js — wake route, sweeps, one-off triggers, request lifecycle, daily jobs
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/tests/harness">harness/</a>
+│   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/harness/gas-mocks.js">gas-mocks.js</a>    — In-memory Apps Script mocks + loader (Properties, Cache, Lock, Drive, Spreadsheet, UrlFetch, triggers)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/index.js">index.js</a>            — Loads every *.test.js in this directory
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_hello.test.js">pack_hello.test.js</a>  — The hello pack extends the core through registries only and runs end to end
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_boundary.test.js">tools_boundary.test.js</a> — Plants a fake secret and a personal-data path; the boundary check must fail on them
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_bundle.test.js">tools_bundle.test.js</a> — Manifest validation, bundle layout, appsscript.json, CLI, bundle runs in the mocks
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_envelope.test.js">tools_envelope.test.js</a> — Envelope stamping with a real id + clock; types from core and manifest
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_new_helper.test.js">tools_new_helper.test.js</a> — Scaffolds a pack and a private repo; the result bundles and runs in the mocks
+│   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/tools">tools/</a>                  — Node tools, no dependencies
+│       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tools/boundary-allowlist.txt">boundary-allowlist.txt</a> — Domains, literals and paths the boundary check accepts
+│       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tools/boundary-check.mjs">boundary-check.mjs</a>  — Fails on secrets, PII and personal-data paths under helpers/ (CI gate)
+│       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tools/bundle.mjs">bundle.mjs</a>          — Reads packs/&lt;name&gt;/helper.json and emits one Apps Script project from core + pack gas/
+│       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tools/envelope.mjs">envelope.mjs</a>        — Stamps a mailbox envelope with a real id + clock (same CLI as the first helper)
+│       └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tools/new-helper.mjs">new-helper.mjs</a>      — Scaffolds a pack and a private repo from the template
 │
 <b>─── Repository Information ───────────────────────────────────────────────────</b>
 ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/repository-information">repository-information/</a>    — [template]
@@ -286,6 +364,11 @@ Last updated: `2026-09-30 10:05:26 PM EST` · Repo version: `v01.11r`
 ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/CLAUDE.md">CLAUDE.md</a>                   — [template · initialized] Developer instructions
 ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/.claude">.claude/</a>                   — [template]
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/.claude/settings.json">settings.json</a>           — [template · modified] Claude Code project settings (permissions + Stop hook wiring)
+│   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/.claude/agents">agents/</a>                 — Build agents for the helper framework (model, effort, disallowedTools per role)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/.claude/agents/hb-architect.md">hb-architect.md</a>     — Fable 5.1 · xhigh — foundation, phase coordination, integration review
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/.claude/agents/hb-builder-fable.md">hb-builder-fable.md</a> — Fable 5.1 · high — judgment-heavy work packages (design, solver)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/.claude/agents/hb-builder-opus.md">hb-builder-opus.md</a>  — Opus 5.5 · high — well-specified work packages
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/.claude/agents/hb-reader.md">hb-reader.md</a>        — Fable 5.1 · high — read-only connector reader; no shell, web or account writes
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/.claude/hooks">hooks/</a>                  — Repo-tracked Claude Code hooks, wired via settings.json
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/.claude/hooks/stop-hook-git-check.sh">stop-hook-git-check.sh</a> — Stop event: checks for uncommitted/untracked/unpushed work; runs `git fetch --prune` first to avoid stale-ref false positives
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/.claude/rules">rules/</a>                  — [template] Always-loaded + path-scoped rules
@@ -343,6 +426,9 @@ Last updated: `2026-09-30 10:05:26 PM EST` · Repo version: `v01.11r`
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/.github/workflows">workflows/</a>              — [template] CI/CD pipeline
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/.github/workflows/auto-merge-claude.yml">auto-merge-claude.yml</a> — [template · initialized] Auto-merge, GAS deploy, Pages deploy, library mirror
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/.github/workflows/clasp-deploy-pilot.yml">clasp-deploy-pilot.yml</a> — clasp push deployment pilot
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/.github/workflows/deploy-helper.yml">deploy-helper.yml</a> — Bundle + clasp push/deploy per helper pack on main (production environment, pinned deployment)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/.github/workflows/helpers-ci.yml">helpers-ci.yml</a> — Tests + bundle check + boundary check on every push touching helpers/
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/.github/workflows/helpers-dist.yml">helpers-dist.yml</a> — Publishes helpers/ as the helpers-dist branch after each merge to main
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/.github/ISSUE_TEMPLATE">ISSUE_TEMPLATE/</a>         — [template] Bug report &amp; feature request forms
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/.github/ISSUE_TEMPLATE/bug_report.yml">bug_report.yml</a> — [template · initialized] Bug report form
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/.github/ISSUE_TEMPLATE/feature_request.yml">feature_request.yml</a> — [template · initialized] Feature request form
