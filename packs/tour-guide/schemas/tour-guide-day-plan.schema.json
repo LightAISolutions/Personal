@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-day-plan.schema.json",
+  "title": "Tour Guide DayPlan (planner output, one per trip date)",
+  "description": "Stops in clock order; legs chain lodging → stop 1 → … → lodging. schemas/index.mjs also checks: arrive ≤ depart, clock order, window.open ≤ arrive and depart ≤ window.close, the leg chain and leg times.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["v", "trip_id", "date", "build_id", "mode", "lodging_start", "lodging_end", "stops", "legs", "meals", "free", "warnings", "day_url", "verified_on", "solver"],
+  "properties": {
+    "v": { "const": 1 },
+    "trip_id": { "$ref": "#/$defs/slug" },
+    "date": { "$ref": "#/$defs/date" },
+    "build_id": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "mode": { "$ref": "#/$defs/mode" },
+    "lodging_start": { "$ref": "#/$defs/slug" },
+    "lodging_end": { "$ref": "#/$defs/slug" },
+    "theme": { "type": "string", "maxLength": 120 },
+    "stops": {
+      "type": "array",
+      "maxItems": 25,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["place", "place_id", "arrive", "depart", "minutes", "activity", "window", "confidence"],
+        "properties": {
+          "place": { "$ref": "#/$defs/slug" },
+          "place_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,300}$" },
+          "arrive": { "$ref": "#/$defs/time" },
+          "depart": { "$ref": "#/$defs/time" },
+          "minutes": { "type": "integer", "minimum": 0, "maximum": 1440 },
+          "activity": { "type": "string", "minLength": 1, "maxLength": 120 },
+          "window": {
+            "anyOf": [
+              { "type": "null" },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["open", "close"],
+                "properties": { "open": { "$ref": "#/$defs/time" }, "close": { "$ref": "#/$defs/close_time" } }
+              }
+            ]
+          },
+          "confidence": { "enum": ["confirmed", "conflicting", "single-source", "unverified"] },
+          "booked": { "type": "string", "maxLength": 120 }
+        }
+      }
+    },
+    "legs": {
+      "type": "array",
+      "maxItems": 26,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["from", "to", "mode", "depart_at", "arrive_at", "minutes", "distance_m", "source", "maps_url"],
+        "properties": {
+          "from": { "$ref": "#/$defs/slug" },
+          "to": { "$ref": "#/$defs/slug" },
+          "mode": { "$ref": "#/$defs/mode" },
+          "depart_at": { "$ref": "#/$defs/time" },
+          "arrive_at": { "$ref": "#/$defs/time" },
+          "minutes": { "type": "integer", "minimum": 0, "maximum": 1440 },
+          "distance_m": { "type": "integer", "minimum": 0 },
+          "source": { "enum": ["matrix", "route"] },
+          "maps_url": { "type": "string", "maxLength": 4000, "pattern": "^https://\\S+$" },
+          "line": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "note": { "type": "string", "maxLength": 300 }
+        }
+      }
+    },
+    "meals": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "start", "end"],
+        "properties": {
+          "kind": { "enum": ["breakfast", "lunch", "dinner", "coffee", "snack", "drinks"] },
+          "start": { "$ref": "#/$defs/time" },
+          "end": { "$ref": "#/$defs/time" },
+          "at": { "$ref": "#/$defs/slug" },
+          "note": { "type": "string", "maxLength": 300 }
+        }
+      }
+    },
+    "free": {
+      "type": "array",
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["start", "end"],
+        "properties": { "start": { "$ref": "#/$defs/time" }, "end": { "$ref": "#/$defs/time" }, "note": { "type": "string", "maxLength": 300 } }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "maxItems": 40,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["severity", "code", "text"],
+        "properties": {
+          "severity": { "enum": ["info", "warn", "alert"] },
+          "code": { "enum": ["closed_day", "tight_connection", "over_long_day", "hours_unknown", "order_disagreement", "budget", "other"] },
+          "text": { "type": "string", "minLength": 1, "maxLength": 400 },
+          "place": { "$ref": "#/$defs/slug" }
+        }
+      }
+    },
+    "day_url": { "anyOf": [{ "type": "null" }, { "type": "string", "maxLength": 4000, "pattern": "^https://\\S+$" }] },
+    "verified_on": { "$ref": "#/$defs/date" },
+    "solver": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "matrix_elements", "route_calls", "cross_check", "seed"],
+      "properties": {
+        "method": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "matrix_elements": { "type": "integer", "minimum": 0 },
+        "route_calls": { "type": "integer", "minimum": 0 },
+        "cross_check": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["asked", "agrees", "google_order", "our_order"],
+              "properties": {
+                "asked": { "type": "boolean" },
+                "agrees": { "type": ["boolean", "null"] },
+                "google_order": { "anyOf": [{ "type": "null" }, { "type": "array", "maxItems": 25, "items": { "$ref": "#/$defs/slug" } }] },
+                "our_order": { "type": "array", "maxItems": 25, "items": { "$ref": "#/$defs/slug" } },
+                "note": { "type": "string", "maxLength": 300 }
+              }
+            }
+          ]
+        },
+        "seed": { "type": "integer" }
+      }
+    }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$", "description": "A local key, or \"lodging\" in legs and meals." },
+    "date": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$", "description": "A date YYYY-MM-DD." },
+    "time": { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$", "description": "A wall-clock time HH:MM (24 h)." },
+    "close_time": { "type": "string", "pattern": "^(([01]\\d|2[0-3]):[0-5]\\d|24:00)$", "description": "A closing time HH:MM; 24:00 = midnight; earlier than open = after midnight." },
+    "mode": { "enum": ["TRANSIT", "DRIVE", "WALK"] }
+  }
+}

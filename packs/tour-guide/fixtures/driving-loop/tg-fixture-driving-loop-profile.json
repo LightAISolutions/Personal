@@ -1,0 +1,12 @@
+{
+  "pace": "relaxed",
+  "interests": {
+    "hike": "high",
+    "viewpoint": "high",
+    "museum": "low",
+    "neighbourhood": "normal"
+  },
+  "meals": {
+    "breakfast_at_lodging": true
+  }
+}

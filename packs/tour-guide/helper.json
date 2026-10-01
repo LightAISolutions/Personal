@@ -1,0 +1,15 @@
+{
+  "name": "tour-guide",
+  "display_name": "Tour Guide",
+  "description": "Travel planner: preferences from approved connectors, deep research, visit-time estimates, day plans over Google Maps, saved-for-later lists, a printed brochure and a Telegram chatbot.",
+  "drive_root": "TourGuide",
+  "producer": "tour-guide-core",
+  "property_prefix": "",
+  "version": "0.1.0",
+  "timezone": "America/New_York",
+  "inbound_routine": "CHAT",
+  "envelope_types": [],
+  "action_allowlist": [],
+  "memory_dirs": ["trips", "places", "profile"],
+  "scopes": []
+}

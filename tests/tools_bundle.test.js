@@ -43,7 +43,7 @@ test('bundle(hello): manifest block first, then core, then the pack; appsscript.
   assert.equal(b.appsscript.runtimeVersion, 'V8');
   assert.deepEqual(b.appsscript.webapp, { executeAs: 'USER_DEPLOYING', access: 'ANYONE_ANONYMOUS' });
   assert.deepEqual(b.appsscript.oauthScopes, B.CORE_SCOPES, 'no extra scopes unless the manifest asks');
-  assert.deepEqual(B.listPacks(), ['hello']);
+  assert.ok(B.listPacks().includes('hello'), 'the hello pack is listed (other packs may exist)');
   assert.throws(() => B.bundle('nope'), /no manifest/);
 });
 

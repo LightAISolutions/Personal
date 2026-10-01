@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-trip.schema.json",
+  "title": "Tour Guide Trip (data contract v1)",
+  "description": "One trip: dates, lodging per night, travel modes, pace and the day window. Semantic rules (end ≥ start, ≤ 31 days, exactly one lodging per night, default mode allowed) are checked by schemas/index.mjs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["v", "id", "title", "destination", "timezone", "start_date", "end_date", "travelers", "pace", "day_start", "day_end", "lodging", "modes", "status"],
+  "properties": {
+    "v": { "const": 1 },
+    "id": { "$ref": "#/$defs/slug" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "destination": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "country": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "timezone": { "type": "string", "pattern": "^(UTC|Etc/[A-Za-z0-9+-]{1,10}|[A-Za-z_]+(/[A-Za-z0-9_+-]+)+)$", "description": "An IANA time zone." },
+    "locale": { "type": "string", "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$" },
+    "start_date": { "$ref": "#/$defs/date" },
+    "end_date": { "$ref": "#/$defs/date" },
+    "travelers": { "type": "array", "maxItems": 12, "items": { "type": "string", "minLength": 1, "maxLength": 60 } },
+    "pace": { "enum": ["relaxed", "normal", "packed"] },
+    "day_start": { "$ref": "#/$defs/time" },
+    "day_end": { "$ref": "#/$defs/time" },
+    "lodging": { "type": "array", "minItems": 1, "maxItems": 31, "items": { "$ref": "#/$defs/lodging" } },
+    "modes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["default", "allowed"],
+      "properties": {
+        "default": { "$ref": "#/$defs/mode" },
+        "allowed": { "type": "array", "minItems": 1, "maxItems": 3, "items": { "$ref": "#/$defs/mode" } },
+        "by_date": { "type": "object", "maxProperties": 31, "propertyNames": { "pattern": "^\\d{4}-\\d{2}-\\d{2}$" }, "additionalProperties": { "$ref": "#/$defs/mode" } }
+      }
+    },
+    "transit_preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "allowedTravelModes": { "type": "array", "minItems": 1, "maxItems": 5, "items": { "enum": ["BUS", "SUBWAY", "TRAIN", "LIGHT_RAIL", "RAIL"] } },
+        "routingPreference": { "enum": ["LESS_WALKING", "FEWER_TRANSFERS"] }
+      }
+    },
+    "budget_notes": { "type": "string", "maxLength": 2000 },
+    "status": { "enum": ["draft", "planned", "done"] },
+    "intro": { "type": "string", "maxLength": 4000 },
+    "practical": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title"],
+        "properties": {
+          "title": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "text": { "type": "string", "maxLength": 2000 },
+          "items": {
+            "type": "array",
+            "maxItems": 30,
+            "items": {
+              "anyOf": [
+                { "type": "string", "minLength": 1, "maxLength": 400 },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["label", "text"],
+                  "properties": {
+                    "label": { "type": "string", "minLength": 1, "maxLength": 80 },
+                    "text": { "type": "string", "minLength": 1, "maxLength": 400 },
+                    "url": { "$ref": "#/$defs/url" }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$", "description": "A local key: lowercase letters, digits and hyphens." },
+    "date": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$", "description": "A date YYYY-MM-DD." },
+    "time": { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$", "description": "A wall-clock time HH:MM (24 h)." },
+    "url": { "type": "string", "maxLength": 2000, "pattern": "^https?://\\S+$" },
+    "mode": { "enum": ["TRANSIT", "DRIVE", "WALK"] },
+    "lodging": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "lat", "lng", "from", "to"],
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "place_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,300}$" },
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lng": { "type": "number", "minimum": -180, "maximum": 180 },
+        "address": { "type": "string", "maxLength": 300 },
+        "from": { "$ref": "#/$defs/date" },
+        "to": { "$ref": "#/$defs/date" },
+        "check_in": { "$ref": "#/$defs/time" },
+        "check_out": { "$ref": "#/$defs/time" },
+        "note": { "type": "string", "maxLength": 1000 }
+      }
+    }
+  }
+}

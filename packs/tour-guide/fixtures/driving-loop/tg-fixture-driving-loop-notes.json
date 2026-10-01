@@ -1,0 +1,132 @@
+[
+  {
+    "v": 1,
+    "place_id": "FixtureDlHeronRidgeTrail",
+    "why_you": "You marked hikes as a high interest.",
+    "what_to_do": "Clockwise loop; the ridge section is the second half.",
+    "best_time": "Morning; afternoon wind on the ridge.",
+    "accessibility": "Steep, rocky; boots needed.",
+    "food": "No water on the trail; bring lunch.",
+    "sources": [
+      {
+        "url": "https://trailbook.example.net/carrow/heron-ridge-trail/notes",
+        "title": "Trail Book: Heron Ridge Trail",
+        "accessed": "2027-05-30",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlCairnPointOverlook",
+    "what_to_do": "Short path from the car park to the cairn.",
+    "best_time": "Clear afternoons.",
+    "pairings": [
+      "Tollby village"
+    ],
+    "sources": [
+      {
+        "url": "https://trailbook.example.net/carrow/cairn-point-overlook/notes",
+        "title": "Trail Book: Cairn Point Overlook",
+        "accessed": "2027-05-30",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlGullhavenLighthouse",
+    "what_to_do": "Climb the tower, then the keeper's cottage.",
+    "best_time": "Friday morning; closed Mondays and Thursdays.",
+    "tickets": "Cash only at the door (fixture).",
+    "sources": [
+      {
+        "url": "https://trailbook.example.net/carrow/gullhaven-lighthouse/notes",
+        "title": "Trail Book: Gullhaven Lighthouse",
+        "accessed": "2027-05-30",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlSealCove",
+    "what_to_do": "Seals haul out on the east rocks at low tide.",
+    "what_to_skip": "The cliff path in wet weather.",
+    "best_time": "Low tide.",
+    "sources": [
+      {
+        "url": "https://trailbook.example.net/carrow/seal-cove/notes",
+        "title": "Trail Book: Seal Cove",
+        "accessed": "2027-05-30",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlMarrowBayAbbey",
+    "what_to_do": "Cloister, then the chapter-house carvings.",
+    "pairings": [
+      "Marrow Bay Gallery"
+    ],
+    "sources": [
+      {
+        "url": "https://trailbook.example.net/carrow/marrow-bay-abbey/notes",
+        "title": "Trail Book: Marrow Bay Abbey",
+        "accessed": "2027-05-30",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlBlackwaterFalls",
+    "what_to_do": "Out-and-back to the upper pool.",
+    "accessibility": "Muddy after rain.",
+    "sources": [
+      {
+        "url": "https://trailbook.example.net/carrow/blackwater-falls/notes",
+        "title": "Trail Book: Blackwater Falls Walk",
+        "accessed": "2027-05-30",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlWrenwickVillage",
+    "what_to_do": "Harbour wall walk and the net lofts.",
+    "food": "Smokehouse by the slipway.",
+    "sources": [
+      {
+        "url": "https://trailbook.example.net/carrow/wrenwick-village/notes",
+        "title": "Trail Book: Wrenwick village",
+        "accessed": "2027-05-30",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlNorthcapeSeaStacks",
+    "why_you": "High interest in viewpoints, but far off the loop.",
+    "best_time": "A separate day trip next time.",
+    "sources": [
+      {
+        "url": "https://trailbook.example.net/carrow/northcape-sea-stacks/notes",
+        "title": "Trail Book: Northcape Sea Stacks",
+        "accessed": "2027-05-30",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-05-30"
+  }
+]

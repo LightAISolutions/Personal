@@ -1,0 +1,1345 @@
+{
+  "v": 1,
+  "modes": {
+    "TRANSIT": {
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcLanternMuseum": {
+        "duration_sec": 451,
+        "distance_m": 601
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcMaritimeArchive": {
+        "duration_sec": 525,
+        "distance_m": 913,
+        "line": "Line 2"
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcTramDepotGallery": {
+        "duration_sec": 599,
+        "distance_m": 1275,
+        "line": "Tram 4"
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 511,
+        "distance_m": 796,
+        "line": "Tram 4"
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcSaffronRowMarket": {
+        "duration_sec": 340,
+        "distance_m": 453
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 501,
+        "distance_m": 802,
+        "line": "Line 2"
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcSignalHillLookout": {
+        "duration_sec": 869,
+        "distance_m": 2274,
+        "line": "Line 1"
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcTidewaterBotanicGarden": {
+        "duration_sec": 799,
+        "distance_m": 1972,
+        "line": "Line 2"
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcHarbourDistrict": {
+        "duration_sec": 439,
+        "distance_m": 585
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcOldTownLanes": {
+        "duration_sec": 437,
+        "distance_m": 582
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcStBrannocChurch": {
+        "duration_sec": 475,
+        "distance_m": 688,
+        "line": "Tram 4"
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcClockTowerClimb": {
+        "duration_sec": 289,
+        "distance_m": 385
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcBluebellCeramicsStudio": {
+        "duration_sec": 792,
+        "distance_m": 2009,
+        "line": "Line 1"
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 90,
+        "distance_m": 120
+      },
+      "FixtureTcLanternMuseum|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 428,
+        "distance_m": 571
+      },
+      "FixtureTcLanternMuseum|FixtureTcMaritimeArchive": {
+        "duration_sec": 523,
+        "distance_m": 941,
+        "line": "Line 2"
+      },
+      "FixtureTcLanternMuseum|FixtureTcTramDepotGallery": {
+        "duration_sec": 628,
+        "distance_m": 1228,
+        "line": "Line 1"
+      },
+      "FixtureTcLanternMuseum|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 536,
+        "distance_m": 1006,
+        "line": "Tram 4"
+      },
+      "FixtureTcLanternMuseum|FixtureTcSaffronRowMarket": {
+        "duration_sec": 509,
+        "distance_m": 769,
+        "line": "Tram 4"
+      },
+      "FixtureTcLanternMuseum|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 633,
+        "distance_m": 1315,
+        "line": "Line 3"
+      },
+      "FixtureTcLanternMuseum|FixtureTcSignalHillLookout": {
+        "duration_sec": 752,
+        "distance_m": 1717,
+        "line": "Line 2"
+      },
+      "FixtureTcLanternMuseum|FixtureTcHarbourDistrict": {
+        "duration_sec": 611,
+        "distance_m": 1057,
+        "line": "Line 3"
+      },
+      "FixtureTcLanternMuseum|FixtureTcOldTownLanes": {
+        "duration_sec": 424,
+        "distance_m": 565
+      },
+      "FixtureTcLanternMuseum|FixtureTcStBrannocChurch": {
+        "duration_sec": 284,
+        "distance_m": 378
+      },
+      "FixtureTcLanternMuseum|FixtureTcClockTowerClimb": {
+        "duration_sec": 290,
+        "distance_m": 387
+      },
+      "FixtureTcLanternMuseum|FixtureTcBluebellCeramicsStudio": {
+        "duration_sec": 822,
+        "distance_m": 2054,
+        "line": "Tram 4"
+      },
+      "FixtureTcLanternMuseum|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 357,
+        "distance_m": 476
+      },
+      "FixtureTcMaritimeArchive|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 564,
+        "distance_m": 961,
+        "line": "Line 2"
+      },
+      "FixtureTcMaritimeArchive|FixtureTcLanternMuseum": {
+        "duration_sec": 532,
+        "distance_m": 952,
+        "line": "Line 2"
+      },
+      "FixtureTcMaritimeArchive|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 258,
+        "distance_m": 344
+      },
+      "FixtureTcMaritimeArchive|FixtureTcSaffronRowMarket": {
+        "duration_sec": 661,
+        "distance_m": 1417,
+        "line": "Tram 4"
+      },
+      "FixtureTcMaritimeArchive|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 652,
+        "distance_m": 1583,
+        "line": "Line 3"
+      },
+      "FixtureTcMaritimeArchive|FixtureTcHarbourDistrict": {
+        "duration_sec": 498,
+        "distance_m": 655,
+        "line": "Line 3"
+      },
+      "FixtureTcMaritimeArchive|FixtureTcOldTownLanes": {
+        "duration_sec": 605,
+        "distance_m": 1347,
+        "line": "Tram 4"
+      },
+      "FixtureTcMaritimeArchive|FixtureTcStBrannocChurch": {
+        "duration_sec": 599,
+        "distance_m": 1282,
+        "line": "Line 2"
+      },
+      "FixtureTcMaritimeArchive|FixtureTcClockTowerClimb": {
+        "duration_sec": 565,
+        "distance_m": 1131,
+        "line": "Line 2"
+      },
+      "FixtureTcMaritimeArchive|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 536,
+        "distance_m": 931,
+        "line": "Line 3"
+      },
+      "FixtureTcTramDepotGallery|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 672,
+        "distance_m": 1378,
+        "line": "Tram 4"
+      },
+      "FixtureTcTramDepotGallery|FixtureTcLanternMuseum": {
+        "duration_sec": 557,
+        "distance_m": 1130,
+        "line": "Line 1"
+      },
+      "FixtureTcTramDepotGallery|FixtureTcSaffronRowMarket": {
+        "duration_sec": 507,
+        "distance_m": 895,
+        "line": "Line 2"
+      },
+      "FixtureTcTramDepotGallery|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 631,
+        "distance_m": 1340,
+        "line": "Line 2"
+      },
+      "FixtureTcTramDepotGallery|FixtureTcSignalHillLookout": {
+        "duration_sec": 797,
+        "distance_m": 1976,
+        "line": "Tram 4"
+      },
+      "FixtureTcTramDepotGallery|FixtureTcHarbourDistrict": {
+        "duration_sec": 846,
+        "distance_m": 2028,
+        "line": "Tram 4"
+      },
+      "FixtureTcTramDepotGallery|FixtureTcOldTownLanes": {
+        "duration_sec": 472,
+        "distance_m": 698,
+        "line": "Line 2"
+      },
+      "FixtureTcTramDepotGallery|FixtureTcStBrannocChurch": {
+        "duration_sec": 572,
+        "distance_m": 893,
+        "line": "Line 1"
+      },
+      "FixtureTcTramDepotGallery|FixtureTcClockTowerClimb": {
+        "duration_sec": 559,
+        "distance_m": 983,
+        "line": "Line 3"
+      },
+      "FixtureTcTramDepotGallery|FixtureTcBluebellCeramicsStudio": {
+        "duration_sec": 511,
+        "distance_m": 816,
+        "line": "Line 1"
+      },
+      "FixtureTcTramDepotGallery|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 655,
+        "distance_m": 1303,
+        "line": "Line 2"
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 496,
+        "distance_m": 778,
+        "line": "Tram 4"
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcLanternMuseum": {
+        "duration_sec": 611,
+        "distance_m": 1103,
+        "line": "Tram 4"
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcMaritimeArchive": {
+        "duration_sec": 264,
+        "distance_m": 352
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcSaffronRowMarket": {
+        "duration_sec": 582,
+        "distance_m": 1208,
+        "line": "Tram 4"
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 660,
+        "distance_m": 1432,
+        "line": "Line 1"
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcTidewaterBotanicGarden": {
+        "duration_sec": 836,
+        "distance_m": 2071,
+        "line": "Line 3"
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcHarbourDistrict": {
+        "duration_sec": 251,
+        "distance_m": 334
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcOldTownLanes": {
+        "duration_sec": 626,
+        "distance_m": 1348,
+        "line": "Line 1"
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcStBrannocChurch": {
+        "duration_sec": 685,
+        "distance_m": 1423,
+        "line": "Line 1"
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcClockTowerClimb": {
+        "duration_sec": 565,
+        "distance_m": 1095,
+        "line": "Line 1"
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 568,
+        "distance_m": 901,
+        "line": "Line 2"
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 374,
+        "distance_m": 498
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcLanternMuseum": {
+        "duration_sec": 507,
+        "distance_m": 767,
+        "line": "Tram 4"
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcMaritimeArchive": {
+        "duration_sec": 677,
+        "distance_m": 1440,
+        "line": "Tram 4"
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcTramDepotGallery": {
+        "duration_sec": 527,
+        "distance_m": 919,
+        "line": "Line 2"
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 657,
+        "distance_m": 1312,
+        "line": "Tram 4"
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 419,
+        "distance_m": 559
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcTidewaterBotanicGarden": {
+        "duration_sec": 805,
+        "distance_m": 1989,
+        "line": "Tram 4"
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcHarbourDistrict": {
+        "duration_sec": 603,
+        "distance_m": 1058,
+        "line": "Line 1"
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcOldTownLanes": {
+        "duration_sec": 280,
+        "distance_m": 373
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcStBrannocChurch": {
+        "duration_sec": 505,
+        "distance_m": 676,
+        "line": "Line 3"
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcClockTowerClimb": {
+        "duration_sec": 275,
+        "distance_m": 366
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcBluebellCeramicsStudio": {
+        "duration_sec": 649,
+        "distance_m": 1494,
+        "line": "Line 3"
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 362,
+        "distance_m": 483
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 492,
+        "distance_m": 791,
+        "line": "Line 2"
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcLanternMuseum": {
+        "duration_sec": 642,
+        "distance_m": 1329,
+        "line": "Line 3"
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcMaritimeArchive": {
+        "duration_sec": 684,
+        "distance_m": 1633,
+        "line": "Line 3"
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcTramDepotGallery": {
+        "duration_sec": 706,
+        "distance_m": 1446,
+        "line": "Line 2"
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 637,
+        "distance_m": 1398,
+        "line": "Line 1"
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcSaffronRowMarket": {
+        "duration_sec": 428,
+        "distance_m": 570
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcTidewaterBotanicGarden": {
+        "duration_sec": 673,
+        "distance_m": 1432,
+        "line": "Line 1"
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcHarbourDistrict": {
+        "duration_sec": 616,
+        "distance_m": 1151,
+        "line": "Tram 4"
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcOldTownLanes": {
+        "duration_sec": 565,
+        "distance_m": 987,
+        "line": "Tram 4"
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcStBrannocChurch": {
+        "duration_sec": 597,
+        "distance_m": 1217,
+        "line": "Line 1"
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcClockTowerClimb": {
+        "duration_sec": 540,
+        "distance_m": 929,
+        "line": "Tram 4"
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcBluebellCeramicsStudio": {
+        "duration_sec": 701,
+        "distance_m": 1674,
+        "line": "Line 2"
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 497,
+        "distance_m": 853,
+        "line": "Tram 4"
+      },
+      "FixtureTcSignalHillLookout|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 885,
+        "distance_m": 2301,
+        "line": "Line 1"
+      },
+      "FixtureTcSignalHillLookout|FixtureTcLanternMuseum": {
+        "duration_sec": 696,
+        "distance_m": 1633,
+        "line": "Line 2"
+      },
+      "FixtureTcSignalHillLookout|FixtureTcTramDepotGallery": {
+        "duration_sec": 855,
+        "distance_m": 2066,
+        "line": "Tram 4"
+      },
+      "FixtureTcSignalHillLookout|FixtureTcOldTownLanes": {
+        "duration_sec": 778,
+        "distance_m": 1917,
+        "line": "Line 2"
+      },
+      "FixtureTcSignalHillLookout|FixtureTcStBrannocChurch": {
+        "duration_sec": 670,
+        "distance_m": 1571,
+        "line": "Line 1"
+      },
+      "FixtureTcSignalHillLookout|FixtureTcClockTowerClimb": {
+        "duration_sec": 802,
+        "distance_m": 1989,
+        "line": "Line 1"
+      },
+      "FixtureTcTidewaterBotanicGarden|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 713,
+        "distance_m": 1833,
+        "line": "Line 2"
+      },
+      "FixtureTcTidewaterBotanicGarden|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 761,
+        "distance_m": 1952,
+        "line": "Line 3"
+      },
+      "FixtureTcTidewaterBotanicGarden|FixtureTcSaffronRowMarket": {
+        "duration_sec": 706,
+        "distance_m": 1830,
+        "line": "Tram 4"
+      },
+      "FixtureTcTidewaterBotanicGarden|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 630,
+        "distance_m": 1369,
+        "line": "Line 1"
+      },
+      "FixtureTcTidewaterBotanicGarden|FixtureTcHarbourDistrict": {
+        "duration_sec": 777,
+        "distance_m": 1816,
+        "line": "Line 2"
+      },
+      "FixtureTcHarbourDistrict|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 437,
+        "distance_m": 583
+      },
+      "FixtureTcHarbourDistrict|FixtureTcLanternMuseum": {
+        "duration_sec": 550,
+        "distance_m": 981,
+        "line": "Line 3"
+      },
+      "FixtureTcHarbourDistrict|FixtureTcMaritimeArchive": {
+        "duration_sec": 498,
+        "distance_m": 655,
+        "line": "Line 3"
+      },
+      "FixtureTcHarbourDistrict|FixtureTcTramDepotGallery": {
+        "duration_sec": 850,
+        "distance_m": 2034,
+        "line": "Tram 4"
+      },
+      "FixtureTcHarbourDistrict|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 249,
+        "distance_m": 332
+      },
+      "FixtureTcHarbourDistrict|FixtureTcSaffronRowMarket": {
+        "duration_sec": 517,
+        "distance_m": 949,
+        "line": "Line 1"
+      },
+      "FixtureTcHarbourDistrict|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 614,
+        "distance_m": 1148,
+        "line": "Tram 4"
+      },
+      "FixtureTcHarbourDistrict|FixtureTcTidewaterBotanicGarden": {
+        "duration_sec": 747,
+        "distance_m": 1771,
+        "line": "Line 2"
+      },
+      "FixtureTcHarbourDistrict|FixtureTcOldTownLanes": {
+        "duration_sec": 591,
+        "distance_m": 1173,
+        "line": "Tram 4"
+      },
+      "FixtureTcHarbourDistrict|FixtureTcStBrannocChurch": {
+        "duration_sec": 655,
+        "distance_m": 1295,
+        "line": "Line 2"
+      },
+      "FixtureTcHarbourDistrict|FixtureTcClockTowerClimb": {
+        "duration_sec": 538,
+        "distance_m": 935,
+        "line": "Line 3"
+      },
+      "FixtureTcHarbourDistrict|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 480,
+        "distance_m": 662,
+        "line": "Line 2"
+      },
+      "FixtureTcOldTownLanes|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 441,
+        "distance_m": 588
+      },
+      "FixtureTcOldTownLanes|FixtureTcLanternMuseum": {
+        "duration_sec": 410,
+        "distance_m": 546
+      },
+      "FixtureTcOldTownLanes|FixtureTcMaritimeArchive": {
+        "duration_sec": 693,
+        "distance_m": 1476,
+        "line": "Tram 4"
+      },
+      "FixtureTcOldTownLanes|FixtureTcTramDepotGallery": {
+        "duration_sec": 482,
+        "distance_m": 710,
+        "line": "Line 2"
+      },
+      "FixtureTcOldTownLanes|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 698,
+        "distance_m": 1451,
+        "line": "Line 1"
+      },
+      "FixtureTcOldTownLanes|FixtureTcSaffronRowMarket": {
+        "duration_sec": 305,
+        "distance_m": 407
+      },
+      "FixtureTcOldTownLanes|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 582,
+        "distance_m": 1008,
+        "line": "Tram 4"
+      },
+      "FixtureTcOldTownLanes|FixtureTcSignalHillLookout": {
+        "duration_sec": 773,
+        "distance_m": 1908,
+        "line": "Line 2"
+      },
+      "FixtureTcOldTownLanes|FixtureTcHarbourDistrict": {
+        "duration_sec": 664,
+        "distance_m": 1271,
+        "line": "Tram 4"
+      },
+      "FixtureTcOldTownLanes|FixtureTcStBrannocChurch": {
+        "duration_sec": 211,
+        "distance_m": 281
+      },
+      "FixtureTcOldTownLanes|FixtureTcClockTowerClimb": {
+        "duration_sec": 181,
+        "distance_m": 241
+      },
+      "FixtureTcOldTownLanes|FixtureTcBluebellCeramicsStudio": {
+        "duration_sec": 705,
+        "distance_m": 1531,
+        "line": "Line 2"
+      },
+      "FixtureTcOldTownLanes|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 419,
+        "distance_m": 558
+      },
+      "FixtureTcStBrannocChurch|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 521,
+        "distance_m": 738,
+        "line": "Tram 4"
+      },
+      "FixtureTcStBrannocChurch|FixtureTcLanternMuseum": {
+        "duration_sec": 269,
+        "distance_m": 358
+      },
+      "FixtureTcStBrannocChurch|FixtureTcMaritimeArchive": {
+        "duration_sec": 629,
+        "distance_m": 1326,
+        "line": "Line 2"
+      },
+      "FixtureTcStBrannocChurch|FixtureTcTramDepotGallery": {
+        "duration_sec": 548,
+        "distance_m": 866,
+        "line": "Line 1"
+      },
+      "FixtureTcStBrannocChurch|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 672,
+        "distance_m": 1405,
+        "line": "Line 1"
+      },
+      "FixtureTcStBrannocChurch|FixtureTcSaffronRowMarket": {
+        "duration_sec": 510,
+        "distance_m": 681,
+        "line": "Line 3"
+      },
+      "FixtureTcStBrannocChurch|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 655,
+        "distance_m": 1298,
+        "line": "Line 1"
+      },
+      "FixtureTcStBrannocChurch|FixtureTcSignalHillLookout": {
+        "duration_sec": 745,
+        "distance_m": 1684,
+        "line": "Line 1"
+      },
+      "FixtureTcStBrannocChurch|FixtureTcHarbourDistrict": {
+        "duration_sec": 673,
+        "distance_m": 1320,
+        "line": "Line 2"
+      },
+      "FixtureTcStBrannocChurch|FixtureTcOldTownLanes": {
+        "duration_sec": 214,
+        "distance_m": 285
+      },
+      "FixtureTcStBrannocChurch|FixtureTcClockTowerClimb": {
+        "duration_sec": 250,
+        "distance_m": 333
+      },
+      "FixtureTcStBrannocChurch|FixtureTcBluebellCeramicsStudio": {
+        "duration_sec": 709,
+        "distance_m": 1651,
+        "line": "Line 2"
+      },
+      "FixtureTcStBrannocChurch|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 442,
+        "distance_m": 589
+      },
+      "FixtureTcClockTowerClimb|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 280,
+        "distance_m": 373
+      },
+      "FixtureTcClockTowerClimb|FixtureTcLanternMuseum": {
+        "duration_sec": 293,
+        "distance_m": 390
+      },
+      "FixtureTcClockTowerClimb|FixtureTcMaritimeArchive": {
+        "duration_sec": 584,
+        "distance_m": 1157,
+        "line": "Line 2"
+      },
+      "FixtureTcClockTowerClimb|FixtureTcTramDepotGallery": {
+        "duration_sec": 511,
+        "distance_m": 921,
+        "line": "Line 3"
+      },
+      "FixtureTcClockTowerClimb|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 565,
+        "distance_m": 1094,
+        "line": "Line 1"
+      },
+      "FixtureTcClockTowerClimb|FixtureTcSaffronRowMarket": {
+        "duration_sec": 281,
+        "distance_m": 374
+      },
+      "FixtureTcClockTowerClimb|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 524,
+        "distance_m": 909,
+        "line": "Tram 4"
+      },
+      "FixtureTcClockTowerClimb|FixtureTcSignalHillLookout": {
+        "duration_sec": 847,
+        "distance_m": 2059,
+        "line": "Line 1"
+      },
+      "FixtureTcClockTowerClimb|FixtureTcHarbourDistrict": {
+        "duration_sec": 565,
+        "distance_m": 968,
+        "line": "Line 3"
+      },
+      "FixtureTcClockTowerClimb|FixtureTcOldTownLanes": {
+        "duration_sec": 179,
+        "distance_m": 239
+      },
+      "FixtureTcClockTowerClimb|FixtureTcStBrannocChurch": {
+        "duration_sec": 248,
+        "distance_m": 331
+      },
+      "FixtureTcClockTowerClimb|FixtureTcBluebellCeramicsStudio": {
+        "duration_sec": 778,
+        "distance_m": 1799,
+        "line": "Line 1"
+      },
+      "FixtureTcClockTowerClimb|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 206,
+        "distance_m": 274
+      },
+      "FixtureTcBluebellCeramicsStudio|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 772,
+        "distance_m": 1976,
+        "line": "Line 1"
+      },
+      "FixtureTcBluebellCeramicsStudio|FixtureTcLanternMuseum": {
+        "duration_sec": 746,
+        "distance_m": 1932,
+        "line": "Tram 4"
+      },
+      "FixtureTcBluebellCeramicsStudio|FixtureTcTramDepotGallery": {
+        "duration_sec": 555,
+        "distance_m": 867,
+        "line": "Line 1"
+      },
+      "FixtureTcBluebellCeramicsStudio|FixtureTcSaffronRowMarket": {
+        "duration_sec": 710,
+        "distance_m": 1586,
+        "line": "Line 3"
+      },
+      "FixtureTcBluebellCeramicsStudio|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 702,
+        "distance_m": 1675,
+        "line": "Line 2"
+      },
+      "FixtureTcBluebellCeramicsStudio|FixtureTcOldTownLanes": {
+        "duration_sec": 710,
+        "distance_m": 1538,
+        "line": "Line 2"
+      },
+      "FixtureTcBluebellCeramicsStudio|FixtureTcStBrannocChurch": {
+        "duration_sec": 759,
+        "distance_m": 1726,
+        "line": "Line 2"
+      },
+      "FixtureTcBluebellCeramicsStudio|FixtureTcClockTowerClimb": {
+        "duration_sec": 687,
+        "distance_m": 1659,
+        "line": "Line 1"
+      },
+      "FixtureTcBluebellCeramicsStudio|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 837,
+        "distance_m": 2053,
+        "line": "Line 2"
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 95,
+        "distance_m": 127
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcLanternMuseum": {
+        "duration_sec": 350,
+        "distance_m": 466
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcMaritimeArchive": {
+        "duration_sec": 566,
+        "distance_m": 968,
+        "line": "Line 3"
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcTramDepotGallery": {
+        "duration_sec": 632,
+        "distance_m": 1272,
+        "line": "Line 2"
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 502,
+        "distance_m": 823,
+        "line": "Line 2"
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcSaffronRowMarket": {
+        "duration_sec": 359,
+        "distance_m": 479
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 512,
+        "distance_m": 872,
+        "line": "Tram 4"
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcHarbourDistrict": {
+        "duration_sec": 484,
+        "distance_m": 645
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcOldTownLanes": {
+        "duration_sec": 404,
+        "distance_m": 538
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcStBrannocChurch": {
+        "duration_sec": 437,
+        "distance_m": 582
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcClockTowerClimb": {
+        "duration_sec": 207,
+        "distance_m": 276
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcBluebellCeramicsStudio": {
+        "duration_sec": 858,
+        "distance_m": 2085,
+        "line": "Line 2"
+      }
+    },
+    "WALK": {
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcLanternMuseum": {
+        "duration_sec": 433,
+        "distance_m": 577
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcMaritimeArchive": {
+        "duration_sec": 658,
+        "distance_m": 877
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcTramDepotGallery": {
+        "duration_sec": 918,
+        "distance_m": 1224
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 573,
+        "distance_m": 764
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcSaffronRowMarket": {
+        "duration_sec": 326,
+        "distance_m": 435
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 578,
+        "distance_m": 770
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcHarbourDistrict": {
+        "duration_sec": 422,
+        "distance_m": 562
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcOldTownLanes": {
+        "duration_sec": 419,
+        "distance_m": 558
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcStBrannocChurch": {
+        "duration_sec": 495,
+        "distance_m": 660
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcClockTowerClimb": {
+        "duration_sec": 278,
+        "distance_m": 370
+      },
+      "FixtureTcHarbourLaneGuesthouse|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 86,
+        "distance_m": 115
+      },
+      "FixtureTcLanternMuseum|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 411,
+        "distance_m": 548
+      },
+      "FixtureTcLanternMuseum|FixtureTcMaritimeArchive": {
+        "duration_sec": 678,
+        "distance_m": 904
+      },
+      "FixtureTcLanternMuseum|FixtureTcTramDepotGallery": {
+        "duration_sec": 884,
+        "distance_m": 1179
+      },
+      "FixtureTcLanternMuseum|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 724,
+        "distance_m": 965
+      },
+      "FixtureTcLanternMuseum|FixtureTcSaffronRowMarket": {
+        "duration_sec": 554,
+        "distance_m": 738
+      },
+      "FixtureTcLanternMuseum|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 947,
+        "distance_m": 1263
+      },
+      "FixtureTcLanternMuseum|FixtureTcHarbourDistrict": {
+        "duration_sec": 761,
+        "distance_m": 1015
+      },
+      "FixtureTcLanternMuseum|FixtureTcOldTownLanes": {
+        "duration_sec": 407,
+        "distance_m": 543
+      },
+      "FixtureTcLanternMuseum|FixtureTcStBrannocChurch": {
+        "duration_sec": 272,
+        "distance_m": 363
+      },
+      "FixtureTcLanternMuseum|FixtureTcClockTowerClimb": {
+        "duration_sec": 279,
+        "distance_m": 372
+      },
+      "FixtureTcLanternMuseum|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 343,
+        "distance_m": 457
+      },
+      "FixtureTcMaritimeArchive|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 692,
+        "distance_m": 923
+      },
+      "FixtureTcMaritimeArchive|FixtureTcLanternMuseum": {
+        "duration_sec": 686,
+        "distance_m": 914
+      },
+      "FixtureTcMaritimeArchive|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 248,
+        "distance_m": 331
+      },
+      "FixtureTcMaritimeArchive|FixtureTcSaffronRowMarket": {
+        "duration_sec": 1020,
+        "distance_m": 1360
+      },
+      "FixtureTcMaritimeArchive|FixtureTcHarbourDistrict": {
+        "duration_sec": 471,
+        "distance_m": 628
+      },
+      "FixtureTcMaritimeArchive|FixtureTcOldTownLanes": {
+        "duration_sec": 970,
+        "distance_m": 1293
+      },
+      "FixtureTcMaritimeArchive|FixtureTcStBrannocChurch": {
+        "duration_sec": 923,
+        "distance_m": 1231
+      },
+      "FixtureTcMaritimeArchive|FixtureTcClockTowerClimb": {
+        "duration_sec": 815,
+        "distance_m": 1086
+      },
+      "FixtureTcMaritimeArchive|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 671,
+        "distance_m": 894
+      },
+      "FixtureTcTramDepotGallery|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 992,
+        "distance_m": 1323
+      },
+      "FixtureTcTramDepotGallery|FixtureTcLanternMuseum": {
+        "duration_sec": 814,
+        "distance_m": 1085
+      },
+      "FixtureTcTramDepotGallery|FixtureTcSaffronRowMarket": {
+        "duration_sec": 644,
+        "distance_m": 859
+      },
+      "FixtureTcTramDepotGallery|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 965,
+        "distance_m": 1286
+      },
+      "FixtureTcTramDepotGallery|FixtureTcOldTownLanes": {
+        "duration_sec": 503,
+        "distance_m": 670
+      },
+      "FixtureTcTramDepotGallery|FixtureTcStBrannocChurch": {
+        "duration_sec": 643,
+        "distance_m": 857
+      },
+      "FixtureTcTramDepotGallery|FixtureTcClockTowerClimb": {
+        "duration_sec": 708,
+        "distance_m": 944
+      },
+      "FixtureTcTramDepotGallery|FixtureTcBluebellCeramicsStudio": {
+        "duration_sec": 588,
+        "distance_m": 784
+      },
+      "FixtureTcTramDepotGallery|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 938,
+        "distance_m": 1251
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 560,
+        "distance_m": 747
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcLanternMuseum": {
+        "duration_sec": 794,
+        "distance_m": 1059
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcMaritimeArchive": {
+        "duration_sec": 254,
+        "distance_m": 338
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcSaffronRowMarket": {
+        "duration_sec": 870,
+        "distance_m": 1160
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 1031,
+        "distance_m": 1375
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcHarbourDistrict": {
+        "duration_sec": 241,
+        "distance_m": 321
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcOldTownLanes": {
+        "duration_sec": 971,
+        "distance_m": 1294
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcStBrannocChurch": {
+        "duration_sec": 1025,
+        "distance_m": 1366
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcClockTowerClimb": {
+        "duration_sec": 788,
+        "distance_m": 1051
+      },
+      "FixtureTcOldQuayFishMarket|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 649,
+        "distance_m": 865
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 359,
+        "distance_m": 478
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcLanternMuseum": {
+        "duration_sec": 552,
+        "distance_m": 736
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcMaritimeArchive": {
+        "duration_sec": 1037,
+        "distance_m": 1382
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcTramDepotGallery": {
+        "duration_sec": 662,
+        "distance_m": 882
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 945,
+        "distance_m": 1260
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 403,
+        "distance_m": 537
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcHarbourDistrict": {
+        "duration_sec": 762,
+        "distance_m": 1016
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcOldTownLanes": {
+        "duration_sec": 269,
+        "distance_m": 358
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcStBrannocChurch": {
+        "duration_sec": 487,
+        "distance_m": 649
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcClockTowerClimb": {
+        "duration_sec": 264,
+        "distance_m": 352
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcBluebellCeramicsStudio": {
+        "duration_sec": 1076,
+        "distance_m": 1434
+      },
+      "FixtureTcSaffronRowMarket|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 347,
+        "distance_m": 463
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 570,
+        "distance_m": 760
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcLanternMuseum": {
+        "duration_sec": 957,
+        "distance_m": 1276
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcTramDepotGallery": {
+        "duration_sec": 1041,
+        "distance_m": 1388
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 1007,
+        "distance_m": 1342
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcSaffronRowMarket": {
+        "duration_sec": 411,
+        "distance_m": 548
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcTidewaterBotanicGarden": {
+        "duration_sec": 1031,
+        "distance_m": 1375
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcHarbourDistrict": {
+        "duration_sec": 829,
+        "distance_m": 1105
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcOldTownLanes": {
+        "duration_sec": 710,
+        "distance_m": 947
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcStBrannocChurch": {
+        "duration_sec": 876,
+        "distance_m": 1168
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcClockTowerClimb": {
+        "duration_sec": 669,
+        "distance_m": 892
+      },
+      "FixtureTcMoonlightNightMarket|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 614,
+        "distance_m": 819
+      },
+      "FixtureTcTidewaterBotanicGarden|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 986,
+        "distance_m": 1314
+      },
+      "FixtureTcHarbourDistrict|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 420,
+        "distance_m": 560
+      },
+      "FixtureTcHarbourDistrict|FixtureTcLanternMuseum": {
+        "duration_sec": 706,
+        "distance_m": 941
+      },
+      "FixtureTcHarbourDistrict|FixtureTcMaritimeArchive": {
+        "duration_sec": 472,
+        "distance_m": 629
+      },
+      "FixtureTcHarbourDistrict|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 239,
+        "distance_m": 318
+      },
+      "FixtureTcHarbourDistrict|FixtureTcSaffronRowMarket": {
+        "duration_sec": 683,
+        "distance_m": 911
+      },
+      "FixtureTcHarbourDistrict|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 827,
+        "distance_m": 1102
+      },
+      "FixtureTcHarbourDistrict|FixtureTcOldTownLanes": {
+        "duration_sec": 844,
+        "distance_m": 1126
+      },
+      "FixtureTcHarbourDistrict|FixtureTcStBrannocChurch": {
+        "duration_sec": 932,
+        "distance_m": 1243
+      },
+      "FixtureTcHarbourDistrict|FixtureTcClockTowerClimb": {
+        "duration_sec": 673,
+        "distance_m": 897
+      },
+      "FixtureTcHarbourDistrict|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 476,
+        "distance_m": 635
+      },
+      "FixtureTcOldTownLanes|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 424,
+        "distance_m": 565
+      },
+      "FixtureTcOldTownLanes|FixtureTcLanternMuseum": {
+        "duration_sec": 394,
+        "distance_m": 525
+      },
+      "FixtureTcOldTownLanes|FixtureTcMaritimeArchive": {
+        "duration_sec": 1063,
+        "distance_m": 1417
+      },
+      "FixtureTcOldTownLanes|FixtureTcTramDepotGallery": {
+        "duration_sec": 512,
+        "distance_m": 682
+      },
+      "FixtureTcOldTownLanes|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 1045,
+        "distance_m": 1393
+      },
+      "FixtureTcOldTownLanes|FixtureTcSaffronRowMarket": {
+        "duration_sec": 293,
+        "distance_m": 391
+      },
+      "FixtureTcOldTownLanes|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 725,
+        "distance_m": 967
+      },
+      "FixtureTcOldTownLanes|FixtureTcHarbourDistrict": {
+        "duration_sec": 915,
+        "distance_m": 1220
+      },
+      "FixtureTcOldTownLanes|FixtureTcStBrannocChurch": {
+        "duration_sec": 203,
+        "distance_m": 270
+      },
+      "FixtureTcOldTownLanes|FixtureTcClockTowerClimb": {
+        "duration_sec": 174,
+        "distance_m": 232
+      },
+      "FixtureTcOldTownLanes|FixtureTcBluebellCeramicsStudio": {
+        "duration_sec": 1102,
+        "distance_m": 1469
+      },
+      "FixtureTcOldTownLanes|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 402,
+        "distance_m": 536
+      },
+      "FixtureTcStBrannocChurch|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 532,
+        "distance_m": 709
+      },
+      "FixtureTcStBrannocChurch|FixtureTcLanternMuseum": {
+        "duration_sec": 258,
+        "distance_m": 344
+      },
+      "FixtureTcStBrannocChurch|FixtureTcMaritimeArchive": {
+        "duration_sec": 955,
+        "distance_m": 1273
+      },
+      "FixtureTcStBrannocChurch|FixtureTcTramDepotGallery": {
+        "duration_sec": 623,
+        "distance_m": 831
+      },
+      "FixtureTcStBrannocChurch|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 1012,
+        "distance_m": 1349
+      },
+      "FixtureTcStBrannocChurch|FixtureTcSaffronRowMarket": {
+        "duration_sec": 491,
+        "distance_m": 654
+      },
+      "FixtureTcStBrannocChurch|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 935,
+        "distance_m": 1246
+      },
+      "FixtureTcStBrannocChurch|FixtureTcHarbourDistrict": {
+        "duration_sec": 950,
+        "distance_m": 1267
+      },
+      "FixtureTcStBrannocChurch|FixtureTcOldTownLanes": {
+        "duration_sec": 205,
+        "distance_m": 273
+      },
+      "FixtureTcStBrannocChurch|FixtureTcClockTowerClimb": {
+        "duration_sec": 239,
+        "distance_m": 319
+      },
+      "FixtureTcStBrannocChurch|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 424,
+        "distance_m": 565
+      },
+      "FixtureTcClockTowerClimb|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 269,
+        "distance_m": 358
+      },
+      "FixtureTcClockTowerClimb|FixtureTcLanternMuseum": {
+        "duration_sec": 281,
+        "distance_m": 375
+      },
+      "FixtureTcClockTowerClimb|FixtureTcMaritimeArchive": {
+        "duration_sec": 833,
+        "distance_m": 1110
+      },
+      "FixtureTcClockTowerClimb|FixtureTcTramDepotGallery": {
+        "duration_sec": 663,
+        "distance_m": 884
+      },
+      "FixtureTcClockTowerClimb|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 788,
+        "distance_m": 1051
+      },
+      "FixtureTcClockTowerClimb|FixtureTcSaffronRowMarket": {
+        "duration_sec": 270,
+        "distance_m": 360
+      },
+      "FixtureTcClockTowerClimb|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 654,
+        "distance_m": 872
+      },
+      "FixtureTcClockTowerClimb|FixtureTcHarbourDistrict": {
+        "duration_sec": 697,
+        "distance_m": 929
+      },
+      "FixtureTcClockTowerClimb|FixtureTcOldTownLanes": {
+        "duration_sec": 172,
+        "distance_m": 229
+      },
+      "FixtureTcClockTowerClimb|FixtureTcStBrannocChurch": {
+        "duration_sec": 239,
+        "distance_m": 318
+      },
+      "FixtureTcClockTowerClimb|FixtureTcSorrelTeaHouse": {
+        "duration_sec": 197,
+        "distance_m": 263
+      },
+      "FixtureTcBluebellCeramicsStudio|FixtureTcTramDepotGallery": {
+        "duration_sec": 624,
+        "distance_m": 832
+      },
+      "FixtureTcBluebellCeramicsStudio|FixtureTcSaffronRowMarket": {
+        "duration_sec": 1142,
+        "distance_m": 1523
+      },
+      "FixtureTcBluebellCeramicsStudio|FixtureTcOldTownLanes": {
+        "duration_sec": 1107,
+        "distance_m": 1476
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcHarbourLaneGuesthouse": {
+        "duration_sec": 92,
+        "distance_m": 122
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcLanternMuseum": {
+        "duration_sec": 335,
+        "distance_m": 447
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcMaritimeArchive": {
+        "duration_sec": 698,
+        "distance_m": 930
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcTramDepotGallery": {
+        "duration_sec": 916,
+        "distance_m": 1221
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcOldQuayFishMarket": {
+        "duration_sec": 593,
+        "distance_m": 790
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcSaffronRowMarket": {
+        "duration_sec": 345,
+        "distance_m": 460
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcMoonlightNightMarket": {
+        "duration_sec": 628,
+        "distance_m": 837
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcHarbourDistrict": {
+        "duration_sec": 464,
+        "distance_m": 619
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcOldTownLanes": {
+        "duration_sec": 388,
+        "distance_m": 517
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcStBrannocChurch": {
+        "duration_sec": 419,
+        "distance_m": 559
+      },
+      "FixtureTcSorrelTeaHouse|FixtureTcClockTowerClimb": {
+        "duration_sec": 199,
+        "distance_m": 265
+      }
+    },
+    "DRIVE": {}
+  },
+  "fallback": {
+    "speed_kmh": {
+      "WALK": 4.5,
+      "TRANSIT": 14,
+      "DRIVE": 45
+    },
+    "overhead_sec": {
+      "WALK": 0,
+      "TRANSIT": 420,
+      "DRIVE": 180
+    }
+  }
+}

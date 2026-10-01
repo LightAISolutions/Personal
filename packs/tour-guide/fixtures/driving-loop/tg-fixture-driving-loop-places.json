@@ -1,0 +1,220 @@
+[
+  {
+    "v": 1,
+    "id": "brackenford-old-mill",
+    "place_id": "FixtureDlBrackenfordOldMill",
+    "name": "Brackenford Old Mill",
+    "category": "museum",
+    "tags": [
+      "history"
+    ],
+    "status": "candidate",
+    "activity": "mill tour",
+    "priority": 2,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "brackenford-harbour-market",
+    "place_id": "FixtureDlBrackenfordHarbourMarket",
+    "name": "Brackenford Harbour Market",
+    "category": "market",
+    "tags": [
+      "food",
+      "morning"
+    ],
+    "status": "candidate",
+    "activity": "morning market",
+    "priority": 2
+  },
+  {
+    "v": 1,
+    "id": "brackenford-bakery",
+    "place_id": "FixtureDlBrackenfordBakery",
+    "name": "Brackenford Bakery",
+    "category": "cafe",
+    "tags": [
+      "food",
+      "break"
+    ],
+    "status": "candidate",
+    "activity": "coffee and buns",
+    "priority": 2
+  },
+  {
+    "v": 1,
+    "id": "heron-ridge-trail",
+    "place_id": "FixtureDlHeronRidgeTrail",
+    "name": "Heron Ridge Trail",
+    "category": "hike",
+    "tags": [
+      "hike",
+      "outdoors"
+    ],
+    "status": "candidate",
+    "activity": "ridge hike (8 km loop)",
+    "priority": 1,
+    "why_fit": "The island's best ridge walk; start before noon.",
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "cairn-point-overlook",
+    "place_id": "FixtureDlCairnPointOverlook",
+    "name": "Cairn Point Overlook",
+    "category": "viewpoint",
+    "tags": [
+      "views"
+    ],
+    "status": "candidate",
+    "activity": "cliff-top view",
+    "priority": 1,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "tollby-village",
+    "place_id": "FixtureDlTollbyVillage",
+    "name": "Tollby village",
+    "category": "neighbourhood",
+    "tags": [
+      "small town",
+      "walk"
+    ],
+    "status": "candidate",
+    "activity": "village stroll",
+    "priority": 2
+  },
+  {
+    "v": 1,
+    "id": "gullhaven-lighthouse",
+    "place_id": "FixtureDlGullhavenLighthouse",
+    "name": "Gullhaven Lighthouse",
+    "category": "museum",
+    "tags": [
+      "history",
+      "views"
+    ],
+    "status": "candidate",
+    "activity": "lighthouse climb and keeper's cottage",
+    "priority": 1,
+    "why_fit": "Closed Mondays and Thursdays: Friday morning before the drive south."
+  },
+  {
+    "v": 1,
+    "id": "gullhaven-fish-shack",
+    "place_id": "FixtureDlGullhavenFishShack",
+    "name": "Gullhaven Fish Shack",
+    "category": "restaurant",
+    "tags": [
+      "food"
+    ],
+    "status": "candidate",
+    "activity": "seafood lunch",
+    "priority": 2,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "seal-cove",
+    "place_id": "FixtureDlSealCove",
+    "name": "Seal Cove",
+    "category": "park",
+    "tags": [
+      "wildlife",
+      "beach"
+    ],
+    "status": "candidate",
+    "activity": "beach and seal colony",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "wrenwick-village",
+    "place_id": "FixtureDlWrenwickVillage",
+    "name": "Wrenwick village",
+    "category": "neighbourhood",
+    "tags": [
+      "small town",
+      "walk"
+    ],
+    "status": "candidate",
+    "activity": "harbour village stroll",
+    "priority": 2
+  },
+  {
+    "v": 1,
+    "id": "marrow-bay-abbey",
+    "place_id": "FixtureDlMarrowBayAbbey",
+    "name": "Marrow Bay Abbey",
+    "category": "church",
+    "tags": [
+      "history",
+      "architecture"
+    ],
+    "status": "candidate",
+    "activity": "abbey ruins and cloister",
+    "priority": 2
+  },
+  {
+    "v": 1,
+    "id": "marrow-bay-gallery",
+    "place_id": "FixtureDlMarrowBayGallery",
+    "name": "Marrow Bay Gallery",
+    "category": "museum",
+    "tags": [
+      "art"
+    ],
+    "status": "candidate",
+    "activity": "island painters",
+    "priority": 2,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "blackwater-falls",
+    "place_id": "FixtureDlBlackwaterFalls",
+    "name": "Blackwater Falls Walk",
+    "category": "hike",
+    "tags": [
+      "hike",
+      "waterfall"
+    ],
+    "status": "candidate",
+    "activity": "waterfall walk (3 km)",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "kestrel-farm-shop",
+    "place_id": "FixtureDlKestrelFarmShop",
+    "name": "Kestrel Farm Shop",
+    "category": "shop",
+    "tags": [
+      "food",
+      "local"
+    ],
+    "status": "candidate",
+    "activity": "cheese and cider tasting",
+    "priority": 2,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "northcape-sea-stacks",
+    "place_id": "FixtureDlNorthcapeSeaStacks",
+    "name": "Northcape Sea Stacks",
+    "category": "viewpoint",
+    "tags": [
+      "views",
+      "remote"
+    ],
+    "status": "candidate",
+    "activity": "sea stacks at the north cape",
+    "priority": 3,
+    "why_fit": "Spectacular but about 160–185 km north of the loop: a day trip of its own.",
+    "indoor": false
+  }
+]

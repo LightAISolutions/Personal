@@ -1,0 +1,1070 @@
+{
+  "v": 1,
+  "modes": {
+    "TRANSIT": {},
+    "WALK": {
+      "FixtureDlBrackenfordInn|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 746,
+        "distance_m": 994
+      },
+      "FixtureDlBrackenfordInn|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 365,
+        "distance_m": 486
+      },
+      "FixtureDlBrackenfordInn|FixtureDlBrackenfordBakery": {
+        "duration_sec": 178,
+        "distance_m": 237
+      },
+      "FixtureDlGullhavenLodge|FixtureDlGullhavenFishShack": {
+        "duration_sec": 522,
+        "distance_m": 696
+      },
+      "FixtureDlMarrowBayHotel|FixtureDlMarrowBayAbbey": {
+        "duration_sec": 907,
+        "distance_m": 1209
+      },
+      "FixtureDlMarrowBayHotel|FixtureDlMarrowBayGallery": {
+        "duration_sec": 720,
+        "distance_m": 960
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlBrackenfordInn": {
+        "duration_sec": 746,
+        "distance_m": 995
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 1006,
+        "distance_m": 1341
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlBrackenfordBakery": {
+        "duration_sec": 524,
+        "distance_m": 698
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlBrackenfordInn": {
+        "duration_sec": 365,
+        "distance_m": 486
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 1043,
+        "distance_m": 1390
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlBrackenfordBakery": {
+        "duration_sec": 516,
+        "distance_m": 688
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlBrackenfordInn": {
+        "duration_sec": 168,
+        "distance_m": 224
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 570,
+        "distance_m": 760
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 539,
+        "distance_m": 718
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlGullhavenLodge": {
+        "duration_sec": 528,
+        "distance_m": 704
+      },
+      "FixtureDlMarrowBayAbbey|FixtureDlMarrowBayHotel": {
+        "duration_sec": 936,
+        "distance_m": 1248
+      },
+      "FixtureDlMarrowBayGallery|FixtureDlMarrowBayHotel": {
+        "duration_sec": 688,
+        "distance_m": 917
+      }
+    },
+    "DRIVE": {
+      "FixtureDlBrackenfordInn|FixtureDlGullhavenLodge": {
+        "duration_sec": 3285,
+        "distance_m": 46207
+      },
+      "FixtureDlBrackenfordInn|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 241,
+        "distance_m": 1077
+      },
+      "FixtureDlBrackenfordInn|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 195,
+        "distance_m": 526
+      },
+      "FixtureDlBrackenfordInn|FixtureDlBrackenfordBakery": {
+        "duration_sec": 181,
+        "distance_m": 257
+      },
+      "FixtureDlBrackenfordInn|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 1126,
+        "distance_m": 14470
+      },
+      "FixtureDlBrackenfordInn|FixtureDlCairnPointOverlook": {
+        "duration_sec": 2330,
+        "distance_m": 31345
+      },
+      "FixtureDlBrackenfordInn|FixtureDlTollbyVillage": {
+        "duration_sec": 2445,
+        "distance_m": 32226
+      },
+      "FixtureDlBrackenfordInn|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 3363,
+        "distance_m": 47644
+      },
+      "FixtureDlBrackenfordInn|FixtureDlGullhavenFishShack": {
+        "duration_sec": 3133,
+        "distance_m": 44895
+      },
+      "FixtureDlBrackenfordInn|FixtureDlSealCove": {
+        "duration_sec": 4119,
+        "distance_m": 55825
+      },
+      "FixtureDlBrackenfordInn|FixtureDlWrenwickVillage": {
+        "duration_sec": 4110,
+        "distance_m": 57470
+      },
+      "FixtureDlBrackenfordInn|FixtureDlBlackwaterFalls": {
+        "duration_sec": 2705,
+        "distance_m": 35474
+      },
+      "FixtureDlBrackenfordInn|FixtureDlKestrelFarmShop": {
+        "duration_sec": 1288,
+        "distance_m": 16116
+      },
+      "FixtureDlGullhavenLodge|FixtureDlBrackenfordInn": {
+        "duration_sec": 3246,
+        "distance_m": 45925
+      },
+      "FixtureDlGullhavenLodge|FixtureDlMarrowBayHotel": {
+        "duration_sec": 3566,
+        "distance_m": 49411
+      },
+      "FixtureDlGullhavenLodge|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 3219,
+        "distance_m": 45224
+      },
+      "FixtureDlGullhavenLodge|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 3157,
+        "distance_m": 45521
+      },
+      "FixtureDlGullhavenLodge|FixtureDlBrackenfordBakery": {
+        "duration_sec": 3615,
+        "distance_m": 48397
+      },
+      "FixtureDlGullhavenLodge|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 2463,
+        "distance_m": 32969
+      },
+      "FixtureDlGullhavenLodge|FixtureDlCairnPointOverlook": {
+        "duration_sec": 1431,
+        "distance_m": 17166
+      },
+      "FixtureDlGullhavenLodge|FixtureDlTollbyVillage": {
+        "duration_sec": 1268,
+        "distance_m": 16712
+      },
+      "FixtureDlGullhavenLodge|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 274,
+        "distance_m": 1771
+      },
+      "FixtureDlGullhavenLodge|FixtureDlGullhavenFishShack": {
+        "duration_sec": 193,
+        "distance_m": 754
+      },
+      "FixtureDlGullhavenLodge|FixtureDlSealCove": {
+        "duration_sec": 1522,
+        "distance_m": 20345
+      },
+      "FixtureDlGullhavenLodge|FixtureDlWrenwickVillage": {
+        "duration_sec": 2515,
+        "distance_m": 33081
+      },
+      "FixtureDlGullhavenLodge|FixtureDlMarrowBayAbbey": {
+        "duration_sec": 3496,
+        "distance_m": 48267
+      },
+      "FixtureDlGullhavenLodge|FixtureDlMarrowBayGallery": {
+        "duration_sec": 4157,
+        "distance_m": 53914
+      },
+      "FixtureDlGullhavenLodge|FixtureDlBlackwaterFalls": {
+        "duration_sec": 3272,
+        "distance_m": 43471
+      },
+      "FixtureDlGullhavenLodge|FixtureDlKestrelFarmShop": {
+        "duration_sec": 2805,
+        "distance_m": 39731
+      },
+      "FixtureDlMarrowBayHotel|FixtureDlGullhavenLodge": {
+        "duration_sec": 3947,
+        "distance_m": 52044
+      },
+      "FixtureDlMarrowBayHotel|FixtureDlCairnPointOverlook": {
+        "duration_sec": 3981,
+        "distance_m": 53931
+      },
+      "FixtureDlMarrowBayHotel|FixtureDlTollbyVillage": {
+        "duration_sec": 3229,
+        "distance_m": 44928
+      },
+      "FixtureDlMarrowBayHotel|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 3714,
+        "distance_m": 50613
+      },
+      "FixtureDlMarrowBayHotel|FixtureDlGullhavenFishShack": {
+        "duration_sec": 3722,
+        "distance_m": 50838
+      },
+      "FixtureDlMarrowBayHotel|FixtureDlSealCove": {
+        "duration_sec": 2322,
+        "distance_m": 30447
+      },
+      "FixtureDlMarrowBayHotel|FixtureDlWrenwickVillage": {
+        "duration_sec": 1366,
+        "distance_m": 17726
+      },
+      "FixtureDlMarrowBayHotel|FixtureDlMarrowBayAbbey": {
+        "duration_sec": 246,
+        "distance_m": 1310
+      },
+      "FixtureDlMarrowBayHotel|FixtureDlMarrowBayGallery": {
+        "duration_sec": 237,
+        "distance_m": 1040
+      },
+      "FixtureDlMarrowBayHotel|FixtureDlBlackwaterFalls": {
+        "duration_sec": 2795,
+        "distance_m": 35315
+      },
+      "FixtureDlMarrowBayHotel|FixtureDlKestrelFarmShop": {
+        "duration_sec": 3446,
+        "distance_m": 48887
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlBrackenfordInn": {
+        "duration_sec": 241,
+        "distance_m": 1078
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlGullhavenLodge": {
+        "duration_sec": 3628,
+        "distance_m": 48082
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 241,
+        "distance_m": 1452
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlBrackenfordBakery": {
+        "duration_sec": 200,
+        "distance_m": 756
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 1254,
+        "distance_m": 14771
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlCairnPointOverlook": {
+        "duration_sec": 2196,
+        "distance_m": 29894
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlTollbyVillage": {
+        "duration_sec": 2346,
+        "distance_m": 31028
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 3460,
+        "distance_m": 47834
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlGullhavenFishShack": {
+        "duration_sec": 3174,
+        "distance_m": 44699
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlSealCove": {
+        "duration_sec": 3756,
+        "distance_m": 52793
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlWrenwickVillage": {
+        "duration_sec": 3748,
+        "distance_m": 54426
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlBlackwaterFalls": {
+        "duration_sec": 2288,
+        "distance_m": 32291
+      },
+      "FixtureDlBrackenfordOldMill|FixtureDlKestrelFarmShop": {
+        "duration_sec": 1345,
+        "distance_m": 16203
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlBrackenfordInn": {
+        "duration_sec": 195,
+        "distance_m": 526
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlGullhavenLodge": {
+        "duration_sec": 3157,
+        "distance_m": 45521
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 254,
+        "distance_m": 1505
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlBrackenfordBakery": {
+        "duration_sec": 203,
+        "distance_m": 746
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 1285,
+        "distance_m": 15803
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlCairnPointOverlook": {
+        "duration_sec": 2378,
+        "distance_m": 31936
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlTollbyVillage": {
+        "duration_sec": 2279,
+        "distance_m": 31337
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 3445,
+        "distance_m": 48490
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlGullhavenFishShack": {
+        "duration_sec": 3557,
+        "distance_m": 48173
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlSealCove": {
+        "duration_sec": 3820,
+        "distance_m": 53966
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlWrenwickVillage": {
+        "duration_sec": 4648,
+        "distance_m": 61418
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlBlackwaterFalls": {
+        "duration_sec": 2823,
+        "distance_m": 36416
+      },
+      "FixtureDlBrackenfordHarbourMarket|FixtureDlKestrelFarmShop": {
+        "duration_sec": 1447,
+        "distance_m": 17313
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlBrackenfordInn": {
+        "duration_sec": 170,
+        "distance_m": 242
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlGullhavenLodge": {
+        "duration_sec": 3479,
+        "distance_m": 47460
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 223,
+        "distance_m": 824
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 214,
+        "distance_m": 778
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 1335,
+        "distance_m": 15711
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlCairnPointOverlook": {
+        "duration_sec": 2131,
+        "distance_m": 29814
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlTollbyVillage": {
+        "duration_sec": 2558,
+        "distance_m": 32865
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 3982,
+        "distance_m": 51812
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlGullhavenFishShack": {
+        "duration_sec": 3375,
+        "distance_m": 46520
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlSealCove": {
+        "duration_sec": 3990,
+        "distance_m": 54821
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlWrenwickVillage": {
+        "duration_sec": 4131,
+        "distance_m": 57520
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlBlackwaterFalls": {
+        "duration_sec": 2283,
+        "distance_m": 32453
+      },
+      "FixtureDlBrackenfordBakery|FixtureDlKestrelFarmShop": {
+        "duration_sec": 1181,
+        "distance_m": 15334
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlBrackenfordInn": {
+        "duration_sec": 1307,
+        "distance_m": 15669
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlGullhavenLodge": {
+        "duration_sec": 2788,
+        "distance_m": 35144
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 1246,
+        "distance_m": 14724
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 1230,
+        "distance_m": 15439
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlBrackenfordBakery": {
+        "duration_sec": 1085,
+        "distance_m": 14062
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlCairnPointOverlook": {
+        "duration_sec": 1195,
+        "distance_m": 15844
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlTollbyVillage": {
+        "duration_sec": 1512,
+        "distance_m": 18829
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 2829,
+        "distance_m": 36370
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlGullhavenFishShack": {
+        "duration_sec": 2329,
+        "distance_m": 31800
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlSealCove": {
+        "duration_sec": 2924,
+        "distance_m": 41265
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlWrenwickVillage": {
+        "duration_sec": 3300,
+        "distance_m": 46705
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlMarrowBayAbbey": {
+        "duration_sec": 4564,
+        "distance_m": 60734
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlBlackwaterFalls": {
+        "duration_sec": 2156,
+        "distance_m": 30447
+      },
+      "FixtureDlHeronRidgeTrail|FixtureDlKestrelFarmShop": {
+        "duration_sec": 1290,
+        "distance_m": 16740
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlBrackenfordInn": {
+        "duration_sec": 2106,
+        "distance_m": 29747
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlGullhavenLodge": {
+        "duration_sec": 1441,
+        "distance_m": 17230
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlMarrowBayHotel": {
+        "duration_sec": 3930,
+        "distance_m": 53573
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 2142,
+        "distance_m": 29507
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 2195,
+        "distance_m": 30643
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlBrackenfordBakery": {
+        "duration_sec": 2610,
+        "distance_m": 33103
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 1257,
+        "distance_m": 16278
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlTollbyVillage": {
+        "duration_sec": 668,
+        "distance_m": 7532
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 1393,
+        "distance_m": 17867
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlGullhavenFishShack": {
+        "duration_sec": 1305,
+        "distance_m": 16085
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlSealCove": {
+        "duration_sec": 2441,
+        "distance_m": 31198
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlWrenwickVillage": {
+        "duration_sec": 2843,
+        "distance_m": 38364
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlMarrowBayAbbey": {
+        "duration_sec": 3712,
+        "distance_m": 51403
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlMarrowBayGallery": {
+        "duration_sec": 3670,
+        "distance_m": 52219
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlBlackwaterFalls": {
+        "duration_sec": 2789,
+        "distance_m": 36100
+      },
+      "FixtureDlCairnPointOverlook|FixtureDlKestrelFarmShop": {
+        "duration_sec": 2172,
+        "distance_m": 28321
+      },
+      "FixtureDlTollbyVillage|FixtureDlBrackenfordInn": {
+        "duration_sec": 2442,
+        "distance_m": 32207
+      },
+      "FixtureDlTollbyVillage|FixtureDlGullhavenLodge": {
+        "duration_sec": 1539,
+        "distance_m": 18510
+      },
+      "FixtureDlTollbyVillage|FixtureDlMarrowBayHotel": {
+        "duration_sec": 3273,
+        "distance_m": 45245
+      },
+      "FixtureDlTollbyVillage|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 2084,
+        "distance_m": 29186
+      },
+      "FixtureDlTollbyVillage|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 2327,
+        "distance_m": 31675
+      },
+      "FixtureDlTollbyVillage|FixtureDlBrackenfordBakery": {
+        "duration_sec": 2135,
+        "distance_m": 29930
+      },
+      "FixtureDlTollbyVillage|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 1446,
+        "distance_m": 18391
+      },
+      "FixtureDlTollbyVillage|FixtureDlCairnPointOverlook": {
+        "duration_sec": 691,
+        "distance_m": 7676
+      },
+      "FixtureDlTollbyVillage|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 1636,
+        "distance_m": 20097
+      },
+      "FixtureDlTollbyVillage|FixtureDlGullhavenFishShack": {
+        "duration_sec": 1510,
+        "distance_m": 18241
+      },
+      "FixtureDlTollbyVillage|FixtureDlSealCove": {
+        "duration_sec": 2124,
+        "distance_m": 26369
+      },
+      "FixtureDlTollbyVillage|FixtureDlWrenwickVillage": {
+        "duration_sec": 2427,
+        "distance_m": 32130
+      },
+      "FixtureDlTollbyVillage|FixtureDlMarrowBayAbbey": {
+        "duration_sec": 2901,
+        "distance_m": 41936
+      },
+      "FixtureDlTollbyVillage|FixtureDlMarrowBayGallery": {
+        "duration_sec": 3311,
+        "distance_m": 46007
+      },
+      "FixtureDlTollbyVillage|FixtureDlBlackwaterFalls": {
+        "duration_sec": 2074,
+        "distance_m": 27592
+      },
+      "FixtureDlTollbyVillage|FixtureDlKestrelFarmShop": {
+        "duration_sec": 1989,
+        "distance_m": 25124
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlBrackenfordInn": {
+        "duration_sec": 3812,
+        "distance_m": 50800
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlGullhavenLodge": {
+        "duration_sec": 267,
+        "distance_m": 1744
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlMarrowBayHotel": {
+        "duration_sec": 3638,
+        "distance_m": 50086
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 4010,
+        "distance_m": 51576
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 3897,
+        "distance_m": 51639
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlBrackenfordBakery": {
+        "duration_sec": 3856,
+        "distance_m": 50966
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 2863,
+        "distance_m": 36597
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlCairnPointOverlook": {
+        "duration_sec": 1544,
+        "distance_m": 18859
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlTollbyVillage": {
+        "duration_sec": 1501,
+        "distance_m": 19211
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlGullhavenFishShack": {
+        "duration_sec": 298,
+        "distance_m": 2202
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlSealCove": {
+        "duration_sec": 1697,
+        "distance_m": 21513
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlWrenwickVillage": {
+        "duration_sec": 2225,
+        "distance_m": 31131
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlMarrowBayAbbey": {
+        "duration_sec": 4068,
+        "distance_m": 52325
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlMarrowBayGallery": {
+        "duration_sec": 3488,
+        "distance_m": 49454
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlBlackwaterFalls": {
+        "duration_sec": 3498,
+        "distance_m": 45733
+      },
+      "FixtureDlGullhavenLighthouse|FixtureDlKestrelFarmShop": {
+        "duration_sec": 3578,
+        "distance_m": 45964
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlBrackenfordInn": {
+        "duration_sec": 3481,
+        "distance_m": 47379
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlGullhavenLodge": {
+        "duration_sec": 196,
+        "distance_m": 762
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlMarrowBayHotel": {
+        "duration_sec": 3719,
+        "distance_m": 50818
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 3414,
+        "distance_m": 46399
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 3779,
+        "distance_m": 49683
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlBrackenfordBakery": {
+        "duration_sec": 3475,
+        "distance_m": 47217
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 2681,
+        "distance_m": 34194
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlCairnPointOverlook": {
+        "duration_sec": 1251,
+        "distance_m": 15729
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlTollbyVillage": {
+        "duration_sec": 1262,
+        "distance_m": 16591
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 327,
+        "distance_m": 2342
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlSealCove": {
+        "duration_sec": 1814,
+        "distance_m": 22708
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlWrenwickVillage": {
+        "duration_sec": 2481,
+        "distance_m": 33207
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlMarrowBayAbbey": {
+        "duration_sec": 3559,
+        "distance_m": 49039
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlMarrowBayGallery": {
+        "duration_sec": 3651,
+        "distance_m": 50794
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlBlackwaterFalls": {
+        "duration_sec": 3420,
+        "distance_m": 44568
+      },
+      "FixtureDlGullhavenFishShack|FixtureDlKestrelFarmShop": {
+        "duration_sec": 3214,
+        "distance_m": 42515
+      },
+      "FixtureDlSealCove|FixtureDlBrackenfordInn": {
+        "duration_sec": 3957,
+        "distance_m": 54694
+      },
+      "FixtureDlSealCove|FixtureDlGullhavenLodge": {
+        "duration_sec": 1445,
+        "distance_m": 19795
+      },
+      "FixtureDlSealCove|FixtureDlMarrowBayHotel": {
+        "duration_sec": 2397,
+        "distance_m": 30956
+      },
+      "FixtureDlSealCove|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 3693,
+        "distance_m": 52343
+      },
+      "FixtureDlSealCove|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 4524,
+        "distance_m": 58819
+      },
+      "FixtureDlSealCove|FixtureDlBrackenfordBakery": {
+        "duration_sec": 4126,
+        "distance_m": 55764
+      },
+      "FixtureDlSealCove|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 2947,
+        "distance_m": 41426
+      },
+      "FixtureDlSealCove|FixtureDlCairnPointOverlook": {
+        "duration_sec": 2365,
+        "distance_m": 30691
+      },
+      "FixtureDlSealCove|FixtureDlTollbyVillage": {
+        "duration_sec": 1887,
+        "distance_m": 24794
+      },
+      "FixtureDlSealCove|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 1631,
+        "distance_m": 21076
+      },
+      "FixtureDlSealCove|FixtureDlGullhavenFishShack": {
+        "duration_sec": 1631,
+        "distance_m": 21483
+      },
+      "FixtureDlSealCove|FixtureDlWrenwickVillage": {
+        "duration_sec": 953,
+        "distance_m": 11679
+      },
+      "FixtureDlSealCove|FixtureDlMarrowBayAbbey": {
+        "duration_sec": 2434,
+        "distance_m": 30515
+      },
+      "FixtureDlSealCove|FixtureDlMarrowBayGallery": {
+        "duration_sec": 2267,
+        "distance_m": 30493
+      },
+      "FixtureDlSealCove|FixtureDlBlackwaterFalls": {
+        "duration_sec": 2707,
+        "distance_m": 35559
+      },
+      "FixtureDlSealCove|FixtureDlKestrelFarmShop": {
+        "duration_sec": 3205,
+        "distance_m": 43380
+      },
+      "FixtureDlWrenwickVillage|FixtureDlBrackenfordInn": {
+        "duration_sec": 3860,
+        "distance_m": 55658
+      },
+      "FixtureDlWrenwickVillage|FixtureDlGullhavenLodge": {
+        "duration_sec": 2427,
+        "distance_m": 32478
+      },
+      "FixtureDlWrenwickVillage|FixtureDlMarrowBayHotel": {
+        "duration_sec": 1554,
+        "distance_m": 18974
+      },
+      "FixtureDlWrenwickVillage|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 4551,
+        "distance_m": 60081
+      },
+      "FixtureDlWrenwickVillage|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 3891,
+        "distance_m": 56102
+      },
+      "FixtureDlWrenwickVillage|FixtureDlBrackenfordBakery": {
+        "duration_sec": 4406,
+        "distance_m": 59442
+      },
+      "FixtureDlWrenwickVillage|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 3491,
+        "distance_m": 48074
+      },
+      "FixtureDlWrenwickVillage|FixtureDlCairnPointOverlook": {
+        "duration_sec": 2604,
+        "distance_m": 36675
+      },
+      "FixtureDlWrenwickVillage|FixtureDlTollbyVillage": {
+        "duration_sec": 2316,
+        "distance_m": 31363
+      },
+      "FixtureDlWrenwickVillage|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 2354,
+        "distance_m": 32047
+      },
+      "FixtureDlWrenwickVillage|FixtureDlGullhavenFishShack": {
+        "duration_sec": 2586,
+        "distance_m": 33922
+      },
+      "FixtureDlWrenwickVillage|FixtureDlSealCove": {
+        "duration_sec": 908,
+        "distance_m": 11380
+      },
+      "FixtureDlWrenwickVillage|FixtureDlMarrowBayAbbey": {
+        "duration_sec": 1232,
+        "distance_m": 16159
+      },
+      "FixtureDlWrenwickVillage|FixtureDlMarrowBayGallery": {
+        "duration_sec": 1418,
+        "distance_m": 18501
+      },
+      "FixtureDlWrenwickVillage|FixtureDlBlackwaterFalls": {
+        "duration_sec": 2073,
+        "distance_m": 29329
+      },
+      "FixtureDlWrenwickVillage|FixtureDlKestrelFarmShop": {
+        "duration_sec": 3351,
+        "distance_m": 44992
+      },
+      "FixtureDlMarrowBayAbbey|FixtureDlGullhavenLodge": {
+        "duration_sec": 3380,
+        "distance_m": 47438
+      },
+      "FixtureDlMarrowBayAbbey|FixtureDlMarrowBayHotel": {
+        "duration_sec": 257,
+        "distance_m": 1352
+      },
+      "FixtureDlMarrowBayAbbey|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 4097,
+        "distance_m": 57489
+      },
+      "FixtureDlMarrowBayAbbey|FixtureDlCairnPointOverlook": {
+        "duration_sec": 4238,
+        "distance_m": 54998
+      },
+      "FixtureDlMarrowBayAbbey|FixtureDlTollbyVillage": {
+        "duration_sec": 3019,
+        "distance_m": 42801
+      },
+      "FixtureDlMarrowBayAbbey|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 3656,
+        "distance_m": 49550
+      },
+      "FixtureDlMarrowBayAbbey|FixtureDlGullhavenFishShack": {
+        "duration_sec": 3562,
+        "distance_m": 49059
+      },
+      "FixtureDlMarrowBayAbbey|FixtureDlSealCove": {
+        "duration_sec": 2411,
+        "distance_m": 30367
+      },
+      "FixtureDlMarrowBayAbbey|FixtureDlWrenwickVillage": {
+        "duration_sec": 1327,
+        "distance_m": 16811
+      },
+      "FixtureDlMarrowBayAbbey|FixtureDlMarrowBayGallery": {
+        "duration_sec": 327,
+        "distance_m": 2328
+      },
+      "FixtureDlMarrowBayAbbey|FixtureDlBlackwaterFalls": {
+        "duration_sec": 2566,
+        "distance_m": 33381
+      },
+      "FixtureDlMarrowBayAbbey|FixtureDlKestrelFarmShop": {
+        "duration_sec": 4098,
+        "distance_m": 52910
+      },
+      "FixtureDlMarrowBayGallery|FixtureDlGullhavenLodge": {
+        "duration_sec": 3655,
+        "distance_m": 50490
+      },
+      "FixtureDlMarrowBayGallery|FixtureDlMarrowBayHotel": {
+        "duration_sec": 223,
+        "distance_m": 993
+      },
+      "FixtureDlMarrowBayGallery|FixtureDlCairnPointOverlook": {
+        "duration_sec": 3831,
+        "distance_m": 53376
+      },
+      "FixtureDlMarrowBayGallery|FixtureDlTollbyVillage": {
+        "duration_sec": 3669,
+        "distance_m": 48482
+      },
+      "FixtureDlMarrowBayGallery|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 3495,
+        "distance_m": 49505
+      },
+      "FixtureDlMarrowBayGallery|FixtureDlGullhavenFishShack": {
+        "duration_sec": 3492,
+        "distance_m": 49652
+      },
+      "FixtureDlMarrowBayGallery|FixtureDlSealCove": {
+        "duration_sec": 2359,
+        "distance_m": 31125
+      },
+      "FixtureDlMarrowBayGallery|FixtureDlWrenwickVillage": {
+        "duration_sec": 1318,
+        "distance_m": 17795
+      },
+      "FixtureDlMarrowBayGallery|FixtureDlMarrowBayAbbey": {
+        "duration_sec": 300,
+        "distance_m": 2199
+      },
+      "FixtureDlMarrowBayGallery|FixtureDlBlackwaterFalls": {
+        "duration_sec": 2477,
+        "distance_m": 33617
+      },
+      "FixtureDlMarrowBayGallery|FixtureDlKestrelFarmShop": {
+        "duration_sec": 3578,
+        "distance_m": 50292
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlBrackenfordInn": {
+        "duration_sec": 2742,
+        "distance_m": 35727
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlGullhavenLodge": {
+        "duration_sec": 2847,
+        "distance_m": 40482
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlMarrowBayHotel": {
+        "duration_sec": 2498,
+        "distance_m": 33328
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 2433,
+        "distance_m": 33335
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 2395,
+        "distance_m": 33459
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlBrackenfordBakery": {
+        "duration_sec": 2676,
+        "distance_m": 35226
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 2460,
+        "distance_m": 32597
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlCairnPointOverlook": {
+        "duration_sec": 2745,
+        "distance_m": 35805
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlTollbyVillage": {
+        "duration_sec": 2184,
+        "distance_m": 28337
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 3642,
+        "distance_m": 46686
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlGullhavenFishShack": {
+        "duration_sec": 2883,
+        "distance_m": 40833
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlSealCove": {
+        "duration_sec": 2906,
+        "distance_m": 36883
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlWrenwickVillage": {
+        "duration_sec": 2412,
+        "distance_m": 31723
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlMarrowBayAbbey": {
+        "duration_sec": 2228,
+        "distance_m": 31037
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlMarrowBayGallery": {
+        "duration_sec": 2712,
+        "distance_m": 35224
+      },
+      "FixtureDlBlackwaterFalls|FixtureDlKestrelFarmShop": {
+        "duration_sec": 1584,
+        "distance_m": 19435
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlBrackenfordInn": {
+        "duration_sec": 1377,
+        "distance_m": 16696
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlGullhavenLodge": {
+        "duration_sec": 2972,
+        "distance_m": 40931
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlMarrowBayHotel": {
+        "duration_sec": 3332,
+        "distance_m": 48054
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlBrackenfordOldMill": {
+        "duration_sec": 1299,
+        "distance_m": 15906
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlBrackenfordHarbourMarket": {
+        "duration_sec": 1397,
+        "distance_m": 16994
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlBrackenfordBakery": {
+        "duration_sec": 1275,
+        "distance_m": 15973
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlHeronRidgeTrail": {
+        "duration_sec": 1229,
+        "distance_m": 16315
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlCairnPointOverlook": {
+        "duration_sec": 2265,
+        "distance_m": 28943
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlTollbyVillage": {
+        "duration_sec": 1882,
+        "distance_m": 24408
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlGullhavenLighthouse": {
+        "duration_sec": 2978,
+        "distance_m": 41838
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlGullhavenFishShack": {
+        "duration_sec": 2872,
+        "distance_m": 40133
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlSealCove": {
+        "duration_sec": 2972,
+        "distance_m": 41732
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlWrenwickVillage": {
+        "duration_sec": 3532,
+        "distance_m": 46220
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlMarrowBayAbbey": {
+        "duration_sec": 3959,
+        "distance_m": 51984
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlMarrowBayGallery": {
+        "duration_sec": 3909,
+        "distance_m": 52609
+      },
+      "FixtureDlKestrelFarmShop|FixtureDlBlackwaterFalls": {
+        "duration_sec": 1417,
+        "distance_m": 18326
+      }
+    }
+  },
+  "fallback": {
+    "speed_kmh": {
+      "WALK": 4.5,
+      "TRANSIT": 14,
+      "DRIVE": 45
+    },
+    "overhead_sec": {
+      "WALK": 0,
+      "TRANSIT": 420,
+      "DRIVE": 180
+    }
+  }
+}
