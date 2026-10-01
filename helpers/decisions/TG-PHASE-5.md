@@ -18,7 +18,7 @@
 ### 1.3 Storage API (WP-5b, `21_sheets.js`; everyone else calls these, never `storeAppend` on a pack tab)
 | Function | Returns / does |
 |---|---|
-| `tgTripGet(slug)` · `tgTripList()` · `tgTripUpsert(obj)` · `tgTripCurrent()` | Trip row objects (`Trips` columns); upsert by `slug`; current = `Settings.tg_current_trip` if that row exists and is not `done`, else the trip whose `start ≤ today ≤ end`, else the next upcoming, else null |
+| `tgTripGet(slug)` · `tgTripList()` · `tgTripUpsert(obj)` · `tgTripCurrent()` | Trip row objects (`Trips` columns: the prompt's list plus `lodging` (JSON `{ text, nights? }`, set by `/lodging` — WP-4d R1) and `review_offered_at`); upsert by `slug`; current = `Settings.tg_current_trip` if that row exists and is not `done`, else the trip whose `start ≤ today ≤ end`, else the next upcoming, else null |
 | `tgTripSetStatus(slug, status)` | status ∈ `intake · researched · choosing · planned · delivered · done` |
 | `tgDigestStore(payload)` · `tgDigestDays(slug)` · `tgDigestDay(slug, n \| 'YYYY-MM-DD')` | stores a `plan_digest` (Trips + `DayPlans` rows, split per day under the 50 000-char cell limit, + `Later`); days come back `{ date, n, theme, stops[], legs[], warnings[] }` |
 | `tgLaterList(slug)` · `tgLaterAdd(slug, { place_slug, name, reason })` | `Later` rows |
@@ -41,3 +41,6 @@ WP-5a: `/interview`, `/profile`, `/plan`, `/seed`, `/trip`, `/today`, `/day`, `/
 
 ### 1.7 Building in parallel
 Each WP works in `../wt-5<x>` on `wp-5<x>`. WP-5a and WP-5c may `git merge wp-5b` into their worktree once `helpers/status/WP-5b.md` says the storage API is done (5b lands its storage API first); until then they write code against §1.3 and test what does not need it. WP-5c writes the end-to-end tests last, after merging `wp-5a` and `wp-5b`. A WP never edits another WP's files; a need goes in its status file.
+
+### 1.8 Prefs review decisions (`pf`)
+The prefs kit reads owner decisions as a `prefs_decisions` document (`helpers/kits/prefs/README.md`: `{ v: 1, kind: "prefs_decisions", source: "owner", via: "telegram", decisions: [{ cid, decision: confirm | edit | reject, value?, decided_at }] }`), but the private repo routes only kind `prefs` to `prefs-build`. Contract: when a review batch is fully decided, WP-5b opens kind **`prefs`** with **`payload.decisions`** = that document (routine `PREFS`); the brain side (a `prefs-build` step that passes `payload.decisions` to the kit's `apply`) is added in the private repo by this phase's coordinator or carried to Phase 6.
