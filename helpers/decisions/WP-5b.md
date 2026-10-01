@@ -1,0 +1,16 @@
+# WP-5b — Envelope handlers, sheets, snapshot: decisions
+
+Defaults chosen where the plan, SPEC, pack README and the Phase 5 contract (`helpers/decisions/TG-PHASE-5.md` §1) are silent.
+
+1. **DayPlans `part` column.** One row per digest day. When a day's `stops_json`, `legs_json` or `warnings_json` would exceed the 50 000-character cell limit it is cut into 45 000-character chunks: part 0 carries date, theme and the first chunk of each column; parts 1, 2, … carry the rest under the same slug and date. `tgDigestDays` joins the parts in order.
+2. **A digest is a whole plan.** `tgDigestStore` replaces every DayPlans row of the trip: plan-days rebuilds a replan from the prior Plan JSON and emits the whole digest.
+3. **Later rows the owner added survive a new digest.** The trip's Later rows are replaced by the digest's `later`, except rows with reason `owner_choice` whose place is neither in that list nor scheduled in a day (added by `/places` ➕ since the build).
+4. **Trip status from envelopes.** `tgDigestStore` sets `planned` unless the trip is `done`, and fills `start`/`end` from the first and last day only when they are blank. A new trip starts as `intake`.
+5. **Short shortlist run key.** The `Shortlist.run` column holds a key that fits callback data: the `run_id` itself when it is ≤ 12 chars of `[A-Za-z0-9_.-]` (the brain's ids look like `f20270430002`), else `r` + 11 hex of `sha1(trip|run_id)`. A re-delivered round (same trip, run, round) replaces its own rows.
+6. **Date cells.** A real Sheet may turn `2027-05-12` into a Date cell; the storage API reads date columns back as `YYYY-MM-DD` in the owner's time zone.
+7. **Places: own data only.** `tgPlacesUpsert` keeps only the digest's own keys (slug, name, area, category, tags, status, last_trip, last_researched, last_verified, note_line, maps_url, history_summary); any other key — the Google list `TG_GOOGLE_FIELDS` (hours, rating, review count, website, address, business status, price level, phone, types, …) or anything unknown — is stripped and reported in `refused`, never stored. The envelope validator refuses such a digest outright before it gets here. Tags are stored as a JSON array; `history_summary` as `history_json = {"summary": …}`.
+8. **Places upsert classification.** `new`; `changed` when name, destination, area, category, tags, status, last trip, note line or link moved; `verified` when only `last_researched`, `last_verified` or the history summary moved; `same` otherwise (row not rewritten).
+9. **Places search.** Every word of the query must appear (case- and accent-insensitive) in the name, area, tags or slug words. Order: the destination (`opts.destination`, else the current trip's destination slugified) first, then names starting with the query, names containing it, the rest, then by name. Default limit 8, clamped to 1–25.
+10. **Snapshot `tour_guide`.** Trips (open first, at most 20: slug, destination, start, end, status, build_id) and `trips_total`; `choice_round` = the latest stored shortlist round of a trip in `choosing` with item count and want / later / skip tap counts (Choices values starting with w / l / s); `profile_summary: { updated }` (the summary's `updated` date, else when it was received); `places` = counts per destination.
+
+Developed by: LightAISolutions

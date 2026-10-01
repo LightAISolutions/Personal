@@ -1,18 +1,22 @@
 # WP-5b — Envelope handlers, sheets, snapshot: status
 
-**State: in progress (paused by the usage limit before any code was written).**
+**State: in progress.**
 
-storage API: not started
+storage API: done
 
-## Where I stopped
-- Orientation done: read the Phase 5 prompt, the contract (`helpers/decisions/TG-PHASE-5.md` §1), the core (`02_registry`, `03_store`, `05_telegram`, `09_mailbox`, `10_router`, `12_wake`, `15_flows`), `gas/00_common.js`, the six payload schemas and `schemas/tour-guide-checks.mjs`, the prefs kit decisions reader (`kits/prefs/lib/decisions.mjs`), the mock harness, and the brain's example payloads (`TourGuide` `skills/trip-research/examples/`). Baseline checks green (303 pass, 1 skipped; bundle and boundary-check clean).
-- No file of this WP exists yet.
+## Built
+- `helpers/packs/tour-guide/gas/21_sheets.js` — the six tabs (`Trips`, `DayPlans` (+ `part`), `Later`, `Places`, `Choices`, `Shortlist`) and the full storage API of contract §1.3: `tgTripGet/List/Upsert/Current/SetStatus`, `tgDigestStore/Days/Day`, `tgLaterList/Add`, `tgPlacesUpsert/Search/Get/Counts`, `tgChoiceSet/List/Clear`, `tgProfileSummaryGet` (+ `tgProfileSummaryStore`), `tgShortlistStore/Items` (+ `tgShortlistRunKey`, `tgShortlistLatest`); snapshot provider `tour_guide`.
+- `helpers/tests/pack_tour-guide_gas_sheets.test.js` — 11 tests.
 
-## Next step
-1. Write `helpers/packs/tour-guide/gas/21_sheets.js` (registerSheet for Trips, DayPlans (+ a `part` column for cells over 50 000 chars), Later, Places, Choices, Shortlist; the §1.3 storage API) and `helpers/tests/pack_tour-guide_gas_sheets.test.js`; commit; set "storage API: done" here.
-2. Then `gas/20_envelopes.js` (six handlers with hand-written validators mirroring the schemas + semantic checks, `pf` callback, `tg_0pf_edit` message handler, snapshot provider `tour_guide`) and `pack_tour-guide_gas_envelopes.test.js`; `helpers/decisions/WP-5b.md`.
+## For WP-5a / WP-5c (merge `wp-5b` now)
+- Shortlist buttons: use `tgShortlistStore(p).run` (or `tgShortlistRunKey(trip, p.run_id)`) as `<run>` in `sl:<run>:<n>:…`; `tgShortlistItems(trip, run)` accepts the short key or the full `run_id`. Item numbers are unique across a round's groups (the brain numbers food on from activities).
+- Shortlist taps for the snapshot's counts: `tgChoiceSet(trip, run, 'shortlist', n, 'w' | 'l' | 's')` (any value starting with w / l / s counts).
+- `tgDigestStore` sets the trip `planned` (never regresses `done`); the flow sets `delivered`.
+
+## Next
+- `gas/20_envelopes.js` (six handlers, `pf` callback, `tg_capture_pf_edit`) and `pack_tour-guide_gas_envelopes.test.js`.
 
 ## Requests to other owners
-None yet.
+None.
 
 Developed by: LightAISolutions
