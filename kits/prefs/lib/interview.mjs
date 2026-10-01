@@ -99,7 +99,8 @@ export function bankWarnings(answers, bank) {
     const q = bank.questions.get(a.qid);
     const warn = (warning) => out.push({ index: a.index, qid: a.qid, warning });
     if (!q) { warn('not a question of the bank'); continue; }
-    if ((a.kind === 'text') !== (q.kind === 'text')) { warn(`answer kind "${a.kind}" does not match the question kind "${q.kind}"`); continue; }
+    const typedOther = a.kind === 'text' && q.kind === 'multi' && q.other === true; // the owner typed a value under ✏️ Other
+    if (!typedOther && (a.kind === 'text') !== (q.kind === 'text')) { warn(`answer kind "${a.kind}" does not match the question kind "${q.kind}"`); continue; }
     if (a.kind === 'text') continue;
     if (a.dimension !== q.dimension || !q.options.some((o) => o.value === a.value && o.polarity === a.polarity)) warn('not one of the question\'s options');
   }
