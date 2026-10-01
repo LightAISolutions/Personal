@@ -239,11 +239,25 @@ test('/places, /place and the ps buttons (note · add · check); long slugs trav
 
   const long = 'a-place-with-a-really-long-slug-that-does-not-fit-in-callback-data';
   const keys = J(ctx.tgCmdPlaceKeys(['tea-house', long]));
-  assert.deepEqual(keys, ['tea-house', '.1']);
-  assert.equal(ctx.tgCmdPlaceByKey('.1').slug, long);
-  assert.equal(ctx.tgCmdPlaceByKey('.7'), null);
-  tap(ctx, state, 'ps:.7:n');
+  assert.deepEqual(keys, ['tea-house', '.1.' + ctx.tgCmdTag(long)]);
+  assert.equal(ctx.tgCmdPlaceByKey(keys[1]).slug, long);
+  assert.equal(ctx.tgCmdPlaceByKey('.1'), null, 'an index key without the slug tag is refused');
+  assert.equal(ctx.tgCmdPlaceByKey('.7.' + ctx.tgCmdTag(long)), null);
+  tap(ctx, state, 'ps:.7.' + ctx.tgCmdTag(long) + ':n');
   assert.match(answers(state).pop(), /That list has changed/);
+  // Phase 5 audit: a later /place or /places overwrites the remembered list; an older ".<i>" button must not act on
+  // whichever place now sits at that index.
+  const other = 'another-place-with-a-really-long-slug-that-does-not-fit-in-the-data';
+  const oldKey = J(ctx.tgCmdPlaceKeys([long]))[0];
+  assert.equal(J(ctx.tgCmdPlaceKeys([other]))[0], '.0.' + ctx.tgCmdTag(other));
+  assert.equal(ctx.tgCmdPlaceByKey(oldKey), null);
+  const notesBefore = reqOf(state, 'notes').length;
+  tap(ctx, state, 'ps:' + oldKey + ':n');
+  assert.match(answers(state).pop(), /That list has changed/);
+  assert.equal(reqOf(state, 'notes').length, notesBefore);
+  // a slug that is not callback-safe (e.g. typed into the Places tab by hand) gets an index key instead of a throw
+  assert.match(J(ctx.tgCmdPlaceKeys(['Tea House']))[0], /^\.0\.[0-9a-f]{4}$/);
+  for (const k of [...keys, oldKey]) assert.ok(Buffer.byteLength('ps:' + k + ':n') <= 64);
 });
 
 test('requests: /replan, /notes, /brochure (resend or build), /lodging, pl:br and pl:rp', () => {

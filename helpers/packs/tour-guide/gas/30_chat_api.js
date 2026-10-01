@@ -150,13 +150,19 @@ var TG_CHAT_SYSTEM = [
 
 /** One Messages API call. Never throws; returns { ok, text?, deep?, model, usage?, code?, error?, ms }. */
 function tgChatAsk(question, contextJson, pick) {
+  // The blocks stay data: "<" inside the context JSON becomes \u003c (still valid JSON) and the owner's text cannot
+  // carry the block tags, so neither can close its block early and pose as a new one.
+  var ctxText = String(contextJson).replace(/</g, '\\u003c');
+  var q = String(question).replace(/<\/?\s*(owner_message|trip_context)\s*>/gi, '');
   var body = {
     model: pick.model, max_tokens: pick.max_tokens, system: TG_CHAT_SYSTEM,
-    messages: [{ role: 'user', content: '<trip_context>\n' + contextJson + '\n</trip_context>\n<owner_message>\n' + question + '\n</owner_message>' }]
+    messages: [{ role: 'user', content: '<trip_context>\n' + ctxText + '\n</trip_context>\n<owner_message>\n' + q + '\n</owner_message>' }]
   };
-  // Sonnet 5.5: no thinking (between_tools — there are no tools) at low effort, to stay fast inside the webhook window.
-  // Haiku 4.5 takes neither field.
-  if (!/haiku/.test(pick.model)) { body.thinking = { type: 'between_tools' }; body.output_config = { effort: 'low' }; }
+  // Sonnet 5.5: no thinking (between_tools — there are no tools; only Sonnet 5.5 accepts it, any other model 400s) at
+  // low effort, to stay fast inside the webhook window. Haiku 4.5 takes neither field; another non-Haiku model set
+  // through CHAT_API_MODEL gets only the low effort.
+  if (/^claude-sonnet-5-5\b/.test(pick.model)) body.thinking = { type: 'between_tools' };
+  if (!/haiku/.test(pick.model)) body.output_config = { effort: 'low' };
   var t0 = new Date().getTime(), res;
   try {
     res = UrlFetchApp.fetch(TG_CHAT.ENDPOINT, {

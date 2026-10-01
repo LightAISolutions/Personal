@@ -298,19 +298,27 @@ registerCommand('/place', function (ctx) {
 /* ==================== places ==================== */
 
 /**
- * Callback keys for place slugs: the slug itself when "ps:<slug>:n" fits in 64 bytes, else ".<i>" — an index into the
- * list remembered in Settings (TG_CMD_PLACES_LAST, the last /places search or /place answer). Slugs never contain ".".
+ * Callback keys for place slugs: the slug itself when it is callback-safe and "ps:<slug>:n" fits in 64 bytes, else
+ * ".<i>.<tag>" — an index into the list remembered in Settings (TG_CMD_PLACES_LAST, the last /places search or /place
+ * answer) plus four hex of the slug's hash, so a button from an older list (overwritten by a later /place or /places)
+ * is refused instead of acting on whichever place now sits at that index. Slugs never contain ".".
  */
 function tgCmdPlaceKeys(slugs) {
   settingSet(TG_CMD_PLACES_LAST, toJson(slugs || []), 'last /places search (ps buttons)');
-  return (slugs || []).map(function (s, i) { return utf8Bytes('ps:' + s + ':n') <= LIMITS.CB_DATA_MAX_BYTES ? s : '.' + i; });
+  return (slugs || []).map(function (s, i) {
+    s = String(s);
+    return /^[A-Za-z0-9_|-]+$/.test(s) && utf8Bytes('ps:' + s + ':n') <= LIMITS.CB_DATA_MAX_BYTES ? s : '.' + i + '.' + tgCmdTag(s);
+  });
 }
 function tgCmdPlaceByKey(key) {
   key = String(key || '');
   if (key.charAt(0) !== '.') return tgPlacesGet(key) || { slug: key, name: key };
+  var m = /^\.(\d+)\.([0-9a-f]{4})$/.exec(key);
+  if (!m) return null;
   var p = safeJsonParse(settingGet(TG_CMD_PLACES_LAST, '[]')), list = p.ok && Array.isArray(p.value) ? p.value : [];
-  var slug = list[parseInt(key.slice(1), 10)];
-  return slug ? (tgPlacesGet(slug) || { slug: slug, name: slug }) : null;
+  var slug = list[parseInt(m[1], 10)];
+  if (!slug || tgCmdTag(slug) !== m[2]) return null;
+  return tgPlacesGet(slug) || { slug: slug, name: slug };
 }
 function tgCmdPlaceLine(p, i) {
   var bits = [];
