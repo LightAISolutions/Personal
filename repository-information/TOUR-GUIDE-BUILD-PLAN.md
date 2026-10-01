@@ -85,6 +85,8 @@ Every row was read on the official page this session (date checked: 2026-09-30).
 | 13 | Claude API list prices per million tokens (input / output): Fable 5.1 $10 / $50, Opus 5.5 $4 / $20, Sonnet 5.5 $2 / $10, Haiku 4.5 $1 / $5; Batch API 50% off; web search $10 per 1,000 searches | [Claude pricing](https://docs.claude.com/en/docs/about-claude/pricing) | Sizes the optional fast chat lane (§5.8, §8) |
 | 14 | The GitHub connector in this project exposes `create_repository`, so the draft's "the integration cannot create repos" was untested. Default stays: the owner creates the private repo by hand (visibility must be verified as private before anything is pushed) | Tool list of this session | §10 decision 1 |
 
+> **Phase 2a corrections (2026-10-01, `helpers/decisions/WP-2a.md`):** fact 2 — `businessStatus` is **Pro**, not Essentials; Place Details photos are in the free IDs-only SKU; Text Search has no non-ID Essentials SKU (`location`/`formattedAddress` in a Text Search mask bill Pro). Fact 7 — confirmed: the Service Specific Terms allow caching **place ids indefinitely** and **lat/lng from Places and Routes for up to 30 consecutive days**; no other Places content (hours, rating, website, address, names) has a caching permission, so `GoogleSnapshot` content is build-scoped (§4.4). Fact 10 — the credential header is `X-Goog-Api-Key`, injected only on requests that go through the `HTTPS_PROXY` tunnel. Fact 12 — Grounding Lite is reachable but the Maps credential does not cover its host; no tool call was made.
+
 ## 4. Architecture, repo layout and data model
 
 ```
@@ -161,7 +163,7 @@ This repo's development `CLAUDE.md` (session-start checklist, bookends, pre-comm
 | `PlaceNote` | place_id, personalized note (why you, what to do, what to skip, best time, tickets, accessibility, pairings), last researched |
 | `DayPlan` | trip id, date, build id, ordered stops (arrive/depart), legs (mode, minutes, Maps link, planned departure), meals, free-time blocks, warnings (closed day, tight connection), `verified_on` |
 | `LaterList` | named lists ("next time", "rainy-day options"), place ids, reason not scheduled |
-| `GoogleSnapshot` | build id, place_id, hours, rating, review count, website, address, `businessStatus`, fetched_at — purged after 30 days (fact 7) |
+| `GoogleSnapshot` | build id, place_id, location, fetched_at, and a `content` block (hours, rating, review count, website, address, `businessStatus`) — **content is build-scoped** (dropped at the end of each build, refetched next build); lat/lng kept at most 30 days; place_id forever (fact 7, as corrected by Phase 2a) |
 
 Google-sourced fields live only in `GoogleSnapshot`; plans and brochures always read the freshest snapshot for their build.
 
@@ -243,7 +245,7 @@ Phases that touch live Google APIs: **2a** (smoke tests), **7**, **8**. Everythi
 | Chromium missing or version-mismatched in routine runs | Use the pre-installed `/opt/pw-browsers/chromium` via `executablePath`; Phase 2c checks inside a routine; fallbacks are a setup-script install or HTML-only delivery with the owner printing to PDF |
 | Routines are a research preview and limits change | Facts re-checked at Phase 7; design keeps quick paths in Apps Script so the bot degrades gracefully |
 | This repo's dev `CLAUDE.md` loads inside a routine | Routines attach only the private repo; routine-mode guard (§4.3) |
-| Terms of service on caching and display of Places content | Place IDs only long-term; snapshots purged; attribution on every page; Phase 2a reads the exact clause |
+| Terms of service on caching and display of Places content | Place IDs only long-term; lat/lng ≤ 30 days; other Places content build-scoped (Phase 2a read the clauses: `helpers/decisions/WP-2a.md`); attribution on every page |
 
 ## 10. Decisions for the owner (with defaults)
 

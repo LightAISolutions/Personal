@@ -3,11 +3,31 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 12/100`
+`Sections: 13/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.13r] — 2026-10-01 01:12:03 AM EST
+
+> **Prompt:** "Start phase 2"
+
+### Added
+- `helpers/kits/maps/` — Places API (New) + Routes API client: one fixed field mask per SKU tier, a monthly SKU ledger with a hard stop before any call over its ceiling, build-scoped Google snapshots with a terms-driven purge, Google Maps URLs, a zero-dependency transport through the HTTPS proxy tunnel, CLI with `--live` for network calls, fixtures in the real API shapes
+- `helpers/kits/research/` — research-run contract: search/fetch/time budgets, a source ledger, the two-independent-sources rule, confidence labels (conflicting, unverified, stale, confirmed, likely, single-source), a prompt-injection scanner for untrusted text, visit-duration ranges, CLI and library
+- `helpers/kits/brochure/` — brochure renderer: JSON Schema model → one self-contained HTML document (no script, no network) → paginated PDF through the pre-installed Chromium; cover, trip at a glance, day spreads with a timeline rail and route sketch, place cards, saved-for-later lists, practical notes, Google Maps attribution; Bitstream Charter fonts with their notice; invented sample trip
+- `helpers/kits/prefs/` — connector-reader pattern for preferences: evidence → held notes → owner review (✅ / ✏️ / ❌, sized for Telegram) → confirmed profile; travel vocabulary preset
+- `helpers/tests/kit_*` — 94 new tests across the four kits (148 in the suite; the live Maps smoke is skipped unless asked)
+- `helpers/status/WP-2a.md` … `WP-2d.md`, `helpers/decisions/WP-2a.md` … `WP-2d.md` — per-package status and defaults
+- `helpers/decisions/TG-PHASE-2.md` — coordinator defaults, smoke-call findings, brochure rating, requests carried to later phases
+- `helpers/prompts/TG-PHASE-3.md` — Phase 3 kickoff for the Tour Guide engine
+- `.claude/agents/hb-builder-opus-medium.md` — Opus 5.5 · medium builder for tightly specified work packages
+
+### Changed
+- `helpers/SPEC.md` — §16 kit CLI form is `node helpers/kits/<kit>/index.mjs <command>`
+- `repository-information/TOUR-GUIDE-BUILD-PLAN.md` — Phase 2a corrections to facts 2, 7, 10 and 12; Google snapshot content is build-scoped (§4.4, §9)
+- `helpers/BUILD-STATE.md` — Phase 2 done, Phase 2 log, next step
 
 ## [v01.12r] — 2026-09-30 11:33:51 PM EST
 

@@ -6,6 +6,33 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-10-01 01:12:03 AM EST
+**Repo version:** v01.13r
+**Branch:** `claude/tg-phase-2-svjmub` (Tour Guide project, thread "Tour Guide Phase 2", coordinator Opus 5.5 · high)
+
+**What we worked on**
+- Tour Guide Phase 2 per `helpers/prompts/TG-PHASE-2.md`: four shared kits built in worktrees by agents and merged: `helpers/kits/maps` (2a), `research` (2b), `brochure` (2c), `prefs` (2d); 148 tests, bundle check and boundary check clean
+- One live Maps smoke run (Text Search, Place Details, Compute Routes all 200); findings corrected plan facts 2, 7, 10, 12 and SPEC §16
+- Wrote `helpers/decisions/TG-PHASE-2.md`, updated `helpers/BUILD-STATE.md`, wrote `helpers/prompts/TG-PHASE-3.md`
+
+**Where we left off**
+- Phase 2 pushed as v01.13r. The sample brochure (invented trip, 12 pages) was posted to the owner for the "would hand it to a friend" rating; the rating was pending at push time. If changes are asked for, iterate the brochure kit in a follow-up push and update decisions §3
+
+**Key decisions made**
+- Owner's standing instruction: never park on a question; do every task that does not need the owner first
+- 2b and 2d ran on Opus 5.5 · high (the medium agent could not load mid-session); Charter fonts embedded; Google content other than place ids and coordinates is build-scoped
+- Open owner question: may a delivered brochure show Google hours and ratings (decisions §4)
+
+**Active context**
+- `helpers-dist` exists; next phase builds `helpers/packs/tour-guide/`; TourGuide private repo untouched since Phase 0; AssistantBrain reference only
+
+**Recommendation for next session**
+- Start Phase 3 in a new session on Fable 5.1 · high (after any brochure changes the owner asks for)
+
+**To continue:** type `Read helpers/prompts/TG-PHASE-3.md and execute it exactly.`
+
+## Previous Sessions
+
 **Date:** 2026-09-30 11:33:51 PM EST
 **Repo version:** v01.12r
 **Branch:** `claude/project-thread-c84ih5` (Tour Guide project thread, Claude HQ environment, Fable 5.1 · xhigh)
@@ -43,41 +70,3 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - Start **Phase 2** in a new Tour Guide session on **Opus 5.5 · effort high** from `helpers/prompts/TG-PHASE-2.md` (first check: the `helpers-dist` branch exists on GitHub after the v01.12r merge).
 
 **To continue:** type `Read helpers/prompts/TG-PHASE-2.md and execute it exactly.`
-
-## Previous Sessions
-
-**Date:** 2026-09-30 10:05:26 PM EST
-**Repo version:** v01.11r
-**Branch:** `claude/project-thread-20mnqb` (Tour Guide project thread, Claude HQ environment, Fable 5.1 · High)
-
-**What we worked on:**
-
-- **Phase 0 of the Tour Guide build is complete** (plan §12 kickoff). All thirteen §10 decisions confirmed as defaults by the owner (`helpers/decisions/TG-PHASE-0.md`)
-- Owner actions all done: private `LightAISolutions/TourGuide` created, attached and seeded with the §4.2 skeleton on `main`; Google Cloud Maps project (Places API (New) + Routes API, key restricted, budget alert; daily caps deferred to Phase 7 because the free trial blocks quota edits); Maps key added to Claude HQ as an API credential for both hosts with the `X-Goog-Api-Key` header; BotFather token created and kept by the owner
-- `helpers/BUILD-STATE.md` (phase tracker) and `helpers/prompts/TG-PHASE-1.md` (Phase 1 kickoff) written
-
-**Where we left off:**
-
-- Phase 0 closed; nothing built yet. Phase 1 has not started
-- The Phase 0 thread is resolved; Phase 1 runs in a **new session**
-
-**Key decisions made:**
-
-- Private repo is owner-created (the GitHub connector cannot create repos, 403)
-- Decisions were presented in one message rather than one at a time; the owner confirmed with "defaults"
-- `REPO-ARCHITECTURE.md` gets its `helpers/` node in Phase 1, not Phase 0
-- Phase 1 runs as a single architect session on this repo's branch and push conventions; worktrees start in Phase 2
-- Per-API daily caps in Google Cloud wait for Phase 7 (account upgrade from the free trial)
-
-**Active context:**
-
-- `Personal`: repo v01.11r · all pages v01.00w · AutoUpdate.ahk v01.01a · `helpers/` holds only build-process files
-- `TourGuide` (private): skeleton only, `main` at the Phase 0 seed commit
-- `AssistantBrain`: reference only, not modified
-- Toggles: START_OF_RESPONSE_BLOCK `On` · CHAT_BOOKENDS `Off` · TIMING_ESTIMATES `On` · END_OF_RESPONSE_BLOCK `On`
-
-**Recommendation for next session:**
-
-- Start **Phase 1** in a new Tour Guide session on **Fable 5.1 · effort Xhigh** from `helpers/prompts/TG-PHASE-1.md` (the scrub-report owner gate comes before any Assistant Brain code is copied into this public repo).
-
-**To continue:** type `Read helpers/prompts/TG-PHASE-1.md and execute it exactly.`
