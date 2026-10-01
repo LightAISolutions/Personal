@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "prefs_decisions",
+  "source": "owner",
+  "via": "telegram",
+  "decisions": [
+    {"cid": "c_44af72c063", "decision": "confirm", "decided_at": "2026-09-20T10:04:00Z"},
+    {"cid": "c_552a750eda", "decision": "edit", "value": "small museums", "decided_at": "2026-09-20T10:05:00Z"},
+    {"cid": "c_fabb1bd76e", "decision": "y", "decided_at": "2026-09-20T10:06:00Z"},
+    {"cid": "c_52d61c9dc3", "decision": "reject", "decided_at": "2026-09-20T10:07:00Z"},
+    {"cid": "c_eb395c1ba1", "decision": "confirm", "decided_at": "2026-09-20T10:08:00Z"}
+  ]
+}
