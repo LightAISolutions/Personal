@@ -2,7 +2,7 @@
 
 > Written 2026-10-01 in the Tour Guide project thread "Hidden gems methodology" (Fable 5.1 · high), branch `claude/tg-hidden-gems-dn7epo`.
 > Status: **a proposal, not yet in the plan.** It changes nothing that is built. The coordinator routes §6 to whichever thread owns `repository-information/TOUR-GUIDE-BUILD-PLAN.md` at the time. Generic content only: this repo is public.
-> Decisions: numbered 22–26 in §7, because the plan's §10 already uses 18–21 for the interaction-design amendment (v01.16r). Owner answered 2026-10-01: 22, 24, 25 and 26 confirmed at their defaults; 23 chosen as \"enable now\" rather than Phase 7.
+> Decisions: numbered 22–26 in §7, because the plan's §10 already uses 18–21 for the interaction-design amendment (v01.16r). Owner answered 2026-10-01: 22, 24, 25 and 26 confirmed at their defaults; 23 chosen as "enable now" rather than Phase 7, done the same day and verified with a live call.
 
 ## Contents
 
@@ -159,7 +159,7 @@ For the thread that owns `TOUR-GUIDE-BUILD-PLAN.md`; nothing here edits it.
 ## 7. Decisions for the owner (with defaults)
 
 22. **Gem appetite default.** Default: 3 — two 💎 activities and two 💎 food options in each shortlist round, changeable per trip in the interview or with `/profile`. — **Confirmed by the owner, 2026-10-01.**
-23. **Enable the Places Aggregate API.** Stream 3 needs it enabled on the Maps Cloud project and `areainsights.googleapis.com` added to the Claude HQ credential's hosts. Default: enable at Phase 7 switch-on with the other caps; until then the funnel runs streams 1, 2 and 4 only. — **Owner's choice, 2026-10-01: enable now.** Nearby Search needs no enabling: it is a Places API (New) method the existing key already covers. Until the owner confirms the API is enabled and `areainsights.googleapis.com` is on the credential, the funnel runs streams 1, 2 and 4.
+23. **Enable the Places Aggregate API.** Stream 3 needs it enabled on the Maps Cloud project and `areainsights.googleapis.com` added to the Claude HQ credential's hosts. Default: enable at Phase 7 switch-on with the other caps; until then the funnel runs streams 1, 2 and 4 only. — **Owner's choice, 2026-10-01: enable now.** Nearby Search needs no enabling: it is a Places API (New) method the existing key already covers. Until the owner confirms the API is enabled and `areainsights.googleapis.com` is on the credential, the funnel runs streams 1, 2 and 4. **Done 2026-10-01:** the API is enabled, on the key's API restriction list and behind a third Claude HQ credential entry for the host; one live `computeInsights` call from the proposal's session returned HTTP 200 with a count. Stream 3 can be built and tested live in Phase 4b.
 24. **Reading Google reviews for fit.** The routine may read the ≤ 5 API reviews and Google's AI summaries to judge preference fit, in-run only, never stored, shown only with attribution. Default: yes. — **Confirmed by the owner, 2026-10-01.**
 25. **Third-party review sources.** None now; Tripadvisor Terra (1,000 free calls) or Foursquare Premium reconsidered at Phase 8 if stream 2 is thin for the trips he takes. Default: none. — **Confirmed by the owner, 2026-10-01.**
 26. **Owner seeds.** Names pasted into the chat during the shortlist step (or a `/seed` command) become candidates tagged as his own. Default: yes, built in Phase 5. — **Confirmed by the owner, 2026-10-01.**

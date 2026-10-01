@@ -3,11 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 22/100`
+`Sections: 23/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.22r] — 2026-10-01 03:53:32 AM EST
+
+> **Prompt:** "Ok, I added the 3rd credential. Now give me step by step instructions on how to rotate the MAPS_STATIC_KEY."
+
+### Changed
+- `helpers/decisions/hidden-gems-proposal.md` — decision 23 recorded as done: the owner enabled the Places Aggregate API, added it to the Maps key's API restrictions and added a Claude HQ credential entry for `areainsights.googleapis.com`; verified from the session with one live `computeInsights` call (HTTP 200, a count returned), so the Gem Funnel's quiet-neighbourhood stream can be built live in Phase 4b instead of waiting for Phase 7
+- `repository-information/SESSION-CONTEXT.md` — session context updated
+
+### Fixed
+- `helpers/decisions/hidden-gems-proposal.md` — stray backslashes before the quotation marks in the header's decisions line
 
 ## [v01.21r] — 2026-10-01 03:44:29 AM EST
 

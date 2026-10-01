@@ -7,6 +7,34 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-10-01 03:53:32 AM EST
+**Repo version:** v01.22r
+**Branch:** `claude/tg-hidden-gems-dn7epo` (Tour Guide project, thread "Hidden gems methodology", Fable 5.1 · high)
+
+**What we worked on**
+- Evaluated the owner's hidden-gems idea (sweep every business on Google Maps and score each) against seven other methods and wrote `helpers/decisions/hidden-gems-proposal.md`: keep the scoring half, replace the enumeration with the Gem Funnel (taste queries in two languages, local-voices research, Aggregate-API neighbourhood probes, free screening, gem score, evidence pass, 💎 marks on the shortlist); ≈ $4 per round at list, $0 inside the free caps
+- Recorded the owner's answers to decisions 22–26 (renumbered after the plan's 18–21) and walked him through enabling the Places Aggregate API, the key's API restrictions and the Claude HQ credential form; verified the API with one live call
+
+**Where we left off**
+- Everything delivered and pushed (v01.18r proposal, v01.20r answers, v01.22r verified enablement). The plan and the phase prompts are untouched; the coordinator routes §6 into a new WP-2g inside Phase 4b, where stream 3 can now run live
+- Owner's remaining action, not blocking: rotate the Static Maps key whose value appeared in a screenshot, and update the `MAPS_STATIC_KEY` environment variable
+
+**Key decisions made**
+- Evaluate at the search layer (Text / Nearby Search Enterprise return 20 places with rating, count, hours and website per call) and pay for Place Details only on finalists
+- A place is a 💎 only with corroboration outside Google; nothing from Google persists beyond place ids; no polygon tests on Google coordinates
+- Decisions 22, 24, 25, 26 confirmed at their defaults; 23 (Aggregate API) chosen as "enable now" and done the same day
+
+**Active context**
+- Credentials cannot be edited in the environment dialog, only deleted or added, so the Aggregate host is a third entry next to the Places/Routes one; package numbering: WP-2e brochure maps, WP-2f prefs gap, WP-2g gems
+- `main` moved repeatedly during this session (Phase 4, interaction design, brochure maps, the v01.21r collision repair); rebased before every push
+
+**Recommendation for next session**
+- When Phase 4b builds WP-2g, read `helpers/decisions/hidden-gems-proposal.md` §4 and §6 and build stream 3 against the live Aggregate API from the start
+
+**To continue:** type `Read helpers/decisions/hidden-gems-proposal.md §6 and fold WP-2g into Phase 4b.`
+
+## Previous Sessions
+
 **Date:** 2026-10-01 03:44:29 AM EST
 **Repo version:** v01.21r
 **Branch:** `claude/tg-interaction-design-awq6bh` (Tour Guide project, thread "Ways to interact with Tour Guide", Fable 5.1 · high)
@@ -32,33 +60,3 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - When Phase 4 hands off, start Phase 4b in a new session on Fable 5.1 · high (its prompt now carries the places-repository fields and the sixth envelope type)
 
 **To continue:** type `Read helpers/prompts/TG-PHASE-4B.md and execute it exactly.`
-
-## Previous Sessions
-
-**Date:** 2026-10-01 03:38:59 AM EST
-**Repo version:** v01.20r
-**Branch:** `claude/tg-hidden-gems-dn7epo` (Tour Guide project, thread "Hidden gems methodology", Fable 5.1 · high)
-
-**What we worked on**
-- Evaluated the owner's idea for uncovering hidden gems (sweep every business on Google Maps, evaluate hours / website / menu / rating / review count / preference-relevant reviews, score, recommend the top) against seven other methods, with web research on Google's limits, pricing and terms and on third-party APIs
-- Wrote `helpers/decisions/hidden-gems-proposal.md`: keep the owner's scoring idea, drop the city-wide enumeration (terms §3.2.3(a), the 20-result / 5-review API shape, cost that follows density, run time, fake-review exposure); recommend the **Gem Funnel** (interview gem appetite → taste queries + local-voices research + quiet-neighbourhood probes → free screening → gem score → evidence pass → 💎 shortlist + "Gems not chosen" Later list), ≈ $4 per round at list price and $0 inside the free caps
-- Answered the owner's follow-up (enable Nearby Search and the Places Aggregate API now?): Nearby Search needs nothing (a Places API (New) method), the Aggregate API is worth enabling now; recorded his answers to decisions 22–26 and renumbered them (the plan's 18–21 belong to the interaction-design amendment)
-
-**Where we left off**
-- Proposal merged as v01.18r, decisions recorded as v01.20r; the plan and the phase prompts are untouched. The coordinator routes §6 (plan changes: facts, §5.1 / §5.2 / §5.5 / §5.9, data model, Maps and research kit additions, a `gems/` engine module) into a new WP-2g inside Phase 4b
-- Waiting only for the owner to say the Places Aggregate API is enabled and `areainsights.googleapis.com` is on the Claude HQ credential; until then stream 3 of the funnel is dormant
-
-**Key decisions made**
-- Evaluate at the search layer (Text / Nearby Search Enterprise return 20 places with rating, count, hours and website per call) and pay for Place Details only on finalists
-- A place is a 💎 only with corroboration outside Google (a local-language or local-editorial mention); "high rating, few reviews" alone is not enough
-- Nothing from Google persists beyond place ids; area questions go to the Aggregate API, distances use our own anchors (no polygon tests on Google coordinates)
-- Decisions 22–26: 22 gem appetite 3, 24 in-run reading of Google reviews and AI summaries, 25 no third-party review APIs, 26 owner seeds — all confirmed by the owner 2026-10-01; 23 Places Aggregate API — owner chose "enable now" over the Phase 7 default
-
-**Active context**
-- `main` advanced four times while this session ran (Phase 4, the interaction-design amendment, the brochure's real Google maps as v01.17r and v01.19r); rebased each time. The TourGuide repo, AssistantBrain and the plan file were not touched
-- Package numbering: WP-2e is the brochure maps package, WP-2f the prefs gap, so the gem package is WP-2g
-
-**Recommendation for next session**
-- When Phase 4b starts, read `helpers/decisions/hidden-gems-proposal.md` §6 and fold WP-2g (the Gem Funnel) into it, with stream 3 live only once the owner has enabled the Aggregate API
-
-**To continue:** type `Read helpers/decisions/hidden-gems-proposal.md §6 and fold WP-2g into Phase 4b.`
