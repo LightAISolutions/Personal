@@ -3,11 +3,20 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 19/100`
+`Sections: 20/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.20r] — 2026-10-01 03:38:59 AM EST
+
+> **Prompt:** "Should I enable Nearby Search and the Places Aggregate API now? I approve all other defaults."
+
+### Changed
+- `helpers/decisions/hidden-gems-proposal.md` — decisions renumbered 22–26 (the plan's §10 already holds 18–21 from the interaction-design amendment of v01.16r); the owner's answers recorded: 22, 24, 25 and 26 confirmed at their defaults, 23 (Places Aggregate API) chosen as "enable now" instead of Phase 7, with the note that Nearby Search needs no enabling because it is a Places API (New) method the existing key covers
+- `README.md` — tree entry for the proposal (decision numbers)
+- `repository-information/SESSION-CONTEXT.md` — this session's entry restored as the latest session (an earlier auto-merge had left its body under the "Amend plan for Telegram vision" header) and updated with the owner's answers; the "Ways to interact with Tour Guide" session kept as the previous one
 
 ## [v01.19r] — 2026-10-01 03:33:09 AM EST
 

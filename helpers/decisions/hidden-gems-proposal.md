@@ -2,6 +2,7 @@
 
 > Written 2026-10-01 in the Tour Guide project thread "Hidden gems methodology" (Fable 5.1 · high), branch `claude/tg-hidden-gems-dn7epo`.
 > Status: **a proposal, not yet in the plan.** It changes nothing that is built. The coordinator routes §6 to whichever thread owns `repository-information/TOUR-GUIDE-BUILD-PLAN.md` at the time. Generic content only: this repo is public.
+> Decisions: numbered 22–26 in §7, because the plan's §10 already uses 18–21 for the interaction-design amendment (v01.16r). Owner answered 2026-10-01: 22, 24, 25 and 26 confirmed at their defaults; 23 chosen as \"enable now\" rather than Phase 7.
 
 ## Contents
 
@@ -153,15 +154,15 @@ For the thread that owns `TOUR-GUIDE-BUILD-PLAN.md`; nothing here edits it.
 | Phases | Add **WP-2g "Gem funnel"** to Phase 4b (WP-2e is the brochure's real-Google-maps package, merged as v01.17r, and WP-2f the prefs-vocabulary gap; it already touches the prefs vocabulary, the engine and the skill deltas, and a fourth concurrent plan edit is what we want to avoid): scoring design and the `gems/` module on Fable 5.1 · high, the Maps and research kit additions on Opus 5.5 · high. Phase 5: the *More gems* button and seed capture. Phase 6: red-team the "why it's a gem" lines and local-source pages. Phase 7: the owner enables the Places Aggregate API and the credential host. Phase 8: tune weights from taps; decide on Terra / Foursquare |
 | §8 costs | + ≈ $4 per `/plan` round at list price, $0 inside the caps |
 | §9 risks | New rows: fake-review-boosted "gems" (mitigated by stage 4 and the local-mention requirement); the bulk-download reading of the terms (mitigated by bounded, query-driven streams and a per-round call ceiling); AI summaries absent outside their regions (never a dependency); a local-source plan that is thin for some destinations (streams 1 and 3 still run; the shortlist says when the 💎 floor could not be met) |
-| §10 decisions | 18–22 below |
+| §10 decisions | 22–26 below |
 
 ## 7. Decisions for the owner (with defaults)
 
-18. **Gem appetite default.** Default: 3 — two 💎 activities and two 💎 food options in each shortlist round, changeable per trip in the interview or with `/profile`.
-19. **Enable the Places Aggregate API.** Stream 3 needs it enabled on the Maps Cloud project and `areainsights.googleapis.com` added to the Claude HQ credential's hosts. Default: enable at Phase 7 switch-on with the other caps; until then the funnel runs streams 1, 2 and 4 only.
-20. **Reading Google reviews for fit.** The routine may read the ≤ 5 API reviews and Google's AI summaries to judge preference fit, in-run only, never stored, shown only with attribution. Default: yes.
-21. **Third-party review sources.** None now; Tripadvisor Terra (1,000 free calls) or Foursquare Premium reconsidered at Phase 8 if stream 2 is thin for the trips he takes. Default: none.
-22. **Owner seeds.** Names pasted into the chat during the shortlist step (or a `/seed` command) become candidates tagged as his own. Default: yes, built in Phase 5.
+22. **Gem appetite default.** Default: 3 — two 💎 activities and two 💎 food options in each shortlist round, changeable per trip in the interview or with `/profile`. — **Confirmed by the owner, 2026-10-01.**
+23. **Enable the Places Aggregate API.** Stream 3 needs it enabled on the Maps Cloud project and `areainsights.googleapis.com` added to the Claude HQ credential's hosts. Default: enable at Phase 7 switch-on with the other caps; until then the funnel runs streams 1, 2 and 4 only. — **Owner's choice, 2026-10-01: enable now.** Nearby Search needs no enabling: it is a Places API (New) method the existing key already covers. Until the owner confirms the API is enabled and `areainsights.googleapis.com` is on the credential, the funnel runs streams 1, 2 and 4.
+24. **Reading Google reviews for fit.** The routine may read the ≤ 5 API reviews and Google's AI summaries to judge preference fit, in-run only, never stored, shown only with attribution. Default: yes. — **Confirmed by the owner, 2026-10-01.**
+25. **Third-party review sources.** None now; Tripadvisor Terra (1,000 free calls) or Foursquare Premium reconsidered at Phase 8 if stream 2 is thin for the trips he takes. Default: none. — **Confirmed by the owner, 2026-10-01.**
+26. **Owner seeds.** Names pasted into the chat during the shortlist step (or a `/seed` command) become candidates tagged as his own. Default: yes, built in Phase 5. — **Confirmed by the owner, 2026-10-01.**
 
 ## 8. Confidence
 
