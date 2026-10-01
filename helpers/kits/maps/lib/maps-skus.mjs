@@ -15,6 +15,12 @@ export const SKUS = Object.freeze({
   'places.text_search.ids_only': { label: 'Text Search Essentials (IDs Only)', unit: 'request', free: Infinity, usdPer1000: 0 },
   'places.text_search.pro': { label: 'Text Search Pro', unit: 'request', free: 5000, usdPer1000: 32 },
   'places.text_search.enterprise': { label: 'Text Search Enterprise', unit: 'request', free: 1000, usdPer1000: 35 },
+  'places.text_search.enterprise_atmosphere': { label: 'Text Search Enterprise + Atmosphere', unit: 'request', free: 1000, usdPer1000: 40 },
+  // WP-2g-kits (Gem Funnel), pricing page "Last updated 2026-09-28 UTC", read 2026-10-01: Nearby Search has no IDs-only or Essentials SKU.
+  'places.nearby_search.pro': { label: 'Nearby Search Pro', unit: 'request', free: 5000, usdPer1000: 32 },
+  'places.nearby_search.enterprise': { label: 'Nearby Search Enterprise', unit: 'request', free: 1000, usdPer1000: 35 },
+  'places.nearby_search.enterprise_atmosphere': { label: 'Nearby Search Enterprise + Atmosphere', unit: 'request', free: 1000, usdPer1000: 40 },
+  'places.aggregate.compute_insights': { label: 'Places Aggregate API (computeInsights)', unit: 'request', free: 5000, usdPer1000: 10 },
   'routes.compute_routes.essentials': { label: 'Compute Routes Essentials', unit: 'request', free: 10000, usdPer1000: 5 },
   'routes.compute_routes.pro': { label: 'Compute Routes Pro', unit: 'request', free: 5000, usdPer1000: 10 },
   'routes.route_matrix.essentials': { label: 'Compute Route Matrix Essentials', unit: 'element', free: 10000, usdPer1000: 5 },

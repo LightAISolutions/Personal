@@ -11,14 +11,24 @@ import { stubFromStaticUrl, stubPhotoPng } from './maps-png-stub.mjs';
 export const FIXTURES_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'fixtures');
 export function fixture(name) { return JSON.parse(readFileSync(join(FIXTURES_DIR, `maps-fixture-${name}.json`), 'utf8')); }
 
-/** Default fixture routing by endpoint (and travel mode / optimize flag for Compute Routes). */
+/** Default fixture routing by endpoint (field mask tier for Places searches and Details, travel mode / optimize flag for
+ * Compute Routes, requested insights for the Places Aggregate API). */
 export function fixtureResponder(req) {
   const u = new URL(req.url);
   const body = req.body ? (typeof req.body === 'string' ? JSON.parse(req.body) : req.body) : null;
-  if (u.hostname === 'places.googleapis.com' && u.pathname.endsWith(':searchText')) return { status: 200, body: fixture('text-search-pro') };
+  const mask = String(req.headers?.['X-Goog-FieldMask'] || '');
+  if (u.hostname === 'places.googleapis.com' && u.pathname.endsWith(':searchText')) return { status: 200, body: fixture(/\bplaces\.rating\b/.test(mask) ? 'text-search-enterprise' : 'text-search-pro') };
+  if (u.hostname === 'places.googleapis.com' && u.pathname.endsWith(':searchNearby')) return { status: 200, body: fixture('nearby-search-enterprise') };
+  if (u.hostname === 'areainsights.googleapis.com' && u.pathname === '/v1:computeInsights') {
+    // INSIGHT_PLACES answers from the small-cell fixture (3 ids, count 3); INSIGHT_COUNT alone from the count fixture (37).
+    const want = body?.insights || [], small = want.includes('INSIGHT_PLACES') ? fixture('aggregate-places') : null, out = {};
+    if (want.includes('INSIGHT_COUNT')) out.count = small ? small.count : fixture('aggregate-count').count;
+    if (small) out.placeInsights = small.placeInsights;
+    return { status: 200, body: out };
+  }
   if (u.hostname === 'places.googleapis.com' && /^\/v1\/places\/[^/]+\/photos\/[^/]+\/media$/.test(u.pathname)) return { status: 200, body: { name: u.pathname.slice(4, -6), photoUri: 'https://photos.example.com/fixture/' + u.pathname.split('/')[5] + '?w=' + (u.searchParams.get('maxWidthPx') || '') } };
   if (u.hostname === 'photos.example.com') { const w = Number(u.searchParams.get('w')) || 1200; return { status: 200, contentType: 'image/png', bytes: stubPhotoPng({ width: Math.min(w, 1200), height: Math.round(Math.min(w, 1200) * 2 / 3), seed: u.pathname.length }) }; }
-  if (u.hostname === 'places.googleapis.com' && u.pathname.startsWith('/v1/places/')) return { status: 200, body: fixture('place-details-enterprise') };
+  if (u.hostname === 'places.googleapis.com' && u.pathname.startsWith('/v1/places/')) return { status: 200, body: fixture(/(^|,)reviews(,|$)/.test(mask) ? 'place-details-atmosphere' : 'place-details-enterprise') };
   if (u.pathname.endsWith('v2:computeRoutes')) {
     if (body?.travelMode === 'TRANSIT') return { status: 200, body: fixture('compute-routes-transit') };
     if (body?.optimizeWaypointOrder) return { status: 200, body: fixture('compute-routes-optimized') };

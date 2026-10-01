@@ -9,12 +9,25 @@ const DETAILS_FIELDS = {
   essentials: ['id', 'photos', 'location', 'formattedAddress', 'shortFormattedAddress', 'types', 'viewport'], // photos: IDs-only field, carried by every mask (Place Photos, WP-2e)
   pro: ['displayName', 'primaryType', 'primaryTypeDisplayName', 'businessStatus', 'googleMapsUri', 'timeZone', 'utcOffsetMinutes', 'accessibilityOptions'],
   enterprise: ['regularOpeningHours', 'currentOpeningHours', 'nationalPhoneNumber', 'priceLevel', 'priceRange', 'rating', 'userRatingCount', 'websiteUri'],
-  enterprise_atmosphere: ['editorialSummary', 'reviewSummary', 'reviews', 'goodForChildren', 'servesVegetarianFood', 'reservable', 'restroom', 'outdoorSeating']
+  enterprise_atmosphere: ['editorialSummary', 'reviewSummary', 'reviews', 'goodForChildren', 'servesVegetarianFood', 'reservable', 'restroom', 'outdoorSeating', 'generativeSummary'] // generativeSummary: Atmosphere field (WP-2g-kits); EN in US/IN only, absent elsewhere
 };
+/** Search-layer Atmosphere additions (Text Search and Nearby Search): the summaries, the ≤ 5 reviews and the amenity flags of the Details mask. */
+const SEARCH_ATMOSPHERE = DETAILS_FIELDS.enterprise_atmosphere.map((f) => 'places.' + f);
 const TEXT_FIELDS = {
   ids_only: ['places.id'],
   pro: ['places.displayName', 'places.formattedAddress', 'places.location', 'places.types', 'places.primaryType', 'places.businessStatus', 'places.googleMapsUri'],
-  enterprise: ['places.rating', 'places.userRatingCount', 'places.regularOpeningHours', 'places.websiteUri', 'places.priceLevel']
+  enterprise: ['places.rating', 'places.userRatingCount', 'places.regularOpeningHours', 'places.websiteUri', 'places.priceLevel'],
+  enterprise_atmosphere: SEARCH_ATMOSPHERE
+};
+/**
+ * Nearby Search (New) masks (WP-2g-kits). Nearby Search has no IDs-only SKU: its lowest SKU is Pro, so `places.id` sits in
+ * the Pro mask, and the masks mirror Text Search's tier for tier so both searches return places of the same shape.
+ * Nearby Search has no pagination, so no `nextPageToken`.
+ */
+const NEARBY_FIELDS = {
+  pro: TEXT_FIELDS.ids_only.concat(TEXT_FIELDS.pro),
+  enterprise: TEXT_FIELDS.enterprise,
+  enterprise_atmosphere: SEARCH_ATMOSPHERE
 };
 const TIER_ORDER = ['ids_only', 'essentials', 'pro', 'enterprise', 'enterprise_atmosphere'];
 
@@ -27,8 +40,13 @@ function cumulative(table, tier) {
 export const PLACE_DETAILS_MASKS = Object.freeze(Object.fromEntries(Object.keys(DETAILS_FIELDS).map((t) => [t, cumulative(DETAILS_FIELDS, t).join(',')])));
 /** Text Search masks; `nextPageToken` is IDs-only and always included. Essentials (non-ID) does not exist for Text Search. */
 export const TEXT_SEARCH_MASKS = Object.freeze(Object.fromEntries(Object.keys(TEXT_FIELDS).map((t) => [t, cumulative(TEXT_FIELDS, t).concat('nextPageToken').join(',')])));
+/** Nearby Search masks: pro · enterprise · enterprise_atmosphere. */
+export const NEARBY_SEARCH_MASKS = Object.freeze(Object.fromEntries(Object.keys(NEARBY_FIELDS).map((t) => [t, cumulative(NEARBY_FIELDS, t).join(',')])));
 export const PLACE_DETAILS_SKU = Object.freeze({ essentials: 'places.details.essentials', pro: 'places.details.pro', enterprise: 'places.details.enterprise', enterprise_atmosphere: 'places.details.enterprise_atmosphere' });
-export const TEXT_SEARCH_SKU = Object.freeze({ ids_only: 'places.text_search.ids_only', pro: 'places.text_search.pro', enterprise: 'places.text_search.enterprise' });
+export const TEXT_SEARCH_SKU = Object.freeze({ ids_only: 'places.text_search.ids_only', pro: 'places.text_search.pro', enterprise: 'places.text_search.enterprise', enterprise_atmosphere: 'places.text_search.enterprise_atmosphere' });
+export const NEARBY_SEARCH_SKU = Object.freeze({ pro: 'places.nearby_search.pro', enterprise: 'places.nearby_search.enterprise', enterprise_atmosphere: 'places.nearby_search.enterprise_atmosphere' });
+/** Places Aggregate API: one SKU whatever the insight; no field mask (the method takes none). */
+export const AGGREGATE_SKU = 'places.aggregate.compute_insights';
 
 /** Routes masks. In Routes the mask does not change the SKU (only request features do — see maps-routes.mjs). */
 export const ROUTE_MASKS = Object.freeze({

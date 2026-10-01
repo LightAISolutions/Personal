@@ -1,0 +1,191 @@
+{
+  "places": [
+    {
+      "id": "FixtureVelmoraNoodle06",
+      "displayName": {
+        "text": "Saltmarsh Noodle Bar",
+        "languageCode": "en"
+      },
+      "formattedAddress": "7 Saltmarsh Row, Velmora, Fictional Isles",
+      "location": {
+        "latitude": 12.3502,
+        "longitude": -45.6733
+      },
+      "types": [
+        "restaurant",
+        "noodle_shop",
+        "food"
+      ],
+      "primaryType": "restaurant",
+      "businessStatus": "OPERATIONAL",
+      "googleMapsUri": "https://maps.example.com/fixture/fixturevelmoranoodle06",
+      "rating": 4.7,
+      "userRatingCount": 96,
+      "regularOpeningHours": {
+        "openNow": true,
+        "periods": [
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ],
+        "weekdayDescriptions": [
+          "Monday: Closed",
+          "Tuesday: 8:00 – 17:00"
+        ]
+      },
+      "websiteUri": "https://saltmarsh-noodles.example.com/",
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE"
+    },
+    {
+      "id": "FixtureVelmoraNoodle07",
+      "displayName": {
+        "text": "Lamplighter Ramen",
+        "languageCode": "en"
+      },
+      "formattedAddress": "2 Lamplighter Steps, Velmora, Fictional Isles",
+      "location": {
+        "latitude": 12.3466,
+        "longitude": -45.6745
+      },
+      "types": [
+        "restaurant",
+        "ramen_restaurant",
+        "food"
+      ],
+      "primaryType": "restaurant",
+      "businessStatus": "OPERATIONAL",
+      "googleMapsUri": "https://maps.example.com/fixture/fixturevelmoranoodle07",
+      "rating": 4.5,
+      "userRatingCount": 1830,
+      "regularOpeningHours": {
+        "openNow": true,
+        "periods": [
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ],
+        "weekdayDescriptions": [
+          "Monday: Closed",
+          "Tuesday: 8:00 – 17:00"
+        ]
+      },
+      "websiteUri": "https://lamplighter-ramen.example.org/",
+      "priceLevel": "PRICE_LEVEL_MODERATE"
+    }
+  ],
+  "nextPageToken": "fixture-enterprise-page-2"
+}

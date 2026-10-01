@@ -1,7 +1,8 @@
 /**
  * Maps kit — one guarded call: reserve units on the ledger (hard stop BEFORE sending), send with the fixed field mask,
  * parse JSON, turn non-2xx answers into MapsRequestError. Key handling: in Claude Code cloud environments the egress
- * proxy adds `X-Goog-Api-Key` for places/routes.googleapis.com, so `apiKey` is absent and no key is sent; elsewhere the
+ * proxy adds `X-Goog-Api-Key` for places/routes.googleapis.com (and, once the owner adds it, areainsights.googleapis.com),
+ * so `apiKey` is absent and no key is sent; elsewhere the
  * caller may pass `apiKey` explicitly (never read from a repo file). The key never appears in errors or results.
  */
 import { MapsRequestError } from './maps-errors.mjs';
@@ -22,7 +23,7 @@ function googleMessage(text) {
 export async function guardedCall(ctx, { sku, units = 1, method, url, mask, body = null }) {
   ctx.ledger.reserve(sku, units); // throws MapsBudgetError → nothing sent
   const headers = { 'Content-Type': 'application/json' };
-  if (mask) headers['X-Goog-FieldMask'] = mask; // photo media has no mask
+  if (mask) headers['X-Goog-FieldMask'] = mask; // photo media and Places Aggregate take no mask
   if (ctx.apiKey) headers['X-Goog-Api-Key'] = ctx.apiKey;
   let res;
   try {

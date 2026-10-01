@@ -1,0 +1,281 @@
+{
+  "places": [
+    {
+      "id": "FixtureVelmoraCafe03",
+      "displayName": {
+        "text": "Tidewater Roastery",
+        "languageCode": "en"
+      },
+      "formattedAddress": "4 Netmender Lane, Velmora, Fictional Isles",
+      "location": {
+        "latitude": 12.3471,
+        "longitude": -45.6772
+      },
+      "types": [
+        "cafe",
+        "coffee_shop",
+        "food"
+      ],
+      "primaryType": "cafe",
+      "businessStatus": "OPERATIONAL",
+      "googleMapsUri": "https://maps.example.com/fixture/fixturevelmoracafe03",
+      "rating": 4.8,
+      "userRatingCount": 142,
+      "regularOpeningHours": {
+        "openNow": true,
+        "periods": [
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ],
+        "weekdayDescriptions": [
+          "Monday: Closed",
+          "Tuesday: 8:00 – 17:00"
+        ]
+      },
+      "websiteUri": "https://tidewater-roastery.example.com/",
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE"
+    },
+    {
+      "id": "FixtureVelmoraCafe04",
+      "displayName": {
+        "text": "The Ropewalk Kitchen",
+        "languageCode": "en"
+      },
+      "formattedAddress": "19 Ropewalk, Velmora, Fictional Isles",
+      "location": {
+        "latitude": 12.348,
+        "longitude": -45.676
+      },
+      "types": [
+        "restaurant",
+        "food"
+      ],
+      "primaryType": "restaurant",
+      "businessStatus": "OPERATIONAL",
+      "googleMapsUri": "https://maps.example.com/fixture/fixturevelmoracafe04",
+      "rating": 4.6,
+      "userRatingCount": 388,
+      "regularOpeningHours": {
+        "openNow": true,
+        "periods": [
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ],
+        "weekdayDescriptions": [
+          "Monday: Closed",
+          "Tuesday: 8:00 – 17:00"
+        ]
+      },
+      "websiteUri": "https://ropewalk-kitchen.example.org/",
+      "priceLevel": "PRICE_LEVEL_MODERATE"
+    },
+    {
+      "id": "FixtureVelmoraCafe05",
+      "displayName": {
+        "text": "Harbour Bean Express",
+        "languageCode": "en"
+      },
+      "formattedAddress": "Ferry Terminal, Velmora, Fictional Isles",
+      "location": {
+        "latitude": 12.3449,
+        "longitude": -45.6801
+      },
+      "types": [
+        "cafe",
+        "food"
+      ],
+      "primaryType": "cafe",
+      "businessStatus": "OPERATIONAL",
+      "googleMapsUri": "https://maps.example.com/fixture/fixturevelmoracafe05",
+      "rating": 4.1,
+      "userRatingCount": 2410,
+      "regularOpeningHours": {
+        "openNow": true,
+        "periods": [
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ],
+        "weekdayDescriptions": [
+          "Monday: Closed",
+          "Tuesday: 8:00 – 17:00"
+        ]
+      },
+      "websiteUri": "https://harbour-bean.example.net/",
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE"
+    }
+  ]
+}
