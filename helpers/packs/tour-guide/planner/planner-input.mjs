@@ -70,7 +70,7 @@ export async function prepare(input) {
     if (seen.has(p.id)) fail(`duplicate place id ${p.id}`);
     seen.add(p.id);
     if (p.status === 'saved-for-later') { saved.push(p); continue; }
-    if (p.status !== 'candidate' && p.status !== 'scheduled') continue;
+    if (p.status !== 'candidate' && p.status !== 'scheduled' && p.status !== 'chosen') continue;
     const snap = snapshots.get(p.place_id) || null;
     const est = estimates.get(p.place_id) || null;
     const interest = (profile.interests && profile.interests[p.category]) || 'normal';

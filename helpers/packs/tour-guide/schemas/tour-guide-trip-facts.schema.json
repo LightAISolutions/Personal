@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-trip-facts.schema.json",
+  "title": "Tour Guide trip facts (payload of the `trip_facts` envelope)",
+  "description": "What the intake read from the owner's connectors about a trip, numbered for confirmation, and what is still missing. Sources stay in quarantine, not here. schemas/index.mjs also checks: numbers unique, start ≤ end, missing without duplicates.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["trip", "found", "missing"],
+  "properties": {
+    "v": { "const": 1 },
+    "kind": { "const": "trip_facts" },
+    "trip": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+    "found": {
+      "type": "array",
+      "maxItems": 40,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["n", "kind", "text"],
+        "properties": {
+          "n": { "type": "integer", "minimum": 1, "maximum": 999 },
+          "kind": { "$ref": "#/$defs/fact_kind" },
+          "text": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "start": { "$ref": "#/$defs/date_or_null" },
+          "end": { "$ref": "#/$defs/date_or_null" }
+        }
+      }
+    },
+    "missing": { "type": "array", "maxItems": 10, "items": { "$ref": "#/$defs/fact_kind" } }
+  },
+  "$defs": {
+    "fact_kind": { "enum": ["dates", "lodging", "flight", "booking", "companions", "other"] },
+    "date_or_null": { "anyOf": [{ "type": "null" }, { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" }] }
+  }
+}

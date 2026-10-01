@@ -88,4 +88,20 @@ test('setStatus: one place changes, unknown slugs and statuses are refused', asy
   assert.throws(() => l.setStatus(places, 'nowhere', 'rejected'), /unknown place/);
 });
 
+test('owner_choice and not_shown: their own lists, created on first use with a description; "chosen" is a status', async () => {
+  const l = await L(), s = await import('../packs/tour-guide/schemas/index.mjs');
+  assert.equal(l.defaultListFor('owner_choice'), l.SAVED_BY_YOU);
+  assert.equal(l.defaultListFor('not_shown'), l.GEMS_NOT_CHOSEN);
+  assert.equal(l.defaultListFor('owner'), l.NEXT_TIME);
+  assert.equal(l.defaultListFor('day_full'), l.DIDNT_FIT);
+  let lists = l.createLists('port-sorrel-spring-2027');
+  lists = l.addItem(lists, { place: 'signal-hill-lookout', place_id: 'FixtureTcSignalHillLookout', reason: 'kept for later', code: 'owner_choice', added_on: '2027-05-02' });
+  lists = l.addItem(lists, { place: 'sorrel-tea-house', place_id: 'FixtureTcSorrelTeaHouse', reason: 'scored 71, not shown', code: 'not_shown', added_on: '2027-05-02' });
+  assert.deepEqual(lists.map((x) => x.name), [l.DIDNT_FIT, l.NEXT_TIME, l.SAVED_BY_YOU, l.GEMS_NOT_CHOSEN]);
+  for (const list of lists) assert.deepEqual(s.validate(list, 'later-list').errors, [], list.name);
+  assert.equal(lists[2].description, l.LIST_DESCRIPTIONS[l.SAVED_BY_YOU]);
+  assert.ok(l.PLACE_STATUSES.includes('chosen'));
+  assert.equal(l.setStatus([{ id: 'a', status: 'candidate' }], 'a', 'chosen')[0].status, 'chosen');
+});
+
 // Developed by: LightAISolutions

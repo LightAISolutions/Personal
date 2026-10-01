@@ -45,7 +45,15 @@ export function checkTrip(t) {
 }
 
 export function checkPlace(p) {
-  return p.booking && !isDate(p.booking.date) ? [{ path: '/booking/date', message: 'not a calendar date' }] : [];
+  const errs = [];
+  const e = (path, message) => errs.push({ path, message });
+  if (p.booking && !isDate(p.booking.date)) e('/booking/date', 'not a calendar date');
+  for (const k of ['last_researched', 'last_verified']) if (p[k] !== undefined && !isDate(p[k])) e('/' + k, 'not a calendar date');
+  (p.history || []).forEach((h, i) => {
+    if (!isDate(h.on)) e(`/history/${i}/on`, 'not a calendar date');
+    else if (i && isDate(p.history[i - 1].on) && h.on < p.history[i - 1].on) e(`/history/${i}/on`, 'history runs oldest first');
+  });
+  return errs;
 }
 
 export function checkSnapshot(s) {
@@ -167,12 +175,111 @@ export function checkPlan(p) {
       if (scheduled.has(it.place)) e(`/later/${i}/items/${j}/place`, `"${it.place}" is both scheduled and in a Later list`);
     });
   });
+  // Owner choices (planTrip input.choices): picks were the whole pool, so a place the owner did not pick may stay a
+  // plain candidate outside every day and every list; skipped places are rejected; kept-for-later ones are never scheduled.
+  const ch = p.choices || null;
+  const picks = new Set(ch ? ch.picks : []), keep = new Set(ch ? ch.later : []), skip = new Set(ch ? ch.skip : []);
+  if (ch) {
+    const seen = new Map();
+    for (const name of ['picks', 'later', 'skip']) {
+      ch[name].forEach((slug, j) => {
+        if (!keys.has(slug)) e(`/choices/${name}/${j}`, `unknown place "${slug}"`);
+        if (seen.has(slug)) e(`/choices/${name}/${j}`, `"${slug}" is also in choices.${seen.get(slug)}`);
+        else seen.set(slug, name);
+      });
+    }
+    for (const slug of skip) {
+      if (scheduled.has(slug)) e('/choices/skip', `"${slug}" was skipped but is scheduled`);
+      if (later.has(slug)) e('/choices/skip', `"${slug}" was skipped but is in a Later list`);
+      if (keys.has(slug) && p.places[keys.get(slug)].status !== 'rejected') e(`/places/${keys.get(slug)}/status`, `"${slug}" was skipped; status must be "rejected"`);
+    }
+    for (const slug of keep) if (scheduled.has(slug)) e('/choices/later', `"${slug}" was kept for later but is scheduled`);
+  }
+  const unpicked = (pl) => ch && picks.size > 0 && pl.status === 'candidate' && !picks.has(pl.id) && !keep.has(pl.id) && !skip.has(pl.id);
   p.places.forEach((pl, i) => {
     if (pl.status === 'rejected') return;
-    if (!scheduled.has(pl.id) && !later.has(pl.id)) e(`/places/${i}`, `"${pl.id}" is neither scheduled nor in a Later list`);
+    if (!scheduled.has(pl.id) && !later.has(pl.id) && !unpicked(pl)) e(`/places/${i}`, `"${pl.id}" is neither scheduled nor in a Later list`);
     if (scheduled.has(pl.id) && pl.status !== 'scheduled') e(`/places/${i}/status`, `"${pl.id}" is in a day plan; status must be "scheduled"`);
     if (!scheduled.has(pl.id) && pl.status === 'scheduled') e(`/places/${i}/status`, `"${pl.id}" is marked scheduled but in no day plan`);
   });
+  return errs;
+}
+
+// ── Payloads of the pack's envelope types (SPEC §2; TG-PHASE-4.md §3) ──
+
+/** Whole-payload character ceiling for the digests (the core's own limit is 65 536; SPEC §2). */
+export const DIGEST_MAX_CHARS = 60000;
+const sizeCheck = (x, errs) => {
+  const n = JSON.stringify(x).length;
+  if (n > DIGEST_MAX_CHARS) errs.push({ path: '/', message: `payload is ${n} characters (at most ${DIGEST_MAX_CHARS})` });
+};
+const dupes = (arr, key, base, label, errs) => {
+  const seen = new Set();
+  arr.forEach((x, i) => {
+    if (seen.has(x[key])) errs.push({ path: `${base}/${i}/${key}`, message: `duplicate ${label} ${JSON.stringify(x[key])}` });
+    seen.add(x[key]);
+  });
+};
+
+export function checkShortlist(s) {
+  const errs = [];
+  const slugs = new Map();
+  s.groups.forEach((g, gi) => {
+    dupes(g.items, 'n', `/groups/${gi}/items`, 'number', errs);
+    g.items.forEach((it, i) => {
+      if (slugs.has(it.slug)) errs.push({ path: `/groups/${gi}/items/${i}/slug`, message: `"${it.slug}" is already listed at ${slugs.get(it.slug)}` });
+      else slugs.set(it.slug, `/groups/${gi}/items/${i}`);
+    });
+    if (g.gems_shown !== undefined && g.gems_shown > g.items.length) errs.push({ path: `/groups/${gi}/gems_shown`, message: `${g.gems_shown} gems shown but the group has ${g.items.length} items` });
+  });
+  dupes(s.groups, 'id', '/groups', 'group', errs);
+  return errs;
+}
+
+export function checkTripFacts(t) {
+  const errs = [];
+  dupes(t.found, 'n', '/found', 'number', errs);
+  t.found.forEach((f, i) => {
+    for (const k of ['start', 'end']) if (typeof f[k] === 'string' && !isDate(f[k])) errs.push({ path: `/found/${i}/${k}`, message: 'not a calendar date' });
+    if (isDate(f.start) && isDate(f.end) && f.end < f.start) errs.push({ path: `/found/${i}/end`, message: 'before start' });
+  });
+  if (new Set(t.missing).size !== t.missing.length) errs.push({ path: '/missing', message: 'duplicate entry' });
+  return errs;
+}
+
+export function checkPlanDigest(d) {
+  const errs = [];
+  if (!isDate(d.verified_on)) errs.push({ path: '/verified_on', message: 'not a calendar date' });
+  d.days.forEach((day, i) => {
+    if (!isDate(day.date)) errs.push({ path: `/days/${i}/date`, message: 'not a calendar date' });
+    else if (i && day.date <= d.days[i - 1].date) errs.push({ path: `/days/${i}/date`, message: 'days must be in date order without duplicates' });
+    dupes(day.stops, 'n', `/days/${i}/stops`, 'stop number', errs);
+  });
+  dupes(d.later, 'slug', '/later', 'place', errs);
+  sizeCheck(d, errs);
+  return errs;
+}
+
+export function checkProfileSummary(p) {
+  return !isDate(p.updated.slice(0, 10)) || Number.isNaN(Date.parse(p.updated)) ? [{ path: '/updated', message: 'not a real date-time' }] : [];
+}
+
+export function checkPrefsReview(r) {
+  const errs = [];
+  dupes(r.items, 'cid', '/items', 'candidate', errs);
+  r.items.forEach((it, i) => it.buttons.forEach((row, j) => row.forEach((b, k) => {
+    if (b.data.split(':')[1] !== it.cid) errs.push({ path: `/items/${i}/buttons/${j}/${k}/data`, message: `must name ${it.cid}` });
+  })));
+  return errs;
+}
+
+export function checkPlacesDigest(d) {
+  const errs = [];
+  d.places.forEach((pl, i) => {
+    for (const k of ['last_researched', 'last_verified']) if (typeof pl[k] === 'string' && !isDate(pl[k])) errs.push({ path: `/places/${i}/${k}`, message: 'not a calendar date' });
+  });
+  dupes(d.places, 'slug', '/places', 'place', errs);
+  sizeCheck(d, errs);
   return errs;
 }
 

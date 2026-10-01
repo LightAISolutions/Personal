@@ -14,6 +14,7 @@ test('output passes core validateEnvelope and uses the canonical file name; the 
   const { ctx } = H.loadGas();
   assert.deepEqual([...TYPES], [...ctx.ENVELOPE_TYPES]);
   assert.deepEqual(typesFor('hello'), [...TYPES, 'greeting']);
+  assert.deepEqual(typesFor('tour-guide'), [...TYPES, 'prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest']);
   assert.throws(() => typesFor('nope'), /unknown pack/);
   const now = new Date('2026-09-29T17:03:07.123Z');
   ctx.__TEST_NOW = now.getTime();
@@ -60,6 +61,15 @@ test('CLI: --pack adds the pack types, --out writes the file, errors exit 1 and 
   assert.equal(JSON.parse(fs.readFileSync(path.join(dir, r.file_name), 'utf8')).producer, 'hello-skill');
   assert.equal(spawnSync(process.execPath, [TOOL], { encoding: 'utf8' }).status, 2);
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('--pack NAME validates a pack type\'s payload when the pack ships schemas/index.mjs validatePayload', async () => {
+  const { packPayloadErrors } = await import('../tools/envelope.mjs');
+  assert.deepEqual(await packPayloadErrors('tour-guide', 'profile_summary', { text: 'Relaxed pace.', dimensions_count: 3, updated: '2027-04-28T08:15:00Z' }), []);
+  assert.deepEqual(await packPayloadErrors('tour-guide', 'profile_summary', { text: 'Relaxed pace.', dimensions_count: 3 }), ['payload: missing required "updated"']);
+  assert.deepEqual(await packPayloadErrors('tour-guide', 'profile_summary', 'not an object'), [], 'non-objects are reported by makeEnvelope');
+  assert.deepEqual(await packPayloadErrors('hello', 'greeting', {}), []);
+  await assert.rejects(packPayloadErrors('nope', 'x', {}), /unknown pack/);
 });
 
 // Developed by: LightAISolutions

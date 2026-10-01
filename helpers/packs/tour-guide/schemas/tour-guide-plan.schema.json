@@ -24,6 +24,17 @@
         "within_ceiling": { "type": "boolean" }
       }
     },
+    "choices": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["picks", "later", "skip"],
+      "description": "The owner's shortlist choices the plan was built with (planTrip input.choices, after promoted places joined picks). Absent when the plan was built without choices.",
+      "properties": {
+        "picks": { "type": "array", "maxItems": 500, "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" } },
+        "later": { "type": "array", "maxItems": 500, "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" } },
+        "skip": { "type": "array", "maxItems": 500, "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" } }
+      }
+    },
     "usage": {
       "type": "object",
       "additionalProperties": false,

@@ -1,7 +1,9 @@
 /**
  * Tour Guide planner — day plans over Google Maps (plan §5.4). Library only; the brain's `plan-days` skill drives it.
- *   planTrip({ trip, places, snapshots, estimates, notes?, profile, calibration?, maps, build_id, now, seed?, chooseMinutes?, railEstimates? }) → Plan
+ *   planTrip({ trip, places, snapshots, estimates, notes?, profile, calibration?, maps, build_id, now, seed?, chooseMinutes?, railEstimates?, choices? }) → Plan
  *   replanDays(plan, dates, input) → Plan        (every other day is byte-identical; Later items outside the pool are kept)
+ * choices = { picks?, later?, skip? } by place slug (planner-choices.mjs): picks are the whole pool, later → "Saved by
+ * you" (owner_choice), skip → rejected. Without choices the output is exactly what it was before choices existed.
  *   estimateBudget(input) → budget               (no API call; what planTrip would spend and whether the ledger allows it)
  * `maps` is a Maps-kit client (createMapsClient); every unit it spends is counted by its ledger before sending.
  * Contract (entities, codes, warnings): helpers/packs/tour-guide/README.md. Design and limits: helpers/decisions/WP-3b.md.
@@ -11,6 +13,7 @@ import { assign } from './planner-assign.mjs';
 import { planDay } from './planner-day.mjs';
 import { budgetFor, PlanBudgetError, SKU } from './planner-budget.mjs';
 import { mergeLater } from './planner-later.mjs';
+import { normalizeChoices, applyChoices, choiceStatus, OWNER_CHOICE_REASON } from './planner-choices.mjs';
 import { createRng } from './planner-rng.mjs';
 import { dateIn } from './planner-time.mjs';
 import { withRailEstimates } from './planner-rail.mjs';
@@ -21,8 +24,9 @@ export { hoursOn, earliestFit, unfitCode } from './planner-hours.mjs';
 export { assign, FAR_KM, CAP, dayCapacity } from './planner-assign.mjs';
 export { prepare, buildDays, lodgingForNight, modeFor, PACE } from './planner-input.mjs';
 export { localToIso, weekdayOf, dateRange, toMin, hm } from './planner-time.mjs';
-export { DIDNT_FIT, NEXT_TIME } from './planner-later.mjs';
+export { DIDNT_FIT, NEXT_TIME, SAVED_BY_YOU } from './planner-later.mjs';
 export { withRailEstimates, railEstimate, railLine, rideMinutes, walkMinutes, RAIL, STATION_TYPES } from './planner-rail.mjs';
+export { normalizeChoices, applyChoices, POOL_STATUSES, CHOICE_LISTS, OWNER_CHOICE_REASON } from './planner-choices.mjs';
 
 const fail = (m) => { throw new Error('planner: ' + m); };
 
@@ -39,8 +43,15 @@ async function context(input) {
   return ctx;
 }
 
-/** Shared build: plan `dates` from `pool`, merge with `prior` (a previous Plan) when re-planning. */
-async function build(ctx, input, { dates, pool, prior }) {
+/** Resolve choices against the places: null without choices, else applyChoices() plus the original places. */
+function resolveChoices(places, raw, explicit) {
+  if (!Array.isArray(places)) return null;
+  const c = normalizeChoices(raw, places);
+  return c ? applyChoices(places, c, { explicit }) : null;
+}
+
+/** Shared build: plan `dates` from `pool`, merge with `prior` (a previous Plan) when re-planning; `ch` = resolved choices. */
+async function build(ctx, input, { dates, pool, prior, ch = null }) {
   const days = ctx.days.filter((d) => dates.includes(d.date));
   const { byDate, later: unassigned } = assign({ days, cands: pool, rng: ctx.rng });
   const budget = budgetFor({ days, byDate, ledger: input.maps.ledger || null });
@@ -58,46 +69,63 @@ async function build(ctx, input, { dates, pool, prior }) {
   const poolIds = new Set(pool.map((c) => c.id));
   const allDays = prior ? prior.days.map((d) => (dates.includes(d.date) ? built.find((b) => b.date === d.date) : JSON.parse(JSON.stringify(d)))) : built;
   const scheduled = new Set(allDays.flatMap((d) => d.stops.map((s) => s.place)));
-  const later = mergeLater({ trip_id: ctx.trip.id, previous: prior ? prior.later : null, pool: poolIds, dropped, saved: ctx.saved, today: ctx.today });
+  const extra = ch && ch.explicit ? {
+    refresh: new Set([...ch.keep, ...ch.skip]),
+    kept: input.places.filter((p) => ch.keep.has(p.id)).map((p) => ({ id: p.id, place_id: p.place_id, reason: OWNER_CHOICE_REASON }))
+  } : {};
+  const later = mergeLater({ trip_id: ctx.trip.id, previous: prior ? prior.later : null, pool: poolIds, dropped, saved: ctx.saved, today: ctx.today, ...extra });
   const inLater = new Set(later.flatMap((l) => l.items.map((it) => it.place)));
   const places = input.places.map((p) => {
     const { scheduled_hint, ...rest } = p;
+    if (ch) return choiceStatus(p, rest, { ch, scheduled, inLater });
     if (scheduled.has(p.id)) return { ...rest, status: 'scheduled' };
     if (inLater.has(p.id)) return { ...rest, status: 'saved-for-later' };
     return poolIds.has(p.id) && p.status === 'scheduled' ? { ...rest, status: 'candidate' } : rest;
   });
   const skus = { ...budget.skus };
   if (prior && prior.budget && prior.budget.skus) for (const [k, v] of Object.entries(prior.budget.skus)) skus[k] = (skus[k] || 0) + v;
-  return {
+  const plan = {
     v: 1, build_id: String(input.build_id), trip_id: ctx.trip.id, built_on: ctx.today,
     days: allDays.sort((a, b) => a.date.localeCompare(b.date)), later, places,
     budget: { skus, usd_estimate: budget.usd_estimate + (prior && prior.budget ? prior.budget.usd_estimate : 0), within_ceiling: budget.within_ceiling },
     usage: { matrix_elements: usage.matrix_elements + (prior ? prior.usage.matrix_elements : 0), route_calls: usage.route_calls + (prior ? prior.usage.route_calls : 0) }
   };
+  if (ch) plan.choices = { picks: [...ch.effective.picks].sort(), later: [...ch.effective.later].sort(), skip: [...ch.effective.skip].sort() };
+  return plan;
 }
 
 export async function planTrip(input) {
-  const ctx = await context(input);
-  return build(ctx, input, { dates: ctx.days.map((d) => d.date), pool: ctx.cands, prior: null });
+  const ch = resolveChoices(input && input.places, input && input.choices, true);
+  const ctx = await context(ch ? { ...input, places: ch.places } : input);
+  return build(ctx, input, { dates: ctx.days.map((d) => d.date), pool: ctx.cands, prior: null, ch });
 }
 
 /**
  * replanDays(plan, dates, input): the pool is every place scheduled on `dates` in `plan` plus every place whose status
  * is `candidate` (a promoted place carries `scheduled_hint`); places scheduled on other days are untouched.
+ * Choices: `input.choices` when given (explicit; `null` = none), else the choices the plan recorded (a pool filter).
  */
 export async function replanDays(plan, dates, input) {
   if (!plan || plan.v !== 1 || !Array.isArray(plan.days)) fail('replanDays needs a v1 Plan');
   if (!Array.isArray(dates) || !dates.length) fail('replanDays needs at least one date');
   for (const d of dates) if (!plan.days.some((x) => x.date === d)) fail(`date ${d} is not in the plan`);
-  const ctx = await context({ ...input, places: input.places || plan.places, build_id: input.build_id || plan.build_id });
-  const elsewhere = new Set(plan.days.filter((d) => !dates.includes(d.date)).flatMap((d) => d.stops.map((s) => s.place)));
+  const places = input.places || plan.places;
+  const explicit = input.choices !== undefined;
+  const ch = resolveChoices(places, explicit ? input.choices : plan.choices || null, explicit);
+  const ctx = await context({ ...input, places: ch ? ch.places : places, build_id: input.build_id || plan.build_id });
+  const elsewhereDay = new Map(plan.days.filter((d) => !dates.includes(d.date)).flatMap((d) => d.stops.map((s) => [s.place, d.date])));
+  const elsewhere = new Set(elsewhereDay.keys());
+  if (ch && ch.explicit) {
+    for (const slug of [...ch.keep, ...ch.skip]) if (elsewhereDay.has(slug)) fail(`choices keep or skip "${slug}", which is scheduled on ${elsewhereDay.get(slug)}, a day not being re-planned (re-plan that day too)`);
+  }
   const pool = ctx.cands.filter((c) => !elsewhere.has(c.id));
-  return build(ctx, { ...input, places: input.places || plan.places, build_id: input.build_id || plan.build_id }, { dates, pool, prior: plan });
+  return build(ctx, { ...input, places, build_id: input.build_id || plan.build_id }, { dates, pool, prior: plan, ch });
 }
 
 /** What a planTrip would spend, checked against the ledger — no API call. */
 export async function estimateBudget(input) {
-  const ctx = await context(input);
+  const ch = resolveChoices(input && input.places, input && input.choices, true);
+  const ctx = await context(ch ? { ...input, places: ch.places } : input);
   const { byDate } = assign({ days: ctx.days, cands: ctx.cands, rng: ctx.rng });
   return budgetFor({ days: ctx.days, byDate, ledger: input.maps.ledger || null });
 }

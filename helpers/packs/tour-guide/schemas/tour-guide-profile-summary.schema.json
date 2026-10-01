@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-profile-summary.schema.json",
+  "title": "Tour Guide profile summary (payload of the `profile_summary` envelope)",
+  "description": "A short plain-text summary of the owner-confirmed travel profile, how many dimensions it covers and when it changed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["text", "dimensions_count", "updated"],
+  "properties": {
+    "v": { "const": 1 },
+    "kind": { "const": "profile_summary" },
+    "text": { "type": "string", "minLength": 1, "maxLength": 1200 },
+    "dimensions_count": { "type": "integer", "minimum": 0, "maximum": 1000 },
+    "updated": { "type": "string", "maxLength": 40, "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T([01]\\d|2[0-3]):[0-5]\\d(:[0-5]\\d(\\.\\d{1,9})?)?(Z|[+-]([01]\\d|2[0-3]):[0-5]\\d)$", "description": "An ISO 8601 date-time with a zone (Z or ±HH:MM)." }
+  }
+}

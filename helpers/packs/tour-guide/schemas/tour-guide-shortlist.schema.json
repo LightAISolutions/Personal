@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-shortlist.schema.json",
+  "title": "Tour Guide shortlist (payload of the `shortlist` envelope)",
+  "description": "One /plan round's numbered shortlist for the owner to pick from: activities and food, each item with the skill's own why-you line, fit, minutes, area, a Maps link and confidence labels. schemas/index.mjs also checks: item numbers unique within a group, slugs unique across groups, gems_shown within the group's items.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["trip", "run_id", "round", "groups", "more"],
+  "properties": {
+    "v": { "const": 1 },
+    "kind": { "const": "shortlist" },
+    "trip": { "$ref": "#/$defs/slug" },
+    "run_id": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "round": { "type": "integer", "minimum": 0, "maximum": 50 },
+    "more": { "anyOf": [{ "type": "boolean" }, { "type": "integer", "minimum": 0, "maximum": 1000 }], "description": "Whether (or how many) more options exist beyond this round." },
+    "decided": { "type": "array", "maxItems": 200, "items": { "$ref": "#/$defs/slug" }, "description": "Slugs the owner already decided in earlier rounds." },
+    "groups": {
+      "type": "array",
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "items"],
+        "properties": {
+          "id": { "enum": ["activities", "food"] },
+          "gems_wanted": { "type": "integer", "minimum": 0, "maximum": 8, "description": "The 💎 floor for this group (Gem Funnel)." },
+          "gems_shown": { "type": "integer", "minimum": 0, "maximum": 8, "description": "How many 💎 items the group actually carries; below gems_wanted the shortlist says the floor could not be met." },
+          "items": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/item" } }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+    "date": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "slug", "name", "why_you", "fit", "est_minutes", "area", "maps_url", "labels"],
+      "properties": {
+        "n": { "type": "integer", "minimum": 1, "maximum": 999, "description": "1-based number the owner taps or types." },
+        "slug": { "$ref": "#/$defs/slug" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "why_you": { "type": "string", "minLength": 0, "maxLength": 160, "description": "The skill's own words; never review text." },
+        "fit": { "type": "number", "minimum": 0, "maximum": 1 },
+        "est_minutes": { "type": "integer", "minimum": 0, "maximum": 1440 },
+        "area": { "type": "string", "maxLength": 120 },
+        "maps_url": { "type": "string", "maxLength": 2000, "pattern": "^https://\\S+$" },
+        "labels": { "type": "array", "maxItems": 4, "items": { "enum": ["verified", "single source", "conflicting", "unverified"] } },
+        "place_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,300}$" },
+        "new": { "type": "boolean" },
+        "gem": { "type": "boolean" },
+        "gem_line": { "type": "string", "maxLength": 200, "description": "The one-sentence \"why it's a gem\", from numbers and sources." },
+        "seen_before": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["trip", "on", "outcome"],
+          "description": "The places repository knows this place from an earlier trip.",
+          "properties": {
+            "trip": { "$ref": "#/$defs/slug" },
+            "on": { "$ref": "#/$defs/date" },
+            "outcome": { "enum": ["chosen", "later", "skipped", "visited"] }
+          }
+        },
+        "changes": { "type": "array", "maxItems": 10, "items": { "type": "string", "minLength": 1, "maxLength": 120 }, "description": "The brain's own lines on what changed since our earlier claims." },
+        "dims": {
+          "type": "array",
+          "maxItems": 10,
+          "description": "Vocabulary dimensions the item maps to (the learning loop's evidence).",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["dimension", "value"],
+            "properties": {
+              "dimension": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,31}$" },
+              "value": { "type": "string", "minLength": 1, "maxLength": 80 }
+            }
+          }
+        }
+      }
+    }
+  }
+}
