@@ -1,0 +1,209 @@
+[
+  {
+    "v": 1,
+    "id": "lantern-museum",
+    "place_id": "FixtureTcLanternMuseum",
+    "name": "Sorrel Lantern Museum",
+    "category": "museum",
+    "tags": [
+      "history",
+      "lanterns"
+    ],
+    "status": "candidate",
+    "activity": "museum highlights",
+    "priority": 1,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "maritime-archive",
+    "place_id": "FixtureTcMaritimeArchive",
+    "name": "Maritime Archive",
+    "category": "museum",
+    "tags": [
+      "history",
+      "harbour"
+    ],
+    "status": "candidate",
+    "activity": "ship models and charts",
+    "priority": 2,
+    "why_fit": "Closed on Thursdays: only Wednesday or Friday work.",
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "tram-depot-gallery",
+    "place_id": "FixtureTcTramDepotGallery",
+    "name": "Tram Depot Gallery",
+    "category": "museum",
+    "tags": [
+      "transport"
+    ],
+    "status": "candidate",
+    "activity": "restored trams",
+    "priority": 2,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "old-quay-fish-market",
+    "place_id": "FixtureTcOldQuayFishMarket",
+    "name": "Old Quay Fish Market",
+    "category": "market",
+    "tags": [
+      "food",
+      "morning"
+    ],
+    "status": "candidate",
+    "activity": "morning market browse",
+    "priority": 2
+  },
+  {
+    "v": 1,
+    "id": "saffron-row-market",
+    "place_id": "FixtureTcSaffronRowMarket",
+    "name": "Saffron Row Market",
+    "category": "market",
+    "tags": [
+      "food",
+      "spices"
+    ],
+    "status": "candidate",
+    "activity": "spice stalls and snacks",
+    "priority": 2
+  },
+  {
+    "v": 1,
+    "id": "moonlight-night-market",
+    "place_id": "FixtureTcMoonlightNightMarket",
+    "name": "Moonlight Night Market",
+    "category": "market",
+    "tags": [
+      "food",
+      "evening"
+    ],
+    "status": "candidate",
+    "activity": "evening street food",
+    "priority": 1,
+    "why_fit": "Opens at 18:30, after the 18:00 day end: an evening outing."
+  },
+  {
+    "v": 1,
+    "id": "signal-hill-lookout",
+    "place_id": "FixtureTcSignalHillLookout",
+    "name": "Signal Hill Lookout",
+    "category": "viewpoint",
+    "tags": [
+      "views",
+      "outdoors"
+    ],
+    "status": "candidate",
+    "activity": "harbour panorama",
+    "priority": 1
+  },
+  {
+    "v": 1,
+    "id": "tidewater-botanic-garden",
+    "place_id": "FixtureTcTidewaterBotanicGarden",
+    "name": "Tidewater Botanic Garden",
+    "category": "park",
+    "tags": [
+      "gardens",
+      "outdoors"
+    ],
+    "status": "candidate",
+    "activity": "glasshouse and rose walk",
+    "priority": 2
+  },
+  {
+    "v": 1,
+    "id": "harbour-district",
+    "place_id": "FixtureTcHarbourDistrict",
+    "name": "Harbour District",
+    "category": "neighbourhood",
+    "tags": [
+      "walk",
+      "waterfront"
+    ],
+    "status": "candidate",
+    "activity": "waterfront stroll",
+    "priority": 2
+  },
+  {
+    "v": 1,
+    "id": "old-town-lanes",
+    "place_id": "FixtureTcOldTownLanes",
+    "name": "Old Town Lanes",
+    "category": "neighbourhood",
+    "tags": [
+      "walk",
+      "architecture"
+    ],
+    "status": "candidate",
+    "activity": "lanes and courtyards",
+    "priority": 1
+  },
+  {
+    "v": 1,
+    "id": "st-brannoc-church",
+    "place_id": "FixtureTcStBrannocChurch",
+    "name": "St Brannoc's Church",
+    "category": "church",
+    "tags": [
+      "architecture"
+    ],
+    "status": "candidate",
+    "activity": "painted ceiling",
+    "priority": 2,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "clock-tower-climb",
+    "place_id": "FixtureTcClockTowerClimb",
+    "name": "Clock Tower Climb",
+    "category": "other",
+    "tags": [
+      "views",
+      "guided"
+    ],
+    "status": "candidate",
+    "activity": "guided climb",
+    "priority": 1,
+    "why_fit": "Booked guided climb on Thursday at 11:00.",
+    "booking": {
+      "date": "2027-05-13",
+      "time": "11:00",
+      "ref": "FIXTURE-CT-0513"
+    }
+  },
+  {
+    "v": 1,
+    "id": "bluebell-ceramics-studio",
+    "place_id": "FixtureTcBluebellCeramicsStudio",
+    "name": "Bluebell Ceramics Studio",
+    "category": "shop",
+    "tags": [
+      "crafts"
+    ],
+    "status": "candidate",
+    "activity": "studio shop",
+    "priority": 3,
+    "why_fit": "No published opening hours.",
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "sorrel-tea-house",
+    "place_id": "FixtureTcSorrelTeaHouse",
+    "name": "Sorrel Tea House",
+    "category": "cafe",
+    "tags": [
+      "food",
+      "break"
+    ],
+    "status": "candidate",
+    "activity": "tea and almond cake",
+    "priority": 2
+  }
+]

@@ -1,0 +1,1295 @@
+[
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlBrackenfordInn",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.2,
+      "lng": -40.5
+    },
+    "content": {
+      "display_name": "Brackenford Inn",
+      "address": "2 Mill Street, Brackenford, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 300,
+      "website": "https://brackenford-inn.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/brackenford-inn",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlGullhavenLodge",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.42,
+      "lng": -40.18
+    },
+    "content": {
+      "display_name": "Gullhaven Lodge",
+      "address": "Harbour Road, Gullhaven, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 300,
+      "website": "https://gullhaven-lodge.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/gullhaven-lodge",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlMarrowBayHotel",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.15,
+      "lng": -39.9
+    },
+    "content": {
+      "display_name": "Marrow Bay Hotel",
+      "address": "1 Strand, Marrow Bay, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 300,
+      "website": "https://marrow-bay-hotel.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/marrow-bay-hotel",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlBrackenfordOldMill",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.2046,
+      "lng": -40.4931
+    },
+    "content": {
+      "display_name": "Brackenford Old Mill",
+      "address": "Brackenford Old Mill, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Closed",
+          "Tuesday: 10:00 AM – 5:00 PM",
+          "Wednesday: 10:00 AM – 5:00 PM",
+          "Thursday: 10:00 AM – 5:00 PM",
+          "Friday: 10:00 AM – 5:00 PM",
+          "Saturday: 10:00 AM – 5:00 PM",
+          "Sunday: 10:00 AM – 5:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 610,
+      "website": "https://brackenford-old-mill.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/brackenford-old-mill",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlBrackenfordHarbourMarket",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.1978,
+      "lng": -40.5036
+    },
+    "content": {
+      "display_name": "Brackenford Harbour Market",
+      "address": "Brackenford Harbour Market, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Closed",
+          "Tuesday: 8:00 AM – 1:00 PM",
+          "Wednesday: Closed",
+          "Thursday: 8:00 AM – 1:00 PM",
+          "Friday: Closed",
+          "Saturday: 8:00 AM – 1:00 PM",
+          "Sunday: Closed"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 13,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 13,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 13,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 380,
+      "website": "https://brackenford-harbour-market.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/brackenford-harbour-market",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlBrackenfordBakery",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.2012,
+      "lng": -40.4985
+    },
+    "content": {
+      "display_name": "Brackenford Bakery",
+      "address": "Brackenford Bakery, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 7:00 AM – 3:00 PM",
+          "Tuesday: 7:00 AM – 3:00 PM",
+          "Wednesday: 7:00 AM – 3:00 PM",
+          "Thursday: 7:00 AM – 3:00 PM",
+          "Friday: 7:00 AM – 3:00 PM",
+          "Saturday: 7:00 AM – 3:00 PM",
+          "Sunday: 7:00 AM – 3:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 15,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.7,
+      "review_count": 905,
+      "website": "https://brackenford-bakery.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/brackenford-bakery",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlHeronRidgeTrail",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.28,
+      "lng": -40.415
+    },
+    "content": {
+      "display_name": "Heron Ridge Trail",
+      "address": "Heron Ridge Trail, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.8,
+      "review_count": 1430,
+      "website": "https://heron-ridge-trail.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/heron-ridge-trail",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlCairnPointOverlook",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.355,
+      "lng": -40.3
+    },
+    "content": {
+      "display_name": "Cairn Point Overlook",
+      "address": "Cairn Point Overlook, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.9,
+      "review_count": 2210,
+      "website": "https://cairn-point-overlook.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/cairn-point-overlook",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlTollbyVillage",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.315,
+      "lng": -40.255
+    },
+    "content": {
+      "display_name": "Tollby village",
+      "address": "Tollby village, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.5,
+      "review_count": 330,
+      "website": "https://tollby-village.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/tollby-village",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlGullhavenLighthouse",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.429,
+      "lng": -40.169
+    },
+    "content": {
+      "display_name": "Gullhaven Lighthouse",
+      "address": "Gullhaven Lighthouse, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Closed",
+          "Tuesday: 10:00 AM – 6:00 PM",
+          "Wednesday: 10:00 AM – 6:00 PM",
+          "Thursday: Closed",
+          "Friday: 10:00 AM – 6:00 PM",
+          "Saturday: 10:00 AM – 6:00 PM",
+          "Sunday: 10:00 AM – 6:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.7,
+      "review_count": 1180,
+      "website": "https://gullhaven-lighthouse.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/gullhaven-lighthouse",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlGullhavenFishShack",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.4215,
+      "lng": -40.187
+    },
+    "content": {
+      "display_name": "Gullhaven Fish Shack",
+      "address": "Gullhaven Fish Shack, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 11:30 AM – 9:00 PM",
+          "Tuesday: 11:30 AM – 9:00 PM",
+          "Wednesday: 11:30 AM – 9:00 PM",
+          "Thursday: 11:30 AM – 9:00 PM",
+          "Friday: 11:30 AM – 9:00 PM",
+          "Saturday: 11:30 AM – 9:00 PM",
+          "Sunday: 11:30 AM – 9:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 11,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 11,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 11,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 11,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 11,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 11,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 11,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 21,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.6,
+      "review_count": 1720,
+      "website": "https://gullhaven-fish-shack.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/gullhaven-fish-shack",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlSealCove",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.33,
+      "lng": -40.03
+    },
+    "content": {
+      "display_name": "Seal Cove",
+      "address": "Seal Cove, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 6:00 AM – 9:00 PM",
+          "Tuesday: 6:00 AM – 9:00 PM",
+          "Wednesday: 6:00 AM – 9:00 PM",
+          "Thursday: 6:00 AM – 9:00 PM",
+          "Friday: 6:00 AM – 9:00 PM",
+          "Saturday: 6:00 AM – 9:00 PM",
+          "Sunday: 6:00 AM – 9:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 21,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.6,
+      "review_count": 880,
+      "website": "https://seal-cove.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/seal-cove",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlWrenwickVillage",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.26,
+      "lng": -39.975
+    },
+    "content": {
+      "display_name": "Wrenwick village",
+      "address": "Wrenwick village, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 290,
+      "website": "https://wrenwick-village.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/wrenwick-village",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlMarrowBayAbbey",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.1565,
+      "lng": -39.908
+    },
+    "content": {
+      "display_name": "Marrow Bay Abbey",
+      "address": "Marrow Bay Abbey, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 9:00 AM – 5:00 PM",
+          "Tuesday: 9:00 AM – 5:00 PM",
+          "Wednesday: 9:00 AM – 5:00 PM",
+          "Thursday: 9:00 AM – 5:00 PM",
+          "Friday: 9:00 AM – 5:00 PM",
+          "Saturday: 9:00 AM – 5:00 PM",
+          "Sunday: 1:00 PM – 5:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.5,
+      "review_count": 640,
+      "website": "https://marrow-bay-abbey.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/marrow-bay-abbey",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlMarrowBayGallery",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.147,
+      "lng": -39.892
+    },
+    "content": {
+      "display_name": "Marrow Bay Gallery",
+      "address": "Marrow Bay Gallery, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Closed",
+          "Tuesday: Closed",
+          "Wednesday: 11:00 AM – 6:00 PM",
+          "Thursday: 11:00 AM – 6:00 PM",
+          "Friday: 11:00 AM – 6:00 PM",
+          "Saturday: 11:00 AM – 6:00 PM",
+          "Sunday: 11:00 AM – 6:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 210,
+      "website": "https://marrow-bay-gallery.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/marrow-bay-gallery",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlBlackwaterFalls",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.13,
+      "lng": -40.2
+    },
+    "content": {
+      "display_name": "Blackwater Falls Walk",
+      "address": "Blackwater Falls Walk, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.7,
+      "review_count": 990,
+      "website": "https://blackwater-falls.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/blackwater-falls",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlKestrelFarmShop",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 41.17,
+      "lng": -40.36
+    },
+    "content": {
+      "display_name": "Kestrel Farm Shop",
+      "address": "Kestrel Farm Shop, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 9:00 AM – 5:00 PM",
+          "Tuesday: 9:00 AM – 5:00 PM",
+          "Wednesday: 9:00 AM – 5:00 PM",
+          "Thursday: 9:00 AM – 5:00 PM",
+          "Friday: 9:00 AM – 5:00 PM",
+          "Saturday: 9:00 AM – 5:00 PM",
+          "Sunday: Closed"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.6,
+      "review_count": 450,
+      "website": "https://kestrel-farm-shop.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/kestrel-farm-shop",
+      "time_zone": "Etc/GMT+3"
+    }
+  },
+  {
+    "build_id": "fixture-build-driving-loop",
+    "place_id": "FixtureDlNorthcapeSeaStacks",
+    "fetched_at": "2027-06-01T12:00:00.000Z",
+    "location": {
+      "lat": 42.65,
+      "lng": -40.35
+    },
+    "content": {
+      "display_name": "Northcape Sea Stacks",
+      "address": "Northcape Sea Stacks, Isle of Carrow, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.9,
+      "review_count": 160,
+      "website": "https://northcape-sea-stacks.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/northcape-sea-stacks",
+      "time_zone": "Etc/GMT+3"
+    }
+  }
+]
