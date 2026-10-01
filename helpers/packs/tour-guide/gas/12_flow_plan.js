@@ -2,7 +2,7 @@
  * Tour Guide pack — the /plan <destination> journey (WP-5a; plan §5.9, decisions 15–17, 22, 26; contract §1.4).
  * A core flow `plan` whose state always carries `trip` (the slug) and `stage`:
  *   intake   → research (scope intake) is out; paused until WP-5b resumes with event trip_facts
- *   confirm  → the facts with tf:<n>:y|e|n taps (✏️ captures the next text), then text questions for what is missing
+ *   confirm  → the facts with tf:<trip key>:<n>:y|e|n taps (✏️ captures the next text), then text questions for what is missing
  *              (dates first, the rest skippable), then research (scope new) with the confirmed values
  *   research → paused until event shortlist
  *   choose   → one message per group with sl:<run>:<g><n>:w|l|s taps; fl buttons More options · More gems (scope more,
@@ -59,14 +59,15 @@ function tgPlanChunk(head, entries, per, extraRows) {
   return msgs.map(function (m) { return m.rows.length ? { html: m.html, keyboard: tgKeyboard(m.rows) } : { html: m.html }; });
 }
 
-/** trip_facts → messages: one line per fact with ✅ ✏️ ❌ (tf:<n>:y|e|n), then what is still missing. */
+/** trip_facts → messages: one line per fact with ✅ ✏️ ❌ (tf:<trip key>:<n>:y|e|n), then what is still missing. */
 function tgPlanFactsMessages(p) {
+  var tk = tgCmdTripKey(p.trip);
   var head = '🧾 <b>What I found for ' + tgPlanTripTitle(p.trip) + '</b>' + ((p.found || []).length ? ' — ✅ keep · ✏️ correct · ❌ drop' : '');
   var entries = (p.found || []).map(function (f) {
     var dates = f.start ? ' <i>(' + tgCmdDate(f.start) + (f.end && f.end !== f.start ? ' → ' + tgCmdDate(f.end) : '') + ')</i>' : '';
     return {
       html: '<b>' + tgEscape(f.n) + '.</b> ' + tgEscape(TG_PLAN_FACT_LABEL[f.kind] || f.kind) + ': ' + tgEscape(f.text) + dates,
-      row: [{ text: f.n + ' ✅', data: cbEncode('tf', f.n, 'y') }, { text: f.n + ' ✏️', data: cbEncode('tf', f.n, 'e') }, { text: f.n + ' ❌', data: cbEncode('tf', f.n, 'n') }]
+      row: ['y', 'e', 'n'].map(function (v) { return { text: f.n + ' ' + { y: '✅', e: '✏️', n: '❌' }[v], data: cbEncode('tf', tk, f.n, v) }; })
     };
   });
   if (!entries.length) entries.push({ html: '<i>Nothing booked that I can see.</i>' });
@@ -108,7 +109,7 @@ function tgPlanRunKey(trip, runId) { return tgShortlistRunKey(trip, runId); }
 /**
  * shortlist → messages, one or more per group: numbered lines (💎 + gem line, your pick, seen before) with
  * ✅ 🔖 ❌ (sl:<run>:<g><n>:w|l|s); a line when the 💎 floor was not met. opts = { seeds?: [names], adopt?: true } —
- * adopt adds "▶️ Continue choosing" (pl:sc:<trip key>:<run>) for a round that arrived with no plan flow.
+ * adopt adds "▶️ Continue choosing" (pl:sc:<trip key>:<run>:<more 1|0>) for a round that arrived with no plan flow.
  */
 function tgPlanShortlistMessages(p, opts) {
   opts = opts || {};
@@ -128,7 +129,8 @@ function tgPlanShortlistMessages(p, opts) {
   });
   if (!msgs.length) msgs.push({ html: '🗺 <b>' + tgPlanTripTitle(p.trip) + '</b> — nothing new this round.' });
   if (opts.adopt) {
-    var extra = { text: '▶️ Continue choosing', data: cbEncode('pl', 'sc', tgCmdTripKey(p.trip), run) };
+    var more = p.more === true || (typeof p.more === 'number' && p.more > 0);
+    var extra = { text: '▶️ Continue choosing', data: cbEncode('pl', 'sc', tgCmdTripKey(p.trip), run, more ? 1 : 0) };
     var last = msgs[msgs.length - 1];
     var rows = last.keyboard ? last.keyboard.inline_keyboard.map(function (r) { return r.map(function (b) { return { text: b.text, data: b.callback_data }; }); }) : [];
     rows.push([extra]);
@@ -182,7 +184,10 @@ function tgPlanSlugFor(dest) {
 /** Dates from text: one or two YYYY-MM-DD → { start, end } (one date = a single day), or null. */
 function tgPlanParseDates(text) {
   var m = String(text || '').match(/\d{4}-\d{2}-\d{2}/g) || [];
-  m = m.filter(isIsoDateOnly);
+  m = m.filter(function (d) {
+    var p = d.split('-').map(Number), t = new Date(Date.UTC(p[0], p[1] - 1, p[2]));
+    return t.getUTCFullYear() === p[0] && t.getUTCMonth() === p[1] - 1 && t.getUTCDate() === p[2];
+  });
   if (!m.length || m.length > 2) return null;
   var start = m[0], end = m[1] || m[0];
   if (end < start) { var x = start; start = end; end = x; }
@@ -370,6 +375,7 @@ registerFlow('plan', {
       var t = tgTripGet(seed.adopt.trip) || { slug: seed.adopt.trip };
       var st = tgPlanNewState(t.slug, t.destination || t.title || t.slug);
       st.runs = [seed.adopt.run];
+      st.more = !!seed.adopt.more;
       settingSet(TG_SETTINGS.CURRENT_TRIP, t.slug, 'trip being planned');
       return tgPlanChooseStep(st);
     }
@@ -396,6 +402,7 @@ registerFlow('plan', {
       if (input.event === 'seed') return tgPlanAddSeeds(state, input.names || []);
       if (input.event === 'adopt' && input.run) {
         if (state.runs.indexOf(input.run) < 0) state.runs.push(input.run);
+        state.more = !!input.more;
         return tgPlanChooseStep(state);
       }
       return tgPlanSame(state);
@@ -479,24 +486,24 @@ function tgPlanRunTrip(chatId, run) {
   return null;
 }
 
-// tf:<n>:y|e|n — a trip fact tap. ✏️ asks the plan flow for the corrected line.
+// tf:<trip key>:<n>:y|e|n — a trip fact tap; it counts only inside the plan flow of that trip (✏️ asks for the line).
 registerCallback('tf', function (ctx) {
-  var n = String(ctx.parts[0] || ''), v = String(ctx.parts[1] || '');
+  var trip = tgCmdTripByKey(ctx.parts[0]), n = String(ctx.parts[1] || ''), v = String(ctx.parts[2] || '');
   if (!n || ['y', 'e', 'n'].indexOf(v) < 0) { ctx.answer('Unknown button'); return; }
   var f = tgPlanActive(ctx.chatId);
-  var cur = f ? null : tgTripCurrent();
-  var trip = f ? f.state.trip : cur ? cur.slug : null;
-  if (!trip) { ctx.answer('No trip in progress — send /plan <destination>.'); return; }
+  if (!trip || !f || f.state.trip !== trip.slug || f.state.stage !== 'confirm') {
+    ctx.answer('Send /plan ' + truncate(trip ? (trip.destination || trip.title || trip.slug) : '<destination>', 60) + ' to confirm these.');
+    return;
+  }
   if (v === 'e') {
-    if (!f || f.state.stage !== 'confirm') { ctx.answer('Send /plan to correct it.'); return; }
     ctx.answer('');
     flowResume(ctx.chatId, { type: 'resume', event: 'tf_edit', n: n });
     return;
   }
-  tgChoiceSet(trip, TG_PLAN_INTAKE_RUN, 'fact', n, v, '');
+  tgChoiceSet(trip.slug, TG_PLAN_INTAKE_RUN, 'fact', n, v, '');
   ctx.answer(v === 'y' ? '✅ Kept' : '❌ Dropped');
-  var taps = tgPlanFactTaps(trip);
-  tgCmdRemark(ctx, 'tf', function (p) { var t = taps[p[0]]; return !!t && t.value === p[1]; });
+  var taps = tgPlanFactTaps(trip.slug);
+  tgCmdRemark(ctx, 'tf', function (p) { var t = taps[p[1]]; return !!t && t.value === p[2]; });
 });
 
 // sl:<run>:<g><n>:w|l|s — a shortlist tap, stored by place slug.
@@ -517,19 +524,19 @@ registerCallback('sl', function (ctx) {
   tgCmdRemark(ctx, 'sl', function (p) { var x = p[0] === run && bySlot[p[1]]; return !!x && val[x.slug] === p[2]; });
 });
 
-// pl:sc:<trip key>:<run> — "Continue choosing" on a shortlist that arrived with no plan flow.
+// pl:sc:<trip key>:<run>:<more 1|0> — "Continue choosing" on a shortlist that arrived with no plan flow.
 tgCmdPlAction('sc', function (ctx, args) {
-  var trip = tgCmdTripByKey(args[0]), run = String(args[1] || '');
+  var trip = tgCmdTripByKey(args[0]), run = String(args[1] || ''), more = String(args[2] || '') === '1';
   if (!trip || !run || !tgShortlistItems(trip.slug, run).length) { ctx.answer('That shortlist is gone.'); return; }
   var f = flowActive(ctx.chatId);
   if (f && f.flow === 'plan' && isPlainObject(f.state) && f.state.trip === trip.slug) {
     ctx.answer('');
-    flowResume(ctx.chatId, { type: 'resume', event: 'adopt', run: run });
+    flowResume(ctx.chatId, { type: 'resume', event: 'adopt', run: run, more: more });
     return;
   }
   if (f) { ctx.answer('Finish or /cancel /' + f.flow + ' first.', true); return; }
   ctx.answer('');
-  flowStart(ctx.chatId, 'plan', { adopt: { trip: trip.slug, run: run } });
+  flowStart(ctx.chatId, 'plan', { adopt: { trip: trip.slug, run: run, more: more } });
 });
 
 registerCommand('/plan', function (ctx) {

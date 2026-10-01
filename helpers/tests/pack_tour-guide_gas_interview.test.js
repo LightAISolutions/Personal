@@ -141,7 +141,7 @@ test('resumable: state survives a new execution; /interview re-asks; another flo
   assert.match(sent(state).pop(), /No section called “nowhere”\. Sections: <code>pace<\/code>, <code>food<\/code>/);
 
   // A plan flow in progress is not replaced.
-  again.ctx.registerFlow('plan', { start() { return { pause: true, state: { trip: 'x' } }; }, next(s) { return { pause: true, state: s }; } });
+  again.ctx.HB_REGISTRY.flow.plan = { start() { return { pause: true, state: { trip: 'x' } }; }, next(s) { return { pause: true, state: s }; } };
   again.ctx.flowStart('777', 'plan', {});
   tg(again.ctx, k, H.tgUpdate({ text: '/interview food' }));
   assert.match(sent(state).pop(), /middle of \/plan/);
