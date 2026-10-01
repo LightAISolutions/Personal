@@ -19,5 +19,6 @@
 - 2026-10-01 — Phase 7 started (thread session, Opus 5.5 · high). Prerequisites clean: Personal 470/471 pass (1 skipped), bundle and boundary clean; TourGuide main carries PRs #3 and #4.
 - 2026-10-01 — Steps 0–2 done (v01.30r): re-pin merged, core deployed and paired; findings F2–F7 in `decisions/TG-PHASE-7.md`. Step 3 started.
 - 2026-10-01 — Step 3 done (v01.31r): seven routines, `/ask` end to end, Aggregate smoke; findings F8–F11; guide §1, §3, §4 rewritten from the live run. Step 4 (interview) started.
+- 2026-10-01 — v01.32r: interview gains ✏️ Other and broader lists (F13); F12 dietary fix and F14 rain backups recorded (private-repo work).
 
 Developed by: LightAISolutions

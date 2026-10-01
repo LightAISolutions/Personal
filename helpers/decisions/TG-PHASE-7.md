@@ -17,6 +17,9 @@
 | F9 | 3 routines | `/ask` end to end on the first try with the amended prompt: "Working on it…" about 30 s after the message (the webhook waits for the `/fire` call), a cited answer about 2 minutes later; the run's log line reached TourGuide `main` through `merge-routine-memory.yml` | none |
 | F10 | 3 smoke | Places Aggregate live smoke: one `INSIGHT_COUNT` call around a public landmark (800 m, restaurants ≥ 4.5, operational) through the proxy answered in 682 ms; scratch ledger 1 unit, 0 failed. `areainsights.googleapis.com` is in the credential's hosts, so the Gem Funnel's stream 3 is live | none |
 | F11 | 3 routines | A screenshot of the setup page's address bar showed most of `ADMIN_SECRET` (truncated). Guide §3 now says never to share the address bar either; the owner rotated the secret | Guide §3 |
+| F12 | 4 interview | The interview saves "cannot eat" answers under Dietary, but the private repo's profile excerpt (the input every routine model sees) dropped that section, so research, place notes and chat never saw a hard dietary limit, and the bank had no Vegetarian or Vegan button | Private repo: the excerpt carries `dietary` / `diet` / `diet_rule`, trip research adds the diet to food queries and screens the place types it rules out, the skills require a dish the owner can eat; bank: Vegetarian and Vegan options |
+| F13 | 4 interview | The owner found the option lists narrow (5–9 options for activities) with no way to add an answer to a button question; only separate text questions took typed answers | ✏️ Other on every open multi question (typed values held for review); the thin lists filled toward the 12-option cap |
+| F14 | 4 interview | No rain backups: a plan has no indoor alternatives unless the owner asks in chat on the day; the place schema's `indoor` flag is unused | Rainy-day swaps per day (in progress, before the pilot) |
 
 ## 2 Choices
 

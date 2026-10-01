@@ -49,6 +49,7 @@ export function validateBank(raw, vocab) {
       if (!dim) { errors.push(`${qp}/dimension: unknown dimension "${q.dimension}"`); return; }
       if (q.kind === 'text') { if (q.options.length) errors.push(`${qp}/options: a text question has an empty options array`); }
       else if (q.options.length < 2) errors.push(`${qp}/options: a ${q.kind} question needs at least two options`);
+      if (q.other === true && (q.kind !== 'multi' || dim.values)) errors.push(`${qp}/other: only a multi question on an open dimension can take typed values`);
       const seen = new Set(), options = [];
       q.options.forEach((o, oi) => {
         const op = `${qp}/options/${oi}`;
@@ -60,7 +61,7 @@ export function validateBank(raw, vocab) {
         seen.add(key);
         options.push({ label: o.label, value: cv.value, polarity: o.polarity });
       });
-      questions.set(q.qid, { qid: q.qid, section: s.id, text: q.text, kind: q.kind, dimension: q.dimension, options, skip_ok: q.skip_ok });
+      questions.set(q.qid, { qid: q.qid, section: s.id, text: q.text, kind: q.kind, dimension: q.dimension, options, skip_ok: q.skip_ok, other: q.other === true });
     });
   });
   if (errors.length) return { bank: null, errors };

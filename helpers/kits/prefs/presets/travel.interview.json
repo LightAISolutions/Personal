@@ -41,9 +41,15 @@
             {"label":"Noodles","value":"noodles","polarity":"+"},
             {"label":"Bakeries","value":"bakeries","polarity":"+"},
             {"label":"Grilled meat","value":"grilled meat","polarity":"+"},
-            {"label":"Desserts","value":"desserts","polarity":"+"}
+            {"label":"Desserts","value":"desserts","polarity":"+"},
+            {"label":"Vegetarian food","value":"vegetarian food","polarity":"+"},
+            {"label":"Curries","value":"curries","polarity":"+"},
+            {"label":"Dumplings","value":"dumplings","polarity":"+"},
+            {"label":"Pizza and pasta","value":"pizza and pasta","polarity":"+"},
+            {"label":"Cheese","value":"cheese","polarity":"+"},
+            {"label":"Coffee and tea","value":"coffee and tea","polarity":"+"}
           ],
-          "skip_ok": true },
+          "skip_ok": true, "other": true },
         {"qid":"food-02","text":"Any foods you would rather not eat? (Not allergies: the next question covers those.)","kind":"multi","dimension":"food",
           "options": [
             {"label":"Shellfish","value":"shellfish","polarity":"-"},
@@ -51,7 +57,7 @@
             {"label":"Raw fish","value":"raw fish","polarity":"-"},
             {"label":"Very sweet food","value":"very sweet food","polarity":"-"}
           ],
-          "skip_ok": true },
+          "skip_ok": true, "other": true },
         {"qid":"food-03","text":"Is there anything you cannot eat?","kind":"multi","dimension":"dietary",
           "options": [
             {"label":"Gluten","value":"gluten","polarity":"-"},
@@ -62,9 +68,11 @@
             {"label":"Beef","value":"beef","polarity":"-"},
             {"label":"Any meat","value":"meat","polarity":"-"},
             {"label":"Eggs","value":"eggs","polarity":"-"},
-            {"label":"Alcohol","value":"alcohol","polarity":"-"}
+            {"label":"Alcohol","value":"alcohol","polarity":"-"},
+            {"label":"Vegetarian","value":"meat and fish","polarity":"-"},
+            {"label":"Vegan","value":"animal products","polarity":"-"}
           ],
-          "skip_ok": true },
+          "skip_ok": true, "other": true },
         {"qid":"food-04","text":"How spicy do you like your food?","kind":"scale","dimension":"spice",
           "options": [
             {"label":"Mild","value":"mild","polarity":"+"},
@@ -98,9 +106,13 @@
             {"label":"Gardens and parks","value":"gardens and parks","polarity":"+"},
             {"label":"Viewpoints","value":"viewpoints","polarity":"+"},
             {"label":"Religious sites","value":"religious sites","polarity":"+"},
-            {"label":"Neighbourhoods","value":"neighbourhoods","polarity":"+"}
+            {"label":"Neighbourhoods","value":"neighbourhoods","polarity":"+"},
+            {"label":"Markets","value":"markets","polarity":"+"},
+            {"label":"Castles and palaces","value":"castles and palaces","polarity":"+"},
+            {"label":"Nature and wildlife","value":"nature and wildlife","polarity":"+"},
+            {"label":"Beaches","value":"beaches","polarity":"+"}
           ],
-          "skip_ok": true },
+          "skip_ok": true, "other": true },
         {"qid":"activities-02","text":"What do you like to do? Pick any.","kind":"multi","dimension":"activities",
           "options": [
             {"label":"Hiking","value":"hiking","polarity":"+"},
@@ -111,9 +123,12 @@
             {"label":"Live music","value":"live music","polarity":"+"},
             {"label":"Shopping","value":"shopping","polarity":"+"},
             {"label":"Photography","value":"photography","polarity":"+"},
-            {"label":"Wine tasting","value":"wine tasting","polarity":"+"}
+            {"label":"Wine tasting","value":"wine tasting","polarity":"+"},
+            {"label":"Food tours","value":"food tours","polarity":"+"},
+            {"label":"Hot springs and spas","value":"hot springs and spas","polarity":"+"},
+            {"label":"Festivals and events","value":"festivals and events","polarity":"+"}
           ],
-          "skip_ok": true },
+          "skip_ok": true, "other": true },
         {"qid":"activities-03","text":"Anything you would rather skip?","kind":"multi","dimension":"activities",
           "options": [
             {"label":"Guided tours","value":"guided tours","polarity":"-"},
@@ -121,7 +136,7 @@
             {"label":"Theme parks","value":"theme parks","polarity":"-"},
             {"label":"Long hikes","value":"long hikes","polarity":"-"}
           ],
-          "skip_ok": true },
+          "skip_ok": true, "other": true },
         {"qid":"activities-04","text":"Any other thing you always look for on a trip?","kind":"text","dimension":"activities",
           "options": [],
           "skip_ok": true }
@@ -182,7 +197,7 @@
             {"label":"Uneven ground","value":"uneven ground","polarity":"-"},
             {"label":"Steep hills","value":"steep hills","polarity":"-"}
           ],
-          "skip_ok": true },
+          "skip_ok": true, "other": true },
         {"qid":"mobility-03","text":"Which ways of getting around do you like?","kind":"multi","dimension":"transport",
           "options": [
             {"label":"Walking","value":"walking","polarity":"+"},
@@ -192,7 +207,7 @@
             {"label":"Bicycle","value":"bicycle","polarity":"+"},
             {"label":"Trains","value":"trains","polarity":"+"}
           ],
-          "skip_ok": true },
+          "skip_ok": true, "other": true },
         {"qid":"mobility-04","text":"Any you would rather avoid?","kind":"multi","dimension":"transport",
           "options": [
             {"label":"Driving","value":"driving","polarity":"-"},
@@ -201,7 +216,7 @@
             {"label":"Small planes","value":"small planes","polarity":"-"},
             {"label":"Scooters","value":"scooters","polarity":"-"}
           ],
-          "skip_ok": true }
+          "skip_ok": true, "other": true }
       ]
     },
     {
@@ -256,7 +271,7 @@
             {"label":"Chain hotels","value":"chain hotels","polarity":"+"},
             {"label":"Bed and breakfast","value":"bed and breakfast","polarity":"+"}
           ],
-          "skip_ok": true },
+          "skip_ok": true, "other": true },
         {"qid":"lodging-02","text":"What matters most in a place to stay?","kind":"multi","dimension":"lodging",
           "options": [
             {"label":"Central location","value":"central location","polarity":"+"},
@@ -265,14 +280,14 @@
             {"label":"Breakfast included","value":"breakfast included","polarity":"+"},
             {"label":"Parking","value":"parking","polarity":"+"}
           ],
-          "skip_ok": true },
+          "skip_ok": true, "other": true },
         {"qid":"lodging-03","text":"Anything to avoid where you stay?","kind":"multi","dimension":"lodging",
           "options": [
             {"label":"Shared bathrooms","value":"shared bathrooms","polarity":"-"},
             {"label":"Noisy areas","value":"noisy areas","polarity":"-"},
             {"label":"No lift","value":"no lift","polarity":"-"}
           ],
-          "skip_ok": true }
+          "skip_ok": true, "other": true }
       ]
     },
     {
@@ -299,7 +314,7 @@
             {"label":"Japanese","value":"japanese","polarity":"+"},
             {"label":"Mandarin","value":"mandarin","polarity":"+"}
           ],
-          "skip_ok": true }
+          "skip_ok": true, "other": true }
       ]
     },
     {
@@ -315,7 +330,7 @@
             {"label":"Long drives","value":"long drives","polarity":"+"},
             {"label":"Early flights","value":"early flights","polarity":"+"}
           ],
-          "skip_ok": true },
+          "skip_ok": true, "other": true },
         {"qid":"avoid-02","text":"Anything else that is a hard no?","kind":"text","dimension":"must_avoid",
           "options": [],
           "skip_ok": true }

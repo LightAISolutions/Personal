@@ -125,9 +125,40 @@ var TG_INTERVIEW_BANK = {
               "label": "Desserts",
               "value": "desserts",
               "polarity": "+"
+            },
+            {
+              "label": "Vegetarian food",
+              "value": "vegetarian food",
+              "polarity": "+"
+            },
+            {
+              "label": "Curries",
+              "value": "curries",
+              "polarity": "+"
+            },
+            {
+              "label": "Dumplings",
+              "value": "dumplings",
+              "polarity": "+"
+            },
+            {
+              "label": "Pizza and pasta",
+              "value": "pizza and pasta",
+              "polarity": "+"
+            },
+            {
+              "label": "Cheese",
+              "value": "cheese",
+              "polarity": "+"
+            },
+            {
+              "label": "Coffee and tea",
+              "value": "coffee and tea",
+              "polarity": "+"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         },
         {
           "qid": "food-02",
@@ -156,7 +187,8 @@ var TG_INTERVIEW_BANK = {
               "polarity": "-"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         },
         {
           "qid": "food-03",
@@ -208,9 +240,20 @@ var TG_INTERVIEW_BANK = {
               "label": "Alcohol",
               "value": "alcohol",
               "polarity": "-"
+            },
+            {
+              "label": "Vegetarian",
+              "value": "meat and fish",
+              "polarity": "-"
+            },
+            {
+              "label": "Vegan",
+              "value": "animal products",
+              "polarity": "-"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         },
         {
           "qid": "food-04",
@@ -331,9 +374,30 @@ var TG_INTERVIEW_BANK = {
               "label": "Neighbourhoods",
               "value": "neighbourhoods",
               "polarity": "+"
+            },
+            {
+              "label": "Markets",
+              "value": "markets",
+              "polarity": "+"
+            },
+            {
+              "label": "Castles and palaces",
+              "value": "castles and palaces",
+              "polarity": "+"
+            },
+            {
+              "label": "Nature and wildlife",
+              "value": "nature and wildlife",
+              "polarity": "+"
+            },
+            {
+              "label": "Beaches",
+              "value": "beaches",
+              "polarity": "+"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         },
         {
           "qid": "activities-02",
@@ -385,9 +449,25 @@ var TG_INTERVIEW_BANK = {
               "label": "Wine tasting",
               "value": "wine tasting",
               "polarity": "+"
+            },
+            {
+              "label": "Food tours",
+              "value": "food tours",
+              "polarity": "+"
+            },
+            {
+              "label": "Hot springs and spas",
+              "value": "hot springs and spas",
+              "polarity": "+"
+            },
+            {
+              "label": "Festivals and events",
+              "value": "festivals and events",
+              "polarity": "+"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         },
         {
           "qid": "activities-03",
@@ -416,7 +496,8 @@ var TG_INTERVIEW_BANK = {
               "polarity": "-"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         },
         {
           "qid": "activities-04",
@@ -589,7 +670,8 @@ var TG_INTERVIEW_BANK = {
               "polarity": "-"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         },
         {
           "qid": "mobility-03",
@@ -628,7 +710,8 @@ var TG_INTERVIEW_BANK = {
               "polarity": "+"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         },
         {
           "qid": "mobility-04",
@@ -662,7 +745,8 @@ var TG_INTERVIEW_BANK = {
               "polarity": "-"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         }
       ]
     },
@@ -810,7 +894,8 @@ var TG_INTERVIEW_BANK = {
               "polarity": "+"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         },
         {
           "qid": "lodging-02",
@@ -844,7 +929,8 @@ var TG_INTERVIEW_BANK = {
               "polarity": "+"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         },
         {
           "qid": "lodging-03",
@@ -868,7 +954,8 @@ var TG_INTERVIEW_BANK = {
               "polarity": "-"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         }
       ]
     },
@@ -957,7 +1044,8 @@ var TG_INTERVIEW_BANK = {
               "polarity": "+"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         }
       ]
     },
@@ -1002,7 +1090,8 @@ var TG_INTERVIEW_BANK = {
               "polarity": "+"
             }
           ],
-          "skip_ok": true
+          "skip_ok": true,
+          "other": true
         },
         {
           "qid": "avoid-02",

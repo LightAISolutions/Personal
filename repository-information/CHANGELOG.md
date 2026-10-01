@@ -3,11 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 32/100`
+`Sections: 33/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.32r] — 2026-10-01 07:33:01 PM EST
+
+> **Prompt:** "I feel like a lot of these interview questions are extremely narrow. For instance, in the activities questions, the bot only gives me 5-9 options that I don't think even cover the entire spectrum." *(Phase 7 step 4, the interview)*
+
+### Added
+- **✏️ Other on the interview's open questions** (`helpers/packs/tour-guide/gas/11_flow_interview.js`): every pick-any question on an open dimension (14 of 17) gets an Other button; typed values join that question's picks as text answers, so they wait for the owner's review instead of entering the profile directly. The bank marks those questions with `"other": true` (schema + `validateBank` refuse it on a closed or non-multi question); the prefs kit no longer warns about a text answer on such a question
+- **Broader option lists** (`helpers/kits/prefs/presets/travel.interview.json`, appended so a question already on screen keeps its buttons): food likes (vegetarian food, curries, dumplings, pizza and pasta, cheese, coffee and tea), cannot-eat (Vegetarian, Vegan), places (markets, castles and palaces, nature and wildlife, beaches), activities (food tours, hot springs and spas, festivals and events); the vocabulary's examples carry the new values; the bundled bank regenerated
+
+### Changed
+- `helpers/decisions/TG-PHASE-7.md`: findings F12 (dietary answers never reached research), F13 (narrow interview lists) and F14 (no rain backups); `helpers/status/PHASE-7-RESUME.md` log line
 
 ## [v01.31r] — 2026-10-01 07:17:09 PM EST
 

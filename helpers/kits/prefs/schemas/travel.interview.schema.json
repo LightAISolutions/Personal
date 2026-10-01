@@ -33,7 +33,8 @@
         "kind": { "enum": ["pick", "multi", "scale", "text"] },
         "dimension": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,31}$" },
         "options": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/option" } },
-        "skip_ok": { "type": "boolean" }
+        "skip_ok": { "type": "boolean" },
+        "other": { "type": "boolean", "description": "multi on an open dimension only: the owner may also type values (answer kind text, held for review)." }
       }
     },
     "option": {

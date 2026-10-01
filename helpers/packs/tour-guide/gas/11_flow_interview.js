@@ -57,10 +57,16 @@ function tgIvStep(state) {
     head += '\n<i>Type your answer (separate several with commas), or tap Skip.</i>';
     expect = 'any';
   } else if (q.kind === 'multi') {
-    var sel = state.sel || [];
+    var sel = state.sel || [], typed = state.typed || [];
     kb = _tgIvRows(q.options.map(function (o, k) { return { text: (sel.indexOf(k) >= 0 ? '✓ ' : '') + o.label, value: 'o' + k }; }), 2);
     head += '\n<i>Tap all that apply, then Done.</i>';
-    if (sel.length) head += '\nPicked: ' + sel.map(function (k) { return tgEscape(q.options[k] ? q.options[k].label : '?'); }).join(', ');
+    if (q.other) {
+      kb.push([{ text: '✏️ Other', value: 'other' }]);
+      expect = 'any';
+      if (state.other) head += '\n<i>Type your own (separate several with commas), then tap Done.</i>';
+    }
+    var picked = sel.map(function (k) { return tgEscape(q.options[k] ? q.options[k].label : '?'); }).concat(typed.map(tgEscape));
+    if (picked.length) head += '\nPicked: ' + picked.join(', ');
   } else {
     kb = _tgIvRows(opts, q.kind === 'scale' ? (opts.length <= 4 ? opts.length : 3) : 2);
   }
@@ -104,21 +110,32 @@ registerFlow('interview', {
     var f = tgIvFind(state.qids[state.i]);
     if (input.type === 'resume' || !f) return tgIvStep(state);   // /interview again: re-ask where we are
     var q = f.q;
+    if (input.type === 'text' && q.kind === 'multi' && q.other) {
+      // ✏️ Other: typed values join this question's picks as text answers (held for the owner's review, never applied)
+      var typed = (state.typed || []).concat(tgIvTextValues(input.text));
+      state.typed = typed.filter(function (x, n) { return typed.indexOf(x) === n; }).slice(0, TG_IV_TEXT_VALUES_MAX);
+      state.other = false;
+      return tgIvStep(state);
+    }
     if (input.type === 'text') {
       if (q.kind !== 'text') return tgIvStep(state);
       var vals = tgIvTextValues(input.text);
       if (!vals.length) return tgIvStep(state);
       state.ans[q.qid] = vals.map(function (v) { return _tgIvAnswer(q, v, '+'); });
-      state.i++; state.sel = [];
+      state.i++; state.sel = []; state.typed = [];
       return tgIvStep(state);
     }
     var v = String(input.value || '');
-    if (v === 'skip') { delete state.ans[q.qid]; state.i++; state.sel = []; return tgIvStep(state); }
+    if (v === 'skip') { delete state.ans[q.qid]; state.i++; state.sel = []; state.typed = []; state.other = false; return tgIvStep(state); }
+    if (v === 'other' && q.kind === 'multi' && q.other) { state.other = true; return tgIvStep(state); }
     if (v === 'done' && q.kind === 'multi') {
       var sel = (state.sel || []).slice().sort(function (a, b) { return a - b; });
-      if (sel.length) state.ans[q.qid] = sel.map(function (k) { return _tgIvAnswer(q, q.options[k].value, q.options[k].polarity); });
+      var pol = q.options.length ? q.options[0].polarity : '+';
+      var answers = sel.map(function (k) { return _tgIvAnswer(q, q.options[k].value, q.options[k].polarity); })
+        .concat((q.other ? state.typed || [] : []).map(function (t) { var a = _tgIvAnswer(q, t, pol); a.kind = 'text'; return a; }));
+      if (answers.length) state.ans[q.qid] = answers;
       else delete state.ans[q.qid];
-      state.i++; state.sel = [];
+      state.i++; state.sel = []; state.typed = []; state.other = false;
       return tgIvStep(state);
     }
     var m = /^o(\d+)$/.exec(v), k = m ? parseInt(m[1], 10) : -1;

@@ -181,4 +181,34 @@ test('a text question takes several values and Skip; empty text re-asks; stale f
   ]);
 });
 
+test('✏️ Other on an open multi question: typed values join the picks as text answers; closed ones have no Other', () => {
+  const { ctx, state, k } = fresh();
+  tg(ctx, k, H.tgUpdate({ text: '/interview activities' }));
+  assert.ok(kbText(state).includes('✏️ Other'), 'activities-01 offers Other');
+  press(ctx, k, state, 'Markets');
+  press(ctx, k, state, '✏️ Other');
+  assert.match(sent(state).pop(), /Type your own/);
+  tg(ctx, k, H.tgUpdate({ text: 'tea houses, rooftop bars; tea houses' }));
+  assert.match(sent(state).pop(), /Picked: Markets, tea houses, rooftop bars/);
+  press(ctx, k, state, '✅ Done');                                  // activities-01
+  tg(ctx, k, H.tgUpdate({ text: 'kayaking' }));                    // activities-02: typing works without tapping Other first
+  press(ctx, k, state, '✅ Done');
+  press(ctx, k, state, '⏭ Skip');                                  // activities-03
+  press(ctx, k, state, '⏭ Skip');                                  // activities-04 (text)
+  const a = requests(state)[0].payload.interview.answers;
+  assert.deepEqual(a.map((x) => [x.qid, x.dimension, x.value, x.polarity, x.kind]), [
+    ['activities-01', 'interests', 'markets', '+', 'multi'],
+    ['activities-01', 'interests', 'tea houses', '+', 'text'],
+    ['activities-01', 'interests', 'rooftop bars', '+', 'text'],
+    ['activities-02', 'activities', 'kayaking', '+', 'text']
+  ]);
+  const closed = fresh();
+  tg(closed.ctx, closed.k, H.tgUpdate({ text: '/interview climate' }));
+  for (let n = 0; n < 4; n++) press(closed.ctx, closed.k, closed.state, '⏭ Skip');
+  assert.ok(!kbText(closed.state).includes('✏️ Other'), 'climate-05 is a closed list');
+  tg(closed.ctx, closed.k, H.tgUpdate({ text: 'fog' }));          // typed text on a closed list is not taken
+  press(closed.ctx, closed.k, closed.state, '✅ Done');
+  assert.equal(requests(closed.state).length, 0);
+});
+
 // Developed by: LightAISolutions

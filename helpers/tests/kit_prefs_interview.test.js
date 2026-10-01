@@ -131,6 +131,16 @@ test('validateBank refuses a bad bank with a path for each problem', async () =>
   assert.match(errs((b) => { b.vocab = 'other'; }), /bank is for vocabulary "other"/);
   assert.match(errs((b) => { b.sections[0].questions[0].kind = 'text'; }), /a text question has an empty options array/);
   assert.match(errs((b) => { b.sections[0].questions[0].extra = 1; }), /unknown field/);
+  assert.match(errs((b) => { b.sections[0].questions[0].other = true; }), /questions\/0\/other: only a multi question on an open dimension/);
+  assert.match(errs((b) => { b.sections[1].questions.find((q) => q.qid === 'food-05').other = true; }), /other: only a multi question on an open dimension/);
+});
+
+test('the bank offers ✏️ Other on exactly the multi questions whose dimension is open', async () => {
+  const m = await load();
+  const vocab = m.loadVocab('travel');
+  for (const s of m.loadBank('travel').sections) for (const q of s.questions) {
+    assert.equal(q.other === true, q.kind === 'multi' && !vocab.dims.get(q.dimension).values, q.qid);
+  }
 });
 
 // ------------------------------------------------------------------------------------------------ the interview
@@ -260,6 +270,18 @@ test('interview: answers that do not match the bank are applied with a warning',
     { qid: 'favourites-01', dimension: 'food', value: 'bakeries', polarity: '+', kind: 'pick' }] });
   assert.equal(r.applied.length, 2);
   assert.deepEqual(r.warnings.map((w) => w.warning), ['not a question of the bank', 'answer kind "pick" does not match the question kind "text"']);
+});
+
+test('interview: a value typed under ✏️ Other is a text answer on a multi question — held, no bank warning', async () => {
+  const m = await load();
+  const t = setup();
+  const r = run(m, t, { version: 1, answers: [
+    { qid: 'activities-01', dimension: 'interests', value: 'markets', polarity: '+', kind: 'multi' },
+    { qid: 'activities-01', dimension: 'interests', value: 'tea houses', polarity: '+', kind: 'text' }] });
+  assert.equal(r.ok, true);
+  assert.deepEqual(r.applied.map((a) => a.value), ['markets']);
+  assert.deepEqual(r.warnings, []);
+  assert.ok(!fs.readFileSync(t.profile, 'utf8').includes('tea houses'), 'typed values wait for review');
 });
 
 test('interview: a hand-edited profile is refused and kept as it is', async () => {
