@@ -75,10 +75,10 @@ test('addGoogleImages fills maps, photos and routes into a copy; the input is un
   assert.equal(statics.length, r.stats.maps);
   const u = new URL(statics[0].url);
   assert.equal(u.searchParams.get('zoom'), String(r.model.days[0].map_image.view.zoom));
-  assert.ok(u.searchParams.getAll('style').includes('feature:poi.business|visibility:off'));
+  for (const st of ['feature:poi.business|visibility:off', 'feature:poi|element:labels.icon|visibility:off', 'feature:road|element:labels.icon|visibility:off']) assert.ok(u.searchParams.getAll('style').includes(st), st);
   // the brochure model still validates
   const { validate } = await brochure();
-  assert.equal(validate(r.model).ok !== false, true);
+  assert.deepEqual(validate(r.model), []);
 });
 
 test('failures degrade with warnings, never throw: no key, broken photo, maps off', async () => {
@@ -114,6 +114,14 @@ test('render: a Google map replaces the sketch, markers overlay it, the credit a
   assert.match(html, /Maps Static API/);
   assert.doesNotMatch(html, /TESTKEY/);
   for (const [, u] of html.matchAll(/\s(?:src|href)="([^"]*)"/g)) assert.match(u, /^(data:|#|https?:\/\/|mailto:)/, u);
+});
+
+test('a real-length Google photo name validates in the brochure schema', async () => {
+  const { validate } = await brochure();
+  const m = fixture();
+  const id = Object.keys(m.places).find((k) => !m.places[k].image);
+  m.places[id].google_photo = { name: 'places/ChIJ' + 'b'.repeat(16) + '/photos/' + 'AUc7tXy-_'.repeat(55), author: 'A. Photographer' };
+  assert.deepEqual(validate(m), []);
 });
 
 test('render without Google images keeps the drawn sketch and no Google map credit', async () => {

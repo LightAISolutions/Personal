@@ -15,8 +15,10 @@ import { dayHue } from './tokens.mjs';
 
 export const DAY_MAP = Object.freeze({ width: 260, height: 320 });
 export const TRIP_MAP = Object.freeze({ width: 420, height: 300 });
-/** Keep Google's map, hide business pins that would compete with the brochure's own markers. */
-export const MAP_STYLES = Object.freeze(['feature:poi.business|visibility:off', 'feature:poi.medical|visibility:off']);
+/** Keep Google's map, hide anything that would compete with the brochure's own markers: business and medical POIs,
+ *  every other POI's pin icon (names and park greens stay), and road shields (green numbered highway shields read as
+ *  numbered stops on a green day). */
+export const MAP_STYLES = Object.freeze(['feature:poi.business|visibility:off', 'feature:poi.medical|visibility:off', 'feature:poi|element:labels.icon|visibility:off', 'feature:road|element:labels.icon|visibility:off']);
 const ROUTE_MODE = { walk: 'WALK', drive: 'DRIVE', taxi: 'DRIVE', bike: 'BICYCLE', transit: 'TRANSIT', train: 'TRANSIT' };
 const hex = (i, alpha = 'E6') => '0x' + dayHue(i)[0].slice(1).toUpperCase() + alpha;
 const ok = (p) => p && Number.isFinite(p.lat) && Number.isFinite(p.lng);
