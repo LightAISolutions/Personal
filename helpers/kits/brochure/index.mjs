@@ -22,6 +22,7 @@ import { pageSpec, PAGES, DEFAULT_PAGE } from './lib/tokens.mjs';
 import { addGoogleImages, DAY_MAP, TRIP_MAP, MAP_STYLES } from './lib/google-images.mjs';
 
 export { addGoogleImages, DAY_MAP, TRIP_MAP, MAP_STYLES };
+export { directionsUrl, TRAVELMODE, DIRECTIONS_BASE } from './lib/directions.mjs';
 export { renderHtml, renderPdf, pdfAvailable, resolvePlaywright, CHROMIUM_PATH, validate, formatErrors, loadSchema, SCHEMA_PATH, prepare, semanticErrors, ModelError, pageSpec, PAGES, DEFAULT_PAGE };
 export const KIT_DIR = dirname(fileURLToPath(import.meta.url));
 export const SAMPLE_MODEL = join(KIT_DIR, 'fixtures', 'sample-trip.json');

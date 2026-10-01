@@ -3,11 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 23/100`
+`Sections: 24/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.23r] — 2026-10-01 04:05:15 AM EST
+
+> **Prompt:** "I really like the new live sample with real Google maps. I rate it 10/10. However, it is unacceptable that you are unable to route me using Google Maps and Japan's train stations; That is 100% how I plan Japan trips myself. Recommend some resolutions." · decision card: "Both"
+
+### Added
+- Brochure kit: a Google Maps directions link on every leg (`lib/directions.mjs`, Maps URLs, no key): built from both ends' coordinates and place ids, the lodging for `lodging` ends; taxi legs link the train options ("by train ↗"); a leg's own `maps_url` still wins. `directionsUrl` exported for other surfaces
+- Tests: `kit_brochure_directions.test.js` (229 in all)
+
+### Changed
+- `helpers/kits/brochure/README.md`, `helpers/decisions/WP-2e.md` (choice 15: train routing in Japan, NAVITIME chosen for real train legs), `README.md` tree
 
 ## [v01.22r] — 2026-10-01 03:53:32 AM EST
 

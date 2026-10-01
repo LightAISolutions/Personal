@@ -4,6 +4,7 @@
  * places, a merged timeline per day (stops, legs, meals, free time in clock order) and per-day statistics.
  * Throws ModelError with every problem listed; never mutates the input.
  */
+import { directionsUrl } from './directions.mjs';
 import { validate, formatErrors } from './validate.mjs';
 import { parseDate, parseTime, daySpan, minutesBetween, addDays } from './format.mjs';
 
@@ -86,7 +87,8 @@ export function prepare(input) {
     const legs = (d.legs || []).map((l, j) => {
       let start = l.depart_at ? parseTime(l.depart_at) : null;
       if (start === null) start = l.from && l.from !== 'lodging' ? endOf(l.from) : (stops[0] ? stops[0].start - l.minutes : null);
-      return { kind: 'leg', ...l, j, start: start ?? 0, end: l.arrive_at ? parseTime(l.arrive_at) : (start ?? 0) + l.minutes, fromPlace: l.from && l.from !== 'lodging' ? places[l.from] : null, toPlace: l.to && l.to !== 'lodging' ? places[l.to] : null, transit: TRANSIT.has(l.mode) };
+      const end = (k) => (l[k] === 'lodging' ? lodging : l[k] ? places[l[k]] : null);
+      return { kind: 'leg', ...l, j, start: start ?? 0, end: l.arrive_at ? parseTime(l.arrive_at) : (start ?? 0) + l.minutes, fromPlace: l.from && l.from !== 'lodging' ? places[l.from] : null, toPlace: l.to && l.to !== 'lodging' ? places[l.to] : null, transit: TRANSIT.has(l.mode), directions_url: l.maps_url || directionsUrl(end('from'), end('to'), l.mode) };
     });
     const timeline = [...legs, ...stops, ...meals, ...free].sort((a, b) => (a.start - b.start) || (sortKey[a.kind] - sortKey[b.kind]) || ((a.j ?? a.n ?? 0) - (b.j ?? b.n ?? 0)));
     const sum = (f) => legs.filter(f).reduce((a, l) => a + (l.minutes || 0), 0);

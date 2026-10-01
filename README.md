@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-01 03:53:32 AM EST` · Repo version: `v01.22r`
+Last updated: `2026-10-01 04:05:15 AM EST` · Repo version: `v01.23r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -262,6 +262,7 @@ Last updated: `2026-10-01 03:53:32 AM EST` · Repo version: `v01.22r`
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/escape.mjs">escape.mjs</a>  — Escaping and URL safety: model text is always data
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/fonts.mjs">fonts.mjs</a>   — Embeds the Charter faces as data URIs
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/format.mjs">format.mjs</a>  — Dates, times and durations on the trip's wall clock
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/directions.mjs">directions.mjs</a> — Google Maps directions link per leg (Maps URLs, no key); taxi legs link the train options
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/google-images.mjs">google-images.mjs</a> — Build step: Google static maps, place photos and route lines inlined into a copy of the model
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/icons.mjs">icons.mjs</a>   — Inline SVG glyphs
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/images.mjs">images.mjs</a>  — Inlines local images; remote URLs dropped with a warning
@@ -498,6 +499,7 @@ Last updated: `2026-10-01 03:53:32 AM EST` · Repo version: `v01.22r`
 │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/harness/gas-mocks.js">gas-mocks.js</a>    — In-memory Apps Script mocks + loader (Properties, Cache, Lock, Drive, Spreadsheet, UrlFetch, triggers)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/index.js">index.js</a>            — Loads every *.test.js in this directory
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_cli.test.js">kit_brochure_cli.test.js</a> — Brochure kit: CLI exit codes, build without Playwright
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_directions.test.js">kit_brochure_directions.test.js</a> — Brochure kit: Google Maps directions links per leg
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_google_images.test.js">kit_brochure_google_images.test.js</a> — Brochure kit: Google maps, photos, projection and overlay
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_render.test.js">kit_brochure_render.test.js</a> — Brochure kit: self-contained render, hostile strings escaped
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_sketch.test.js">kit_brochure_sketch.test.js</a> — Brochure kit: route sketch projection and drawing

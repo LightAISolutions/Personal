@@ -8,6 +8,7 @@ import { longDate, shortDate, duration, distance } from '../format.mjs';
 import { routeSketch, sketchLegend } from '../sketch.mjs';
 import { daySequence, mapFigure, mapCredit } from '../mapframe.mjs';
 import { icon, MODE_LABEL, MEAL_ICON } from '../icons.mjs';
+import { DIRECTIONS_LABEL } from '../directions.mjs';
 import { hueStyle, hueOf, timeCell, clockPlain, pageRef, link, hoursFrag, metaLine, sep } from './common.mjs';
 
 const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
@@ -23,8 +24,9 @@ function legRow(t, locale) {
   const from = t.fromPlace ? '' : (t.from === 'lodging' ? 'from the inn' : '');
   const facts = join([t.minutes ? duration(t.minutes) : '', distance(t.distance_m)], ', ');
   const body = `<b>${MODE_LABEL[t.mode] || 'Travel'}</b>${facts ? ` ${facts}` : ''}${from ? ` ${from}` : ''}${to ? ` ${to}` : ''}`;
-  const map = link(t.maps_url, 'map ↗');
-  return `<div class="ti ti-leg" data-pg="block">${timeCell(t.start, null, locale)}<div class="ti-mark"><span>${icon(t.mode, 12)}</span></div><div class="ti-body">${body}${map !== 'map ↗' ? map : ''}${t.line ? `<span class="line">${esc(t.line)}</span>` : ''}${t.note ? `<span class="line">${esc(t.note)}</span>` : ''}</div></div>`;
+  const label = t.maps_url ? 'map ↗' : (DIRECTIONS_LABEL[t.mode] || 'Google Maps ↗');
+  const map = t.directions_url ? link(t.directions_url, label) : '';
+  return `<div class="ti ti-leg" data-pg="block">${timeCell(t.start, null, locale)}<div class="ti-mark"><span>${icon(t.mode, 12)}</span></div><div class="ti-body">${body}${map.startsWith('<a') ? map : ''}${t.line ? `<span class="line">${esc(t.line)}</span>` : ''}${t.note ? `<span class="line">${esc(t.note)}</span>` : ''}</div></div>`;
 }
 function mealRow(t, locale) {
   const name = t.place ? esc(t.place.name) : esc(t.name || '');
