@@ -3,11 +3,30 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 27/100`
+`Sections: 28/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.27r] — 2026-10-01 08:10:13 AM EST
+
+> **Prompt:** "Read helpers/prompts/TG-PHASE-5.md (LightAISolutions/Personal) and execute it exactly." *(and, answering the Lane B question mid-phase: "Give me both options in some sort of toggle, with the free option being the default. I want the ability to toggle on my Claude API usage for faster, smarter answers.")*
+
+### Added
+- **Tour Guide chatbot pack** `helpers/packs/tour-guide/gas/` (Phase 5): `00_common.js` (request routing to the seven routines, shared helpers); `10_commands.js` (`/profile /trip /today /day /later /place /places /replan /notes /brochure /lodging`, the `/start` interview offer); `11_flow_interview.js` (`/interview`); `12_flow_plan.js` (`/plan` intake → confirm → research → shortlist rounds → plan, `/seed`); `13_flow_review.js` (`/review` and the daily post-trip offer); `20_envelopes.js` (handlers for the six pack envelope types, prefs review `pf:` buttons with ✏️ capture → a `prefs` request carrying `decisions`); `21_sheets.js` (tabs `Trips DayPlans Later Places Choices Shortlist` and their storage API); `30_chat_api.js` (Lane B: direct Claude API answers behind the owner's `/smart on|off` toggle, free routines by default, daily cap and usage counter); `31_route.js` (`/route`); `40_interview_bank.js` (generated from the prefs kit's travel interview bank)
+- **Core**: renderer hooks `core_start` (a pack's message after `/start` and pairing) and `core_status` (a pack's lines in `/status`), SPEC §5; `redactSecrets()` also redacts every `*_API_KEY` property value, SPEC §4
+- **Bundler**: generated-file step — `bundle.mjs` writes `gas/40_interview_bank.js` from `kits/prefs/presets/travel.interview.json`; `--check` fails when it is stale
+- Tests: `pack_tour-guide_gas_{chat,commands,e2e,envelopes,interview,plan,review,route,sheets}.test.js` (the mock end-to-end runs the interview, the `/plan` journey with a lost wake and the +10 fallback, places, the post-trip review and refusals); core router/config tests for the new hooks and redaction; 373 pass, 1 skipped
+- `helpers/decisions/TG-PHASE-5.md` (contract, Lane B toggle, defaults, measured trigger minutes, carried items), `helpers/decisions/WP-5{a,b,c}.md`, `helpers/status/WP-5{a,b,c}.md`, `helpers/status/PHASE-5-RESUME.md`
+- `helpers/prompts/TG-PHASE-6.md` — Phase 6 kickoff (integration across both repos, red-team, PDF delivery, cost and quota audit, `helpers/docs/TG-SWITCH-ON.md`) on Fable 5.1 · xhigh
+
+### Changed
+- `helpers/packs/tour-guide/README.md`: Chatbot section (files, answer lanes, Script Properties, trigger minutes); tests list
+- `helpers/BUILD-STATE.md`: row 5 **done**, row 6 prompt written, Phase 5 log, Next = Phase 6
+- Test harness: mock Drive dates follow the test clock
+- Audit fixes: place buttons carry a tagged key so a stale list cannot act on another place; Lane B sends extended thinking only to the model that accepts it; untrusted context sent to the Claude API cannot close its data block
+- No live Telegram, Drive, Maps, Claude API, wake-route or routine call in this phase; the private repo's review-decision path (`prefs-build-ingest.mjs --decisions`) is its PR #3
 
 ## [v01.26r] — 2026-10-01 05:45:21 AM EST
 

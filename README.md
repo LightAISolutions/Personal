@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-01 05:45:21 AM EST` · Repo version: `v01.26r`
+Last updated: `2026-10-01 08:10:13 AM EST` · Repo version: `v01.27r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -232,6 +232,7 @@ Last updated: `2026-10-01 05:45:21 AM EST` · Repo version: `v01.26r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-3.md">TG-PHASE-3.md</a>   — Phase 3: coordinator defaults, ownership-map extension, solver design and limits, requests carried
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-4.md">TG-PHASE-4.md</a>   — Phase 4: coordinator defaults, request-kind contract, payloads, Drive and memory layout, drivers, routine table, "For Phase 4b"
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-4B.md">TG-PHASE-4B.md</a> — Phase 4b: coordinator defaults, flows and documents as built, the six payload schemas, request kinds (final table), Gem Funnel and transit fallback as built, what changed vs the Phase 4 delta, requests carried
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-5.md">TG-PHASE-5.md</a> — Phase 5: cross-WP contract, the Lane B toggle, defaults, trigger minutes, carried items
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-1b.md">WP-1b.md</a> — WP-1b core flows + document delivery: defaults (step shape, claim order, expiry, size fallback)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2a.md">WP-2a.md</a>            — WP-2a Maps kit: defaults, Maps terms finding, credential header, live smoke results
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2b.md">WP-2b.md</a>            — WP-2b Research kit: defaults (budgets, independence, labels, scanner)
@@ -250,6 +251,9 @@ Last updated: `2026-10-01 05:45:21 AM EST` · Repo version: `v01.26r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4b.md">WP-4b.md</a>        — WP-4b prefs-build + place-notes + brochure-build: defaults, interview answers
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4c.md">WP-4c.md</a>        — WP-4c chat + trip-check + routine table: defaults (request check, hand-offs, Enterprise tier, change codes)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4d.md">WP-4d.md</a>        — WP-4d Phase 4b skill deltas: defaults (one places digest, known-place re-check, choices and evidence, review paths, routine table)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-5a.md">WP-5a.md</a> — WP-5a commands and flows: deviations and defaults
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-5b.md">WP-5b.md</a> — WP-5b envelope handlers and sheets: defaults
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-5c.md">WP-5c.md</a> — WP-5c Lane B, /route, trigger-minute measurement
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/hidden-gems-proposal.md">hidden-gems-proposal.md</a> — Hidden gems: the sweep idea evaluated against other methods, the Gem Funnel recommendation, costs, plan changes implied, decisions 22–26 (answered by the owner)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits">kits/</a>                   — Shared Node kits (no runtime dependencies except Playwright for the brochure PDF step)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/brochure">brochure/</a>           — Brochure renderer: brochure model → one self-contained HTML document → paginated PDF via Playwright
@@ -436,7 +440,17 @@ Last updated: `2026-10-01 05:45:21 AM EST` · Repo version: `v01.26r`
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/gems-weights.mjs">gems-weights.mjs</a> — Weights, floors, rough-edge tokens
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/index.mjs">index.mjs</a> — Gem Funnel exports
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gems/README.md">README.md</a> — Contract: the funnel in call order, the pool record, what stays build-scoped
-│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/gas">gas/</a>            — Pack-side Apps Script (empty until Phase 5)
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/gas">gas/</a>            — The Telegram chatbot (Phase 5): commands, flows, envelope handlers, sheets, Lane B, /route
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/00_common.js">00_common.js</a> — Request routing and shared helpers
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/10_commands.js">10_commands.js</a> — Instant commands and the /start interview offer
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/11_flow_interview.js">11_flow_interview.js</a> — The /interview flow
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/12_flow_plan.js">12_flow_plan.js</a> — The /plan journey and /seed
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/13_flow_review.js">13_flow_review.js</a> — The post-trip /review flow and daily offer
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/20_envelopes.js">20_envelopes.js</a> — Handlers for the six pack envelope types, prefs review buttons
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/21_sheets.js">21_sheets.js</a> — Pack tabs and their storage API
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/30_chat_api.js">30_chat_api.js</a> — Lane B (Claude API answers) and the /smart toggle
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/31_route.js">31_route.js</a> — /route through the Apps Script Maps service
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/40_interview_bank.js">40_interview_bank.js</a> — Interview bank, generated by the bundler (never edit)
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/.gitkeep">.gitkeep</a>        — Keeps the directory
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/helper.json">helper.json</a>     — Pack manifest: name, drive root, memory dirs, timezone default
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/later">later/</a>          — Saved-for-later lists (WP-3a)
@@ -488,10 +502,12 @@ Last updated: `2026-10-01 05:45:21 AM EST` · Repo version: `v01.26r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-4B.md">TG-PHASE-4B.md</a>  — Phase 4b kickoff: core flows + document delivery, prefs interview, engine choices and envelope types, skill deltas (Fable 5.1 · high)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-4B-DELTA.md">TG-PHASE-4B-DELTA.md</a> — Phase 4b delta for the running session: places repository fields, sixth envelope type, re-check before re-research, review prefs, decisions 20–21
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-5.md">TG-PHASE-5.md</a>       — Phase 5 kickoff: Telegram commands, /interview and /plan flows, envelope handlers, sheets (Opus 5.5 · high)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-6.md">TG-PHASE-6.md</a> — Phase 6 kickoff: integration, red-team, cost audit, switch-on guide (Fable 5.1 · xhigh)
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-9.md">TG-PHASE-9.md</a>       — Phase 9 kickoff (draft, finalized by Phase 8): the Tour Guide app as a Telegram Mini App — core route + signed launch data, app operations, generic data-free shell (Fable 5.1 · high; route Opus 5.5 · high)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/README.md">README.md</a>               — Framework overview, "how to add a helper", the public/private rules
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/SPEC.md">SPEC.md</a>                 — Framework contract v1 — envelope, mailbox, wake route, manifest, registries, properties, sheet, limits, ownership map
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/status">status/</a>                 — One status file per work package
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/PHASE-5-RESUME.md">PHASE-5-RESUME.md</a> — Phase 5 resume note (usage-limit pause and resume)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-1b.md">WP-1b.md</a> — WP-1b progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2a.md">WP-2a.md</a>            — WP-2a progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2b.md">WP-2b.md</a>            — WP-2b progress and requests to the coordinator
@@ -508,7 +524,10 @@ Last updated: `2026-10-01 05:45:21 AM EST` · Repo version: `v01.26r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4a.md">WP-4a.md</a>        — WP-4a progress, dry runs and requests (generic copy from the private repo)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4b.md">WP-4b.md</a>        — WP-4b progress, dry runs and requests (generic copy from the private repo)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4c.md">WP-4c.md</a>        — WP-4c progress, dry runs, memory-merge experiment and requests (generic copy from the private repo)
-│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4d.md">WP-4d.md</a>        — WP-4d contract, checks, the `/plan` journey dry-run and requests R1–R9 (generic copy from the private repo)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4d.md">WP-4d.md</a>        — WP-4d contract, checks, the `/plan` journey dry-run and requests R1–R9 (generic copy from the private repo)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-5a.md">WP-5a.md</a> — WP-5a progress, checks and requests
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-5b.md">WP-5b.md</a> — WP-5b progress, checks and requests
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-5c.md">WP-5c.md</a> — WP-5c progress, checks and requests
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates">templates/</a>              — Skeletons copied by tools/new-helper.mjs
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo">private-repo/</a>       — Skeleton of a helper's private repo ({{…}} placeholders filled by new-helper.mjs)
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/.gitattributes">.gitattributes</a>  — log/*.md merge=union so daily logs merge line by line; the Maps ledger uses the maps-ledger driver
@@ -578,6 +597,15 @@ Last updated: `2026-10-01 05:45:21 AM EST` · Repo version: `v01.26r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_choices.test.js">pack_tour-guide_choices.test.js</a> — Tour Guide pack: owner choices on planTrip, statuses, "Saved by you"
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_estimator.test.js">pack_tour-guide_estimator.test.js</a> — Tour Guide pack: estimates, calibration taps, bounds
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_fixtures.test.js">pack_tour-guide_fixtures.test.js</a> — Tour Guide pack: fixtures validate, responder replays every pair
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_gas_chat.test.js">pack_tour-guide_gas_chat.test.js</a> — Tour Guide chatbot: Lane B, /smart and the status line
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_gas_commands.test.js">pack_tour-guide_gas_commands.test.js</a> — Tour Guide chatbot: Instant commands and callbacks
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_gas_e2e.test.js">pack_tour-guide_gas_e2e.test.js</a> — Tour Guide chatbot: Mock end-to-end: interview, /plan, places, review, fallbacks
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_gas_envelopes.test.js">pack_tour-guide_gas_envelopes.test.js</a> — Tour Guide chatbot: The six envelope handlers and prefs review
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_gas_interview.test.js">pack_tour-guide_gas_interview.test.js</a> — Tour Guide chatbot: The /interview flow
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_gas_plan.test.js">pack_tour-guide_gas_plan.test.js</a> — Tour Guide chatbot: The /plan flow
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_gas_review.test.js">pack_tour-guide_gas_review.test.js</a> — Tour Guide chatbot: The /review flow and daily offer
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_gas_route.test.js">pack_tour-guide_gas_route.test.js</a> — Tour Guide chatbot: /route
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_gas_sheets.test.js">pack_tour-guide_gas_sheets.test.js</a> — Tour Guide chatbot: Pack sheets and storage API
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_gems.test.js">pack_tour-guide_gems.test.js</a> — Tour Guide pack: the Gem Funnel on the invented pool
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_integration.test.js">pack_tour-guide_integration.test.js</a> — Tour Guide pack: fixtures → estimator → planner → schemas → brochure, the Phase 3 property set
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_later.test.js">pack_tour-guide_later.test.js</a> — Tour Guide pack: Later lists, promote / demote

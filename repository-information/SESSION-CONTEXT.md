@@ -7,6 +7,31 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-10-01 08:10:13 AM EST
+**Repo version:** v01.27r
+**Branch:** `claude/project-thread-m0kbpq` (Tour Guide project, thread "Phase 5 Telegram commands", Opus 5.5 · high)
+
+**What we worked on**
+- Phase 5: the Tour Guide Telegram chatbot pack `helpers/packs/tour-guide/gas/` — contract (`helpers/decisions/TG-PHASE-5.md` §1), WP-5a commands and flows, WP-5b envelope handlers and sheets, WP-5c Lane B / `/route` / measurement / mock end-to-end, an audit pass, core hooks `core_start` + `core_status`, `*_API_KEY` redaction, bundler-generated interview bank. 373 tests pass, 1 skipped; bundle and boundary clean.
+- Private repo: `prefs-build-ingest.mjs --decisions` (review taps → kit `apply`) on TourGuide branch `claude/project-thread-m0kbpq`, PR #3, rebased on main after the owner merged Phase 4b (PR #2).
+
+**Where we left off**
+- Phase 5 done and pushed as v01.27r; `helpers/prompts/TG-PHASE-6.md` written; BUILD-STATE Next = Phase 6.
+- Paused once for the owner's usage cue (10:00–11:10 UTC); `helpers/status/PHASE-5-RESUME.md` records it.
+
+**Key decisions made**
+- Lane B (owner, 10:07 UTC): both lanes, free routines by default, `/smart on|off` toggles Claude API answers (needs `CLAUDE_API_KEY`), `/status` shows the mode.
+- Review decisions travel as a `prefs` request with `payload.decisions`; capture handlers are named `tg_capture_*`; review ratings use the core `fl` buttons.
+
+**Active context**
+- TourGuide PR #3 awaits the owner's merge. Recommend `MAX_ROUTINE_FIRES_PER_DAY` 20–24 (Phase 6 decides). Lane B prices in `30_chat_api.js` are unverified (Phase 6 checks).
+
+**Recommendation for next session**
+- Start Phase 6 in a new session on Fable 5.1 · xhigh.
+**To continue:** type `Read helpers/prompts/TG-PHASE-6.md and execute it exactly.`
+
+## Previous Sessions
+
 **Date:** 2026-10-01 05:45:21 AM EST
 **Repo version:** v01.26r
 **Branch:** `claude/tg-phase-4b-s94tru` (Tour Guide project, thread "Tour Guide Phase 4b", Fable 5.1 · high)
@@ -33,30 +58,3 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 **To continue:** type `Read helpers/prompts/TG-PHASE-5.md and execute it exactly.`
 
-## Previous Sessions
-
-**Date:** 2026-10-01 03:53:32 AM EST
-**Repo version:** v01.22r
-**Branch:** `claude/tg-hidden-gems-dn7epo` (Tour Guide project, thread "Hidden gems methodology", Fable 5.1 · high)
-
-**What we worked on**
-- Evaluated the owner's hidden-gems idea (sweep every business on Google Maps and score each) against seven other methods and wrote `helpers/decisions/hidden-gems-proposal.md`: keep the scoring half, replace the enumeration with the Gem Funnel (taste queries in two languages, local-voices research, Aggregate-API neighbourhood probes, free screening, gem score, evidence pass, 💎 marks on the shortlist); ≈ $4 per round at list, $0 inside the free caps
-- Recorded the owner's answers to decisions 22–26 (renumbered after the plan's 18–21) and walked him through enabling the Places Aggregate API, the key's API restrictions and the Claude HQ credential form; verified the API with one live call
-
-**Where we left off**
-- Everything delivered and pushed (v01.18r proposal, v01.20r answers, v01.22r verified enablement). The plan and the phase prompts are untouched; the coordinator routes §6 into a new WP-2g inside Phase 4b, where stream 3 can now run live
-- Owner's remaining action, not blocking: rotate the Static Maps key whose value appeared in a screenshot, and update the `MAPS_STATIC_KEY` environment variable
-
-**Key decisions made**
-- Evaluate at the search layer (Text / Nearby Search Enterprise return 20 places with rating, count, hours and website per call) and pay for Place Details only on finalists
-- A place is a 💎 only with corroboration outside Google; nothing from Google persists beyond place ids; no polygon tests on Google coordinates
-- Decisions 22, 24, 25, 26 confirmed at their defaults; 23 (Aggregate API) chosen as "enable now" and done the same day
-
-**Active context**
-- Credentials cannot be edited in the environment dialog, only deleted or added, so the Aggregate host is a third entry next to the Places/Routes one; package numbering: WP-2e brochure maps, WP-2f prefs gap, WP-2g gems
-- `main` moved repeatedly during this session (Phase 4, interaction design, brochure maps, the v01.21r collision repair); rebased before every push
-
-**Recommendation for next session**
-- When Phase 4b builds WP-2g, read `helpers/decisions/hidden-gems-proposal.md` §4 and §6 and build stream 3 against the live Aggregate API from the start
-
-**To continue:** type `Read helpers/decisions/hidden-gems-proposal.md §6 and fold WP-2g into Phase 4b.`
