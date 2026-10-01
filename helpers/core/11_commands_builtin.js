@@ -32,8 +32,18 @@ registerCommand('/status', function (ctx) {
     '\nLast sweep: ' + tgEscape(fmtLocalIso(settingGet('last_sweep', ''))) +
     '\nWakes today: ' + settingDailyCount('wakes') +
     '\nRoutine fires today: ' + settingDailyCount('routine_fires') +
-    '\nOne-off triggers: ' + listTriggers().length);
+    '\nOne-off triggers: ' + listTriggers().length + statusExtras());
 }, 'queue / pending / requests / sweep counts');
+/**
+ * A pack may add lines to /status by registering the renderer 'core_status': fn() → '' | html (already escaped; one
+ * or more lines). A failing renderer is audited and leaves /status as the core writes it.
+ */
+function statusExtras() {
+  var r = getRenderer('core_status');
+  if (!r) return '';
+  try { var out = r(); return out ? '\n' + String(out) : ''; }
+  catch (err) { auditFail('status_extras_error', '', describeError(err)); return ''; }
+}
 registerCommand('/pending', function (ctx) {
   var rows = listPendingActions();
   if (!rows.length) { ctx.reply('No pending actions.'); return; }

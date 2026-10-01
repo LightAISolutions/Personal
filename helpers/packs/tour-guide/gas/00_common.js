@@ -15,7 +15,8 @@ var TG_KIND_ROUTINE = {
 var TG_SETTINGS = {
   PROFILE_SUMMARY: 'tg_profile_summary',   // JSON { text, dimensions_count?, updated?, received_at } — written by 20_envelopes.js
   CURRENT_TRIP: 'tg_current_trip',         // slug of the trip the owner is working on — written by 12_flow_plan.js
-  REVIEW_OFFERED: 'tg_review_offered'      // JSON { <trip slug>: <ISO> } — written by the review daily job
+  REVIEW_OFFERED: 'tg_review_offered',     // JSON { <trip slug>: <ISO> } — written by the review daily job
+  SMART: 'tg_smart'                        // 'on' | 'off' — the owner's /smart toggle for Lane B (30_chat_api.js); unset = CHAT_API_ENABLED, default off
 };
 
 function tgKindRoutine(kind) {
