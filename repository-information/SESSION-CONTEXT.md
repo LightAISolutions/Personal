@@ -6,8 +6,8 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
-**Date:** 2026-09-30 08:38:20 PM EST
-**Repo version:** v01.09r
+**Date:** 2026-09-30 09:10:27 PM EST
+**Repo version:** v01.10r
 **Branch:** `claude/project-thread-20mnqb` (Tour Guide project thread, Claude HQ environment, Fable 5.1 · High)
 
 **What we worked on:**
@@ -18,7 +18,8 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 **Where we left off:**
 
-- Waiting on the owner for: the Maps key added to Claude HQ as an API credential, a new BotFather token (owner keeps it), and any objection to the thirteen defaults (or "defaults")
+- Maps key added to Claude HQ as an API credential (both hosts, `X-Goog-Api-Key`); console quota caps deferred to Phase 7 (free trial blocks quota edits)
+- Waiting on the owner for: a new BotFather token (owner keeps it) and any objection to the thirteen defaults (or "defaults")
 - When those are in, the Phase 0 thread marks Phase 0 done in `helpers/BUILD-STATE.md`
 - Do not start Phase 1 in this thread
 

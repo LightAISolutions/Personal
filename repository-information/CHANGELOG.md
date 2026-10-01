@@ -3,11 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 9/100`
+`Sections: 10/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.10r] — 2026-09-30 09:10:27 PM EST
+
+> **Prompt:** "maps key added"
+
+### Changed
+- `helpers/BUILD-STATE.md`, `helpers/decisions/TG-PHASE-0.md` — Maps key recorded as added to Claude HQ as an API credential for the Places and Routes hosts with the `X-Goog-Api-Key` header (plan fact 10 inference resolved from the cloud-environments doc: custom header name with an empty prefix is supported); Google Cloud per-API daily caps deferred to Phase 7 because the free trial blocks quota edits; remaining owner actions are the bot token and any objection to the defaults
+- `repository-information/SESSION-CONTEXT.md` — updated for the same state
 
 ## [v01.09r] — 2026-09-30 08:38:20 PM EST
 
