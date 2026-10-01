@@ -25,6 +25,7 @@ const PATHS = {
   fork: `<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M16 3c-1.5 1-2.5 3-2.5 6.5 0 2 1 3 2.5 3v8.5M16 3v9.5" ${S}/>`,
   cup: `<path d="M5 8h11v6a5 5 0 0 1-10 0zM16 9h2a2.5 2.5 0 0 1 0 5h-2M4 20h13" ${S}/>`,
   free: `<path d="M7 3h10M7 21h10M8 3c0 7 8 7 8 14M16 3c0 7-8 7-8 14" ${S}/>`,
+  umbrella: `<path d="M3 12a9 9 0 0 1 18 0zM12 3v-.5M12 12v6.5a2 2 0 0 1-4 0" ${S}/>`,
   bed: `<path d="M3 18V8M3 14h18v4M21 14v-3a2 2 0 0 0-2-2h-9v5M3 11h4a2 2 0 0 1 2 2" ${S}/>`,
   warn: `<path d="M12 4l9 16H3zM12 10v4M12 17.5v.5" ${S}/>`,
   info: `<circle cx="12" cy="12" r="8.5" ${S}/><path d="M12 11v6M12 7.5v.5" ${S}/>`,

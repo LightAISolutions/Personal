@@ -88,6 +88,11 @@ test('validate: a valid payload per type passes; an invalid one is refused with 
   const tf = P.trip_facts(); tf.found[0].end = '2027-05-01'; bad('trip_facts', tf, /found\[0\]\.end is before start/);
   const pd = P.plan_digest(); pd.days[0].stops[0].arrive = '25:00'; bad('plan_digest', pd, /stops\[0\]\.arrive has the wrong format/);
   const pd2 = P.plan_digest(); pd2.days.push({ ...pd2.days[0] }); bad('plan_digest', pd2, /days must be in date order/);
+  const pr = P.plan_digest(); pr.days[0].rain = [{ slug: 'rope-loft', name: 'Rope Loft', instead_of: 'Harbour Walk', km: 0.8, maps_url: 'https://www.google.com/maps/place/?q=place_id:FixtureR' }];
+  assert.deepEqual(validate(ctx, 'plan_digest', pr).errors, [], 'rain swaps are accepted');
+  const pr2 = J(pr); pr2.days[0].rain[0].km = -1; pr2.days[0].rain.push(pr2.days[0].rain[0], pr2.days[0].rain[0]);
+  bad('plan_digest', pr2, /rain\[0\]\.km must be a number from 0 to 100/);
+  bad('plan_digest', pr2, /rain/);
   bad('plan_digest', P.plan_digest({ drive: { plan: 'x', brochure_html: null, brochure_pdf: null } }), /drive\.plan must be a Drive file id/);
   bad('profile_summary', P.profile_summary({ text: '' }), /text must not be empty/);
   bad('profile_summary', P.profile_summary({ updated: '2027-02-30T10:00:00Z' }), /updated is not a real date-time/);

@@ -62,7 +62,7 @@ Street View is never used: Google forbids it in print. Model fields: `trip.map_i
 |---|---|
 | `version*` | `1` |
 | `trip*` | `title*`, `destination*`, `start_date*`, `end_date*` (ISO dates, ≤ 31 days), `subtitle`, `country`, `timezone`, `locale` (BCP 47, default `en-US`), `travelers[]`, `prepared_for`, `pace`, `day_start`/`day_end`, `intro` (paragraphs split on blank lines), `cover_image` `{src, alt, credit}`, `lodging[]` (`name*`, `address`, `from`/`to`, `lat`/`lng`, `maps_url`, `note`, `check_in`/`check_out`), `build_id`, `built_on`, `verified_on` |
-| `days[]*` | one per day: `date*`, `theme`, `summary`, `lodging` (name, matched against `trip.lodging`), `stops[]*` (`place*` key, `arrive*`, `depart*`, `activity`, `minutes`, `note`, `booked`), `legs[]` (`from`/`to`: place key or `lodging`, `mode*` walk/transit/train/drive/taxi/bike/ferry/other, `minutes*`, `distance_m`, `depart_at`, `line`, `maps_url`, `note`), `meals[]` (`kind*` breakfast/coffee/lunch/snack/dinner/drinks, `start*`, `end`, `place` or `name`, `note`), `free[]`, `warnings[]` (`severity` info/warn/alert, `text*`, `place`), `verified_on` |
+| `days[]*` | one per day: `date*`, `theme`, `summary`, `lodging` (name, matched against `trip.lodging`), `stops[]*` (`place*` key, `arrive*`, `depart*`, `activity`, `minutes`, `note`, `booked`), `legs[]` (`from`/`to`: place key or `lodging`, `mode*` walk/transit/train/drive/taxi/bike/ferry/other, `minutes*`, `distance_m`, `depart_at`, `line`, `maps_url`, `note`), `meals[]` (`kind*` breakfast/coffee/lunch/snack/dinner/drinks, `start*`, `end`, `place` or `name`, `note`), `free[]`, `warnings[]` (`severity` info/warn/alert, `text*`, `place`), `alternatives` (`title`, default "If it rains"; `items[]*` of `place*` key and `note`, at most 3, shown in the aside without a card), `verified_on` |
 | `places*` | object keyed by the ids the stops use: `name*`, `category`, `tagline`, `address`, `lat`/`lng`, `hours[]` (Google's seven weekday lines), `hours_today`, `closed_days[]`, `rating`, `review_count`, `price_level`, `website`, `phone`, `maps_url`, `place_id`, `business_status`, `editorial`, `image`, `note` (`why_you`, `what_to_do`, `what_to_skip`, `best_time`, `tickets`, `accessibility`, `pairings[]`, `food`), `reviews[]` (`author*`, `author_url`, `rating`, `text*`, `when`, `url`), `sources[]` (`title`, `url*`, `accessed`, `supports`), `fetched_on` |
 | `later[]` | named lists of what was not scheduled: `name*`, `description`, `items[]*` (`place` or `name`, `reason`, `note`) |
 | `practical[]` | sections for the practical page: `title*`, `text` and/or `items[]` (`label*`, `text*`, `url`) |
@@ -92,7 +92,7 @@ sections declare a small markup contract that the paginator reads:
 | `data-pg="block"` (+ `data-keep`) | unsplittable; `data-keep` travels with the next block (headings) |
 | `data-pg="split"` + `data-cont` | a container of blocks that continues on later pages under a "…, continued" note |
 | `data-pg="cols"` | two columns of unsplittable items, filled left then right and balanced (cards, lists) |
-| `data-pg="aside"` | floated right, never split (route sketch, lodging, warnings) |
+| `data-pg="aside"` | floated right, never split (route sketch, lodging, alternatives, warnings) |
 
 Widow control never leaves a lone last item on a continuation page. **Near-fit compaction**: a section that spills
 only a little (its second page is a continuation using under 30 % of the height) is re-set with the `tight` class

@@ -82,6 +82,7 @@
         "meals": { "type": "array", "maxItems": 8, "items": { "$ref": "#/$defs/meal" } },
         "free": { "type": "array", "maxItems": 8, "items": { "$ref": "#/$defs/freeBlock" } },
         "warnings": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/warning" } },
+        "alternatives": { "$ref": "#/$defs/alternatives" },
         "map_image": { "$ref": "#/$defs/mapImage", "description": "A Google static map of this day's route (Maps Static API, fetched during the build and inlined). When present it replaces the day's route sketch." },
         "verified_on": { "$ref": "#/$defs/date" }
       }
@@ -130,6 +131,14 @@
     "freeBlock": {
       "type": "object", "additionalProperties": false, "required": ["start", "end"],
       "properties": { "start": { "$ref": "#/$defs/time" }, "end": { "$ref": "#/$defs/time" }, "note": { "$ref": "#/$defs/short" } }
+    },
+    "alternatives": {
+      "type": "object", "additionalProperties": false, "required": ["items"],
+      "description": "Places to swap in on this day, e.g. indoor options if it rains. Shown in the day's aside; a place needs no card.",
+      "properties": {
+        "title": { "$ref": "#/$defs/short", "description": "The block's heading; default 'If it rains'." },
+        "items": { "type": "array", "minItems": 1, "maxItems": 3, "items": { "type": "object", "additionalProperties": false, "required": ["place"], "properties": { "place": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$", "description": "Key into `places`." }, "note": { "$ref": "#/$defs/short" } } } }
+      }
     },
     "warning": {
       "type": "object", "additionalProperties": false, "required": ["text"],

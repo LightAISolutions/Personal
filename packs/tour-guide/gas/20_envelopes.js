@@ -192,7 +192,7 @@ function tgEnvValidatePlanDigest(p) {
   if (p.days !== undefined && tgEnvArr(errs, 'days', p.days, 31)) {
     p.days.forEach(function (d, i) {
       var at = 'days[' + i + ']';
-      if (!tgEnvObj(errs, at, d, ['date', 'theme', 'stops', 'legs', 'warnings'])) return;
+      if (!tgEnvObj(errs, at, d, ['date', 'theme', 'stops', 'legs', 'warnings'], ['rain'])) return;
       if (d.date !== undefined) {
         tgEnvDate(errs, at + '.date', d.date);
         var prev = i ? p.days[i - 1] : null;
@@ -226,6 +226,17 @@ function tgEnvValidatePlanDigest(p) {
         });
       }
       if (d.warnings !== undefined && tgEnvArr(errs, at + '.warnings', d.warnings, 20)) d.warnings.forEach(function (w, j) { tgEnvStr(errs, at + '.warnings[' + j + ']', w, 1, 200); });
+      if (d.rain !== undefined && tgEnvArr(errs, at + '.rain', d.rain, 2)) {
+        d.rain.forEach(function (r, j) {
+          var ar = at + '.rain[' + j + ']';
+          if (!tgEnvObj(errs, ar, r, ['slug', 'name', 'instead_of', 'km', 'maps_url'])) return;
+          if (r.slug !== undefined) tgEnvSlug(errs, ar + '.slug', r.slug);
+          if (r.name !== undefined) tgEnvStr(errs, ar + '.name', r.name, 1, 120);
+          if (r.instead_of !== undefined) tgEnvStr(errs, ar + '.instead_of', r.instead_of, 1, 120);
+          if (r.km !== undefined && !(typeof r.km === 'number' && isFinite(r.km) && r.km >= 0 && r.km <= 100)) errs.push(ar + '.km must be a number from 0 to 100');
+          if (r.maps_url !== undefined) tgEnvUrl(errs, ar + '.maps_url', r.maps_url);
+        });
+      }
     });
   }
   if (p.later !== undefined && tgEnvArr(errs, 'later', p.later, 200)) {

@@ -110,6 +110,23 @@
         }
       }
     },
+    "rain_swaps": {
+      "type": "array",
+      "maxItems": 2,
+      "description": "Indoor places off the plan, near one of this day's outdoor stops, to swap in if it rains (planner-rain.mjs). Suggestions only: a swap becomes a stop through a replan.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["place", "place_id", "instead_of", "km", "hours"],
+        "properties": {
+          "place": { "$ref": "#/$defs/slug" },
+          "place_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,300}$" },
+          "instead_of": { "$ref": "#/$defs/slug", "description": "The outdoor stop of this day it is nearest to." },
+          "km": { "type": "number", "minimum": 0, "maximum": 100, "description": "Straight-line distance to that stop." },
+          "hours": { "enum": ["open", "unknown"], "description": "Open on this date by Google's hours, or hours unknown." }
+        }
+      }
+    },
     "day_url": { "anyOf": [{ "type": "null" }, { "type": "string", "maxLength": 4000, "pattern": "^https://\\S+$" }] },
     "verified_on": { "$ref": "#/$defs/date" },
     "solver": {

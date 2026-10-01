@@ -173,6 +173,10 @@ function tgCmdDayMessages(trip, day, total) {
   if (home) lines.push(legLine(home, 'back to your lodging'));
   if (!(day.stops || []).length) lines.push('<i>A free day.</i>');
   (day.warnings || []).forEach(function (w) { lines.push('⚠️ ' + tgEscape(w)); });
+  (Array.isArray(day.rain) ? day.rain : []).forEach(function (r, i) {
+    if (!i) lines.push('<b>If it rains</b>');
+    lines.push('☔ ' + tgCmdHref(r.maps_url, r.name) + ' <i>instead of ' + tgEscape(r.instead_of) + (typeof r.km === 'number' ? ', ' + tgEscape(r.km) + ' km away' : '') + '</i>');
+  });
   var nav = [];
   if (day.n > 1) nav.push({ text: '◀ Day ' + (day.n - 1), data: cbEncode('dy', tk, day.n - 1, 'e') });
   if (total && day.n < total) nav.push({ text: 'Day ' + (day.n + 1) + ' ▶', data: cbEncode('dy', tk, day.n + 1, 'e') });
