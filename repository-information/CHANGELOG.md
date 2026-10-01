@@ -3,11 +3,26 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 14/100`
+`Sections: 15/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.15r] — 2026-10-01 02:50:57 AM EST
+
+> **Prompt:** "In my project goal, I forgot to mention that my vision for the final product is a chatbot via Telegram that starts me off with an extensive interview about my food & activity preferences, hot/cold tolerance, and other useful questions that helps it understand my likes and dislikes. Then, I want to have multiple commands that I can give it to automate tasks, such as "/plan Tokyo, Japan" and it would review the information available to it via my connectors related to "Tokyo, Japan", conduct additional web research to see current options and evaluate them for me, recommend me several activities/food options, then takes my choices and generates a professional, beautiful travel brochure like the sample you gave me. Given the context above, amend the plan (both built and unbuilt) to implement my vision."
+
+### Added
+- `helpers/prompts/TG-PHASE-4-DELTA.md` — additions for the running Phase 4 session: `plan` requests gain `later`, `skip` and `deliverables` beside `picks`; the research skill writes a structured shortlist and handles an `intake` scope; `prefs-build` accepts interview answers; the hand-off now points at Phase 4b
+- `helpers/prompts/TG-PHASE-4B.md` — new gap-closure phase (Fable 5.1 · high): core flows primitive and Telegram document delivery (WP-1b), prefs interview bank, eleven new vocabulary dimensions and an `interview` command (WP-2f), engine choices, statuses and the five pack envelope types (WP-3d), TourGuide skill deltas and pin bump (WP-4d)
+- `helpers/prompts/TG-PHASE-5.md` — Telegram commands and flows phase (Opus 5.5 · high): `/start`, `/interview`, `/profile`, the five-step `/plan` flow, envelope handlers and sheets, Lane B and `/route`; carries a FINALIZE block Phase 4b fills in
+
+### Changed
+- `repository-information/TOUR-GUIDE-BUILD-PLAN.md` — amended for the owner's Telegram vision: scope and §4 architecture, data model (trip and place statuses, Shortlist, FlowState, PlanDigest), §5.1 interview-first preferences, §5.2/§5.7/§5.8 additions, new §5.9 owner's journey (`/plan <destination>` as a five-step chat flow ending in a brochure PDF), §6 gap work packages 1b/2f/3d and a new Phase 4b, Phases 5–8 rewritten, §8 per-plan costs, §9 four new risks, §10 decisions 14–17, new §11b amendment summary, §12 kickoff
+- `helpers/BUILD-STATE.md` — gap rows 1b/2f/3d, Phase 4 marked in progress with its delta file, new Phase 4b row, Phases 5–8 rewritten, plan amendment log, Next updated
+- `README.md` — tree entries for the three new prompt files
+- `repository-information/SESSION-CONTEXT.md` — session context saved
 
 ## [v01.14r] — 2026-10-01 01:56:30 AM EST
 

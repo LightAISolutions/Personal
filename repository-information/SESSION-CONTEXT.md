@@ -6,6 +6,33 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-10-01 02:50:57 AM EST
+**Repo version:** v01.15r
+**Branch:** `claude/tg-plan-telegram-vision-610o9x` (Tour Guide project, thread "Amend plan for Telegram vision", Fable 5.1 · xhigh)
+
+**What we worked on**
+- Amended `repository-information/TOUR-GUIDE-BUILD-PLAN.md` for the owner's Telegram vision: an interview-first preference profile, `/plan <destination>` as a five-step Telegram flow (intake facts, shortlist of activities and food, picks, then plan + notes + brochure PDF in chat), new §5.9 owner's journey, §6 gap work packages for the built phases (1b core flows + document delivery, 2f prefs interview, 3d engine choices + five envelope types), new Phase 4b, Phases 5–8 rewritten, §9 risks, §10 decisions 14–17, §11b summary, §12 kickoff
+- Updated `helpers/BUILD-STATE.md` (gap rows, Phase 4 in progress, Phase 4b, amendment log, Next)
+- Wrote `helpers/prompts/TG-PHASE-4-DELTA.md` (for the running Phase 4 session), `helpers/prompts/TG-PHASE-4B.md` and `helpers/prompts/TG-PHASE-5.md` (with a FINALIZE block Phase 4b fills in)
+
+**Where we left off**
+- Amendment pushed as v01.15r. Phase 4 is running in its own thread on the TourGuide branch `claude/tg-phase-4-18ndyh`; the coordinator relays the delta file to it. `helpers/prompts/TG-PHASE-4.md` was deliberately left untouched
+
+**Key decisions made**
+- Phase 4 keeps `plan.picks` (already committed in the TourGuide `skills/README.md`) and adds `later`, `skip` and `deliverables`; `shortlist` and `trip_facts` go out as prose replies until Phase 4b registers the envelope types
+- Decisions 14–17 taken at their defaults (the owner can override in thread)
+- §11b added instead of renumbering §12, because `helpers/BUILD-STATE.md` row 0 cites "plan §12"
+
+**Active context**
+- Phase 2 thread owns the Maps Static brochure change; AssistantBrain reference only; the TourGuide private repo was not touched by this session
+
+**Recommendation for next session**
+- When Phase 4 hands off, start Phase 4b in a new session on Fable 5.1 · high
+
+**To continue:** type `Read helpers/prompts/TG-PHASE-4B.md and execute it exactly.`
+
+## Previous Sessions
+
 **Date:** 2026-10-01 01:56:30 AM EST
 **Repo version:** v01.14r
 **Branch:** `claude/tg-phase-3-2udjs1` (Tour Guide project, thread "Tour Guide Phase 3", coordinator Fable 5.1 · high)
@@ -33,29 +60,3 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 **To continue:** type `Read helpers/prompts/TG-PHASE-4.md and execute it exactly.`
 
-## Previous Sessions
-
-**Date:** 2026-10-01 01:12:03 AM EST
-**Repo version:** v01.13r
-**Branch:** `claude/tg-phase-2-svjmub` (Tour Guide project, thread "Tour Guide Phase 2", coordinator Opus 5.5 · high)
-
-**What we worked on**
-- Tour Guide Phase 2 per `helpers/prompts/TG-PHASE-2.md`: four shared kits built in worktrees by agents and merged: `helpers/kits/maps` (2a), `research` (2b), `brochure` (2c), `prefs` (2d); 148 tests, bundle check and boundary check clean
-- One live Maps smoke run (Text Search, Place Details, Compute Routes all 200); findings corrected plan facts 2, 7, 10, 12 and SPEC §16
-- Wrote `helpers/decisions/TG-PHASE-2.md`, updated `helpers/BUILD-STATE.md`, wrote `helpers/prompts/TG-PHASE-3.md`
-
-**Where we left off**
-- Phase 2 pushed as v01.13r. The sample brochure (invented trip, 12 pages) was posted to the owner for the "would hand it to a friend" rating; the rating was pending at push time. If changes are asked for, iterate the brochure kit in a follow-up push and update decisions §3
-
-**Key decisions made**
-- Owner's standing instruction: never park on a question; do every task that does not need the owner first
-- 2b and 2d ran on Opus 5.5 · high (the medium agent could not load mid-session); Charter fonts embedded; Google content other than place ids and coordinates is build-scoped
-- Open owner question: may a delivered brochure show Google hours and ratings (decisions §4)
-
-**Active context**
-- `helpers-dist` exists; next phase builds `helpers/packs/tour-guide/`; TourGuide private repo untouched since Phase 0; AssistantBrain reference only
-
-**Recommendation for next session**
-- Start Phase 3 in a new session on Fable 5.1 · high (after any brochure changes the owner asks for)
-
-**To continue:** type `Read helpers/prompts/TG-PHASE-3.md and execute it exactly.`
