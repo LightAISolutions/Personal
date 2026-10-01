@@ -10,8 +10,8 @@ export const APPETITE_MIN = 1;
 export const APPETITE_MAX = 5;
 export const OFF_TRACK_MINUTES_DEFAULT = 25;
 /** The rough edges the owner may tolerate (prefs vocabulary `rough_edges`, WP-2f) and the stage-0 default set. */
-export const ROUGH_EDGES = Object.freeze(['cash_only', 'no_english_menu', 'queues', 'no_reservations', 'standing_room']);
-export const ROUGH_EDGES_DEFAULT = Object.freeze(['cash_only', 'no_english_menu']);
+export const ROUGH_EDGES = Object.freeze(['cash-only', 'no-english-menu', 'queues', 'no-reservations', 'standing-room']);
+export const ROUGH_EDGES_DEFAULT = Object.freeze(['cash-only', 'no-english-menu']);
 
 /** Stage 2 — screening. */
 export const RATING_FLOOR_DEFAULT = 4.3;

@@ -58,8 +58,8 @@
     "price_max": 3
   },
   "rough_edges": [
-    "cash_only",
-    "no_english_menu"
+    "cash-only",
+    "no-english-menu"
   ],
   "aggregate_counts": {
     "restaurant": 140,
@@ -969,8 +969,8 @@
       ],
       "price_level": "PRICE_LEVEL_INEXPENSIVE",
       "friction": [
-        "cash_only",
-        "no_english_menu"
+        "cash-only",
+        "no-english-menu"
       ]
     },
     {
@@ -1910,7 +1910,7 @@
       ],
       "price_level": "PRICE_LEVEL_MODERATE",
       "friction": [
-        "no_english_menu"
+        "no-english-menu"
       ],
       "reviews": [
         {
@@ -2140,7 +2140,7 @@
         }
       ],
       "friction": [
-        "cash_only"
+        "cash-only"
       ]
     },
     {
@@ -2925,7 +2925,7 @@
       ],
       "price_level": "PRICE_LEVEL_EXPENSIVE",
       "friction": [
-        "no_reservations"
+        "no-reservations"
       ]
     },
     {

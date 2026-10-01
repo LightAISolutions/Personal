@@ -11,7 +11,7 @@ const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'e
 export const numberWord = (n) => (Number.isInteger(n) && n >= 0 && n <= 10 ? WORDS[n] : String(n));
 const fmt = (n) => Math.round(n).toLocaleString('en-US');
 const plural = (n, one, many) => `${numberWord(n)} ${n === 1 ? one : many}`;
-const FRICTION_WORDS = Object.freeze({ cash_only: 'cash only', no_english_menu: 'no English menu', queues: 'expect a queue', no_reservations: 'no reservations', standing_room: 'standing room only' });
+const FRICTION_WORDS = Object.freeze({ 'cash-only': 'cash only', 'no-english-menu': 'no English menu', queues: 'expect a queue', 'no-reservations': 'no reservations', 'standing-room': 'standing room only' });
 const FLAG_WORDS = Object.freeze({ unproven: 'new: all its ratings are recent', tourist_oriented: 'reads tourist-oriented', closed_day_conflict: 'closed on a trip day' });
 
 /** gemLineClauses(record, { category_median_count }) → the clauses in order, before joining and trimming. */
@@ -31,7 +31,7 @@ export function gemLineClauses(record, { category_median_count } = {}) {
   if (isOwnerSeed(record)) parts.push('one of your own seeds');
   if (record.mass_tourism_rank != null && record.mass_tourism_rank <= MASS_TOURISM_TOP_N) parts.push('on a mass-tourism top-ten list');
   const edges = (record.friction || []).map((f) => FRICTION_WORDS[f]).filter(Boolean);
-  if (record.signals?.english_only_menu === true && !edges.includes(FRICTION_WORDS.no_english_menu)) edges.push('English-only menu');
+  if (record.signals?.english_only_menu === true && !edges.includes(FRICTION_WORDS["no-english-menu"])) edges.push('English-only menu');
   parts.push(...edges);
   parts.push(...(record.flags || []).map((f) => FLAG_WORDS[f]).filter(Boolean));
   return parts;

@@ -141,8 +141,8 @@ test('scoreGems: deterministic, every component and the score in range, componen
   // Practicality: unknown hours 0.5; never open in the day window 0; friction the owner does not tolerate −0.25
   assert.equal(byId(fx.carriers.unknown_hours).p, 0.5);
   assert.equal(byId('FixtureGemSaffronRowSupperClub').p, 0, 'opens at 18:00, the day ends at 18:00');
-  assert.equal(byId('FixtureGemMillQuarterGinRoom').p, 0.75, 'no_reservations is not tolerated');
-  assert.equal(fig.p, 1, 'no_english_menu is tolerated');
+  assert.equal(byId('FixtureGemMillQuarterGinRoom').p, 0.75, 'no-reservations is not tolerated');
+  assert.equal(fig.p, 1, 'no-english-menu is tolerated');
   // Fit: the skill's estimate wins; a cheap estimate otherwise
   const forced = g.scoreGems(kept, { ...scoreOpts, fit_estimates: { [fig.place_id]: 0.95 } }).find((r) => r.place_id === fig.place_id);
   assert.equal(forced.f, 0.95);
@@ -253,7 +253,7 @@ test('gemLine: numbers and source kinds only, ≤ 200 chars, deterministic, trim
     assert.ok(s.length <= g.GEM_LINE_MAX && s.endsWith('.'), s);
     assert.ok(!/SECRET|hidden/.test(s));
   }
-  const many = { rating: 4.6, rating_count: 77, local_mentions: Array.from({ length: 9 }, (_, i) => ({ ref: 'L' + String(100 + i), language: 'pt', kind: ['local-language', 'editorial', 'community'][i % 3] })), friction: ['cash_only', 'no_english_menu', 'queues', 'no_reservations', 'standing_room'], mass_tourism_rank: 3, flags: ['tourist_oriented', 'closed_day_conflict'], streams: ['owner_seed'] };
+  const many = { rating: 4.6, rating_count: 77, local_mentions: Array.from({ length: 9 }, (_, i) => ({ ref: 'L' + String(100 + i), language: 'pt', kind: ['local-language', 'editorial', 'community'][i % 3] })), friction: ['cash-only', 'no-english-menu', 'queues', 'no-reservations', 'standing-room'], mass_tourism_rank: 3, flags: ['tourist_oriented', 'closed_day_conflict'], streams: ['owner_seed'] };
   const long = g.gemLine(many, { category_median_count: 1900000 });
   assert.ok(long.length <= 200 && long.endsWith('.'), long);
   assert.ok(g.gemLineClauses(many).join('; ').length > 200, 'the full set of clauses was longer');

@@ -61,7 +61,7 @@ from a raw search result. Unknown keys are dropped; nonsense throws a `gems: …
   mass_tourism_rank?,             the place's rank on a mass-tourism list the research found (≤ 10 earns the penalty)
   reviews?: [{ publish_time, rating, author? }],   in-run only, never persisted; review TEXT is dropped at normalization
   slug?,                          our place key when the place is already known
-  friction?: subset of ROUGH_EDGES (cash_only, no_english_menu, queues, no_reservations, standing_room),
+  friction?: subset of ROUGH_EDGES (cash-only, no-english-menu, queues, no-reservations, standing-room),
   signals?: { english_only_menu?, tourist_pricing?, visitor_wording?, mass_tourism_listing? }   booleans the skill sets }
 ```
 
@@ -89,7 +89,7 @@ nearest anchor at the fastest of `modes` — WALK 4.5, TRANSIT 15, DRIVE 30 km/h
   within `price_max` else −0.15 per level over, +0.1 for an owner seed; clamped.
 - **P** `practicalityScore`: 1 when some window on a trip date overlaps the day window by ≥ 30 minutes (0.5 when hours are
   unknown, 0 when never) and within `off_track_minutes` of an anchor; −0.25 per `friction` edge not in `rough_edges`
-  (default tolerates cash_only and no_english_menu); clamped.
+  (default tolerates cash-only and no-english-menu); clamped.
 - `gem_score = 100 × (F·wF + Q·wQ + O·wO + L·wL + P·wP)`, weights 0.35 / 0.25 / 0.20 / 0.15 / 0.05 at appetite 3;
   `weightsFor(appetite)` moves up to 0.10 from Q and F to O and L at appetite 5 and the reverse at 1 (0.05 per component,
   linear in between). `gem = O ≥ 0.6 ∧ L ≥ 0.3 ∧ Q ≥ 0.6`. One decimal. Deterministic; input order kept; inputs not mutated.
