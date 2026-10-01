@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-01 03:24:20 AM EST` · Repo version: `v01.17r`
+Last updated: `2026-10-01 03:27:41 AM EST` · Repo version: `v01.18r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -240,7 +240,8 @@ Last updated: `2026-10-01 03:24:20 AM EST` · Repo version: `v01.17r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-3c.md">WP-3c.md</a>        — WP-3c brochure map: defaults, what the brochure shows and hides
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4a.md">WP-4a.md</a>        — WP-4a trip-research + plan-days: defaults, the Phase 4 delta (statuses, choices, chaining, shortlist, intake)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4b.md">WP-4b.md</a>        — WP-4b prefs-build + place-notes + brochure-build: defaults, interview answers
-│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4c.md">WP-4c.md</a>        — WP-4c chat + trip-check + routine table: defaults (request check, hand-offs, Enterprise tier, change codes)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4c.md">WP-4c.md</a>        — WP-4c chat + trip-check + routine table: defaults (request check, hand-offs, Enterprise tier, change codes)
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/hidden-gems-proposal.md">hidden-gems-proposal.md</a> — Hidden gems: the sweep idea evaluated against other methods, the Gem Funnel recommendation, costs, plan changes implied, decisions 18–22
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits">kits/</a>                   — Shared Node kits (no runtime dependencies except Playwright for the brochure PDF step)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/brochure">brochure/</a>           — Brochure renderer: brochure model → one self-contained HTML document → paginated PDF via Playwright
 │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/brochure/assets">assets/</a>         — Embedded assets (no network at render or view time)

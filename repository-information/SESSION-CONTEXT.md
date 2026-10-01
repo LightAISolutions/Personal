@@ -6,6 +6,33 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-10-01 03:27:41 AM EST
+**Repo version:** v01.18r
+**Branch:** `claude/tg-hidden-gems-dn7epo` (Tour Guide project, thread "Hidden gems methodology", Fable 5.1 · high)
+
+**What we worked on**
+- Evaluated the owner's idea for uncovering hidden gems (sweep every business on Google Maps, evaluate hours / website / menu / rating / review count / preference-relevant reviews, score, recommend the top) against seven other methods, with web research on Google's limits, pricing and terms and on third-party APIs
+- Wrote `helpers/decisions/hidden-gems-proposal.md`: keep the owner's scoring idea, drop the city-wide enumeration (terms §3.2.3(a), the 20-result / 5-review API shape, cost that follows density, run time, fake-review exposure); recommend the **Gem Funnel** (interview gem appetite → taste queries + local-voices research + quiet-neighbourhood probes → free screening → gem score → evidence pass → 💎 shortlist + "Gems not chosen" Later list), ≈ $4 per round at list price and $0 inside the free caps
+
+**Where we left off**
+- Proposal pushed as v01.18r and delivered in the thread; the plan and the phase prompts are untouched. The coordinator routes §6 (plan changes: facts, §5.1 / §5.2 / §5.5 / §5.9, data model, Maps and research kit additions, a `gems/` engine module, WP-2g inside Phase 4b) to the thread that owns the plan. Decisions 18–22 (gem appetite default 3, enable the Places Aggregate API at Phase 7, reading API reviews for fit, no third parties for now, owner seeds) wait for the owner, defaults stand meanwhile
+
+**Key decisions made**
+- Evaluate at the search layer (Text / Nearby Search Enterprise return 20 places with rating, count, hours and website per call) and pay for Place Details only on finalists
+- A place is a 💎 only with corroboration outside Google (a local-language or local-editorial mention); "high rating, few reviews" alone is not enough
+- Nothing from Google persists beyond place ids; area questions go to the Aggregate API, distances use our own anchors (no polygon tests on Google coordinates)
+
+**Active context**
+- Phase 4 merged as v01.16r while this session ran (rebased onto it); Phase 4b is next and is the proposed home of WP-2g; the TourGuide repo, AssistantBrain and the plan file were not touched
+- The Phase 2 brochure follow-up (WP-2e, real Google maps and place photos) merged as v01.17r while this session ran, without saving session context; its summary is in CHANGELOG v01.17r. The gem package therefore takes the next free number, WP-2g
+
+**Recommendation for next session**
+- When Phase 4b starts, read `helpers/decisions/hidden-gems-proposal.md` §6 and decide with the owner whether WP-2g joins Phase 4b or waits for its own package
+
+**To continue:** type `Read helpers/decisions/hidden-gems-proposal.md §6 and fold WP-2g into Phase 4b.`
+
+## Previous Sessions
+
 **Date:** 2026-10-01 03:16:38 AM EST
 **Repo version:** v01.16r
 **Branch:** `claude/tg-phase-4-18ndyh` (Tour Guide project, thread "Tour Guide Phase 4 (resumed)", coordinator Fable 5.1 · high)
@@ -32,29 +59,3 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 **To continue:** type `Read helpers/prompts/TG-PHASE-4B.md and execute it exactly.`
 
-## Previous Sessions
-
-**Date:** 2026-10-01 02:50:57 AM EST
-**Repo version:** v01.15r
-**Branch:** `claude/tg-plan-telegram-vision-610o9x` (Tour Guide project, thread "Amend plan for Telegram vision", Fable 5.1 · xhigh)
-
-**What we worked on**
-- Amended `repository-information/TOUR-GUIDE-BUILD-PLAN.md` for the owner's Telegram vision: an interview-first preference profile, `/plan <destination>` as a five-step Telegram flow (intake facts, shortlist of activities and food, picks, then plan + notes + brochure PDF in chat), new §5.9 owner's journey, §6 gap work packages for the built phases (1b core flows + document delivery, 2f prefs interview, 3d engine choices + five envelope types), new Phase 4b, Phases 5–8 rewritten, §9 risks, §10 decisions 14–17, §11b summary, §12 kickoff
-- Updated `helpers/BUILD-STATE.md` (gap rows, Phase 4 in progress, Phase 4b, amendment log, Next)
-- Wrote `helpers/prompts/TG-PHASE-4-DELTA.md` (for the running Phase 4 session), `helpers/prompts/TG-PHASE-4B.md` and `helpers/prompts/TG-PHASE-5.md` (with a FINALIZE block Phase 4b fills in)
-
-**Where we left off**
-- Amendment pushed as v01.15r. Phase 4 is running in its own thread on the TourGuide branch `claude/tg-phase-4-18ndyh`; the coordinator relays the delta file to it. `helpers/prompts/TG-PHASE-4.md` was deliberately left untouched
-
-**Key decisions made**
-- Phase 4 keeps `plan.picks` (already committed in the TourGuide `skills/README.md`) and adds `later`, `skip` and `deliverables`; `shortlist` and `trip_facts` go out as prose replies until Phase 4b registers the envelope types
-- Decisions 14–17 taken at their defaults (the owner can override in thread)
-- §11b added instead of renumbering §12, because `helpers/BUILD-STATE.md` row 0 cites "plan §12"
-
-**Active context**
-- Phase 2 thread owns the Maps Static brochure change; AssistantBrain reference only; the TourGuide private repo was not touched by this session
-
-**Recommendation for next session**
-- When Phase 4 hands off, start Phase 4b in a new session on Fable 5.1 · high
-
-**To continue:** type `Read helpers/prompts/TG-PHASE-4B.md and execute it exactly.`

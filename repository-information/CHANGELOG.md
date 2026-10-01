@@ -3,11 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 17/100`
+`Sections: 18/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.18r] — 2026-10-01 03:27:41 AM EST
+
+> **Prompt:** "Also, I want Tour Guide to be able to uncover hidden gems, but am not sure what the best methodology is. One idea I have is: * After I input a location and Tour Guide interviews me on my preferences, Tour Guide can literally go business to business on Google map, evaluate their general information (address, hours of operations, days closed), website, menu, number of reviews/stars, relevant reviews that are related to my preferences, score all the options, and recommend the top-scorers to me. Work with me to figure out which activities/foods I am most interested in, and then create a personalized travel brochure for me to maximize my trip. I want you to start a thread on Fable 5.1 High or Xhigh (you decide) to evaluate my idea against other methodologies and recommend one or more methods for Tour Guide to use."
+
+### Added
+- `helpers/decisions/hidden-gems-proposal.md` — evaluation of the owner's "sweep every business on Google Maps" idea for finding hidden gems against seven other methods, with the platform facts checked on 2026-10-01 (Nearby Search's 20-result cap and popularity ranking, Text Search's 60-result cap and `minRating` filter, five relevance-sorted reviews per place with no sort parameter, AI-summary regions, Nearby Search and Places Aggregate pricing and free caps, General Terms §3.2.3 (a)(b)(c)(g), Google's app-only gem lists, the Yelp / Foursquare / Tripadvisor API state); recommends the **Gem Funnel** — interview gem appetite → taste queries in two languages with a rating floor + local-voices web research + quiet-neighbourhood probes through the Aggregate API → free screening → a gem score (fit, Bayesian-shrunk quality, obscurity, local-ness, practicality) → an evidence pass on the top ~40 → 💎 marks and "why it's a gem" lines on the §5.9 shortlist and a "Gems not chosen" Later list — with its per-round cost (≈ $4 at list price, $0 inside the free caps) against the sweep's, the plan changes it implies (facts, §5.1 / §5.2 / §5.5 / §5.9, data model, Maps and research kit additions, a `gems/` engine module, a WP-2g inside Phase 4b) and decisions 18–22 for the owner. A proposal only: the plan and the phase prompts are untouched
+
+### Changed
+- `README.md` — tree entry for the proposal
+- `repository-information/SESSION-CONTEXT.md` — session context saved
 
 ## [v01.17r] — 2026-10-01 03:24:20 AM EST
 
