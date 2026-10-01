@@ -85,7 +85,7 @@ test('Text Search: Gem Funnel filters are sent; strictTypeFiltering only with in
   const n = transport.calls.length;
   await assert.rejects(maps.textSearch('x', { minRating: 4.3 }), /steps of 0.5/);
   await assert.rejects(maps.textSearch('x', { minRating: 6 }), /0–5/);
-  await assert.rejects(maps.textSearch('x', { priceLevels: ['FREE'] }), /price level/);
+  await assert.rejects(maps.textSearch('x', { priceLevels: ['CHEAP'] }), /price level/);
   await assert.rejects(maps.textSearch('x', { priceLevels: 'MODERATE' }), /array/);
   await assert.rejects(maps.textSearch('x', { rankPreference: 'POPULARITY' }), /RELEVANCE or DISTANCE/);
   await assert.rejects(maps.textSearch('x', { locationRestriction: { lat: 1, lng: 1, radiusMeters: 500 } }), /rectangle only/);

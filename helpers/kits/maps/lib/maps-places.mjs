@@ -31,8 +31,6 @@ export async function placeDetails(ctx, placeId, opts = {}) {
 const TEXT_KEYS = ['tier', 'pageSize', 'pageToken', 'languageCode', 'regionCode', 'includedType', 'strictTypeFiltering', 'openNow', 'minRating', 'priceLevels', 'rankPreference', 'locationBias', 'locationRestriction', 'includePureServiceAreaBusinesses'];
 const NEARBY_KEYS = ['tier', 'center', 'radiusMeters', 'includedTypes', 'excludedTypes', 'includedPrimaryTypes', 'excludedPrimaryTypes', 'rankPreference', 'maxResultCount', 'languageCode', 'regionCode'];
 export const PRICE_LEVELS = Object.freeze(['PRICE_LEVEL_FREE', 'PRICE_LEVEL_INEXPENSIVE', 'PRICE_LEVEL_MODERATE', 'PRICE_LEVEL_EXPENSIVE', 'PRICE_LEVEL_VERY_EXPENSIVE']);
-/** Text Search's `priceLevels` filter takes the four paid levels (PRICE_LEVEL_FREE is not a filter value there). */
-const TEXT_PRICE_LEVELS = PRICE_LEVELS.slice(1);
 const TYPE_RE = /^[a-z][a-z0-9_]{0,63}$/;
 export const NEARBY_MAX_RADIUS_M = 50000;
 export const NEARBY_MAX_TYPES = 50;
@@ -101,7 +99,7 @@ export async function textSearch(ctx, query, opts = {}) {
     if (!Number.isFinite(r) || r < 0 || r > 5 || Math.round(r * 2) !== r * 2) throw new MapsInputError('maps: minRating must be 0–5 in steps of 0.5');
     body.minRating = r;
   }
-  if (opts.priceLevels != null) { const p = normalizePriceLevels(opts.priceLevels, TEXT_PRICE_LEVELS); if (p.length) body.priceLevels = p; }
+  if (opts.priceLevels != null) { const p = normalizePriceLevels(opts.priceLevels, PRICE_LEVELS); if (p.length) body.priceLevels = p; }
   if (opts.rankPreference != null) {
     if (!['RELEVANCE', 'DISTANCE'].includes(opts.rankPreference)) throw new MapsInputError('maps: Text Search rankPreference must be RELEVANCE or DISTANCE');
     body.rankPreference = opts.rankPreference;
