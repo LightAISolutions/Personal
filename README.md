@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-01 03:38:59 AM EST` · Repo version: `v01.20r`
+Last updated: `2026-10-01 03:44:29 AM EST` · Repo version: `v01.21r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -439,6 +439,7 @@ Last updated: `2026-10-01 03:38:59 AM EST` · Repo version: `v01.20r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-4.md">TG-PHASE-4.md</a>   — Phase 4 kickoff: private repo, memory, trip-research and plan-days (Fable 5.1 · high; rest Opus 5.5 · high)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-4-DELTA.md">TG-PHASE-4-DELTA.md</a> — Phase 4 delta for the running session: plan picks/later/skip/deliverables, shortlist, intake, interview answers, hand-off to 4b
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-4B.md">TG-PHASE-4B.md</a>  — Phase 4b kickoff: core flows + document delivery, prefs interview, engine choices and envelope types, skill deltas (Fable 5.1 · high)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-4B-DELTA.md">TG-PHASE-4B-DELTA.md</a> — Phase 4b delta for the running session: places repository fields, sixth envelope type, re-check before re-research, review prefs, decisions 20–21
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-5.md">TG-PHASE-5.md</a>       — Phase 5 kickoff: Telegram commands, /interview and /plan flows, envelope handlers, sheets (Opus 5.5 · high)
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-9.md">TG-PHASE-9.md</a>       — Phase 9 kickoff (draft, finalized by Phase 8): the Tour Guide app as a Telegram Mini App — core route + signed launch data, app operations, generic data-free shell (Fable 5.1 · high; route Opus 5.5 · high)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/README.md">README.md</a>               — Framework overview, "how to add a helper", the public/private rules
