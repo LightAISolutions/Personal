@@ -1,0 +1,155 @@
+[
+  {
+    "v": 1,
+    "place_id": "FixtureTcLanternMuseum",
+    "why_you": "You rated history museums highly; this is the city's best.",
+    "what_to_do": "Start upstairs with the storm-lantern gallery, then the harbour signals room.",
+    "what_to_skip": "The temporary gift-shop exhibit.",
+    "best_time": "Opening time on a weekday.",
+    "tickets": "Covered by the three-day museum pass (fixture).",
+    "accessibility": "Lift to every floor.",
+    "pairings": [
+      "Sorrel Tea House",
+      "Old Town Lanes"
+    ],
+    "food": "Café on the ground floor.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/lantern-museum/notes",
+        "title": "Fixture Guide: Sorrel Lantern Museum",
+        "accessed": "2027-04-28",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcMaritimeArchive",
+    "why_you": "Ship models and old sea charts.",
+    "what_to_do": "Ask for the chart drawers in room 3.",
+    "best_time": "Wednesday or Friday; closed Thursdays.",
+    "tickets": "Museum pass.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/maritime-archive/notes",
+        "title": "Fixture Guide: Maritime Archive",
+        "accessed": "2027-04-28",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcOldQuayFishMarket",
+    "what_to_do": "Walk the auction hall, then the grilled-sardine stalls.",
+    "best_time": "Before 10:00.",
+    "food": "Grilled fish at the stalls by the water.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/old-quay-fish-market/notes",
+        "title": "Fixture Guide: Old Quay Fish Market",
+        "accessed": "2027-04-28",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcMoonlightNightMarket",
+    "why_you": "Street food in the evening, after the day plan ends.",
+    "what_to_do": "Lantern lighting at dusk; dumplings at the north end.",
+    "best_time": "From 19:00.",
+    "food": "Dinner here instead of a restaurant.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/moonlight-night-market/notes",
+        "title": "Fixture Guide: Moonlight Night Market",
+        "accessed": "2027-04-28",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcSignalHillLookout",
+    "what_to_do": "Climb the steps from Tower Hill; the view faces west.",
+    "best_time": "Late afternoon light.",
+    "accessibility": "180 steps, no lift.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/signal-hill-lookout/notes",
+        "title": "Fixture Guide: Signal Hill Lookout",
+        "accessed": "2027-04-28",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcOldTownLanes",
+    "what_to_do": "Courtyards off Lantern Row; the tiled fountain.",
+    "pairings": [
+      "St Brannoc's Church",
+      "Clock Tower Climb"
+    ],
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/old-town-lanes/notes",
+        "title": "Fixture Guide: Old Town Lanes",
+        "accessed": "2027-04-28",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcStBrannocChurch",
+    "what_to_do": "The painted ceiling and the ship votives.",
+    "best_time": "Late morning; closed 12:30–14:00 on weekdays.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/st-brannoc-church/notes",
+        "title": "Fixture Guide: St Brannoc's Church",
+        "accessed": "2027-04-28",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcClockTowerClimb",
+    "tickets": "Timed entry, booked for Thursday 11:00 (fixture booking).",
+    "accessibility": "Narrow spiral stairs.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/clock-tower-climb/notes",
+        "title": "Fixture Guide: Clock Tower Climb",
+        "accessed": "2027-04-28",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcTidewaterBotanicGarden",
+    "what_to_do": "The glasshouse first, then the rose walk to the pond.",
+    "best_time": "Morning, before the glasshouse warms up.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/tidewater-botanic-garden/notes",
+        "title": "Fixture Guide: Tidewater Botanic Garden",
+        "accessed": "2027-04-28",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-04-28"
+  }
+]

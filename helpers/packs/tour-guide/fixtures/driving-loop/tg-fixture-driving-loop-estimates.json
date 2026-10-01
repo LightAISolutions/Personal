@@ -1,0 +1,397 @@
+[
+  {
+    "v": 1,
+    "place_id": "FixtureDlBrackenfordOldMill",
+    "activity": "mill tour",
+    "category": "museum",
+    "range": {
+      "min": 45,
+      "max": 70
+    },
+    "typical": 55,
+    "chosen_minutes": 55,
+    "sources": [
+      {
+        "url": "https://guide.example.org/carrow/brackenford-old-mill",
+        "accessed": "2027-05-30",
+        "title": "Fixture Guide: Brackenford Old Mill",
+        "ref": "L001"
+      },
+      {
+        "url": "https://coastroads.example.com/carrow/brackenford-old-mill",
+        "accessed": "2027-05-30",
+        "title": "Coast Roads (fixture): Brackenford Old Mill",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlBrackenfordHarbourMarket",
+    "activity": "morning market",
+    "category": "market",
+    "range": {
+      "min": 30,
+      "max": 60
+    },
+    "typical": 45,
+    "chosen_minutes": 45,
+    "sources": [
+      {
+        "url": "https://guide.example.org/carrow/brackenford-harbour-market",
+        "accessed": "2027-05-30",
+        "title": "Fixture Guide: Brackenford Harbour Market",
+        "ref": "L001"
+      }
+    ],
+    "confidence": "single-source",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlBrackenfordBakery",
+    "activity": "coffee and buns",
+    "category": "cafe",
+    "range": {
+      "min": 25,
+      "max": 40
+    },
+    "typical": 30,
+    "chosen_minutes": 30,
+    "sources": [
+      {
+        "url": "https://guide.example.org/carrow/brackenford-bakery",
+        "accessed": "2027-05-30",
+        "title": "Fixture Guide: Brackenford Bakery",
+        "ref": "L001"
+      },
+      {
+        "url": "https://coastroads.example.com/carrow/brackenford-bakery",
+        "accessed": "2027-05-30",
+        "title": "Coast Roads (fixture): Brackenford Bakery",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlHeronRidgeTrail",
+    "activity": "ridge hike (8 km loop)",
+    "category": "hike",
+    "range": {
+      "min": 150,
+      "max": 210
+    },
+    "typical": 180,
+    "chosen_minutes": 180,
+    "sources": [
+      {
+        "url": "https://trailbook.example.net/carrow/heron-ridge-trail",
+        "accessed": "2027-05-30",
+        "title": "Trail Book (fixture): Heron Ridge Trail",
+        "ref": "L001"
+      },
+      {
+        "url": "https://guide.example.org/carrow/heron-ridge-trail",
+        "accessed": "2027-05-30",
+        "title": "Fixture Guide: Heron Ridge Trail",
+        "ref": "L002"
+      },
+      {
+        "url": "https://coastroads.example.com/carrow/heron-ridge-trail",
+        "accessed": "2027-05-30",
+        "title": "Coast Roads (fixture): Heron Ridge Trail",
+        "ref": "L003"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlCairnPointOverlook",
+    "activity": "cliff-top view",
+    "category": "viewpoint",
+    "range": {
+      "min": 25,
+      "max": 40
+    },
+    "typical": 30,
+    "chosen_minutes": 30,
+    "sources": [
+      {
+        "url": "https://guide.example.org/carrow/cairn-point-overlook",
+        "accessed": "2027-05-30",
+        "title": "Fixture Guide: Cairn Point Overlook",
+        "ref": "L001"
+      },
+      {
+        "url": "https://coastroads.example.com/carrow/cairn-point-overlook",
+        "accessed": "2027-05-30",
+        "title": "Coast Roads (fixture): Cairn Point Overlook",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlTollbyVillage",
+    "activity": "village stroll",
+    "category": "neighbourhood",
+    "range": {
+      "min": 45,
+      "max": 90
+    },
+    "typical": 70,
+    "chosen_minutes": 70,
+    "sources": [
+      {
+        "url": "https://coastroads.example.com/carrow/tollby-village",
+        "accessed": "2027-05-30",
+        "title": "Coast Roads (fixture): Tollby village",
+        "ref": "L001"
+      }
+    ],
+    "confidence": "single-source",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlGullhavenLighthouse",
+    "activity": "lighthouse climb and keeper's cottage",
+    "category": "museum",
+    "range": {
+      "min": 55,
+      "max": 85
+    },
+    "typical": 70,
+    "chosen_minutes": 70,
+    "sources": [
+      {
+        "url": "https://guide.example.org/carrow/gullhaven-lighthouse",
+        "accessed": "2027-05-30",
+        "title": "Fixture Guide: Gullhaven Lighthouse",
+        "ref": "L001"
+      },
+      {
+        "url": "https://trailbook.example.net/carrow/gullhaven-lighthouse",
+        "accessed": "2027-05-30",
+        "title": "Trail Book (fixture): Gullhaven Lighthouse",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlGullhavenFishShack",
+    "activity": "seafood lunch",
+    "category": "restaurant",
+    "range": {
+      "min": 60,
+      "max": 90
+    },
+    "typical": 75,
+    "chosen_minutes": 75,
+    "sources": [
+      {
+        "url": "https://coastroads.example.com/carrow/gullhaven-fish-shack",
+        "accessed": "2027-05-30",
+        "title": "Coast Roads (fixture): Gullhaven Fish Shack",
+        "ref": "L001"
+      }
+    ],
+    "confidence": "single-source",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlSealCove",
+    "activity": "beach and seal colony",
+    "category": "park",
+    "range": {
+      "min": 85,
+      "max": 120
+    },
+    "typical": 100,
+    "chosen_minutes": 100,
+    "sources": [
+      {
+        "url": "https://trailbook.example.net/carrow/seal-cove",
+        "accessed": "2027-05-30",
+        "title": "Trail Book (fixture): Seal Cove",
+        "ref": "L001"
+      },
+      {
+        "url": "https://coastroads.example.com/carrow/seal-cove",
+        "accessed": "2027-05-30",
+        "title": "Coast Roads (fixture): Seal Cove",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "conflicting",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlWrenwickVillage",
+    "activity": "harbour village stroll",
+    "category": "neighbourhood",
+    "range": {
+      "min": 55,
+      "max": 90
+    },
+    "typical": 70,
+    "chosen_minutes": 70,
+    "sources": [
+      {
+        "url": "https://guide.example.org/carrow/wrenwick-village",
+        "accessed": "2027-05-30",
+        "title": "Fixture Guide: Wrenwick village",
+        "ref": "L001"
+      },
+      {
+        "url": "https://coastroads.example.com/carrow/wrenwick-village",
+        "accessed": "2027-05-30",
+        "title": "Coast Roads (fixture): Wrenwick village",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlMarrowBayAbbey",
+    "activity": "abbey ruins and cloister",
+    "category": "church",
+    "range": {
+      "min": 30,
+      "max": 55
+    },
+    "typical": 40,
+    "chosen_minutes": 40,
+    "sources": [
+      {
+        "url": "https://guide.example.org/carrow/marrow-bay-abbey",
+        "accessed": "2027-05-30",
+        "title": "Fixture Guide: Marrow Bay Abbey",
+        "ref": "L001"
+      },
+      {
+        "url": "https://trailbook.example.net/carrow/marrow-bay-abbey",
+        "accessed": "2027-05-30",
+        "title": "Trail Book (fixture): Marrow Bay Abbey",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlMarrowBayGallery",
+    "activity": "island painters",
+    "category": "museum",
+    "range": null,
+    "typical": null,
+    "chosen_minutes": 120,
+    "sources": [],
+    "confidence": "unverified",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlBlackwaterFalls",
+    "activity": "waterfall walk (3 km)",
+    "category": "hike",
+    "range": {
+      "min": 70,
+      "max": 90
+    },
+    "typical": 80,
+    "chosen_minutes": 80,
+    "sources": [
+      {
+        "url": "https://trailbook.example.net/carrow/blackwater-falls",
+        "accessed": "2027-05-30",
+        "title": "Trail Book (fixture): Blackwater Falls Walk",
+        "ref": "L001"
+      },
+      {
+        "url": "https://guide.example.org/carrow/blackwater-falls",
+        "accessed": "2027-05-30",
+        "title": "Fixture Guide: Blackwater Falls Walk",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlKestrelFarmShop",
+    "activity": "cheese and cider tasting",
+    "category": "shop",
+    "range": {
+      "min": 30,
+      "max": 45
+    },
+    "typical": 40,
+    "chosen_minutes": 40,
+    "sources": [
+      {
+        "url": "https://guide.example.org/carrow/kestrel-farm-shop",
+        "accessed": "2027-05-30",
+        "title": "Fixture Guide: Kestrel Farm Shop",
+        "ref": "L001"
+      }
+    ],
+    "confidence": "single-source",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureDlNorthcapeSeaStacks",
+    "activity": "sea stacks at the north cape",
+    "category": "viewpoint",
+    "range": {
+      "min": 45,
+      "max": 60
+    },
+    "typical": 55,
+    "chosen_minutes": 55,
+    "sources": [
+      {
+        "url": "https://trailbook.example.net/carrow/northcape-sea-stacks",
+        "accessed": "2027-05-30",
+        "title": "Trail Book (fixture): Northcape Sea Stacks",
+        "ref": "L001"
+      }
+    ],
+    "confidence": "single-source",
+    "calibration": null,
+    "estimated_on": "2027-05-30"
+  }
+]

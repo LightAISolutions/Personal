@@ -1,0 +1,12 @@
+{
+  "pace": "normal",
+  "interests": {
+    "museum": "high",
+    "viewpoint": "high",
+    "market": "normal",
+    "shop": "low"
+  },
+  "meals": {
+    "breakfast_at_lodging": true
+  }
+}

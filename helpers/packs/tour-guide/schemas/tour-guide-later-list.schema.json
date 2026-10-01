@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-later-list.schema.json",
+  "title": "Tour Guide LaterList (data contract v1)",
+  "description": "A named list of places that were not scheduled, each with its reason. Default lists: \"Didn't fit\" (planner) and \"Next time\" (owner-saved). A place appears in one list only (checked by schemas/index.mjs for a Plan).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["v", "trip_id", "name", "items"],
+  "properties": {
+    "v": { "const": 1 },
+    "trip_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 60 },
+    "description": { "type": "string", "maxLength": 300 },
+    "items": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["place", "place_id", "reason", "code", "added_on"],
+        "properties": {
+          "place": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+          "place_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,300}$" },
+          "reason": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "code": { "enum": ["closed_day", "outside_hours", "outside_day", "day_full", "too_far", "closed_business", "hours_unknown", "owner", "other"] },
+          "added_on": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" },
+          "from_date": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" }
+        }
+      }
+    }
+  }
+}

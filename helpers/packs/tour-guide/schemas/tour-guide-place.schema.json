@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-place.schema.json",
+  "title": "Tour Guide Place (data contract v1)",
+  "description": "A candidate place for a trip. No Google content here (no hours, no coordinates): those come from the GoogleSnapshot for place_id.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["v", "id", "place_id", "name", "category", "tags", "status", "activity", "priority"],
+  "properties": {
+    "v": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$", "description": "The local place key (also the brochure's place key)." },
+    "place_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,300}$", "description": "A Google place id." },
+    "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "category": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}$", "description": "museum, viewpoint, market, hike, park, church, neighbourhood, restaurant, cafe, shop, other…" },
+    "tags": { "type": "array", "maxItems": 20, "items": { "type": "string", "minLength": 1, "maxLength": 40 } },
+    "why_fit": { "type": "string", "maxLength": 1000 },
+    "source_trip": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+    "status": { "enum": ["candidate", "scheduled", "saved-for-later", "rejected"] },
+    "note_path": { "type": "string", "maxLength": 300, "pattern": "^[^\\s].*$" },
+    "activity": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "priority": { "enum": [1, 2, 3] },
+    "booking": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "time"],
+      "properties": {
+        "date": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" },
+        "time": { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$", "description": "The stop must start at this time." },
+        "ref": { "type": "string", "maxLength": 120 }
+      }
+    },
+    "indoor": { "type": "boolean" },
+    "scheduled_hint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date"],
+      "description": "Set by later/promote(): the owner asked for this place on that date; the planner re-plans that day.",
+      "properties": { "date": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" } }
+    }
+  }
+}

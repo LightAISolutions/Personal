@@ -1,0 +1,386 @@
+[
+  {
+    "v": 1,
+    "place_id": "FixtureTcLanternMuseum",
+    "activity": "museum highlights",
+    "category": "museum",
+    "range": {
+      "min": 90,
+      "max": 120
+    },
+    "typical": 105,
+    "chosen_minutes": 105,
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/lantern-museum",
+        "accessed": "2027-04-28",
+        "title": "Fixture Guide: Sorrel Lantern Museum",
+        "ref": "L001"
+      },
+      {
+        "url": "https://travelnotes.example.net/port-sorrel/lantern-museum",
+        "accessed": "2027-04-28",
+        "title": "Travel Notes (fixture): Sorrel Lantern Museum",
+        "ref": "L002"
+      },
+      {
+        "url": "https://citywalks.example.com/port-sorrel/lantern-museum",
+        "accessed": "2027-04-28",
+        "title": "City Walks (fixture): Sorrel Lantern Museum",
+        "ref": "L003"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcMaritimeArchive",
+    "activity": "ship models and charts",
+    "category": "museum",
+    "range": {
+      "min": 60,
+      "max": 105
+    },
+    "typical": 85,
+    "chosen_minutes": 85,
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/maritime-archive",
+        "accessed": "2027-04-28",
+        "title": "Fixture Guide: Maritime Archive",
+        "ref": "L001"
+      },
+      {
+        "url": "https://citywalks.example.com/port-sorrel/maritime-archive",
+        "accessed": "2027-04-28",
+        "title": "City Walks (fixture): Maritime Archive",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcTramDepotGallery",
+    "activity": "restored trams",
+    "category": "museum",
+    "range": {
+      "min": 45,
+      "max": 60
+    },
+    "typical": 55,
+    "chosen_minutes": 55,
+    "sources": [
+      {
+        "url": "https://travelnotes.example.net/port-sorrel/tram-depot-gallery",
+        "accessed": "2027-04-28",
+        "title": "Travel Notes (fixture): Tram Depot Gallery",
+        "ref": "L001"
+      }
+    ],
+    "confidence": "single-source",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcOldQuayFishMarket",
+    "activity": "morning market browse",
+    "category": "market",
+    "range": {
+      "min": 40,
+      "max": 55
+    },
+    "typical": 45,
+    "chosen_minutes": 45,
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/old-quay-fish-market",
+        "accessed": "2027-04-28",
+        "title": "Fixture Guide: Old Quay Fish Market",
+        "ref": "L001"
+      },
+      {
+        "url": "https://travelnotes.example.net/port-sorrel/old-quay-fish-market",
+        "accessed": "2027-04-28",
+        "title": "Travel Notes (fixture): Old Quay Fish Market",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcSaffronRowMarket",
+    "activity": "spice stalls and snacks",
+    "category": "market",
+    "range": {
+      "min": 75,
+      "max": 105
+    },
+    "typical": 90,
+    "chosen_minutes": 90,
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/saffron-row-market",
+        "accessed": "2027-04-28",
+        "title": "Fixture Guide: Saffron Row Market",
+        "ref": "L001"
+      },
+      {
+        "url": "https://citywalks.example.com/port-sorrel/saffron-row-market",
+        "accessed": "2027-04-28",
+        "title": "City Walks (fixture): Saffron Row Market",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "conflicting",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcMoonlightNightMarket",
+    "activity": "evening street food",
+    "category": "market",
+    "range": {
+      "min": 75,
+      "max": 105
+    },
+    "typical": 90,
+    "chosen_minutes": 90,
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/moonlight-night-market",
+        "accessed": "2027-04-28",
+        "title": "Fixture Guide: Moonlight Night Market",
+        "ref": "L001"
+      },
+      {
+        "url": "https://travelnotes.example.net/port-sorrel/moonlight-night-market",
+        "accessed": "2027-04-28",
+        "title": "Travel Notes (fixture): Moonlight Night Market",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcSignalHillLookout",
+    "activity": "harbour panorama",
+    "category": "viewpoint",
+    "range": {
+      "min": 25,
+      "max": 40
+    },
+    "typical": 30,
+    "chosen_minutes": 30,
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/signal-hill-lookout",
+        "accessed": "2027-04-28",
+        "title": "Fixture Guide: Signal Hill Lookout",
+        "ref": "L001"
+      },
+      {
+        "url": "https://citywalks.example.com/port-sorrel/signal-hill-lookout",
+        "accessed": "2027-04-28",
+        "title": "City Walks (fixture): Signal Hill Lookout",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcTidewaterBotanicGarden",
+    "activity": "glasshouse and rose walk",
+    "category": "park",
+    "range": {
+      "min": 60,
+      "max": 90
+    },
+    "typical": 75,
+    "chosen_minutes": 75,
+    "sources": [
+      {
+        "url": "https://travelnotes.example.net/port-sorrel/tidewater-botanic-garden",
+        "accessed": "2027-04-28",
+        "title": "Travel Notes (fixture): Tidewater Botanic Garden",
+        "ref": "L001"
+      }
+    ],
+    "confidence": "single-source",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcHarbourDistrict",
+    "activity": "waterfront stroll",
+    "category": "neighbourhood",
+    "range": {
+      "min": 60,
+      "max": 105
+    },
+    "typical": 85,
+    "chosen_minutes": 85,
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/harbour-district",
+        "accessed": "2027-04-28",
+        "title": "Fixture Guide: Harbour District",
+        "ref": "L001"
+      },
+      {
+        "url": "https://citywalks.example.com/port-sorrel/harbour-district",
+        "accessed": "2027-04-28",
+        "title": "City Walks (fixture): Harbour District",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcOldTownLanes",
+    "activity": "lanes and courtyards",
+    "category": "neighbourhood",
+    "range": {
+      "min": 75,
+      "max": 120
+    },
+    "typical": 90,
+    "chosen_minutes": 90,
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/old-town-lanes",
+        "accessed": "2027-04-28",
+        "title": "Fixture Guide: Old Town Lanes",
+        "ref": "L001"
+      },
+      {
+        "url": "https://travelnotes.example.net/port-sorrel/old-town-lanes",
+        "accessed": "2027-04-28",
+        "title": "Travel Notes (fixture): Old Town Lanes",
+        "ref": "L002"
+      },
+      {
+        "url": "https://citywalks.example.com/port-sorrel/old-town-lanes",
+        "accessed": "2027-04-28",
+        "title": "City Walks (fixture): Old Town Lanes",
+        "ref": "L003"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcStBrannocChurch",
+    "activity": "painted ceiling",
+    "category": "church",
+    "range": {
+      "min": 20,
+      "max": 35
+    },
+    "typical": 30,
+    "chosen_minutes": 30,
+    "sources": [
+      {
+        "url": "https://travelnotes.example.net/port-sorrel/st-brannoc-church",
+        "accessed": "2027-04-28",
+        "title": "Travel Notes (fixture): St Brannoc's Church",
+        "ref": "L001"
+      },
+      {
+        "url": "https://citywalks.example.com/port-sorrel/st-brannoc-church",
+        "accessed": "2027-04-28",
+        "title": "City Walks (fixture): St Brannoc's Church",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcClockTowerClimb",
+    "activity": "guided climb",
+    "category": "other",
+    "range": {
+      "min": 45,
+      "max": 55
+    },
+    "typical": 50,
+    "chosen_minutes": 50,
+    "sources": [
+      {
+        "url": "https://guide.example.org/port-sorrel/clock-tower-climb",
+        "accessed": "2027-04-28",
+        "title": "Fixture Guide: Clock Tower Climb",
+        "ref": "L001"
+      },
+      {
+        "url": "https://travelnotes.example.net/port-sorrel/clock-tower-climb",
+        "accessed": "2027-04-28",
+        "title": "Travel Notes (fixture): Clock Tower Climb",
+        "ref": "L002"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcBluebellCeramicsStudio",
+    "activity": "studio shop",
+    "category": "shop",
+    "range": null,
+    "typical": null,
+    "chosen_minutes": 45,
+    "sources": [],
+    "confidence": "unverified",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureTcSorrelTeaHouse",
+    "activity": "tea and almond cake",
+    "category": "cafe",
+    "range": {
+      "min": 30,
+      "max": 45
+    },
+    "typical": 40,
+    "chosen_minutes": 40,
+    "sources": [
+      {
+        "url": "https://citywalks.example.com/port-sorrel/sorrel-tea-house",
+        "accessed": "2027-04-28",
+        "title": "City Walks (fixture): Sorrel Tea House",
+        "ref": "L001"
+      }
+    ],
+    "confidence": "single-source",
+    "calibration": null,
+    "estimated_on": "2027-04-28"
+  }
+]

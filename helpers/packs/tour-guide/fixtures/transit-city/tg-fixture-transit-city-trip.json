@@ -1,0 +1,72 @@
+{
+  "v": 1,
+  "id": "port-sorrel-spring-2027",
+  "title": "Three days in Port Sorrel",
+  "destination": "Port Sorrel",
+  "country": "Fictional Isles",
+  "timezone": "Etc/GMT+2",
+  "locale": "en-US",
+  "start_date": "2027-05-12",
+  "end_date": "2027-05-14",
+  "travelers": [
+    "Traveller One",
+    "Traveller Two"
+  ],
+  "pace": "normal",
+  "day_start": "09:00",
+  "day_end": "18:00",
+  "lodging": [
+    {
+      "id": "harbour-lane-guesthouse",
+      "name": "Harbour Lane Guesthouse",
+      "place_id": "FixtureTcHarbourLaneGuesthouse",
+      "lat": 36.41,
+      "lng": -33.8,
+      "address": "4 Harbour Lane, Port Sorrel, Fictional Isles",
+      "from": "2027-05-12",
+      "to": "2027-05-15",
+      "check_in": "14:00",
+      "check_out": "11:00",
+      "note": "Breakfast included; luggage room after check-out."
+    }
+  ],
+  "modes": {
+    "default": "TRANSIT",
+    "allowed": [
+      "TRANSIT",
+      "WALK"
+    ]
+  },
+  "transit_preferences": {
+    "allowedTravelModes": [
+      "SUBWAY",
+      "BUS",
+      "LIGHT_RAIL"
+    ],
+    "routingPreference": "FEWER_TRANSFERS"
+  },
+  "budget_notes": "A three-day museum pass covers the Lantern Museum, the Maritime Archive and the Tram Depot Gallery (fixture).",
+  "status": "draft",
+  "intro": "An invented harbour city for testing: three days by tram and on foot, museums in the mornings, markets and lookouts in the afternoons, and a night market for the evenings.",
+  "practical": [
+    {
+      "title": "Getting around",
+      "text": "Trams and buses cover the centre; most sights are within a 25-minute ride of the guesthouse.",
+      "items": [
+        {
+          "label": "Transit pass",
+          "text": "Three-day pass, sold at every station.",
+          "url": "https://transit.example.org/port-sorrel/passes"
+        },
+        "Trams run every 8 minutes until midnight."
+      ]
+    },
+    {
+      "title": "Good to know",
+      "items": [
+        "The Maritime Archive is closed on Thursdays.",
+        "The Tram Depot Gallery is temporarily closed."
+      ]
+    }
+  ]
+}

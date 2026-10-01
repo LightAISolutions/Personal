@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-google-snapshot.schema.json",
+  "title": "Tour Guide GoogleSnapshot (= toSnapshot() of helpers/kits/maps/lib/maps-snapshots.mjs)",
+  "description": "Build-scoped Google content for one place id. location is kept ≤ 30 days, content only for the build (Maps terms, decisions WP-2a F1). Period day 0 = Sunday … 6 = Saturday. No periods and no weekday lines = hours unknown.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["build_id", "place_id", "fetched_at", "location", "content"],
+  "properties": {
+    "build_id": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "place_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,300}$" },
+    "fetched_at": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?Z$", "description": "An ISO UTC timestamp." },
+    "content_purged_at": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?Z$" },
+    "location": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lat", "lng"],
+          "properties": { "lat": { "type": "number", "minimum": -90, "maximum": 90 }, "lng": { "type": "number", "minimum": -180, "maximum": 180 } }
+        }
+      ]
+    },
+    "content": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["display_name", "address", "business_status", "hours", "current_hours", "rating", "review_count", "website", "maps_uri", "time_zone"],
+          "properties": {
+            "display_name": { "type": ["string", "null"], "maxLength": 300 },
+            "address": { "type": ["string", "null"], "maxLength": 500 },
+            "business_status": { "anyOf": [{ "type": "null" }, { "enum": ["OPERATIONAL", "CLOSED_TEMPORARILY", "CLOSED_PERMANENTLY", "BUSINESS_STATUS_UNSPECIFIED"] }] },
+            "hours": {
+              "anyOf": [
+                { "type": "null" },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["weekday_descriptions", "periods"],
+                  "properties": {
+                    "weekday_descriptions": { "type": "array", "maxItems": 7, "items": { "type": "string", "minLength": 1, "maxLength": 200 } },
+                    "periods": { "type": "array", "maxItems": 70, "items": { "$ref": "#/$defs/period" } }
+                  }
+                }
+              ]
+            },
+            "current_hours": {
+              "anyOf": [
+                { "type": "null" },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["open_now", "weekday_descriptions"],
+                  "properties": {
+                    "open_now": { "type": ["boolean", "null"] },
+                    "weekday_descriptions": { "type": "array", "maxItems": 7, "items": { "type": "string", "maxLength": 200 } }
+                  }
+                }
+              ]
+            },
+            "rating": { "anyOf": [{ "type": "null" }, { "type": "number", "minimum": 0, "maximum": 5 }] },
+            "review_count": { "anyOf": [{ "type": "null" }, { "type": "integer", "minimum": 0 }] },
+            "website": { "anyOf": [{ "type": "null" }, { "type": "string", "maxLength": 2000, "pattern": "^https?://\\S+$" }] },
+            "maps_uri": { "anyOf": [{ "type": "null" }, { "type": "string", "maxLength": 2000, "pattern": "^https?://\\S+$" }] },
+            "time_zone": { "type": ["string", "null"], "maxLength": 64 }
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["day", "hour", "minute"],
+      "properties": {
+        "day": { "type": "integer", "minimum": 0, "maximum": 6, "description": "0 = Sunday … 6 = Saturday (Google)." },
+        "hour": { "type": "integer", "minimum": 0, "maximum": 23 },
+        "minute": { "type": "integer", "minimum": 0, "maximum": 59 },
+        "truncated": { "type": "boolean" },
+        "date": { "type": "object" }
+      }
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["open"],
+      "description": "A missing close means open around the clock (Google's 24/7 shape).",
+      "properties": { "open": { "$ref": "#/$defs/point" }, "close": { "$ref": "#/$defs/point" } }
+    }
+  }
+}
