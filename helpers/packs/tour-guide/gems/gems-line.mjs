@@ -32,8 +32,11 @@ export function peerComparison(ratio) {
 }
 const FLAG_WORDS = Object.freeze({ unproven: 'new: all its ratings are recent', tourist_oriented: 'reads tourist-oriented', closed_day_conflict: 'closed on a trip day' });
 
-/** gemLineClauses(record, { category_median_count }) → the clauses in order, before joining and trimming. *  The first clause is words only (R3): a rating band from our own thresholds plus the reviewer-count-vs-peer-median
- *  comparison, never a digit from Google. */
+/**
+ * gemLineClauses(record, { category_median_count }) → the clauses in order, before joining and trimming. The first clause
+ * is words only (R3): a rating band from our own thresholds plus the reviewer-count-vs-peer-median comparison, never a
+ * digit from Google.
+ */
 export function gemLineClauses(record, { category_median_count } = {}) {
   const parts = [];
   const rating = Number(record.rating), count = Number(record.rating_count);
