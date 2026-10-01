@@ -36,7 +36,9 @@ async function planWith(L, name, { strip = false, trip = null } = {}) {
   const seen = { routes: 0, matrices: 0 };
   const responder = L.fixtures.createFixtureResponder(fx);
   const maps = L.maps.createMapsClient({ transport: L.maps.createMockTransport(strip ? stripTransit(responder, seen) : responder), ledger: L.maps.createLedger() });
-  const input = { ...fx, maps, build_id: `tf-${name}`, now: NOW, seed: 7 };
+  // railEstimates off: these tests exercise the distance fallback alone (the station-based rail estimates run first in
+  // production and need Text Search recordings this fixture does not carry; the chain is covered in pack_tour-guide_rail).
+  const input = { ...fx, maps, build_id: `tf-${name}`, now: NOW, seed: 7, railEstimates: false };
   return { fx, input, seen, plan: await L.planner.planTrip(input) };
 }
 

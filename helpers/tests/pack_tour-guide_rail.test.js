@@ -116,7 +116,16 @@ test('planTrip on a TRANSIT fixture with no Google transit: every leg is a stati
     assert.match(l.maps_url, /travelmode=transit/);
   }
   assert.ok(transitLegs.some((l) => l.line), 'at least one leg is a train estimate');
-  await assert.rejects(planTrip({ ...fx, maps, railEstimates: false, build_id: 'rail-off', now: '2027-04-30T09:00:00Z', seed: 7 }), 'without estimates the day cannot be timed');
+  // With the rail estimates off, a leg Google could not route falls through to the distance fallback (WP-3e):
+  // the day still times, every TRANSIT leg is a distance estimate and the day carries one transit_estimated warning.
+  const off = await planTrip({ ...fx, maps, railEstimates: false, build_id: 'rail-off', now: '2027-04-30T09:00:00Z', seed: 7 });
+  assert.deepEqual(validate(off, 'plan').errors, []);
+  const offDays = off.days.filter((d) => d.mode === 'TRANSIT' && d.legs.length > 0);
+  assert.ok(offDays.length > 0);
+  for (const d of offDays) {
+    assert.ok(d.legs.every((l) => l.estimated === true && l.estimate_basis === 'distance' && !l.line), 'distance estimates, no train line');
+    assert.equal(d.warnings.filter((w) => w.code === 'transit_estimated').length, 1);
+  }
 });
 
 // Developed by: LightAISolutions
