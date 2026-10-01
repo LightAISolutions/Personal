@@ -4,6 +4,10 @@
 // status (fetch) are read, every string is sanitized, and nothing in a page can change budgets or fields.
 import * as run from './run.mjs';
 import { checkSpend, remaining } from './budget.mjs';
+import { sourceTags } from './ledger.mjs';
+
+/** { source_kind | sourceKind, language } from the caller's options → validated tags (before any injected call runs). */
+const tagsOf = (opts = {}) => sourceTags({ source_kind: opts.source_kind ?? opts.sourceKind, language: opts.language });
 
 export class BudgetExhaustedError extends Error {
   constructor(result) { super(result.message); this.name = 'BudgetExhaustedError'; this.code = result.code; this.entry = result.entry; this.exitCode = 3; }
@@ -22,9 +26,11 @@ export class ResearchSession {
     return new ResearchSession({ state: run.startRun({ topic, budgets, now: clock() }), search, fetch, clock });
   }
 
-  /** Run one search through the injected function. Throws BudgetExhaustedError (without calling it) when spent. */
-  async search(query) {
+  /** Run one search through the injected function; `opts` = { source_kind, language } tags the entry. Throws
+   * BudgetExhaustedError (without calling it) when spent, and a usage error (without calling it) on a bad tag. */
+  async search(query, opts = {}) {
     if (typeof this._search !== 'function') throw new Error('no search function injected');
+    const tags = tagsOf(opts);
     const now = this.clock();
     const pre = this._precheck('search', { query }, now);
     if (pre) throw pre;
@@ -34,12 +40,13 @@ export class ResearchSession {
       results = Array.isArray(out) ? out.map((r) => ({ url: r && r.url, title: str(r && r.title), snippet: str(r && r.snippet) })) : [];
       if (!Array.isArray(out)) { failed = true; note = 'search returned no result list'; }
     } catch (err) { failed = true; note = `search failed: ${str(err && err.message)}`; }
-    return run.record(this.state, 'search', { query, results, failed, note }, now).entry;
+    return run.record(this.state, 'search', { query, results, failed, note, ...tags }, now).entry;
   }
 
-  /** Fetch one page through the injected function; `opts` = { query, official, excerpt, derived_from }. */
+  /** Fetch one page through the injected function; `opts` = { query, official, excerpt, derived_from, source_kind, language }. */
   async fetch(url, opts = {}) {
     if (typeof this._fetch !== 'function') throw new Error('no fetch function injected');
+    const tags = tagsOf(opts);
     const now = this.clock();
     const pre = this._precheck('fetch', { url, query: opts.query }, now);
     if (pre) throw pre;
@@ -50,7 +57,7 @@ export class ResearchSession {
       url, text: str(page.text), title: str(page.title), excerpt: str(opts.excerpt), query: opts.query,
       official: opts.official === true, canonical: typeof page.canonical === 'string' && /^https?:\/\//.test(page.canonical) ? page.canonical : undefined,
       page_date: typeof page.page_date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(page.page_date) ? page.page_date : undefined,
-      derived_from: opts.derived_from || null, http_status: status, failed: failed || !str(page.text), note: note || (str(page.text) ? '' : 'empty page')
+      derived_from: opts.derived_from || null, http_status: status, failed: failed || !str(page.text), note: note || (str(page.text) ? '' : 'empty page'), ...tags
     }, now).entry;
   }
 
@@ -68,6 +75,8 @@ export class ResearchSession {
   }
 
   claim(input) { return run.claim(this.state, input, this.clock()); }
+  /** Usable web sources with their source kind and language (see run.mentions). */
+  mentions(filter) { return run.mentions(this.state, filter); }
   check() { return run.check(this.state, this.clock()); }
   duration(specs) { return run.duration(this.state, specs); }
   remaining() { return remaining(this.state, this.clock()); }

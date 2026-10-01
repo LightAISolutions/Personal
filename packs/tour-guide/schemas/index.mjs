@@ -4,14 +4,15 @@
  *   validate(trip, 'trip') → { ok: true, errors: [] } | { ok: false, errors: [{ path: '/lodging/0/to', message }] }
  * Each kind has one JSON Schema file (tour-guide-<kind>.schema.json) in the draft 2020-12 subset the brochure kit's
  * validator understands (helpers/kits/brochure/lib/validate.mjs — reused, not copied), plus semantic checks
- * (tour-guide-checks.mjs) that run once the schema passes. A Plan's days[], later[] and places[] are validated
+ * (tour-guide-checks.mjs) that run once the schema passes. Six kinds are envelope payloads (PAYLOAD_KINDS, validatePayload). A Plan's days[], later[] and places[] are validated
  * against their own schemas (the subset has no cross-file $ref) with paths prefixed by their position.
  */
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validate as validateSubset } from '../../../kits/brochure/lib/validate.mjs';
-import { checkTrip, checkPlace, checkSnapshot, checkEstimate, checkCalibration, checkLaterList, checkDayPlan, checkPlan } from './tour-guide-checks.mjs';
+import { checkTrip, checkPlace, checkSnapshot, checkEstimate, checkCalibration, checkLaterList, checkDayPlan, checkPlan,
+  checkShortlist, checkTripFacts, checkPlanDigest, checkProfileSummary, checkPrefsReview, checkPlacesDigest } from './tour-guide-checks.mjs';
 
 export const SCHEMA_DIR = dirname(fileURLToPath(import.meta.url));
 const KINDS = Object.freeze({
@@ -24,7 +25,23 @@ const KINDS = Object.freeze({
   'day-plan': checkDayPlan,
   'later-list': checkLaterList,
   'plan': checkPlan,
-  'profile-excerpt': null
+  'profile-excerpt': null,
+  // Payloads of the pack's envelope types (helper.json envelope_types; PAYLOAD_KINDS maps type → kind).
+  'shortlist': checkShortlist,
+  'trip-facts': checkTripFacts,
+  'plan-digest': checkPlanDigest,
+  'profile-summary': checkProfileSummary,
+  'prefs-review': checkPrefsReview,
+  'places-digest': checkPlacesDigest
+});
+/** Envelope type (helper.json envelope_types) → schema kind of its payload. */
+export const PAYLOAD_KINDS = Object.freeze({
+  prefs_review: 'prefs-review',
+  shortlist: 'shortlist',
+  trip_facts: 'trip-facts',
+  plan_digest: 'plan-digest',
+  profile_summary: 'profile-summary',
+  places_digest: 'places-digest'
 });
 /** Parts of a Plan validated against their own kind. */
 const PLAN_PARTS = Object.freeze({ days: 'day-plan', later: 'later-list', places: 'place' });
@@ -69,6 +86,15 @@ export function assertValid(entity, kind) {
   const r = validate(entity, kind);
   if (!r.ok) throw Object.assign(new Error(`tour-guide ${kind} is invalid:\n` + formatErrors(r.errors)), { errors: r.errors });
   return entity;
+}
+/**
+ * validatePayload(type, payload) → { ok, kind, errors: [{ path, message }] } for an envelope of one of the pack's types
+ * (tools/envelope.mjs --pack tour-guide calls this). A type with no payload schema → ok false, kind null.
+ */
+export function validatePayload(type, payload) {
+  const kind = Object.prototype.hasOwnProperty.call(PAYLOAD_KINDS, type) ? PAYLOAD_KINDS[type] : null;
+  if (!kind) return { ok: false, kind: null, errors: [{ path: '/', message: `no payload schema for envelope type "${type}" (known: ${Object.keys(PAYLOAD_KINDS).join(', ')})` }] };
+  return { ...validate(payload, kind), kind };
 }
 export const formatErrors = (errors) => errors.map((x) => `${x.path}: ${x.message}`).join('\n');
 

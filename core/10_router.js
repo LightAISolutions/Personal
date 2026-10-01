@@ -105,7 +105,9 @@ function handleTelegramMessage(msg) {
     try { return fn(ctx); }
     catch (err) { auditFail('command_error', cmd, describeError(err)); ctx.reply('⚠️ ' + tgEscape(cmd) + ' failed: ' + tgEscape(truncate(describeError(err), 200))); return null; }
   }
-  // Free text (or media with a caption): pack message handlers first, then the inbound routine via a request.
+  // Free text (or media with a caption): the active flow has first claim (15_flows.js), then pack message handlers,
+  // then the inbound routine via a request.
+  if (flowClaimText(ctx)) return null;
   var names = Object.keys(HB_REGISTRY.message).sort();
   for (var i = 0; i < names.length; i++) {
     try { if (HB_REGISTRY.message[names[i]](ctx) === true) return null; }

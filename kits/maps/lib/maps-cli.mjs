@@ -1,12 +1,13 @@
 /**
- * Maps kit — command-line front end. Network commands (details, search, route, matrix, smoke --live) refuse to run
+ * Maps kit — command-line front end. Network commands (details, search, route, matrix, and nearby / aggregate / smoke
+ * with --live) refuse to run
  * without --live and without a ledger path (--ledger or MAPS_USAGE_LEDGER), so nothing reaches Google by accident and
  * every call is counted in a file that outlives the process.
  */
 import { createMapsClient } from './maps-client.mjs';
 import { createLedger } from './maps-ledger.mjs';
 import { createMockTransport } from './maps-mock-transport.mjs';
-import { PLACE_DETAILS_MASKS, TEXT_SEARCH_MASKS, ROUTE_MASKS, ROUTE_MATRIX_MASK, PLACE_DETAILS_SKU, TEXT_SEARCH_SKU } from './maps-masks.mjs';
+import { PLACE_DETAILS_MASKS, TEXT_SEARCH_MASKS, NEARBY_SEARCH_MASKS, ROUTE_MASKS, ROUTE_MATRIX_MASK, PLACE_DETAILS_SKU, TEXT_SEARCH_SKU, NEARBY_SEARCH_SKU, AGGREGATE_SKU } from './maps-masks.mjs';
 import { SKUS, DEFAULT_CEILINGS, parseCeilingsEnv } from './maps-skus.mjs';
 import { openSnapshotStore, toSnapshot } from './maps-snapshots.mjs';
 import { directionsUrl, placeUrl } from './maps-urls.mjs';
@@ -20,6 +21,8 @@ export const USAGE = `usage: node helpers/kits/maps/index.mjs <command> [options
   url     dir|place --json '<spec>'             Maps URL (see README); no network
   details <placeId> [--tier T] --live --ledger P
   search  <query> [--tier T] [--page-size N] --live --ledger P
+  nearby  --json '<searchNearby params>' [--tier T] [--live --ledger P]   one Nearby Search (offline: fixtures)
+  aggregate --json '<computeInsights params>' [--live --ledger P]       one Places Aggregate call (offline: fixtures)
   route   --json '<computeRoutes spec>' --live --ledger P
   matrix  --json '<computeRouteMatrix spec>' --live --ledger P
   smoke   [--live --ledger P]                   1 Text Search + 1 Place Details + 1 Compute Routes (offline: fixtures)
@@ -88,7 +91,7 @@ export async function runCli(argv) {
   try {
     switch (cmd) {
       case 'masks':
-        print({ place_details: Object.fromEntries(Object.entries(PLACE_DETAILS_MASKS).map(([t, m]) => [t, { sku: PLACE_DETAILS_SKU[t], mask: m }])), text_search: Object.fromEntries(Object.entries(TEXT_SEARCH_MASKS).map(([t, m]) => [t, { sku: TEXT_SEARCH_SKU[t], mask: m }])), routes: ROUTE_MASKS, route_matrix: ROUTE_MATRIX_MASK, skus: SKUS, default_ceilings: DEFAULT_CEILINGS });
+        print({ place_details: Object.fromEntries(Object.entries(PLACE_DETAILS_MASKS).map(([t, m]) => [t, { sku: PLACE_DETAILS_SKU[t], mask: m }])), text_search: Object.fromEntries(Object.entries(TEXT_SEARCH_MASKS).map(([t, m]) => [t, { sku: TEXT_SEARCH_SKU[t], mask: m }])), nearby_search: Object.fromEntries(Object.entries(NEARBY_SEARCH_MASKS).map(([t, m]) => [t, { sku: NEARBY_SEARCH_SKU[t], mask: m }])), aggregate: { sku: AGGREGATE_SKU, mask: null }, routes: ROUTE_MASKS, route_matrix: ROUTE_MATRIX_MASK, skus: SKUS, default_ceilings: DEFAULT_CEILINGS });
         return 0;
       case 'usage': {
         const path = a.ledger || process.env.MAPS_USAGE_LEDGER;
@@ -117,6 +120,16 @@ export async function runCli(argv) {
         if (cmd === 'search') print((await c.textSearch(a._.slice(1).join(' '), { tier: a.tier, pageSize: a['page-size'] ? Number(a['page-size']) : undefined })));
         if (cmd === 'route') print((await c.computeRoutes(json(a.json))));
         if (cmd === 'matrix') print((await c.computeRouteMatrix(json(a.json))));
+        return 0;
+      }
+      case 'nearby': case 'aggregate': {
+        if (!a.json) { console.error(USAGE); return 2; }
+        const spec = json(a.json);
+        let client;
+        if (a.live) { if (!needLive(a)) return 2; client = liveClient(a); }
+        else client = createMapsClient({ transport: createMockTransport(), allowMemoryLedger: true, env: {} });
+        const r = cmd === 'nearby' ? await client.searchNearby(spec, { tier: a.tier }) : await client.computeInsights(spec);
+        print({ source: a.live ? 'live' : 'fixtures', ...r });
         return 0;
       }
       case 'photo': {

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-prefs-review.schema.json",
+  "title": "Tour Guide preference review (payload of the `prefs_review` envelope)",
+  "description": "The prefs kit's review document exactly as helpers/kits/prefs/lib/review.mjs buildReview() emits it: one Telegram-sized item per candidate with ✅ / ✏️ / ❌ buttons, the candidates held back with their reason, and how many more are waiting. schemas/index.mjs also checks that candidate ids are unique and each button's callback data names its own item.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["v", "kind", "vocab", "batch_id", "items", "held_back", "more"],
+  "properties": {
+    "v": { "const": 1 },
+    "kind": { "const": "prefs_review" },
+    "vocab": { "$ref": "#/$defs/ident" },
+    "batch_id": { "type": "string", "pattern": "^pfb_[0-9a-f]{16}$" },
+    "items": {
+      "type": "array",
+      "maxItems": 40,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cid", "dimension", "value", "stance", "statement", "suspect", "text", "buttons"],
+        "properties": {
+          "cid": { "$ref": "#/$defs/cid" },
+          "dimension": { "$ref": "#/$defs/ident" },
+          "value": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "stance": { "enum": ["+", "-"] },
+          "statement": { "type": "string", "minLength": 1, "maxLength": 400 },
+          "suspect": { "type": "boolean" },
+          "text": { "type": "string", "minLength": 1, "maxLength": 1200 },
+          "buttons": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 3,
+            "items": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 3,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["text", "data"],
+                "properties": {
+                  "text": { "type": "string", "minLength": 1, "maxLength": 40 },
+                  "data": { "type": "string", "maxLength": 64, "pattern": "^pf:c_[0-9a-f]{10}:[yen]$" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "held_back": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cid", "statement", "reason"],
+        "properties": {
+          "cid": { "$ref": "#/$defs/cid" },
+          "statement": { "type": "string", "minLength": 1, "maxLength": 400 },
+          "reason": { "enum": ["unknown_dimension", "suspect_only", "tied", "low_support", "negative_single_value"] }
+        }
+      }
+    },
+    "more": { "type": "integer", "minimum": 0 }
+  },
+  "$defs": {
+    "ident": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,31}$" },
+    "cid": { "type": "string", "pattern": "^c_[0-9a-f]{10}$" }
+  }
+}

@@ -8,6 +8,30 @@ import { isoSeconds, usage } from './budget.mjs';
 
 export const MAX_RESULTS = 20;
 export const QUERY_MAX = 300;
+/** Source kinds a caller may tag a search or fetch with (Gem Funnel `local_mentions`): set by the caller, never by a page. */
+export const SOURCE_KINDS = Object.freeze(['editorial', 'community', 'local-language']);
+export const LANGUAGE_MAX = 35;
+const LANGUAGE_RE = /^[A-Za-z]{2,3}(-[A-Za-z0-9]{1,8})*$/;
+
+/**
+ * sourceTags({ source_kind, language }) → { source_kind, language } validated (both optional, null when absent).
+ * `language` is a BCP 47 tag, canonicalized ('JA' → 'ja', 'pt-br' → 'pt-BR'). Throws a usage error (exit 2) otherwise.
+ */
+export function sourceTags({ source_kind, language } = {}) {
+  let kind = null, lang = null;
+  if (source_kind !== undefined && source_kind !== null && source_kind !== '') {
+    if (!SOURCE_KINDS.includes(String(source_kind))) throw usage(`source kind must be one of ${SOURCE_KINDS.join(', ')} (got ${JSON.stringify(String(source_kind).slice(0, 40))})`);
+    kind = String(source_kind);
+  }
+  if (language !== undefined && language !== null && language !== '') {
+    const raw = String(language);
+    let canon = null;
+    if (raw.length <= LANGUAGE_MAX && LANGUAGE_RE.test(raw)) { try { canon = Intl.getCanonicalLocales(raw)[0]; } catch { canon = null; } }
+    if (!canon || canon.length > LANGUAGE_MAX) throw usage(`language must be a BCP 47 tag such as ja, de or pt-BR (got ${JSON.stringify(raw.slice(0, 40))})`);
+    lang = canon;
+  }
+  return { source_kind: kind, language: lang };
+}
 
 export function entryId(n) { return 'L' + String(n).padStart(3, '0'); }
 
@@ -15,7 +39,8 @@ function blank(id, kind, now) {
   return {
     id, kind, status: 'ok', fetched_at: isoSeconds(now), query: null, url: null, domain: null, publisher: null,
     canonical_url: null, page_date: null, official: false, derived_from: null, http_status: null, title: '',
-    excerpt: '', results: [], supports: [], contradicts: [], injection_suspect: false, injection_reasons: [], note: ''
+    excerpt: '', results: [], supports: [], contradicts: [], injection_suspect: false, injection_reasons: [], note: '',
+    source_kind: null, language: null
   };
 }
 
@@ -41,10 +66,12 @@ function flag(entry, scan) {
   entry.injection_reasons = scan.reasons.slice(0, 20);
 }
 
-/** A search: query + up to 20 results ({url, title, snippet}); results with a bad URL are dropped and counted in `note`. */
-export function searchEntry(id, now, { query, results = [], failed = false, note = '' }) {
+/** A search: query + up to 20 results ({url, title, snippet}); results with a bad URL are dropped and counted in `note`.
+ * `source_kind` / `language` (optional) tag the whole search, i.e. every result in it. */
+export function searchEntry(id, now, { query, results = [], failed = false, note = '', source_kind, language }) {
   const e = blank(id, 'search', now);
   e.query = cleanQuery(query, true);
+  Object.assign(e, sourceTags({ source_kind, language }));
   if (!Array.isArray(results)) throw usage('results must be a JSON array of {url, title, snippet}');
   let dropped = 0;
   for (const r of results) {
@@ -70,9 +97,10 @@ export function searchEntry(id, now, { query, results = [], failed = false, note
  * A fetched page. `text` is the full page content (scanned, not stored); `excerpt` is the passage that supports a
  * claim (stored); without `excerpt` the first 1000 sanitized characters of `text` are stored.
  */
-export function fetchEntry(id, now, { url, text = '', excerpt = '', title = '', query, official = false, canonical, page_date, derived_from = null, http_status = null, failed = false, note = '' }) {
+export function fetchEntry(id, now, { url, text = '', excerpt = '', title = '', query, official = false, canonical, page_date, derived_from = null, http_status = null, failed = false, note = '', source_kind, language }) {
   const e = blank(id, 'fetch', now);
   e.url = checkUrl(url);
+  Object.assign(e, sourceTags({ source_kind, language }));
   e.domain = registrableDomain(url); e.publisher = publisherKey(url);
   e.query = cleanQuery(query, false);
   if (canonical) e.canonical_url = checkUrl(canonical, 'canonical');

@@ -8,7 +8,7 @@ test('ensureSheets creates every core tab with the exact headers and drops the d
   const { ctx, state } = H.loadGas({ pack: 'hello' });
   H.bootstrap(ctx, state);
   const ss = ctx.getSpreadsheet();
-  assert.deepEqual([...ss.getSheets()].map((s) => s.getName()).sort(), ['AuditLog', 'PendingActions', 'Queue', 'Requests', 'Settings']);
+  assert.deepEqual([...ss.getSheets()].map((s) => s.getName()).sort(), ['AuditLog', 'Flows', 'PendingActions', 'Queue', 'Requests', 'Settings']);
   assert.deepEqual([...ctx.sheetHeaders(ss.getSheetByName('Requests'))], [...ctx.SHEET_HEADERS.Requests]);
   assert.equal(ctx.ensureSheets().length, 0, 'second run creates nothing');
 });

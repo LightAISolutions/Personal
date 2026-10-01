@@ -8,7 +8,8 @@ import { fileURLToPath } from 'node:url';
 import { main } from './lib/cli.mjs';
 
 export { ResearchSession, BudgetExhaustedError } from './lib/session.mjs';
-export { startRun, record, claim, check, duration, summary, finish, loadRun, saveRun, assertValid } from './lib/run.mjs';
+export { startRun, record, claim, check, duration, summary, finish, loadRun, saveRun, assertValid, mentions, sourceKindCounts } from './lib/run.mjs';
+export { SOURCE_KINDS, sourceTags } from './lib/ledger.mjs';
 export { DEFAULT_BUDGETS, MAX_BUDGETS, MAX_API_RECORDS, MAX_REFUSED_RECORDS, normalizeBudgets, checkSpend, remaining } from './lib/budget.mjs';
 export { CLAIM_KINDS, CRITICAL_KINDS, LABELS, STALE_DAYS, SIMILARITY_THRESHOLD, labelClaim, independenceGroups, textSimilarity, isStale } from './lib/claims.mjs';
 export { scanText, scanView, RULES as INJECTION_RULES } from './lib/injection.mjs';

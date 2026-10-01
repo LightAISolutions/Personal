@@ -19,15 +19,29 @@ test('every fixed Places mask bills exactly the tier it is named for (plan fact 
     assert.ok(mask.split(',').includes('nextPageToken'));
     assert.ok(k.TEXT_SEARCH_SKU[tier] in k.SKUS);
   }
+  for (const [tier, mask] of Object.entries(k.NEARBY_SEARCH_MASKS)) {
+    assert.equal(k.highestTier(mask), tier, 'nearby search ' + tier);
+    assert.ok(mask.split(',').every((f) => k.fieldTier(f)), 'every field is known: nearby ' + tier);
+    assert.ok(!mask.split(',').includes('nextPageToken'), 'Nearby Search has no pagination');
+    assert.ok(k.NEARBY_SEARCH_SKU[tier] in k.SKUS);
+  }
+  assert.deepEqual(Object.keys(k.NEARBY_SEARCH_MASKS), ['pro', 'enterprise', 'enterprise_atmosphere'], 'Nearby Search has no IDs-only or Essentials SKU');
+  assert.ok(k.TEXT_SEARCH_MASKS.enterprise_atmosphere.split(',').includes('places.reviews'));
+  assert.ok(k.AGGREGATE_SKU in k.SKUS);
+  for (const t of ['enterprise', 'enterprise_atmosphere']) assert.equal(k.NEARBY_SEARCH_MASKS[t], k.TEXT_SEARCH_MASKS[t].replace(',nextPageToken', ''), 'Nearby and Text Search return places of the same shape: ' + t);
   assert.ok(!k.PLACE_DETAILS_MASKS.enterprise.includes('reviews'), 'reviews only in the Atmosphere mask');
   assert.ok(k.PLACE_DETAILS_MASKS.enterprise_atmosphere.includes('reviews'));
-  assert.ok(Object.isFrozen(k.PLACE_DETAILS_MASKS) && Object.isFrozen(k.TEXT_SEARCH_MASKS));
+  for (const f of ['reviewSummary', 'editorialSummary', 'generativeSummary', 'priceRange', 'regularOpeningHours', 'websiteUri']) assert.ok(k.PLACE_DETAILS_MASKS.enterprise_atmosphere.split(',').includes(f), 'atmosphere details carry ' + f);
+  assert.ok(Object.isFrozen(k.PLACE_DETAILS_MASKS) && Object.isFrozen(k.TEXT_SEARCH_MASKS) && Object.isFrozen(k.NEARBY_SEARCH_MASKS));
 });
 
 test('default ceilings sit at or below every free cap; overrides are validated', async () => {
   const k = await kit();
   for (const [sku, s] of Object.entries(k.SKUS)) assert.ok(k.DEFAULT_CEILINGS[sku] <= s.free, sku);
   assert.equal(k.DEFAULT_CEILINGS['places.details.enterprise'], 800);
+  assert.deepEqual(['places.nearby_search.pro', 'places.nearby_search.enterprise', 'places.nearby_search.enterprise_atmosphere', 'places.text_search.enterprise_atmosphere', 'places.aggregate.compute_insights'].map((s) => [k.SKUS[s].free, k.SKUS[s].usdPer1000, k.DEFAULT_CEILINGS[s]]),
+    [[5000, 32, 4000], [1000, 35, 800], [1000, 40, 800], [1000, 40, 800], [5000, 10, 4000]], 'Gem Funnel SKUs: free cap, list price, 80 % ceiling');
+  assert.deepEqual(k.resolveCeilings(k.parseCeilingsEnv('places.nearby_search.enterprise=15,places.aggregate.compute_insights=0'))['places.aggregate.compute_insights'], 0, 'MAPS_SKU_CEILINGS covers the new names');
   assert.equal(k.resolveCeilings({ 'places.details.enterprise': 5 })['places.details.enterprise'], 5);
   assert.throws(() => k.resolveCeilings({ 'nope.sku': 1 }), /unknown SKU/);
   assert.throws(() => k.resolveCeilings({ 'places.details.pro': -1 }), /non-negative/);

@@ -43,7 +43,8 @@ function dayPlan() {
 
 test('every kind has a schema file in the validator subset (only #/$defs refs) and listKinds() names them', async () => {
   const s = await S();
-  assert.deepEqual(s.listKinds(), ['trip', 'place', 'google-snapshot', 'visit-estimate', 'place-note', 'calibration', 'day-plan', 'later-list', 'plan', 'profile-excerpt']);
+  assert.deepEqual(s.listKinds(), ['trip', 'place', 'google-snapshot', 'visit-estimate', 'place-note', 'calibration', 'day-plan', 'later-list', 'plan', 'profile-excerpt',
+    'shortlist', 'trip-facts', 'plan-digest', 'profile-summary', 'prefs-review', 'places-digest']);
   for (const kind of s.listKinds()) {
     const schema = s.loadSchema(kind);
     assert.equal(schema.$schema, 'https://json-schema.org/draft/2020-12/schema', kind);
@@ -172,6 +173,78 @@ test('estimate, note, later-list, calibration and profile excerpt reject unknown
   assert.ok(s.validate({ v: 1, categories: { museum: { longer: 2, shorter: 0, about_right: 3, factor: 1.2 } } }, 'calibration').ok);
   assert.ok(!s.validate({ ...fx.profile, interests: { museum: 'very' } }, 'profile-excerpt').ok);
   assert.throws(() => s.assertValid({ v: 2 }, 'place-note'), /place-note is invalid/);
+});
+
+test('v4b enums: trip lifecycle, place "chosen", Later codes owner_choice and not_shown', async () => {
+  const s = await S(), f = await F();
+  const trip = f.loadFixture('transit-city').trip;
+  for (const status of ['intake', 'researched', 'choosing', 'planned', 'delivered', 'done']) assert.ok(s.validate({ ...trip, status }, 'trip').ok, status);
+  assert.ok(!s.validate({ ...trip, status: 'booked' }, 'trip').ok);
+  const place = f.loadFixture('transit-city').places[0];
+  for (const status of ['candidate', 'chosen', 'scheduled', 'saved-for-later', 'rejected']) assert.ok(s.validate({ ...place, status }, 'place').ok, status);
+  const item = (code) => ({ v: 1, trip_id: 't', name: 'x', items: [{ place: 'a', place_id: 'FixtureAaaaaa', reason: 'r', code, added_on: '2027-01-01' }] });
+  assert.ok(s.validate(item('owner_choice'), 'later-list').ok);
+  assert.ok(s.validate(item('not_shown'), 'later-list').ok);
+});
+
+test('place: repository history across two trips, research dates and Gem Funnel fields', async () => {
+  const s = await S(), f = await F();
+  const base = f.loadFixture('transit-city').places[0];
+  const p = { ...base, destination: 'port-sorrel', source_trip: 'port-sorrel-spring-2027', last_researched: '2027-05-01', last_verified: '2028-03-02',
+    history: [
+      { trip: 'port-sorrel-spring-2027', on: '2027-05-01', event: 'shortlisted' },
+      { trip: 'port-sorrel-spring-2027', on: '2027-05-02', event: 'chosen' },
+      { trip: 'port-sorrel-spring-2027', on: '2027-05-12', event: 'visited' },
+      { trip: 'port-sorrel-spring-2027', on: '2027-05-16', event: 'rated_up', note: 'loved the lantern hall' },
+      { trip: 'port-sorrel-autumn-2028', on: '2028-03-02', event: 'checked', note: 'still open; new opening hours on its own site' }
+    ],
+    gem_score: 81.5, gem: true, obscurity: 0.72, flags: ['closed_day_conflict'],
+    local_mentions: [{ ref: 'src-0003', language: 'pt-BR', kind: 'local-language' }, { ref: 'src-0007', language: 'en', kind: 'editorial' }] };
+  assert.deepEqual(s.validate(p, 'place').errors, []);
+  const bad = (over, path) => assert.ok(s.validate({ ...p, ...over }, 'place').errors.some((e) => e.path.startsWith(path)), JSON.stringify(over));
+  bad({ history: [{ trip: 'x', on: '2027-05-01', event: 'liked' }] }, '/history/0/event');
+  bad({ history: [{ trip: 'x', on: '2027-02-30', event: 'chosen' }] }, '/history/0/on');
+  bad({ history: [p.history[1], p.history[0]] }, '/history/1/on');
+  bad({ history: [{ trip: 'x', on: '2027-05-01', event: 'chosen', note: 'n'.repeat(121) }] }, '/history/0/note');
+  bad({ last_verified: '2027-13-01' }, '/last_verified');
+  bad({ gem_score: 101 }, '/gem_score');
+  bad({ obscurity: 1.5 }, '/obscurity');
+  bad({ flags: ['fake'] }, '/flags/0');
+  bad({ local_mentions: [{ ref: 'r', language: 'Portuguese', kind: 'editorial' }] }, '/local_mentions/0/language');
+  bad({ local_mentions: [{ ref: 'r', language: 'pt', kind: 'blog' }] }, '/local_mentions/0/kind');
+  bad({ rating: 4.7 }, '/rating');
+});
+
+test('plan: recorded choices let an un-picked candidate stay out of every list; skipped and kept places are checked', async () => {
+  const s = await S(), f = await F();
+  const L = await import('../packs/tour-guide/later/index.mjs');
+  const fx = f.loadFixture('transit-city');
+  const day = dayPlan();
+  const picked = day.stops.map((x) => x.place);
+  const [kept, skipped] = fx.places.filter((p) => !picked.includes(p.id)).map((p) => p.id);
+  let later = L.createLists(fx.trip.id);
+  const keptPlace = fx.places.find((p) => p.id === kept);
+  later = L.addItem(later, { place: kept, place_id: keptPlace.place_id, reason: 'kept for later', code: 'owner_choice', added_on: '2027-05-01' });
+  assert.equal(later[2].name, L.SAVED_BY_YOU);
+  const places = fx.places.map((p) => ({ ...p, status: picked.includes(p.id) ? 'scheduled' : p.id === kept ? 'saved-for-later' : p.id === skipped ? 'rejected' : 'candidate' }));
+  const plan = { v: 1, build_id: 'b1', trip_id: fx.trip.id, built_on: '2027-05-01', days: [day], later, places,
+    budget: { skus: {}, usd_estimate: 0, within_ceiling: true }, usage: { matrix_elements: 4, route_calls: 3 },
+    choices: { picks: picked, later: [kept], skip: [skipped] } };
+  assert.deepEqual(s.validate(plan, 'plan').errors, []);
+  const none = clone(plan); delete none.choices;
+  assert.ok(s.validate(none, 'plan').errors.some((e) => /neither scheduled nor in a Later list/.test(e.message)), 'without choices the rule is unchanged');
+  const noPicks = clone(plan); noPicks.choices.picks = [];
+  assert.ok(s.validate(noPicks, 'plan').errors.some((e) => /neither scheduled nor in a Later list/.test(e.message)), 'only picks narrow the pool');
+  const unknown = clone(plan); unknown.choices.skip.push('nowhere-place');
+  assert.ok(s.validate(unknown, 'plan').errors.some((e) => e.path === '/choices/skip/1' && /unknown place/.test(e.message)));
+  const twice = clone(plan); twice.choices.later.push(picked[0]);
+  assert.ok(s.validate(twice, 'plan').errors.some((e) => /also in choices.picks/.test(e.message)));
+  const skipScheduled = clone(plan); skipScheduled.choices.picks = picked.slice(1); skipScheduled.choices.skip.push(picked[0]);
+  assert.ok(s.validate(skipScheduled, 'plan').errors.some((e) => /was skipped but is scheduled/.test(e.message)));
+  const skipStatus = clone(plan); skipStatus.places.find((p) => p.id === skipped).status = 'candidate';
+  assert.ok(s.validate(skipStatus, 'plan').errors.some((e) => /status must be "rejected"/.test(e.message)));
+  const keptScheduled = clone(plan); keptScheduled.choices.picks = picked.slice(1); keptScheduled.choices.later.push(picked[0]);
+  assert.ok(s.validate(keptScheduled, 'plan').errors.some((e) => /kept for later but is scheduled/.test(e.message)));
 });
 
 // Developed by: LightAISolutions

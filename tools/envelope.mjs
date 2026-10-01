@@ -4,11 +4,13 @@
 // collide with an earlier one and the core drops the envelope as a duplicate. Zero deps.
 //   node helpers/tools/envelope.mjs <type> <producer> <payload.json> [--pack NAME] [--dedupe-key K] [--in-reply-to ID] [--out DIR]
 // Prints {"file_name","content","errors"}; with --out, also writes DIR/<file_name>. Keep payload + output files OUTSIDE the repo.
-// --pack NAME adds the pack's envelope_types (helpers/packs/NAME/helper.json) to the accepted core types.
+// --pack NAME adds the pack's envelope_types (helpers/packs/NAME/helper.json) to the accepted core types and, when the
+// pack ships helpers/packs/NAME/schemas/index.mjs exporting validatePayload(type, payload), checks a pack type's payload
+// against its schema (errors are prefixed "payload/<pointer>: ").
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 /** The core envelope types, read from the same source the core validates against (no drift). */
@@ -16,10 +18,28 @@ export const TYPES = JSON.parse(/var ENVELOPE_TYPES = (\[[^\]]*\])/.exec(fs.read
 /** typesFor('hello') → core types + the pack's envelope_types. */
 export function typesFor(pack) {
   if (!pack) return TYPES.slice();
+  const m = manifestOf(pack);
+  return TYPES.concat((m.envelope_types || []).filter((t) => !TYPES.includes(t)));
+}
+function manifestOf(pack) {
   const file = path.join(ROOT, 'packs', pack, 'helper.json');
   if (!fs.existsSync(file)) throw new Error('unknown pack: ' + pack + ' (no ' + path.relative(ROOT, file) + ')');
-  const m = JSON.parse(fs.readFileSync(file, 'utf8'));
-  return TYPES.concat((m.envelope_types || []).filter((t) => !TYPES.includes(t)));
+  return JSON.parse(fs.readFileSync(file, 'utf8'));
+}
+/**
+ * packPayloadErrors('tour-guide', 'shortlist', payload) → ['payload/groups/0/items/0/fit: above maximum 1', …].
+ * [] when there is no pack, the type is not one of the pack's envelope_types, the payload is not an object, or the pack
+ * has no schemas/index.mjs exporting validatePayload(type, payload) → { ok, errors: [{ path, message }] }.
+ */
+export async function packPayloadErrors(pack, type, payload) {
+  if (!pack || !payload || typeof payload !== 'object' || Array.isArray(payload)) return [];
+  if (!(manifestOf(pack).envelope_types || []).includes(type)) return [];
+  const file = path.join(ROOT, 'packs', pack, 'schemas', 'index.mjs');
+  if (!fs.existsSync(file)) return [];
+  const mod = await import(pathToFileURL(file).href);
+  if (typeof mod.validatePayload !== 'function') return [];
+  const r = mod.validatePayload(type, payload);
+  return r && r.ok ? [] : (r.errors || []).map((e) => 'payload' + (e.path === '/' ? '' : e.path) + ': ' + e.message);
 }
 const longest = (v) => (typeof v === 'string' ? v.length : v && typeof v === 'object' ? Math.max(0, ...Object.values(v).map(longest)) : 0);
 
@@ -44,17 +64,19 @@ export function makeEnvelope({ type, producer, payload, dedupeKey, inReplyTo, no
   return { file_name: stamp + '_' + type + '_' + id + '.json', envelope: env, errors };
 }
 
-function main(argv) {
+async function main(argv) {
   const pos = [], opt = {};
   for (let i = 0; i < argv.length; i++) { if (argv[i].startsWith('--')) opt[argv[i].slice(2)] = argv[++i]; else pos.push(argv[i]); }
   const [type, producer, file] = pos;
   if (!type || !producer || !file) { console.error('usage: node helpers/tools/envelope.mjs <type> <producer> <payload.json> [--pack NAME] [--dedupe-key K] [--in-reply-to ID] [--out DIR]'); return 2; }
-  const r = makeEnvelope({ type, producer, payload: JSON.parse(fs.readFileSync(file, 'utf8')), dedupeKey: opt['dedupe-key'], inReplyTo: opt['in-reply-to'], types: typesFor(opt.pack) });
+  const payload = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const r = makeEnvelope({ type, producer, payload, dedupeKey: opt['dedupe-key'], inReplyTo: opt['in-reply-to'], types: typesFor(opt.pack) });
+  r.errors.push(...(await packPayloadErrors(opt.pack, type, payload)));
   const content = JSON.stringify(r.envelope);
   if (!r.errors.length && opt.out) fs.writeFileSync(path.join(opt.out, r.file_name), content);
   console.log(JSON.stringify({ file_name: r.file_name, content, errors: r.errors }));
   return r.errors.length ? 1 : 0;
 }
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) process.exitCode = main(process.argv.slice(2));
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main(process.argv.slice(2)).then((code) => { process.exitCode = code; });
 
 // Developed by: LightAISolutions

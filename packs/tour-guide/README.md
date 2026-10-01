@@ -10,6 +10,7 @@ The engine behind the Tour Guide helper: it turns a trip, its researched places 
 | `planner/` | Day assignment, the time-window solver, real legs, meals, warnings, Maps links, budget, Later lists | below |
 | `later/` | Later-list operations (promote and demote report which days to re-plan) | below |
 | `brochure-map/` | Maps a Plan onto the brochure kit's model and renders it | below |
+| `gems/` | The Gem Funnel's engine (proposal §4 stages 2–5): screening, the gem score and 💎 rule, evidence flags, the "why it's a gem" line, shortlist floors and the "Gems not chosen" Later list — pure functions, no calls | below |
 | `fixtures/` | Two invented trips with recorded Maps answers in the real API shapes, used by every test | below |
 | `gas/` | Empty until Phase 5 (the chatbot feature pack) | — |
 
@@ -35,11 +36,13 @@ Input to `planTrip`: `trip`, `places`, `snapshots` (array or map by place id), `
 
 ## Schemas — `schemas/`
 One JSON Schema per entity, `schemas/tour-guide-<kind>.schema.json` (subset of 2020-12, the same one the brochure kit validates).
-Kinds: trip, place, google-snapshot, visit-estimate, place-note, calibration, day-plan, later-list, plan, profile-excerpt.
+Kinds: trip, place, google-snapshot, visit-estimate, place-note, calibration, day-plan, later-list, plan, profile-excerpt, and the six envelope payloads (see "Payloads" below): shortlist, trip-facts, plan-digest, profile-summary, prefs-review, places-digest.
 - `validate(entity, kind) → { ok, errors: [{ path, message }] }`. It runs the schema first. If that passes, it runs the semantic checks:
   - Trip: real calendar dates, ≤ 31 days, a valid IANA time zone, day_start < day_end, exactly one lodging per night.
   - Day plan: legs and stops chain lodging → … → lodging; times run in order (they may cross midnight); each leg's minutes match its clock times within 1; each stop sits inside its opening window.
-  - Plan: each part is validated as its own kind; each non-rejected place is either scheduled or in exactly one Later list.
+  - Place: real calendar dates in `last_researched`, `last_verified`, the booking and `history` (oldest first).
+  - Plan: each part is validated as its own kind; each non-rejected place is either scheduled or in exactly one Later list. With `plan.choices`: every slug is a known place and sits in one list only; skipped places are rejected and unscheduled; kept places are unscheduled; a candidate that was not picked may be in neither (it was simply not chosen).
+  - Payloads: numbering and slugs unique, real dates, end ≥ start, a review's buttons name their own item, digests ≤ 60 000 characters.
 - `listKinds()`, `assertValid(entity, kind)` (throws, `err.errors`), `loadSchema(kind)`, `formatErrors(errors)`.
 - Date helpers: `tripDates`, `weekdayOf`, `addDays`, `toMinutes` / `fromMinutes`, `lodgingForNight`, `dayLodgings`.
   - A lodging covers the nights [from, to).
@@ -58,8 +61,9 @@ Kinds: trip, place, google-snapshot, visit-estimate, place-note, calibration, da
   - It is reversible: an opposite tap undoes a tap.
 
 ## Later lists — `later/`
-- Statuses: candidate · scheduled · saved-for-later · rejected.
-- Default lists: "Didn't fit" (machine codes) and "Next time" (owner).
+- Statuses: candidate · chosen · scheduled · saved-for-later · rejected. `chosen` = the owner picked it from the shortlist; the planner treats it like a candidate.
+- Trip statuses: intake · researched · choosing · planned · delivered · done.
+- Default lists: "Didn't fit" (machine codes), "Next time" (code `owner`), "Saved by you" (code `owner_choice`: kept for later while choosing from the shortlist) and "Gems not chosen" (code `not_shown`: gems the shortlist could not show). `defaultListFor(code)` and `LIST_DESCRIPTIONS` name them.
 - `createLists(trip_id)`, `addItem(lists, { place, place_id, reason, code, from_date?, list?, added_on })`, `removeItem`, `findItem`, `setStatus`.
   - Adding a place that is already listed moves it.
 - `promote({ lists, places, place, to_date }) → { lists, places, affected_days: [to_date] }`.
@@ -89,12 +93,38 @@ import { planTrip, replanDays, estimateBudget, PlanBudgetError } from './planner
 const plan = await planTrip({ trip, places, snapshots, estimates, profile, calibration, maps, build_id, now, seed });
 const plan2 = await replanDays(plan, ['2027-05-04'], { trip, places: plan.places, snapshots, estimates, profile, maps });
 const budget = await estimateBudget({ … same input … });   // no API call
+// the owner's choices from the shortlist (slugs):
+const chosen = await planTrip({ …, choices: { picks: ['old-market'], later: ['river-walk'], skip: ['tower'] } });
 ```
 `maps` is a Maps-kit client; its ledger counts every unit before it is sent. For each trip date the planner assigns candidates (geography + lodging anchors, priority first, bookings pinned, a promoted place's `scheduled_hint` preferred; too-far and never-open places go straight to *Didn't fit*), fetches **one Route Matrix** (stops + lodging endpoints, ≤ 10 points on TRANSIT days), solves the exact best subset and order under opening hours, bookings and the day bounds (lunch 12:00–14:00 is mandatory on a day that runs past it; breakfast at the lodging from `day_start`; dinner suggested after the return), then fetches the **real legs pair by pair** at the planned departure times (TRANSIT legs carry the line), re-timelines on them (one re-solve, then drops a stop at a time), cross-checks the order with Google on DRIVE / WALK days, and writes the DayPlan with Maps links, meals, free blocks and warnings. Visit lengths come from the estimator's `chooseMinutes` (pace, interest, calibration); a caller may inject its own. `replanDays` rebuilds only the dates given and keeps every other day byte-identical. Limits: ≤ 12 stops per day (≤ 9 on TRANSIT with one lodging, ≤ 8 with two), ≤ 31 days, modes TRANSIT / DRIVE / WALK, return leg may spill ≤ 90 min past `day_end` (warned), a stop waits ≤ 75 min for its opening window (a booked stop may wait any length).
 
 **Train estimates where Google has no transit (Japan).** The Routes API returns no transit route in Japan, so `planTrip` wraps the Maps client with `withRailEstimates` (`planner-rail.mjs`): a TRANSIT matrix element or leg Google could not find becomes walk → nearest station → ride → station → walk, using Google's own station places (Text Search Pro, one call per point, cached for the build; train, subway and light-rail stations within 1 km). The ride is an estimate (straight line × 1.3 at 30 km/h plus a 5 min wait, one 5 min change past 6 km; past 40 km 75 km/h, past 150 km shinkansen speed) and the leg's line reads `Shibuya Station → Ueno Station (estimate)`; its Google Maps link (travelmode=transit) shows the exact train. Hops under 1.2 km are walked; a point with no station in reach keeps "no route". Live check 2026-10-01 on Tokyo pairs: estimates ran about 0–10 min above the real Metro times. Pass `railEstimates: false` to turn it off. The budget estimate does not yet count the Text Search calls.
 
+**Transit fallback** — Google Routes has no TRANSIT routes in some countries (Japan, for one). The rail estimates above run first; a leg they leave as "no route" (no station in reach, or `railEstimates: false`) falls through to this. When a TRANSIT matrix element is missing or not `ROUTE_EXISTS`, or a TRANSIT Compute Routes call returns no route, the planner does not switch to driving: it estimates the leg as straight-line distance × 1.3 at `trip.transit_fallback.kmh` (default 20) plus `overhead_min` (default 12), rounded up. The solver uses the same estimate for missing matrix pairs. Estimated legs carry `estimated: true`, `estimate_basis: "distance"`, no `line` and the normal transit Maps link; each affected day gets one `transit_estimated` warning ("Transit times on this day are estimates; check the Maps link before you go"). `trip.transit_fallback = { kmh, overhead_min, source?: default|researched, note? }`. DRIVE and WALK days are unchanged. Reasons: `helpers/decisions/WP-3e.md`.
+
+**Choices** — `input.choices = { picks?, later?, skip? }`, arrays of place slugs (ids); absent → the plan is exactly what it was before choices existed.
+- `picks` is the whole pool: picked places get status `chosen` and are planned; candidates that were not picked stay `candidate`, are not planned and are in no Later list. A place promoted with `scheduled_hint` counts as picked.
+- `later` → the "Saved by you" list (code `owner_choice`), status saved-for-later, never planned.
+- `skip` → status rejected, never planned, in no list.
+- Unknown slugs, a slug in two lists or extra keys throw (`planner: …`); duplicates inside one list are ignored. An explicit pick may bring back a saved or rejected place.
+- The plan records them as `plan.choices` (sorted, effective). `replanDays(plan, dates, input)` uses `input.choices` when given, else `plan.choices`; `choices: null` drops them. Keeping or skipping a place that is scheduled on a day not being re-planned throws (re-plan that day too). `estimateBudget` honours choices.
+
 Every default and its reason (objective weights, mandatory lunch, meal rules, waits and spill, hours model, assignment score, capacity, too-far radius, Later reason precedence, one matrix per day, real legs, cross-check, Maps links, budget, determinism, time zones, limits): `helpers/decisions/WP-3b.md`.
+
+## Payloads (envelope types) — `schemas/`
+
+`helper.json` declares six envelope types (no actions: `action_allowlist` is empty). Each has a schema `schemas/tour-guide-<kind>.schema.json` and semantic checks; `PAYLOAD_KINDS` maps type → kind and `validatePayload(type, payload) → { ok, kind, errors }` validates one (an unknown type gives `ok: false, kind: null`). `node helpers/tools/envelope.mjs <type> <skill> <payload.json> --pack tour-guide` refuses a payload that fails it.
+
+| Type | Kind | Shape (strict: no extra fields) |
+|---|---|---|
+| `shortlist` | shortlist | `{ v?, kind?, trip, run_id, round, groups: [{ id: activities\|food, gems_wanted, gems_shown, items: [{ n, slug, name, why_you, fit 0–1, est_minutes, area, maps_url, labels, place_id?, new?, gem?, gem_line?, seen_before?, changes?, dims? }] ≤ 20 }] ≤ 2, more, decided? }` |
+| `trip_facts` | trip-facts | `{ trip, found: [{ n, kind: dates\|lodging\|flight\|booking\|companions\|other, text ≤ 200, start?, end? }] ≤ 40, missing: [kind] ≤ 10 }` |
+| `plan_digest` | plan-digest | `{ trip, build_id, verified_on, days: [{ date, theme, stops: [{ n, slug, name, arrive, depart, minutes, maps_url, note_line }], legs: [{ from, to, mode, minutes, maps_url? }], warnings: [text] }], later: [{ slug, name, reason }], drive: { plan, brochure_html, brochure_pdf } }`, ≤ 60 000 characters |
+| `profile_summary` | profile-summary | `{ text ≤ 1200 }` — the prefs kit's plain-text summary as is; optional `dimensions_count`, `updated` (ISO date-time) |
+| `prefs_review` | prefs-review | exactly the prefs kit's `buildReview` payload: `{ v: 1, kind, vocab, batch_id, items: [{ cid, dimension, value, stance, statement, suspect, text, buttons }] ≤ 40, held_back, more }` |
+| `places_digest` | places-digest | `{ destination, places: [{ slug, name, area, category, tags, status, last_trip, last_researched, last_verified, note_line, maps_url, history_summary }] }`, ≤ 60 000 characters, no Google content |
+
+Place records may also carry `destination`, `history[]` (trip, date, event), `last_researched`, `last_verified` and the gem fields `gem_score` (0–100), `gem`, `obscurity` (0–1), `local_mentions[]` and `flags[]`.
 
 ## Brochure map — `brochure-map/`
 
@@ -120,9 +150,27 @@ Every default and its reason (objective weights, mandatory lunch, meal rules, wa
 - `brochure-map-sample.mjs` → `sampleInput()`: an invented two-day trip for tests.
 Defaults and their reasons: `helpers/decisions/WP-3c.md`.
 
+## Gem Funnel — `gems/`
+Library only: pure functions over the candidate pool the `trip-research` skill assembles; no Google call, no fetch, no clock. Every tunable number lives in `gems/gems-weights.mjs`.
+```js
+import * as gems from './gems/index.mjs';
+const { kept, dropped } = gems.screen(pool, { trip_dates, anchors, off_track_minutes, modes, avoid_types, rating_floor });   // stage 2: one reason_code per drop
+const scored = gems.scoreGems(kept, { appetite, city_size, fit_estimates, profile, trip_dates, day_start, day_end, anchors, rough_edges }); // stage 3: q o l f p → gem_score, gem
+const { flags, record } = gems.flagEvidence(scored[0], { trip_dates, today, signals });   // stage 4: unproven | tourist_oriented | closed_day_conflict
+const line = gems.gemLine(record, { category_median_count });                              // ≤ 200 chars, numbers and source kinds only
+const { groups, not_shown } = gems.selectShortlist(flagged, { appetite, per_group: { activities: 8, food: 6 }, decided });
+const later = gems.gemsNotChosenList({ trip_id, not_shown, today });                      // LaterList "Gems not chosen", code not_shown
+const placeFields = gems.toPlaceFields(record);                                           // gem_score, gem, obscurity, local_mentions, flags — no Google field
+```
+- Pool record: `{ place_id, name, types, primary_type?, category?, rating?, rating_count?, price_level?, business_status, location, hours?, website?, streams, local_mentions: [{ ref, language, kind }], mass_tourism_rank?, reviews? (in-run only), slug?, friction?, signals? }`; `fromSearchResult(rawPlace, { streams })` builds one from a Places (New) search result.
+- Screening drops: not operational, avoided type, chain (a name repeated ≥ 3 times or a short generic brand list), rating under the floor (4.3; 4.5 at appetite ≥ 4), fewer than 15 ratings unless two local mentions or an owner seed, closed on every trip date, beyond `off_track_minutes` from every anchor in a straight line at WALK 4.5 / TRANSIT 15 / DRIVE 30 km/h.
+- Score: Bayesian quality (m = 30, μ = the category's pool mean or 4.2), bucketed obscurity (40–400 ratings in a large city, 15–150 in a small one; > 2 000 → 0; owner seeds 0.5), local-ness (+0.5 per local-language source, +0.3 editorial, +0.2 community, −0.5 top-ten mass tourism), fit (the skill's estimate, else a cheap one from types and price), practicality (open at a usable time on a trip day, within reach, minus untolerated rough edges). `100 × (0.35 F + 0.25 Q + 0.20 O + 0.15 L + 0.05 P)`; appetite moves up to 0.10 between Q + F and O + L. 💎 when O ≥ 0.6, L ≥ 0.3, Q ≥ 0.6.
+- Shortlist: 💎 floor by appetite (1 → none, 2 → 1 + 1, 3 → 2 + 2, 4 → 3 + 2, 5 → 4 + 3), `decided` excluded, `floor_met: false` when the pool had too few gems. Unproven places are never shown as 💎.
+- Persisted projections carry only our own numbers and notes; reviews are read in-run for their dates only; distances run to our own anchors, never a polygon test on Google coordinates. Defaults and reasons: `helpers/decisions/WP-2g-engine.md`; full contract: `gems/README.md`.
+
 ## Tests
 
-`node --test helpers/tests/` runs the pack's suites: `pack_tour-guide_schemas`, `_estimator`, `_later`, `_fixtures`, `_planner` (a small invented world of its own, `pack_tour-guide_planner_world.js`), `_brochure-map`, `_brochure-map_units` and `_integration`. No test touches the network: Maps answers come from the fixture responder through the Maps kit's mock transport, and the PDF step runs only where `pdfAvailable()` is true (never in CI).
+`node --test helpers/tests/` runs the pack's suites: `pack_tour-guide_schemas`, `_estimator`, `_later`, `_fixtures`, `_planner` (a small invented world of its own, `pack_tour-guide_planner_world.js`), `_planner_transit-fallback`, `_choices`, `_payloads`, `_gems`, `_brochure-map`, `_brochure-map_units` and `_integration`. No test touches the network: Maps answers come from the fixture responder through the Maps kit's mock transport, and the PDF step runs only where `pdfAvailable()` is true (never in CI).
 
 ## What the pack never does
 

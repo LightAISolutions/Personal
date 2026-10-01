@@ -52,9 +52,10 @@ function wakeSweep(source) {
     r.mailbox = _safe('mailbox', function () { return pollFromBrain(LIMITS.SWEEP_BUDGET_MS * 0.6); }) || { processed: 0, rejected: 0, failed: 0, duplicate: 0 };
     r.expired = _safe('expire', expirePendingActions) || 0;
     r.requests_expired = _safe('requests_expire', expireRequests) || 0;
+    r.flows_expired = _safe('flows_expire', expireFlows) || 0;
     r.daily = _safe('daily', runDailyJobs);
     r.open_requests = _safe('requests_count', openRequestCount) || 0;
-    var touched = r.mailbox.processed + r.mailbox.rejected + r.mailbox.failed + r.mailbox.duplicate + r.expired + r.requests_expired;
+    var touched = r.mailbox.processed + r.mailbox.rejected + r.mailbox.failed + r.mailbox.duplicate + r.expired + r.requests_expired + r.flows_expired;
     r.processed = touched;
     if (touched > 0 || source !== 'wake') r.snapshot = !!_safe('snapshot', function () { writeSnapshot(); return true; });
     _safe('sweep_setting', function () { settingSet('last_sweep', nowIso(), r.source); });

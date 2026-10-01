@@ -1,0 +1,212 @@
+{
+  "id": "FixtureVelmoraMuseum01",
+  "location": {
+    "latitude": 12.3456,
+    "longitude": -45.6789
+  },
+  "formattedAddress": "1 Lantern Quay, Velmora, Fictional Isles",
+  "shortFormattedAddress": "1 Lantern Quay, Velmora",
+  "types": [
+    "museum",
+    "tourist_attraction",
+    "point_of_interest",
+    "establishment"
+  ],
+  "viewport": {
+    "low": {
+      "latitude": 12.344,
+      "longitude": -45.68
+    },
+    "high": {
+      "latitude": 12.347,
+      "longitude": -45.677
+    }
+  },
+  "displayName": {
+    "text": "Velmora Lantern Museum",
+    "languageCode": "en"
+  },
+  "primaryType": "museum",
+  "primaryTypeDisplayName": {
+    "text": "Museum",
+    "languageCode": "en"
+  },
+  "businessStatus": "OPERATIONAL",
+  "googleMapsUri": "https://maps.example.com/fixture/velmora-lantern-museum",
+  "timeZone": {
+    "id": "Etc/GMT+3"
+  },
+  "utcOffsetMinutes": -180,
+  "accessibilityOptions": {
+    "wheelchairAccessibleEntrance": true
+  },
+  "regularOpeningHours": {
+    "openNow": true,
+    "periods": [
+      {
+        "open": {
+          "day": 2,
+          "hour": 10,
+          "minute": 0
+        },
+        "close": {
+          "day": 2,
+          "hour": 18,
+          "minute": 0
+        }
+      },
+      {
+        "open": {
+          "day": 3,
+          "hour": 10,
+          "minute": 0
+        },
+        "close": {
+          "day": 3,
+          "hour": 18,
+          "minute": 0
+        }
+      }
+    ],
+    "weekdayDescriptions": [
+      "Monday: Closed",
+      "Tuesday: 10:00 AM – 6:00 PM",
+      "Wednesday: 10:00 AM – 6:00 PM",
+      "Thursday: Closed",
+      "Friday: Closed",
+      "Saturday: Closed",
+      "Sunday: Closed"
+    ]
+  },
+  "currentOpeningHours": {
+    "openNow": true,
+    "weekdayDescriptions": [
+      "Monday: Closed",
+      "Tuesday: 10:00 AM – 6:00 PM"
+    ]
+  },
+  "nationalPhoneNumber": "01 23 45",
+  "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+  "rating": 4.6,
+  "userRatingCount": 812,
+  "websiteUri": "https://velmora-museum.example.com/",
+  "photos": [
+    {
+      "name": "places/FixtureVelmoraMuseum01/photos/fixturephoto-a1",
+      "widthPx": 4032,
+      "heightPx": 3024,
+      "authorAttributions": [
+        {
+          "displayName": "Ilse Varga",
+          "uri": "https://maps.example.com/contrib/ilse-varga",
+          "photoUri": "https://photos.example.com/contrib/ilse-varga/avatar"
+        }
+      ]
+    },
+    {
+      "name": "places/FixtureVelmoraMuseum01/photos/fixturephoto-b2",
+      "widthPx": 3000,
+      "heightPx": 2000,
+      "authorAttributions": [
+        {
+          "displayName": "Velmora Lantern Museum",
+          "uri": "https://maps.example.com/contrib/velmora-lantern-museum",
+          "photoUri": ""
+        }
+      ]
+    }
+  ],
+  "priceRange": {
+    "startPrice": {
+      "currencyCode": "XTS",
+      "units": "5"
+    },
+    "endPrice": {
+      "currencyCode": "XTS",
+      "units": "12"
+    }
+  },
+  "reviews": [
+    {
+      "name": "places/FixtureVelmoraMuseum01/reviews/fixture-review-r1",
+      "relativePublishTimeDescription": "a month ago",
+      "rating": 5,
+      "text": {
+        "text": "Quiet galleries of old harbour lanterns; the upstairs room is the best part.",
+        "languageCode": "en"
+      },
+      "originalText": {
+        "text": "Quiet galleries of old harbour lanterns; the upstairs room is the best part.",
+        "languageCode": "en"
+      },
+      "authorAttribution": {
+        "displayName": "Quay Wanderer",
+        "uri": "https://maps.example.com/contrib/quay-wanderer",
+        "photoUri": "https://photos.example.com/contrib/quay-wanderer/avatar"
+      },
+      "publishTime": "2026-08-14T10:12:00Z",
+      "flagContentUri": "https://maps.example.com/fixture/flag/r1",
+      "googleMapsUri": "https://maps.example.com/fixture/review/r1"
+    },
+    {
+      "name": "places/FixtureVelmoraMuseum01/reviews/fixture-review-r2",
+      "relativePublishTimeDescription": "7 months ago",
+      "rating": 4,
+      "text": {
+        "text": "Small but well kept. Allow an hour.",
+        "languageCode": "en"
+      },
+      "originalText": {
+        "text": "Small but well kept. Allow an hour.",
+        "languageCode": "en"
+      },
+      "authorAttribution": {
+        "displayName": "Fixture Reviewer Two",
+        "uri": "https://maps.example.com/contrib/fixture-reviewer-two",
+        "photoUri": "https://photos.example.com/contrib/fixture-reviewer-two/avatar"
+      },
+      "publishTime": "2026-03-02T16:40:00Z",
+      "flagContentUri": "https://maps.example.com/fixture/flag/r2",
+      "googleMapsUri": "https://maps.example.com/fixture/review/r2"
+    },
+    {
+      "name": "places/FixtureVelmoraMuseum01/reviews/fixture-review-r3",
+      "relativePublishTimeDescription": "10 months ago",
+      "rating": 5,
+      "text": {
+        "text": "Lovely staff, lantern-making demo on Wednesdays.",
+        "languageCode": "en"
+      },
+      "originalText": {
+        "text": "Lovely staff, lantern-making demo on Wednesdays.",
+        "languageCode": "en"
+      },
+      "authorAttribution": {
+        "displayName": "Netmender Notes",
+        "uri": "https://maps.example.com/contrib/netmender-notes",
+        "photoUri": "https://photos.example.com/contrib/netmender-notes/avatar"
+      },
+      "publishTime": "2025-11-20T09:05:00Z",
+      "flagContentUri": "https://maps.example.com/fixture/flag/r3",
+      "googleMapsUri": "https://maps.example.com/fixture/review/r3"
+    }
+  ],
+  "reviewSummary": {
+    "text": {
+      "text": "Visitors praise the lantern collection and the calm rooms; some find it small.",
+      "languageCode": "en"
+    },
+    "flagContentUri": "https://maps.example.com/fixture/flag/summary",
+    "disclosureText": {
+      "text": "Summarized with Gemini",
+      "languageCode": "en"
+    },
+    "reviewsUri": "https://maps.example.com/fixture/velmora-lantern-museum/reviews"
+  },
+  "editorialSummary": {
+    "text": "Small museum of harbour lanterns in a former quay warehouse.",
+    "languageCode": "en"
+  },
+  "goodForChildren": true,
+  "restroom": true
+}

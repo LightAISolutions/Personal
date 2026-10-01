@@ -3,6 +3,7 @@
  * sending) and a fixed field mask.
  *   const maps = createMapsClient({ ledgerPath: process.env.MAPS_USAGE_LEDGER });
  *   await maps.placeDetails(id, { tier: 'enterprise' });  await maps.textSearch('…', { tier: 'pro' });
+ *   await maps.searchNearby({ center, radiusMeters: 500, includedTypes: ['cafe'] }, { tier: 'enterprise' });  await maps.computeInsights({ … });
  *   await maps.computeRoutes({ origin, destination, travelMode: 'WALK' });  await maps.computeRouteMatrix({ origins, destinations });
  * Options: transport (default: zero-dependency HTTPS through HTTPS_PROXY), ledger | ledgerPath (required unless
  * allowMemoryLedger: a live client must persist its counter), ceilings, apiKey (only outside Claude Code cloud, where
@@ -11,7 +12,8 @@
  */
 import { createLedger } from './maps-ledger.mjs';
 import { createHttpsTransport } from './maps-transport.mjs';
-import { placeDetails, textSearch } from './maps-places.mjs';
+import { placeDetails, textSearch, searchNearby } from './maps-places.mjs';
+import { computeInsights } from './maps-aggregate.mjs';
 import { computeRoutes, computeRouteMatrix } from './maps-routes.mjs';
 import { parseCeilingsEnv } from './maps-skus.mjs';
 import { staticMap } from './maps-static.mjs';
@@ -26,6 +28,10 @@ export function createMapsClient({ transport, ledger, ledgerPath, ceilings, apiK
     ledger: led,
     placeDetails: (placeId, opts) => placeDetails(ctx, placeId, opts),
     textSearch: (query, opts) => textSearch(ctx, query, opts),
+    /** Nearby Search (New): searchNearby({ center, radiusMeters, includedTypes, rankPreference, … }, { tier }) → { places, nextPageToken: null, sku, ms, notSent, notes } */
+    searchNearby: (params, opts) => searchNearby(ctx, params, opts),
+    /** Places Aggregate API: computeInsights({ insights, area: { circle }, typeFilter, ratingFilter?, operatingStatus?, priceLevels? }) → { count, placeIds, sku, ms } */
+    computeInsights: (params) => computeInsights(ctx, params),
     computeRoutes: (opts) => computeRoutes(ctx, opts),
     computeRouteMatrix: (opts) => computeRouteMatrix(ctx, opts),
     /** Maps Static API → { bytes (PNG), width, height, … }; SKU static_maps; refuses without a static key (code NO_KEY). */

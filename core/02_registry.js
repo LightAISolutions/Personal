@@ -17,6 +17,7 @@ var HB_REGISTRY = {
   renderer: {},   // name -> fn(payload)->html
   proposal_guard: {}, // name -> fn(env, proposal) -> null | string reason
   observer: {},   // name -> fn(env, result)       (after an envelope was handled successfully)
+  flow: {},       // name -> { start(seed, ctx), next(state, input, ctx), onDone?(state, ctx), ttl_min? } (15_flows.js)
   help: []        // lines shown by /help
 };
 

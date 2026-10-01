@@ -6,12 +6,13 @@
 import { hm, localToIso } from './planner-time.mjs';
 import { earliestFit } from './planner-hours.mjs';
 import { solveDay } from './planner-solve.mjs';
-import { fetchMatrix, fetchLeg, crossCheck, legUrl, dayLink, pointKey } from './planner-legs.mjs';
+import { fetchMatrix, fetchLeg, crossCheck, legUrl, dayLink, pointKey, transitFallback } from './planner-legs.mjs';
 import { LUNCH_WINDOW, DINNER_EARLIEST } from './planner-input.mjs';
 
 export const SOLVER_METHOD = 'held-karp/time-windows';
 export const TIGHT_MINUTES = 10;
 export const FREE_MIN = 20;
+export const TRANSIT_ESTIMATED_TEXT = 'Transit times on this day are estimates; check the Maps link before you go';
 const candPoint = (c) => ({ placeId: c.place_id, lat: c.loc.lat, lng: c.loc.lng, name: c.name, id: c.id });
 const windowsOn = (c, date) => (c.hours[date].status === 'open' ? c.hours[date].windows : []);
 
@@ -24,11 +25,12 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
   const departAt = day.dayStart + breakfast;
   const S = day.lodging_start, E = day.lodging_end;
   const tp = mode === 'TRANSIT' ? trip.transit_preferences || null : null;
+  const fallback = mode === 'TRANSIT' ? transitFallback(trip) : null;
   const usage = { matrix_elements: 0, route_calls: 0 };
   const pt = (x) => (x === 'S' ? S : x === 'E' ? E : candPoint(x));
   const key = (a, b) => pointKey(pt(a)) + '|' + pointKey(pt(b));
 
-  const m = await fetchMatrix(maps, { points: [S, ...cands.map(candPoint), E], mode, departureTime: iso(departAt), transitPreferences: tp });
+  const m = await fetchMatrix(maps, { points: [S, ...cands.map(candPoint), E], mode, departureTime: iso(departAt), transitPreferences: tp, fallback });
   usage.matrix_elements += m.elements;
   const travel = new Map(m.travel); // 'from|to' → { minutes, distance_m, line? }
   const legs = new Map(); // real legs, same keys
@@ -43,7 +45,7 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
     for (let i = 0; i < chain.length - 1; i++) {
       const k = key(chain[i], chain[i + 1]);
       if (legs.has(k)) continue;
-      const leg = await fetchLeg(maps, { from: pt(chain[i]), to: pt(chain[i + 1]), mode, departureTime: iso(departures[i]), transitPreferences: tp });
+      const leg = await fetchLeg(maps, { from: pt(chain[i]), to: pt(chain[i + 1]), mode, departureTime: iso(departures[i]), transitPreferences: tp, fallback });
       usage.route_calls += 1;
       legs.set(k, leg);
       travel.set(k, { minutes: leg.minutes, distance_m: leg.distance_m, line: leg.line });
@@ -118,6 +120,7 @@ function assemble({ ctx, day, ordered, timeline, cc, build_id, seed, verified_on
     if (ev.kind === 'leg') {
       const leg = { from: slug(ev.from), to: slug(ev.to), mode, depart_at: hm(ev.depart), arrive_at: hm(ev.arrive), minutes: ev.leg.minutes, distance_m: ev.leg.distance_m, source: 'route', maps_url: legUrl(pt(ev.from), pt(ev.to), mode) };
       if (ev.leg.line) leg.line = ev.leg.line;
+      if (ev.leg.estimated) { leg.estimated = true; leg.estimate_basis = 'distance'; }
       legs.push(leg);
     } else if (ev.kind === 'stop') {
       const c = ev.c;
@@ -132,6 +135,7 @@ function assemble({ ctx, day, ordered, timeline, cc, build_id, seed, verified_on
     } else if (ev.kind === 'free') free.push({ start: hm(ev.start), end: hm(ev.end), note: ev.note });
     else if (ev.kind === 'note') warnings.push({ severity: 'info', code: 'other', text: ev.text });
   }
+  if (legs.some((l) => l.estimated)) warnings.push({ severity: 'warn', code: 'transit_estimated', text: TRANSIT_ESTIMATED_TEXT });
   const finish = timeline.finish;
   if (finish > day.dayEnd) warnings.push({ severity: 'warn', code: 'over_long_day', text: `back at ${E.name} at ${hm(finish)}, ${finish - day.dayEnd} min after your ${hm(day.dayEnd)} day end` });
   else if (day.dayEnd - finish >= FREE_MIN) free.push({ start: hm(finish), end: hm(day.dayEnd), note: 'back early; the rest of the day is free' });

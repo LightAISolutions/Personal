@@ -63,7 +63,7 @@ An envelope is one JSON file. The brain writes them into `from-brain/`; the core
 | Type | Direction | Payload | Effect |
 |---|---|---|---|
 | `notice` | brain → core | `{text ≤4000, title? ≤120, level?: "info"\|"warn"}` | Sent to the owner chat (HTML-escaped) |
-| `reply` | brain → core | `{text ≤4000, html?: boolean}`; **`in_reply_to` required** | Sent as a Telegram reply to the message that opened the request; the request row becomes `answered` |
+| `reply` | brain → core | `{text ≤4000, html?: boolean, drive_file_ids?: {<label>: <drive file id>}}` (≤10 labels, label `[A-Za-z0-9 _.()-]{1,60}`); **`in_reply_to` required** | Sent as a Telegram reply to the message that opened the request; the request row becomes `answered`. Each `drive_file_ids` entry is then sent as a silent captioned document via `tgSendDocument` (§5 helpers; files over `DOCUMENT_MAX_BYTES` fall back to the Drive link) |
 | `proposal` | brain → core | `{action: <ACTION_ALLOWLIST>, payload: {…}, rationale? ≤300, idempotency_key? ≤120, expires_in_min?}` | Validated by the action's `validate()`, screened by every `registerProposalGuard()`, then a PendingActions row + Telegram message with ✅ / ❌ (§11) |
 | `request` | core → brain | `{kind, text, chat: {chat_id, message_id, ts} \| null, requested_at, …}` | Written by the core as `to-brain/req_<id>.json`; never accepted from the brain |
 
@@ -138,7 +138,8 @@ Pack files (`helpers/packs/<name>/gas/*.js`) load after every core file and exte
 | `registerEnvelopeHandler` | `(type, fn \| {validate(payload, env) → string[], handle(env) → any})` | `type` must be a core type or listed in the manifest's `envelope_types` |
 | `registerAction` | `(type, {validate(payload) → string[], preview(payload) → html, execute(payload, ctx) → result})` | `type` must be core or in `action_allowlist`; `execute` runs only after the owner's ✅ (§11); `result.summary` is shown to the owner |
 | `registerCommand` | `('/cmd', fn(ctx), helpLine?)` | `ctx = {chatId, from, text, args, argv, message, chat, reply(html, opts)}`; command names `^/[a-z0-9_]{1,31}$`; `helpLine` lands in `/help` |
-| `registerCallback` | `('prefix', fn(ctx))` | Inline-button data `<prefix>:<part>:<part>` (≤64 bytes, `cbEncode`/`cbDecode`); prefix `^[a-z][a-z0-9]{0,7}$`; `a` is taken by the executor |
+| `registerCallback` | `('prefix', fn(ctx))` | Inline-button data `<prefix>:<part>:<part>` (≤64 bytes, `cbEncode`/`cbDecode`); prefix `^[a-z][a-z0-9]{0,7}$`; `a` is taken by the executor and `fl` by flows |
+| `registerFlow` | `(name, {start(seed, fctx) → step, next(state, input, fctx) → step, onDone?(state, fctx), ttl_min?})` | A multi-step conversation (`core/15_flows.js`). `step = {prompt: html, keyboard?: rows of {text, value} \| {text, url}, expect: 'button' \| 'text' \| 'any', state, done?: true, result?, pause?: true}`; `input = {type: 'button', value}` \| `{type: 'text', text}` \| `{type: 'resume', …}`. Name `^[a-z][a-z0-9_-]{0,31}$`; one active flow per chat, state in the `Flows` tab (§8), expires after `ttl_min` (default `FLOW_DEFAULT_TTL_MIN`) |
 | `registerMessageHandler` | `(name, fn(ctx) → true \| false)` | Owner free text; handlers run in name order; first `true` wins; otherwise the core opens a request for the inbound routine |
 | `registerQueueHandler` | `(kind, fn(item) → result)` | `item = {id, kind, source, payload, attempts, created_at}`; items come from `enqueue(kind, payload, source)` |
 | `registerDailyJob` | `(name, fn)` | Runs once per local day inside the first sweep of that day |
@@ -150,7 +151,7 @@ Pack files (`helpers/packs/<name>/gas/*.js`) load after every core file and exte
 | `registerEnvelopeObserver` | `(name, fn(env, result))` | After any envelope handler returned without throwing |
 | `registerHelp` | `(line)` | Extra `/help` line not tied to a command |
 
-Core helpers a pack may call: `tgSendOwner(html, opts)`, `tgSend(chatId, html, opts)` (owner chat only — the core never messages anyone else), `tgEscape(text)` (mandatory on every untrusted string; parse mode is HTML), `tgKeyboard(rows)`, `enqueue()`, `proposeAction(spec)`, `openRequest(spec)`, `fireRoutine(name, text)`, `settingGet/settingSet`, `storeAppend/storeFind/storeUpdate/...` (§8), `audit(event, ref, detail)`, `getProp(propName('MY_KEY'))` for pack-specific properties, `HELPER.*`, `LIMITS.*`.
+Core helpers a pack may call: `tgSendOwner(html, opts)`, `tgSend(chatId, html, opts)` (owner chat only — the core never messages anyone else), `tgSendDocument(chatId, {driveFileId | blob, filename?, caption?, replyTo?, silent?})` / `tgSendOwnerDocument(spec)` (Telegram `sendDocument` multipart, ≤ `DOCUMENT_MAX_BYTES`; a larger Drive file is sent as its link and audited `document_too_large`), `tgEscape(text)` (mandatory on every untrusted string; parse mode is HTML), `tgKeyboard(rows)`, `flowStart(chatId, name, seed)` / `flowActive(chatId)` / `flowResume(chatId, input)` / `flowCancel(chatId)` (§5 `registerFlow`), `enqueue()`, `proposeAction(spec)`, `openRequest(spec)`, `fireRoutine(name, text)`, `settingGet/settingSet`, `storeAppend/storeFind/storeUpdate/...` (§8), `audit(event, ref, detail)`, `getProp(propName('MY_KEY'))` for pack-specific properties, `HELPER.*`, `LIMITS.*`.
 
 ## 6. Web-app routes and the wake contract
 
@@ -158,7 +159,7 @@ Core helpers a pack may call: `tgSendOwner(html, opts)`, `tgSend(chatId, html, o
 
 | Route | Method | Auth | Behaviour |
 |---|---|---|---|
-| `?route=tg` | POST | `?k=<WEBHOOK_SECRET>`; then `from.id` must equal `OWNER_CHAT_ID` (before pairing, only `/start <PAIR_CODE>` from a private chat is accepted, once) | Telegram webhook. Always answers HTTP 200 `OK` (HtmlService) so Telegram never retries. `update_id` deduped for 6 h. Commands → `registerCommand`; inline buttons → `registerCallback`; free text → message handlers, else a request. If the script lock is busy for 15 s the update is queued as `tg_update_deferred` and handled by the worker |
+| `?route=tg` | POST | `?k=<WEBHOOK_SECRET>`; then `from.id` must equal `OWNER_CHAT_ID` (before pairing, only `/start <PAIR_CODE>` from a private chat is accepted, once) | Telegram webhook. Always answers HTTP 200 `OK` (HtmlService) so Telegram never retries. `update_id` deduped for 6 h. Commands → `registerCommand` (always first; `/cancel` ends an active flow); then an active, non-paused flow claims free text and `fl:` buttons; otherwise inline buttons → `registerCallback`; free text → message handlers, else a request. If the script lock is busy for 15 s the update is queued as `tg_update_deferred` and handled by the worker |
 | `?route=wake` | GET or POST | none | The wake contract below |
 | `?route=setup` | GET / POST | `?k=<ADMIN_SECRET>` | Owner setup page (§12) |
 | anything else | GET | none | Health JSON `{ok:true, app, version, core, ts}` — no secrets, no state |
@@ -167,7 +168,7 @@ Strangers: an unpaired or foreign sender gets no reply; the first message from e
 
 ### Wake contract (`?route=wake`)
 
-The brain calls it once after writing envelopes: `GET <wake_url>` (the snapshot's `wake_url`). It is **unauthenticated, idempotent and rate-limited**, and it does one thing: a sweep (`wakeSweep('wake')`: read `from-brain/` → expire stale proposals and requests → run the day's daily jobs once → rewrite `state.json` when something changed). A stranger who finds the URL can only cause a sweep that would happen anyway.
+The brain calls it once after writing envelopes: `GET <wake_url>` (the snapshot's `wake_url`). It is **unauthenticated, idempotent and rate-limited**, and it does one thing: a sweep (`wakeSweep('wake')`: read `from-brain/` → expire stale proposals, requests and flows → run the day's daily jobs once → rewrite `state.json` when something changed). A stranger who finds the URL can only cause a sweep that would happen anyway.
 
 | Response | Meaning |
 |---|---|
@@ -209,6 +210,7 @@ One spreadsheet, `<display_name> — state`, created by the setup page inside `<
 | `Queue` | `id created_at kind source status attempts payload_json last_error claimed_at processed_at result_json` | `new → processing → done \| failed (retried, back to new) \| dead`; pruned after 7 days |
 | `PendingActions` | `id created_at type status preview payload_json idempotency_key expires_at decided_at executed_at result_json error tg_chat_id tg_message_id origin` | `pending → approved → executed \| failed`; `pending → rejected \| expired` |
 | `Requests` | `id created_at kind status routine fired answered_at tg_chat_id tg_message_id text_preview` | `open → answered \| expired` |
+| `Flows` | `chat_id flow step expect state_json updated_at expires_at` | One row per chat with an active flow (`expect` = `button \| text \| any \| paused`; `state_json` ≤ `FLOW_STATE_MAX_CHARS`); the row is deleted when the flow finishes, is cancelled or expires (`expireFlows()` in the sweep tells the owner once) |
 | `AuditLog` | `id ts actor event ref detail_json ok` | Every side effect, rejection and auth failure (secrets redacted) |
 | `Settings` | `key value updated_at note` | `last_sweep`, `last_daily_date`, `webhook_set_at`, per-day counters (`wakes`, `routine_fires`, `action_proposals`), pack settings via `settingGet/settingSet` |
 
@@ -328,6 +330,7 @@ One owner per path. A work package (WP) edits only the paths it owns; anything e
 | Path | Owner | Notes |
 |---|---|---|
 | `helpers/core/`, `helpers/tools/`, `helpers/tests/harness/`, `helpers/tests/core_*`, `helpers/tests/tools_*`, `helpers/packs/hello/`, `helpers/SPEC.md`, `helpers/README.md`, `helpers/templates/private-repo/`, `.claude/agents/hb-*.md`, `.github/workflows/helpers-*.yml`, `.github/workflows/deploy-helper.yml` | architect / Phase 2 coordinator | Contract files. A WP that finds a bug here files it in its status file with a proposed patch; it does not edit |
+| `helpers/core/15_flows.js`, `tgSendDocument`/`tgApiMultipart` in `helpers/core/05_telegram.js`, `drive_file_ids` in `helpers/core/09_mailbox.js`, `helpers/tests/core_flows.test.js`, `helpers/status/WP-1b.md`, `helpers/decisions/WP-1b.md` | WP-1b Core flows + document delivery (Phase 4b) | Multi-step conversations (`registerFlow`, `Flows` tab, `fl` callback prefix, `/cancel`, `expireFlows()` in the sweep) and Telegram document delivery |
 | `helpers/kits/maps/`, `helpers/tests/kit_maps_*.test.js`, `helpers/status/WP-2a.md`, `helpers/decisions/WP-2a.md` | WP-2a Maps kit | Places (New) + Routes client, fixed field masks, SKU counter and hard stop, 30-day snapshot purge, Maps URL builder |
 | `helpers/kits/research/`, `helpers/tests/kit_research_*.test.js`, `helpers/status/WP-2b.md`, `helpers/decisions/WP-2b.md` | WP-2b Research kit | Run contract: budgets, source ledger, two-source rule, confidence labels, injection tests |
 | `helpers/kits/brochure/`, `helpers/tests/kit_brochure_*.test.js`, `helpers/status/WP-2c.md`, `helpers/decisions/WP-2c.md` | WP-2c Brochure kit | Design tokens, type scale, print CSS, HTML renderer, PDF step, attribution block |
@@ -393,6 +396,11 @@ Constants in `helpers/core/00_config.js` (`LIMITS`). The four marked ⚙ can be 
 | `MAX_WAKES_PER_DAY` ⚙ | 500 | `?route=wake` answers `daily_cap` past this |
 | `WAKE_MIN_INTERVAL_SEC` ⚙ | 15 | Wakes closer than this are `throttled` (a follow-up sweep is scheduled instead) |
 | `WAKE_AUDIT_TTL_SEC` | 3 600 | An idle wake (nothing processed) is audited at most once an hour |
+| `FLOW_STATE_MAX_CHARS` | 40 000 | `state_json` of a `Flows` row; a step whose state exceeds it throws and the flow is not advanced |
+| `FLOW_DEFAULT_TTL_MIN` | 1 440 | A flow without `ttl_min` expires 24 h after its last step |
+| `DOCUMENT_MAX_BYTES` | 52 428 800 | `tgSendDocument` attaches up to 50 MB; a larger Drive file is sent as its link (`document_too_large`) |
+| `DOCUMENT_CAPTION_CHARS` | 1 024 | Caption of a `sendDocument` call (Telegram's limit) |
+| `REPLY_MAX_DOCUMENTS` | 10 | `drive_file_ids` entries accepted on one `reply` envelope |
 | `REQUEST_TEXT_CHARS` | 4 000 | `text` of a `req_<id>.json` request |
 | `REQUEST_MAX_AGE_HOURS` | 24 | An open request older than this is expired and the owner told once |
 | `FALLBACK_SWEEP_MIN` | [3, 10] | One-off sweeps scheduled when a request opens, in case the wake never comes |

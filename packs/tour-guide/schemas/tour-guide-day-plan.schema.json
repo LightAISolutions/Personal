@@ -63,7 +63,9 @@
           "source": { "enum": ["matrix", "route"] },
           "maps_url": { "type": "string", "maxLength": 4000, "pattern": "^https://\\S+$" },
           "line": { "type": "string", "minLength": 1, "maxLength": 80 },
-          "note": { "type": "string", "maxLength": 300 }
+          "note": { "type": "string", "maxLength": 300 },
+          "estimated": { "const": true, "description": "Google had no TRANSIT route: minutes are a distance estimate (trip.transit_fallback)." },
+          "estimate_basis": { "enum": ["distance"] }
         }
       }
     },
@@ -102,7 +104,7 @@
         "required": ["severity", "code", "text"],
         "properties": {
           "severity": { "enum": ["info", "warn", "alert"] },
-          "code": { "enum": ["closed_day", "tight_connection", "over_long_day", "hours_unknown", "order_disagreement", "budget", "other"] },
+          "code": { "enum": ["closed_day", "tight_connection", "over_long_day", "hours_unknown", "order_disagreement", "budget", "transit_estimated", "other"] },
           "text": { "type": "string", "minLength": 1, "maxLength": 400 },
           "place": { "$ref": "#/$defs/slug" }
         }

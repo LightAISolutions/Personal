@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-places-digest.schema.json",
+  "title": "Tour Guide places digest (payload of the `places_digest` envelope)",
+  "description": "The places repository of one destination as the core mirrors it into its Places tab (plan §5.10). Own data only: ids, our notes, the owner's history and our dates. No Google field (hours, rating, review count, address, website, business status) is allowed: every object refuses unknown keys. schemas/index.mjs also checks: the whole payload ≤ 60 000 characters, slugs unique.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["destination", "places"],
+  "properties": {
+    "v": { "const": 1 },
+    "kind": { "const": "places_digest" },
+    "destination": { "$ref": "#/$defs/slug" },
+    "places": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slug", "name", "area", "category", "tags", "status", "last_trip", "last_researched", "last_verified", "note_line", "maps_url", "history_summary"],
+        "properties": {
+          "slug": { "$ref": "#/$defs/slug" },
+          "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+          "area": { "type": "string", "maxLength": 120 },
+          "category": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}$" },
+          "tags": { "type": "array", "maxItems": 20, "items": { "type": "string", "minLength": 1, "maxLength": 40 } },
+          "status": { "enum": ["candidate", "chosen", "scheduled", "saved-for-later", "rejected"] },
+          "last_trip": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/slug" }] },
+          "last_researched": { "$ref": "#/$defs/date_or_null" },
+          "last_verified": { "$ref": "#/$defs/date_or_null" },
+          "note_line": { "type": "string", "maxLength": 160 },
+          "maps_url": { "type": "string", "maxLength": 2000, "pattern": "^https://\\S+$" },
+          "history_summary": { "type": "string", "maxLength": 120 }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+    "date_or_null": { "anyOf": [{ "type": "null" }, { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" }] }
+  }
+}
