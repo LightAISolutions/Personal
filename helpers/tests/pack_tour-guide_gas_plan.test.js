@@ -149,6 +149,9 @@ test('the whole /plan journey: intake → facts (keep, edit, drop, add) → ques
   assert.match(texts(state).pop(), /Added: <i>We travel with a toddler &amp; a stroller<\/i>/);
   press(ctx, state, '▶️ Continue');
   assert.match(texts(state).pop(), /Where are you staying/, 'lodging was dropped and is missing → asked');
+  assert.deepEqual([ctx.flowActive('777').state.stage, ctx.flowActive('777').state.ask], ['confirm', 'lodging'], 'the questions stay in the contract stage confirm');
+  tap(ctx, state, 'tf:port-sorrel:1:n');
+  assert.match(answers(state).pop(), /Send \/plan Port Sorrel to confirm these/, 'fact taps are closed once the questions start');
   say(ctx, state, 'Harbour Lane Guesthouse');
   assert.match(texts(state).pop(), /Any flights/);
   press(ctx, state, '⏭ Skip');

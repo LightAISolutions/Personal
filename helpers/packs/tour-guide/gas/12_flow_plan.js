@@ -3,7 +3,8 @@
  * A core flow `plan` whose state always carries `trip` (the slug) and `stage`:
  *   intake   → research (scope intake) is out; paused until WP-5b resumes with event trip_facts
  *   confirm  → the facts with tf:<trip key>:<n>:y|e|n taps (✏️ captures the next text), then text questions for what is missing
- *              (dates first, the rest skippable), then research (scope new) with the confirmed values
+ *              (dates first, the rest skippable; state.ask names the open question), then research (scope new) with the
+ *              confirmed values
  *   research → paused until event shortlist
  *   choose   → one message per group with sl:<run>:<g><n>:w|l|s taps; fl buttons More options · More gems (scope more,
  *              decided, gems_only; three More rounds at most) · Done choosing; free text or /seed = owner seeds
@@ -256,7 +257,7 @@ function tgPlanEditStep(state, n) {
 }
 function tgPlanAskStep(state, note) {
   if (!state.asks.length) return tgPlanResearchNew(state);
-  state.stage = 'ask';
+  state.stage = 'confirm';   // the questions are the second half of confirm; state.ask says which one is open
   state.ask = state.asks[0];
   var p = (note ? note + '\n' : '') + TG_PLAN_ASK[state.ask];
   if (state.ask === 'dates') return { prompt: p, expect: 'text', state: state };
@@ -276,8 +277,8 @@ function tgPlanChooseStep(state, note) {
 }
 /** Re-show where the flow is (/plan again, /seed with nothing new, an unknown event). */
 function tgPlanSame(state, note) {
+  if (state.stage === 'confirm' && state.ask) return tgPlanAskStep(state, note);
   if (state.stage === 'confirm') return state.edit ? tgPlanEditStep(state, state.edit) : tgPlanConfirmStep(state, note);
-  if (state.stage === 'ask') return tgPlanAskStep(state, note);
   if (state.stage === 'choose') return tgPlanChooseStep(state, note);
   var what = state.stage === 'planning' ? 'the plan' : state.stage === 'intake' ? 'what I already know' : 'the shortlist';
   return tgPlanWait(state, (note ? note + '\n' : '') + '⏳ Still working on ' + what + ' for <b>' + tgEscape(state.dest || state.trip) + '</b> — I will message you. /cancel stops it.');
@@ -338,7 +339,7 @@ function tgPlanOnFacts(state, p, chatId) {
     return o;
   });
   state.missing = (p.missing || []).slice(0, TG_PLAN_ASK_ORDER.length);
-  state.stage = 'confirm'; state.edit = null; state.answers = {};
+  state.stage = 'confirm'; state.edit = null; state.ask = null; state.asks = []; state.answers = {};
   tgChoiceClear(state.trip, TG_PLAN_INTAKE_RUN, 'fact');
   tgCmdSendAll(chatId, tgPlanFactsMessages(p));
   return tgPlanConfirmStep(state);
@@ -398,7 +399,7 @@ registerFlow('plan', {
         tgCmdSendAll(chatId, tgPlanDigestMessages(p));
         return { prompt: '', done: true, state: state, result: { trip: state.trip, build_id: p.build_id } };
       }
-      if (input.event === 'tf_edit' && state.stage === 'confirm') return tgPlanEditStep(state, input.n);
+      if (input.event === 'tf_edit' && state.stage === 'confirm' && !state.ask) return tgPlanEditStep(state, input.n);
       if (input.event === 'seed') return tgPlanAddSeeds(state, input.names || []);
       if (input.event === 'adopt' && input.run) {
         if (state.runs.indexOf(input.run) < 0) state.runs.push(input.run);
@@ -409,7 +410,7 @@ registerFlow('plan', {
     }
     var v = input.type === 'button' ? String(input.value || '') : '';
     var text = input.type === 'text' ? String(input.text || '').trim() : '';
-    if (state.stage === 'confirm') {
+    if (state.stage === 'confirm' && !state.ask) {
       if (v === 'back') { state.edit = null; return tgPlanConfirmStep(state); }
       if (v === 'go') { state.edit = null; state.asks = tgPlanAsks(state); return tgPlanAskStep(state); }
       if (text && state.edit) {
@@ -425,7 +426,7 @@ registerFlow('plan', {
       }
       return tgPlanSame(state);
     }
-    if (state.stage === 'ask') {
+    if (state.stage === 'confirm') {   // answering the questions for what is missing
       var k = state.ask;
       if (v === 'skip' && k !== 'dates') { state.asks.shift(); return tgPlanAskStep(state); }
       if (text) {
@@ -491,7 +492,7 @@ registerCallback('tf', function (ctx) {
   var trip = tgCmdTripByKey(ctx.parts[0]), n = String(ctx.parts[1] || ''), v = String(ctx.parts[2] || '');
   if (!n || ['y', 'e', 'n'].indexOf(v) < 0) { ctx.answer('Unknown button'); return; }
   var f = tgPlanActive(ctx.chatId);
-  if (!trip || !f || f.state.trip !== trip.slug || f.state.stage !== 'confirm') {
+  if (!trip || !f || f.state.trip !== trip.slug || f.state.stage !== 'confirm' || f.state.ask) {
     ctx.answer('Send /plan ' + truncate(trip ? (trip.destination || trip.title || trip.slug) : '<destination>', 60) + ' to confirm these.');
     return;
   }
