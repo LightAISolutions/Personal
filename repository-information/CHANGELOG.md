@@ -3,11 +3,25 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 26/100`
+`Sections: 27/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.26r] — 2026-10-01 05:45:21 AM EST
+
+> **Prompt:** "Read helpers/prompts/TG-PHASE-4B.md in LightAISolutions/Personal and execute it exactly." *(the same interaction, continued: WP-4d in the private repo and the Phase 4b close-out)*
+
+### Added
+- `helpers/status/WP-4d.md` and `helpers/decisions/WP-4d.md` — generic copies of the private repo's WP-4d status (contract table, checks, the `/plan` journey dry-run of 83 checks and 23 validated envelopes, requests R1–R9) and decisions (S1–S5 shared, A1–A9 trip-research, B1–B4 plan-days and trip-check, C1–C6 prefs-build and routines, P1–P3); README tree entries
+
+### Changed
+- `helpers/BUILD-STATE.md`: row 4 (the TourGuide Phase 4 branch merged, PR #1), row 4b **done**, the WP-4d entry in the Phase 4b log, Next = Phase 5 on Opus 5.5 · high; row 2g (Places Aggregate live-verified by the design thread, Phase 7 smoke); row 8 owner-input item (ask the owner how the Google-based Japan train estimates felt — Ekispert's paid timetable service is the named upgrade)
+- `helpers/decisions/TG-PHASE-4B.md`: §1 decisions 18–21 at their defaults with 19 confirmed by the owner; §5 `drive_file_ids` labels `plan · brochure_html · brochure_pdf · notes`; §6 Aggregate; §8 renumbered — Phase 6's open point, Japan transit decided (layered transit leg, Phase 8 asks the owner), WP-4d as built with requests R2 (`floor_reason`) and R3 (`gem_line` digits → Phase 6) carried here
+- `helpers/prompts/TG-PHASE-5.md`: `drive_file_ids` labels; open items (3) Aggregate, (4) decision 19 and Japan transit with the re-pin condition, (5) the Phase 4 branch merged and the Phase 4b branch to read the skills from, (7) WP-4d's requests for Phase 5
+- `repository-information/TOUR-GUIDE-BUILD-PLAN.md`: status line (Phases 0–4b built, Phase 5 next), Phase 8 row owner-input item, §10 tail
+- No live Google, Telegram or Drive call in this phase; `vendor/helpers/` in the private repo changed only through the pin bump
 
 ## [v01.25r] — 2026-10-01 04:44:25 AM EST
 

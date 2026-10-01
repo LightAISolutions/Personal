@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-01 04:44:25 AM EST` · Repo version: `v01.25r`
+Last updated: `2026-10-01 05:45:21 AM EST` · Repo version: `v01.26r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -249,6 +249,7 @@ Last updated: `2026-10-01 04:44:25 AM EST` · Repo version: `v01.25r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4a.md">WP-4a.md</a>        — WP-4a trip-research + plan-days: defaults, the Phase 4 delta (statuses, choices, chaining, shortlist, intake)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4b.md">WP-4b.md</a>        — WP-4b prefs-build + place-notes + brochure-build: defaults, interview answers
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4c.md">WP-4c.md</a>        — WP-4c chat + trip-check + routine table: defaults (request check, hand-offs, Enterprise tier, change codes)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4d.md">WP-4d.md</a>        — WP-4d Phase 4b skill deltas: defaults (one places digest, known-place re-check, choices and evidence, review paths, routine table)
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/hidden-gems-proposal.md">hidden-gems-proposal.md</a> — Hidden gems: the sweep idea evaluated against other methods, the Gem Funnel recommendation, costs, plan changes implied, decisions 22–26 (answered by the owner)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits">kits/</a>                   — Shared Node kits (no runtime dependencies except Playwright for the brochure PDF step)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/brochure">brochure/</a>           — Brochure renderer: brochure model → one self-contained HTML document → paginated PDF via Playwright
@@ -506,7 +507,8 @@ Last updated: `2026-10-01 04:44:25 AM EST` · Repo version: `v01.25r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-3e.md">WP-3e.md</a> — WP-3e progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4a.md">WP-4a.md</a>        — WP-4a progress, dry runs and requests (generic copy from the private repo)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4b.md">WP-4b.md</a>        — WP-4b progress, dry runs and requests (generic copy from the private repo)
-│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4c.md">WP-4c.md</a>        — WP-4c progress, dry runs, memory-merge experiment and requests (generic copy from the private repo)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4c.md">WP-4c.md</a>        — WP-4c progress, dry runs, memory-merge experiment and requests (generic copy from the private repo)
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4d.md">WP-4d.md</a>        — WP-4d contract, checks, the `/plan` journey dry-run and requests R1–R9 (generic copy from the private repo)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates">templates/</a>              — Skeletons copied by tools/new-helper.mjs
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo">private-repo/</a>       — Skeleton of a helper's private repo ({{…}} placeholders filled by new-helper.mjs)
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/.gitattributes">.gitattributes</a>  — log/*.md merge=union so daily logs merge line by line; the Maps ledger uses the maps-ledger driver

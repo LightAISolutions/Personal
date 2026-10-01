@@ -7,6 +7,34 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-10-01 05:45:21 AM EST
+**Repo version:** v01.26r
+**Branch:** `claude/tg-phase-4b-s94tru` (Tour Guide project, thread "Tour Guide Phase 4b", Fable 5.1 · high)
+
+**What we worked on**
+- Phase 4b end to end: the `Personal` side (WP-1b flows + documents, WP-2f interview, WP-3d choices/statuses/payload schemas, WP-2g Gem Funnel kits + engine, WP-3e transit fallback) merged and pushed as v01.25r, then WP-4d in the private repo on its own `claude/tg-phase-4b-s94tru` branch: pin bump, the skill deltas by three builders in worktrees, one shared places digest, `tools/journey-dryrun.mjs` (the whole `/plan` journey on invented fixtures, every envelope validated), vendor tests and scans green
+- Close-out here as v01.26r: BUILD-STATE rows 4 / 4b / 8 and Next, `decisions/TG-PHASE-4B.md` §1 / §5 / §6 / §8, `prompts/TG-PHASE-5.md` open items and `drive_file_ids` labels, the plan's status line, generic copies `status/WP-4d.md` + `decisions/WP-4d.md`
+
+**Where we left off**
+- Phase 4b is done. Phase 5 (Opus 5.5 · high) starts from `helpers/prompts/TG-PHASE-5.md` in a new session; nothing in it waits on the owner except merging the TourGuide branch `claude/tg-phase-4b-s94tru` (the Phase 4 branch is merged, PR #1)
+- Coordinator relays recorded during the phase: Places Aggregate live-verified by the design thread (Phase 7 smoke); decision 19 confirmed (Mini App after the pilot); Japan transit decided (Google-based station estimate, Ekispert as the upgrade, Phase 8 asks the owner); this session's own push to the private repo's `main` was refused by its guard, the owner merged through a pull request instead
+
+**Key decisions made**
+- Only our own dated research claims and the owner's choices are stored; Google's hours, rating, review count, website, address and business status stay build-scoped; place names stored as today (Phase 6's open point)
+- One `places_digest` builder for every routine; known places lead a `new` research round with `seen_before` / `changes`; the post-trip review runs before the next trip to the same destination (history is oldest-first by schema)
+- Requests carried back here: R2 `floor_reason` on the shortlist group schema (optional), R3 `gem_line` rating digits for Phase 6's terms review
+
+**Active context**
+- `main` moved three times during the phase (v01.23r / v01.24r rail estimates, the Aggregate credential, `[skip ci]` bookkeeping); rebased before each push. Never push while another `claude/*` branch is on the remote or a branch whose head equals `origin/main`
+- Private repo: `vendor/helpers/` changes only through the pin bump; dry runs on fixtures only (`--maps fixture:<name>`, `--pool fixture:<name>`); no live Google, Telegram, Drive or wake-route call in this phase
+
+**Recommendation for next session**
+- Start Phase 5 in a new session on Opus 5.5 · high and paste `Read helpers/prompts/TG-PHASE-5.md and execute it exactly.`; it reads the skills from the TourGuide branch `claude/tg-phase-4b-s94tru` until the owner merges it
+
+**To continue:** type `Read helpers/prompts/TG-PHASE-5.md and execute it exactly.`
+
+## Previous Sessions
+
 **Date:** 2026-10-01 03:53:32 AM EST
 **Repo version:** v01.22r
 **Branch:** `claude/tg-hidden-gems-dn7epo` (Tour Guide project, thread "Hidden gems methodology", Fable 5.1 · high)
@@ -32,31 +60,3 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - When Phase 4b builds WP-2g, read `helpers/decisions/hidden-gems-proposal.md` §4 and §6 and build stream 3 against the live Aggregate API from the start
 
 **To continue:** type `Read helpers/decisions/hidden-gems-proposal.md §6 and fold WP-2g into Phase 4b.`
-
-## Previous Sessions
-
-**Date:** 2026-10-01 03:44:29 AM EST
-**Repo version:** v01.21r
-**Branch:** `claude/tg-interaction-design-awq6bh` (Tour Guide project, thread "Ways to interact with Tour Guide", Fable 5.1 · high)
-
-**What we worked on**
-- Evaluated seven ways to interact with Tour Guide (chat commands, a standalone web app, a Telegram Mini App, Drive, the Sheet, inline mode, an Artifact) and recommended: Telegram stays the front door; the places repository and the learning loop land in Phase 4b and Phase 5; the Tour Guide app (Telegram Mini App) becomes Phase 9 after the pilot
-- Amended `repository-information/TOUR-GUIDE-BUILD-PLAN.md` (new §5.10 places repository + learning loop, new §5.11 interaction options and the app, §4 architecture and data model, §5.9 `/places` and `/review`, §6 rows and Phase 9, §8–§10, new §11c, §12), `helpers/BUILD-STATE.md`, `helpers/prompts/TG-PHASE-4B.md`, `helpers/prompts/TG-PHASE-5.md`; wrote `helpers/prompts/TG-PHASE-9.md` (draft, finalized by Phase 8)
-
-**Where we left off**
-- Pushed twice: v01.16r (the amendment) and v01.21r (repair — three branches landed within minutes and the auto-merge's "theirs" strategy dropped changelog and build-state entries, now restored; `helpers/prompts/TG-PHASE-4B-DELTA.md` written for the Phase 4b thread, which started before the amendment merged). The hidden-gems thread renumbered its decisions to 22–26, so 18–21 stay ours
-- Phase 4 finished while this session ran; Phase 4b is running in its own thread. `TG-PHASE-4.md` and `TG-PHASE-4-DELTA.md` were left untouched and no new delta was needed (the repository fields land in Phase 4b because `tg-memory.mjs` is the sole reader/writer of `places/`)
-- Decision 19 (when to build the app: after Phase 8 by default, or right after Phase 6) was put to the owner as a card in the thread; the plan records the default
-
-**Key decisions made**
-- Decisions 18–21 at their defaults: 18 the app, yes — a generic data-free shell on this repo's Pages plus `?route=app` with signed launch data; 19 after the pilot; 20 the repository is Phase 4's `places/<slug>.md` with a per-trip history, re-check before re-research (`RECHECK_DAYS` 90), own claims only and no Google field stored (place names flagged as an open point for Phase 6's terms review); 21 the learning loop from shortlist and post-trip taps, negatives held until support 2
-- The shell is a standalone top-level page `live-site-pages/helper-app.html` (not a subdirectory) so the `<basename>html.version.txt` convention holds
-- No `registerRoute` exists yet; Phase 9 adds it as the fifteenth registry with the four built-in routes not overridable
-
-**Active context**
-- Phase 2 thread owns the Maps Static brochure change; AssistantBrain reference only; the TourGuide private repo was not touched by this session
-
-**Recommendation for next session**
-- When Phase 4 hands off, start Phase 4b in a new session on Fable 5.1 · high (its prompt now carries the places-repository fields and the sixth envelope type)
-
-**To continue:** type `Read helpers/prompts/TG-PHASE-4B.md and execute it exactly.`
