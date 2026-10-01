@@ -152,6 +152,15 @@ function _archiveRequest(reqId) {
   while (it.hasNext()) _archive(it.next(), f.processed);
 }
 
+/** The request the brain is answering, read back from to-brain/req_<id>.json — null once archived or never written. Packs
+ * use it from an envelope observer: the Requests row keeps only kind/status/chat, the payload lives in the file. */
+function mailboxReadRequest(reqId) {
+  if (!/^[A-Za-z0-9_-]{1,64}$/.test(String(reqId || ''))) return null;
+  var it = getMailboxFolders().toBrain.getFilesByName('req_' + reqId + '.json');
+  if (!it.hasNext()) return null;
+  try { var env = JSON.parse(it.next().getBlob().getDataAsString('UTF-8')); return isPlainObject(env) ? env : null; } catch (e) { return null; }
+}
+
 /** Write a request for the brain: to-brain/req_<id>.json with type "request" and payload {kind, text, chat, …}. Returns id. */
 function mailboxWriteRequest(payload) {
   payload = payload || {};

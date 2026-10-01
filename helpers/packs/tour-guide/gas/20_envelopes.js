@@ -590,4 +590,24 @@ registerEnvelopeHandler('places_digest', {
   }
 });
 
+/**
+ * A core `reply` that answers a `brochure` request and names Drive files (labels `plan`, `brochure_html`, `brochure_pdf` —
+ * the same keys `plan_digest.drive` uses) → remember them on the trip, as tgDigestStore does, so the next /brochure or 📄
+ * resends the file instead of opening another request (WP-6c C7/R4). Runs after the core handler sent the files.
+ */
+registerEnvelopeObserver('tg_brochure_reply', function (env) {
+  if (!env || env.type !== 'reply' || !env.in_reply_to) return;
+  var p = env.payload || {}, ids = p.drive_file_ids;
+  if (!isPlainObject(ids)) return;
+  var req = getRequest(env.in_reply_to);
+  if (!req || req.kind !== 'brochure') return;                     // the cheap sheet check first; the trip is only in the file
+  var rq = mailboxReadRequest(env.in_reply_to), rp = rq && isPlainObject(rq.payload) ? rq.payload : null;
+  if (!rp || typeof rp.trip !== 'string' || !tgTripGet(rp.trip)) return;
+  var upd = { slug: rp.trip };
+  ['plan', 'brochure_html', 'brochure_pdf'].forEach(function (label) {
+    if (typeof ids[label] === 'string' && ids[label]) upd['drive_' + label] = ids[label];
+  });
+  if (Object.keys(upd).length > 1) tgTripUpsert(upd);
+});
+
 // Developed by: LightAISolutions

@@ -373,6 +373,12 @@ function tgCmdPlanDate(trip, word) {
   var d = tgDigestDay(trip.slug, w);
   return d ? d.date : null;
 }
+/**
+ * What a replan must rebuild (WP-6c R3): the plan always; the brochure too when the trip has one, so the owner never keeps a
+ * stale brochure after a day changed. Mirrors the `deliverables` the /plan flow sends (`gas/12_flow_plan.js`).
+ */
+function tgCmdDeliverables(trip) { return trip && (trip.drive_brochure_pdf || trip.drive_brochure_html) ? ['plan', 'brochure'] : ['plan']; }
+
 registerCommand('/replan', function (ctx) {
   var trip = tgCmdCurrent(ctx);
   if (!trip) return;
@@ -381,7 +387,7 @@ registerCommand('/replan', function (ctx) {
   var date = tgCmdPlanDate(trip, m[1]);
   if (!date) { ctx.reply('That day is not in the plan of ' + tgCmdTitle(trip) + '. /trip shows its days.'); return; }
   var why = truncate(String(m[2] || '').trim(), 300);
-  var payload = { trip: trip.slug, dates: [date] };
+  var payload = { trip: trip.slug, dates: [date], deliverables: tgCmdDeliverables(trip) };
   if (why) payload.reason = why;
   tgOpenKindRequest('replan', payload, { chat: ctx.chat, text: ctx.text, replyTo: ctx.chat.message_id, ack: '🔁 Replanning ' + tgCmdDate(date) + '…' });
 }, 'rebuild one day: /replan <date or day N> <why>');
@@ -485,7 +491,7 @@ registerCallback('lt', function (ctx) {
   if (!day) { ctx.answer('No such day.'); return; }
   ctx.answer('Replanning day ' + day.n);
   if (ctx.messageId) tgApi('editMessageReplyMarkup', { chat_id: ctx.chatId, message_id: ctx.messageId, reply_markup: { inline_keyboard: [] } });
-  tgOpenKindRequest('replan', { trip: trip.slug, dates: [day.date], promote: [e.place_slug], reason: 'promoted from the Later list' },
+  tgOpenKindRequest('replan', { trip: trip.slug, dates: [day.date], promote: [e.place_slug], reason: 'promoted from the Later list', deliverables: tgCmdDeliverables(trip) },
     { text: 'promote ' + e.name + ' onto day ' + day.n, ack: '🔁 Putting <b>' + tgEscape(e.name) + '</b> on day ' + day.n + ' (' + tgCmdDate(day.date) + ') — replanning that day…' });
 });
 

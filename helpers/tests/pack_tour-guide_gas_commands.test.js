@@ -25,8 +25,10 @@ const answers = (state) => state.fetch.telegram('answerCallbackQuery').map((r) =
 const kbData = (m) => (m && m.reply_markup ? m.reply_markup.inline_keyboard.flat().map((b) => b.callback_data) : []);
 const lastKbData = (state) => kbData(sends(state).filter((j) => j.reply_markup).pop());
 const allData = (state) => sends(state).flatMap(kbData);
-const requests = (state) => (state.drive.listFiles('TourGuide/mailbox/to-brain') || []).filter((n) => /^req_/.test(n))
-  .map((n) => JSON.parse(state.drive.readFile('TourGuide/mailbox/to-brain', n)).payload);
+const reqEnvs = (state) => (state.drive.listFiles('TourGuide/mailbox/to-brain') || []).filter((n) => /^req_/.test(n))
+  .map((n) => JSON.parse(state.drive.readFile('TourGuide/mailbox/to-brain', n)));
+const requests = (state) => reqEnvs(state).map((e) => e.payload);
+const reqIdOf = (state, kind) => reqEnvs(state).filter((e) => e.payload.kind === kind).map((e) => e.id);
 const reqOf = (state, kind) => requests(state).filter((r) => r.kind === kind);
 function deliver(ctx, state, type, payload) {
   H.putEnvelope(state, H.envelope(type, payload));
@@ -176,8 +178,8 @@ test('/later and the lt buttons: pick a day, promote through a replan request, s
   tap(ctx, state, 'lt:port-sorrel:0.' + tag + ':2', 66);
   const r = reqOf(state, 'replan');
   assert.equal(r.length, 1);
-  assert.deepEqual({ trip: r[0].trip, dates: r[0].dates, promote: r[0].promote, reason: r[0].reason },
-    { trip: TRIP, dates: ['2027-05-13'], promote: ['signal-hill-lookout'], reason: 'promoted from the Later list' });
+  assert.deepEqual({ trip: r[0].trip, dates: r[0].dates, promote: r[0].promote, reason: r[0].reason, deliverables: r[0].deliverables },
+    { trip: TRIP, dates: ['2027-05-13'], promote: ['signal-hill-lookout'], reason: 'promoted from the Later list', deliverables: ['plan'] });
   assert.match(answers(state).pop(), /Replanning day 2/);
   assert.deepEqual(J(state.fetch.telegram('editMessageReplyMarkup').map((x) => x.json).pop().reply_markup), { inline_keyboard: [] });
 
@@ -270,6 +272,7 @@ test('requests: /replan, /notes, /brochure (resend or build), /lodging, pl:br an
   say(ctx, state, '/replan day 2 more time at the <market>');
   let r = reqOf(state, 'replan');
   assert.deepEqual(J(r.map((x) => [x.trip, x.dates, x.reason])), [[TRIP, ['2027-05-13'], 'more time at the <market>']]);
+  assert.deepEqual(J(r[0].deliverables), ['plan'], 'WP-6c R3: no brochure yet → the plan only');
   assert.match(last(state), /🔁 Replanning Thu 13 May…/);
   ctx.__TEST_NOW = '2027-05-12T15:00:00Z';
   say(ctx, state, '/replan tomorrow');
@@ -287,15 +290,29 @@ test('requests: /replan, /notes, /brochure (resend or build), /lodging, pl:br an
 
   say(ctx, state, '/brochure');
   assert.deepEqual(J(reqOf(state, 'brochure').map((x) => [x.trip, x.build_id])), [[TRIP, 'build-ps-1']]);
+  // WP-6c R4: the brochure routine answers with a core reply that names the files → the trip remembers them (observer);
+  // a reply to any other request kind, or a label the trip does not know, changes nothing.
+  const [brId] = reqIdOf(state, 'brochure');
+  const stray = state.drive.putFile('TourGuide/Trips', 'stray.pdf', '%PDF-stray', 'application/pdf');
+  H.putEnvelope(state, H.envelope('reply', { text: 'Notes done.', drive_file_ids: { brochure_pdf: stray.getId() } }, { in_reply_to: reqIdOf(state, 'notes')[0] }));
+  assert.equal(J(ctx.pollFromBrain()).processed, 1);
+  assert.ok(!ctx.tgTripGet(TRIP).drive_brochure_pdf, 'a reply to a notes request is not a brochure');
   const f = state.drive.putFile('TourGuide/Trips', 'port-sorrel-brochure.pdf', '%PDF-fixture', 'application/pdf');
-  ctx.tgTripUpsert({ slug: TRIP, drive_brochure_pdf: f.getId() });
+  const fh = state.drive.putFile('TourGuide/Trips', 'port-sorrel-brochure.html', '<p>fixture</p>', 'text/html');
+  H.putEnvelope(state, H.envelope('reply', { text: 'Brochure ready.', drive_file_ids: { brochure_pdf: f.getId(), brochure_html: fh.getId(), extra: stray.getId() } }, { in_reply_to: brId }));
+  assert.equal(J(ctx.pollFromBrain()).processed, 1);
+  const t = ctx.tgTripGet(TRIP);
+  assert.deepEqual([t.drive_brochure_pdf, t.drive_brochure_html, t.drive_plan], [f.getId(), fh.getId(), 'fixtureDrivePlanFile01']);
+  assert.equal(reqOf(state, 'brochure').length, 0, 'the answered brochure request is archived');
+  const nDocs = state.fetch.telegram('sendDocument').length;
   say(ctx, state, '/brochure');
-  const doc = state.fetch.telegram('sendDocument').pop();
-  assert.ok(doc, 'the stored PDF is resent');
-  assert.equal(reqOf(state, 'brochure').length, 1, 'no new request when the PDF is there');
+  assert.equal(state.fetch.telegram('sendDocument').length, nDocs + 1, 'the stored PDF is resent');
+  assert.equal(reqOf(state, 'brochure').length, 0, 'no new request when the PDF is there');
+  say(ctx, state, '/replan day 2 rain');
+  assert.deepEqual(J(reqOf(state, 'replan').pop().deliverables), ['plan', 'brochure'], 'WP-6c R3: a trip with a brochure replans both');
   ctx.tgTripUpsert({ slug: TRIP, drive_brochure_pdf: 'fixtureMissingFile' });
   tap(ctx, state, 'pl:br:port-sorrel');
-  assert.equal(reqOf(state, 'brochure').length, 2, 'a missing PDF falls back to a build request');
+  assert.equal(reqOf(state, 'brochure').length, 1, 'a missing PDF falls back to a build request');
   tap(ctx, state, 'pl:br:gone-trip');
   assert.match(answers(state).pop(), /That trip is gone/);
 
