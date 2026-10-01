@@ -102,6 +102,9 @@ export function checkValue(vocab, dimId, value) {
   const v = normValue(value);
   if (!v) return { value: null, error: dimId + ': empty value' };
   if (v.length > VALUE_MAX) return { value: null, error: dimId + ': value longer than ' + VALUE_MAX + ' chars' };
+  // A value is a short plain-text phrase: markup and control characters are refused, never escaped into the profile
+  // (WP-6b red team — a profile line must read as the owner's own words wherever it is rendered).
+  if (/[<>\u0000-\u001f\u007f]/.test(v)) return { value: null, error: dimId + ': value must be plain text (no < > or control characters)' };
   if (dim.values && !dim.values.includes(v)) return { value: null, error: dimId + ': "' + v + '" is not one of ' + dim.values.join(', ') };
   return { value: v, error: null };
 }

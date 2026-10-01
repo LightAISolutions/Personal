@@ -31,7 +31,9 @@ export function toPlaceFields(record) {
       const language = String(m.language);
       if (!LANGUAGE_RE.test(language)) throw new Error(`gems: local mention language ${JSON.stringify(m.language)} is not a BCP-47-like tag`);
       if (!LOCAL_MENTION_KINDS.includes(m.kind)) throw new Error(`gems: local mention kind ${JSON.stringify(m.kind)} is not one of ${LOCAL_MENTION_KINDS.join(', ')}`);
-      return { ref: String(m.ref).slice(0, LOCAL_MENTION_REF_MAX), language, kind: m.kind };
+      const out = { ref: String(m.ref).slice(0, LOCAL_MENTION_REF_MAX), language, kind: m.kind };
+      if (m.publisher) out.publisher = String(m.publisher).slice(0, LOCAL_MENTION_REF_MAX);
+      return out;
     }),
     flags: (record.flags || []).filter((f) => FLAGS.includes(f)).slice(0, FLAGS_MAX)
   };

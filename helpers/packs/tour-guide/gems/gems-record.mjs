@@ -62,7 +62,15 @@ function normalizeMention(m, i) {
   const language = String(m.language ?? '').trim().replace(/^([A-Za-z]{2,3})/, (s) => s.toLowerCase());
   if (!LANGUAGE_RE.test(language)) throw err(`local_mentions[${i}].language must be a BCP-47-like tag (got ${JSON.stringify(m.language)})`);
   if (!LOCAL_MENTION_KINDS.includes(m.kind)) throw err(`local_mentions[${i}].kind must be one of ${LOCAL_MENTION_KINDS.join(', ')}`);
-  return { ref, language, kind: m.kind };
+  const out = { ref, language, kind: m.kind };
+  // Optional publisher (the research kit's `publisher` / host of the mention): mentions from one publisher count once,
+  // so fifty posts on one blog cannot buy a 💎 (WP-6b red team). Anything else on the mention is dropped here.
+  if (m.publisher !== undefined && m.publisher !== null) {
+    const publisher = String(m.publisher).trim().toLowerCase();
+    if (!publisher || publisher.length > LOCAL_MENTION_REF_MAX) throw err(`local_mentions[${i}].publisher must be 1–${LOCAL_MENTION_REF_MAX} characters when given`);
+    out.publisher = publisher;
+  }
+  return out;
 }
 function normalizeReview(r, i) {
   if (!r || typeof r !== 'object') throw err(`reviews[${i}] must be an object`);
@@ -158,9 +166,9 @@ export function fromSearchResult(place, { streams = [], local_mentions = [], slu
   return normalizeRecord(raw);
 }
 
-/** mentionCount(record, kind?) → distinct refs of that kind (all kinds when omitted). */
+/** mentionCount(record, kind?) → distinct publishers (falling back to refs) of that kind (all kinds when omitted). */
 export function mentionCount(record, kind) {
-  return new Set((record.local_mentions || []).filter((m) => !kind || m.kind === kind).map((m) => m.ref)).size;
+  return new Set((record.local_mentions || []).filter((m) => !kind || m.kind === kind).map((m) => (m.publisher ? 'p:' + m.publisher : 'r:' + m.ref))).size;
 }
 export const isOwnerSeed = (record) => (record.streams || []).includes('owner_seed');
 
