@@ -190,7 +190,7 @@
       "type": "object", "additionalProperties": false,
       "description": "A Place Photo (New). `name` is the photo resource (places/…/photos/…) the build fetches through the maps kit; `src` is the fetched image (path or data URI) and is what the renderer shows. The author credit is shown with the photo (Places policy).",
       "properties": {
-        "name": { "type": "string", "pattern": "^places/[A-Za-z0-9_-]{1,300}/photos/[A-Za-z0-9_-]{1,400}$" },
+        "name": { "type": "string", "pattern": "^places/[A-Za-z0-9_-]{1,300}/photos/[A-Za-z0-9_-]{1,2000}$" },
         "src": { "type": "string", "maxLength": 20000000 },
         "alt": { "$ref": "#/$defs/short" },
         "author": { "$ref": "#/$defs/short" },

@@ -12,7 +12,7 @@ import { MapsInputError, MapsRequestError } from './maps-errors.mjs';
 import { guardedCall, PLACES_BASE } from './maps-http.mjs';
 
 export const PHOTOS_SKU = 'places.details.photos';
-export const PHOTO_NAME_RE = /^places\/[A-Za-z0-9_-]{1,300}\/photos\/[A-Za-z0-9_-]{1,400}$/;
+export const PHOTO_NAME_RE = /^places\/[A-Za-z0-9_-]{1,300}\/photos\/[A-Za-z0-9_-]{1,2000}$/;
 export const PHOTO_MAX_PX = 4800;
 
 /** The attribution list in the kit's shape: [{ displayName, uri, photoUri }] (strings, possibly empty). */

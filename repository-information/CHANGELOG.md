@@ -3,13 +3,25 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 16/100`
+`Sections: 19/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
 
-## [v01.16r] — 2026-10-01 03:32:47 AM EST
+## [v01.19r] — 2026-10-01 03:33:09 AM EST
+
+> **Prompt:** "When the work is merged, build a live sample brochure with real maps and photos … save it under /mnt/project-files/tour-guide/phase-2/ … and post it in this thread for the owner's rating." (coordinator brief, continuing the owner's "10/10 once the map is fixed")
+
+### Fixed
+- Brochure and Maps kits: real Google Place Photo names were rejected (their photo ids run 400–460 characters; the pattern allowed 400). The photo-id part now allows up to 2,000 characters, with tests using a realistic-length name
+- `kit_brochure_google_images.test.js`: the schema check after `addGoogleImages` compared an error array with `.ok` and could never fail; it now expects no errors
+
+### Changed
+- Google maps in the brochure also hide POI pin icons and road-shield icons (Google's green numbered highway shields read as the brochure's green numbered stops in the live Tokyo sample); place, station and park names stay
+- `helpers/decisions/WP-2e.md` (choices 5, 12, 13: map styles, photo names, no transit routes in Japan), `helpers/decisions/TG-PHASE-2.md` §4 (planner request: transit fallback in Japan), `helpers/BUILD-STATE.md` (live sample sent)
+
+## [v01.18r] — 2026-10-01 03:27:41 AM EST
 
 > **Prompt:** "Also, I gave one example of how I could interact with the Tour Guide helper and all its functions (via the /plan Tokyo, Japan command to the chatbot), but I want you to create a new thread on Fable 5.1 high or xhigh (your choice) to think about other ways to allow me to interact with all the tools you are building now. I'm also considering having you create a web app that allows Tour Guide to gather information from me about my upcoming trip at a location I provide (ie: Tokyo, Japan) and display the finished travel brochures. I want to have a personal repository of places that Tour Guide has researched, so that all that effort is not wasted. Who knows? Even the best plans go wrong or maybe I will decide on the fly that I want to change my itinerary. Either way, I will be able to browse through this repository to find an alternative. Also, if I ask Tour Guide to plan two different itineraries for the same location at two different points in time, Tour Guide will be able to go through the existing repository places to check if they are still in business, and if so, what has changed about them since we last looked at them.
 >

@@ -108,6 +108,17 @@ test('placePhoto: media lookup then image download, one SKU unit, attribution pa
   await assert.rejects(maps.placePhoto('places/A/photos/B', { maxWidthPx: 99999 }), (e) => e.code === 'BAD_INPUT');
 });
 
+test('real-length photo names (ids of ~450 characters) are accepted; over-long or odd ones are not', async () => {
+  const { k, maps } = await setup();
+  const long = 'places/ChIJ' + 'a'.repeat(16) + '/photos/' + 'AUc7tXy-_'.repeat(55);
+  assert.ok(long.split('/photos/')[1].length > 400);
+  assert.match(long, k.PHOTO_NAME_RE);
+  const r = await maps.placePhoto(long, { maxWidthPx: 400 });
+  assert.equal(r.contentType, 'image/png');
+  assert.doesNotMatch('places/A/photos/' + 'x'.repeat(2001), k.PHOTO_NAME_RE);
+  assert.doesNotMatch('places/A/photos/B?c=1', k.PHOTO_NAME_RE);
+});
+
 test('photos are in the IDs-only tier, so every Details mask already lists them', async () => {
   const k = await kit();
   for (const mask of Object.values(k.PLACE_DETAILS_MASKS)) assert.ok(mask.split(',').includes('photos'), mask);
