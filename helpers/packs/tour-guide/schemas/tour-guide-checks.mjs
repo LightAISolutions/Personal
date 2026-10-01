@@ -270,6 +270,7 @@ export function checkPlanDigest(d) {
 }
 
 export function checkProfileSummary(p) {
+  if (p.updated === undefined) return [];
   return !isDate(p.updated.slice(0, 10)) || Number.isNaN(Date.parse(p.updated)) ? [{ path: '/updated', message: 'not a real date-time' }] : [];
 }
 

@@ -66,7 +66,7 @@ test('CLI: --pack adds the pack types, --out writes the file, errors exit 1 and 
 test('--pack NAME validates a pack type\'s payload when the pack ships schemas/index.mjs validatePayload', async () => {
   const { packPayloadErrors } = await import('../tools/envelope.mjs');
   assert.deepEqual(await packPayloadErrors('tour-guide', 'profile_summary', { text: 'Relaxed pace.', dimensions_count: 3, updated: '2027-04-28T08:15:00Z' }), []);
-  assert.deepEqual(await packPayloadErrors('tour-guide', 'profile_summary', { text: 'Relaxed pace.', dimensions_count: 3 }), ['payload: missing required "updated"']);
+  assert.deepEqual(await packPayloadErrors('tour-guide', 'profile_summary', { dimensions_count: 3 }), ['payload: missing required "text"']);
   assert.deepEqual(await packPayloadErrors('tour-guide', 'profile_summary', 'not an object'), [], 'non-objects are reported by makeEnvelope');
   assert.deepEqual(await packPayloadErrors('hello', 'greeting', {}), []);
   await assert.rejects(packPayloadErrors('nope', 'x', {}), /unknown pack/);

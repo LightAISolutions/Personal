@@ -119,7 +119,7 @@ Every default and its reason (objective weights, mandatory lunch, meal rules, wa
 | `shortlist` | shortlist | `{ v?, kind?, trip, run_id, round, groups: [{ id: activities\|food, gems_wanted, gems_shown, items: [{ n, slug, name, why_you, fit 0–1, est_minutes, area, maps_url, labels, place_id?, new?, gem?, gem_line?, seen_before?, changes?, dims? }] ≤ 20 }] ≤ 2, more, decided? }` |
 | `trip_facts` | trip-facts | `{ trip, found: [{ n, kind: dates\|lodging\|flight\|booking\|companions\|other, text ≤ 200, start?, end? }] ≤ 40, missing: [kind] ≤ 10 }` |
 | `plan_digest` | plan-digest | `{ trip, build_id, verified_on, days: [{ date, theme, stops: [{ n, slug, name, arrive, depart, minutes, maps_url, note_line }], legs: [{ from, to, mode, minutes, maps_url? }], warnings: [text] }], later: [{ slug, name, reason }], drive: { plan, brochure_html, brochure_pdf } }`, ≤ 60 000 characters |
-| `profile_summary` | profile-summary | `{ text ≤ 1200, dimensions_count, updated (ISO date-time) }` |
+| `profile_summary` | profile-summary | `{ text ≤ 1200 }` — the prefs kit's plain-text summary as is; optional `dimensions_count`, `updated` (ISO date-time) |
 | `prefs_review` | prefs-review | exactly the prefs kit's `buildReview` payload: `{ v: 1, kind, vocab, batch_id, items: [{ cid, dimension, value, stance, statement, suspect, text, buttons }] ≤ 40, held_back, more }` |
 | `places_digest` | places-digest | `{ destination, places: [{ slug, name, area, category, tags, status, last_trip, last_researched, last_verified, note_line, maps_url, history_summary }] }`, ≤ 60 000 characters, no Google content |
 

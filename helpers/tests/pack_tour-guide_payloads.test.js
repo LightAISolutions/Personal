@@ -138,6 +138,12 @@ test('invalid payloads are refused with pointer paths', async () => {
   refuse('profile_summary', (x) => { x.updated = '2027-04-28'; }, '/updated');
   refuse('profile_summary', (x) => { x.updated = '2027-02-30T08:00:00Z'; }, '/updated', /real date-time/);
   refuse('profile_summary', (x) => { x.dimensions_count = -1; }, '/dimensions_count');
+  // WP-2f: the payload is just { text } — the prefs kit's plain-text summary (a count line, then one line per dimension).
+  const kitText = 'Travel preferences: 3 confirmed preferences.\nPace: relaxed\nFood: likes street food, noodles; avoids formal dining\nMuseums: likes small museums';
+  assert.deepEqual(s.validatePayload('profile_summary', { text: kitText }).errors, []);
+  assert.deepEqual(s.validatePayload('profile_summary', { text: 'x'.repeat(1200) }).errors, []);
+  refuse('profile_summary', (x) => { delete x.text; }, '/', /missing required "text"/);
+  refuse('profile_summary', (x) => { x.html = '<b>no</b>'; }, '/html', /unknown field/);
   refuse('places_digest', (x) => { x.places[0].hours = ['Mon: 09:00–17:00']; }, '/places/0/hours', /unknown field/);
   refuse('places_digest', (x) => { x.places[0].rating = 4.6; }, '/places/0/rating', /unknown field/);
   for (const field of ['address', 'website', 'business_status', 'user_rating_count']) refuse('places_digest', (x) => { x.places[0][field] = 'x'; }, `/places/0/${field}`, /unknown field/);
