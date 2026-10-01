@@ -7,6 +7,34 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-10-01 10:03:09 AM EST
+**Repo version:** v01.28r
+**Branch:** `claude/project-thread-orkxn4` (Tour Guide project, thread "Tour Guide", Fable 5.1 · xhigh — Phase 6 architect)
+
+**What we worked on**
+- Phase 6 of the Tour Guide build: carried items (core `tgSplit`/`tgClip`, Maps scope, web-verified Lane B prices and trigger quotas, `MAX_ROUTINE_FIRES_PER_DAY` 24), three builders in worktrees — WP-6a pack gas red-team + PDF delivery, WP-6b kits/engines red-team (R3: words-only `gem_line`), WP-6c integration dry run + skills red-team in TourGuide — all merged; 97 new tests (374 → 471), bundle and boundary clean
+- `helpers/decisions/TG-PHASE-6.md` (briefs, findings and fixes §2.1–§2.3, cost and quota audit §3 with sources, carried decisions §4, accepted risk §5), `helpers/docs/TG-SWITCH-ON.md` (the owner's switch-on guide), `helpers/prompts/TG-PHASE-7.md`
+- WP-6c's framework requests: `tools/envelope.mjs` reply checks + `--now`, `/replan` `deliverables`, the `tg_brochure_reply` observer with core `mailboxReadRequest(id)` (SPEC §5)
+
+**Where we left off**
+- Phase 6 is done (v01.28r). TourGuide PR #4 (`claude/project-thread-orkxn4`, head `ff7811c`) is ready for review: vendor re-pin to the Phase 5 dist, `tools/integration-dryrun.mjs` (392 checks / 0 failed), skill fixes, `trip-research-lodging.mjs`. PR #3 must merge first (PR #4 was cut from its head)
+- The private repo still pins the Phase 5 `helpers-dist`; Phase 7 Step 0 re-pins it to the v01.28r dist before any routine is created
+
+**Key decisions made**
+- Located lodging = option (a) in trip-research; destination clip (120) stands; the review closes the trip on any recorded rating; WP-6c's optional R2 (pack digest cap in the stamp tool) not taken; C6 skill-only request kinds documented, not removed
+- Google content: `gem_line` carries no Google digits (Maps ToS); brochure hours/ratings stay an open owner question for Phase 8 (`show_google_content`)
+
+**Active context**
+- Branch `claude/project-thread-orkxn4` pushed as the single Phase 6 push (auto-merges to `main`); worktrees `../wt-6a`, `../wt-6b` were session-local and are merged
+- Open owner questions for Phase 7/8 are listed in `helpers/prompts/TG-PHASE-7.md` and `helpers/decisions/TG-PHASE-6.md` §5
+
+**Recommendation for next session**
+- Start Phase 7 on Opus 5.5 · high: merge TourGuide PR #3 then PR #4, re-pin `vendor/helpers/` to the v01.28r `helpers-dist`, then switch the helper on with the owner following `helpers/docs/TG-SWITCH-ON.md`
+
+**To continue:** type `Read helpers/prompts/TG-PHASE-7.md and execute it exactly.`
+
+## Previous Sessions
+
 **Date:** 2026-10-01 08:10:13 AM EST
 **Repo version:** v01.27r
 **Branch:** `claude/project-thread-m0kbpq` (Tour Guide project, thread "Phase 5 Telegram commands", Opus 5.5 · high)
@@ -29,32 +57,3 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 **Recommendation for next session**
 - Start Phase 6 in a new session on Fable 5.1 · xhigh.
 **To continue:** type `Read helpers/prompts/TG-PHASE-6.md and execute it exactly.`
-
-## Previous Sessions
-
-**Date:** 2026-10-01 05:45:21 AM EST
-**Repo version:** v01.26r
-**Branch:** `claude/tg-phase-4b-s94tru` (Tour Guide project, thread "Tour Guide Phase 4b", Fable 5.1 · high)
-
-**What we worked on**
-- Phase 4b end to end: the `Personal` side (WP-1b flows + documents, WP-2f interview, WP-3d choices/statuses/payload schemas, WP-2g Gem Funnel kits + engine, WP-3e transit fallback) merged and pushed as v01.25r, then WP-4d in the private repo on its own `claude/tg-phase-4b-s94tru` branch: pin bump, the skill deltas by three builders in worktrees, one shared places digest, `tools/journey-dryrun.mjs` (the whole `/plan` journey on invented fixtures, every envelope validated), vendor tests and scans green
-- Close-out here as v01.26r: BUILD-STATE rows 4 / 4b / 8 and Next, `decisions/TG-PHASE-4B.md` §1 / §5 / §6 / §8, `prompts/TG-PHASE-5.md` open items and `drive_file_ids` labels, the plan's status line, generic copies `status/WP-4d.md` + `decisions/WP-4d.md`
-
-**Where we left off**
-- Phase 4b is done. Phase 5 (Opus 5.5 · high) starts from `helpers/prompts/TG-PHASE-5.md` in a new session; nothing in it waits on the owner except merging the TourGuide branch `claude/tg-phase-4b-s94tru` (the Phase 4 branch is merged, PR #1)
-- Coordinator relays recorded during the phase: Places Aggregate live-verified by the design thread (Phase 7 smoke); decision 19 confirmed (Mini App after the pilot); Japan transit decided (Google-based station estimate, Ekispert as the upgrade, Phase 8 asks the owner); this session's own push to the private repo's `main` was refused by its guard, the owner merged through a pull request instead
-
-**Key decisions made**
-- Only our own dated research claims and the owner's choices are stored; Google's hours, rating, review count, website, address and business status stay build-scoped; place names stored as today (Phase 6's open point)
-- One `places_digest` builder for every routine; known places lead a `new` research round with `seen_before` / `changes`; the post-trip review runs before the next trip to the same destination (history is oldest-first by schema)
-- Requests carried back here: R2 `floor_reason` on the shortlist group schema (optional), R3 `gem_line` rating digits for Phase 6's terms review
-
-**Active context**
-- `main` moved three times during the phase (v01.23r / v01.24r rail estimates, the Aggregate credential, `[skip ci]` bookkeeping); rebased before each push. Never push while another `claude/*` branch is on the remote or a branch whose head equals `origin/main`
-- Private repo: `vendor/helpers/` changes only through the pin bump; dry runs on fixtures only (`--maps fixture:<name>`, `--pool fixture:<name>`); no live Google, Telegram, Drive or wake-route call in this phase
-
-**Recommendation for next session**
-- Start Phase 5 in a new session on Opus 5.5 · high and paste `Read helpers/prompts/TG-PHASE-5.md and execute it exactly.`; it reads the skills from the TourGuide branch `claude/tg-phase-4b-s94tru` until the owner merges it
-
-**To continue:** type `Read helpers/prompts/TG-PHASE-5.md and execute it exactly.`
-

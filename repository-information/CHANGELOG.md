@@ -3,11 +3,32 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 28/100`
+`Sections: 29/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.28r] — 2026-10-01 10:03:09 AM EST
+
+> **Prompt:** "Read helpers/prompts/TG-PHASE-6.md in LightAISolutions/Personal and execute it exactly."
+
+### Added
+- **Switch-on guide** `helpers/docs/TG-SWITCH-ON.md` — the owner's step-by-step for Phase 7: Cloud project and keys, Apps Script deploy, Script Properties (`MAX_ROUTINE_FIRES_PER_DAY` 24), the seven routines, pairing, the first trip, costs and caps, failure cases
+- **Red-team suites** (Phase 6, invented fixtures only, 96 new tests — 374 → 470, 471 with the WP-6c request tests): pack gas `helpers/tests/pack_tour-guide_redteam_{envelopes,callbacks,chat,pdf}.test.js` (hostile from-brain envelopes, forged callbacks, chat/interview/Lane B/`/route`/`/plan` inputs, PDF delivery); kits `kit_{research,brochure,maps,prefs}_redteam.test.js`; engines `pack_tour-guide_engines_redteam.test.js`; core `core_telegram.test.js` (tag-safe `tgSplit`/`tgClip`, plain-text retries, `tgSafeHtml`, `stripHidden`)
+- **Core hardening**: `stripHidden` (`01_util.js`) removes zero-width, bidi and control characters from brain text; `tgSafeHtml` (`05_telegram.js`) lets a `reply` with `html: true` keep only Telegram's plain tags and `https://` links without userinfo; `driveFileWhere` (`09_mailbox.js`) refuses to attach a Drive file outside the helper's root (`document_outside_root` audit); `tgSplit`/`tgClip` never cut inside a tag or an entity; `registerProposalGuard` lets a pack veto core proposal actions
+- `helpers/decisions/TG-PHASE-6.md` (WP briefs, findings and fixes, cost and quota audit with sources, carried items, accepted risk), `helpers/decisions/WP-6{a,b,c}.md`, `helpers/status/WP-6{a,b,c}.md`, `helpers/status/PHASE-6-RESUME.md`
+- `helpers/prompts/TG-PHASE-7.md` — Phase 7 kickoff (owner switch-on: deploy, pair, routines, interview, the first real `/plan`) on Opus 5.5 · high
+
+### Changed
+- **Tour Guide pack gas**: shortlist links only Google Maps hosts; every pack envelope is cleaned of hidden characters before validation; the pack refuses every core proposal action (`action_allowlist` empty); strict callback arity, `ps:` taps only for stored or listed places; Lane B strips nested block tags; `/route` refuses unsupported modes; `/plan` inputs refused with a reason instead of truncated; `/brochure` attaches only files inside the helper root
+- **Kits**: research scan reads attribute text, flags French/German/Spanish/Italian/Portuguese/Dutch instruction injection and forged envelopes, `mentions(distinct:'publisher')`; brochure escapes every attribute emit site, strips bidi/zero-width characters, accepts only well-formed base64 image data URIs; maps caps and types every snapshot field and sanitizes the snapshot store on load and put; prefs flags multilingual injection and refuses markup in profile values
+- **Gems engine (R3)**: `gem_line` carries no Google digits — a words-only rating band and peer comparison (Maps Platform ToS §3.2.3(b), Service Specific Terms §3 and §14.3); `local_mentions[].publisher` counted distinct per publisher
+- **WP-6c requests (framework side)**: `tools/envelope.mjs` mirrors the core's `reply` checks (text ≤ 4000, `html` boolean, `drive_file_ids` shape, labels, ids, ≤ 10) and takes `--now <ISO>`; `/replan` and the Later-list promote send `deliverables` (`['plan']`, or `['plan','brochure']` when the trip has a brochure); the `tg_brochure_reply` envelope observer stores a `brochure` reply's `drive_file_ids` on the Trips tab so `/brochure` resends instead of rebuilding; new core helper `mailboxReadRequest(id)` (SPEC §5) reads a request's payload back for observers
+- **Private repo (TourGuide PR #4, for the owner to merge after PR #3)**: `tools/integration-dryrun.mjs` drives every pack request kind through the skill drivers, the envelope tool and the core validator/renderer (392 checks, 0 failed, 26 wakes, 12 request kinds); skill fixes C1–C5, C8–C11 and red-team fixes R2, R3b, R4a, R6b (tags, controls and instructions stripped from destination, lodging, seeds, replan reasons and pool names; `trip-check-run.mjs --digest always`; the review closes the trip; routines README connectors match each SKILL.md); new `trip-research-lodging.mjs` locates the owner's lodging in the `new` round with one Maps call (injection-checked text, name/address overlap required, fixture-fed in dry runs) and asks for it in the round's reply when it cannot — the plan-days `lodging_missing` finding stays as the fallback; `docs/TG-SWITCH-ON.md` §0 and §4 and `prompts/TG-PHASE-7.md` Step 0 carry the vendor re-pin to the v01.28r `helpers-dist` and the plan-days web connectors
+- Test harness: `createMocks()` resets the envelope clock and root between test files
+- `helpers/BUILD-STATE.md`: row 6 **done**, row 7 prompt written, Phase 6 log, Next = Phase 7; `helpers/status/WP-4d.md` and `helpers/decisions/hidden-gems-proposal.md` note the superseded digit `gem_line`
+- No live Telegram, Drive mailbox, Claude API, wake-route or routine call in this phase; the private repo changes (integration dry run, skill hardening, vendor re-pin) are TourGuide PR #4, to be merged after PR #3
 
 ## [v01.27r] — 2026-10-01 08:10:13 AM EST
 
