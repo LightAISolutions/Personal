@@ -2,7 +2,22 @@
 
 registerCommand('/start', function (ctx) {
   ctx.reply('👋 ' + tgEscape(HELPER.display_name) + ' is paired to this chat. Send /help for commands.\nAnything else you type goes to the helper as a request.');
+  startExtras(ctx.chatId);
 });
+/**
+ * A pack may add one message after the /start greeting (and after pairing) by registering the renderer 'core_start':
+ * fn({chatId}) → '' | html | {html, keyboard?} (keyboard built with tgKeyboard). A failing renderer is audited, never fatal.
+ */
+function startExtras(chatId) {
+  var r = getRenderer('core_start');
+  if (!r) return null;
+  try {
+    var out = r({ chatId: chatId });
+    if (!out) return null;
+    if (typeof out === 'string') return tgSend(chatId, out);
+    return out.html ? tgSend(chatId, String(out.html), out.keyboard ? { keyboard: out.keyboard } : undefined) : null;
+  } catch (err) { auditFail('start_extras_error', '', describeError(err)); return null; }
+}
 registerCommand('/help', function (ctx) {
   var lines = HB_REGISTRY.help.slice().sort();
   ctx.reply('<b>Commands</b>\n' + lines.map(tgEscape).join('\n') + '\n\nPlain text → a request the helper answers here.');
@@ -17,8 +32,18 @@ registerCommand('/status', function (ctx) {
     '\nLast sweep: ' + tgEscape(fmtLocalIso(settingGet('last_sweep', ''))) +
     '\nWakes today: ' + settingDailyCount('wakes') +
     '\nRoutine fires today: ' + settingDailyCount('routine_fires') +
-    '\nOne-off triggers: ' + listTriggers().length);
+    '\nOne-off triggers: ' + listTriggers().length + statusExtras());
 }, 'queue / pending / requests / sweep counts');
+/**
+ * A pack may add lines to /status by registering the renderer 'core_status': fn() → '' | html (already escaped; one
+ * or more lines). A failing renderer is audited and leaves /status as the core writes it.
+ */
+function statusExtras() {
+  var r = getRenderer('core_status');
+  if (!r) return '';
+  try { var out = r(); return out ? '\n' + String(out) : ''; }
+  catch (err) { auditFail('status_extras_error', '', describeError(err)); return ''; }
+}
 registerCommand('/pending', function (ctx) {
   var rows = listPendingActions();
   if (!rows.length) { ctx.reply('No pending actions.'); return; }

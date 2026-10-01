@@ -62,4 +62,13 @@ test('redactSecrets strips bot tokens, bearer tokens, ?k= secrets and the exact 
   assert.equal(ctx.describeError(new Error('token ' + tok)).includes(tok), false);
 });
 
+test('redactSecrets also strips the value of any property whose name ends in _API_KEY (pack keys)', () => {
+  const { ctx, state } = H.loadGas({ pack: 'hello' });
+  H.bootstrap(ctx, state);
+  state.props[ctx.propName('CLAUDE_API_KEY')] = 'sk-invented-0123456789abcdef';
+  state.props[ctx.propName('MAPS_API_KEY')] = 'AIzaInvented0123456789';
+  const out = ctx.redactSecrets('call failed: x-api-key sk-invented-0123456789abcdef and key=AIzaInvented0123456789');
+  assert.ok(!out.includes('sk-invented') && !out.includes('AIzaInvented'), out);
+});
+
 // Developed by: LightAISolutions

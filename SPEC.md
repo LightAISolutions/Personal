@@ -151,6 +151,8 @@ Pack files (`helpers/packs/<name>/gas/*.js`) load after every core file and exte
 | `registerEnvelopeObserver` | `(name, fn(env, result))` | After any envelope handler returned without throwing |
 | `registerHelp` | `(line)` | Extra `/help` line not tied to a command |
 
+Renderer names the core itself looks up: **`core_start`** — `fn({chatId}) → '' | html | {html, keyboard?}`, sent after the `/start` greeting and after pairing (`startExtras()` in `core/11_commands_builtin.js`; a throw is audited `start_extras_error`). A pack uses it to offer its first step (the tour-guide pack offers the interview). **`core_status`** — `fn() → '' | html` (escaped lines), appended to `/status` (`statusExtras()`; a throw is audited `status_extras_error`). The tour-guide pack shows its answer mode there.
+
 Core helpers a pack may call: `tgSendOwner(html, opts)`, `tgSend(chatId, html, opts)` (owner chat only — the core never messages anyone else), `tgSendDocument(chatId, {driveFileId | blob, filename?, caption?, replyTo?, silent?})` / `tgSendOwnerDocument(spec)` (Telegram `sendDocument` multipart, ≤ `DOCUMENT_MAX_BYTES`; a larger Drive file is sent as its link and audited `document_too_large`), `tgEscape(text)` (mandatory on every untrusted string; parse mode is HTML), `tgKeyboard(rows)`, `flowStart(chatId, name, seed)` / `flowActive(chatId)` / `flowResume(chatId, input)` / `flowCancel(chatId)` (§5 `registerFlow`), `enqueue()`, `proposeAction(spec)`, `openRequest(spec)`, `fireRoutine(name, text)`, `settingGet/settingSet`, `storeAppend/storeFind/storeUpdate/...` (§8), `audit(event, ref, detail)`, `getProp(propName('MY_KEY'))` for pack-specific properties, `HELPER.*`, `LIMITS.*`.
 
 ## 6. Web-app routes and the wake contract
@@ -199,7 +201,7 @@ Every property name is `<property_prefix>_<KEY>` (`propName()`); with `property_
 | `MAX_PROPOSALS_PER_DAY` | owner, optional (default 30) | Daily cap on new proposals |
 | `MAX_WAKES_PER_DAY`, `WAKE_MIN_INTERVAL_SEC` | owner, optional (defaults 500, 15) | Wake-route limits |
 
-Pack-specific properties use the same prefix and are read with `getProp(propName('MY_KEY'))`; a pack documents them in its README (the tour-guide pack plans `MAPS_API_KEY`, `CLAUDE_API_KEY` and `CHAT_API_ENABLED`). Pack secret keys must be added to the pack's own redaction (or named so that `redactSecrets()` sees them) before they are logged anywhere.
+Pack-specific properties use the same prefix and are read with `getProp(propName('MY_KEY'))`; a pack documents them in its README (the tour-guide pack plans `MAPS_API_KEY`, `CLAUDE_API_KEY` and `CHAT_API_ENABLED`). Pack secret keys must be named so that `redactSecrets()` sees them before they are logged anywhere: it redacts the exact value of every property whose name ends in `_API_KEY`, besides the core's secret keys and the routine tokens.
 
 ## 8. State Sheet
 

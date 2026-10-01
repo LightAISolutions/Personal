@@ -74,13 +74,15 @@ class Spreadsheet {
 }
 
 /* ---------------- Drive ---------------- */
+// Drive dates follow the test clock of the most recent loadGas() (set below), so date-based pruning sees test time.
+let driveNow = () => Date.now();
 const iter = (arr) => { let i = 0; return { hasNext: () => i < arr.length, next: () => { if (i >= arr.length) throw new Error('iterator exhausted'); return arr[i++]; } }; };
 class DFile {
-  constructor(parent, name, content, mime) { Object.assign(this, { id: nid('file'), parent, name, content: String(content ?? ''), mime: mime || 'text/plain', trashed: false, created: new Date(), updated: new Date() }); }
+  constructor(parent, name, content, mime) { Object.assign(this, { id: nid('file'), parent, name, content: String(content ?? ''), mime: mime || 'text/plain', trashed: false, created: new Date(driveNow()), updated: new Date(driveNow()) }); }
   getId() { return this.id; } getName() { return this.name; } setName(n) { this.name = n; return this; }
   getBlob() { const c = this.content; return { getDataAsString: () => c, getBytes: () => Array.from(Buffer.from(c, 'utf8')), getContentType: () => this.mime }; }
   getSize() { return Buffer.byteLength(this.content, 'utf8'); } getMimeType() { return this.mime; }
-  setContent(c) { this.content = String(c); this.updated = new Date(); return this; }
+  setContent(c) { this.content = String(c); this.updated = new Date(driveNow()); return this; }
   moveTo(folder) { if (this.parent) this.parent.files = this.parent.files.filter((f) => f !== this); this.parent = folder; folder.files.push(this); return this; }
   setTrashed(b) { this.trashed = !!b; return this; } isTrashed() { return this.trashed; }
   getUrl() { return `https://drive.google.com/file/d/${this.id}`; } getDateCreated() { return this.created; } getLastUpdated() { return this.updated; }
@@ -88,7 +90,7 @@ class DFile {
   path() { return (this.parent ? this.parent.path() + '/' : '') + this.name; }
 }
 class DFolder {
-  constructor(parent, name) { Object.assign(this, { id: nid('folder'), parent, name, folders: [], files: [], trashed: false, created: new Date() }); }
+  constructor(parent, name) { Object.assign(this, { id: nid('folder'), parent, name, folders: [], files: [], trashed: false, created: new Date(driveNow()) }); }
   getId() { return this.id; } getName() { return this.name; } getUrl() { return `https://drive.google.com/drive/folders/${this.id}`; }
   getFolders() { return iter(this.folders.filter((f) => !f.trashed)); }
   getFoldersByName(n) { return iter(this.folders.filter((f) => !f.trashed && f.name === n)); }
@@ -144,6 +146,7 @@ function createMocks(opts = {}) {
     tz: opts.tz || 'Etc/UTC',
     now: () => (sandbox.__TEST_NOW ? new Date(sandbox.__TEST_NOW).getTime() : Date.now())
   };
+  driveNow = () => state.now();
   state.fetch.telegram = (method) => state.fetch.requests.filter((r) => /api\.telegram\.org/.test(r.url) && (!method || r.url.endsWith('/' + method)));
   state.fetch.lastTelegramText = () => { const c = state.fetch.telegram('sendMessage'); return c.length ? c[c.length - 1].json.text : null; };
   state.fetch.routine = () => state.fetch.requests.filter((r) => /api\.anthropic\.com|\/fire\b/.test(r.url));
