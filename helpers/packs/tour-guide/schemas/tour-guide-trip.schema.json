@@ -52,7 +52,7 @@
       }
     },
     "budget_notes": { "type": "string", "maxLength": 2000 },
-    "status": { "enum": ["intake", "researched", "choosing", "planned", "delivered", "done", "draft"], "description": "intake → researched → choosing → planned → delivered → done. \"draft\" is legacy (Phase 3 fixtures) and is refused once the fixtures move to \"intake\" (WP-3d status, request 1)." },
+    "status": { "enum": ["intake", "researched", "choosing", "planned", "delivered", "done"], "description": "intake → researched → choosing → planned → delivered → done." },
     "intro": { "type": "string", "maxLength": 4000 },
     "practical": {
       "type": "array",

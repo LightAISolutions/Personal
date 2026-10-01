@@ -10,6 +10,7 @@ The engine behind the Tour Guide helper: it turns a trip, its researched places 
 | `planner/` | Day assignment, the time-window solver, real legs, meals, warnings, Maps links, budget, Later lists | below |
 | `later/` | Later-list operations (promote and demote report which days to re-plan) | below |
 | `brochure-map/` | Maps a Plan onto the brochure kit's model and renders it | below |
+| `gems/` | The Gem Funnel's engine (proposal §4 stages 2–5): screening, the gem score and 💎 rule, evidence flags, the "why it's a gem" line, shortlist floors and the "Gems not chosen" Later list — pure functions, no calls | below |
 | `fixtures/` | Two invented trips with recorded Maps answers in the real API shapes, used by every test | below |
 | `gas/` | Empty until Phase 5 (the chatbot feature pack) | — |
 
@@ -61,7 +62,7 @@ Kinds: trip, place, google-snapshot, visit-estimate, place-note, calibration, da
 
 ## Later lists — `later/`
 - Statuses: candidate · chosen · scheduled · saved-for-later · rejected. `chosen` = the owner picked it from the shortlist; the planner treats it like a candidate.
-- Trip statuses: intake · researched · choosing · planned · delivered · done (`draft` is accepted as the legacy Phase 3 value).
+- Trip statuses: intake · researched · choosing · planned · delivered · done.
 - Default lists: "Didn't fit" (machine codes), "Next time" (code `owner`), "Saved by you" (code `owner_choice`: kept for later while choosing from the shortlist) and "Gems not chosen" (code `not_shown`: gems the shortlist could not show). `defaultListFor(code)` and `LIST_DESCRIPTIONS` name them.
 - `createLists(trip_id)`, `addItem(lists, { place, place_id, reason, code, from_date?, list?, added_on })`, `removeItem`, `findItem`, `setStatus`.
   - Adding a place that is already listed moves it.
@@ -149,9 +150,27 @@ Place records may also carry `destination`, `history[]` (trip, date, event), `la
 - `brochure-map-sample.mjs` → `sampleInput()`: an invented two-day trip for tests.
 Defaults and their reasons: `helpers/decisions/WP-3c.md`.
 
+## Gem Funnel — `gems/`
+Library only: pure functions over the candidate pool the `trip-research` skill assembles; no Google call, no fetch, no clock. Every tunable number lives in `gems/gems-weights.mjs`.
+```js
+import * as gems from './gems/index.mjs';
+const { kept, dropped } = gems.screen(pool, { trip_dates, anchors, off_track_minutes, modes, avoid_types, rating_floor });   // stage 2: one reason_code per drop
+const scored = gems.scoreGems(kept, { appetite, city_size, fit_estimates, profile, trip_dates, day_start, day_end, anchors, rough_edges }); // stage 3: q o l f p → gem_score, gem
+const { flags, record } = gems.flagEvidence(scored[0], { trip_dates, today, signals });   // stage 4: unproven | tourist_oriented | closed_day_conflict
+const line = gems.gemLine(record, { category_median_count });                              // ≤ 200 chars, numbers and source kinds only
+const { groups, not_shown } = gems.selectShortlist(flagged, { appetite, per_group: { activities: 8, food: 6 }, decided });
+const later = gems.gemsNotChosenList({ trip_id, not_shown, today });                      // LaterList "Gems not chosen", code not_shown
+const placeFields = gems.toPlaceFields(record);                                           // gem_score, gem, obscurity, local_mentions, flags — no Google field
+```
+- Pool record: `{ place_id, name, types, primary_type?, category?, rating?, rating_count?, price_level?, business_status, location, hours?, website?, streams, local_mentions: [{ ref, language, kind }], mass_tourism_rank?, reviews? (in-run only), slug?, friction?, signals? }`; `fromSearchResult(rawPlace, { streams })` builds one from a Places (New) search result.
+- Screening drops: not operational, avoided type, chain (a name repeated ≥ 3 times or a short generic brand list), rating under the floor (4.3; 4.5 at appetite ≥ 4), fewer than 15 ratings unless two local mentions or an owner seed, closed on every trip date, beyond `off_track_minutes` from every anchor in a straight line at WALK 4.5 / TRANSIT 15 / DRIVE 30 km/h.
+- Score: Bayesian quality (m = 30, μ = the category's pool mean or 4.2), bucketed obscurity (40–400 ratings in a large city, 15–150 in a small one; > 2 000 → 0; owner seeds 0.5), local-ness (+0.5 per local-language source, +0.3 editorial, +0.2 community, −0.5 top-ten mass tourism), fit (the skill's estimate, else a cheap one from types and price), practicality (open at a usable time on a trip day, within reach, minus untolerated rough edges). `100 × (0.35 F + 0.25 Q + 0.20 O + 0.15 L + 0.05 P)`; appetite moves up to 0.10 between Q + F and O + L. 💎 when O ≥ 0.6, L ≥ 0.3, Q ≥ 0.6.
+- Shortlist: 💎 floor by appetite (1 → none, 2 → 1 + 1, 3 → 2 + 2, 4 → 3 + 2, 5 → 4 + 3), `decided` excluded, `floor_met: false` when the pool had too few gems. Unproven places are never shown as 💎.
+- Persisted projections carry only our own numbers and notes; reviews are read in-run for their dates only; distances run to our own anchors, never a polygon test on Google coordinates. Defaults and reasons: `helpers/decisions/WP-2g-engine.md`; full contract: `gems/README.md`.
+
 ## Tests
 
-`node --test helpers/tests/` runs the pack's suites: `pack_tour-guide_schemas`, `_estimator`, `_later`, `_fixtures`, `_planner` (a small invented world of its own, `pack_tour-guide_planner_world.js`), `_planner_transit-fallback`, `_choices`, `_payloads`, `_brochure-map`, `_brochure-map_units` and `_integration`. No test touches the network: Maps answers come from the fixture responder through the Maps kit's mock transport, and the PDF step runs only where `pdfAvailable()` is true (never in CI).
+`node --test helpers/tests/` runs the pack's suites: `pack_tour-guide_schemas`, `_estimator`, `_later`, `_fixtures`, `_planner` (a small invented world of its own, `pack_tour-guide_planner_world.js`), `_planner_transit-fallback`, `_choices`, `_payloads`, `_gems`, `_brochure-map`, `_brochure-map_units` and `_integration`. No test touches the network: Maps answers come from the fixture responder through the Maps kit's mock transport, and the PDF step runs only where `pdfAvailable()` is true (never in CI).
 
 ## What the pack never does
 

@@ -322,12 +322,7 @@ test('gemsNotChosenList: a LaterList "Gems not chosen" with code not_shown, high
   assert.equal(new Set(list.items.map((it) => it.place)).size, list.items.length, 'slugs unique');
   const scoreOf = (id) => scored.find((r) => r.place_id === id).gem_score;
   for (let i = 1; i < list.items.length; i++) assert.ok(scoreOf(list.items[i - 1].place_id) >= scoreOf(list.items[i].place_id));
-  // TODO(WP-3d): once `not_shown` is in tour-guide-later-list.schema.json's `code` enum, replace this shape check with assert.ok(s.validate(list, 'later-list').ok)
-  const r = s.validate(list, 'later-list');
-  const otherErrors = r.errors.filter((e) => !/\/code$/.test(e.path));
-  assert.deepEqual(otherErrors, [], 'only the code enum (WP-3d) stands between this list and the schema');
-  const withKnownCode = { ...list, items: list.items.map((it) => ({ ...it, code: 'other' })) };
-  assert.deepEqual(s.validate(withKnownCode, 'later-list').errors, [], 'everything but the new code already validates');
+  assert.deepEqual(s.validate(list, 'later-list').errors, [], 'the Gems not chosen list validates against the Later list schema');
   const dup = g.gemsNotChosenList({ trip_id: 't1', today: '2027-05-01', not_shown: [{ place_id: 'FixtureGemA1', slug: 'same', gem_score: 50, reason: 'r' }, { place_id: 'FixtureGemA2', slug: 'same', gem_score: 60, reason: 'r' }] });
   assert.deepEqual(dup.items.map((it) => [it.place, it.place_id]), [['same', 'FixtureGemA2'], ['same-2', 'FixtureGemA1']]);
   assert.throws(() => g.gemsNotChosenList({ trip_id: 'Bad Trip', not_shown, today: fx.today }), /gems: trip_id/);
