@@ -3,11 +3,23 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 18/100`
+`Sections: 19/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.19r] — 2026-10-01 03:33:09 AM EST
+
+> **Prompt:** "When the work is merged, build a live sample brochure with real maps and photos … save it under /mnt/project-files/tour-guide/phase-2/ … and post it in this thread for the owner's rating." (coordinator brief, continuing the owner's "10/10 once the map is fixed")
+
+### Fixed
+- Brochure and Maps kits: real Google Place Photo names were rejected (their photo ids run 400–460 characters; the pattern allowed 400). The photo-id part now allows up to 2,000 characters, with tests using a realistic-length name
+- `kit_brochure_google_images.test.js`: the schema check after `addGoogleImages` compared an error array with `.ok` and could never fail; it now expects no errors
+
+### Changed
+- Google maps in the brochure also hide POI pin icons and road-shield icons (Google's green numbered highway shields read as the brochure's green numbered stops in the live Tokyo sample); place, station and park names stay
+- `helpers/decisions/WP-2e.md` (choices 5, 12, 13: map styles, photo names, no transit routes in Japan), `helpers/decisions/TG-PHASE-2.md` §4 (planner request: transit fallback in Japan), `helpers/BUILD-STATE.md` (live sample sent)
 
 ## [v01.18r] — 2026-10-01 03:27:41 AM EST
 
