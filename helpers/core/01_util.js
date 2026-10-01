@@ -111,7 +111,7 @@ function redactSecrets(s) {
     var all = PropertiesService.getScriptProperties().getProperties() || {};
     var secretNames = SECRET_PROP_KEYS.map(propName);
     Object.keys(all).forEach(function (k) {
-      if (secretNames.indexOf(k) < 0 && !/ROUTINE_FIRE_TOKEN_/.test(k)) return;
+      if (secretNames.indexOf(k) < 0 && !/ROUTINE_FIRE_TOKEN_/.test(k) && !/_API_KEY$/.test(k)) return;
       var v = String(all[k] || '');
       if (v.length >= 8 && s.indexOf(v) >= 0) s = s.split(v).join('[redacted]');
     });

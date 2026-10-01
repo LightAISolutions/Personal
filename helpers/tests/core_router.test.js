@@ -182,4 +182,20 @@ test('core_start renderer: its message follows /start and pairing; a throwing re
   assert.ok(ctx.storeAll('AuditLog').some((r) => r.event === 'start_extras_error'));
 });
 
+test('core_status renderer: its lines end /status; a throwing renderer is audited and /status still answers', () => {
+  const { ctx, state } = H.loadGas();
+  H.bootstrap(ctx, state);
+  const k = state.props[ctx.PROP.WEBHOOK_SECRET];
+  ctx.doPost(H.postEvent('tg', { k }, H.tgUpdate({ text: '/status' })));
+  assert.match(state.fetch.lastTelegramText(), /One-off triggers: \d+$/);
+  let mode = 'ok';
+  ctx.registerRenderer('core_status', () => { if (mode === 'throw') throw new Error('boom'); return 'Answers: <b>free</b>'; });
+  ctx.doPost(H.postEvent('tg', { k }, H.tgUpdate({ text: '/status' })));
+  assert.match(state.fetch.lastTelegramText(), /One-off triggers: \d+\nAnswers: <b>free<\/b>$/);
+  mode = 'throw';
+  ctx.doPost(H.postEvent('tg', { k }, H.tgUpdate({ text: '/status' })));
+  assert.match(state.fetch.lastTelegramText(), /One-off triggers: \d+$/);
+  assert.ok(ctx.storeAll('AuditLog').some((r) => r.event === 'status_extras_error'));
+});
+
 // Developed by: LightAISolutions
