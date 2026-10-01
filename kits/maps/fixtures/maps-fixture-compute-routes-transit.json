@@ -1,0 +1,31 @@
+{
+  "routes": [
+    {
+      "distanceMeters": 6120,
+      "duration": "1500s",
+      "polyline": { "encodedPolyline": "fixture_polyline_transit" },
+      "legs": [
+        {
+          "distanceMeters": 6120,
+          "duration": "1500s",
+          "startLocation": { "latLng": { "latitude": 12.3456, "longitude": -45.6789 } },
+          "endLocation": { "latLng": { "latitude": 12.3901, "longitude": -45.6402 } },
+          "steps": [
+            { "travelMode": "WALK", "staticDuration": "240s" },
+            {
+              "travelMode": "TRANSIT",
+              "staticDuration": "1080s",
+              "transitDetails": {
+                "stopDetails": { "departureStop": { "name": "Quay Station" }, "arrivalStop": { "name": "North Gate" }, "departureTime": "2026-10-06T13:04:00Z", "arrivalTime": "2026-10-06T13:22:00Z" },
+                "headsign": "North Gate",
+                "transitLine": { "nameShort": "L2", "vehicle": { "type": "TRAM" } },
+                "stopCount": 6
+              }
+            },
+            { "travelMode": "WALK", "staticDuration": "180s" }
+          ]
+        }
+      ]
+    }
+  ]
+}

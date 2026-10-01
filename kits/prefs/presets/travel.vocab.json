@@ -1,0 +1,16 @@
+{
+  "v": 1,
+  "name": "travel",
+  "title": "Travel profile",
+  "max_tokens": 2000,
+  "dimensions": [
+    { "id": "pace", "label": "Pace", "cardinality": "one", "values": ["relaxed", "normal", "packed"], "hint": "How full a day should be" },
+    { "id": "interests", "label": "Interests", "cardinality": "many", "hint": "Kinds of places and activities: museums, hiking, markets, architecture" },
+    { "id": "food", "label": "Food", "cardinality": "many", "hint": "Cuisines, formats and dietary needs; polarity - means avoid" },
+    { "id": "budget_band", "label": "Budget band", "cardinality": "one", "values": ["shoestring", "moderate", "comfortable", "luxury"] },
+    { "id": "mobility", "label": "Mobility", "cardinality": "many", "polarity_labels": { "+": "ok with", "-": "avoid" }, "hint": "Walking range, stairs, accessibility needs" },
+    { "id": "crowds", "label": "Crowds", "cardinality": "one", "values": ["avoid", "tolerate", "enjoy"] },
+    { "id": "day_rhythm", "label": "Early or late", "cardinality": "one", "values": ["early", "flexible", "late"] },
+    { "id": "must_avoid", "label": "Must avoid", "cardinality": "many", "polarity_labels": { "+": "never", "-": "fine with" }, "hint": "Hard no: places, activities or conditions to never schedule" }
+  ]
+}

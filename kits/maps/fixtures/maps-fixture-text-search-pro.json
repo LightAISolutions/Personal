@@ -1,0 +1,25 @@
+{
+  "places": [
+    {
+      "id": "FixtureVelmoraMuseum01",
+      "displayName": { "text": "Velmora Lantern Museum", "languageCode": "en" },
+      "formattedAddress": "1 Lantern Quay, Velmora, Fictional Isles",
+      "location": { "latitude": 12.3456, "longitude": -45.6789 },
+      "types": ["museum", "tourist_attraction"],
+      "primaryType": "museum",
+      "businessStatus": "OPERATIONAL",
+      "googleMapsUri": "https://maps.example.com/fixture/velmora-lantern-museum"
+    },
+    {
+      "id": "FixtureVelmoraTower02",
+      "displayName": { "text": "Old Signal Tower", "languageCode": "en" },
+      "formattedAddress": "Tower Hill, Velmora, Fictional Isles",
+      "location": { "latitude": 12.3512, "longitude": -45.6701 },
+      "types": ["historical_landmark", "tourist_attraction"],
+      "primaryType": "historical_landmark",
+      "businessStatus": "OPERATIONAL",
+      "googleMapsUri": "https://maps.example.com/fixture/old-signal-tower"
+    }
+  ],
+  "nextPageToken": "fixture-page-2"
+}

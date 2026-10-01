@@ -340,7 +340,7 @@ One owner per path. A work package (WP) edits only the paths it owns; anything e
 ```
 helpers/kits/<kit>/
   README.md        contract: what it does, inputs and outputs, budgets and caps, what it never does, dependencies
-  index.mjs        CLI entry — node helpers/kits/<kit>/ <command> …   (node vendor/helpers/kits/<kit>/ … from a private repo)
+  index.mjs        CLI entry — node helpers/kits/<kit>/index.mjs <command> …   (node vendor/helpers/kits/<kit>/index.mjs … from a private repo; Node does not run a directory's index.mjs)
   lib/             implementation, plain ESM, one concern per file
   fixtures/        invented data only (reserved domains, made-up places and names); the boundary check scans it
 helpers/tests/kit_<kit>_*.test.js   node:test suites; network calls are mocked, live calls live behind an explicit flag

@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "research-run.schema.json",
+  "title": "Research kit run file v1 (budgets, counters, source ledger, claims)",
+  "description": "One JSON file per research run, kept outside the repo. lib/schema.mjs validates every load and save against this file; keep the two in step.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["v", "kit", "run_id", "topic", "status", "started_at", "finished_at", "budgets", "counters", "ledger", "claims"],
+  "properties": {
+    "v": { "const": 1 },
+    "kit": { "const": "research" },
+    "run_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{8,64}$" },
+    "topic": { "type": "string", "maxLength": 200 },
+    "status": { "enum": ["open", "finished"] },
+    "started_at": { "$ref": "#/$defs/isoTime" },
+    "finished_at": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$" },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["searches", "fetches", "wall_time_s"],
+      "properties": {
+        "searches": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "fetches": { "type": "integer", "minimum": 1, "maximum": 200 },
+        "wall_time_s": { "type": "integer", "minimum": 1, "maximum": 10800 }
+      }
+    },
+    "counters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["searches", "fetches", "api", "refused"],
+      "properties": {
+        "searches": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "fetches": { "type": "integer", "minimum": 0, "maximum": 200 },
+        "api": { "type": "integer", "minimum": 0, "maximum": 200 },
+        "refused": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "ledger": { "type": "array", "maxItems": 550, "items": { "$ref": "#/$defs/ledgerEntry" } },
+    "claims": { "type": "array", "maxItems": 300, "items": { "$ref": "#/$defs/claim" } }
+  },
+  "$defs": {
+    "isoTime": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$" },
+    "isoDateOrNull": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "urlOrNull": { "type": ["string", "null"], "pattern": "^https?://", "maxLength": 2048 },
+    "hostOrNull": { "type": ["string", "null"], "maxLength": 253 },
+    "entryId": { "type": "string", "pattern": "^L\\d{3,4}$" },
+    "sourceRef": { "type": "string", "pattern": "^L\\d{3,4}(\\.\\d{1,2})?$", "description": "A ledger entry id, or <search entry id>.<1-based result index> for one search result" },
+    "claimId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$" },
+    "injectionReason": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule", "sample"],
+      "properties": {
+        "rule": { "type": "string", "pattern": "^[a-z0-9-]{1,40}$" },
+        "sample": { "type": "string", "maxLength": 80 }
+      }
+    },
+    "searchResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "domain", "publisher", "title", "snippet", "injection_suspect", "injection_reasons"],
+      "properties": {
+        "url": { "type": "string", "pattern": "^https?://", "maxLength": 2048 },
+        "domain": { "type": "string", "maxLength": 253 },
+        "publisher": { "type": "string", "maxLength": 253 },
+        "title": { "type": "string", "maxLength": 200 },
+        "snippet": { "type": "string", "maxLength": 300 },
+        "injection_suspect": { "type": "boolean" },
+        "injection_reasons": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/injectionReason" } }
+      }
+    },
+    "ledgerEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "status", "fetched_at", "query", "url", "domain", "publisher", "canonical_url", "page_date", "official", "derived_from", "http_status", "title", "excerpt", "results", "supports", "contradicts", "injection_suspect", "injection_reasons", "note"],
+      "properties": {
+        "id": { "$ref": "#/$defs/entryId" },
+        "kind": { "enum": ["search", "fetch", "api"] },
+        "status": { "enum": ["ok", "error", "refused"] },
+        "fetched_at": { "$ref": "#/$defs/isoTime" },
+        "query": { "type": ["string", "null"], "maxLength": 300 },
+        "url": { "$ref": "#/$defs/urlOrNull" },
+        "domain": { "$ref": "#/$defs/hostOrNull" },
+        "publisher": { "$ref": "#/$defs/hostOrNull" },
+        "canonical_url": { "$ref": "#/$defs/urlOrNull" },
+        "page_date": { "$ref": "#/$defs/isoDateOrNull" },
+        "official": { "type": "boolean" },
+        "derived_from": { "type": ["string", "null"], "pattern": "^L\\d{3,4}$" },
+        "http_status": { "type": ["integer", "null"], "minimum": 100, "maximum": 599 },
+        "title": { "type": "string", "maxLength": 200 },
+        "excerpt": { "type": "string", "maxLength": 1000 },
+        "results": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/searchResult" } },
+        "supports": { "type": "array", "maxItems": 300, "items": { "$ref": "#/$defs/claimId" } },
+        "contradicts": { "type": "array", "maxItems": 300, "items": { "$ref": "#/$defs/claimId" } },
+        "injection_suspect": { "type": "boolean" },
+        "injection_reasons": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/injectionReason" } },
+        "note": { "type": "string", "maxLength": 300 }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "text", "kind", "place", "plan_critical", "supports", "contradicts", "created_at", "updated_at"],
+      "properties": {
+        "id": { "$ref": "#/$defs/claimId" },
+        "text": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "kind": { "enum": ["hours", "closed_days", "visit_duration", "tickets", "price", "other"] },
+        "place": { "type": ["string", "null"], "maxLength": 120 },
+        "plan_critical": { "type": "boolean" },
+        "supports": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/sourceRef" } },
+        "contradicts": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/sourceRef" } },
+        "created_at": { "$ref": "#/$defs/isoTime" },
+        "updated_at": { "$ref": "#/$defs/isoTime" }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "routes": [
+    {
+      "distanceMeters": 3870,
+      "duration": "3215s",
+      "staticDuration": "3215s",
+      "polyline": { "encodedPolyline": "fixture_polyline_loop" },
+      "optimizedIntermediateWaypointIndex": [1, 0],
+      "legs": [
+        { "distanceMeters": 900, "duration": "760s", "startLocation": { "latLng": { "latitude": 12.3456, "longitude": -45.6789 } }, "endLocation": { "latLng": { "latitude": 12.349, "longitude": -45.672 } } },
+        { "distanceMeters": 1470, "duration": "1225s", "startLocation": { "latLng": { "latitude": 12.349, "longitude": -45.672 } }, "endLocation": { "latLng": { "latitude": 12.3512, "longitude": -45.6701 } } },
+        { "distanceMeters": 1500, "duration": "1230s", "startLocation": { "latLng": { "latitude": 12.3512, "longitude": -45.6701 } }, "endLocation": { "latLng": { "latitude": 12.3456, "longitude": -45.6789 } } }
+      ],
+      "warnings": ["Walking directions are in beta. Use caution – This route may be missing sidewalks or pedestrian paths."]
+    }
+  ]
+}
