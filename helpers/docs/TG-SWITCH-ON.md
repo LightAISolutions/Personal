@@ -5,7 +5,7 @@
 ## 0 Before you start
 
 - **Merge the private repo's branches.** TourGuide PR #3 (the review-decision path, `prefs-build-ingest.mjs --decisions`) and PR #4 (the Phase 5 framework pin and the Phase 6 integration tools) must be on TourGuide `main` before the routines are created — a routine checks out `main`. Merge #3 first, then #4 (it was branched from #3's head).
-- **Personal `main` carries Phase 6** (`repository-information/repository.version.txt` ≥ `v01.28r`), so `helpers-dist` holds the hardened core the private repo pins and `deploy-helper.yml` deploys the same code.
+- **Personal `main` carries Phase 6** (`repository-information/repository.version.txt` ≥ `v01.28r`), so `helpers-dist` holds the hardened core and kits and `deploy-helper.yml` deploys the same code. The private repo still pins the Phase 5 `helpers-dist` — re-pin `vendor/helpers/` to the v01.28r one (`/update-helpers` in `repository-information/DEV-SESSION.md`, then the private suite and both dry runs) on a branch the owner merges **before** the routines are created; Phase 7's Step 0 does this.
 - **A Google Cloud project** with these APIs enabled: Places API (New), Routes API, Places Aggregate API, Maps Static API. Two keys: the **Maps key** (restricted to Places API (New), Routes API and Places Aggregate API) goes into the Claude environment's API credentials for the hosts `places.googleapis.com`, `routes.googleapis.com` and `areainsights.googleapis.com` — the proxy injects it, no routine ever sees it; the **Static Maps key** (restricted to Maps Static API) becomes the environment variable `MAPS_STATIC_KEY`. Set a billing budget alert on the project (a few dollars a month) as the last line of defence; the kits stop at 80 % of each free tier on their own.
 - **A Telegram bot** from BotFather (`/newbot`) — keep the token for the setup page, nowhere else.
 - **A Google account** for the Apps Script project (the consumer quotas in the audit assume a gmail.com account), `clasp login` done once on your machine, and a GitHub `production` environment in the Personal repo restricted to `main`.
@@ -55,7 +55,7 @@ For each row: new routine → attach **only** the private repo `LightAISolutions
 |---|---|---|---|---|
 | `prefs-build` | `PREFS` | API (the core fires it for `prefs` requests: interview, review, decisions) | Google Drive; Gmail and Google Calendar read-only for the connector window | Opus 5.5 · high |
 | `trip-research` | `RESEARCH` | API (`research`) | Google Drive, web search and fetch; Gmail and Google Calendar read-only (used by the `intake` step only) | Opus 5.5 · high (Fable 5.1 · high for a trip that matters) |
-| `plan-days` | `PLAN` | API (`plan`, `replan`) | Google Drive | Opus 5.5 · high |
+| `plan-days` | `PLAN` | API (`plan`, `replan`) | Google Drive; web search and fetch (used only when the request's `deliverables` include `notes`) | Opus 5.5 · high |
 | `place-notes` | `NOTES` | API (`notes`) | Google Drive, web search and fetch | Opus 5.5 · high |
 | `brochure-build` | `BROCHURE` | API (`brochure`) | Google Drive | Opus 5.5 · high |
 | `chat` | `CHAT` | API (free text: `message`, `ask`) | Google Drive, web search and fetch | Opus 5.5 · medium |
