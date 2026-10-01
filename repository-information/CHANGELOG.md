@@ -3,11 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 24/100`
+`Sections: 25/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.24r] — 2026-10-01 04:13:42 AM EST
+
+> **Prompt:** *(continuation of the v01.23r interaction)* decision card "Choose how Tour Guide plans Japan train legs": "Google estimate"
+
+### Added
+- Tour Guide planner: station-based train estimates where Google returns no transit route (Japan) — `planner/planner-rail.mjs` (`withRailEstimates`, `railEstimate`, `rideMinutes`, `walkMinutes`, `RAIL`). `planTrip` wraps the Maps client with it (opt out with `railEstimates: false`): nearest train, subway or light-rail stations from Google Text Search (one Pro call per point, cached for the build), walk + estimated ride + walk, the leg line `A Station → B Station (estimate)`, and the existing Google Maps transit link for the exact train. Verified live on Tokyo pairs
+- Tests: `pack_tour-guide_rail.test.js` (233 passing in all)
+
+### Changed
+- `helpers/decisions/WP-2e.md` choice 15 revised: NAVITIME through RapidAPI dropped (Japanese-only output and average times on that tier; its terms forbid storing, caching or translating results), station-based estimates chosen by the owner; `helpers/decisions/TG-PHASE-2.md` §4 Japan-transit row marked done; `helpers/packs/tour-guide/README.md`, `helpers/BUILD-STATE.md`, `README.md` tree
 
 ## [v01.23r] — 2026-10-01 04:05:15 AM EST
 

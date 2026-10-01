@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-01 04:05:15 AM EST` · Repo version: `v01.23r`
+Last updated: `2026-10-01 04:13:42 AM EST` · Repo version: `v01.24r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -415,6 +415,7 @@ Last updated: `2026-10-01 04:05:15 AM EST` · Repo version: `v01.23r`
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-input.mjs">planner-input.mjs</a> — Normalises trip, places, estimates and profile into candidates
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-later.mjs">planner-later.mjs</a> — Collects dropped candidates into Later lists with codes
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-legs.mjs">planner-legs.mjs</a> — Maps kit calls: route matrix, one leg, cross-check, Maps URLs
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-rail.mjs">planner-rail.mjs</a> — Station-based train estimates where Google has no transit route (Japan)
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-rng.mjs">planner-rng.mjs</a> — Seeded RNG for deterministic tie-breaks
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-solve.mjs">planner-solve.mjs</a> — Held-Karp with time windows, bookings and the lunch slot
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-time.mjs">planner-time.mjs</a> — Minutes-of-day helpers and local → ISO times
@@ -523,6 +524,7 @@ Last updated: `2026-10-01 04:05:15 AM EST` · Repo version: `v01.23r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_integration.test.js">pack_tour-guide_integration.test.js</a> — Tour Guide pack: fixtures → estimator → planner → schemas → brochure, the Phase 3 property set
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_later.test.js">pack_tour-guide_later.test.js</a> — Tour Guide pack: Later lists, promote / demote
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_planner.test.js">pack_tour-guide_planner.test.js</a> — Tour Guide pack: solver and planner properties on a generated world
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_rail.test.js">pack_tour-guide_rail.test.js</a> — Tour Guide pack: station-based train estimates where Google has no transit
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_planner_world.js">pack_tour-guide_planner_world.js</a> — Generated planner world (seeded cities, hours, bookings) used by the planner tests
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_schemas.test.js">pack_tour-guide_schemas.test.js</a> — Tour Guide pack: every schema accepts its fixture and rejects hostile shapes
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_boundary.test.js">tools_boundary.test.js</a> — Plants a fake secret and a personal-data path; the boundary check must fail on them
