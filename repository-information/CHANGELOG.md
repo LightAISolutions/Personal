@@ -3,11 +3,20 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 31/100`
+`Sections: 32/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.31r] — 2026-10-01 07:17:09 PM EST
+
+> **Prompt:** "for each of the 6 new routines, give me step by step instructions on how to create them. Make it as easy as possible for me to just copy/paste whenever possible." *(Phase 7 switch-on, step 3 with the owner: routines, `/ask`, Aggregate smoke)*
+
+### Changed
+- `helpers/docs/TG-SWITCH-ON.md` rewritten from the live switch-on: §1 deploys without a checkout (clasp 2 login in a terminal, browser project, Deploy helper pushes first, then the web-app deployment from Manage deployments); §3 sets `WEBAPP_URL` before `printSetupUrl()` and never shares the setup line or address bar; §4 creates `chat` first, says where the fire URL and the once-shown token live, that every connector is included by default, and that the prompt must name the `routine-fire-payload` block
+- `helpers/templates/private-repo/routines/README.md`: the prompt shape names the `routine-fire-payload` block and limits it to a request id
+- `helpers/decisions/TG-PHASE-7.md`: findings F8–F11; `helpers/status/PHASE-7-RESUME.md`: step 3 done, step 4 (interview) in progress
 
 ## [v01.30r] — 2026-10-01 06:50:29 PM EST
 
