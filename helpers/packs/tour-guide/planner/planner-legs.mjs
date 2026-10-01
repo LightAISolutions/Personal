@@ -5,16 +5,40 @@
  * Points are { placeId? , lat?, lng?, name } — place ids for places, coordinates for a lodging without one.
  */
 import { directionsUrl, dayUrl, URL_MAX_WAYPOINTS } from '../../../kits/maps/index.mjs';
+import { haversineKm, isLoc } from './planner-geo.mjs';
 
 export const pointKey = (p) => (p.placeId ? 'id:' + p.placeId : `ll:${p.lat},${p.lng}`);
 export const waypoint = (p) => (p.placeId ? { placeId: p.placeId } : { lat: p.lat, lng: p.lng });
 const minutes = (sec) => Math.max(1, Math.ceil(sec / 60));
 
 /**
- * fetchMatrix(maps, { points, mode, departureTime, transitPreferences }) → { travel: Map('from|to' → { minutes, distance_m }), elements }
- * Identical points are sent once; the diagonal is 0 without asking.
+ * Transit fallback (WP-3e). Google Routes returns no TRANSIT route in some countries (Japan, for one). When a TRANSIT
+ * matrix element or a TRANSIT Compute Routes call yields no route, the planner does not switch to driving: it
+ * estimates the leg from the straight-line distance × ROUTE_FACTOR at `kmh`, plus `overhead_min` (walk to the
+ * station, waits). Estimated legs carry `estimated: true` and the day a `transit_estimated` warning.
  */
-export async function fetchMatrix(maps, { points, mode, departureTime = null, transitPreferences = null }) {
+export const TRANSIT_FALLBACK_DEFAULT = Object.freeze({ kmh: 20, overhead_min: 12 });
+export const ROUTE_FACTOR = 1.3;
+export function transitFallback(trip) {
+  const t = (trip && trip.transit_fallback) || {};
+  return {
+    kmh: Number.isFinite(t.kmh) && t.kmh > 0 ? t.kmh : TRANSIT_FALLBACK_DEFAULT.kmh,
+    overhead_min: Number.isFinite(t.overhead_min) && t.overhead_min >= 0 ? t.overhead_min : TRANSIT_FALLBACK_DEFAULT.overhead_min
+  };
+}
+/** estimateTransit(a, b, fallback) → { minutes, distance_m, line: null, estimated: true } or null without coordinates. */
+export function estimateTransit(a, b, fallback) {
+  if (!fallback || !isLoc(a) || !isLoc(b)) return null;
+  const km = haversineKm(a, b) * ROUTE_FACTOR;
+  return { minutes: Math.max(1, Math.ceil((km / fallback.kmh) * 60 + fallback.overhead_min)), distance_m: Math.round(km * 1000), line: null, estimated: true };
+}
+
+/**
+ * fetchMatrix(maps, { points, mode, departureTime, transitPreferences, fallback }) → { travel: Map('from|to' → { minutes, distance_m, estimated? }), elements }
+ * Identical points are sent once; the diagonal is 0 without asking. With `fallback` (TRANSIT only) a pair Google
+ * answered with no route — element missing or not ROUTE_EXISTS — gets the distance estimate instead of Infinity.
+ */
+export async function fetchMatrix(maps, { points, mode, departureTime = null, transitPreferences = null, fallback = null }) {
   const uniq = [];
   const index = new Map();
   for (const p of points) { const k = pointKey(p); if (!index.has(k)) { index.set(k, uniq.length); uniq.push(p); } }
@@ -30,16 +54,27 @@ export async function fetchMatrix(maps, { points, mode, departureTime = null, tr
     if (a === b) continue;
     travel.set(a + '|' + b, e.ok && e.durationSec != null ? { minutes: minutes(e.durationSec), distance_m: e.distanceMeters ?? null } : { minutes: Infinity, distance_m: null });
   }
+  if (mode === 'TRANSIT' && fallback) {
+    for (const p of uniq) for (const q of uniq) {
+      const k = pointKey(p) + '|' + pointKey(q), cur = travel.get(k);
+      if (cur && cur.minutes < Infinity) continue;
+      const est = estimateTransit(p, q, fallback);
+      if (est) travel.set(k, { minutes: est.minutes, distance_m: est.distance_m, estimated: true });
+    }
+  }
   return { travel, elements: r.units, requests: r.requests };
 }
 
-/** One real leg: computeRoutes(from, to) at `departureTime` → { minutes, distance_m, line, raw } (minutes Infinity when Google found no route). */
-export async function fetchLeg(maps, { from, to, mode, departureTime = null, transitPreferences = null }) {
+/**
+ * One real leg: computeRoutes(from, to) at `departureTime` → { minutes, distance_m, line } (minutes Infinity when
+ * Google found no route). With `fallback` (TRANSIT only) a missing route becomes the distance estimate ({ estimated: true }).
+ */
+export async function fetchLeg(maps, { from, to, mode, departureTime = null, transitPreferences = null, fallback = null }) {
   const opts = { origin: waypoint(from), destination: waypoint(to), travelMode: mode };
   if (departureTime) opts.departureTime = departureTime;
   if (mode === 'TRANSIT' && transitPreferences) opts.transitPreferences = transitPreferences;
   const { route } = await maps.computeRoutes(opts);
-  if (!route || route.durationSec == null) return { minutes: Infinity, distance_m: null, line: null };
+  if (!route || route.durationSec == null) return (mode === 'TRANSIT' && estimateTransit(from, to, fallback)) || { minutes: Infinity, distance_m: null, line: null };
   return { minutes: minutes(route.durationSec), distance_m: route.distanceMeters ?? null, line: transitLine(route) };
 }
 export function transitLine(route) {

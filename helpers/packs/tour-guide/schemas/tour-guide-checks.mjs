@@ -116,6 +116,15 @@ export function checkDayPlan(d) {
     if (L[i] && L[i].to !== s.place) e(`/legs/${i}/to`, `must be "${s.place}" (stop ${i + 1})`);
     if (L[i + 1] && L[i + 1].from !== s.place) e(`/legs/${i + 1}/from`, `must be "${s.place}" (stop ${i + 1})`);
   });
+  // Estimated TRANSIT legs (WP-3e): TRANSIT only, `estimated` and `estimate_basis` together, one day warning.
+  L.forEach((l, i) => {
+    if (l.estimated && l.mode !== 'TRANSIT') e(`/legs/${i}/estimated`, 'only a TRANSIT leg can be estimated');
+    if (!!l.estimated !== !!l.estimate_basis) e(`/legs/${i}/estimate_basis`, 'estimated and estimate_basis go together');
+  });
+  const estimatedLegs = L.filter((l) => l.estimated).length;
+  const estWarnings = (d.warnings || []).filter((w) => w.code === 'transit_estimated').length;
+  if (estimatedLegs && estWarnings !== 1) e('/warnings', `a day with estimated transit legs carries exactly one "transit_estimated" warning (found ${estWarnings})`);
+  if (!estimatedLegs && estWarnings) e('/warnings', '"transit_estimated" on a day without an estimated leg');
   // Walk the timeline in order: leg 0, stop 0, leg 1, stop 1, …, last leg.
   const seq = [];
   for (let i = 0; i < Math.max(L.length, S.length); i++) {

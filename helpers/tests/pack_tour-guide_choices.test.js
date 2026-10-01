@@ -55,6 +55,7 @@ function properties(L, name, fx, p) {
     if (day.stops.length) assert.equal(day.legs.length, day.stops.length + 1); else assert.ok(day.legs.length <= 1, 'a day without stops has at most the lodging move');
     const pid = (ref, lodging) => byId.get(ref === 'lodging' ? lodging : ref).place_id;
     for (const leg of day.legs) {
+      if (leg.estimated) continue; // estimated TRANSIT legs (WP-3e) are not in the travel table
       const want = L.fixtures.fixtureTravel(fx, day.mode, pid(leg.from, day.lodging_start), pid(leg.to, day.lodging_end));
       assert.ok(Math.abs(leg.minutes - want.durationSec / 60) <= 1, `${name}: leg ${leg.from}→${leg.to} matches the recorded time`);
     }

@@ -39,6 +39,18 @@
         "routingPreference": { "enum": ["LESS_WALKING", "FEWER_TRANSFERS"] }
       }
     },
+    "transit_fallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kmh", "overhead_min"],
+      "description": "How the planner estimates a TRANSIT leg Google has no route for (straight-line distance × 1.3 at kmh, plus overhead_min). Absent: 20 km/h and 12 min.",
+      "properties": {
+        "kmh": { "type": "number", "minimum": 1, "maximum": 200 },
+        "overhead_min": { "type": "integer", "minimum": 0, "maximum": 120 },
+        "source": { "enum": ["default", "researched"] },
+        "note": { "type": "string", "maxLength": 200 }
+      }
+    },
     "budget_notes": { "type": "string", "maxLength": 2000 },
     "status": { "enum": ["intake", "researched", "choosing", "planned", "delivered", "done", "draft"], "description": "intake → researched → choosing → planned → delivered → done. \"draft\" is legacy (Phase 3 fixtures) and is refused once the fixtures move to \"intake\" (WP-3d status, request 1)." },
     "intro": { "type": "string", "maxLength": 4000 },

@@ -62,6 +62,8 @@ test('both fixtures plan end to end: schemas, hours, closed days, legs, day boun
       assert.equal(day.legs.length, day.stops.length + 1, `${name} ${day.date}: legs = stops + 1`);
       const pid = (ref, lodging) => byId.get(ref === 'lodging' ? lodging : ref).place_id;
       for (const leg of day.legs) {
+        assert.equal(leg.estimated, undefined, `${name} ${day.date}: the fixture answers every pair, so no leg is a transit estimate`);
+        if (leg.estimated) continue; // estimated TRANSIT legs (WP-3e) are checked against the estimate, not the table
         const want = L.fixtures.fixtureTravel(fx, day.mode, pid(leg.from, day.lodging_start), pid(leg.to, day.lodging_end));
         assert.ok(Math.abs(leg.minutes - want.durationSec / 60) <= 1, `${name} ${day.date}: leg ${leg.from}→${leg.to} ${leg.minutes} min matches the recorded ${want.durationSec}s`);
         assert.equal(leg.source, 'route'); assert.match(leg.maps_url, /^https:\/\/www\.google\.com\/maps\/dir\//);

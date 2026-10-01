@@ -5,6 +5,8 @@
  * choices = { picks?, later?, skip? } by place slug (planner-choices.mjs): picks are the whole pool, later → "Saved by
  * you" (owner_choice), skip → rejected. Without choices the output is exactly what it was before choices existed.
  *   estimateBudget(input) → budget               (no API call; what planTrip would spend and whether the ledger allows it)
+ * TRANSIT legs Google has no route for are estimated from distance (trip.transit_fallback, planner-legs.mjs) and the
+ * day carries a `transit_estimated` warning; DRIVE / WALK are unchanged.
  * `maps` is a Maps-kit client (createMapsClient); every unit it spends is counted by its ledger before sending.
  * Contract (entities, codes, warnings): helpers/packs/tour-guide/README.md. Design and limits: helpers/decisions/WP-3b.md.
  */
@@ -27,6 +29,8 @@ export { localToIso, weekdayOf, dateRange, toMin, hm } from './planner-time.mjs'
 export { DIDNT_FIT, NEXT_TIME, SAVED_BY_YOU } from './planner-later.mjs';
 export { withRailEstimates, railEstimate, railLine, rideMinutes, walkMinutes, RAIL, STATION_TYPES } from './planner-rail.mjs';
 export { normalizeChoices, applyChoices, POOL_STATUSES, CHOICE_LISTS, OWNER_CHOICE_REASON } from './planner-choices.mjs';
+export { transitFallback, estimateTransit, TRANSIT_FALLBACK_DEFAULT, ROUTE_FACTOR } from './planner-legs.mjs';
+export { TRANSIT_ESTIMATED_TEXT } from './planner-day.mjs';
 
 const fail = (m) => { throw new Error('planner: ' + m); };
 
