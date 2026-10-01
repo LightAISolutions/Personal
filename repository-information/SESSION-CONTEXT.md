@@ -6,6 +6,34 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-10-01 03:16:38 AM EST
+**Repo version:** v01.16r
+**Branch:** `claude/tg-phase-4-18ndyh` (Tour Guide project, thread "Tour Guide Phase 4 (resumed)", coordinator Fable 5.1 · high)
+
+**What we worked on**
+- Tour Guide Phase 4 per `helpers/prompts/TG-PHASE-4.md` + `TG-PHASE-4-DELTA.md`, built in the private repo `LightAISolutions/TourGuide` on its branch `claude/tg-phase-4-18ndyh`: template rendered from the pack manifest, `vendor/helpers/` pinned to `helpers-dist`, seven routine skills with drivers (trip-research, plan-days, place-notes, brochure-build, prefs-build, chat, trip-check), memory tools, routine prompts and table; WP-4b and WP-4c by `hb-builder-opus` agents in worktrees, WP-4a by the coordinator
+- The delta: trip statuses, `plan` `later` / `skip` / `deliverables` with `plan-days-run.mjs` chaining plan → notes → brochure, structured shortlist, `intake` scope, `prefs-build --interview`
+- In this repo: `helpers/decisions/TG-PHASE-4.md`, `helpers/status/WP-4a..c.md`, `helpers/decisions/WP-4a..c.md`, the ledger merge driver mirrored into `helpers/templates/private-repo/` (`scripts/merge-maps-ledger.mjs`, `.gitattributes`, workflow config, allow-list), `helpers/BUILD-STATE.md`
+
+**Where we left off**
+- Phase 4 done and pushed as v01.16r; the TourGuide branch is pushed and waits for the owner's merge. The owner was told to start Phase 4b in a new session on Fable 5.1 · high. The Google-content question (`show_google_content`, default yes) is still open with the owner
+
+**Key decisions made**
+- Trip statuses live in `tools/tg-memory.mjs` with `schemaTrip()` mapping onto the closed schema enum until Phase 4b widens it; `owner_choice` rides in the Later reason text
+- Chaining is a separate resumable run driver; Drive ids are attached after the fact (`--attach`)
+- Enterprise tier for every brain-side snapshot (Essentials has no hours); the ledger merge driver replaces "conflicts are rare"
+- Models: Opus 5.5 · high default, chat medium, trip-research Fable for a trip that matters; WP-4b's Sonnet suggestion recorded for the owner
+
+**Active context**
+- `helpers/packs/tour-guide/` untouched this phase; AssistantBrain reference only; worktrees `tg-wt-4b` / `tg-wt-4c` local to the private clone (branches `wp-4b` / `wp-4c`, never pushed); Phase 2 thread owns the Maps Static brochure change
+
+**Recommendation for next session**
+- Start Phase 4b in a new session on Fable 5.1 · high; it builds WP-1b, 2f, 3d here, then WP-4d in the private repo, and finalizes `helpers/prompts/TG-PHASE-5.md` (see `helpers/decisions/TG-PHASE-4.md` §8)
+
+**To continue:** type `Read helpers/prompts/TG-PHASE-4B.md and execute it exactly.`
+
+## Previous Sessions
+
 **Date:** 2026-10-01 02:50:57 AM EST
 **Repo version:** v01.15r
 **Branch:** `claude/tg-plan-telegram-vision-610o9x` (Tour Guide project, thread "Amend plan for Telegram vision", Fable 5.1 · xhigh)
@@ -30,33 +58,3 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - When Phase 4 hands off, start Phase 4b in a new session on Fable 5.1 · high
 
 **To continue:** type `Read helpers/prompts/TG-PHASE-4B.md and execute it exactly.`
-
-## Previous Sessions
-
-**Date:** 2026-10-01 01:56:30 AM EST
-**Repo version:** v01.14r
-**Branch:** `claude/tg-phase-3-2udjs1` (Tour Guide project, thread "Tour Guide Phase 3", coordinator Fable 5.1 · high)
-
-**What we worked on**
-- Tour Guide Phase 3 per `helpers/prompts/TG-PHASE-3.md`: the `helpers/packs/tour-guide/` engine. WP-3a (schemas, estimator, Later lists, fixtures) and WP-3c (brochure map) built by `hb-builder-opus` agents in worktrees; WP-3b (planner + Held-Karp solver) built by the coordinator; all merged, 206 tests, bundle check and boundary check clean, no live calls
-- Cross-WP integration test on both fixtures; pack README; both fixture brochures rendered to the project's shared folder as a preview
-- Wrote `helpers/decisions/TG-PHASE-3.md`, updated `helpers/BUILD-STATE.md`, wrote `helpers/prompts/TG-PHASE-4.md`
-
-**Where we left off**
-- Phase 3 pushed as v01.14r. Nothing is owed by the owner for Phase 3; the owner's Phase 2 brochure rating and the Google-content question (hours/ratings in a delivered brochure) stay open and are carried into Phase 4's owner-input step
-
-**Key decisions made**
-- Booked stops are exempt from the solver's wait cap (the plan may go there first and wait for the booking)
-- Fixture travel times are the single source of truth: every leg the planner emits must match the fixture's answer within a minute
-- `REPO-ARCHITECTURE.md` unchanged (its `helpers/` node already lists `packs/`)
-- Phase 4 request kinds `research, plan, replan, notes, brochure, prefs` + free-text `chat`; `show_google_content` defaults to true until the owner answers
-
-**Active context**
-- `helpers-dist` carries the pack after this merge; the TourGuide private repo is still at its Phase 0 skeleton and receives the template + first `vendor/helpers/` pin in Phase 4; AssistantBrain reference only
-- Worktrees `wt-3a/b/c` are local only (branches `wp-3a/b/c`, never pushed)
-
-**Recommendation for next session**
-- Start Phase 4 in a new session on Fable 5.1 · high
-
-**To continue:** type `Read helpers/prompts/TG-PHASE-4.md and execute it exactly.`
-

@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-01 02:50:57 AM EST` · Repo version: `v01.15r`
+Last updated: `2026-10-01 03:16:38 AM EST` · Repo version: `v01.16r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -229,13 +229,17 @@ Last updated: `2026-10-01 02:50:57 AM EST` · Repo version: `v01.15r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-1.md">TG-PHASE-1.md</a>       — Phase 1: scrub report (owner gate), subtree decision, every default chosen
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-2.md">TG-PHASE-2.md</a>       — Phase 2: coordinator defaults, findings, brochure rating
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-3.md">TG-PHASE-3.md</a>   — Phase 3: coordinator defaults, ownership-map extension, solver design and limits, requests carried
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-4.md">TG-PHASE-4.md</a>   — Phase 4: coordinator defaults, request-kind contract, payloads, Drive and memory layout, drivers, routine table, "For Phase 4b"
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2a.md">WP-2a.md</a>            — WP-2a Maps kit: defaults, Maps terms finding, credential header, live smoke results
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2b.md">WP-2b.md</a>            — WP-2b Research kit: defaults (budgets, independence, labels, scanner)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2c.md">WP-2c.md</a>            — WP-2c Brochure kit: defaults, design rationale, Playwright for routines
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2d.md">WP-2d.md</a>            — WP-2d Prefs kit: defaults (formats, review payload, invariants)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-3a.md">WP-3a.md</a>        — WP-3a schemas / estimator / Later / fixtures: defaults and fixture design
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-3b.md">WP-3b.md</a>        — WP-3b planner + solver: defaults, solver limits, the booked-stop wait rule
-│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-3c.md">WP-3c.md</a>        — WP-3c brochure map: defaults, what the brochure shows and hides
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-3c.md">WP-3c.md</a>        — WP-3c brochure map: defaults, what the brochure shows and hides
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4a.md">WP-4a.md</a>        — WP-4a trip-research + plan-days: defaults, the Phase 4 delta (statuses, choices, chaining, shortlist, intake)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4b.md">WP-4b.md</a>        — WP-4b prefs-build + place-notes + brochure-build: defaults, interview answers
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-4c.md">WP-4c.md</a>        — WP-4c chat + trip-check + routine table: defaults (request check, hand-offs, Enterprise tier, change codes)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits">kits/</a>                   — Shared Node kits (no runtime dependencies except Playwright for the brochure PDF step)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/brochure">brochure/</a>           — Brochure renderer: brochure model → one self-contained HTML document → paginated PDF via Playwright
 │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/brochure/assets">assets/</a>         — Embedded assets (no network at render or view time)
@@ -437,10 +441,13 @@ Last updated: `2026-10-01 02:50:57 AM EST` · Repo version: `v01.15r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2d.md">WP-2d.md</a>            — WP-2d progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-3a.md">WP-3a.md</a>        — WP-3a progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-3b.md">WP-3b.md</a>        — WP-3b progress and requests to the coordinator
-│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-3c.md">WP-3c.md</a>        — WP-3c progress and requests to the coordinator
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-3c.md">WP-3c.md</a>        — WP-3c progress and requests to the coordinator
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4a.md">WP-4a.md</a>        — WP-4a progress, dry runs and requests (generic copy from the private repo)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4b.md">WP-4b.md</a>        — WP-4b progress, dry runs and requests (generic copy from the private repo)
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-4c.md">WP-4c.md</a>        — WP-4c progress, dry runs, memory-merge experiment and requests (generic copy from the private repo)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates">templates/</a>              — Skeletons copied by tools/new-helper.mjs
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo">private-repo/</a>       — Skeleton of a helper's private repo ({{…}} placeholders filled by new-helper.mjs)
-│   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/.gitattributes">.gitattributes</a>  — log/*.md merge=union so daily logs merge line by line
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/.gitattributes">.gitattributes</a>  — log/*.md merge=union so daily logs merge line by line; the Maps ledger uses the maps-ledger driver
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/.github">.github/</a>
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/.github/workflows">workflows/</a>
 │   │       │       └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/.github/workflows/merge-routine-memory.yml">merge-routine-memory.yml</a> — Merges memory-only claude/* branches into main
@@ -458,6 +465,7 @@ Last updated: `2026-10-01 02:50:57 AM EST` · Repo version: `v01.15r`
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/routines">routines/</a>       — One &lt;name&gt;.prompt.md per routine
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/routines/README.md">README.md</a>   — The text pasted into the routine editor, one file per routine
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/scripts">scripts/</a>
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/scripts/merge-maps-ledger.mjs">merge-maps-ledger.mjs</a> — git merge driver for log/maps-usage-ledger.json: sums both sides' Maps spend
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/scripts/merge-routine-memory.sh">merge-routine-memory.sh</a> — Memory-only merge rules used by the workflow
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo/skills">skills/</a>         — One SKILL.md per routine
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/skills/README.md">README.md</a>   — How skills are named and what each must state

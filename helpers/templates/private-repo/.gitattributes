@@ -9,7 +9,10 @@
 # Two runs on the same day therefore both add a line at the end of log/YYYY-MM-DD.md. The union merge driver keeps
 # both sides instead of reporting a conflict, so .github/workflows/merge-routine-memory.yml can merge every memory
 # branch unattended. Only the daily logs get this driver: other memory files are edited in place and must conflict
-# normally so the owner sees it.
+# normally so the owner sees it — except the Maps usage ledger: every run that calls Google rewrites its rows, so two
+# runs from the same main always conflict there; scripts/merge-maps-ledger.mjs sums both sides' spend instead (the
+# workflow wires the driver up with git config before the sweep).
 log/*.md merge=union
+log/maps-usage-ledger.json merge=maps-ledger
 
 # Developed by: LightAISolutions

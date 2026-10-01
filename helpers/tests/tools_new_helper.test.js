@@ -43,7 +43,7 @@ test('scaffoldPrivateRepo fills every placeholder, ships the memory dirs, the me
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'hb-private-'));
   N.scaffoldPrivateRepo(m, out, { frameworkRepo: 'ExampleOrg/Framework' });
   const files = walk(out);
-  for (const f of ['CLAUDE.md', 'README.md', '.gitattributes', '.github/workflows/merge-routine-memory.yml', 'scripts/merge-routine-memory.sh', 'skills/README.md', 'skills/remember-session/SKILL.md', 'routines/README.md', 'vendor/helpers/README.md', 'repository-information/SESSION-CONTEXT.md', 'log/.gitkeep', 'quarantine/.gitkeep', 'trips/.gitkeep', 'places/.gitkeep']) {
+  for (const f of ['CLAUDE.md', 'README.md', '.gitattributes', '.github/workflows/merge-routine-memory.yml', 'scripts/merge-routine-memory.sh', 'scripts/merge-maps-ledger.mjs', 'skills/README.md', 'skills/remember-session/SKILL.md', 'routines/README.md', 'vendor/helpers/README.md', 'repository-information/SESSION-CONTEXT.md', 'log/.gitkeep', 'quarantine/.gitkeep', 'trips/.gitkeep', 'places/.gitkeep']) {
     assert.ok(files.includes(f), 'missing ' + f);
   }
   for (const f of files) {
@@ -57,6 +57,7 @@ test('scaffoldPrivateRepo fills every placeholder, ships the memory dirs, the me
   assert.match(fs.readFileSync(path.join(out, 'scripts/merge-routine-memory.sh'), 'utf8'), /trips\|places/);
   assert.match(fs.readFileSync(path.join(out, 'vendor/helpers/README.md'), 'utf8'), /ExampleOrg\/Framework/);
   assert.match(fs.readFileSync(path.join(out, '.gitattributes'), 'utf8'), /log\/\*\.md merge=union/);
+  assert.match(fs.readFileSync(path.join(out, '.gitattributes'), 'utf8'), /maps-usage-ledger\.json merge=maps-ledger/);
   assert.throws(() => N.scaffoldPrivateRepo(m, out), /not empty/);
   fs.rmSync(out, { recursive: true, force: true });
   const none = N.manifestFor({ name: 'quiet' });

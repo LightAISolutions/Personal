@@ -3,11 +3,27 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 15/100`
+`Sections: 16/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.16r] — 2026-10-01 03:16:38 AM EST
+
+> **Prompt:** "Restart both threads from where they started on whichever AI model and effort level they were at before the pause"
+
+### Added
+- `helpers/decisions/TG-PHASE-4.md` — Phase 4 (Tour Guide brain side in the private repo): coordinator defaults, the request-kind contract as implemented (`research` with `intake` / `more` / `decided`, `plan` with `picks` / `later` / `skip` / `deliverables`, `replan`, `notes`, `brochure`, `prefs` with interview answers, free text), the `shortlist` / `trip_facts` / `prefs_review` payloads the drivers already write, the Drive and memory layout, every driver's name and flags, the routine table, what each skill needs from the core, a "For Phase 4b" section, requests carried, checks at push
+- `helpers/status/WP-4a.md`, `WP-4b.md`, `WP-4c.md` and `helpers/decisions/WP-4a.md`, `WP-4b.md`, `WP-4c.md` — generic copies of the private repo's per-package status (contract tables, dry runs on the two invented fixture trips, requests) and defaults
+- `helpers/templates/private-repo/scripts/merge-maps-ledger.mjs` — git merge driver for `log/maps-usage-ledger.json`: per month × SKU × field `ours + theirs − base`, `updated_at` the later side; anything that is not a v1 ledger still conflicts
+
+### Changed
+- `helpers/templates/private-repo/.gitattributes`, `.github/workflows/merge-routine-memory.yml`, `scripts/merge-routine-memory.sh`, `README.md` — the Maps ledger merges through the new driver (`merge=maps-ledger`, two `git config` lines before the sweep) and the memory allow-list accepts `.json` files; the template README names the new script
+- `helpers/tests/tools_new_helper.test.js` — a rendered private repo must carry the merge driver and the `.gitattributes` line
+- `helpers/BUILD-STATE.md` — Phase 4 done, the TourGuide repo row, Phase 4b marked next, Phase 4 log, Next (Phase 4b kickoff)
+- `README.md` — tree entries for every new file
+- `repository-information/SESSION-CONTEXT.md` — session context saved
 
 ## [v01.15r] — 2026-10-01 02:50:57 AM EST
 

@@ -16,7 +16,7 @@ routines/<name>.prompt.md  the exact text pasted into the claude.ai routine edit
 quarantine/                notes derived from untrusted content, waiting for the owner to promote them
 log/                       append-only daily logs, one line per routine run
 vendor/helpers/            pinned copy of {{FRAMEWORK_REPO}} → helpers/ (helpers-dist branch); never edited here
-scripts/                   merge-routine-memory.sh, run by the memory workflow
+scripts/                   merge-routine-memory.sh (run by the memory workflow) · merge-maps-ledger.mjs (git merge driver that sums both sides of log/maps-usage-ledger.json)
 .github/workflows/         merge-routine-memory.yml: merges memory-only claude/* branches into main
 repository-information/    DEV-SESSION.md (development rules) · SESSION-CONTEXT.md (saved by remember-session) · BUILD-STATE.md (pointer)
 ```
