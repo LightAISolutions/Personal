@@ -43,7 +43,7 @@ export function closedDays(hours) {
 export function hoursToday(lines, dates) {
   if (!lines || !lines.length || !dates.length) return undefined;
   const vals = [...new Set(dates.map((d) => hoursLine(lines, weekdayName(d))))];
-  return vals.length === 1 && vals[0] ? clip(vals[0], SHORT) : undefined;
+  return vals.length === 1 && vals[0] ? clip(vals[0].replace(/^open\s+/i, ''), SHORT) : undefined; // the kit prints "open <hours>"; Google's line already says "Open 24 hours"
 }
 function noteFields(note) {
   if (!note) return undefined;
