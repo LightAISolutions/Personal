@@ -48,7 +48,7 @@ export function solveDay({ stops, travel, departAt, dayEnd, lunch = null, maxWai
           let start;
           if (st.booking != null) { if (arrive > st.booking || st.booking + st.minutes > dayEnd) continue; start = st.booking; }
           else { const f = earliestFit(st.windows, arrive, st.minutes, dayEnd); if (!f) continue; start = f.start; }
-          if (start - arrive > maxWait) continue;
+          if (st.booking == null && start - arrive > maxWait) continue; // a booked stop may wait any length: the wait is free time, never a reason to drop the booking
           relax(sidx(mask | (1 << j), j, ld), start + st.minutes, from, start);
         }
       }
