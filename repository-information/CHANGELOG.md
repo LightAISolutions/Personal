@@ -3,11 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 8/100`
+`Sections: 9/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.09r] — 2026-09-30 08:38:20 PM EST
+
+> **Prompt:** "repo created and added to Tour Guide's project settings"
+
+### Changed
+- `helpers/BUILD-STATE.md`, `helpers/decisions/TG-PHASE-0.md` — the private `TourGuide` repo is created, attached, verified private and seeded with the §4.2 skeleton on its `main` (owner's choice); decision 1 marked confirmed; remaining owner actions are the Maps key credential, the bot token and any objection to the defaults
+- `repository-information/SESSION-CONTEXT.md` — updated for the same state
 
 ## [v01.08r] — 2026-09-30 08:20:41 PM EST
 

@@ -6,20 +6,20 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
-**Date:** 2026-09-30 08:20:41 PM EST
-**Repo version:** v01.08r
+**Date:** 2026-09-30 08:38:20 PM EST
+**Repo version:** v01.09r
 **Branch:** `claude/project-thread-20mnqb` (Tour Guide project thread, Claude HQ environment, Fable 5.1 · High)
 
 **What we worked on:**
 
 - Phase 0 of the Tour Guide build (plan §12 kickoff): all thirteen §10 decisions recorded with their defaults in `helpers/decisions/TG-PHASE-0.md`, owner to object in the thread
 - `helpers/BUILD-STATE.md` (phase tracker) and `helpers/prompts/TG-PHASE-1.md` (Phase 1 kickoff on Fable 5.1 · Xhigh) written
-- Private-repo skeleton (§4.2) prepared in the session scratchpad, not yet pushed: `LightAISolutions/TourGuide` does not exist and the GitHub connector cannot create it (403)
+- `LightAISolutions/TourGuide` created by the owner (the GitHub connector cannot create repos, 403), attached, verified private, and seeded with the §4.2 skeleton on `main` (14 files, no personal data)
 
 **Where we left off:**
 
-- Waiting on the owner for: the private `TourGuide` repo (create + attach to the Tour Guide project), the Maps key added to Claude HQ as an API credential, and a new BotFather token (owner keeps it); plus any objection to the thirteen defaults
-- When the repo exists and is private, the Phase 0 thread pushes the skeleton as its first commit and marks Phase 0 done in `helpers/BUILD-STATE.md`
+- Waiting on the owner for: the Maps key added to Claude HQ as an API credential, a new BotFather token (owner keeps it), and any objection to the thirteen defaults (or "defaults")
+- When those are in, the Phase 0 thread marks Phase 0 done in `helpers/BUILD-STATE.md`
 - Do not start Phase 1 in this thread
 
 **Key decisions made:**

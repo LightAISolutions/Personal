@@ -8,7 +8,7 @@
 
 | # | Decision | Chosen | Status | Notes |
 |---|---|---|---|---|
-| 1 | Private repo | `LightAISolutions/TourGuide`, **created by the owner**, one private repo per helper from `helpers/templates/private-repo/` | default (owner action open) | The GitHub connector's `create_repository` returned `403 Resource not accessible by integration` this session, so the session cannot create it (fact 14 resolved: the integration cannot create repos). The owner creates it, attaches it to the Tour Guide project, and the session verifies it is private before pushing the §4.2 skeleton |
+| 1 | Private repo | `LightAISolutions/TourGuide`, **created by the owner**, one private repo per helper from `helpers/templates/private-repo/` | confirmed (repo exists, private, seeded) | The GitHub connector's `create_repository` returned `403 Resource not accessible by integration` this session, so the session cannot create it (fact 14 resolved: the integration cannot create repos). The owner creates it, attaches it to the Tour Guide project, and the session verifies it is private before pushing the §4.2 skeleton |
 | 2 | Separate Telegram bot | Yes, a dedicated Tour Guide bot with its own pairing | default | Token stays with the owner until Phase 7; it is never pasted into a session or a repo |
 | 3 | Seed preferences from Assistant Brain's profile | Yes, travel-relevant lines only, once, confirmed line by line in Telegram | default | Runs inside `prefs-build` (Phase 4/7); Assistant Brain itself is not modified |
 | 4 | Google Maps Takeout import | Yes, once, in Phase 7 | default | Export dropped into Drive by the owner; no connector reaches it |
@@ -26,7 +26,7 @@
 
 | Action | Status | Where it is checked |
 |---|---|---|
-| Create private `LightAISolutions/TourGuide` and attach it to the Tour Guide project | **open** — the session asked for it (connector cannot create repos) | This session verifies visibility, then pushes the §4.2 skeleton |
+| Create private `LightAISolutions/TourGuide` and attach it to the Tour Guide project | **done** 2026-09-30 — owner created and attached it; session verified private + empty and pushed the skeleton to `main` (owner's choice on a decision card) | Done |
 | Google Cloud project with **Places API (New)** and **Routes API** enabled; key restricted to those two APIs; per-API daily caps; budget alert | **open** — owner confirms | Phase 2a live smoke calls |
 | Add the key to Claude HQ as an **API credential** for hosts `places.googleapis.com` and `routes.googleapis.com`, header `X-Goog-Api-Key` if the dialog allows it | **open** — owner confirms, and reports whether the header type could be chosen (fact 10 inference) | Phase 2a. A probe from this session was not run: the sandbox's auto-mode classifier blocked an unauthenticated test call to the Maps hosts as credential exploration, so the header-type question is answered by the owner's dialog and verified live in Phase 2a |
 | BotFather → new bot token | **open** — owner creates it and keeps it for Phase 7 | Phase 7 switch-on |
