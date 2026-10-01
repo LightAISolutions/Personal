@@ -233,15 +233,15 @@ test('flagEvidence: unproven clears the gem, tourist_oriented from the skill\'s 
   assert.deepEqual(Object.keys(g.FLAG_LABELS).sort(), [...g.FLAGS].sort());
 });
 
-test('gemLine: numbers and source kinds only, ≤ 200 chars, deterministic, trims whole clauses first', async () => {
+test('gemLine: our own words and source kinds only (no Google digit), ≤ 200 chars, deterministic, trims whole clauses first', async () => {
   const { g, fx, byId, scored, kept } = await world();
   const medians = g.categoryMedianCounts(kept);
   const fig = byId(fx.carriers.gem_candidates[0]);
   const line = g.gemLine(fig, { category_median_count: medians[fig.category] });
-  assert.equal(line, '4.7 from 180 ratings where peers typically have 145; named by two local-language guides; no English menu.');
+  assert.equal(line, 'exceptionally well rated by more reviewers than its peers; named by two local-language guides; no English menu.');
   assert.equal(g.gemLine(fig, { category_median_count: medians[fig.category] }), line);
   const lantern = byId(fx.carriers.gem_candidates[1]);
-  assert.equal(g.gemLine(lantern), '4.8 from 95 ratings; named by one local-language guide and one local editorial list.');
+  assert.equal(g.gemLine(lantern), 'exceptionally well rated; named by one local-language guide and one local editorial list.');
   const seeds = g.gemLine(byId(fx.carriers.owner_seeds[0]));
   assert.ok(seeds.includes('one of your own seeds'), seeds);
   const flagged = g.flagEvidence(byId(fx.carriers.unproven), { trip_dates: fx.trip.dates, today: fx.today }).record;
@@ -252,13 +252,22 @@ test('gemLine: numbers and source kinds only, ≤ 200 chars, deterministic, trim
     const s = g.gemLine(r, { category_median_count: medians[r.category] });
     assert.ok(s.length <= g.GEM_LINE_MAX && s.endsWith('.'), s);
     assert.ok(!/SECRET|hidden/.test(s));
+    assert.doesNotMatch(s, /\d/, 'R3: no digit of any kind in a gem line');
   }
+  // R3 (Phase 6 terms review): the coordinator's record — rating 4.7, 140 ratings, peer median 280 — yields words only
+  const r3 = g.gemLine({ rating: 4.7, rating_count: 140 }, { category_median_count: 280 });
+  assert.doesNotMatch(r3, /\d\.\d/);
+  for (const digits of ['140', '280', '4.7']) assert.ok(!r3.includes(digits), r3);
+  assert.equal(r3, 'exceptionally well rated by far fewer reviewers than its peers.');
+  assert.equal(g.gemLine({ rating: 4.1, rating_count: 300 }, { category_median_count: 280 }), 'decently rated by about as many reviewers as its peers.');
+  assert.equal(g.gemLine({ rating: 3.9, rating_count: 1 }, { category_median_count: 2000 }), 'modestly rated by a fraction of the reviewers its peers have.');
+  assert.equal(g.gemLine({ rating_count: 40 }, { category_median_count: 50 }), 'rated by fewer reviewers than its peers.');
   const many = { rating: 4.6, rating_count: 77, local_mentions: Array.from({ length: 9 }, (_, i) => ({ ref: 'L' + String(100 + i), language: 'pt', kind: ['local-language', 'editorial', 'community'][i % 3] })), friction: ['cash-only', 'no-english-menu', 'queues', 'no-reservations', 'standing-room'], mass_tourism_rank: 3, flags: ['tourist_oriented', 'closed_day_conflict'], streams: ['owner_seed'] };
   const long = g.gemLine(many, { category_median_count: 1900000 });
   assert.ok(long.length <= 200 && long.endsWith('.'), long);
   assert.ok(g.gemLineClauses(many).join('; ').length > 200, 'the full set of clauses was longer');
-  assert.equal(g.gemLine(many, { max: 20 }), '4.6 from 77 ratings.', 'the first clause alone fits');
-  assert.equal(g.gemLine(many, { max: 15 }), '4.6 from 77 ra…', 'a hard cut only when even the first clause is too long');
+  assert.equal(g.gemLine(many, { max: 16 }), 'very well rated.', 'the first clause alone fits');
+  assert.equal(g.gemLine(many, { max: 12 }), 'very well r…', 'a hard cut only when even the first clause is too long');
   assert.equal(g.gemLine({}), '');
   assert.equal(g.numberWord(2), 'two'); assert.equal(g.numberWord(12), '12');
 });
@@ -352,7 +361,8 @@ test('toPlaceFields / toShortlistFields: exactly the WP-3d field names, our own 
   const sl = g.toShortlistFields(fig, { category_median_count: 145 });
   assert.deepEqual(Object.keys(sl).sort(), [...g.SHORTLIST_FIELDS].sort());
   assert.equal(sl.gem, true);
-  assert.ok(sl.gem_line.length <= 200 && sl.gem_line.startsWith('4.7 from 180 ratings'));
+  assert.ok(sl.gem_line.length <= 200 && sl.gem_line.startsWith('exceptionally well rated by more reviewers than its peers'));
+  assert.doesNotMatch(sl.gem_line, /\d/, 'R3: the shortlist projection carries no Google digit');
   assert.throws(() => g.assertNoGoogleFields({ gem: true, rating: 4.7 }), /gems: projection carries Google content \(rating\)/);
   // every exported constant the tests depend on is a number or frozen object, not a literal in the code
   assert.ok(Object.isFrozen(g.WEIGHTS_BASE) && Object.isFrozen(g.GEM_RULE) && Object.isFrozen(g.OBSCURITY_BANDS) && Object.isFrozen(g.GEM_FLOORS));

@@ -80,6 +80,20 @@ function tgEnvHead(errs, p, kind) {
 function tgEnvSize(errs, p) { var n = toJson(p).length; if (n > TG_ENV_DIGEST_MAX_CHARS) errs.push('payload is ' + n + ' chars (max ' + TG_ENV_DIGEST_MAX_CHARS + ')'); }
 function tgEnvDone(errs) { return errs.length > TG_ENV_MAX_ERRORS ? errs.slice(0, TG_ENV_MAX_ERRORS).concat(['… ' + (errs.length - TG_ENV_MAX_ERRORS) + ' more']) : errs; }
 
+/**
+ * Invisible and direction-changing characters (the core's stripHidden set: controls, bidi marks and isolates, zero-width
+ * space, word joiner, BOM) could reorder or hide text in the chat (WP-6a, red-team A7), so every pack envelope is cleaned
+ * in place before validation — the validators, the Sheet and the chat only ever see the cleaned strings.
+ */
+function tgEnvClean(v) {
+  if (typeof v === 'string') return stripHidden(v);
+  if (Array.isArray(v)) { for (var i = 0; i < v.length; i++) v[i] = tgEnvClean(v[i]); return v; }
+  if (isPlainObject(v)) { Object.keys(v).forEach(function (k) { v[k] = tgEnvClean(v[k]); }); return v; }
+  return v;
+}
+/** validate() wrapper: clean the payload in place (the core hands the same object to handle()), then validate it. */
+function tgEnvCleaned(fn) { return function (p, env) { if (isPlainObject(p)) tgEnvClean(p); return fn(p, env); }; }
+
 /* ---------------- validators (mirrors of the payload schemas) ---------------- */
 var TG_ENV_LABELS = ['verified', 'single source', 'conflicting', 'unverified'];
 var TG_ENV_OUTCOMES = ['chosen', 'later', 'skipped', 'visited'];
@@ -357,7 +371,7 @@ function tgEnvDeliver(type, env, plainHtml) { return tgEnvToFlow(type, env) ? 'f
 function tgEnvCount(groups) { var n = 0; (groups || []).forEach(function (g) { n += (g.items || []).length; }); return n; }
 
 registerEnvelopeHandler('shortlist', {
-  validate: tgEnvValidateShortlist,
+  validate: tgEnvCleaned(tgEnvValidateShortlist),
   handle: function (env) {
     var p = env.payload;
     var trip = tgTripUpsert({ slug: p.trip });
@@ -368,7 +382,7 @@ registerEnvelopeHandler('shortlist', {
   }
 });
 registerEnvelopeHandler('trip_facts', {
-  validate: tgEnvValidateTripFacts,
+  validate: tgEnvCleaned(tgEnvValidateTripFacts),
   handle: function (env) {
     var p = env.payload;
     tgTripUpsert({ slug: p.trip });
@@ -377,7 +391,7 @@ registerEnvelopeHandler('trip_facts', {
   }
 });
 registerEnvelopeHandler('plan_digest', {
-  validate: tgEnvValidatePlanDigest,
+  validate: tgEnvCleaned(tgEnvValidatePlanDigest),
   handle: function (env) {
     var p = env.payload;
     var st = tgDigestStore(p);
@@ -386,12 +400,22 @@ registerEnvelopeHandler('plan_digest', {
   }
 });
 registerEnvelopeHandler('profile_summary', {
-  validate: tgEnvValidateProfileSummary,
+  validate: tgEnvCleaned(tgEnvValidateProfileSummary),
   handle: function (env) {
     tgProfileSummaryStore(env.payload);
     var r = tgSendOwner('🧭 <b>Your travel profile</b>\n' + tgEscape(env.payload.text));
     return { stored: true, sent: !!(r && r.ok) };
   }
+});
+
+/**
+ * Proposals: the core's own built-in actions (drive_create_file) are on ACTION_ALLOWLIST for every pack, but Tour Guide's
+ * contract is that the core executes only the pack's allowlist (helper.json action_allowlist — empty). A brain proposal
+ * for anything else is refused before the owner sees a ✅ card (WP-6a, red-team A14).
+ */
+registerProposalGuard('tg_pack_allowlist', function (env, p) {
+  var allowed = HELPER.action_allowlist || [];
+  return allowed.indexOf(p && p.action) >= 0 ? null : 'action ' + truncate(String(p && p.action), 40) + ' is not on the Tour Guide allowlist (' + (allowed.join(', ') || 'none') + ')';
 });
 
 /* ---------------- prefs_review: pf:<cid>:y|e|n, ✏️ capture, decisions → kind prefs ---------------- */
@@ -447,7 +471,7 @@ function tgPfMaybeFinish(batches, b) {
   return r.id;
 }
 registerEnvelopeHandler('prefs_review', {
-  validate: tgEnvValidatePrefsReview,
+  validate: tgEnvCleaned(tgEnvValidatePrefsReview),
   handle: function (env) {
     var p = env.payload;
     if (!p.items.length) return { items: 0, sent: 0 };
@@ -477,7 +501,7 @@ registerEnvelopeHandler('prefs_review', {
 });
 registerCallback('pf', function (ctx) {
   var cid = String(ctx.parts[0] || ''), code = String(ctx.parts[1] || '');
-  if (!TG_ENV_RE.cid.test(cid) || !TG_PF_CODES[code]) { ctx.answer('Unknown button'); return; }
+  if (ctx.parts.length !== 2 || !TG_ENV_RE.cid.test(cid) || !TG_PF_CODES[code]) { ctx.answer('Unknown button'); return; }   // exact shape (WP-6a B8)
   var batches = tgPfLoad(), hit = tgPfFind(batches, cid);
   if (!hit) { ctx.answer('That review has ended.'); return; }
   if (hit.batch.request_id) { ctx.answer('Already sent — this review is closed.'); return; }
@@ -540,7 +564,7 @@ function tgEnvPlaceLine(pl) {
   return '✅ still open: ' + name + (pl.last_verified ? ' · checked ' + tgEscape(pl.last_verified) : '');
 }
 registerEnvelopeHandler('places_digest', {
-  validate: tgEnvValidatePlacesDigest,
+  validate: tgEnvCleaned(tgEnvValidatePlacesDigest),
   handle: function (env) {
     var p = env.payload;
     var res = tgPlacesUpsert(p);
@@ -564,6 +588,26 @@ registerEnvelopeHandler('places_digest', {
     }
     return out;
   }
+});
+
+/**
+ * A core `reply` that answers a `brochure` request and names Drive files (labels `plan`, `brochure_html`, `brochure_pdf` —
+ * the same keys `plan_digest.drive` uses) → remember them on the trip, as tgDigestStore does, so the next /brochure or 📄
+ * resends the file instead of opening another request (WP-6c C7/R4). Runs after the core handler sent the files.
+ */
+registerEnvelopeObserver('tg_brochure_reply', function (env) {
+  if (!env || env.type !== 'reply' || !env.in_reply_to) return;
+  var p = env.payload || {}, ids = p.drive_file_ids;
+  if (!isPlainObject(ids)) return;
+  var req = getRequest(env.in_reply_to);
+  if (!req || req.kind !== 'brochure') return;                     // the cheap sheet check first; the trip is only in the file
+  var rq = mailboxReadRequest(env.in_reply_to), rp = rq && isPlainObject(rq.payload) ? rq.payload : null;
+  if (!rp || typeof rp.trip !== 'string' || !tgTripGet(rp.trip)) return;
+  var upd = { slug: rp.trip };
+  ['plan', 'brochure_html', 'brochure_pdf'].forEach(function (label) {
+    if (typeof ids[label] === 'string' && ids[label]) upd['drive_' + label] = ids[label];
+  });
+  if (Object.keys(upd).length > 1) tgTripUpsert(upd);
 });
 
 // Developed by: LightAISolutions

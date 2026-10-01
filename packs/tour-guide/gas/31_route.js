@@ -14,6 +14,8 @@ var TG_ROUTE_MODES = {
 var TG_ROUTE_SYNONYMS = { walk: 'walk', walking: 'walk', foot: 'walk', transit: 'transit', train: 'transit', subway: 'transit', metro: 'transit',
   bus: 'transit', public: 'transit', drive: 'drive', driving: 'drive', car: 'drive', taxi: 'drive' };
 
+/** Travel modes the owner may name that Maps here does not offer: a polite refusal instead of a search for "B bike". */
+var TG_ROUTE_UNSUPPORTED = /^(bike|bicycle|bicycling|cycling)$/i;   // not boat/ferry: a place name may end in those
 function tgRouteMode(s) { var k = String(s || '').toLowerCase().trim(); return Object.prototype.hasOwnProperty.call(TG_ROUTE_SYNONYMS, k) ? TG_ROUTE_SYNONYMS[k] : ''; }
 
 function tgRouteMapsUrl(from, to, mode) {
@@ -27,6 +29,7 @@ function tgRouteParse(args) {
   if (!s) return { error: 'usage' };
   var mode = '', words = s.split(' ');
   var lastWord = words[words.length - 1];
+  if (words.length >= 2 && TG_ROUTE_UNSUPPORTED.test(lastWord)) return { error: 'mode', mode: lastWord.toLowerCase() };   // WP-6a F
   if (words.length >= 2 && tgRouteMode(lastWord)) {
     mode = tgRouteMode(lastWord); words.pop();
     if (words.length >= 2 && /^by$/i.test(words[words.length - 1])) words.pop();
@@ -115,6 +118,7 @@ var TG_ROUTE_ERRORS = {
 };
 function tgRouteCommand(ctx) {
   var p = tgRouteParse(ctx.args);
+  if (p.error === 'mode') { ctx.reply('I can route by walk, transit or drive — not “' + tgEscape(p.mode) + '”. Try <code>/route A → B walk</code>.'); return; }
   if (p.error) { ctx.reply(p.error === 'too_long' ? 'Those place names are too long (≤ ' + TG_ROUTE.ARG_MAX + ' characters each).' : 'Usage: /route A → B [walk|transit|drive] — also "A -> B" or "A to B". Default: transit.'); return; }
   var trip = null;
   try { trip = typeof tgTripCurrent === 'function' ? tgTripCurrent() : null; } catch (e) { trip = null; }

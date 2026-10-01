@@ -4,11 +4,13 @@
  * emits a <script> element (tests assert the output contains none).
  */
 const MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' };
+/** Bidi overrides/embeddings/isolates, zero-width and tag characters: a name must not flip or hide the line around it. */
+export const DIRECTIONAL_RE = /[\u00AD\u180E\u200B-\u200D\u2060-\u2064\uFEFF\u202A-\u202E\u2066-\u2069]|[\u{E0000}-\u{E007F}]/gu;
 
 /** Escape text for an HTML or SVG text node. Non-strings are stringified; null/undefined become ''. */
 export function esc(v) {
   if (v === null || v === undefined) return '';
-  return String(v).replace(/[&<>"'`]/g, (c) => MAP[c]);
+  return String(v).replace(DIRECTIONAL_RE, '').replace(/[&<>"'`]/g, (c) => MAP[c]);
 }
 /** Escape for a double-quoted attribute value (same table; kept separate for readability at call sites). */
 export const attr = esc;

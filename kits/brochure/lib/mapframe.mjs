@@ -101,7 +101,7 @@ export function mapFigure({ src, image, points = [], hue, title = 'Map', caption
   const w = v ? v.width : 4, h = v ? v.height : 3;
   const overlay = v ? `<svg class="gmap-marks" viewBox="0 0 ${w} ${h}" aria-hidden="true">${markersSvg(points, projector(v), { hue, halo: true })}</svg>` : '';
   const alt = (image && image.alt) || title;
-  return `<figure class="map-fig"><div class="gmap"${v ? ` style="aspect-ratio:${w}/${h}"` : ''}><img src="${src}" alt="${attr(alt)}">${overlay}</div>${caption ? `<figcaption class="legend">${caption}</figcaption>` : ''}</figure>`;
+  return `<figure class="map-fig"><div class="gmap"${v ? ` style="aspect-ratio:${w}/${h}"` : ''}><img src="${attr(src)}" alt="${attr(alt)}">${overlay}</div>${caption ? `<figcaption class="legend">${caption}</figcaption>` : ''}</figure>`;
 }
 export const mapCredit = (image) => esc((image && image.credit) || 'Map data © Google');
 

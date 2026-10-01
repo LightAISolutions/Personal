@@ -137,6 +137,7 @@ function formatDate(date, tz, fmt) {
 /* ---------------- Context factory ---------------- */
 let _last = null; // { ctx, state } of the most recent loadGas(); envelope()/putEnvelope() default to it
 function createMocks(opts = {}) {
+  _last = null; // envelope()/putEnvelope() fall back to wall time and 'Helper' until the next loadGas() (WP-6a R4)
   // opts.state: reuse a previous load's state (props, Sheet, Drive, fetch log) so a second context behaves like a fresh
   // Apps Script execution against the same stored data — used to test that state survives a new execution.
   const state = opts.state || {

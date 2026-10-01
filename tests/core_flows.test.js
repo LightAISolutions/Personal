@@ -249,8 +249,8 @@ test('tgSendDocument sends a Drive file as multipart sendDocument; oversize fall
 
 test('reply envelopes may carry drive_file_ids: validated, then sent as captioned documents after the text', () => {
   const { ctx, state, k } = fresh();
-  const f1 = state.drive.putFile('Helper/out', 'notes.md', 'notes', 'text/markdown');
-  const f2 = state.drive.putFile('Helper/out', 'brochure.html', '<p>b</p>', 'text/html');
+  const f1 = state.drive.putFile(ctx.HELPER.drive_root + '/out', 'notes.md', 'notes', 'text/markdown');   // inside the helper's folder: attachable
+  const f2 = state.drive.putFile(ctx.HELPER.drive_root + '/out', 'brochure.html', '<p>b</p>', 'text/html');
   tg(ctx, k, H.tgUpdate({ text: 'plan my weekend', messageId: 31 }));
   const req = ctx.storeAll('Requests')[0];
   const bad = H.envelope('reply', { text: 'x', drive_file_ids: { 'Bad/Label': f1.getId(), Ok: 'short' } }, { in_reply_to: req.id });

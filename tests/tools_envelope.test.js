@@ -45,6 +45,35 @@ test('ids are random per call; reply needs in_reply_to; bad producer / oversize 
   assert.match(makeEnvelope({ type: 'notice', producer: 'x', payload: {}, dedupeKey: 'k'.repeat(121) }).errors.join(), /dedupe_key/);
 });
 
+test('reply payloads get the core checks (text, html, drive_file_ids); --now stamps created_at and the file name', async () => {
+  const { makeEnvelope } = await import('../tools/envelope.mjs');
+  const mk = (payload) => makeEnvelope({ type: 'reply', producer: 'x', payload, inReplyTo: 'req-1' }).errors.join('\n');
+  assert.equal(mk({ text: 'Brochure ready.', html: true, drive_file_ids: { brochure_pdf: 'fileAbcdefgh01', 'Day 2 (plan).pdf': 'file_Abcdefgh02' } }), '');
+  assert.match(mk({ text: 'x'.repeat(4001) }), /reply\.text must be a non-empty string of at most 4000/);
+  assert.match(mk({ text: '  ' }), /reply\.text must be a non-empty/);
+  assert.match(mk({ drive_file_ids: { plan: 'fileAbcdefgh01' } }), /reply\.text must be a non-empty/);
+  assert.match(mk({ text: 'ok', html: 'yes' }), /reply\.html must be true or false/);
+  assert.match(mk({ text: 'ok', drive_file_ids: ['fileAbcdefgh01'] }), /drive_file_ids must be an object/);
+  assert.match(mk({ text: 'ok', drive_file_ids: { 'bad<label>': 'fileAbcdefgh01' } }), /label "bad<label>" must match/);
+  assert.match(mk({ text: 'ok', drive_file_ids: { plan: 'short' } }), /drive_file_ids\["plan"\] must be a Drive file id/);
+  assert.match(mk({ text: 'ok', drive_file_ids: { plan: 42 } }), /drive_file_ids\["plan"\] must be a Drive file id/);
+  const many = Object.fromEntries(Array.from({ length: 11 }, (_, i) => ['f' + i, 'fileAbcdefgh' + String(i).padStart(2, '0')]));
+  assert.match(mk({ text: 'ok', drive_file_ids: many }), /at most 10 files/);
+  assert.equal(makeEnvelope({ type: 'notice', producer: 'x', payload: { text: 'x'.repeat(4001) } }).errors.length, 0, 'the 4000 limit is a reply rule');
+
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hb-env-'));
+  const payload = path.join(dir, 'payload.json');
+  fs.writeFileSync(payload, JSON.stringify({ text: 'hi' }));
+  const ok = spawnSync(process.execPath, [TOOL, 'notice', 'x', payload, '--now', '2027-05-01T16:00:00Z'], { encoding: 'utf8' });
+  assert.equal(ok.status, 0, ok.stderr);
+  const r = JSON.parse(ok.stdout);
+  assert.equal(JSON.parse(r.content).created_at, '2027-05-01T16:00:00Z');
+  assert.match(r.file_name, /^20270501T160000_notice_[0-9a-f-]{36}\.json$/);
+  const bad = spawnSync(process.execPath, [TOOL, 'notice', 'x', payload, '--now', 'yesterday'], { encoding: 'utf8' });
+  assert.equal(bad.status, 2);
+  assert.match(bad.stderr, /--now must be an ISO date-time/);
+});
+
 test('CLI: --pack adds the pack types, --out writes the file, errors exit 1 and write nothing', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hb-env-'));
   const payload = path.join(dir, 'payload.json');

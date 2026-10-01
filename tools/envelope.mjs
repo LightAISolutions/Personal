@@ -2,7 +2,7 @@
 // Routine helper: stamp a from-brain envelope with a REAL random id, the real clock and the canonical file name.
 // Live runs showed routines inventing UUIDs (patterned after the SKILL.md examples) and timestamps; an invented id can
 // collide with an earlier one and the core drops the envelope as a duplicate. Zero deps.
-//   node helpers/tools/envelope.mjs <type> <producer> <payload.json> [--pack NAME] [--dedupe-key K] [--in-reply-to ID] [--out DIR]
+//   node helpers/tools/envelope.mjs <type> <producer> <payload.json> [--pack NAME] [--dedupe-key K] [--in-reply-to ID] [--now ISO] [--out DIR]
 // Prints {"file_name","content","errors"}; with --out, also writes DIR/<file_name>. Keep payload + output files OUTSIDE the repo.
 // --pack NAME adds the pack's envelope_types (helpers/packs/NAME/helper.json) to the accepted core types and, when the
 // pack ships helpers/packs/NAME/schemas/index.mjs exporting validatePayload(type, payload), checks a pack type's payload
@@ -51,6 +51,22 @@ export function makeEnvelope({ type, producer, payload, dedupeKey, inReplyTo, no
   const errors = [];
   if (!types.includes(type)) errors.push('unknown type: ' + type + ' (see helpers/SPEC.md §2; pack types need --pack NAME)');
   if (type === 'reply' && !inReplyTo) errors.push('reply needs --in-reply-to <request id>');
+  if (type === 'reply' && payload && typeof payload === 'object' && !Array.isArray(payload)) {
+    // The core's reply checks (helpers/core/09_mailbox.js), so a skill learns here what the core would refuse (WP-6c R1).
+    if (typeof payload.text !== 'string' || !payload.text.trim() || payload.text.length > 4000) errors.push('reply.text must be a non-empty string of at most 4000 chars (core limit)');
+    if ('html' in payload && typeof payload.html !== 'boolean') errors.push('reply.html must be true or false');
+    if ('drive_file_ids' in payload) {
+      const d = payload.drive_file_ids;
+      if (!d || typeof d !== 'object' || Array.isArray(d)) errors.push('reply.drive_file_ids must be an object { label: id }');
+      else {
+        if (Object.keys(d).length > 10) errors.push('reply.drive_file_ids: at most 10 files');
+        for (const [label, id] of Object.entries(d)) {
+          if (!/^[A-Za-z0-9 _.()-]{1,60}$/.test(label)) errors.push('reply.drive_file_ids label "' + label.slice(0, 40) + '" must match ^[A-Za-z0-9 _.()-]{1,60}$');
+          if (typeof id !== 'string' || !/^[A-Za-z0-9_-]{10,200}$/.test(id)) errors.push('reply.drive_file_ids["' + label.slice(0, 40) + '"] must be a Drive file id');
+        }
+      }
+    }
+  }
   if (!/^[a-z0-9_-]{1,64}$/.test(String(producer))) errors.push('producer must match ^[a-z0-9_-]{1,64}$ (use the skill name)');
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) errors.push('payload must be a JSON object');
   else {
@@ -68,9 +84,11 @@ async function main(argv) {
   const pos = [], opt = {};
   for (let i = 0; i < argv.length; i++) { if (argv[i].startsWith('--')) opt[argv[i].slice(2)] = argv[++i]; else pos.push(argv[i]); }
   const [type, producer, file] = pos;
-  if (!type || !producer || !file) { console.error('usage: node helpers/tools/envelope.mjs <type> <producer> <payload.json> [--pack NAME] [--dedupe-key K] [--in-reply-to ID] [--out DIR]'); return 2; }
+  if (!type || !producer || !file) { console.error('usage: node helpers/tools/envelope.mjs <type> <producer> <payload.json> [--pack NAME] [--dedupe-key K] [--in-reply-to ID] [--now ISO] [--out DIR]'); return 2; }
   const payload = JSON.parse(fs.readFileSync(file, 'utf8'));
-  const r = makeEnvelope({ type, producer, payload, dedupeKey: opt['dedupe-key'], inReplyTo: opt['in-reply-to'], types: typesFor(opt.pack) });
+  const now = opt.now ? new Date(opt.now) : new Date();
+  if (Number.isNaN(now.getTime())) { console.error('--now must be an ISO date-time'); return 2; }
+  const r = makeEnvelope({ type, producer, payload, dedupeKey: opt['dedupe-key'], inReplyTo: opt['in-reply-to'], now, types: typesFor(opt.pack) });
   r.errors.push(...(await packPayloadErrors(opt.pack, type, payload)));
   const content = JSON.stringify(r.envelope);
   if (!r.errors.length && opt.out) fs.writeFileSync(path.join(opt.out, r.file_name), content);

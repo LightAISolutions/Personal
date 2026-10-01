@@ -25,7 +25,7 @@ const EXAMPLES = {
     groups: [
       { id: 'activities', gems_wanted: 2, gems_shown: 1, items: [
         item(1, 'lantern-museum', { place_id: 'FixtureTcLanternMuseum', new: true, dims: [{ dimension: 'interests', value: 'museums' }] }),
-        item(2, 'signal-hill-lookout', { labels: ['single source'], gem: true, gem_line: '4.7 from 180 ratings where peers average 1,900; named by two local-language guides.',
+        item(2, 'signal-hill-lookout', { labels: ['single source'], gem: true, gem_line: 'exceptionally well rated by far fewer reviewers than its peers; named by two local-language guides.',
           seen_before: { trip: 'port-sorrel-autumn-2026', on: '2026-10-04', outcome: 'skipped' }, changes: ['New evening opening on Fridays, per its own site.'] })] },
       { id: 'food', items: [item(3, 'saffron-row-market', { why_you: '', fit: 0.5, labels: ['conflicting', 'unverified'] })] }
     ] }),
