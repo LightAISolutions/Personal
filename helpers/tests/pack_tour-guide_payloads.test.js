@@ -213,7 +213,7 @@ test('core mocks: the manifest\'s six types are accepted by registerEnvelopeHand
   // reads the most recent loadGas() clock, so a pinned future clock here would leak into later files.
   const now = new Date();
   for (const t of TYPES) {
-    ctx.registerEnvelopeHandler(t, { validate: () => [], handle: () => 'ok' });
+    if (!ctx.getEnvelopeHandler(t)) ctx.registerEnvelopeHandler(t, { validate: () => [], handle: () => 'ok' });
     const env = E.makeEnvelope({ type: t, producer: 'tg-skill', payload: payloads[t], now, types: E.typesFor('tour-guide') });
     assert.deepEqual(env.errors, [], t);
     const raw = JSON.stringify(env.envelope);
