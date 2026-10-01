@@ -13,8 +13,8 @@ const rec = (over = {}) => Object.assign({ source_kind: 'gmail', source_ref: 'ms
 test('the travel preset loads; a vocabulary is caller-supplied and validated', async () => {
   const m = await load();
   const v = m.loadVocab('travel');
-  assert.deepEqual([...v.dims.keys()], ['pace', 'interests', 'food', 'budget_band', 'mobility', 'crowds', 'day_rhythm', 'must_avoid']);
-  assert.equal(v.max_tokens, 2000);
+  assert.deepEqual([...v.dims.keys()].slice(0, 8), ['pace', 'interests', 'food', 'budget_band', 'mobility', 'crowds', 'day_rhythm', 'must_avoid']);
+  assert.equal(v.max_tokens, 3000); // Phase 4b (WP-2f) extended the preset; kit_prefs_interview.test.js checks the new dimensions
   const custom = m.validateVocab({ v: 1, name: 'reading', dimensions: [{ id: 'genre', cardinality: 'many' }] });
   assert.deepEqual(custom.errors, []);
   assert.equal(custom.vocab.dims.get('genre').label, 'genre');

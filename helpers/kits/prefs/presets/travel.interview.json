@@ -1,0 +1,385 @@
+{
+  "v": 1,
+  "vocab": "travel",
+  "title": "Travel preferences interview",
+  "sections": [
+    {
+      "id": "pace",
+      "title": "Pace & rhythm",
+      "questions": [
+        {"qid":"pace-01","text":"How full should a typical sightseeing day be?","kind":"scale","dimension":"pace",
+          "options": [
+            {"label":"Relaxed","value":"relaxed","polarity":"+"},
+            {"label":"Normal","value":"normal","polarity":"+"},
+            {"label":"Packed","value":"packed","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"pace-02","text":"Do you like to start early or late?","kind":"pick","dimension":"day_rhythm",
+          "options": [
+            {"label":"Early riser","value":"early","polarity":"+"},
+            {"label":"Flexible","value":"flexible","polarity":"+"},
+            {"label":"Late starter","value":"late","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"pace-03","text":"How much unplanned free time do you want in a day?","kind":"scale","dimension":"free_time",
+          "options": [
+            {"label":"A little","value":"little","polarity":"+"},
+            {"label":"Some","value":"some","polarity":"+"},
+            {"label":"Lots","value":"lots","polarity":"+"}
+          ],
+          "skip_ok": true }
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food",
+      "questions": [
+        {"qid":"food-01","text":"Which foods do you look forward to? Pick any.","kind":"multi","dimension":"food",
+          "options": [
+            {"label":"Local specialties","value":"local specialties","polarity":"+"},
+            {"label":"Seafood","value":"seafood","polarity":"+"},
+            {"label":"Noodles","value":"noodles","polarity":"+"},
+            {"label":"Bakeries","value":"bakeries","polarity":"+"},
+            {"label":"Grilled meat","value":"grilled meat","polarity":"+"},
+            {"label":"Desserts","value":"desserts","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"food-02","text":"Any foods you would rather not eat? (Not allergies: the next question covers those.)","kind":"multi","dimension":"food",
+          "options": [
+            {"label":"Shellfish","value":"shellfish","polarity":"-"},
+            {"label":"Offal","value":"offal","polarity":"-"},
+            {"label":"Raw fish","value":"raw fish","polarity":"-"},
+            {"label":"Very sweet food","value":"very sweet food","polarity":"-"}
+          ],
+          "skip_ok": true },
+        {"qid":"food-03","text":"Is there anything you cannot eat?","kind":"multi","dimension":"dietary",
+          "options": [
+            {"label":"Gluten","value":"gluten","polarity":"-"},
+            {"label":"Dairy","value":"dairy","polarity":"-"},
+            {"label":"Nuts","value":"nuts","polarity":"-"},
+            {"label":"Shellfish","value":"shellfish","polarity":"-"},
+            {"label":"Pork","value":"pork","polarity":"-"},
+            {"label":"Beef","value":"beef","polarity":"-"},
+            {"label":"Any meat","value":"meat","polarity":"-"},
+            {"label":"Eggs","value":"eggs","polarity":"-"},
+            {"label":"Alcohol","value":"alcohol","polarity":"-"}
+          ],
+          "skip_ok": true },
+        {"qid":"food-04","text":"How spicy do you like your food?","kind":"scale","dimension":"spice",
+          "options": [
+            {"label":"Mild","value":"mild","polarity":"+"},
+            {"label":"Medium","value":"medium","polarity":"+"},
+            {"label":"Hot","value":"hot","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"food-05","text":"How do you like to eat while travelling? Pick any.","kind":"multi","dimension":"meal_style",
+          "options": [
+            {"label":"Street food","value":"street food","polarity":"+"},
+            {"label":"Markets","value":"markets","polarity":"+"},
+            {"label":"Cafés","value":"cafes","polarity":"+"},
+            {"label":"Sit-down restaurants","value":"sit-down","polarity":"+"},
+            {"label":"Fine dining","value":"fine dining","polarity":"+"},
+            {"label":"Cooking class","value":"cooking class","polarity":"+"},
+            {"label":"Bars","value":"bars","polarity":"+"}
+          ],
+          "skip_ok": true }
+      ]
+    },
+    {
+      "id": "activities",
+      "title": "Activities",
+      "questions": [
+        {"qid":"activities-01","text":"Which kinds of places do you enjoy visiting?","kind":"multi","dimension":"interests",
+          "options": [
+            {"label":"Museums","value":"museums","polarity":"+"},
+            {"label":"Historic sites","value":"historic sites","polarity":"+"},
+            {"label":"Architecture","value":"architecture","polarity":"+"},
+            {"label":"Art galleries","value":"art galleries","polarity":"+"},
+            {"label":"Gardens and parks","value":"gardens and parks","polarity":"+"},
+            {"label":"Viewpoints","value":"viewpoints","polarity":"+"},
+            {"label":"Religious sites","value":"religious sites","polarity":"+"},
+            {"label":"Neighbourhoods","value":"neighbourhoods","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"activities-02","text":"What do you like to do? Pick any.","kind":"multi","dimension":"activities",
+          "options": [
+            {"label":"Hiking","value":"hiking","polarity":"+"},
+            {"label":"Walking tours","value":"walking tours","polarity":"+"},
+            {"label":"Cycling","value":"cycling","polarity":"+"},
+            {"label":"Swimming","value":"swimming","polarity":"+"},
+            {"label":"Boat trips","value":"boat trips","polarity":"+"},
+            {"label":"Live music","value":"live music","polarity":"+"},
+            {"label":"Shopping","value":"shopping","polarity":"+"},
+            {"label":"Photography","value":"photography","polarity":"+"},
+            {"label":"Wine tasting","value":"wine tasting","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"activities-03","text":"Anything you would rather skip?","kind":"multi","dimension":"activities",
+          "options": [
+            {"label":"Guided tours","value":"guided tours","polarity":"-"},
+            {"label":"Nightlife","value":"nightlife","polarity":"-"},
+            {"label":"Theme parks","value":"theme parks","polarity":"-"},
+            {"label":"Long hikes","value":"long hikes","polarity":"-"}
+          ],
+          "skip_ok": true },
+        {"qid":"activities-04","text":"Any other thing you always look for on a trip?","kind":"text","dimension":"activities",
+          "options": [],
+          "skip_ok": true }
+      ]
+    },
+    {
+      "id": "climate",
+      "title": "Climate",
+      "questions": [
+        {"qid":"climate-01","text":"How do you cope with hot weather?","kind":"pick","dimension":"climate",
+          "options": [
+            {"label":"Heat is fine","value":"heat","polarity":"+"},
+            {"label":"Avoid the heat","value":"heat","polarity":"-"}
+          ],
+          "skip_ok": true },
+        {"qid":"climate-02","text":"And with cold weather?","kind":"pick","dimension":"climate",
+          "options": [
+            {"label":"Cold is fine","value":"cold","polarity":"+"},
+            {"label":"Avoid the cold","value":"cold","polarity":"-"}
+          ],
+          "skip_ok": true },
+        {"qid":"climate-03","text":"Is high humidity a problem?","kind":"pick","dimension":"climate",
+          "options": [
+            {"label":"Humidity is fine","value":"humidity","polarity":"+"},
+            {"label":"Avoid humidity","value":"humidity","polarity":"-"}
+          ],
+          "skip_ok": true },
+        {"qid":"climate-04","text":"Should rain change the plans?","kind":"pick","dimension":"climate",
+          "options": [
+            {"label":"Rain is fine","value":"rain","polarity":"+"},
+            {"label":"Avoid rain","value":"rain","polarity":"-"}
+          ],
+          "skip_ok": true },
+        {"qid":"climate-05","text":"Anything else to avoid? Pick any.","kind":"multi","dimension":"climate",
+          "options": [
+            {"label":"High altitude","value":"altitude","polarity":"-"},
+            {"label":"Strong wind","value":"wind","polarity":"-"},
+            {"label":"Long sun exposure","value":"long sun exposure","polarity":"-"}
+          ],
+          "skip_ok": true }
+      ]
+    },
+    {
+      "id": "mobility",
+      "title": "Mobility",
+      "questions": [
+        {"qid":"mobility-01","text":"How far are you happy to walk in a day?","kind":"scale","dimension":"mobility",
+          "options": [
+            {"label":"Up to 5 km","value":"walks up to 5 km","polarity":"+"},
+            {"label":"5 to 10 km","value":"walks 5 to 10 km","polarity":"+"},
+            {"label":"More than 10 km","value":"walks over 10 km","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"mobility-02","text":"Anything about walking or access to avoid?","kind":"multi","dimension":"mobility",
+          "options": [
+            {"label":"Steep stairs","value":"steep stairs","polarity":"-"},
+            {"label":"Long walks","value":"long walks","polarity":"-"},
+            {"label":"Uneven ground","value":"uneven ground","polarity":"-"},
+            {"label":"Steep hills","value":"steep hills","polarity":"-"}
+          ],
+          "skip_ok": true },
+        {"qid":"mobility-03","text":"Which ways of getting around do you like?","kind":"multi","dimension":"transport",
+          "options": [
+            {"label":"Walking","value":"walking","polarity":"+"},
+            {"label":"Public transport","value":"public transport","polarity":"+"},
+            {"label":"Taxis","value":"taxis","polarity":"+"},
+            {"label":"Rental car","value":"rental car","polarity":"+"},
+            {"label":"Bicycle","value":"bicycle","polarity":"+"},
+            {"label":"Trains","value":"trains","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"mobility-04","text":"Any you would rather avoid?","kind":"multi","dimension":"transport",
+          "options": [
+            {"label":"Driving","value":"driving","polarity":"-"},
+            {"label":"Night buses","value":"night buses","polarity":"-"},
+            {"label":"Ferries","value":"ferries","polarity":"-"},
+            {"label":"Small planes","value":"small planes","polarity":"-"},
+            {"label":"Scooters","value":"scooters","polarity":"-"}
+          ],
+          "skip_ok": true }
+      ]
+    },
+    {
+      "id": "crowds",
+      "title": "Crowds & timing",
+      "questions": [
+        {"qid":"crowds-01","text":"How do you feel about crowds?","kind":"scale","dimension":"crowds",
+          "options": [
+            {"label":"Avoid them","value":"avoid","polarity":"+"},
+            {"label":"Tolerate them","value":"tolerate","polarity":"+"},
+            {"label":"Enjoy the buzz","value":"enjoy","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"crowds-02","text":"Should famous sights be kept away from their busiest hours?","kind":"pick","dimension":"must_avoid",
+          "options": [
+            {"label":"Yes, avoid peak hours","value":"peak hours","polarity":"+"},
+            {"label":"Does not matter","value":"peak hours","polarity":"-"}
+          ],
+          "skip_ok": true }
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Budget",
+      "questions": [
+        {"qid":"budget-01","text":"What is your usual travel budget?","kind":"scale","dimension":"budget_band",
+          "options": [
+            {"label":"Shoestring","value":"shoestring","polarity":"+"},
+            {"label":"Moderate","value":"moderate","polarity":"+"},
+            {"label":"Comfortable","value":"comfortable","polarity":"+"},
+            {"label":"Luxury","value":"luxury","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"budget-02","text":"Is one special, fine-dining meal per trip worth it?","kind":"pick","dimension":"meal_style",
+          "options": [
+            {"label":"Yes, worth it","value":"fine dining","polarity":"+"},
+            {"label":"No, skip it","value":"fine dining","polarity":"-"}
+          ],
+          "skip_ok": true }
+      ]
+    },
+    {
+      "id": "lodging",
+      "title": "Lodging",
+      "questions": [
+        {"qid":"lodging-01","text":"Where do you like to stay? Pick any.","kind":"multi","dimension":"lodging",
+          "options": [
+            {"label":"Boutique hotels","value":"boutique hotels","polarity":"+"},
+            {"label":"Apartments","value":"apartments","polarity":"+"},
+            {"label":"Guesthouses","value":"guesthouses","polarity":"+"},
+            {"label":"Hostels","value":"hostels","polarity":"+"},
+            {"label":"Chain hotels","value":"chain hotels","polarity":"+"},
+            {"label":"Bed and breakfast","value":"bed and breakfast","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"lodging-02","text":"What matters most in a place to stay?","kind":"multi","dimension":"lodging",
+          "options": [
+            {"label":"Central location","value":"central location","polarity":"+"},
+            {"label":"Quiet room","value":"quiet room","polarity":"+"},
+            {"label":"Kitchen","value":"kitchen","polarity":"+"},
+            {"label":"Breakfast included","value":"breakfast included","polarity":"+"},
+            {"label":"Parking","value":"parking","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"lodging-03","text":"Anything to avoid where you stay?","kind":"multi","dimension":"lodging",
+          "options": [
+            {"label":"Shared bathrooms","value":"shared bathrooms","polarity":"-"},
+            {"label":"Noisy areas","value":"noisy areas","polarity":"-"},
+            {"label":"No lift","value":"no lift","polarity":"-"}
+          ],
+          "skip_ok": true }
+      ]
+    },
+    {
+      "id": "companions",
+      "title": "Companions",
+      "questions": [
+        {"qid":"companions-01","text":"Who do you usually travel with?","kind":"pick","dimension":"companions",
+          "options": [
+            {"label":"Solo","value":"solo","polarity":"+"},
+            {"label":"Partner","value":"partner","polarity":"+"},
+            {"label":"Family with kids","value":"family with kids","polarity":"+"},
+            {"label":"Friends","value":"friends","polarity":"+"},
+            {"label":"A group","value":"group","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"companions-02","text":"Which languages are you comfortable in? Pick any.","kind":"multi","dimension":"languages",
+          "options": [
+            {"label":"English","value":"english","polarity":"+"},
+            {"label":"Spanish","value":"spanish","polarity":"+"},
+            {"label":"French","value":"french","polarity":"+"},
+            {"label":"German","value":"german","polarity":"+"},
+            {"label":"Italian","value":"italian","polarity":"+"},
+            {"label":"Portuguese","value":"portuguese","polarity":"+"},
+            {"label":"Japanese","value":"japanese","polarity":"+"},
+            {"label":"Mandarin","value":"mandarin","polarity":"+"}
+          ],
+          "skip_ok": true }
+      ]
+    },
+    {
+      "id": "avoid",
+      "title": "Must avoid",
+      "questions": [
+        {"qid":"avoid-01","text":"Is there anything we must never schedule?","kind":"multi","dimension":"must_avoid",
+          "options": [
+            {"label":"Heights","value":"heights","polarity":"+"},
+            {"label":"Boats","value":"boats","polarity":"+"},
+            {"label":"Caves","value":"caves","polarity":"+"},
+            {"label":"Animal attractions","value":"animal attractions","polarity":"+"},
+            {"label":"Long drives","value":"long drives","polarity":"+"},
+            {"label":"Early flights","value":"early flights","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"avoid-02","text":"Anything else that is a hard no?","kind":"text","dimension":"must_avoid",
+          "options": [],
+          "skip_ok": true }
+      ]
+    },
+    {
+      "id": "planning",
+      "title": "Planning style",
+      "questions": [
+        {"qid":"planning-01","text":"How do you like your days planned?","kind":"pick","dimension":"planning_style",
+          "options": [
+            {"label":"Hour by hour","value":"scheduled","polarity":"+"},
+            {"label":"A loose outline","value":"loose","polarity":"+"},
+            {"label":"A bit of both","value":"mixed","polarity":"+"}
+          ],
+          "skip_ok": true }
+      ]
+    },
+    {
+      "id": "hidden-gems",
+      "title": "Hidden gems",
+      "questions": [
+        {"qid":"hidden-gems-01","text":"Famous sights or hidden gems? 1 = stick to the famous, 5 = I would rather eat where the neighbourhood eats.","kind":"scale","dimension":"gem_appetite",
+          "options": [
+            {"label":"1 Stick to the famous","value":"1","polarity":"+"},
+            {"label":"2","value":"2","polarity":"+"},
+            {"label":"3 A mix","value":"3","polarity":"+"},
+            {"label":"4","value":"4","polarity":"+"},
+            {"label":"5 Where locals eat","value":"5","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"hidden-gems-02","text":"How far beyond the day's plan may a hidden gem pull you, by transit or on foot?","kind":"scale","dimension":"off_track_minutes",
+          "options": [
+            {"label":"10 minutes","value":"10","polarity":"+"},
+            {"label":"25 minutes","value":"25","polarity":"+"},
+            {"label":"45 minutes","value":"45","polarity":"+"},
+            {"label":"An hour","value":"60","polarity":"+"}
+          ],
+          "skip_ok": true },
+        {"qid":"hidden-gems-03","text":"Which of these are fine with you at a hidden gem? Pick any.","kind":"multi","dimension":"rough_edges",
+          "options": [
+            {"label":"Cash only","value":"cash-only","polarity":"+"},
+            {"label":"No English menu","value":"no-english-menu","polarity":"+"},
+            {"label":"Queues","value":"queues","polarity":"+"},
+            {"label":"No reservations","value":"no-reservations","polarity":"+"},
+            {"label":"Standing room only","value":"standing-room","polarity":"+"}
+          ],
+          "skip_ok": true }
+      ]
+    },
+    {
+      "id": "favourites",
+      "title": "Past favourites",
+      "questions": [
+        {"qid":"favourites-01","text":"Which trip or place did you love most, and why?","kind":"text","dimension":"interests",
+          "options": [],
+          "skip_ok": true },
+        {"qid":"favourites-02","text":"A meal or food experience you still remember?","kind":"text","dimension":"food",
+          "options": [],
+          "skip_ok": true },
+        {"qid":"favourites-03","text":"Anything from a past trip you would not repeat?","kind":"text","dimension":"must_avoid",
+          "options": [],
+          "skip_ok": true }
+      ]
+    }
+  ]
+}
