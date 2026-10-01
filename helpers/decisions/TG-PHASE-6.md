@@ -57,10 +57,82 @@ Skills red-team (tests or dry-run checks, invented fixtures): a routine fire who
 *(filled at merge)*
 
 ## 3 Cost and quota audit
-*(filled by the architect, every figure cited)*
+
+Every figure below is list price in the 0–100,000 monthly tier, read on 2026-10-01 from the official pages in §3.6 — nothing from memory. Counts are the design maxima the kits and skills budget for (a fixture round makes far fewer calls).
+
+### 3.1 Google Maps Platform
+
+**Per research round** (`trip-research`, the Gem Funnel of `hidden-gems-proposal.md` §5; every call counted on the Maps kit ledger):
+
+| Call | Count | Free per month | Price per 1,000 | Cost per round |
+|---|---|---|---|---|
+| Text Search Enterprise (taste stream) | 60 | 1,000 | $35.00 | $2.10 |
+| Text Search Essentials, IDs only (quiet and seed streams) | 150 | unlimited | $0 | $0 |
+| Places Aggregate `computeInsights` (quiet stream) | 30 | 5,000 | $10.00 | $0.30 |
+| Nearby Search Enterprise (quiet stream) | 15 | 1,000 | $35.00 | $0.53 |
+| Place Details Enterprise + Atmosphere (screening) | 40 | 1,000 | $25.00 | $1.00 |
+| **Total** | | | | **≈ $3.93 list — $0 billed inside the free tier** |
+
+**Per plan** (`plan-days`, then `brochure-build`): one Place Details Enterprise per plannable place (hours and status; ≤ 40 places → $0.80 list, 1,000 free), one Compute Route Matrix Essentials per day (7 days → $0.035, 10,000 free), the real legs as Compute Routes Essentials (≤ 10 legs × 7 days → $0.35, 10,000 free), one Compute Routes Pro cross-check per driving or walking day (≤ 7 → $0.07, 5,000 free), Static Maps for the brochure (≈ 8 renders → $0.016, 10,000 free) and Place Details Photos media requests (≤ 1 per planned place → ≤ $0.28, 1,000 free). **≈ $1.55 list per plan, $0 billed inside the free tier.** `trip-check` re-reads one Place Details Enterprise per stored place of an upcoming destination once a week (≤ 40 → $0.80 list). `/route` uses the Apps Script Maps service (quota 1,000 Direction queries a day on a consumer account), capped by the pack at 200 a day.
+
+**Monthly headroom.** The Maps kit's `DEFAULT_CEILINGS` stop every SKU at 80 % of its free cap (`kits/maps/lib/maps-skus.mjs`; IDs-only at 2,000 as a loop guard). The binding SKU is Text Search Enterprise: 800 ÷ 60 = **13 research rounds a month** before the ledger refuses; Place Details Enterprise + Atmosphere allows 20 screening rounds, Nearby Enterprise 53, Aggregate 133. Plans share the Place Details Enterprise cap (800 ÷ 40 ≈ 20 plans or weekly checks). Three planned trips a month with two extra rounds each stay inside every ceiling, as the proposal said.
+
+### 3.2 Claude API (Lane B, `/smart on` only)
+
+Off by default; nothing is spent until the owner sends `/smart on` and sets `CLAUDE_API_KEY`. One `messages` call per answered question, no tools: ≤ 24,000 characters of context (≈ 6–8k input tokens) and ≤ 900 output tokens on `claude-sonnet-5-5` ($2.00 / $10.00 per MTok), ≤ 400 output tokens on `claude-haiku-4-5-20251001` ($1.00 / $5.00) for trivial lookups.
+
+| | Input | Output | Per answer | At the daily cap (60) | A week at the cap |
+|---|---|---|---|---|---|
+| Sonnet 5.5 | 8,000 × $2/M = $0.016 | 900 × $10/M = $0.009 | **≈ $0.025** | $1.50 | $10.50 |
+| Haiku 4.5 lookup | 8,000 × $1/M = $0.008 | 400 × $5/M = $0.002 | ≈ $0.010 | $0.60 | $4.20 |
+
+Typical use (5 quick questions a day) ≈ $0.13 a day. `CHAT_API_MAX_PER_DAY` (default 60) caps the count; a call slower than 25 s starts a 10-minute cooldown; `/smart` shows today's count and dollar estimate from `tg_chat_usage`. Lane C (the routines) costs nothing per use — it runs inside the claude.ai subscription.
+
+### 3.3 Apps Script, Telegram and the mailbox against their documented quotas
+
+| Resource | Our daily use (typical → heavy) | Documented limit (consumer account) | Headroom |
+|---|---|---|---|
+| Routine fires (`MAX_ROUTINE_FIRES_PER_DAY`) | 3–6 → 18 (a full `/plan` with two More rounds = 6, ten deep questions = 10, a notes or brochure rebuild = 2) | our own cap: default 12, **recommended 24** (§4.3) | the cap is the stop; the 25th request waits until the next day or expires after 24 h |
+| Trigger runtime | ≈ 10 s per request (+3 and +10 sweeps) → 24 fires ≈ 4 min; hourly guard ≤ 2.2 min a day; daily jobs < 1 min (WP-5c §M) | 90 min / day (6 h on Workspace) | > 80 min spare even beside Assistant Brain's 12–24 min |
+| URL Fetch calls | ≈ 3 per webhook update, 1 per fire, 1 per Lane B answer, 1 per document → 100 → 600 | 20,000 / day | > 97 % |
+| Properties read/write | ≈ 20 per execution × ≈ 200 executions → 4,000; values ≤ 9 KB (flow state lives in the Sheet, cap 40,000 chars) | 50,000 / day; 9 KB per value; 500 KB per store | > 90 % |
+| Simultaneous executions | webhook + one sweep + one trigger | 30 per user | the 15 s lock defers the rest to the queue |
+| Installed one-off triggers | ≤ 3 live at a time (`+3`, `+10`, hourly) | 20 per user per script | — |
+| Script runtime per execution | sweep budget 120 s, Lane B call ≤ 25 s | 6 min | — |
+| Maps service (`/route`) | ≤ 200 Direction queries (pack cap) | 1,000 / day | 80 % |
+| Telegram message | `TG_MAX_CHARS` 4096, split at 3,900; caption 1,024; callback data 64 bytes | 4,096 chars after entity parsing; caption 0–1,024; `callback_data` 1–64 bytes | the core enforces each |
+| Telegram document | `DOCUMENT_MAX_BYTES` 50 MB; a larger file falls back to the Drive link | 50 MB per uploaded file | — |
+| Telegram rate | one chat, ≤ a few messages per interaction | ≈ 1 message / s per chat (Bot FAQ) | the webhook answers one update at a time |
+| Drive operations (mailbox) | one folder listing + ≤ 25 files per sweep (`MAILBOX_BATCH`), archive kept 30 days | not on the Apps Script quotas page; bounded by `SWEEP_BUDGET_MS` 120 s | — |
+| Mailbox envelope | ≤ 65,536 payload chars, ≤ 16,000 per string, ≤ 200,000 bytes per file, ≤ 14 days old | our own limits (SPEC §18) | — |
+
+### 3.4 A typical week
+
+One trip planned every two or three weeks: two research rounds and one plan ≈ $9.40 at list price, **$0 billed** because every SKU stays inside its free tier and the ledger stops at 80 %. Routines run inside the claude.ai subscription: 20–40 fires a week, well under the daily cap, subject to the Claude plan's own routine allowance (not verified here). Lane B: $0 while `/smart` is off; about $0.90 a week at five questions a day when it is on; $10.50 a week if the owner hits the 60-a-day cap every day. Apps Script: free. **Expected bill: $0–1 a week; worst case ≈ $11.**
+
+### 3.5 What stops runaway spend
+
+- **Maps:** the ledger refuses the first call past a SKU ceiling (80 % of the free cap, override only through `MAPS_SKU_CEILINGS`); `planTrip` refuses a build whose estimate would pass it (`PlanBudgetError`) unless the owner's own words said "plan anyway"; the IDs-only loop guard (2,000 a month); `/route` 200 a day with a 6 h cache; at most three More rounds per `/plan` (`TG_PLAN_MORE_MAX`). A Google Cloud budget alert on the project is the owner's belt-and-braces (the switch-on guide asks for one).
+- **Claude API:** off by default; `CHAT_API_MAX_PER_DAY` (60); the 10-minute cooldown after a slow call; one call per question, no tools, bounded tokens; the key is a Script Property the owner can delete at any time.
+- **Routines:** `MAX_ROUTINE_FIRES_PER_DAY`; one fire per request, never a retry loop (an unanswered request expires after `REQUEST_MAX_AGE_HOURS` 24); the research kit's budgets (20 searches, 40 fetches, 30 minutes per run).
+- **Apps Script:** `MAX_WAKES_PER_DAY` 500 and `WAKE_MIN_INTERVAL_SEC` 15 on the unauthenticated wake route; `MAX_PROPOSALS_PER_DAY` 30; `SWEEP_BUDGET_MS`; the hourly guard runs one at a time.
+
+### 3.6 Sources (read 2026-10-01)
+
+- Google Maps Platform pricing — https://developers.google.com/maps/billing-and-pricing/pricing (Text Search Enterprise $35.00, 1,000 free; Text Search Essentials IDs Only unlimited; Nearby Search Enterprise $35.00, 1,000 free; Place Details Enterprise $20.00 and Enterprise + Atmosphere $25.00, 1,000 free; Place Details Photos $7.00, 1,000 free; Places Aggregate $10.00, 5,000 free; Compute Routes Essentials $5.00 and Compute Route Matrix Essentials $5.00, 10,000 free; Compute Routes Pro $10.00, 5,000 free; Static Maps $2.00, 10,000 free)
+- Apps Script quotas — https://developers.google.com/apps-script/guides/services/quotas (triggers total runtime 90 min / day consumer, 6 h Workspace; URL Fetch 20,000 / day; Properties read/write 50,000 / day, 9 KB per value, 500 KB per store; Google Map Direction query 1,000 / day; script runtime 6 min; simultaneous executions 30; triggers 20 per user per script)
+- Telegram Bot API — https://core.telegram.org/bots/api (text 1–4096 characters after entities parsing; caption 0–1024; `callback_data` 1–64 bytes; files up to 50 MB) and https://core.telegram.org/bots/faq (≈ 1 message per second per chat)
+- Claude pricing — https://platform.claude.com/docs/en/about-claude/pricing (Sonnet 5.5 $2 / $10 per MTok; Haiku 4.5 $1 / $5) and model ids — https://platform.claude.com/docs/en/about-claude/models/overview (`claude-sonnet-5-5`; `claude-haiku-4-5-20251001`, alias `claude-haiku-4-5`, retirement not sooner than 2026-10-15)
 
 ## 4 Carried items
-*(Lane B prices and ids, `MAX_ROUTINE_FIRES_PER_DAY`, R2/R3, trigger minutes, Maps scope, truncation hardening)*
+
+1. **Lane B toggle (`30_chat_api.js`).** Model ids and list prices in `TG_CHAT` verified correct on 2026-10-01: `claude-sonnet-5-5` $2 / $10, `claude-haiku-4-5-20251001` $1 / $5 (§3.6). Heads-up for the guide: Haiku 4.5 is a dated snapshot whose retirement is "not sooner than 2026-10-15" — when it is retired, set `CHAT_API_MODEL_LOOKUP` to the alias `claude-haiku-4-5` or to the current small model. The toggle, its cost and the key go in `helpers/docs/TG-SWITCH-ON.md` §7. Red-team outcome: WP-6a attack set E (§2).
+2. **Review decisions path** (`pf:` taps → `prefs` request `payload.decisions` → `prefs-build-ingest.mjs --decisions`, TourGuide PR #3). Unmerged while Phase 6 ran; WP-6c read it from branch `claude/project-thread-m0kbpq` and the switch-on guide says in its prerequisites that PR #3 must be merged first. Integration outcome: WP-6c contract table (§2).
+3. **`MAX_ROUTINE_FIRES_PER_DAY`.** The core default stays 12 (it is a framework default shared by every helper). For Tour Guide the guide sets the Script Property to **24**: a heavy day is a full `/plan` with two More rounds (6 fires), ten deep questions (10) and a notes or brochure rebuild (2) = 18, and 24 leaves a review or a second trip's intake. Cost of the higher cap: ≈ 2 trigger runs per fire → 24 fires ≈ 4 of the 90 trigger minutes (§3.3); the Claude plan's routine allowance is the other bound (not verified here; the guide names it).
+4. **WP-4d R2 / R3.** R3 decided from the terms (§3.6 and the Maps Platform Terms of Service §3.2.3(b) "No Caching. Customer will not cache Google Maps Content except as expressly permitted under the Maps Service Specific Terms"; Service Specific Terms §3 "Google ID Caching" — place_id may be cached — and §14.3 — latitude and longitude for up to 30 consecutive calendar days; https://cloud.google.com/maps-platform/terms and https://cloud.google.com/maps-platform/terms/maps-service-terms): the `gem_line` text carried Google's rating and rating-count digits into the `shortlist` envelope (kept in the Drive mailbox archive), into the Sheet tab `Shortlist.payload_json` and into the chat. Neither store is a permitted exception, so **`gem_line` now carries no Google digits** — the comparison with the place's peers is said in our own words from our own derived fields (WP-6b implements and tests it; §2). R2 (`floor_reason` in the pinned shortlist schema) stays **not adopted** unless the red-team showed a need (§2). Open to the owner, unchanged from Phase 5: whether the brochure may show Google hours and ratings (`show_google_content`, default yes) — the brochure PDF is an owner document kept in Drive, so the same no-caching clause is the reason to ask.
+5. **Trigger minutes.** The mock measurements (WP-5c §M: ≈ 45 s per `/plan` with one More round, 0.5–1.5 min a typical day, 2.5–3 min a heavy day) hold against the documented quota of 90 trigger minutes a day on a consumer account (§3.3): even the raised fire cap of 24 costs ≈ 4 minutes.
+6. **Re-pin.** TourGuide `vendor/helpers/` re-pinned from `87be955` to the Phase 5 dist `4afb9cd`; journey dry run 0 failures; handed to the owner as draft PR LightAISolutions/TourGuide#4 (on top of PR #3's head), marked ready at the end of Phase 6 with the WP-6c changes.
+7. **Core audit.** (a) `tgSplit` never cuts inside a tag or an entity and closes the tags it cut through at the end of a chunk, reopening them at the start of the next; `tgClip` bounds `editMessageText` text (4,096) and document captions (1,024) the same way; `tgSend`, `tgEdit` and `tgSendDocument` retry once as plain text (`tgStripHtml`) when Telegram answers "can't parse entities" — `tests/core_telegram.test.js` (9 tests). (b) The Apps Script Maps service needs no OAuth scope: the scopes page (https://developers.google.com/apps-script/concepts/scopes) lists none for it, scopes are detected from the code, and the Maps service reference (https://developers.google.com/apps-script/reference/maps) speaks only of default quota allowances and `setAuthenticationByApiKey` for more — `helper.json` `scopes` stays `[]`.
 
 ## 5 Accepted risk
 *(filled at merge)*
