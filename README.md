@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-01 10:03:09 AM EST` · Repo version: `v01.28r`
+Last updated: `2026-10-01 04:45:03 PM EST` · Repo version: `v01.29r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -234,6 +234,7 @@ Last updated: `2026-10-01 10:03:09 AM EST` · Repo version: `v01.28r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-4B.md">TG-PHASE-4B.md</a> — Phase 4b: coordinator defaults, flows and documents as built, the six payload schemas, request kinds (final table), Gem Funnel and transit fallback as built, what changed vs the Phase 4 delta, requests carried
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-5.md">TG-PHASE-5.md</a> — Phase 5: cross-WP contract, the Lane B toggle, defaults, trigger minutes, carried items
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-6.md">TG-PHASE-6.md</a> — Phase 6 decisions: WP-6a/6b/6c briefs, red-team findings and fixes, cost and quota audit with sources, carried items, accepted risk
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-7.md">TG-PHASE-7.md</a> — Phase 7 decisions: live switch-on findings and the owner's choices
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-1b.md">WP-1b.md</a> — WP-1b core flows + document delivery: defaults (step shape, claim order, expiry, size fallback)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2a.md">WP-2a.md</a>            — WP-2a Maps kit: defaults, Maps terms finding, credential header, live smoke results
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2b.md">WP-2b.md</a>            — WP-2b Research kit: defaults (budgets, independence, labels, scanner)
@@ -516,6 +517,7 @@ Last updated: `2026-10-01 10:03:09 AM EST` · Repo version: `v01.28r`
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/status">status/</a>                 — One status file per work package
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/PHASE-5-RESUME.md">PHASE-5-RESUME.md</a> — Phase 5 resume note (usage-limit pause and resume)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/PHASE-6-RESUME.md">PHASE-6-RESUME.md</a> — Phase 6 resume note (usage-limit safety): step table and log
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/PHASE-7-RESUME.md">PHASE-7-RESUME.md</a> — Phase 7 resume note (usage-limit safety): which switch-on step the owner reached
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-1b.md">WP-1b.md</a> — WP-1b progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2a.md">WP-2a.md</a>            — WP-2a progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2b.md">WP-2b.md</a>            — WP-2b progress and requests to the coordinator

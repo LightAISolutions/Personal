@@ -3,11 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 29/100`
+`Sections: 30/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.29r] — 2026-10-01 04:45:03 PM EST
+
+> **Prompt:** "start phase 7"
+
+### Fixed
+- **Core `tgSafeHtml`** (`helpers/core/05_telegram.js`): a `reply` with `html: true` no longer shows the entities the brain wrote (`&amp;`, `&lt;`, numeric) escaped twice in the chat — they are restored after the safe tags, so an escaped tag still stays visible text; two new assertions in `helpers/tests/core_telegram.test.js`. Found by the private repo's integration dry run on the Phase 7 re-pin
+
+### Added
+- `helpers/decisions/TG-PHASE-7.md` (live switch-on findings and choices, started) and `helpers/status/PHASE-7-RESUME.md` (which switch-on step the owner reached)
 
 ## [v01.28r] — 2026-10-01 10:03:09 AM EST
 

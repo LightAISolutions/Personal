@@ -54,8 +54,11 @@ function tgStripHtml(html) {
  */
 var TG_SAFE_TAG_RE = /&lt;(\/?)(b|strong|i|em|u|ins|s|strike|del|code|pre|blockquote|tg-spoiler)&gt;/g;
 var TG_SAFE_LINK_RE = /&lt;a href="(https:\/\/(?:[^"<>\s&@]|&amp;){1,400})"&gt;/g;
+var TG_SAFE_ENTITY_RE = /&amp;(amp|lt|gt|quot|#[0-9]{1,7}|#x[0-9a-fA-F]{1,6});/g;
 function tgSafeHtml(s) {
-  return tgEscape(s).replace(TG_SAFE_TAG_RE, '<$1$2>').replace(TG_SAFE_LINK_RE, '<a href="$1">').replace(/&lt;\/a&gt;/g, '</a>');
+  // Entities the brain wrote (`&amp;`, `&lt;`, `&#8212;`) are restored last, so an escaped `&lt;b&gt;` stays visible text.
+  return tgEscape(s).replace(TG_SAFE_TAG_RE, '<$1$2>').replace(TG_SAFE_LINK_RE, '<a href="$1">').replace(/&lt;\/a&gt;/g, '</a>')
+    .replace(TG_SAFE_ENTITY_RE, '&$1;');
 }
 /** A copy of `params` for the plain-text retry: parse_mode dropped, `field` stripped of HTML. Never mutates the first attempt's object. */
 function _tgPlainRetry(params, field) {

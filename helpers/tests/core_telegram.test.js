@@ -133,6 +133,8 @@ test('tgSafeHtml keeps Telegram\'s plain tags and https links and shows everythi
   assert.equal(ctx.tgSafeHtml('<a href="javascript:alert(1)">x</a>'), '&lt;a href="javascript:alert(1)"&gt;x</a>');
   assert.equal(ctx.tgSafeHtml('<script>alert(1)</script> <tg-emoji emoji-id="1">x</tg-emoji> <b class="y">z</b>'), '&lt;script&gt;alert(1)&lt;/script&gt; &lt;tg-emoji emoji-id="1"&gt;x&lt;/tg-emoji&gt; &lt;b class="y"&gt;z</b>');
   assert.equal(ctx.tgSafeHtml('5 < 6 & 7 > 3'), '5 &lt; 6 &amp; 7 &gt; 3');
+  assert.equal(ctx.tgSafeHtml('Tea &amp; cake &#8212; <b>2 &lt; 3</b>'), 'Tea &amp; cake &#8212; <b>2 &lt; 3</b>', 'entities the brain wrote are not escaped twice (Phase 7)');
+  assert.equal(ctx.tgSafeHtml('&lt;b&gt;shown&lt;/b&gt; &amp;bogus;'), '&lt;b&gt;shown&lt;/b&gt; &amp;bogus;', 'an escaped tag stays text; an unknown entity stays escaped');
 });
 
 test('stripHidden removes controls, bidi marks, zero-width space and the BOM but keeps ZWJ sequences and newlines (red-team A7 / R2)', () => {
