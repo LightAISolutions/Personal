@@ -135,7 +135,9 @@ function formatDate(date, tz, fmt) {
 /* ---------------- Context factory ---------------- */
 let _last = null; // { ctx, state } of the most recent loadGas(); envelope()/putEnvelope() default to it
 function createMocks(opts = {}) {
-  const state = {
+  // opts.state: reuse a previous load's state (props, Sheet, Drive, fetch log) so a second context behaves like a fresh
+  // Apps Script execution against the same stored data — used to test that state survives a new execution.
+  const state = opts.state || {
     props: {}, userProps: {}, cache: new Map(), logs: [], triggers: [], spreadsheets: new Map(),
     drive: driveState(), lock: { busy: false, acquired: 0 },
     fetch: { requests: [], responder: null, tgMessageId: 100 },
@@ -235,6 +237,7 @@ function createMocks(opts = {}) {
     },
     Session: { getScriptTimeZone: () => state.tz, getEffectiveUser: () => ({ getEmail: () => 'owner@example.com' }), getActiveUser: () => ({ getEmail: () => '' }), getTemporaryActiveUserKey: () => 'k' }
   };
+  if (opts.state) state.now = () => (sandbox.__TEST_NOW ? new Date(sandbox.__TEST_NOW).getTime() : Date.now());
   return { sandbox, state };
 }
 
@@ -252,7 +255,7 @@ function manifestFor({ pack = null, manifest = undefined } = {}) {
   return JSON.parse(fs.readFileSync(path.join(HELPERS_ROOT, 'packs', pack, 'helper.json'), 'utf8'));
 }
 
-/** loadGas({pack, manifest, extra, now, tz}) → { ctx, state, files }. ctx is the vm global: every GAS function/var is a property. */
+/** loadGas({pack, manifest, extra, now, tz, state}) → { ctx, state, files }. `state` reuses an earlier load's state (new execution, same data). ctx is the vm global: every GAS function/var is a property. */
 function loadGas(opts = {}) {
   const { sandbox, state } = createMocks(opts);
   const ctx = vm.createContext(sandbox);

@@ -196,22 +196,45 @@ registerEnvelopeHandler('notice', {
 });
 /**
  * Core envelope: reply — the brain's answer to a request (envelope in_reply_to = request id).
- * payload {text (≤4000), html?: boolean}. Sent to the owner as a Telegram reply to the message that opened the request.
+ * payload {text (≤4000), html?: boolean, drive_file_ids?: { <label>: <Drive file id> }}. Sent to the owner as a Telegram
+ * reply to the message that opened the request; each Drive file then follows as a document captioned with its label
+ * (tgSendDocument — over-size files arrive as a link).
  */
+function _driveFileIdsErrors(ids) {
+  var errs = [];
+  if (ids === undefined) return errs;
+  if (!isPlainObject(ids)) { errs.push('drive_file_ids must be an object { label: id }'); return errs; }
+  var keys = Object.keys(ids);
+  if (keys.length > LIMITS.REPLY_MAX_DOCUMENTS) errs.push('drive_file_ids: at most ' + LIMITS.REPLY_MAX_DOCUMENTS + ' files');
+  keys.forEach(function (k) {
+    if (!/^[A-Za-z0-9 _.()-]{1,60}$/.test(k)) errs.push('drive_file_ids: bad label "' + truncate(k, 40) + '"');
+    if (typeof ids[k] !== 'string' || !/^[A-Za-z0-9_-]{10,200}$/.test(ids[k])) errs.push('drive_file_ids["' + truncate(k, 40) + '"] must be a Drive file id');
+  });
+  return errs;
+}
 registerEnvelopeHandler('reply', {
   validate: function (p, env) {
     var errs = _textPayloadErrors(p, 4000);
     if (p.html !== undefined && typeof p.html !== 'boolean') errs.push('html must be boolean');
     if (env && !env.in_reply_to) errs.push('reply needs in_reply_to');
-    return errs;
+    return errs.concat(_driveFileIdsErrors(p.drive_file_ids));
   },
   handle: function (env) {
     var p = env.payload;
     var req = getRequest(env.in_reply_to);
     var html = p.html ? p.text : tgEscape(p.text);
     var opts = req && req.tg_message_id ? { replyTo: req.tg_message_id } : {};
-    var r = req && req.tg_chat_id ? tgSend(req.tg_chat_id, html, opts) : tgSendOwner(html, opts);
-    return { sent: !!(r && r.ok), request: req ? req.id : null };
+    var chat = req && req.tg_chat_id ? req.tg_chat_id : tgOwnerChatId();
+    var r = chat ? tgSend(chat, html, opts) : tgSendOwner(html, opts);
+    var docs = 0, docsOk = 0;
+    if (isPlainObject(p.drive_file_ids) && chat) {
+      Object.keys(p.drive_file_ids).forEach(function (label) {
+        docs++;
+        var d = tgSendDocument(chat, { driveFileId: p.drive_file_ids[label], caption: tgEscape(label), silent: true });
+        if (d && d.ok) docsOk++;
+      });
+    }
+    return { sent: !!(r && r.ok), request: req ? req.id : null, documents: docs, documents_sent: docsOk };
   }
 });
 /**

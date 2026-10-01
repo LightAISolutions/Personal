@@ -74,7 +74,12 @@ var LIMITS = {
   HOURLY_SWEEP_MIN: 60,
   MAILBOX_TO_BRAIN_KEEP_DAYS: 3,
   MAILBOX_ARCHIVE_KEEP_DAYS: 30,
-  MAILBOX_BATCH: 25
+  MAILBOX_BATCH: 25,
+  FLOW_STATE_MAX_CHARS: 40000,
+  FLOW_DEFAULT_TTL_MIN: 24 * 60,
+  DOCUMENT_MAX_BYTES: 50 * 1024 * 1024,
+  DOCUMENT_CAPTION_CHARS: 1024,
+  REPLY_MAX_DOCUMENTS: 10
 };
 
 /** From-brain envelope types the core handles. The manifest's envelope_types are appended at load. */
@@ -92,7 +97,7 @@ var MAILBOX = {
   PROCESSED: 'processed', REJECTED: 'rejected', FAILED: 'failed', STATE_FILE: 'state.json'
 };
 
-var SHEETS = { QUEUE: 'Queue', PENDING: 'PendingActions', REQUESTS: 'Requests', AUDIT: 'AuditLog', SETTINGS: 'Settings' };
+var SHEETS = { QUEUE: 'Queue', PENDING: 'PendingActions', REQUESTS: 'Requests', AUDIT: 'AuditLog', SETTINGS: 'Settings', FLOWS: 'Flows' };
 
 /** Exact column headers. Never reorder or rename; packs may add columns via registerSheet(). */
 var SHEET_HEADERS = {
@@ -102,7 +107,8 @@ var SHEET_HEADERS = {
     'expires_at', 'decided_at', 'executed_at', 'result_json', 'error', 'tg_chat_id', 'tg_message_id', 'origin'],
   Requests: ['id', 'created_at', 'kind', 'status', 'routine', 'fired', 'answered_at', 'tg_chat_id', 'tg_message_id', 'text_preview'],
   AuditLog: ['id', 'ts', 'actor', 'event', 'ref', 'detail_json', 'ok'],
-  Settings: ['key', 'value', 'updated_at', 'note']
+  Settings: ['key', 'value', 'updated_at', 'note'],
+  Flows: ['chat_id', 'flow', 'step', 'expect', 'state_json', 'updated_at', 'expires_at']
 };
 
 function getProp(key) {

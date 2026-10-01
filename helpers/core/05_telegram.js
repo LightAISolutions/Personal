@@ -3,6 +3,7 @@
  * Conventions: parse_mode HTML + tgEscape() on ALL untrusted text; messages split at LIMITS.TG_SPLIT_AT;
  * callback_data ≤ 64 bytes encoded as "<prefix>:<part>:<part>"; always answerCallbackQuery.
  * Automatic messages go ONLY to the owner chat (tgSendOwner). Never send to any other chat id.
+ * Files: tgSendDocument / tgSendOwnerDocument (multipart sendDocument, ≤ LIMITS.DOCUMENT_MAX_BYTES, else the Drive link).
  */
 var TG_API_BASE = 'https://api.telegram.org/bot';
 
@@ -15,12 +16,16 @@ function tgOwnerChatId() { return getProp(PROP.OWNER_CHAT_ID); }
 
 /** Low-level call. Returns the parsed Telegram response ({ok, result|description}). Never throws on API errors. */
 function tgApi(method, params) {
+  return _tgCall(method, { method: 'post', contentType: 'application/json', payload: toJson(params || {}), muteHttpExceptions: true });
+}
+/** Same, as multipart/form-data (UrlFetchApp builds the form when the payload object holds a Blob). Used for files. */
+function tgApiMultipart(method, params) {
+  return _tgCall(method, { method: 'post', payload: params || {}, muteHttpExceptions: true });
+}
+function _tgCall(method, options) {
   var res;
-  try {
-    res = UrlFetchApp.fetch(TG_API_BASE + tgToken() + '/' + method, {
-      method: 'post', contentType: 'application/json', payload: toJson(params || {}), muteHttpExceptions: true
-    });
-  } catch (e) {
+  try { res = UrlFetchApp.fetch(TG_API_BASE + tgToken() + '/' + method, options); }
+  catch (e) {
     auditFail('tg_api_error', method, describeError(e));
     return { ok: false, description: describeError(e) };
   }
@@ -109,6 +114,44 @@ function tgAnswerCallback(callbackQueryId, text, showAlert) {
   if (text) p.text = truncate(text, 200);
   if (showAlert) p.show_alert = true;
   return tgApi('answerCallbackQuery', p);
+}
+/**
+ * Send a file as a Telegram document: tgSendDocument(chatId, { driveFileId | blob, filename?, caption? (html), replyTo? }).
+ * Files over LIMITS.DOCUMENT_MAX_BYTES cannot go through the Bot API — the owner gets the Drive link instead
+ * (audited document_too_large). Returns the Telegram response ({ok, ...}); never throws on API errors.
+ */
+function tgSendDocument(chatId, spec) {
+  spec = spec || {};
+  var blob = spec.blob || null, file = null, bytes = 0, name = spec.filename ? String(spec.filename) : '';
+  if (!blob && spec.driveFileId) {
+    try { file = DriveApp.getFileById(String(spec.driveFileId)); }
+    catch (e) { auditFail('document_not_found', String(spec.driveFileId), describeError(e)); return { ok: false, description: 'file not found' }; }
+    bytes = file.getSize();
+    if (!name) name = file.getName();
+    if (bytes > LIMITS.DOCUMENT_MAX_BYTES) {
+      auditFail('document_too_large', String(spec.driveFileId), { bytes: bytes, name: name });
+      var line = '📎 <b>' + tgEscape(name) + '</b> (' + Math.round(bytes / 1048576) + ' MB, too large to attach)' + (spec.caption ? '\n' + spec.caption : '') + '\n' + tgEscape(file.getUrl());
+      var sent = tgSend(chatId, line, { replyTo: spec.replyTo });
+      return { ok: !!(sent && sent.ok), fallback: 'link', description: 'document_too_large', result: sent && sent.result };
+    }
+    blob = file.getBlob();
+  }
+  if (!blob) return { ok: false, description: 'tgSendDocument: driveFileId or blob required' };
+  if (!file) {
+    try { bytes = blob.getBytes().length; } catch (e) { bytes = 0; }
+    if (bytes > LIMITS.DOCUMENT_MAX_BYTES) { auditFail('document_too_large', name || '(blob)', { bytes: bytes }); return { ok: false, description: 'document_too_large' }; }
+  }
+  if (name && typeof blob.setName === 'function') blob.setName(name);
+  var params = { chat_id: String(chatId), document: blob };
+  if (spec.caption) { params.caption = truncate(String(spec.caption), LIMITS.DOCUMENT_CAPTION_CHARS); params.parse_mode = 'HTML'; }
+  if (spec.replyTo) params.reply_to_message_id = String(spec.replyTo);
+  if (spec.silent) params.disable_notification = 'true';
+  return tgApiMultipart('sendDocument', params);
+}
+function tgSendOwnerDocument(spec) {
+  var chat = tgOwnerChatId();
+  if (!chat) { auditFail('tg_send_no_owner', '', 'document'); return { ok: false, description: PROP.OWNER_CHAT_ID + ' not set' }; }
+  return tgSendDocument(chat, spec);
 }
 function tgGetMe() { return tgApi('getMe', {}); }
 function tgSetWebhook(url) {

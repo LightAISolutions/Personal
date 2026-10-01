@@ -44,7 +44,7 @@ test('setup actions: deployment URL, token paste tolerance, storage, webhook, sn
   assert.match(post(ctx, { k, action: 'save_token', token: 'Use this token to access the HTTP API:\n`123456789:TESTtokenTESTtokenTEST`​' }), /Token saved/);
   assert.equal(state.props[ctx.PROP.BOT_TOKEN], '123456789:TESTtokenTESTtokenTEST');
   const r = post(ctx, { k, action: 'create_storage' });
-  assert.match(r, /Sheet created · Tabs ensured: 5 created · Mailbox folders ready/);
+  assert.match(r, /Sheet created · Tabs ensured: 6 created · Mailbox folders ready/);
   assert.equal(state.spreadsheets.get(state.props[ctx.PROP.SHEET_ID]).getName(), 'Hello Helper — state');
   assert.ok(state.drive.findFolder('Hello/mailbox/to-brain'));
   assert.match(post(ctx, { k, action: 'create_storage' }), /Tabs ensured: 0 created/, 'idempotent');
