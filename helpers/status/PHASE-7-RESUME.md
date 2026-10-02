@@ -11,9 +11,9 @@
 | 2 | Script Properties, setup page, pairing | done — Script Properties, `WEBAPP_URL`, setup steps 0–6, paired, test message, `/status` ok |
 | 3 | Seven routines, Aggregate smoke, `/ask` end to end | done — seven routines configured, `/ask` answered end to end, Aggregate smoke ok |
 | 4 | Interview | done — the owner answered and redid food and activities |
-| 5 | Pilot `/plan` | in progress — one-day plan delivered (brochure in the chat and on Drive); rebuilt after the v01.41r planner fix (TourGuide PR #13, `/repick` → ✅ Done choosing) |
-| 6 | Lane B choice | the owner chose to try `/smart` (key in Script Properties, one question, then keep or `/smart off`); outcome pending |
-| 7–9 | Guide verified, decisions, BUILD-STATE, Phase 8 prompt, remember session | v01.42r pushed (guide §4/§6, BUILD-STATE, README tree, `prompts/TG-PHASE-8.md`, routine-model choice); left: the rebuilt day, the Lane B answer, the final BUILD-STATE flip and remember session |
+| 5 | Pilot `/plan` | done — one-day plan delivered (brochure in the chat and on Drive), rebuilt after the v01.41r planner fix and accepted by the owner |
+| 6 | Lane B choice | done — tried; the owner keeps `/smart` off by default (F24 date fix v01.43r, F25) |
+| 7–9 | Guide verified, decisions, BUILD-STATE, Phase 8 prompt, remember session | done — v01.42r (guide, BUILD-STATE, Phase 8 prompt), v01.43r (Sheet zone fix), v01.44r (Phase 7 done, remember session) |
 
 ## Log
 - 2026-10-01 — Phase 7 started (thread session, Opus 5.5 · high). Prerequisites clean: Personal 470/471 pass (1 skipped), bundle and boundary clean; TourGuide main carries PRs #3 and #4.
@@ -28,5 +28,7 @@
 - 2026-10-02 — v01.40r: no way back from Done choosing (F20): `/repick` returns to choosing with taps kept. The pilot trip is cut to one day and re-planned from the owner's picks.
 - 2026-10-02 — v01.41r: the one-day re-plan arrived (brochure in the chat and on Drive) but booked lunch twice and a breakfast at the late start (F21); planner fixed. Re-pin the private repo, then the owner rebuilds with `/repick` → ✅ Done choosing. F22 (upload key on the command line) and F23 (routines run on the default model) recorded.
 - 2026-10-02 — v01.42r: TourGuide PR #13 merged (the re-pin). The owner chose Opus 5.5 for the routines (F23, set in the editor by the owner); the owner chose to try `/smart`. Guide, BUILD-STATE, README tree and `prompts/TG-PHASE-8.md` pushed; the owner rebuilds the day with `/repick` → ✅ Done choosing.
+- 2026-10-02 — v01.43r: quick answers read trip dates a day early (F24): the core now keeps the state Sheet on the owner's zone. Hours questions go to the routine (F25).
+- 2026-10-02 — v01.44r: the owner keeps `/smart` off by default and accepted the rebuilt day. **Phase 7 done**; Phase 8 starts after the trip.
 
 Developed by: LightAISolutions

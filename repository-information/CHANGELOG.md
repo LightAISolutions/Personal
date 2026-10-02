@@ -3,11 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 44/100`
+`Sections: 45/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.44r] — 2026-10-02 07:29:11 PM EST
+
+> **Prompt:** "I have finished choosing and reviewed the rebuilt [trip] day. It looks good enough for now." *(Phase 7 step 5 close; earlier in the step 6 trial the owner wrote: "I have tried /smart out and understand the difference now. I want /smart off by default unless i turn it on.")*
+
+### Changed
+- **Phase 7 done**: `helpers/BUILD-STATE.md` Phase 7 row done (v01.29r–v01.44r), log and Next ("Phases 0–7 and 9 are done"; Phase 8 after the owner's trip on Opus 5.5 · high)
+- `helpers/decisions/TG-PHASE-7.md` §2: Lane B `/smart` stays off by default (owner choice, no code change); the pilot day accepted; F24 notes the date fix was not re-checked on record
+- `helpers/prompts/TG-PHASE-8.md` item 8: one check that a date-based answer names the right day
+- `helpers/status/PHASE-7-RESUME.md`: every step done
+- `repository-information/SESSION-CONTEXT.md`: remember session
 
 ## [v01.43r] — 2026-10-02 03:13:35 AM EST
 
