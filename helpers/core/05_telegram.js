@@ -124,11 +124,16 @@ function tgClip(html, max) {
   return tgSplit(html, max - 1)[0] + '…';
 }
 
-/** Build an inline keyboard from rows of {text, data} or {text, url}. Validates callback_data ≤ 64 bytes. */
+/** Build an inline keyboard from rows of {text, data}, {text, url} or {text, web_app: {url}} (a Mini App button, https only). Validates callback_data ≤ 64 bytes. */
 function tgKeyboard(rows) {
   return {
     inline_keyboard: rows.map(function (row) {
       return row.map(function (b) {
+        if (b.web_app) {
+          var wu = String(b.web_app.url || '');
+          if (!/^https:\/\//.test(wu)) throw new Error('tgKeyboard: web_app url must be https');
+          return { text: String(b.text), web_app: { url: wu } };
+        }
         if (b.url) return { text: String(b.text), url: String(b.url) };
         var data = String(b.data);
         if (utf8Bytes(data) > LIMITS.CB_DATA_MAX_BYTES) throw new Error('callback_data > 64 bytes: ' + data);
@@ -231,6 +236,59 @@ function tgSendOwnerDocument(spec) {
   if (!chat) { auditFail('tg_send_no_owner', '', 'document'); return { ok: false, description: PROP.OWNER_CHAT_ID + ' not set' }; }
   return tgSendDocument(chat, spec);
 }
+/* ---------------- Mini App (Telegram Web App) ---------------- */
+function _tgHex(bytes) { var out = ''; for (var i = 0; i < bytes.length; i++) out += ('0' + ((bytes[i] + 256) % 256).toString(16)).slice(-2); return out; }
+/**
+ * Verify a Mini App's `initData` (https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app):
+ * drop `hash`, sort the remaining key=value pairs, join with "\n", secret = HMAC-SHA256(key "WebAppData", message BOT_TOKEN),
+ * hash = hex(HMAC-SHA256(secret, data_check_string)), constant-time compare. Then auth_date must be within maxAgeSec and
+ * user.id must be OWNER_CHAT_ID. Returns { ok, user, auth_date, start_param, reason } — reasons are short words, never the data.
+ */
+function tgVerifyInitData(initData, opts) {
+  opts = opts || {};
+  var maxAge = opts.maxAgeSec === undefined ? LIMITS.INITDATA_MAX_AGE_SEC : opts.maxAgeSec;
+  var fail = function (reason) { return { ok: false, user: null, auth_date: 0, start_param: '', reason: reason }; };
+  if (typeof initData !== 'string' || !initData) return fail('missing');
+  if (initData.length > LIMITS.INITDATA_MAX_CHARS) return fail('too_long');
+  var fields = {}, hash = '', parts = initData.split('&');
+  for (var i = 0; i < parts.length; i++) {
+    var eq = parts[i].indexOf('=');
+    if (eq <= 0) return fail('malformed');
+    var k, v;
+    try { k = decodeURIComponent(parts[i].slice(0, eq)); v = decodeURIComponent(parts[i].slice(eq + 1)); } catch (e) { return fail('malformed'); }
+    if (k === 'hash') { if (hash) return fail('malformed'); hash = v; continue; }
+    if (Object.prototype.hasOwnProperty.call(fields, k)) return fail('malformed');
+    fields[k] = v;
+  }
+  if (!/^[0-9a-f]{64}$/.test(hash)) return fail('missing_hash');
+  if (!fields.auth_date || !fields.user) return fail('missing_field');
+  var dcs = Object.keys(fields).sort().map(function (k2) { return k2 + '=' + fields[k2]; }).join('\n');
+  var secret = Utilities.computeHmacSha256Signature(Utilities.newBlob(tgToken()).getBytes(), Utilities.newBlob('WebAppData').getBytes());
+  var sig = Utilities.computeHmacSha256Signature(Utilities.newBlob(dcs).getBytes(), secret);
+  if (!safeEqual(_tgHex(sig), hash)) return fail('bad_hash');
+  var ad = parseInt(fields.auth_date, 10);
+  if (!(ad > 0) || !/^\d{1,12}$/.test(fields.auth_date)) return fail('bad_auth_date');
+  if (maxAge > 0 && Math.floor(nowMs() / 1000) - ad > maxAge) return fail('expired');
+  var u = safeJsonParse(fields.user);
+  if (!u.ok || !isPlainObject(u.value) || u.value.id === undefined || u.value.id === null) return fail('bad_user');
+  var owner = tgOwnerChatId();
+  if (!owner || String(u.value.id) !== String(owner)) return fail('not_owner');
+  return { ok: true, user: u.value, auth_date: ad, start_param: typeof fields.start_param === 'string' ? fields.start_param.slice(0, 512) : '', reason: '' };
+}
+/** The owner chat's menu button opens the Mini App at `url` (https). tgMenuButtonDefault() restores Telegram's default. */
+function tgSetMenuButton(url, text) {
+  var chat = tgOwnerChatId();
+  if (!chat) return { ok: false, description: PROP.OWNER_CHAT_ID + ' not set' };
+  url = String(url || '');
+  if (!/^https:\/\//.test(url)) return { ok: false, description: 'menu button url must be https' };
+  return tgApi('setChatMenuButton', { chat_id: chat, menu_button: { type: 'web_app', text: truncate(String(text || 'Open'), 32), web_app: { url: url } } });
+}
+function tgMenuButtonDefault() {
+  var chat = tgOwnerChatId();
+  if (!chat) return { ok: false, description: PROP.OWNER_CHAT_ID + ' not set' };
+  return tgApi('setChatMenuButton', { chat_id: chat, menu_button: { type: 'default' } });
+}
+
 function tgGetMe() { return tgApi('getMe', {}); }
 function tgSetWebhook(url) {
   return tgApi('setWebhook', { url: url, drop_pending_updates: true, allowed_updates: ['message', 'callback_query'], max_connections: 4 });

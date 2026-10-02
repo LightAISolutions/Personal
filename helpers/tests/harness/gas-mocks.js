@@ -332,6 +332,31 @@ function fireTriggers(ctx, state, handler) {
   return due.map((t) => ctx[t.fn]({ triggerUid: t.id }));
 }
 
-module.exports = { HELPERS_ROOT, loadGas, createMocks, listGasFiles, bootstrap, configureRoutine, tgUpdate, postEvent, getEvent, envelope, putEnvelope, fireTriggers, formatDate };
+/**
+ * A signed Telegram Mini App initData string for the bootstrap bot token (tgVerifyInitData accepts it as the owner 777):
+ * initData(ctx, state, { userId?, authDate? (unix s, default: the test clock), startParam?, extra? (more fields) }).
+ * Tamper with the returned string in the test (change a field, drop the hash) to make it fail.
+ */
+function initData(ctx, state, o = {}) {
+  const token = state.props[ctx.PROP.BOT_TOKEN];
+  const fields = {
+    query_id: 'AAHdF6IQAAAAAN0XohDhrOrc',
+    user: JSON.stringify({ id: o.userId !== undefined ? o.userId : 777, first_name: 'Owner', username: 'owner', language_code: 'en', allows_write_to_pm: true }),
+    auth_date: String(o.authDate !== undefined ? o.authDate : Math.floor(state.now() / 1000)),
+    ...(o.startParam ? { start_param: o.startParam } : {}), ...(o.extra || {})
+  };
+  const dcs = Object.keys(fields).sort().map((k) => `${k}=${fields[k]}`).join('\n');
+  const secret = crypto.createHmac('sha256', 'WebAppData').update(token).digest();
+  const hash = crypto.createHmac('sha256', secret).update(dcs).digest('hex');
+  return Object.keys(fields).map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(fields[k])}`).join('&') + '&hash=' + hash;
+}
+/** POST a Mini App call to a registered route and parse the JSON answer: appPost(ctx, state, 'app', { op, args }, { initData?, params? }). */
+function appPost(ctx, state, route, body = {}, o = {}) {
+  const payload = { initData: o.initData !== undefined ? o.initData : initData(ctx, state, o), ...body };
+  const out = ctx.doPost(postEvent(route, o.params || {}, payload));
+  return JSON.parse(out.content);
+}
+
+module.exports = { HELPERS_ROOT, loadGas, createMocks, listGasFiles, bootstrap, configureRoutine, tgUpdate, postEvent, getEvent, envelope, putEnvelope, fireTriggers, formatDate, initData, appPost };
 
 // Developed by: LightAISolutions

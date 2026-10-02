@@ -3,11 +3,29 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 37/100`
+`Sections: 38/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.37r] — 2026-10-01 10:06:38 PM EST
+
+> **Prompt:** "Read helpers/prompts/TG-PHASE-9.md in LightAISolutions/Personal and execute it exactly." *(The Phase 9 brief, thread "Tour Guide Phase 9 — Mini App"; the owner pulled the phase forward after Phase 7 because inline-button taps are slow. The owner's answers to the three Step 0 questions: the web-app URL — session-only, never recorded —, "I approve." for the screenshots, and "Give me step by step instructions when it's time." for the live check.)*
+
+### Added
+- **Core — registered routes** (`helpers/core/02_registry.js`, `10_router.js`, `00_config.js`): `registerRoute(name, {methods, auth: none|admin|webapp, handler})` is the new extension point for `?route=<name>`; the core names (`CORE_ROUTES`: `tg wake setup health upload`) cannot be registered. `routeRegistered()` checks the method, parses the POST body (`ROUTE_BODY_MAX_CHARS` 65 536), runs the auth and answers ContentService JSON with the status in the body (`{ok:false, status, reason}` — Apps Script cannot set an HTTP status); an unknown POST route is now a JSON 404. `LIMITS.MAX_APP_CALLS_PER_DAY` (2000, overridable by the property of the same name), `INITDATA_MAX_AGE_SEC` (24 h), `INITDATA_MAX_CHARS`; properties `APP_SHELL_URL`, `MAX_APP_CALLS_PER_DAY`
+- **Core — Mini App launch data** (`helpers/core/05_telegram.js`): `tgVerifyInitData(initData)` (HMAC per Telegram's rule, constant-time compare, freshness, owner only; refusals audited once per 6 h per reason), `tgSetMenuButton(url, text)` / `tgMenuButtonDefault()`, and `web_app` buttons (`{text, web_app:{url}}`, https only) in `tgKeyboard`
+- **Pack — the app route** (`helpers/packs/tour-guide/gas/32_app_api.js`): `?route=app` (POST, `webapp`) with 16 operations — `home`, `shortlist.get · choose · choose_many · more · done`, `trip.digest`, `brochure.get` (inline up to `TG_APP_BROCHURE_MAX_CHARS` 200 000, else the Drive link), `places.search · get · note · check`, `interview.bank · submit`, `facts.get · confirm`; the setup step `app_menu_button`; 📱 `web_app` buttons on shortlist, plan-digest and `/places` messages when `APP_SHELL_URL` is set; a choice made in the app re-marks the chat's shortlist keyboard (message ids in Settings `tg_app_sl_msgs`). No Google call, no Google field stored. Small additive edits in `10_commands.js`, `12_flow_plan.js` (`tgPlanRowsOf` keeps `url`/`web_app` buttons through the adopt re-map) and `20_envelopes.js` (`onSent` hook on `tgEnvRender`/`tgEnvDeliver`)
+- **The app shell** (`live-site-pages/helper-app.html`, v01.00w, + `html-versions/helper-apphtml.version.txt`, `html-changelogs/helper-apphtml.changelog.md`, `helper-apphtml.changelog-archive.md`): one generic Telegram Mini App page for every helper — no data, no helper-specific text; screens home, shortlist (local ticks, one batch submit), trip facts, interview, brochure (sandboxed iframe or Drive link), places; the core address comes only from `?core=` (or CloudStorage) and must be an Apps Script `/exec` URL — never from `start_param`; strict CSP, DOM built with `textContent` only, theme and viewport from Telegram
+- **Tests**: `core_initdata.test.js` (real HMAC, every refusal reason, menu button, web_app buttons), `core_routes.test.js` (registry, core names refused, auth none/admin/webapp, status in body, daily cap), `pack_tour-guide_gas_app.test.js` (every operation, refusals, no Google field written), harness helpers `H.initData` / `H.appPost` with a real `Utilities.computeHmacSha256Signature`; `shell_helper-app.playwright.mjs` (six screens light/dark, batch submit, brochure sandbox, error states, layout) and its 17 screenshots in `helpers/decisions/screenshots/wp-9c/`. Suite: 516 tests, 515 pass, 1 skipped
+- **Docs**: `SPEC.md` route table rows and the "Registered routes" section; `decisions/TG-PHASE-9.md` (finalized values, the Step 0 cross-origin verification, WP pointers), `decisions/WP-9a.md`, `WP-9b.md`, `WP-9c.md`, `status/WP-9a.md`, `WP-9b.md`, `WP-9c.md`; `prompts/TG-PHASE-9.md` FINALIZE block filled; pack README "The app" section and rows; REPO-ARCHITECTURE shell node; README tree entries
+
+### Security
+- Security review of the Phase 9 surface (`decisions/TG-PHASE-9.md` §5): registry getters (`getRoute`, `getCommand`, …) answer own properties only, so `?route=constructor` / `__proto__` no longer throws and audits per request; an unknown POST route is audited once per 6 h per name; the shell's `img-src` is `'self' data:` (brochure images are inlined by the kit, so the sandboxed frame cannot beacon out); `brochure.get` echoes only HTML inline
+
+### Changed
+- `core_router.test.js` and `pack_tour-guide_redteam_chat.test.js` expect the JSON 404 for an unknown POST route; `core_routes.test.js` plants `health` (the `upload` name became a real core route in v01.35r)
 
 ## [v01.36r] — 2026-10-01 09:23:51 PM EST
 

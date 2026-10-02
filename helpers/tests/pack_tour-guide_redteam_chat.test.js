@@ -461,8 +461,8 @@ test('H5 unknown routes and the health route → doPost "not found" (audited), d
   const t = fresh();
   t.state.props.CLAUDE_API_KEY = KEY;
   const n = sends(t).length;
-  assert.equal(body(t.ctx.doPost(H.postEvent('admin', { k: t.k }, { cmd: 'drop' }))), 'not found');
-  assert.equal(body(t.ctx.doPost(H.postEvent('', {}, {}))), 'not found');
+  assert.equal(body(t.ctx.doPost(H.postEvent('admin', { k: t.k }, { cmd: 'drop' }))), '{"ok":false,"status":404,"reason":"not_found"}');
+  assert.equal(body(t.ctx.doPost(H.postEvent('', {}, {}))), '{"ok":false,"status":404,"reason":"not_found"}');
   assert.equal(audits(t, 'route_unknown').length, 2);
   for (const route of ['', 'health', 'admin', '../setup', 'tg?x=1']) {
     const out = body(t.ctx.doGet(H.getEvent(route, { k: t.k })));

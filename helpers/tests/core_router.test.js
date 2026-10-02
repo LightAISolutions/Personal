@@ -19,7 +19,7 @@ test('health route answers without secrets; unknown POST routes are audited; tg 
   assert.deepEqual(Object.keys(h).sort(), ['app', 'core', 'ok', 'ts', 'version']);
   assert.equal(h.app, 'hello'); assert.equal(h.version, '0.1.0');
   assert.equal(ctx.doGet(H.getEvent('tg')).content, 'OK');
-  assert.equal(ctx.doPost(H.postEvent('nope', {}, {})).content, 'not found');
+  assert.deepEqual(JSON.parse(ctx.doPost(H.postEvent('nope', {}, {})).content), { ok: false, status: 404, reason: 'not_found' });
   assert.equal(audits(ctx, 'route_unknown').length, 1);
   assert.equal(JSON.stringify(state.props).includes('"ok"'), false);
 });

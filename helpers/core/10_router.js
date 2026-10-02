@@ -2,10 +2,12 @@
  * Helpers core — web-app router.
  * Routes: ?route=tg (Telegram webhook, POST) · ?route=wake (brain wake-up, GET/POST, no auth) · ?route=setup (owner page,
  *         GET/POST, ?k=ADMIN_SECRET) · ?route=upload (routine file upload, POST, per-request key — 16_upload.js) ·
- *         anything else → health JSON (no secrets).
+ *         ?route=<name> registered by a pack (registerRoute: auth none | admin | webapp) ·
+ *         anything else → health JSON on GET (no secrets), 404 JSON on POST.
  * Telegram route ALWAYS returns HtmlService (HTTP 200) — ContentService would 302 and Telegram would retry.
  * Auth: tg → ?k=WEBHOOK_SECRET + from.id === OWNER_CHAT_ID; setup → ?k=ADMIN_SECRET; wake → none (rate-limited, idempotent);
- *       upload → the request's HMAC upload key (open or just-answered request only).
+ *       upload → the request's HMAC upload key (open or just-answered request only);
+ *       registered 'webapp' routes → Telegram Mini App initData in the POST body (tgVerifyInitData) + MAX_APP_CALLS_PER_DAY.
  */
 function htmlOut(text) { return HtmlService.createHtmlOutput(text); }
 function jsonOut(obj) { return ContentService.createTextOutput(toJson(obj)).setMimeType(ContentService.MimeType.JSON); }
@@ -18,10 +20,12 @@ function doGet(e) {
     if (route === 'setup') return routeSetupGet(e);
     if (route === 'wake') return routeWake(e);
     if (route === 'tg') return htmlOut('OK');
+    var reg = getRoute(route);
+    if (reg) return routeRegistered(e, route, reg, 'GET');
     return jsonOut({ ok: true, app: HELPER.name, version: HELPER.version, core: CORE_VERSION, ts: nowIso() });
   } catch (err) {
     auditFail('doGet_error', route, describeError(err));
-    return route === 'wake' ? jsonOut({ ok: false, error: 'internal' }) : htmlOut('error');
+    return route === 'wake' || getRoute(route) ? routeError(500, 'internal') : htmlOut('error');
   }
 }
 function doPost(e) {
@@ -31,12 +35,56 @@ function doPost(e) {
     if (route === 'wake') return routeWake(e);
     if (route === 'setup') return routeSetupPost(e);
     if (route === 'upload') return routeUpload(e);
-    auditFail('route_unknown', route, null);
-    return htmlOut('not found');
+    var reg = getRoute(route);
+    if (reg) return routeRegistered(e, route, reg, 'POST');
+    if (!seenOnce('route:unknown:' + route.slice(0, 40))) auditFail('route_unknown', route, null);   // once per 6 h per name — a scanner cannot grow the AuditLog
+    return routeError(404, 'not_found');
   } catch (err) {
     auditFail('doPost_error', route, describeError(err));
-    return route === 'tg' ? htmlOut('OK') : jsonOut({ ok: false, error: 'internal' });
+    return route === 'tg' ? htmlOut('OK') : routeError(500, 'internal');
   }
+}
+
+/* ---------------- Registered routes (registerRoute, 02_registry.js) ---------------- */
+/**
+ * Apps Script web apps always answer HTTP 200 (ContentService cannot set a status), so the status travels in the JSON:
+ * errors are { ok:false, status, reason } — never a stack, never the request. A handler returns { status, body } (body is
+ * JSON-serialised as is; a non-200 status gets ok/status/reason filled in when the body lacks them).
+ */
+function routeError(status, reason) { return jsonOut({ ok: false, status: status, reason: reason }); }
+function routeRegistered(e, name, def, method) {
+  if (def.methods.indexOf(method) < 0) return routeError(405, 'method_not_allowed');
+  var req = { method: method, params: e && e.parameter ? e.parameter : {}, body: {}, user: null, auth_date: 0, start_param: '' };
+  if (method === 'POST') {
+    var raw = postBody(e);
+    if (raw.length > LIMITS.ROUTE_BODY_MAX_CHARS) return routeError(400, 'body_too_large');
+    if (raw.trim()) {
+      var parsed = safeJsonParse(raw);
+      if (!parsed.ok || !isPlainObject(parsed.value)) return routeError(400, 'bad_json');
+      req.body = parsed.value;
+    }
+  }
+  if (def.auth === 'admin') {
+    if (!_adminOk(e)) { if (!seenOnce('route:authfail:' + name)) auditFail('route_auth_fail', name, { auth: 'admin' }); return routeError(403, 'forbidden'); }
+  } else if (def.auth === 'webapp') {
+    var v = tgVerifyInitData(req.body.initData);
+    if (!v.ok) { if (!seenOnce('route:authfail:' + name + ':' + v.reason)) auditFail('route_auth_fail', name, { auth: 'webapp', reason: v.reason }); return routeError(403, 'forbidden'); }
+    req.user = v.user; req.auth_date = v.auth_date; req.start_param = v.start_param;
+    var cap = getIntProp(PROP.MAX_APP_CALLS_PER_DAY, LIMITS.MAX_APP_CALLS_PER_DAY);
+    if (settingDailyCount('app_calls') >= cap) { if (!seenOnce('app:cap:' + isoDateLocal())) auditFail('app_cap_reached', name, { cap: cap }); return routeError(429, 'daily_cap'); }
+    settingIncrDaily('app_calls');
+  }
+  var out;
+  try { out = def.handler(req); }
+  catch (err) { auditFail('route_error', name, describeError(err)); return routeError(500, 'internal'); }
+  if (!isPlainObject(out)) return jsonOut(out === undefined ? { ok: true } : out);
+  var status = clampInt(out.status, 100, 599, 200), body = out.body === undefined ? (status === 200 ? { ok: true } : {}) : out.body;
+  if (status !== 200 && isPlainObject(body)) {
+    if (body.ok === undefined) body.ok = false;
+    if (body.status === undefined) body.status = status;
+    if (body.reason === undefined) body.reason = status === 404 ? 'not_found' : status === 403 ? 'forbidden' : status === 429 ? 'daily_cap' : 'bad_request';
+  }
+  return jsonOut(body);
 }
 
 /** Dedupe key seen within DEDUPE_TTL_SEC → true (and does NOT re-mark). First sight marks it. */

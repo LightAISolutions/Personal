@@ -18,8 +18,11 @@ var HB_REGISTRY = {
   proposal_guard: {}, // name -> fn(env, proposal) -> null | string reason
   observer: {},   // name -> fn(env, result)       (after an envelope was handled successfully)
   flow: {},       // name -> { start(seed, ctx), next(state, input, ctx), onDone?(state, ctx), ttl_min? } (15_flows.js)
+  route: {},      // name -> { methods: ['GET'|'POST'], auth: 'none'|'admin'|'webapp', handler(req) -> { status, body } } (10_router.js)
   help: []        // lines shown by /help
 };
+/** Route names the core owns. registerRoute() refuses them at load time and the router never looks them up in the registry. */
+var CORE_ROUTES = ['tg', 'wake', 'setup', 'health', 'upload'];
 
 function _regPut(bucket, key, value, what) {
   if (!key || typeof key !== 'string') throw new Error('register' + what + ': key must be a non-empty string');
@@ -97,12 +100,35 @@ function registerProposalGuard(name, fn) { return _regPut('proposal_guard', name
 /** registerEnvelopeObserver(name, fn(env, result)) — after ANY envelope handler returned without throwing. */
 function registerEnvelopeObserver(name, fn) { return _regPut('observer', name, _regFn(fn, 'registerEnvelopeObserver'), 'EnvelopeObserver'); }
 
-function getEnvelopeHandler(type) { return HB_REGISTRY.envelope[type] || null; }
-function getActionDef(type) { return HB_REGISTRY.action[type] || null; }
-function getCommand(cmd) { return HB_REGISTRY.command[cmd] || null; }
-function getCallback(prefix) { return HB_REGISTRY.callback[prefix] || null; }
-function getQueueHandler(kind) { return HB_REGISTRY.queue[kind] || null; }
-function getRenderer(name) { return HB_REGISTRY.renderer[name] || null; }
+/**
+ * registerRoute(name, { methods, auth, handler }) — an extra `?route=<name>` on the web app (10_router.js).
+ * methods ⊆ ['GET','POST'] (non-empty); auth: 'none' | 'admin' (?k=ADMIN_SECRET) | 'webapp' (Telegram Mini App initData in
+ * the POST body `{ initData, op, args }`, verified against BOT_TOKEN and OWNER_CHAT_ID before the handler runs — POST only);
+ * handler(req) → { status, body } with req = { method, params, body, user, auth_date, start_param }. The router serialises
+ * `body` as JSON. Core route names (CORE_ROUTES) cannot be registered — the throw is the bundle-time refusal.
+ */
+function registerRoute(name, def) {
+  if (!/^[a-z][a-z0-9_-]{0,31}$/.test(name || '')) throw new Error('registerRoute: name must match /^[a-z][a-z0-9_-]{0,31}$/');
+  if (CORE_ROUTES.indexOf(name) >= 0) throw new Error('registerRoute: "' + name + '" is a core route and cannot be overridden');
+  if (!def || typeof def.handler !== 'function') throw new Error('registerRoute: need { methods, auth, handler }');
+  var methods = Array.isArray(def.methods) ? def.methods.map(String) : [];
+  if (!methods.length || methods.some(function (m) { return m !== 'GET' && m !== 'POST'; })) throw new Error('registerRoute: methods must be a non-empty subset of [GET, POST]');
+  if (['none', 'admin', 'webapp'].indexOf(def.auth) < 0) throw new Error('registerRoute: auth must be none | admin | webapp');
+  if (def.auth === 'webapp' && (methods.length !== 1 || methods[0] !== 'POST')) throw new Error('registerRoute: auth "webapp" routes are POST only (initData travels in the body)');
+  return _regPut('route', name, { methods: methods.slice(), auth: def.auth, handler: def.handler }, 'Route');
+}
+
+/** Own properties only — `constructor`, `__proto__`, `toString`… from a request must never resolve to an inherited member. */
+function _regGet(bucket, key) {
+  return typeof key === 'string' && Object.prototype.hasOwnProperty.call(HB_REGISTRY[bucket], key) ? HB_REGISTRY[bucket][key] : null;
+}
+function getEnvelopeHandler(type) { return _regGet('envelope', type); }
+function getActionDef(type) { return _regGet('action', type); }
+function getCommand(cmd) { return _regGet('command', cmd); }
+function getCallback(prefix) { return _regGet('callback', prefix); }
+function getQueueHandler(kind) { return _regGet('queue', kind); }
+function getRenderer(name) { return _regGet('renderer', name); }
+function getRoute(name) { return CORE_ROUTES.indexOf(name) >= 0 ? null : _regGet('route', name); }
 function registryKeys(bucket) { return Object.keys(HB_REGISTRY[bucket] || {}).sort(); }
 
 // Developed by: LightAISolutions

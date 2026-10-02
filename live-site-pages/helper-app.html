@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
+  <meta name="robots" content="noindex">
+  <meta name="build-version" content="v01.00w">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <title>Helper app</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+/*
+ * A generic Telegram Mini App shell for a helper built on the helpers framework (helpers/SPEC.md §6, "Registered
+ * routes"). It carries no data, no key and no helper-specific text: the core named by ?core= serves everything after
+ * verifying Telegram's signed launch data. Editorial-journal tone: a serif voice for headings, a quiet mono for facts,
+ * the chat's own theme colours for everything else so the app reads as part of the conversation it came from.
+ */
+    :root {
+      --bg: #ffffff; --fg: #1a1a1a; --hint: #6f6f6f; --link: #2a6fb0; --btn: #2a6fb0; --btn-fg: #ffffff;
+      --card: #f4f3ef; --section: #ffffff; --accent: #2a6fb0; --danger: #c0392b; --line: rgba(0,0,0,0.09);
+      --want: #2e7d32; --later: #b26a00; --skip: #8e8e8e; --vh: 100vh;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+    body { font: 16px/1.45 var(--sans); min-height: var(--vh); overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    a { color: var(--link); }
+    .hidden { display: none !important; }
+
+    /* ── chrome ── */
+    header { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+    .masthead { display: flex; align-items: baseline; justify-content: space-between; padding: 14px 16px 6px; }
+    .masthead h1 { margin: 0; font: 600 22px/1.1 var(--serif); letter-spacing: -0.01em; }
+    .masthead .kicker { font: 11px/1 var(--mono); color: var(--hint); letter-spacing: 0.08em; text-transform: uppercase; }
+    nav { display: flex; gap: 6px; padding: 6px 16px 10px; overflow-x: auto; scrollbar-width: none; }
+    nav::-webkit-scrollbar { display: none; }
+    nav button { flex: 0 0 auto; min-height: 44px; padding: 0 14px; border: 1px solid var(--line); border-radius: 22px;
+      background: var(--card); color: var(--fg); font-size: 14px; }
+    nav button[aria-current="page"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+    main { padding: 16px 16px 112px; max-width: 640px; margin: 0 auto; }
+    footer { position: fixed; left: 0; right: 0; bottom: 0; padding: 6px 16px calc(6px + env(safe-area-inset-bottom));
+      display: flex; justify-content: space-between; font: 11px/1 var(--mono); color: var(--hint);
+      background: linear-gradient(to top, var(--bg) 70%, transparent); pointer-events: none; }
+
+    /* ── type & blocks ── */
+    h2 { margin: 0 0 4px; font: 600 26px/1.15 var(--serif); letter-spacing: -0.015em; }
+    h3 { margin: 22px 0 8px; font: 600 15px/1.2 var(--sans); color: var(--hint); letter-spacing: 0.04em; text-transform: uppercase; }
+    .lede { margin: 0 0 16px; color: var(--hint); font-size: 15px; }
+    .meta { font: 12px/1.4 var(--mono); color: var(--hint); }
+    .card { background: var(--card); border-radius: 14px; padding: 14px; margin: 0 0 10px; }
+    .card.flat { background: transparent; border: 1px solid var(--line); }
+    .row { display: flex; align-items: center; gap: 10px; }
+    .row.between { justify-content: space-between; }
+    .grow { flex: 1 1 auto; min-width: 0; }
+    .note { border-left: 3px solid var(--accent); padding: 8px 12px; margin: 8px 0; background: var(--card); border-radius: 0 10px 10px 0; }
+    .state { text-align: center; padding: 48px 20px; color: var(--hint); }
+    .state h2 { color: var(--fg); }
+    .state .big { font-size: 40px; margin-bottom: 10px; }
+    .pill { display: inline-block; font: 11px/1 var(--mono); padding: 5px 8px; border-radius: 10px; background: var(--section); border: 1px solid var(--line); color: var(--hint); margin: 0 6px 6px 0; }
+    .pill.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+    button.pill { min-height: 44px; min-width: 44px; padding: 0 12px; margin: 0; font-size: 12px; }
+    .btn { min-height: 44px; padding: 10px 16px; border: 0; border-radius: 12px; background: var(--btn); color: var(--btn-fg); font-weight: 600; }
+    .btn.ghost { background: var(--card); color: var(--fg); }
+    .btn.danger { background: transparent; color: var(--danger); border: 1px solid var(--line); }
+    .btn.wide { width: 100%; margin-top: 10px; }
+    .stack > * + * { margin-top: 10px; }
+    .count { font: 600 36px/1 var(--serif); }
+    .counts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .counts .card { margin: 0; text-align: center; }
+    input[type=text], input[type=search], textarea, select { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--section); }
+    textarea { min-height: 72px; resize: vertical; }
+    label.q { display: block; font-weight: 600; margin: 18px 0 8px; }
+    .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+    .choices button { min-height: 44px; padding: 8px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--section); }
+    .choices button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+    /* ── shortlist (the checklist) ── */
+    .item { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .item .n { font: 600 18px/1.3 var(--serif); color: var(--hint); }
+    .item .name { font-weight: 600; }
+    .item .why { color: var(--hint); font-size: 14px; margin: 2px 0 6px; }
+    .item.gem .name::after { content: " 💎"; }
+    .ticks { display: flex; gap: 6px; }
+    .ticks button { flex: 1 1 0; min-height: 44px; border-radius: 10px; border: 1px solid var(--line); background: var(--section); font-size: 14px; }
+    .ticks button[aria-pressed="true"][data-v="w"] { background: var(--want); color: #fff; border-color: var(--want); }
+    .ticks button[aria-pressed="true"][data-v="l"] { background: var(--later); color: #fff; border-color: var(--later); }
+    .ticks button[aria-pressed="true"][data-v="s"] { background: var(--skip); color: #fff; border-color: var(--skip); }
+    .actions { display: flex; gap: 8px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+    .actions button { flex: 1 1 0; }
+
+    /* ── brochure ── */
+    .frame { width: 100%; height: calc(var(--vh) - 180px); min-height: 360px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+    .days { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+    .days button { flex: 0 0 auto; min-width: 44px; min-height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); }
+
+    /* ── places ── */
+    .filters { display: flex; gap: 6px; margin: 8px 0 12px; }
+    .filters select { min-width: 0; flex: 1 1 0; font-size: 14px; }
+    .place-actions { gap: 6px; }
+    .place-actions button { min-height: 44px; min-width: 44px; padding: 0; border-radius: 10px; border: 1px solid var(--line); background: var(--section); font-size: 16px; }
+    .place-actions button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+
+    .reveal { animation: rise 0.35s ease both; }
+    .reveal:nth-child(2) { animation-delay: 0.04s; } .reveal:nth-child(3) { animation-delay: 0.08s; }
+    .reveal:nth-child(4) { animation-delay: 0.12s; } .reveal:nth-child(5) { animation-delay: 0.16s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { .reveal { animation: none; } }
+  </style>
+</head>
+<body>
+  <header id="chrome" class="hidden">
+    <div class="masthead"><h1 id="title">Helper</h1><span class="kicker" id="kicker"></span></div>
+    <nav id="nav" aria-label="Screens"></nav>
+  </header>
+  <main id="main"></main>
+  <footer><span id="status"></span><span id="appVer"></span></footer>
+  <script>
+// ══════════════
+// PROJECT START
+// ══════════════
+  (function () {
+    'use strict';
+    var APP_VERSION = 'v01.00w';
+    var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
+    var SCREENS = [
+      { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'facts', label: 'Facts' },
+      { id: 'interview', label: 'Interview' }, { id: 'brochure', label: 'Brochure' }, { id: 'places', label: 'Places' }
+    ];
+    var TICKS = [{ v: 'w', text: '✅ Want' }, { v: 'l', text: '🔖 Later' }, { v: 's', text: '❌ Skip' }];
+    var tg = (window.Telegram && window.Telegram.WebApp) || null;
+    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, facts: null, factChoices: {}, factEdits: {}, busy: false };
+    var $ = function (id) { return document.getElementById(id); };
+    var main = $('main');
+
+    /* ---------- DOM helpers: text only, never markup ---------- */
+    function el(tag, attrs, children) {
+      var n = document.createElement(tag), k;
+      if (attrs) for (k in attrs) if (Object.prototype.hasOwnProperty.call(attrs, k)) {
+        if (k === 'class') n.className = attrs[k];
+        else if (k === 'text') n.textContent = attrs[k];
+        else if (k === 'on') { var evs = attrs[k], e; for (e in evs) if (Object.prototype.hasOwnProperty.call(evs, e)) n.addEventListener(e, evs[e]); }
+        else n.setAttribute(k, attrs[k]);
+      }
+      (children || []).forEach(function (c) { if (c === null || c === undefined || c === false) return; n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+      return n;
+    }
+    function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); return node; }
+    function str(v, max) { v = v === undefined || v === null ? '' : String(v); return max && v.length > max ? v.slice(0, max - 1) + '…' : v; }
+    function num(v) { v = Number(v); return isFinite(v) ? v : 0; }
+    function list(v) { return Array.isArray(v) ? v : []; }
+    function obj(v) { return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }
+    function httpsUrl(u) { u = str(u, 2000); return /^https:\/\/[^\s]+$/i.test(u) ? u : ''; }
+    function openLink(u) { u = httpsUrl(u); if (!u) return; if (tg && tg.openLink) tg.openLink(u); else window.open(u, '_blank', 'noopener'); }
+    function linkBtn(text, url, cls) { return httpsUrl(url) ? el('button', { class: cls || 'btn ghost', type: 'button', text: text, on: { click: function () { openLink(url); } } }) : null; }
+    function setStatus(t) { $('status').textContent = t || ''; }
+    function haptic(kind) { try { if (tg && tg.HapticFeedback) { if (kind === 'ok') tg.HapticFeedback.notificationOccurred('success'); else tg.HapticFeedback.selectionChanged(); } } catch (e) { /* older clients */ } }
+    function stateView(big, title, body, action) {
+      return el('div', { class: 'state' }, [el('div', { class: 'big', text: big }), el('h2', { text: title }), body ? el('p', { text: body }) : null, action || null]);
+    }
+
+    /* ---------- theme & viewport from Telegram ---------- */
+    function applyTheme() {
+      var p = (tg && tg.themeParams) || {}, r = document.documentElement.style, dark = tg && tg.colorScheme === 'dark';
+      var d = dark ? { bg: '#17212b', fg: '#f5f5f5', hint: '#9fa8b2', link: '#6ab3f3', btn: '#5288c1', btnfg: '#ffffff', card: '#232e3c', section: '#17212b', line: 'rgba(255,255,255,0.1)' }
+                   : { bg: '#ffffff', fg: '#1a1a1a', hint: '#6f6f6f', link: '#2a6fb0', btn: '#2a6fb0', btnfg: '#ffffff', card: '#f4f3ef', section: '#ffffff', line: 'rgba(0,0,0,0.09)' };
+      var c = function (key, fb) { return /^#[0-9a-fA-F]{6}$/.test(p[key] || '') ? p[key] : fb; };
+      r.setProperty('--bg', c('bg_color', d.bg)); r.setProperty('--fg', c('text_color', d.fg)); r.setProperty('--hint', c('hint_color', d.hint));
+      r.setProperty('--link', c('link_color', d.link)); r.setProperty('--btn', c('button_color', d.btn)); r.setProperty('--btn-fg', c('button_text_color', d.btnfg));
+      r.setProperty('--card', c('secondary_bg_color', d.card)); r.setProperty('--section', c('section_bg_color', c('bg_color', d.section)));
+      r.setProperty('--accent', c('accent_text_color', c('link_color', d.link))); r.setProperty('--danger', c('destructive_text_color', '#c0392b'));
+      r.setProperty('--line', d.line);
+      try { if (tg && tg.setHeaderColor) tg.setHeaderColor(c('bg_color', d.bg)); if (tg && tg.setBackgroundColor) tg.setBackgroundColor(c('bg_color', d.bg)); } catch (e) { /* older clients */ }
+    }
+    function applyViewport() {
+      var h = tg && tg.viewportStableHeight ? Math.max(320, num(tg.viewportStableHeight)) : window.innerHeight;
+      document.documentElement.style.setProperty('--vh', h + 'px');
+    }
+
+    /* ---------- launch parameters: core only from the URL, screen/trip from the URL or start_param ---------- */
+    function query(s) {
+      var out = {}; String(s || '').replace(/^\?/, '').split('&').forEach(function (kv) {
+        if (!kv) return; var i = kv.indexOf('='), k = i < 0 ? kv : kv.slice(0, i), v = i < 0 ? '' : kv.slice(i + 1);
+        try { out[decodeURIComponent(k)] = decodeURIComponent(v.replace(/\+/g, ' ')); } catch (e) { /* skip a bad pair */ }
+      });
+      return out;
+    }
+    function readParams() {
+      var q = query(window.location.search), sp = str(tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param, 512), extra = {};
+      if (sp) { if (sp.indexOf('=') >= 0) extra = query(sp); else { var m = /^([a-z]+)(?:[_-]([a-z0-9-]{1,64}))?$/.exec(sp); if (m) { extra.screen = m[1]; if (m[2]) extra.trip = m[2]; } } }
+      var screen = str(q.screen || extra.screen), trip = str(q.trip || extra.trip, 64);
+      S.screen = SCREENS.some(function (s) { return s.id === screen; }) ? screen : 'home';
+      S.trip = /^[a-z0-9][a-z0-9-]{0,63}$/.test(trip) ? trip : '';
+      return str(q.core, 400);
+    }
+    function resolveCore(fromUrl, done) {
+      if (CORE_HOST_RE.test(fromUrl)) { S.core = fromUrl; try { if (tg && tg.CloudStorage) tg.CloudStorage.setItem('core', fromUrl, function () {}); } catch (e) { /* no storage */ } return done(); }
+      try {
+        if (tg && tg.CloudStorage) return tg.CloudStorage.getItem('core', function (err, v) { if (!err && CORE_HOST_RE.test(v || '')) S.core = v; done(); });
+      } catch (e) { /* no storage */ }
+      done();
+    }
+
+    /* ---------- the one transport: text/plain POST, status in the JSON body ---------- */
+    function api(op, args, cb) {
+      var body = JSON.stringify({ initData: tg.initData, op: op, args: args || {} });
+      S.busy = true; setStatus('…');
+      fetch(S.core + '?route=app', { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: body, redirect: 'follow' })
+        .then(function (r) { return r.text(); })
+        .then(function (t) { var j; try { j = JSON.parse(t); } catch (e) { j = { ok: false, status: 502, reason: 'bad_answer' }; } S.busy = false; setStatus(''); cb(null, obj(j)); })
+        .catch(function (err) { S.busy = false; setStatus(''); cb(err || new Error('network'), null); });
+    }
+    /** Runs op; renders the 403 / 429 / network states itself and calls ok(body) only on success. */
+    function call(op, args, ok, fail) {
+      api(op, args, function (err, body) {
+        if (err) return render(stateView('📡', 'No connection', 'The helper did not answer. Check the network and try again.', el('button', { class: 'btn', type: 'button', text: 'Retry', on: { click: function () { call(op, args, ok, fail); } } })));
+        if (body.ok) return ok(body);
+        var st = num(body.status);
+        if (st === 403) return render(stateView('🔒', 'This app only answers its owner', 'Open it from your own helper bot.'));
+        if (st === 429) return render(stateView('⏳', 'Daily limit reached — use the chat', 'The app is paused until tomorrow; the bot still answers.'));
+        if (fail) return fail(body);
+        render(stateView('⚠️', 'That did not work', str(body.reason, 80) || 'Unknown error', el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } })));
+      });
+    }
+
+    /* ---------- navigation, MainButton and BackButton ---------- */
+    var mainBtn = { fn: null };
+    function render(node) { clear(main).appendChild(node); window.scrollTo(0, 0); }
+    function setMain(text, fn) {
+      mainBtn.fn = fn || null;
+      if (!tg || !tg.MainButton) return;
+      if (!fn) { tg.MainButton.hide(); return; }
+      tg.MainButton.setText(str(text, 40)); tg.MainButton.show(); tg.MainButton.enable();
+    }
+    function mainProgress(on) { try { if (tg && tg.MainButton) { if (on) tg.MainButton.showProgress(false); else tg.MainButton.hideProgress(); } } catch (e) { /* older clients */ } }
+    function go(screen, trip) {
+      S.screen = screen; if (trip !== undefined) S.trip = trip;
+      setMain('', null);
+      Array.prototype.forEach.call($('nav').children, function (b) { if (b.getAttribute('data-screen') === screen) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+      try { if (tg && tg.BackButton) { if (screen === 'home') tg.BackButton.hide(); else tg.BackButton.show(); } } catch (e) { /* older clients */ }
+      ({ home: showHome, shortlist: showShortlist, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces })[screen]();
+    }
+    function buildNav() {
+      var nav = clear($('nav'));
+      SCREENS.forEach(function (s) { nav.appendChild(el('button', { type: 'button', text: s.label, 'data-screen': s.id, on: { click: function () { go(s.id); } } })); });
+    }
+    function tripLabel(t) { t = obj(t); return str(t.title || t.destination || t.slug, 60); }
+    function tripName(slug) { var hit = (S.home ? list(S.home.trips) : []).filter(function (t) { return str(obj(t).slug) === str(slug); })[0]; return hit ? tripLabel(hit) : str(slug, 60); }
+    function dates(t) { t = obj(t); return t.start ? str(t.start, 10) + (t.end ? ' → ' + str(t.end, 10) : '') : ''; }
+
+    /* ---------- home ---------- */
+    function showHome() {
+      render(stateView('', 'Loading…'));
+      call('home', {}, function (b) {
+        S.home = b;
+        var trips = list(b.trips), round = b.choice_round ? obj(b.choice_round) : null, facts = b.pending_facts ? obj(b.pending_facts) : null, pc = obj(b.places);
+        if (!S.trip && trips.length) S.trip = str(trips[0].slug, 64);
+        var view = el('div', { class: 'stack' }, [
+          el('h2', { text: trips.length ? 'Your trips' : 'Nothing planned yet' }),
+          el('p', { class: 'lede', text: trips.length ? num(b.trips_total) + ' trip' + (num(b.trips_total) === 1 ? '' : 's') + ' on file' : 'Send /plan <destination> to the bot to start one.' })
+        ]);
+        if (round) view.appendChild(el('div', { class: 'card reveal' }, [
+          el('div', { class: 'meta', text: 'OPEN CHOICE ROUND ' + num(round.round) }),
+          el('div', { class: 'row between' }, [el('div', { class: 'grow', text: str(round.items) + ' places to decide · ✅ ' + num(round.want) + ' · 🔖 ' + num(round.later) + ' · ❌ ' + num(round.skip) }),
+            el('button', { class: 'btn', type: 'button', text: 'Choose', on: { click: function () { go('shortlist', str(round.trip, 64)); } } })])
+        ]));
+        if (facts) view.appendChild(el('div', { class: 'card reveal' }, [
+          el('div', { class: 'meta', text: 'FACTS TO CONFIRM' }),
+          el('div', { class: 'row between' }, [el('div', { class: 'grow', text: 'The helper found details for ' + tripName(facts.trip) + '.' }),
+            el('button', { class: 'btn', type: 'button', text: 'Review', on: { click: function () { go('facts', str(facts.trip, 64)); } } })])
+        ]));
+        trips.forEach(function (t) {
+          t = obj(t);
+          view.appendChild(el('div', { class: 'card reveal' }, [
+            el('div', { class: 'row between' }, [el('div', { class: 'grow' }, [el('div', { class: 'name', text: tripLabel(t) }), el('div', { class: 'meta', text: [dates(t), str(t.status, 20)].filter(Boolean).join(' · ') })]),
+              el('div', { class: 'row' }, [
+                t.has_brochure ? el('button', { class: 'btn ghost', type: 'button', text: '📄', 'aria-label': 'Brochure', on: { click: function () { go('brochure', str(t.slug, 64)); } } }) : null,
+                el('button', { class: 'btn ghost', type: 'button', text: 'Plan', on: { click: function () { go('brochure', str(t.slug, 64)); } } })])])
+          ]));
+        });
+        view.appendChild(el('h3', { text: 'Places on file' }));
+        var cs = Object.keys(pc).slice(0, 3);
+        view.appendChild(el('div', { class: 'counts' }, cs.length ? cs.map(function (k) { return el('div', { class: 'card' }, [el('div', { class: 'count', text: str(num(pc[k])) }), el('div', { class: 'meta', text: str(k, 16) })]); }) : [el('div', { class: 'meta', text: 'none yet' })]));
+        view.appendChild(el('button', { class: 'btn ghost wide', type: 'button', text: 'Browse the repository', on: { click: function () { go('places'); } } }));
+        view.appendChild(el('h3', { text: 'Profile' }));
+        view.appendChild(el('div', { class: 'row between' }, [el('div', { class: 'meta grow', text: b.profile_summary && obj(b.profile_summary).updated ? 'Updated ' + str(obj(b.profile_summary).updated, 20) : 'No interview answers yet' }),
+          el('button', { class: 'btn ghost', type: 'button', text: 'Interview', on: { click: function () { go('interview'); } } })]));
+        render(view);
+      });
+    }
+
+    /* ---------- shortlist: tick locally, one batch call on submit ---------- */
+    function showShortlist() {
+      render(stateView('', 'Loading…'));
+      call('shortlist.get', {}, function (b) {
+        S.shortlist = b; S.ticks = {};
+        var groups = list(b.groups), total = 0;
+        groups.forEach(function (g) { list(obj(g).items).forEach(function (it) { total++; if (/^[wls]$/.test(str(obj(it).choice))) S.ticks[str(it.key, 8)] = str(it.choice); }); });
+        S.sent = JSON.parse(JSON.stringify(S.ticks));
+        if (!total) return render(stateView('🗺', 'No open shortlist', 'When the helper sends one, choose here or in the chat.', el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } })));
+        var view = el('div', {}, [el('h2', { text: tripName(b.trip) }), el('p', { class: 'meta', text: 'ROUND ' + num(b.round) }), el('p', { class: 'lede', text: 'Tick each place, then save once. ✅ want · 🔖 later · ❌ skip' })]);
+        groups.forEach(function (g) {
+          g = obj(g);
+          view.appendChild(el('h3', { text: str(g.title || g.id, 40) }));
+          list(g.items).forEach(function (it) {
+            it = obj(it); var key = str(it.key, 8);
+            var ticks = el('div', { class: 'ticks' }, TICKS.map(function (t) {
+              return el('button', { type: 'button', text: t.text, 'data-v': t.v, 'aria-pressed': S.ticks[key] === t.v ? 'true' : 'false', on: { click: function () {
+                S.ticks[key] = S.ticks[key] === t.v ? '' : t.v; haptic();
+                Array.prototype.forEach.call(ticks.children, function (x) { x.setAttribute('aria-pressed', x.getAttribute('data-v') === S.ticks[key] ? 'true' : 'false'); });
+                refreshMain();
+              } } });
+            }));
+            var facts = [it.est_minutes ? num(it.est_minutes) + ' min' : '', str(it.area, 40)].filter(Boolean).join(' · ');
+            view.appendChild(el('div', { class: 'item' + (it.gem ? ' gem' : ''), 'data-key': key }, [
+              el('div', { class: 'n', text: str(it.n, 4) }),
+              el('div', { class: 'grow' }, [el('div', { class: 'name', text: str(it.name, 80) }), el('div', { class: 'why', text: str(it.why_you, 200) }),
+                el('div', { class: 'row between' }, [el('span', { class: 'meta', text: facts }), linkBtn('Map ↗', it.maps_url, 'pill')]), ticks])
+            ]));
+          });
+        });
+        var pending = function () { var n = 0, k; for (k in S.ticks) if (Object.prototype.hasOwnProperty.call(S.ticks, k) && S.ticks[k] !== (S.sent[k] || '')) n++; return n; };
+        var save = function (then) {
+          var choices = [], k;
+          for (k in S.ticks) if (Object.prototype.hasOwnProperty.call(S.ticks, k) && S.ticks[k] && S.ticks[k] !== (S.sent[k] || '')) choices.push({ n: k, choice: S.ticks[k] });
+          if (!choices.length) return then();
+          mainProgress(true);
+          call('shortlist.choose_many', { run: str(b.run, 64), choices: choices }, function (r) {
+            mainProgress(false); S.sent = JSON.parse(JSON.stringify(S.ticks)); haptic('ok');
+            setStatus(num(r.applied) + ' saved' + (list(r.refused).length ? ', ' + list(r.refused).length + ' refused' : ''));
+            then();
+          }, function (err) { mainProgress(false); setStatus('Not saved: ' + str(err.reason, 40)); });
+        };
+        var refreshMain = function () { var n = pending(); setMain(n ? 'Save ' + n + ' choice' + (n === 1 ? '' : 's') : 'Done choosing', function () { n ? save(refreshMain) : finish(); }); $('saveBtn').textContent = n ? 'Save ' + n : 'All saved'; };
+        var finish = function () { save(function () { call('shortlist.done', { run: str(b.run, 64) }, function () { haptic('ok'); render(stateView('🧭', 'Building your days', 'The helper is planning — the digest arrives in the chat.', el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } }))); setMain('', null); }); }); };
+        view.appendChild(el('div', { class: 'actions' }, [
+          el('button', { class: 'btn grow', type: 'button', id: 'saveBtn', text: 'All saved', on: { click: function () { save(refreshMain); } } }),
+          b.more ? el('button', { class: 'btn ghost', type: 'button', text: 'More options', on: { click: function () { save(function () { call('shortlist.more', { run: str(b.run, 64) }, function () { render(stateView('🔎', 'Looking for more', 'A new round arrives in the chat.')); }); }); } } }) : null,
+          el('button', { class: 'btn ghost', type: 'button', id: 'doneBtn', text: 'Done choosing', on: { click: finish } })
+        ]));
+        render(view); refreshMain();
+      });
+    }
+
+    /* ---------- facts: the trip-facts confirmation as a form ---------- */
+    function showFacts() {
+      render(stateView('', 'Loading…'));
+      var trip = S.trip || (S.home && S.home.pending_facts ? str(obj(S.home.pending_facts).trip, 64) : '');
+      if (!trip) return render(stateView('📋', 'Nothing to confirm', 'The helper asks here when it has found trip details.', el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } })));
+      call('facts.get', { trip: trip }, function (b) {
+        S.facts = b; S.factChoices = {}; S.factEdits = {};
+        var found = list(b.found);
+        if (!found.length) return render(stateView('📋', 'Nothing to confirm', 'No details are waiting for ' + tripName(b.trip) + '.', el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } })));
+        var view = el('div', {}, [el('h2', { text: 'Confirm the facts' }), el('p', { class: 'lede', text: tripName(b.trip) + ' — keep what is right, drop or correct the rest.' })]);
+        found.forEach(function (f) {
+          f = obj(f); var n = str(f.n, 8); S.factChoices[n] = /^[yn]$/.test(str(f.choice)) ? str(f.choice) : '';
+          var ta = el('textarea', { class: 'hidden', placeholder: 'Correct it here', maxlength: '300', on: { input: function () { S.factEdits[n] = str(ta.value, 300); } } });
+          var btns = el('div', { class: 'choices' }, [['y', '✅ Keep'], ['n', '❌ Drop'], ['e', '✏️ Correct']].map(function (c) {
+            return el('button', { type: 'button', text: c[1], 'data-v': c[0], 'aria-pressed': S.factChoices[n] === c[0] ? 'true' : 'false', on: { click: function () {
+              S.factChoices[n] = c[0]; haptic();
+              Array.prototype.forEach.call(btns.children, function (x) { x.setAttribute('aria-pressed', x.getAttribute('data-v') === c[0] ? 'true' : 'false'); });
+              if (c[0] === 'e') { ta.classList.remove('hidden'); ta.focus(); } else { ta.classList.add('hidden'); delete S.factEdits[n]; }
+            } } });
+          }));
+          view.appendChild(el('div', { class: 'card reveal' }, [el('div', { class: 'meta', text: str(f.kind, 20).toUpperCase() }), el('div', { class: 'name', text: str(f.text, 200) }),
+            f.start ? el('div', { class: 'meta', text: str(f.start, 10) + (f.end ? ' → ' + str(f.end, 10) : '') }) : null, el('div', { style: 'margin-top:8px' }, [btns]), ta]));
+        });
+        if (list(b.missing).length) view.appendChild(el('div', { class: 'note', text: 'Still missing: ' + list(b.missing).map(function (m) { return str(m, 20); }).join(', ') + ' — tell the bot in the chat.' }));
+        var submit = function () {
+          var facts = [], edits = [], k;
+          for (k in S.factChoices) if (Object.prototype.hasOwnProperty.call(S.factChoices, k)) {
+            if (S.factChoices[k] === 'y' || S.factChoices[k] === 'n') facts.push({ n: k, choice: S.factChoices[k] });
+            else if (S.factChoices[k] === 'e' && str(S.factEdits[k]).trim()) edits.push({ n: k, text: str(S.factEdits[k], 300).trim() });
+          }
+          if (!facts.length && !edits.length) { setStatus('Nothing chosen yet'); return; }
+          mainProgress(true);
+          call('facts.confirm', { trip: trip, facts: facts, edits: edits }, function (r) {
+            mainProgress(false); haptic('ok'); setMain('', null);
+            render(stateView('✅', 'Facts confirmed', num(r.applied) + ' noted' + (list(r.refused).length ? ', ' + list(r.refused).length + ' refused' : '') + '. The helper carries on in the chat.', el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } })));
+          }, function (err) { mainProgress(false); setStatus('Not saved: ' + str(err.reason, 40)); });
+        };
+        view.appendChild(el('button', { class: 'btn wide', type: 'button', text: 'Confirm', on: { click: submit } }));
+        render(view); setMain('Confirm', submit);
+      });
+    }
+
+    /* ---------- interview: one scrollable form from the bank ---------- */
+    function showInterview() {
+      render(stateView('', 'Loading…'));
+      call('interview.bank', {}, function (b) {
+        var bank = obj(b.bank), sections = list(bank.sections); S.bank = bank; S.answers = {};
+        list(b.answers).forEach(function (a) { a = obj(a); var q = str(a.qid, 32); (S.answers[q] = S.answers[q] || []).push(str(a.value, 60)); });
+        if (!sections.length) return render(stateView('🗣', 'No interview available', 'The helper has no question bank yet.'));
+        var view = el('div', {}, [el('h2', { text: str(bank.title, 80) || 'Interview' }), el('p', { class: 'lede', text: 'Answer what you like and skip the rest — send once at the end.' })]);
+        var count = 0;
+        sections.forEach(function (sec) {
+          sec = obj(sec); view.appendChild(el('h3', { text: str(sec.title || sec.id, 60) }));
+          list(sec.questions).forEach(function (q) {
+            q = obj(q); var qid = str(q.qid, 32), kind = str(q.kind, 10), single = kind === 'scale' || kind === 'pick'; count++;
+            view.appendChild(el('label', { class: 'q', text: str(q.text, 300) }));
+            if (kind === 'text' || q.other) {
+              var inp = el('input', { type: 'text', maxlength: '300', placeholder: kind === 'text' ? 'Type your answer — commas separate several' : '✏️ Something else?', on: { input: function () { S.typed = S.typed || {}; S.typed[qid] = str(inp.value, 300); } } });
+              if (kind === 'text') { view.appendChild(inp); return; }
+              view.appendChild(choiceRow(q, qid, single)); view.appendChild(el('div', { style: 'margin-top:8px' }, [inp])); return;
+            }
+            view.appendChild(choiceRow(q, qid, single));
+          });
+        });
+        function choiceRow(q, qid, single) {
+          var row = el('div', { class: 'choices' });
+          list(q.options).slice(0, 12).forEach(function (o) {
+            o = obj(o); var v = str(o.value, 60);
+            row.appendChild(el('button', { type: 'button', text: str(o.label, 40), 'aria-pressed': (S.answers[qid] || []).indexOf(v) >= 0 ? 'true' : 'false', on: { click: function () {
+              var cur = S.answers[qid] || [], i = cur.indexOf(v); haptic();
+              if (single) cur = i >= 0 ? [] : [v]; else if (i >= 0) cur.splice(i, 1); else if (cur.length < 5) cur.push(v);
+              S.answers[qid] = cur;
+              Array.prototype.forEach.call(row.children, function (x) { x.setAttribute('aria-pressed', cur.indexOf(x.getAttribute('data-v')) >= 0 ? 'true' : 'false'); });
+            } }, 'data-v': v }));
+          });
+          return row;
+        }
+        var submit = function () {
+          var answers = [], k, typed = S.typed || {};
+          Object.keys(S.answers).forEach(function (q) { if (S.answers[q].length) answers.push({ qid: q, values: S.answers[q].slice(0, 5) }); });
+          for (k in typed) if (Object.prototype.hasOwnProperty.call(typed, k) && typed[k].trim()) {
+            var vals = typed[k].split(/[\n,;]+/).map(function (v) { return v.replace(/\s+/g, ' ').trim().slice(0, 60); }).filter(Boolean).slice(0, 5);
+            var ex = answers.filter(function (a) { return a.qid === k; })[0];
+            if (ex) ex.values = ex.values.concat(vals).slice(0, 5); else if (vals.length) answers.push({ qid: k, values: vals });
+          }
+          if (!answers.length) { setStatus('Nothing answered yet'); return; }
+          mainProgress(true);
+          call('interview.submit', { version: num(bank.v) || 1, answers: answers }, function (r) {
+            mainProgress(false); haptic('ok'); setMain('', null);
+            render(stateView('✅', 'Thanks', num(r.answers) + ' answer' + (num(r.answers) === 1 ? '' : 's') + ' noted — the helper updates your profile.', el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } })));
+          }, function (err) { mainProgress(false); setStatus('Not sent: ' + str(err.reason, 40)); });
+        };
+        view.appendChild(el('p', { class: 'meta', text: count + ' questions' }));
+        view.appendChild(el('button', { class: 'btn wide', type: 'button', text: 'Send answers', on: { click: submit } }));
+        render(view); setMain('Send answers', submit);
+      });
+    }
+
+    /* ---------- brochure: the trip digest, then the HTML in a sandboxed frame ---------- */
+    function showBrochure() {
+      render(stateView('', 'Loading…'));
+      var trip = S.trip || (S.home && list(S.home.trips).length ? str(obj(S.home.trips[0]).slug, 64) : '');
+      if (!trip) return render(stateView('📄', 'No trip yet', 'Plan one in the chat first.', el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } })));
+      call('trip.digest', { slug: trip }, function (b) {
+        var t = obj(b.trip), days = list(b.days), later = list(b.later);
+        var view = el('div', {}, [el('h2', { text: tripLabel(t) }), el('p', { class: 'lede', text: [dates(t), days.length ? days.length + ' day' + (days.length === 1 ? '' : 's') : '', t.verified_on ? 'checked ' + str(t.verified_on, 10) : ''].filter(Boolean).join(' · ') })]);
+        var frameBox = el('div', { id: 'frameBox' });
+        if (t.has_brochure) {
+          view.appendChild(frameBox);
+          frameBox.appendChild(el('p', { class: 'meta', text: 'Opening the brochure…' }));
+          call('brochure.get', { slug: trip }, function (r) {
+            clear(frameBox);
+            if (typeof r.html === 'string' && r.html) {
+              var fr = el('iframe', { class: 'frame', sandbox: '', title: 'Brochure', referrerpolicy: 'no-referrer' });
+              fr.srcdoc = r.html;            // sandbox="" — no scripts, no same-origin, no forms, no navigation
+              frameBox.appendChild(fr);
+              if (days.length) frameBox.appendChild(el('div', { class: 'days' }, days.map(function (d, i) { return el('button', { type: 'button', text: 'Day ' + (i + 1), on: { click: function () { fr.scrollIntoView({ behavior: 'smooth' }); } } }); })));
+            } else if (httpsUrl(r.link)) {
+              frameBox.appendChild(el('div', { class: 'card' }, [el('p', { text: 'The brochure is too large to show here — open it in Drive.' }), linkBtn('Open the brochure ↗', r.link, 'btn')]));
+            } else frameBox.appendChild(el('p', { class: 'meta', text: 'No brochure file.' }));
+          }, function (err) { clear(frameBox).appendChild(el('p', { class: 'meta', text: 'Brochure not available (' + str(err.reason, 40) + ').' })); });
+        } else if (days.length) view.appendChild(el('div', { class: 'note', text: 'No brochure yet — ask the bot with /brochure.' }));
+        days.forEach(function (d, i) {
+          d = obj(d);
+          var card = el('div', { class: 'card reveal' }, [el('div', { class: 'meta', text: 'DAY ' + (i + 1) + ' · ' + str(d.date, 10) }), el('div', { class: 'name', text: str(d.theme, 100) })]);
+          list(d.stops).forEach(function (s) { s = obj(s); card.appendChild(el('div', { class: 'row between', style: 'margin-top:6px' }, [el('div', { class: 'grow' }, [el('div', { text: str(s.n, 4) + '. ' + str(s.name, 80) }), el('div', { class: 'meta', text: [str(s.arrive, 5) && str(s.arrive, 5) + '–' + str(s.depart, 5), s.minutes ? num(s.minutes) + ' min' : '', str(s.note_line, 120)].filter(Boolean).join(' · ') })]), linkBtn('Map ↗', s.maps_url, 'pill')])); });
+          list(d.warnings).forEach(function (w) { card.appendChild(el('div', { class: 'note', text: '⚠️ ' + str(w, 200) })); });
+          list(d.rain).forEach(function (r) { r = obj(r); card.appendChild(el('div', { class: 'meta', text: '☔ If it rains: ' + str(r.name, 60) + ' instead of ' + str(r.instead_of, 60) })); });
+          view.appendChild(card);
+        });
+        if (later.length) { view.appendChild(el('h3', { text: 'Later' })); later.forEach(function (l) { l = obj(l); view.appendChild(el('div', { class: 'row between', style: 'padding:6px 0' }, [el('div', { class: 'grow', text: str(l.name, 80) + (l.reason_text || l.reason ? ' — ' + str(l.reason_text || l.reason, 120) : '') })])); }); }
+        if (!days.length && !t.has_brochure) view.appendChild(el('div', { class: 'state' }, [el('p', { text: 'No days planned yet for this trip.' })]));
+        render(view);
+      });
+    }
+
+    /* ---------- places: search, filters, a card per place ---------- */
+    function showPlaces() {
+      var view = el('div', {}, [el('h2', { text: 'Places' }), el('p', { class: 'lede', text: 'Everything the helper has researched, searchable.' })]);
+      var q = el('input', { type: 'search', placeholder: 'Search by name, area, note…', maxlength: '200', 'aria-label': 'Search' });
+      var selDest = el('select', { 'aria-label': 'Trip' }), selStatus = el('select', { 'aria-label': 'Status' }), selTag = el('select', { 'aria-label': 'Tag' });
+      var results = el('div', { id: 'results' }), picked = {};
+      var fill = function (sel, label, values) { clear(sel).appendChild(el('option', { value: '', text: label })); list(values).slice(0, 60).forEach(function (v) { sel.appendChild(el('option', { value: str(v, 60), text: str(v, 40) })); }); };
+      fill(selDest, 'Any trip', []); fill(selStatus, 'Any status', []); fill(selTag, 'Any tag', []);
+      var timer = null, first = true;
+      var search = function () {
+        var args = { query: str(q.value, 200).trim() };
+        if (selDest.value) args.destination = selDest.value; if (selStatus.value) args.status = selStatus.value; if (selTag.value) args.tag = selTag.value;
+        clear(results).appendChild(el('p', { class: 'meta', text: 'Searching…' }));
+        call('places.search', args, function (b) {
+          if (first) { first = false; var f = obj(b.filters); fill(selDest, 'Any trip', f.destinations); fill(selStatus, 'Any status', f.statuses); fill(selTag, 'Any tag', f.tags); }
+          clear(results);
+          var rows = list(b.rows);
+          results.appendChild(el('p', { class: 'meta', text: rows.length ? rows.length + ' of ' + num(b.total) + ' places' : 'Nothing matches.' }));
+          rows.forEach(function (p) {
+            p = obj(p); var slug = str(p.slug, 64);
+            var acts = el('div', { class: 'row place-actions' }, [
+              el('button', { type: 'button', text: '📝', 'aria-label': 'Notes', on: { click: function () { call('places.get', { slug: slug }, function (r) { var pl = obj(r.place); showPlace(pl); }); } } }),
+              el('button', { type: 'button', text: '➕', 'aria-label': 'Check for the next trip', 'aria-pressed': picked[slug] ? 'true' : 'false', on: { click: function (ev) { picked[slug] = !picked[slug]; ev.currentTarget.setAttribute('aria-pressed', picked[slug] ? 'true' : 'false'); haptic(); refreshMain(); } } }),
+              linkBtn('🗺', p.maps_url, '')
+            ]);
+            results.appendChild(el('div', { class: 'card reveal' }, [el('div', { class: 'row between' }, [el('div', { class: 'grow' }, [el('div', { class: 'name', text: str(p.name, 80) }), el('div', { class: 'meta', text: [str(p.destination, 40), str(p.area, 40), str(p.category, 30), str(p.status, 20)].filter(Boolean).join(' · ') })]), acts]),
+              p.note_line ? el('div', { class: 'why', text: str(p.note_line, 200) }) : null,
+              list(p.tags).length ? el('div', {}, list(p.tags).slice(0, 8).map(function (t) { return el('span', { class: 'pill', text: str(t, 24) }); })) : null]));
+          });
+        });
+      };
+      var refreshMain = function () { var n = Object.keys(picked).filter(function (k) { return picked[k]; }).length; setMain(n ? 'Check ' + n + ' place' + (n === 1 ? '' : 's') : '', n ? function () {
+        var slugs = Object.keys(picked).filter(function (k) { return picked[k]; }).slice(0, 24); mainProgress(true);
+        call('places.check', { slugs: slugs }, function () { mainProgress(false); haptic('ok'); picked = {}; setMain('', null); setStatus('Check requested — the answer comes in the chat'); search(); }, function (err) { mainProgress(false); setStatus('Not requested: ' + str(err.reason, 40)); });
+      } : null); };
+      var showPlace = function (pl) {
+        var box = el('div', { class: 'stack' }, [el('h2', { text: str(pl.name, 80) }), el('p', { class: 'lede', text: [str(pl.destination, 40), str(pl.area, 40), str(pl.category, 30)].filter(Boolean).join(' · ') }),
+          pl.note_line ? el('div', { class: 'note', text: str(pl.note_line, 400) }) : null, el('div', { class: 'meta', text: [pl.status ? 'status ' + str(pl.status, 20) : '', pl.last_trip ? 'last trip ' + str(pl.last_trip, 40) : '', pl.last_verified ? 'verified ' + str(pl.last_verified, 10) : ''].filter(Boolean).join(' · ') })]);
+        list(pl.history).forEach(function (h) { h = obj(h); box.appendChild(el('div', { class: 'card flat' }, [el('div', { class: 'meta', text: [str(h.date, 10), str(h.trip, 40)].filter(Boolean).join(' · ') }), el('div', { text: str(h.text, 600) })])); });
+        box.appendChild(el('div', { class: 'row' }, [linkBtn('Map ↗', pl.maps_url, 'btn ghost'), el('button', { class: 'btn', type: 'button', text: 'Back to places', on: { click: function () { go('places'); } } })]));
+        render(box); setMain('', null);
+      };
+      q.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(search, 350); });
+      [selDest, selStatus, selTag].forEach(function (s) { s.addEventListener('change', search); });
+      view.appendChild(q); view.appendChild(el('div', { class: 'filters' }, [selDest, selStatus, selTag])); view.appendChild(results);
+      render(view); search();
+    }
+
+    /* ---------- boot ---------- */
+    function boot() {
+      $('appVer').textContent = APP_VERSION;
+      try { fetch('html-versions/helper-apphtml.version.txt', { cache: 'no-store' }).then(function (r) { return r.text(); }).then(function (t) { var v = (t.split('|')[1] || '').trim(); if (v) $('appVer').textContent = v; }).catch(function () {}); } catch (e) { /* offline */ }
+      if (!tg || !tg.initData) { render(stateView('🤖', 'Open this from your helper\'s bot', 'This page only works inside Telegram, launched by the bot that owns it.')); return; }
+      try { tg.ready(); tg.expand(); } catch (e) { /* older clients */ }
+      applyTheme(); applyViewport();
+      try { tg.onEvent('themeChanged', applyTheme); tg.onEvent('viewportChanged', applyViewport); } catch (e) { /* older clients */ }
+      try { if (tg.MainButton) tg.MainButton.onClick(function () { if (mainBtn.fn && !S.busy) mainBtn.fn(); }); if (tg.BackButton) tg.BackButton.onClick(function () { go('home'); }); } catch (e) { /* older clients */ }
+      var fromUrl = readParams();
+      resolveCore(fromUrl, function () {
+        if (!S.core) { render(stateView('🔗', 'No helper address', 'Open the app from the bot\'s menu button or one of its buttons — the link carries the address.')); return; }
+        $('chrome').classList.remove('hidden'); buildNav(); go(S.screen);
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  })();
+// ══════════════
+// PROJECT END
+// ══════════════
+  </script>
+</body>
+</html>
+<!-- Developed by: LightAISolutions -->
