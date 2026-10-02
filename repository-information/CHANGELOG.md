@@ -3,11 +3,26 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 39/100`
+`Sections: 40/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.39r] — 2026-10-01 10:41:22 PM EST
+
+> **Prompt:** the owner's Phase 9 live check (thread "Tour Guide Phase 9 — Mini App"): "I completed steps 1-2 and got "menu button set: it opens the app". However, for step 3, I clicked the paperclip icon …" · "It popped up an app that I expanded." · "When I clicked Choose on the "Open choice round 2" card, it brought me to the "more" options I asked for with my answers from Telegram pre-populated. I clicked "Done Choosing" at the bottom and it resulted in this error. Facts does not work either. The Interview tab shows me the interview I did on Telegram. If this exists, I would prefer all future interviews (for other people's profile since I might not always travel alone) be done via this app instead of via Telegram. The Brochure tab shows my [trip] dates but nothing else. The Places tab shows filters and 9 places." *(the destination is redacted; screenshots were attached)*
+
+### Fixed
+- **Helper app shell (`live-site-pages/helper-app.html` v01.01w)** — a shortlist round the chat had already closed (the plan flow past `choose`: building the days or looking for more options) was shown on Home as still open with a **Choose** button, and **Done choosing** or the **Facts** tab then ended on a bare `no_flow` error screen. Home now labels such a round `CLOSED` with the tally and what the chat is doing (**View** opens it read-only), the shortlist screen shows the round as closed instead of a form, a `no_flow` on Done choosing says the round is closed, the Facts tab treats "no facts open" as a quiet *Nothing to confirm* state, and the brochure's empty state says the days are being built while the plan is in progress. Every other refusal is now worded in plain language (`WHY` map + the flow stage)
+- **Pack app route (`32_app_api.js`)** — `home.choice_round` and `shortlist.get` carry the trip's plan-flow `stage` (`''` when no flow: the adopt path still accepts the round), so the shell can tell an open round from a closed one
+
+### Added
+- Shell test (`tests/shell_helper-app.playwright.mjs`): a `planning` mode (closed round, no open facts) with three checks and the screenshot `decisions/screenshots/wp-9c/state-round-closed.png`
+- `helpers/decisions/TG-PHASE-9.md` §6 live findings (L1–L6) and §7 items for the next phase (interviews for other travellers' profiles in the app; the shell's generic masthead)
+
+### Changed
+- `helpers/BUILD-STATE.md`: Phase 9 **done** (v01.39r), Phase 9 log, Next; `helpers/docs/TG-SWITCH-ON.md` §3 gains "Open from the app"; `helpers/decisions/TG-PHASE-7.md` §1 row F18 points at Phase 9; `repository-information/SESSION-CONTEXT.md` remembers this session
 
 ## [v01.38r] — 2026-10-01 10:38:23 PM EST
 

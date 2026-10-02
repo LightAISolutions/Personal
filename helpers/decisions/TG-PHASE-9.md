@@ -26,4 +26,23 @@
 ## 5 Security review (Step 3)
 `imported--security-review` over `02_registry.js`, `05_telegram.js`, `10_router.js`, `32_app_api.js` and `helper-app.html` (Fable 5.1 · high, read-only; threat model: forged / replayed / foreign initData, a hostile `startapp` or `?core=` link, stored brochure HTML, argument injection into Sheet or Drive lookups, Google fields written by the app, AuditLog growth and cap bypass, leaks into the public shell, the menu-button and `web_app` buttons). Result: 0 critical, 0 high, 1 medium, 5 low, 3 info. Fixed in this push: the medium (prototype-named routes audited per request → registry getters answer own properties only), the unknown-POST audit (once per 6 h per name), `img-src` narrowed to `'self' data:`, `brochure.get` sends only HTML inline (another MIME gets the Drive link). Accepted and recorded: the non-atomic daily cap (`WP-9a.md` §14), `?core=` in the query string (`WP-9c.md` §17), registered route names enumerable through `405` (harmless). Carried: formula escaping in the core store (`WP-9a.md` §15), a `lock: true` flag on `registerRoute` (9b's R4). Verified sound: the initData check (HMAC per Telegram, constant-time, hash before owner, 24 h, every refusal audited once per 6 h), core-name dispatch before any registry lookup, every id regex-bound and every Sheet lookup in memory, no Google field written, the shell's `textContent`-only DOM, the `core`-only-from-URL rule, the brochure sandbox (scripts blocked, parent untouched), no secret in any answer or audit row.
 
+## 6 Live check (Step 4, 2026-10-02 02:10–02:45 UTC)
+The owner set `APP_SHELL_URL`, ran the setup step ("menu button set: it opens the app") and opened the app from the bot's menu button in Telegram Web, then tapped every tab.
+
+| # | Step | Finding | Fix |
+|---|---|---|---|
+| L1 | menu button | The owner looked for the app behind the paperclip (Telegram's attachment menu). The bot's menu button is a separate button left of the message box, and Telegram Web shows it only after the chat is reloaded (bot details are cached) | Guide §3 "Open from the app" says where the button is and to reload the web client |
+| L2 | home | Home, the trip card, the places counts and the profile line rendered from the live core; the app expanded to full height | none |
+| L3 | shortlist | The chat had already left the shortlist (the owner typed his picks and the plan was being built), yet Home showed the round as open with **Choose**; **Done choosing** then ended on a bare `no_flow` screen. The core was right (409 `no_flow`, stage `planning`); the shell did not know the round was closed | **v01.39r**: `home.choice_round.stage` and `shortlist.get.stage`; the shell shows a closed round as `CLOSED` with the tally and the stage (read-only **View**), and a `no_flow` on Done choosing as "This round is closed" |
+| L4 | facts | The Facts tab ended on the same `no_flow` screen because no facts were open at that stage | **v01.39r**: a quiet *Nothing to confirm* state naming the stage |
+| L5 | interview | The interview form rendered with the owner's chat answers pre-filled. The owner asked that future interviews, including other travellers' profiles, be done in the app rather than in the chat | §7 item 1 (next phase) |
+| L6 | brochure, places | Brochure showed the trip and its dates with "No days planned yet" (correct: the plan digest had not arrived); Places listed the 9 places on file with filters | **v01.39r**: the empty brochure state says the days are being built while the plan is in progress |
+
+The fix was verified with the shell test's new `planning` mode (closed round, no open facts; screenshot `screenshots/wp-9c/state-round-closed.png`); the owner re-tests after the v01.39r deploy.
+
+## 7 For the next phase
+1. **Interviews in the app for more than one traveller** (owner request, L5): the interview screen works for the owner's own profile only (`interview.submit` → the `prefs` request). Companions' profiles need a profile slot in the pack (who the answers are for, how research and planning weigh them) before the app can offer "interview for someone else"; the chat has no such notion either. Scope it in Phase 8 with the owner.
+2. **Masthead**: the shell shows the generic "Helper" title by design (no helper-specific text in the public page). If the owner wants the helper's name there, `home` can carry the pack's `display_name` and the shell set the title from it — data, not text.
+3. Carried from §5: `lock: true` on `registerRoute`; formula escaping in the core store.
+
 Developed by: LightAISolutions

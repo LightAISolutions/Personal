@@ -7,6 +7,36 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-10-01 10:41:22 PM EST
+**Repo version:** v01.39r
+**Branch:** `claude/project-thread-rf0581` (Tour Guide project, thread "Tour Guide Phase 9 — Mini App", Fable 5.1 · high)
+
+**What we worked on**
+- Phase 9, the Telegram Mini App: WP-9a core contract (`registerRoute`, `CORE_ROUTES`, `tgVerifyInitData`, `tgSetMenuButton`), WP-9b pack `32_app_api.js` (`?route=app`, 16 ops, setup step `app_menu_button`), WP-9c shell `live-site-pages/helper-app.html` with a no-network Playwright check; security review, single push v01.37r auto-merged, Pages and "Deploy helper" green
+- Step 4 live check with the owner: menu button set, Home/Shortlist/Interview/Brochure/Places open from the app; "Done choosing" and Facts returned `no_flow` because the shell showed a closed round as open (trip status stays `choosing` while the plan flow is at `planning`)
+- v01.39r fix: `home.choice_round.stage` and `shortlist.get.stage` from the trip's plan flow; the shell shows closed rounds read-only, maps refusals to plain words, quiet Facts/Brochure empty states; shell v01.01w; Playwright `state-round-closed` check
+- Step 5 bookkeeping: `helpers/decisions/TG-PHASE-9.md` §6 live findings + §7 next-phase items, `helpers/BUILD-STATE.md` Phase 9 row done + Phase 9 log + Next, `helpers/docs/TG-SWITCH-ON.md` §3 "Open from the app", `helpers/decisions/TG-PHASE-7.md` §1 row F18
+
+**Where we left off**
+- Phase 9 is done (v01.39r pushed; auto-merge → Pages → Deploy helper). The owner retests the app after the deploy (Home shows the round as closed with the stage, Facts "Nothing to confirm", Shortlist "Round N is closed")
+- Phase 7 (switch-on) continues in its own thread and has one Personal bookkeeping push pending; it rebases on v01.39r and keeps the Phase 9 rows in BUILD-STATE and TG-PHASE-7 §1
+
+**Key decisions made**
+- The shell never guesses flow state: the pack reports `stage` and the shell renders closed rounds and `no_flow` as quiet states with a "Back home" button; the adopt path (`stage: ''`) still accepts a round with no flow
+- Owner request (live check): future interviews for other travellers should run in the app, not in Telegram — needs a profile slot in the pack, scoped in Phase 8 (`TG-PHASE-9.md` §7)
+- Owner trip data seen in screenshots stays out of the public repo (redacted in CHANGELOG and decisions)
+
+**Active context**
+- Branch `claude/project-thread-rf0581` is the single Phase 9 push (auto-merges to `main`); `APP_SHELL_URL` is the Pages URL of `helper-app.html`; the owner's web-app URL is session-only and never written anywhere
+- Open items for Phase 8 are in `helpers/decisions/TG-PHASE-9.md` §7 and `helpers/prompts/TG-PHASE-8.md` (written by the Phase 7 thread)
+
+**Recommendation for next session**
+- After Phase 7 finishes, start Phase 8 on Opus 5.5 · high and take the Phase 9 items in `helpers/decisions/TG-PHASE-9.md` §7 (in-app interviews for other travellers, masthead name, carried `lock: true` and formula escaping) into its scope
+
+**To continue:** type `Read helpers/prompts/TG-PHASE-8.md and execute it exactly.`
+
+## Previous Sessions
+
 **Date:** 2026-10-01 10:03:09 AM EST
 **Repo version:** v01.28r
 **Branch:** `claude/project-thread-orkxn4` (Tour Guide project, thread "Tour Guide", Fable 5.1 · xhigh — Phase 6 architect)
@@ -32,28 +62,3 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - Start Phase 7 on Opus 5.5 · high: merge TourGuide PR #3 then PR #4, re-pin `vendor/helpers/` to the v01.28r `helpers-dist`, then switch the helper on with the owner following `helpers/docs/TG-SWITCH-ON.md`
 
 **To continue:** type `Read helpers/prompts/TG-PHASE-7.md and execute it exactly.`
-
-## Previous Sessions
-
-**Date:** 2026-10-01 08:10:13 AM EST
-**Repo version:** v01.27r
-**Branch:** `claude/project-thread-m0kbpq` (Tour Guide project, thread "Phase 5 Telegram commands", Opus 5.5 · high)
-
-**What we worked on**
-- Phase 5: the Tour Guide Telegram chatbot pack `helpers/packs/tour-guide/gas/` — contract (`helpers/decisions/TG-PHASE-5.md` §1), WP-5a commands and flows, WP-5b envelope handlers and sheets, WP-5c Lane B / `/route` / measurement / mock end-to-end, an audit pass, core hooks `core_start` + `core_status`, `*_API_KEY` redaction, bundler-generated interview bank. 373 tests pass, 1 skipped; bundle and boundary clean.
-- Private repo: `prefs-build-ingest.mjs --decisions` (review taps → kit `apply`) on TourGuide branch `claude/project-thread-m0kbpq`, PR #3, rebased on main after the owner merged Phase 4b (PR #2).
-
-**Where we left off**
-- Phase 5 done and pushed as v01.27r; `helpers/prompts/TG-PHASE-6.md` written; BUILD-STATE Next = Phase 6.
-- Paused once for the owner's usage cue (10:00–11:10 UTC); `helpers/status/PHASE-5-RESUME.md` records it.
-
-**Key decisions made**
-- Lane B (owner, 10:07 UTC): both lanes, free routines by default, `/smart on|off` toggles Claude API answers (needs `CLAUDE_API_KEY`), `/status` shows the mode.
-- Review decisions travel as a `prefs` request with `payload.decisions`; capture handlers are named `tg_capture_*`; review ratings use the core `fl` buttons.
-
-**Active context**
-- TourGuide PR #3 awaits the owner's merge. Recommend `MAX_ROUTINE_FIRES_PER_DAY` 20–24 (Phase 6 decides). Lane B prices in `30_chat_api.js` are unverified (Phase 6 checks).
-
-**Recommendation for next session**
-- Start Phase 6 in a new session on Fable 5.1 · xhigh.
-**To continue:** type `Read helpers/prompts/TG-PHASE-6.md and execute it exactly.`

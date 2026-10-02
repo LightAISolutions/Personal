@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.00w">
+  <meta name="build-version" content="v01.01w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -125,7 +125,7 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.00w';
+    var APP_VERSION = 'v01.01w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'facts', label: 'Facts' },
@@ -161,6 +161,18 @@
     function haptic(kind) { try { if (tg && tg.HapticFeedback) { if (kind === 'ok') tg.HapticFeedback.notificationOccurred('success'); else tg.HapticFeedback.selectionChanged(); } } catch (e) { /* older clients */ } }
     function stateView(big, title, body, action) {
       return el('div', { class: 'state' }, [el('div', { class: 'big', text: big }), el('h2', { text: title }), body ? el('p', { text: body }) : null, action || null]);
+    }
+    function homeBtn() { return el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } }); }
+    /* A refusal in plain words: the reason the helper sent, plus what the chat is doing when it says which stage it is at. */
+    var WHY = { no_flow: 'Nothing is open for this in the chat right now.', busy: 'The chat is busy with another step — finish it there first.', no_round: 'There is no open shortlist.',
+      no_picks: 'Tick ✅ on at least one place first.', no_more: 'No more rounds for this shortlist.', no_trip: 'That trip is not on file.', bad_answer: 'The helper sent an answer the app could not read.' };
+    function stageLine(stage) {
+      return stage === 'planning' ? 'the helper is building the days' : stage === 'research' ? 'the helper is looking for more options' : stage === 'confirm' ? 'the chat is confirming the trip facts'
+        : stage === 'choose' ? 'the chat is at the shortlist' : stage === 'intake' ? 'the plan is starting in the chat' : stage;
+    }
+    function why(body) {
+      body = obj(body); var r = str(body.reason, 80), st = str(body.stage, 20);
+      return (WHY[r] || r || 'Unknown error') + (st ? ' ' + stageLine(st).charAt(0).toUpperCase() + stageLine(st).slice(1) + '.' : '');
     }
 
     /* ---------- theme & viewport from Telegram ---------- */
@@ -223,7 +235,7 @@
         if (st === 403) return render(stateView('🔒', 'This app only answers its owner', 'Open it from your own helper bot.'));
         if (st === 429) return render(stateView('⏳', 'Daily limit reached — use the chat', 'The app is paused until tomorrow; the bot still answers.'));
         if (fail) return fail(body);
-        render(stateView('⚠️', 'That did not work', str(body.reason, 80) || 'Unknown error', el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } })));
+        render(stateView('⚠️', 'That did not work', why(body), homeBtn()));
       });
     }
 
@@ -263,11 +275,15 @@
           el('h2', { text: trips.length ? 'Your trips' : 'Nothing planned yet' }),
           el('p', { class: 'lede', text: trips.length ? num(b.trips_total) + ' trip' + (num(b.trips_total) === 1 ? '' : 's') + ' on file' : 'Send /plan <destination> to the bot to start one.' })
         ]);
-        if (round) view.appendChild(el('div', { class: 'card reveal' }, [
-          el('div', { class: 'meta', text: 'OPEN CHOICE ROUND ' + num(round.round) }),
-          el('div', { class: 'row between' }, [el('div', { class: 'grow', text: str(round.items) + ' places to decide · ✅ ' + num(round.want) + ' · 🔖 ' + num(round.later) + ' · ❌ ' + num(round.skip) }),
-            el('button', { class: 'btn', type: 'button', text: 'Choose', on: { click: function () { go('shortlist', str(round.trip, 64)); } } })])
-        ]));
+        if (round) {
+          var rs = str(round.stage, 20), open = !rs || rs === 'choose';   // past `choose` the round is closed: the chat has moved on
+          var tally = '✅ ' + num(round.want) + ' · 🔖 ' + num(round.later) + ' · ❌ ' + num(round.skip);
+          view.appendChild(el('div', { class: 'card reveal' }, [
+            el('div', { class: 'meta', text: (open ? 'OPEN CHOICE ROUND ' : 'CHOICE ROUND ') + num(round.round) + (open ? '' : ' · CLOSED') }),
+            el('div', { class: 'row between' }, [el('div', { class: 'grow', text: open ? str(round.items) + ' places to decide · ' + tally : tally + ' — ' + stageLine(rs) + '.' }),
+              el('button', { class: open ? 'btn' : 'btn ghost', type: 'button', text: open ? 'Choose' : 'View', on: { click: function () { go('shortlist', str(round.trip, 64)); } } })])
+          ]));
+        }
         if (facts) view.appendChild(el('div', { class: 'card reveal' }, [
           el('div', { class: 'meta', text: 'FACTS TO CONFIRM' }),
           el('div', { class: 'row between' }, [el('div', { class: 'grow', text: 'The helper found details for ' + tripName(facts.trip) + '.' }),
@@ -301,7 +317,14 @@
         var groups = list(b.groups), total = 0;
         groups.forEach(function (g) { list(obj(g).items).forEach(function (it) { total++; if (/^[wls]$/.test(str(obj(it).choice))) S.ticks[str(it.key, 8)] = str(it.choice); }); });
         S.sent = JSON.parse(JSON.stringify(S.ticks));
-        if (!total) return render(stateView('🗺', 'No open shortlist', 'When the helper sends one, choose here or in the chat.', el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } })));
+        if (!total) return render(stateView('🗺', 'No open shortlist', 'When the helper sends one, choose here or in the chat.', homeBtn()));
+        var rs = str(b.stage, 20);
+        if (rs && rs !== 'choose') {   // the chat has moved on: the round is read-only
+          var c = { w: 0, l: 0, s: 0 };
+          Object.keys(S.ticks).forEach(function (k) { if (Object.prototype.hasOwnProperty.call(c, S.ticks[k])) c[S.ticks[k]]++; });
+          setMain('', null);
+          return render(stateView('🧭', 'Round ' + num(b.round) + ' is closed', 'Your choices: ✅ ' + c.w + ' · 🔖 ' + c.l + ' · ❌ ' + c.s + ' — ' + stageLine(rs) + '.', homeBtn()));
+        }
         var view = el('div', {}, [el('h2', { text: tripName(b.trip) }), el('p', { class: 'meta', text: 'ROUND ' + num(b.round) }), el('p', { class: 'lede', text: 'Tick each place, then save once. ✅ want · 🔖 later · ❌ skip' })]);
         groups.forEach(function (g) {
           g = obj(g);
@@ -336,7 +359,8 @@
           }, function (err) { mainProgress(false); setStatus('Not saved: ' + str(err.reason, 40)); });
         };
         var refreshMain = function () { var n = pending(); setMain(n ? 'Save ' + n + ' choice' + (n === 1 ? '' : 's') : 'Done choosing', function () { n ? save(refreshMain) : finish(); }); $('saveBtn').textContent = n ? 'Save ' + n : 'All saved'; };
-        var finish = function () { save(function () { call('shortlist.done', { run: str(b.run, 64) }, function () { haptic('ok'); render(stateView('🧭', 'Building your days', 'The helper is planning — the digest arrives in the chat.', el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } }))); setMain('', null); }); }); };
+        var finish = function () { save(function () { call('shortlist.done', { run: str(b.run, 64) }, function () { haptic('ok'); render(stateView('🧭', 'Building your days', 'The helper is planning — the digest arrives in the chat.', homeBtn())); setMain('', null); },
+          function (err) { if (str(err.reason, 40) === 'no_picks') return setStatus(WHY.no_picks); setMain('', null); render(stateView('🧭', 'This round is closed', why(err), homeBtn())); }); }); };
         view.appendChild(el('div', { class: 'actions' }, [
           el('button', { class: 'btn grow', type: 'button', id: 'saveBtn', text: 'All saved', on: { click: function () { save(refreshMain); } } }),
           b.more ? el('button', { class: 'btn ghost', type: 'button', text: 'More options', on: { click: function () { save(function () { call('shortlist.more', { run: str(b.run, 64) }, function () { render(stateView('🔎', 'Looking for more', 'A new round arrives in the chat.')); }); }); } } }) : null,
@@ -385,6 +409,8 @@
         };
         view.appendChild(el('button', { class: 'btn wide', type: 'button', text: 'Confirm', on: { click: submit } }));
         render(view); setMain('Confirm', submit);
+      }, function (err) {   // 409 no_flow: no facts are waiting — a quiet state, not a fault
+        render(stateView('📋', 'Nothing to confirm', str(err.reason, 40) === 'no_flow' ? 'No trip details are waiting right now' + (str(err.stage, 20) ? ' — ' + stageLine(str(err.stage, 20)) : '') + '.' : why(err), homeBtn()));
       });
     }
 
@@ -477,7 +503,10 @@
           view.appendChild(card);
         });
         if (later.length) { view.appendChild(el('h3', { text: 'Later' })); later.forEach(function (l) { l = obj(l); view.appendChild(el('div', { class: 'row between', style: 'padding:6px 0' }, [el('div', { class: 'grow', text: str(l.name, 80) + (l.reason_text || l.reason ? ' — ' + str(l.reason_text || l.reason, 120) : '') })])); }); }
-        if (!days.length && !t.has_brochure) view.appendChild(el('div', { class: 'state' }, [el('p', { text: 'No days planned yet for this trip.' })]));
+        if (!days.length && !t.has_brochure) {
+          var hr = S.home && S.home.choice_round ? obj(S.home.choice_round) : null, hs = hr && str(hr.trip, 64) === trip ? str(hr.stage, 20) : '';
+          view.appendChild(el('div', { class: 'state' }, [el('p', { text: hs === 'planning' ? 'The helper is building the days — the plan arrives in the chat.' : str(t.status, 20) === 'choosing' ? 'Still choosing — the days come after Done choosing.' : 'No days planned yet for this trip.' })]));
+        }
         render(view);
       });
     }

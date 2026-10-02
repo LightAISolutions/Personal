@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-01 10:38:23 PM EST` · Repo version: `v01.38r`
+Last updated: `2026-10-01 10:41:22 PM EST` · Repo version: `v01.39r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -54,7 +54,7 @@ Last updated: `2026-10-01 10:38:23 PM EST` · Repo version: `v01.38r`
 │   │
 │   │
 │   <b>│ ─ Standalone Utilities ─────────────────────────────────────────────────────</b>
-│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/helper-app.html">helper-app.html</a>  →  <a href="https://lightaisolutions.github.io/Personal/helper-app.html">🌐</a>  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/helper-apphtml.changelog.md">v01.00w</a> · vNoGASg | Helper app: the generic Telegram Mini App shell a helper opens from its bot's menu button — no data and no helper-specific text in the page; it talks to the helper's core `?route=app` with the Mini App's signed launch data
+│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/helper-app.html">helper-app.html</a>  →  <a href="https://lightaisolutions.github.io/Personal/helper-app.html">🌐</a>  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/helper-apphtml.changelog.md">v01.01w</a> · vNoGASg | Helper app: the generic Telegram Mini App shell a helper opens from its bot's menu button — no data and no helper-specific text in the page; it talks to the helper's core `?route=app` with the Mini App's signed launch data
 │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/text-compare.html">text-compare.html</a>  →  <a href="https://lightaisolutions.github.io/Personal/text-compare.html">🌐</a>  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/text-comparehtml.changelog.md">v01.00w</a> · vNoGASg | [template] Text comparison tool with side-by-side diff highlighting
 │   │
 │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/MasterACL.html">MasterACL.html</a>  →  <a href="https://LightAISolutions.github.io/Personal/MasterACL.html">🌐</a>🟢 · 🔸 · ◽ · <a href="https://github.com/LightAISolutions/Personal/blob/main/googleAppsScripts/MasterACL/MasterACL.gs">⛽</a> · ◽  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/MasterACLhtml.changelog.md">v01.00w</a> · <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/gs-changelogs/MasterACLgs.changelog.md">v01.00g</a> | [template] MasterACL page
@@ -270,7 +270,7 @@ Last updated: `2026-10-01 10:38:23 PM EST` · Repo version: `v01.38r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-9c.md">WP-9c.md</a> — WP-9c shell page: design, behaviour decisions, the core-only-from-URL rule, screenshot table
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/hidden-gems-proposal.md">hidden-gems-proposal.md</a> — Hidden gems: the sweep idea evaluated against other methods, the Gem Funnel recommendation, costs, plan changes implied, decisions 22–26 (answered by the owner)
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/decisions/screenshots">screenshots/</a> — Screenshots a work package attached to its decisions file
-│   │       └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/decisions/screenshots/wp-9c">wp-9c/</a> — The helper app shell at 390×844: six screens in light and dark, the error states (from the shell test, invented fixtures)
+│   │       └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/decisions/screenshots/wp-9c">wp-9c/</a> — The helper app shell at 390×844: six screens in light and dark, the error and closed-round states (from the shell test, invented fixtures)
 │   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/screenshots/wp-9c/dark-1-home.png">dark-1-home.png</a>
 │   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/screenshots/wp-9c/dark-2-shortlist.png">dark-2-shortlist.png</a>
 │   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/screenshots/wp-9c/dark-3-facts.png">dark-3-facts.png</a>
@@ -287,6 +287,7 @@ Last updated: `2026-10-01 10:38:23 PM EST` · Repo version: `v01.38r`
 │   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/screenshots/wp-9c/state-429.png">state-429.png</a>
 │   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/screenshots/wp-9c/state-brochure-link.png">state-brochure-link.png</a>
 │   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/screenshots/wp-9c/state-no-telegram.png">state-no-telegram.png</a>
+│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/screenshots/wp-9c/state-round-closed.png">state-round-closed.png</a>
 │   │           └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/screenshots/wp-9c/state-shortlist-done.png">state-shortlist-done.png</a>
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/docs">docs/</a> — Owner-facing guides written by a phase for the owner to follow
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/docs/TG-SWITCH-ON.md">TG-SWITCH-ON.md</a> — Tour Guide switch-on guide (Phase 6 → Phase 7): Cloud project and keys, Apps Script deploy, Script Properties, the seven routines, pairing, the first trip, costs and caps, what to do when something fails
