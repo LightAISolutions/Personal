@@ -70,3 +70,20 @@ test('pack sheets: registerSheet adds a tab and extra columns on a core tab; aud
 });
 
 // Developed by: LightAISolutions
+
+test('getSpreadsheet keeps the Sheet on the owner zone once per zone, so date cells read back as the day written', () => {
+  const { ctx, state } = H.loadGas({ pack: 'hello' });
+  H.bootstrap(ctx, state);
+  const ss = ctx.getSpreadsheet();
+  const props = () => ctx.PropertiesService.getScriptProperties();
+  props().setProperty(ctx.PROP.TIMEZONE, 'America/Los_Angeles');
+  ss.setSpreadsheetTimeZone('America/New_York');
+  ctx._HB_SS_CACHE = null;
+  ctx.getSpreadsheet();
+  assert.equal(ss.getSpreadsheetTimeZone(), 'America/Los_Angeles', 'the Sheet follows TIMEZONE');
+  assert.equal(props().getProperty(ctx.PROP.SHEET_TZ), 'America/Los_Angeles');
+  assert.equal(ctx.syncSheetTimeZone(ss), false, 'nothing to do once the zone is recorded');
+  props().setProperty(ctx.PROP.TIMEZONE, 'Asia/Tokyo');
+  assert.equal(ctx.syncSheetTimeZone(ss), true, 'a changed TIMEZONE syncs again');
+  assert.equal(ss.getSpreadsheetTimeZone(), 'Asia/Tokyo');
+});
