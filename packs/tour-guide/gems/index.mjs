@@ -15,7 +15,7 @@ export { CHAIN_LIST, normalizeName, nameCounts, chainReason } from './gems-chain
 export { haversineKm, straightLineMinutes, minutesToNearestAnchor, isLatLng } from './gems-geo.mjs';
 export { hoursKnown, openWindows, closedOn, closedOnAll, closedDates, usableOn, usableDates } from './gems-hours.mjs';
 export { STREAMS, BUSINESS_STATUSES, PRICE_LEVELS, CATEGORY_TYPES, FOOD_CATEGORIES, LANGUAGE_RE, LEDGER_REF_RE, normalizeRecord, normalizePool, fromSearchResult, categoryOf, groupOf, slugFor, mentionCount, isOwnerSeed } from './gems-record.mjs';
-export { screen, DROP_REASONS } from './gems-screen.mjs';
+export { screen, DROP_REASONS, nameWords, nameCore, isFeatureName, partOfParent } from './gems-screen.mjs';
 export { scoreGems, scoringContext, categoryMeans, categoryMedianCounts, muFor, qualityScore, percentileRank, citySizeFor, bucketFactor, obscurityScore, localnessScore, estimateFit, practicalityScore, isGem } from './gems-score.mjs';
 export { flagEvidence, isUnproven, isTouristOriented, FLAG_LABELS, TOURIST_SIGNALS } from './gems-flags.mjs';
 export { gemLine, gemLineClauses, numberWord } from './gems-line.mjs';

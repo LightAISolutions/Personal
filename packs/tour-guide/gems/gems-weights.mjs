@@ -20,6 +20,26 @@ export const RATING_FLOOR_APPETITE_FROM = 4;
 export const MIN_RATING_COUNT = 15;              // fewer than this is "too new to trust" …
 export const MIN_LOCAL_MENTIONS_TO_WAIVE_COUNT = 2; // … unless this many local mentions vouch for it
 export const CHAIN_REPEAT_MIN = 3;               // the same display name this many times in the pool = a chain
+export const RATING_OFFSET_MAX = 0.5;            // |rating_offset| a country may apply to the floor (ratings run lower in some countries)
+/** Activities only: a primary type that is not a visit (a hotel, its spa, a tour desk, a car park, a station). */
+export const NOT_A_VISIT_TYPES = Object.freeze(['lodging', 'hotel', 'resort_hotel', 'motel', 'hostel', 'bed_and_breakfast', 'guest_house', 'inn',
+  'japanese_inn', 'spa', 'travel_agency', 'tour_agency', 'tourist_information_center', 'parking', 'car_rental', 'transit_station',
+  'train_station', 'bus_station', 'subway_station', 'real_estate_agency', 'corporate_office']);
+/** Activities only: a name that is a facility, not a place to visit. */
+export const FACILITY_NAME_RE = /\b(smoking (area|room|spot)|restrooms?|toilets?|parking( lot)?|car park|ticket (office|booth|gate)|bus stop|coin lockers?|information (center|centre|desk|office))\b|喫煙所|喫煙場所|トイレ|駐車場|券売所|案内所/i;
+/** Part of a bigger place: within this radius of a pool place with this many times its ratings, and named after it or only with feature words. */
+export const PART_OF_RADIUS_M = 400;
+export const PART_OF_COUNT_RATIO = 5;
+export const PART_OF_CORE_MIN = 4;               // a parent's name core must be this long to count as "named after it"
+/** Words dropped from a parent's name before matching ("Kinkaku-ji" → "kinkaku", "Yasaka Shrine" → "yasaka"). */
+export const NAME_SUFFIX_WORDS = Object.freeze(['temple', 'shrine', 'jinja', 'jingu', 'taisha', 'dera', 'tera', 'ji', 'in', 'castle', 'palace',
+  'park', 'garden', 'gardens', 'museum', 'the', 'of', 'and']);
+/** A name made only of these words (and numbers) is a feature of whatever big place it sits in ("Second Torii", "Rose Garden"). */
+export const FEATURE_WORDS = Object.freeze(['gate', 'gates', 'torii', 'garden', 'gardens', 'hall', 'pond', 'bridge', 'pavilion', 'tower', 'pagoda', 'rose',
+  'cherry', 'plum', 'maple', 'hydrangea', 'iris', 'wisteria', 'first', 'second', 'third', 'main', 'east', 'west', 'north', 'south', 'inner',
+  'outer', 'upper', 'lower', 'western', 'eastern', 'northern', 'southern', 'front', 'rear', 'great', 'grand', 'big', 'small', 'old', 'new', 'stone', 'rock', 'moss', 'sand', 'tea', 'house', 'room', 'path', 'stairs', 'steps', 'statue', 'bell', 'fountain',
+  'entrance', 'hojo', 'honden', 'haiden', 'hondo', 'kondo', 'romon', 'sanmon', 'chumon', 'karamon', 'shoin', 'tahoto', 'ninomaru', 'honmaru',
+  'nishiromon', 'shariden', 'the', 'of', 'and', 'at']);
 /** Straight-line speeds for the off-track estimate, km/h, deliberately conservative (proposal §4 stage 2). */
 export const MODE_SPEEDS_KMH = Object.freeze({ WALK: 4.5, TRANSIT: 15, DRIVE: 30 });
 export const MODES_DEFAULT = Object.freeze(['TRANSIT', 'WALK']);
