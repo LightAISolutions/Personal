@@ -10,7 +10,24 @@ function getSpreadsheet() {
   var id = getProp(PROP.SHEET_ID);
   if (!id) throw new Error(PROP.SHEET_ID + ' not set — run setup first');
   _HB_SS_CACHE = SpreadsheetApp.openById(id);
+  syncSheetTimeZone(_HB_SS_CACHE);
   return _HB_SS_CACHE;
+}
+
+/**
+ * Keep the Sheet's own time zone on the owner's zone (getTz()). Sheets turns a written "2026-11-17" into a date cell at
+ * midnight in the Sheet's zone; read back in another zone that midnight lands on the day before (a Sheet left in the
+ * manifest's zone, east of the owner's, shifted every stored date back one day). The serial date itself does not change,
+ * so switching the zone fixes cells already written. Runs once per zone: SHEET_TZ records the zone last set.
+ */
+function syncSheetTimeZone(ss) {
+  var tz = getTz();
+  if (!tz || getProp(PROP.SHEET_TZ) === tz) return false;
+  try {
+    if (ss.getSpreadsheetTimeZone() !== tz) ss.setSpreadsheetTimeZone(tz);
+    setProp(PROP.SHEET_TZ, tz);
+    return true;
+  } catch (e) { return false; }
 }
 
 function allSheetSchemas() {

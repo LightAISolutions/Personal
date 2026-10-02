@@ -63,7 +63,9 @@ class Sheet {
   rows() { return this.data; }
 }
 class Spreadsheet {
-  constructor(name) { this.id = nid('ss'); this.name = name; this.sheets = [new Sheet(this, 'Sheet1')]; }
+  constructor(name) { this.id = nid('ss'); this.name = name; this.sheets = [new Sheet(this, 'Sheet1')]; this.tz = 'America/New_York'; }
+  getSpreadsheetTimeZone() { return this.tz; }
+  setSpreadsheetTimeZone(tz) { this.tz = tz; }
   getId() { return this.id; }
   getUrl() { return `https://docs.google.com/spreadsheets/d/${this.id}`; }
   getName() { return this.name; }

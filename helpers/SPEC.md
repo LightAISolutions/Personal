@@ -209,6 +209,7 @@ Every property name is `<property_prefix>_<KEY>` (`propName()`); with `property_
 | `SHEET_ID`, `ROOT_FOLDER_ID`, `MAILBOX_FOLDER_ID` | setup page step 2 | Storage ids |
 | `WEBAPP_URL` | setup page step 0 | The `/exec` URL. Stored because `ScriptApp.getService().getUrl()` can return the `/dev` URL, which needs a Google login |
 | `TIMEZONE` | owner, optional | Overrides the manifest's zone |
+| `SHEET_TZ` | core | The zone last given to the state Sheet: `getSpreadsheet()` keeps the Sheet on `getTz()` so date cells read back as the day written |
 | `ROUTINE_FIRE_URL_<NAME>`, `ROUTINE_FIRE_TOKEN_<NAME>` 🔒 | owner, one pair per routine | Fire URL and bearer token of a Claude Code Routine (`<NAME>` upper-case, e.g. `CHAT`); `routineNames()` lists the configured ones |
 | `MAX_ROUTINE_FIRES_PER_DAY` | owner, optional (default 12) | Daily cap on routine fires |
 | `MAX_PROPOSALS_PER_DAY` | owner, optional (default 30) | Daily cap on new proposals |

@@ -3,11 +3,23 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 43/100`
+`Sections: 44/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.43r] — 2026-10-02 03:13:35 AM EST
+
+> **Prompt:** "even when I ask normally, it takes a long time." *(Phase 7 step 6, the `/smart` trial; a screenshot showed the first quick answer naming the day before the trip day and an opening-hours question handed to the routine)*
+
+### Fixed
+- **State Sheet time zone** (`core/03_store.js` `syncSheetTimeZone`, property `SHEET_TZ` in `core/00_config.js` and `SPEC.md` §7): Sheets stores a written `YYYY-MM-DD` as midnight in the Sheet's own zone; a Sheet created in the manifest's zone east of the owner's `TIMEZONE` read every stored day date back as the day before (quick answers, day lookups by date). `getSpreadsheet()` now sets the Sheet's zone to `getTz()` once per zone; stored serial dates are unchanged, so rows already written read correctly after the switch
+- Test in `core_store.test.js`; the mock spreadsheet has a zone
+
+### Changed
+- `helpers/docs/TG-SWITCH-ON.md` §7: type quick questions as plain text (`/ask` always goes to the routine) and what the quick lane can answer
+- `helpers/decisions/TG-PHASE-7.md` findings F24–F25; `helpers/prompts/TG-PHASE-8.md` carries the `/smart` follow-ups
 
 ## [v01.42r] — 2026-10-01 11:57:26 PM EST
 
