@@ -10,6 +10,7 @@
  */
 import { haversineKm, centroid } from './planner-geo.mjs';
 import { unfitCode } from './planner-hours.mjs';
+import { breakfastLen } from './planner-input.mjs';
 
 export const FAR_KM = Object.freeze({ TRANSIT: 30, WALK: 12, DRIVE: 120 });
 export const CAP = Object.freeze({ TRANSIT_POINTS: 10, STOPS: 12 });
@@ -43,7 +44,7 @@ export function assign({ days, cands, rng }) {
     const codes = {};
     const ok = [];
     for (const day of days) {
-      let code = unfitCode(c.hours[day.date], c.minutes, day.dayStart + day.pace.breakfast, day.dayEnd);
+      let code = unfitCode(c.hours[day.date], c.minutes, day.dayStart + breakfastLen(day), day.dayEnd);
       if (!code && c.booking) {
         if (c.booking.date !== day.date) code = 'booked_elsewhere';
         else if (c.booking.time < day.dayStart || c.booking.time + c.minutes > day.dayEnd) code = 'outside_day';

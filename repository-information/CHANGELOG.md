@@ -3,11 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 41/100`
+`Sections: 42/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.41r] — 2026-10-01 11:18:18 PM EST
+
+> **Prompt:** "I completed steps 1-3. See screenshot." *(Phase 7 step 5: the pilot's one-day re-plan arrived with a breakfast at the late arrival time, a generic lunch slot and the chosen lunch restaurant booked again mid-afternoon, which pushed a pick off the day)*
+
+### Fixed
+- **Planner meals** (`packs/tour-guide/planner/planner-day.mjs`, `planner-input.mjs`, `planner-assign.mjs`): a day that starts at 10:30 or later has no breakfast at the lodging (`LATE_START`, `breakfastLen`); a chosen restaurant or cafe whose activity is lunch is the day's lunch — the solver adds no separate lunch slot and starts that stop between 11:30 and the end of lunchtime, while the stop still reports the place's own hours. If the lunch spot cannot make the day, the plain lunch slot comes back
+- Test in `pack_tour-guide_planner.test.js`
+
+### Changed
+- `helpers/decisions/TG-PHASE-7.md` findings F21–F23; `helpers/status/PHASE-7-RESUME.md` log
 
 ## [v01.40r] — 2026-10-01 10:52:44 PM EST
 

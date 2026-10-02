@@ -123,6 +123,22 @@ test('replanDays: one day changes, the other is byte-identical, Later items outs
   await assert.rejects(replanDays(plan, ['2027-06-09'], input), /not in the plan/);
 });
 
+test('late start and a chosen lunch spot: no breakfast, the spot is the lunch, starting in lunchtime', async () => {
+  const { w, input } = await setup();
+  const { planTrip } = await planner();
+  input.trip = { ...input.trip, day_start: '11:30' };
+  input.places = input.places.map((p) => (p.id === 'tile-workshop' ? { ...p, category: 'restaurant', activity: 'set lunch', priority: 1 } : p));
+  const plan = await planTrip(input);
+  for (const d of plan.days) { assert.ok(!d.meals.some((m) => m.kind === 'breakfast'), `${d.date}: no breakfast after an 11:30 start`); checkDay(d, { ...w, trip: input.trip }, 'TRANSIT'); }
+  const day = plan.days.find((d) => d.stops.some((s) => s.place === 'tile-workshop'));
+  assert.ok(day, 'the lunch spot is scheduled');
+  const spot = day.stops.find((s) => s.place === 'tile-workshop');
+  assert.ok(toMin(spot.arrive) >= 11 * 60 + 30 && toMin(spot.arrive) <= 14 * 60, `lunch spot starts in lunchtime (${spot.arrive})`);
+  assert.deepEqual(spot.window, { open: '11:00', close: '17:00' }, 'the reported window is the place\'s own hours');
+  assert.ok(!day.meals.some((m) => m.kind === 'lunch'), 'no second lunch on the day with the lunch spot');
+  for (const d of plan.days) if (d !== day) assert.ok(d.meals.some((m) => m.kind === 'lunch'), `${d.date} still gets a lunch slot`);
+});
+
 test('input validation: bad trip, missing lodging night, unknown mode', async () => {
   const { input } = await setup();
   const { planTrip } = await planner();

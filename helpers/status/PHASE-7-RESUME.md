@@ -26,5 +26,6 @@
 - 2026-10-02 — v01.36r: round 1 was thin (F17); screening drops hotels, facilities and parts of bigger places; rating offset per country. TourGuide re-pin and skill guidance follow, then a "more" round.
 - 2026-10-02 — v01.38r: the pilot plan was built but never delivered (F18): the plan-days skill still put its files on Drive through the connector. Upload route takes JSON; TourGuide plan-days moves to the upload tool, then the plan re-runs.
 - 2026-10-02 — v01.40r: no way back from Done choosing (F20): `/repick` returns to choosing with taps kept. The pilot trip is cut to one day and re-planned from the owner's picks.
+- 2026-10-02 — v01.41r: the one-day re-plan arrived (brochure in the chat and on Drive) but booked lunch twice and a breakfast at the late start (F21); planner fixed. Re-pin the private repo, then the owner rebuilds with `/repick` → ✅ Done choosing. F22 (upload key on the command line) and F23 (routines run on the default model) recorded.
 
 Developed by: LightAISolutions

@@ -11,6 +11,9 @@ import { isLoc } from './planner-geo.mjs';
 export const PACE = Object.freeze({ relaxed: { breakfast: 45, lunch: 75, dinner: 75 }, normal: { breakfast: 35, lunch: 60, dinner: 60 }, packed: { breakfast: 25, lunch: 45, dinner: 45 } });
 export const LUNCH_WINDOW = Object.freeze({ open: 12 * 60, close: 14 * 60 });
 export const DINNER_EARLIEST = 18 * 60 + 30;
+/** A day that starts this late (an arrival day, say) has no breakfast at the lodging. */
+export const LATE_START = 10 * 60 + 30;
+export const breakfastLen = (day, atLodging = true) => (atLodging && day.dayStart < LATE_START ? day.pace.breakfast : 0);
 const MODES = ['TRANSIT', 'DRIVE', 'WALK'];
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
 
