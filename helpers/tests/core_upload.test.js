@@ -34,6 +34,9 @@ test('the request file carries a per-request upload key; a good upload lands und
   const d = post(ctx, { req: id, key, name: 'page.html', mime: 'text/html', data: b64('<p>x</p>') });
   assert.equal(d.ok, true);
   assert.deepEqual(state.drive.listFiles('Hello/files'), ['page.html'], 'default folder is files/');
+  const j = post(ctx, { req: id, key, name: 'plan-b1.json', mime: 'application/json', data: b64('{"v":1}'), folder: 'trips/kyoto' });
+  assert.equal(j.ok, true, 'a JSON data file (a plan) goes the same way');
+  assert.equal(state.drive.readFile('Hello/trips/kyoto', 'plan-b1.json'), '{"v":1}');
   assert.ok(ctx.storeAll('AuditLog').some((x) => x.event === 'upload'));
 });
 
@@ -49,6 +52,7 @@ test('wrong key, unknown or malformed request, bad mime/name/folder/data are ref
   assert.equal(reason({ req: ghost, key: ctx.uploadKey(ghost) }), 'unknown_request');
   assert.equal(reason({ mime: 'application/zip', name: 'a.zip' }), 'bad_mime');
   assert.equal(reason({ name: 'a.html' }), 'bad_name', 'extension must match the mime');
+  assert.equal(reason({ mime: 'application/json', name: 'a.pdf' }), 'bad_name');
   assert.equal(reason({ name: '../a.pdf' }), 'bad_name');
   assert.equal(reason({ folder: 'mailbox/from-brain' }), 'bad_folder', 'never into the mailbox');
   assert.equal(reason({ folder: 'Trips/Kyoto' }), 'bad_folder');

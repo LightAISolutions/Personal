@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Routine helper: put one file a routine made (a PDF, an HTML page) into the helper's Drive folder through the core's
+// Routine helper: put one file a routine made (a PDF, an HTML page, a JSON data file) into the helper's Drive folder through the core's
 // ?route=upload, and print the Drive file id to name in a `reply` envelope's drive_file_ids (the core then sends the
 // file to the chat). The Drive connector cannot carry megabytes of base64; this POSTs the bytes directly. Zero deps;
 // uses curl so the environment's proxy settings apply (Apps Script answers a POST with a 302 that curl -L follows).
@@ -12,7 +12,7 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-export const MIMES = { pdf: 'application/pdf', html: 'text/html' };
+export const MIMES = { pdf: 'application/pdf', html: 'text/html', json: 'application/json' };
 export const MAX_BYTES = 30 * 1024 * 1024;   // mirrors LIMITS.UPLOAD_MAX_BYTES in core/00_config.js
 
 /** uploadUrl('https://script.google.com/macros/s/X/exec?route=wake') → '…/exec?route=upload'. */
@@ -28,7 +28,7 @@ export function uploadUrl(wakeUrl) {
 export function uploadBody(o) {
   const name = o.name || path.basename(o.file);
   const ext = name.split('.').pop().toLowerCase();
-  if (!MIMES[ext]) throw new Error('only .pdf and .html files can be uploaded');
+  if (!MIMES[ext]) throw new Error('only .pdf, .html and .json files can be uploaded');
   if (!/^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/.test(name)) throw new Error('name must be letters, digits, . _ - (≤ 100)');
   if (o.folder && !/^[a-z0-9][a-z0-9-]{0,63}(\/[a-z0-9][a-z0-9-]{0,63}){0,2}$/.test(o.folder)) throw new Error('folder must be ≤ 3 lowercase parts, e.g. trips/kyoto');
   if (!/^(req_)?[0-9a-f-]{36}$/i.test(String(o.req || ''))) throw new Error('--req must be the request id');

@@ -24,5 +24,6 @@
 - 2026-10-01 — v01.34r: ☔ Swap in on `/day`. Interview redone; `/plan` pilot started (first research round thin: F15–F16 and a quality check pending).
 - 2026-10-01 — v01.35r: shortlist PDF sheet, core upload route and tool (F15), typed picks (F16). Phase 9 (checklist Mini App) pulled forward into its own thread.
 - 2026-10-02 — v01.36r: round 1 was thin (F17); screening drops hotels, facilities and parts of bigger places; rating offset per country. TourGuide re-pin and skill guidance follow, then a "more" round.
+- 2026-10-02 — v01.38r: the pilot plan was built but never delivered (F18): the plan-days skill still put its files on Drive through the connector. Upload route takes JSON; TourGuide plan-days moves to the upload tool, then the plan re-runs.
 
 Developed by: LightAISolutions

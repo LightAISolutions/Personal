@@ -3,11 +3,20 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 38/100`
+`Sections: 39/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.38r] — 2026-10-01 10:38:23 PM EST
+
+> **Prompt:** "I finished choosing and it says it's "Building the days from 5 picks (14 for Later)...". Is it still actively working?" *(Phase 7 step 5, the pilot `/plan`: the plan routine built the days and brochure but could not put the plan JSON or the brochure on Drive, so it sent nothing)*
+
+### Changed
+- **Core upload route** (`helpers/core/16_upload.js`) and **`tools/upload.mjs`** also take `.json` (`application/json`), so a routine puts its plan file on Drive through the route instead of pasting it into the Drive connector, where a hand-copied data file can be silently corrupted
+- Tests in `core_upload.test.js` and `tools_upload.test.js`; `SPEC.md` route and tool rows
+- `helpers/decisions/TG-PHASE-7.md` finding F18; `helpers/status/PHASE-7-RESUME.md` log
 
 ## [v01.37r] — 2026-10-01 10:06:38 PM EST
 
