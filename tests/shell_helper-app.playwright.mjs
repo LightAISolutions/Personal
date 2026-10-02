@@ -19,7 +19,7 @@ fs.mkdirSync(OUT, { recursive: true });
 /* ---------- invented fixtures ---------- */
 const TRIP = { slug: 'harbor-town-2027', title: 'Harbor Town', destination: 'Harbor Town', start: '2027-05-12', end: '2027-05-15', status: 'choosing', build_id: 'b-fixture-01', has_brochure: true, verified_on: '2027-05-01', lodging: 'Quay Street inn' };
 const ITEM = (key, n, name, why, min, area, gem) => ({ key, n, slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'), name, why_you: why, est_minutes: min, area, maps_url: 'https://maps.google.com/?q=' + encodeURIComponent(name), gem: !!gem, labels: gem ? ['hidden gem'] : [], choice: '' });
-const SHORTLIST = { ok: true, trip: TRIP.slug, run: 'run-fixture-1', round: 1, more: true, groups: [
+const SHORTLIST = { ok: true, trip: TRIP.slug, run: 'run-fixture-1', round: 1, more: true, stage: 'choose', groups: [
   { id: 'activities', title: 'Activities', items: [ITEM('a1', 1, 'Lighthouse Walk', 'A quiet cliff path you said you like — early light, no crowds.', 90, 'Old Harbour'), ITEM('a2', 2, 'Tide Pool Museum', 'Small, hands-on, closes early — fits your slow mornings.', 60, 'Quay Street'), ITEM('a3', 3, 'Rope Makers\' Lane', 'Working craft lane, no tickets, locals only.', 45, 'Rope Quarter', true), ITEM('a4', 4, 'Harbour Ferry Loop', 'Forty minutes on the water for the price of a bus ticket.', 40, 'Pier 3')] },
   { id: 'food', title: 'Food', items: [ITEM('f1', 1, 'Salt Kitchen', 'Vegetable-first set lunch, changes daily.', 60, 'Quay Street'), ITEM('f2', 2, 'Kelp & Barley', 'Brewery canteen; the barley bowl is the local plate.', 50, 'Rope Quarter', true), ITEM('f3', 3, 'The Net Loft Café', 'Cardamom buns, sea view, cash only.', 30, 'Old Harbour')] }] };
 const DIGEST = { ok: true, trip: TRIP, days: [
@@ -35,11 +35,16 @@ const BANK = { v: 1, title: 'Travel preferences interview', sections: [
   { id: 'food', title: 'Food', questions: [{ qid: 'food-01', text: 'Which foods do you look forward to? Pick any.', kind: 'multi', dimension: 'food', options: [{ label: 'Local specialties', value: 'local', polarity: '+' }, { label: 'Street food', value: 'street', polarity: '+' }, { label: 'Fine dining', value: 'fine', polarity: '+' }], skip_ok: true, other: true },
     { qid: 'food-03', text: 'Anything you cannot eat?', kind: 'text', dimension: 'food', options: [], skip_ok: true }] }] };
 const FACTS = { ok: true, trip: TRIP.slug, found: [{ n: '1', kind: 'dates', text: 'May 12 – May 15, 2027', start: '2027-05-12', end: '2027-05-15', choice: '' }, { n: '2', kind: 'lodging', text: 'Quay Street inn, 3 nights', choice: '' }, { n: '3', kind: 'flight', text: 'Arrives 11:40 on May 12', choice: '' }], missing: ['companions'] };
-const HOME = { ok: true, trips: [TRIP, { slug: 'moor-weekend-2026', title: 'Moor weekend', destination: 'High Moor', start: '2026-11-07', end: '2026-11-08', status: 'done', build_id: 'b-fixture-00', has_brochure: false }], trips_total: 2, choice_round: { trip: TRIP.slug, run: 'run-fixture-1', round: 1, items: 7, want: 0, later: 0, skip: 0 }, pending_facts: { trip: TRIP.slug }, profile_summary: { updated: '2026-10-01' }, places: { 'Harbor Town': 3, 'High Moor': 5 } };
+const HOME = { ok: true, trips: [TRIP, { slug: 'moor-weekend-2026', title: 'Moor weekend', destination: 'High Moor', start: '2026-11-07', end: '2026-11-08', status: 'done', build_id: 'b-fixture-00', has_brochure: false }], trips_total: 2, choice_round: { trip: TRIP.slug, run: 'run-fixture-1', round: 1, items: 7, want: 0, later: 0, skip: 0, stage: '' }, pending_facts: { trip: TRIP.slug }, profile_summary: { updated: '2026-10-01' }, places: { 'Harbor Town': 3, 'High Moor': 5 } };
 
 function answer(op, args, mode) {
   if (mode === 403) return { ok: false, status: 403, reason: 'forbidden' };
   if (mode === 429) return { ok: false, status: 429, reason: 'daily_cap' };
+  if (mode === 'planning') {   // the chat moved past the shortlist: the round is closed, no facts are open
+    if (op === 'home') return { ...HOME, choice_round: { ...HOME.choice_round, want: 2, later: 4, skip: 1, stage: 'planning' }, pending_facts: null };
+    if (op === 'shortlist.get') return { ...SHORTLIST, stage: 'planning', more: false };
+    if (op === 'shortlist.done' || op === 'facts.get') return { ok: false, status: 409, reason: 'no_flow', stage: 'planning' };
+  }
   switch (op) {
     case 'home': return HOME;
     case 'shortlist.get': return SHORTLIST;
@@ -187,6 +192,10 @@ try {
     const a = await open(browser, { telegram: false }); check((await text(a.page)).includes("Open this from your helper's bot") && a.calls.length === 0, 'no Telegram → refusal, no call'); await shot(a.page, 'state-no-telegram'); await a.ctx.close();
     const b = await open(browser, { initData: false }); check((await text(b.page)).includes("Open this from your helper's bot") && b.calls.length === 0, 'empty initData → refusal, no call'); await b.ctx.close();
     const c = await open(browser, { mode: 403 }); check((await text(c.page)).includes('This app only answers its owner'), '403 state'); await shot(c.page, 'state-403'); await c.ctx.close();
+    const h = await open(browser, { mode: 'planning' }); const ht = await text(h.page);
+    check(ht.includes('CLOSED') && ht.includes('building the days') && !(await h.page.$('text=Choose')), 'a closed round shows its stage and no Choose button');
+    await h.page.click('text="View"'); await h.page.waitForTimeout(300); check((await text(h.page)).includes('Round 1 is closed') && !(await h.page.evaluate(() => window.__tg.main.visible)), 'the closed round is read-only');
+    await h.page.click('text=Facts'); await h.page.waitForTimeout(300); check((await text(h.page)).includes('Nothing to confirm') && !(await text(h.page)).includes('That did not work'), 'no open facts is a quiet state, not an error'); await shot(h.page, 'state-round-closed'); await h.ctx.close();
     const d = await open(browser, { mode: 429 }); check((await text(d.page)).includes('Daily limit reached'), '429 state'); await shot(d.page, 'state-429'); await d.ctx.close();
     const e = await open(browser, { url: PAGE_ORIGIN + '/helper-app.html' }); check((await text(e.page)).includes('No helper address') && e.calls.length === 0, 'no core and nothing stored → explanatory line'); await e.ctx.close();
     const f = await open(browser, { url: PAGE_ORIGIN + '/helper-app.html?core=' + encodeURIComponent('https://evil.example.invalid/exec') }); check((await text(f.page)).includes('No helper address') && f.calls.length === 0 && f.foreign.length === 0, 'a core outside script.google.com is ignored'); await f.ctx.close();

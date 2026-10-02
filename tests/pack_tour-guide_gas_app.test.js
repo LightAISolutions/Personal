@@ -154,13 +154,13 @@ test('a round with no plan flow: home, shortlist.get, choose and choose_many in 
 
   const h = J(app(ctx, state, 'home'));
   assert.equal(h.ok, true);
-  assert.deepEqual(h.choice_round, { trip: TRIP, run: 'r1', round: 1, items: 3, want: 0, later: 0, skip: 0 });
+  assert.deepEqual(h.choice_round, { trip: TRIP, run: 'r1', round: 1, items: 3, want: 0, later: 0, skip: 0, stage: '' });
   assert.deepEqual(h.trips.map((t) => [t.slug, t.status, t.has_brochure]), [[TRIP, 'choosing', false]]);
   assert.equal(h.pending_facts, null);
   assert.equal(h.trips_total, 1);
 
   const g = J(app(ctx, state, 'shortlist.get', {}));
-  assert.deepEqual([g.trip, g.run, g.round, g.more, g.flow], [TRIP, 'r1', 1, false, false]);
+  assert.deepEqual([g.trip, g.run, g.round, g.more, g.flow, g.stage], [TRIP, 'r1', 1, false, false, '']);
   assert.deepEqual(g.groups.map((x) => [x.id, x.title, x.items.map((i) => i.key)]), [['activities', 'Activities', ['a1', 'a2']], ['food', 'Food', ['f1']]]);
   const a2 = g.groups[0].items[1];
   assert.deepEqual([a2.n, a2.slug, a2.gem, a2.gem_line, a2.est_minutes, a2.area, a2.choice, a2.labels], [2, 'signal-hill-lookout', true, 'Small and loved by locals.', 60, 'Old harbour', '', ['verified']]);

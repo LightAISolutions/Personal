@@ -249,13 +249,15 @@ function tgAppPlaceOut(p) {
 
 /* ==================== operations: home, shortlist ==================== */
 
-/** home — the snapshot provider's data (tgSnapshot) with each trip's title and brochure flag, plus an open facts form. */
+/** home — the snapshot provider's data (tgSnapshot) with each trip's title and brochure flag, the open round's flow stage, plus an open facts form. */
 function tgAppOpHome() {
   var snap = tgSnapshot();
   var trips = (snap.trips || []).map(function (s) { return tgAppTripOut(tgTripGet(s.slug) || s); });
   var f = tgAppPlanFlow('');
   var pending = f && f.state.stage === 'confirm' && !f.state.ask ? { trip: f.state.trip } : null;
-  return tgAppOk({ trips: trips, trips_total: snap.trips_total, choice_round: snap.choice_round, pending_facts: pending,
+  var cr = snap.choice_round;
+  if (cr) { var pf = tgAppPlanFlow(cr.trip); cr.stage = pf ? tgAppS(pf.state.stage) : ''; }   // '' = no flow: the adopt path still accepts the round
+  return tgAppOk({ trips: trips, trips_total: snap.trips_total, choice_round: cr, pending_facts: pending,
     profile_summary: snap.profile_summary, places: snap.places });
 }
 
@@ -281,6 +283,7 @@ function tgAppOpShortlistGet(args) {
   var f = tgAppPlanFlow(r.trip), st = f ? f.state : null, choosing = !!st && st.stage === 'choose';
   var t = tgTripGet(r.trip) || { slug: r.trip };
   return tgAppOk({ trip: r.trip, title: tgAppS(t.title || t.destination || t.slug), run: r.run, round: s.round, flow: choosing,
+    stage: st ? tgAppS(st.stage) : '',   // the trip's plan flow stage ('' = none): past `choose` the round is closed for the shell
     more: choosing && !!st.more && (st.more_rounds || 0) < TG_PLAN_MORE_MAX,
     groups: order.map(function (g) { groups[g].items.sort(function (a, b) { return a.n - b.n; }); return groups[g]; }) });
 }
