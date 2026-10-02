@@ -79,7 +79,11 @@ var LIMITS = {
   FLOW_DEFAULT_TTL_MIN: 24 * 60,
   DOCUMENT_MAX_BYTES: 50 * 1024 * 1024,
   DOCUMENT_CAPTION_CHARS: 1024,
-  REPLY_MAX_DOCUMENTS: 10
+  REPLY_MAX_DOCUMENTS: 10,
+  UPLOAD_MAX_BYTES: 30 * 1024 * 1024,      // one file through ?route=upload (decoded)
+  UPLOAD_MAX_BODY_CHARS: 42 * 1024 * 1024, // the JSON body carrying it as base64
+  UPLOAD_MAX_PER_REQUEST: 6,
+  UPLOAD_AFTER_ANSWER_MIN: 60              // an answered request still takes uploads this long
 };
 
 /** From-brain envelope types the core handles. The manifest's envelope_types are appended at load. */

@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-01 07:48:38 PM EST` · Repo version: `v01.34r`
+Last updated: `2026-10-01 09:13:26 PM EST` · Repo version: `v01.35r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -224,7 +224,8 @@ Last updated: `2026-10-01 07:48:38 PM EST` · Repo version: `v01.34r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/12_wake.js">12_wake.js</a>          — Wake route, sweeps, requests (req_&lt;id&gt;.json) and one-off triggers
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/13_routines.js">13_routines.js</a>      — Claude Code Routine fire client with the daily cap
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/14_setup.js">14_setup.js</a>         — Owner setup page (?route=setup&amp;k=ADMIN_SECRET) and printSetupUrl()
-│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/15_flows.js">15_flows.js</a> — Multi-step conversations: registerFlow, Flows tab, fl callbacks, /cancel, pause/resume, expiry (WP-1b)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/15_flows.js">15_flows.js</a> — Multi-step conversations: registerFlow, Flows tab, fl callbacks, /cancel, pause/resume, expiry (WP-1b)
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/core/16_upload.js">16_upload.js</a> — ?route=upload: a routine stores a PDF/HTML it made under the helper root (per-request HMAC key)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/decisions">decisions/</a>              — One decisions file per phase / work package
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-0.md">TG-PHASE-0.md</a>       — Phase 0: the thirteen owner decisions, owner actions, session findings
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-1.md">TG-PHASE-1.md</a>       — Phase 1: scrub report (owner gate), subtree decision, every default chosen
@@ -480,26 +481,28 @@ Last updated: `2026-10-01 07:48:38 PM EST` · Repo version: `v01.34r`
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-solve.mjs">planner-solve.mjs</a> — Held-Karp with time windows, bookings and the lunch slot
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-time.mjs">planner-time.mjs</a> — Minutes-of-day helpers and local → ISO times
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/README.md">README.md</a>       — Pack contract: schemas, estimator, Later, fixtures, planner, brochure map, what it never does
-│   │       └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/schemas">schemas/</a>        — JSON Schemas for every entity + semantic checks (WP-3a)
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/index.mjs">index.mjs</a>       — validate(entity, kind) → { ok, errors }
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-calibration.schema.json">tour-guide-calibration.schema.json</a> — Calibration state
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-checks.mjs">tour-guide-checks.mjs</a> — Cross-field checks the schema cannot express
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-dates.mjs">tour-guide-dates.mjs</a> — Date and time-of-day validation
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-day-plan.schema.json">tour-guide-day-plan.schema.json</a> — DayPlan
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-google-snapshot.schema.json">tour-guide-google-snapshot.schema.json</a> — GoogleSnapshot (as the Maps kit emits it)
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-later-list.schema.json">tour-guide-later-list.schema.json</a> — LaterList
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-place-note.schema.json">tour-guide-place-note.schema.json</a> — PlaceNote
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-place.schema.json">tour-guide-place.schema.json</a> — Place
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-places-digest.schema.json">tour-guide-places-digest.schema.json</a> — places_digest payload
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-plan.schema.json">tour-guide-plan.schema.json</a> — Plan (days, Later lists, budget, usage)
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-plan-digest.schema.json">tour-guide-plan-digest.schema.json</a> — plan_digest payload
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-prefs-review.schema.json">tour-guide-prefs-review.schema.json</a> — prefs_review payload (the prefs kit's review)
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-profile-excerpt.schema.json">tour-guide-profile-excerpt.schema.json</a> — Profile excerpt
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-profile-summary.schema.json">tour-guide-profile-summary.schema.json</a> — profile_summary payload
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-shortlist.schema.json">tour-guide-shortlist.schema.json</a> — shortlist payload (one /plan round)
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-trip.schema.json">tour-guide-trip.schema.json</a> — Trip
-│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-trip-facts.schema.json">tour-guide-trip-facts.schema.json</a> — trip_facts payload (intake)
-│   │           └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-visit-estimate.schema.json">tour-guide-visit-estimate.schema.json</a> — VisitEstimate
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/schemas">schemas/</a>        — JSON Schemas for every entity + semantic checks (WP-3a)
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/index.mjs">index.mjs</a>       — validate(entity, kind) → { ok, errors }
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-calibration.schema.json">tour-guide-calibration.schema.json</a> — Calibration state
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-checks.mjs">tour-guide-checks.mjs</a> — Cross-field checks the schema cannot express
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-dates.mjs">tour-guide-dates.mjs</a> — Date and time-of-day validation
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-day-plan.schema.json">tour-guide-day-plan.schema.json</a> — DayPlan
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-google-snapshot.schema.json">tour-guide-google-snapshot.schema.json</a> — GoogleSnapshot (as the Maps kit emits it)
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-later-list.schema.json">tour-guide-later-list.schema.json</a> — LaterList
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-place-note.schema.json">tour-guide-place-note.schema.json</a> — PlaceNote
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-place.schema.json">tour-guide-place.schema.json</a> — Place
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-places-digest.schema.json">tour-guide-places-digest.schema.json</a> — places_digest payload
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-plan.schema.json">tour-guide-plan.schema.json</a> — Plan (days, Later lists, budget, usage)
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-plan-digest.schema.json">tour-guide-plan-digest.schema.json</a> — plan_digest payload
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-prefs-review.schema.json">tour-guide-prefs-review.schema.json</a> — prefs_review payload (the prefs kit's review)
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-profile-excerpt.schema.json">tour-guide-profile-excerpt.schema.json</a> — Profile excerpt
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-profile-summary.schema.json">tour-guide-profile-summary.schema.json</a> — profile_summary payload
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-shortlist.schema.json">tour-guide-shortlist.schema.json</a> — shortlist payload (one /plan round)
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-trip.schema.json">tour-guide-trip.schema.json</a> — Trip
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-trip-facts.schema.json">tour-guide-trip-facts.schema.json</a> — trip_facts payload (intake)
+│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-visit-estimate.schema.json">tour-guide-visit-estimate.schema.json</a> — VisitEstimate
+│   │       └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/shortlist-sheet">shortlist-sheet/</a> — One research round as a printable PDF, numbered like the chat
+│   │           └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/shortlist-sheet/index.mjs">index.mjs</a>       — shortlistSheetHtml, renderShortlistPdf, CLI
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/prompts">prompts/</a>                — The prompt each phase's session starts from
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-1.md">TG-PHASE-1.md</a>       — Phase 1 kickoff: helper framework foundation (Fable 5.1 · Xhigh)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-2.md">TG-PHASE-2.md</a>       — Phase 2 kickoff: shared kits 2a–2d in worktrees (coordinator Opus 5.5 · high)
@@ -581,6 +584,7 @@ Last updated: `2026-10-01 07:48:38 PM EST` · Repo version: `v01.34r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_setup.test.js">core_setup.test.js</a>  — 14_setup.js — admin-secret gate, every setup action, pack steps
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_store.test.js">core_store.test.js</a>  — 03_store.js + 04_audit.js — header-mapped rows, settings, daily counters, pack sheets
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_telegram.test.js">core_telegram.test.js</a> — 05_telegram.js: tag- and entity-safe `tgSplit`/`tgClip`, plain-text retries, `tgSafeHtml`, `stripHidden`
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_upload.test.js">core_upload.test.js</a> — 16_upload.js: key per request, open/just-answered only, mime/name/folder/size/count refusals
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/core_wake.test.js">core_wake.test.js</a>   — 12_wake.js + 13_routines.js — wake route, sweeps, one-off triggers, request lifecycle, daily jobs
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/tests/harness">harness/</a>
 │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/harness/gas-mocks.js">gas-mocks.js</a>    — In-memory Apps Script mocks + loader (Properties, Cache, Lock, Drive, Spreadsheet, UrlFetch, triggers)
@@ -638,16 +642,19 @@ Last updated: `2026-10-01 07:48:38 PM EST` · Repo version: `v01.34r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_redteam_envelopes.test.js">pack_tour-guide_redteam_envelopes.test.js</a> — Pack red-team A: hostile from-brain envelopes refused or neutralised
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_redteam_pdf.test.js">pack_tour-guide_redteam_pdf.test.js</a> — Pack red-team I: PDF delivery — `drive_file_ids`, over-size files, `/brochure` resend, files outside the helper root
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_schemas.test.js">pack_tour-guide_schemas.test.js</a> — Tour Guide pack: every schema accepts its fixture and rejects hostile shapes
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_shortlist-sheet.test.js">pack_tour-guide_shortlist-sheet.test.js</a> — Shortlist sheet: chat numbering, escaping, gem badge, notes cap, real PDF when Chromium is present
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_boundary.test.js">tools_boundary.test.js</a> — Plants a fake secret and a personal-data path; the boundary check must fail on them
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_bundle.test.js">tools_bundle.test.js</a> — Manifest validation, bundle layout, appsscript.json, CLI, bundle runs in the mocks
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_envelope.test.js">tools_envelope.test.js</a> — Envelope stamping with a real id + clock; types from core and manifest
-│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_new_helper.test.js">tools_new_helper.test.js</a> — Scaffolds a pack and a private repo; the result bundles and runs in the mocks
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_new_helper.test.js">tools_new_helper.test.js</a> — Scaffolds a pack and a private repo; the result bundles and runs in the mocks
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_upload.test.js">tools_upload.test.js</a> — upload.mjs builds what the route accepts; dry run never prints the key
 │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/tools">tools/</a>                  — Node tools, no dependencies
 │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tools/boundary-allowlist.txt">boundary-allowlist.txt</a> — Domains, literals and paths the boundary check accepts
 │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tools/boundary-check.mjs">boundary-check.mjs</a>  — Fails on secrets, PII and personal-data paths under helpers/ (CI gate)
 │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tools/bundle.mjs">bundle.mjs</a>          — Reads packs/&lt;name&gt;/helper.json and emits one Apps Script project from core + pack gas/
 │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tools/envelope.mjs">envelope.mjs</a>        — Stamps a mailbox envelope with a real id + clock (same CLI as the first helper)
-│       └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tools/new-helper.mjs">new-helper.mjs</a>      — Scaffolds a pack and a private repo from the template
+│       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tools/new-helper.mjs">new-helper.mjs</a>      — Scaffolds a pack and a private repo from the template
+│       └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tools/upload.mjs">upload.mjs</a>        — Routine side of ?route=upload: POSTs a made file, prints the Drive file id
 │
 <b>─── Repository Information ───────────────────────────────────────────────────</b>
 ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/repository-information">repository-information/</a>    — [template]

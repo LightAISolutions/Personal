@@ -166,6 +166,8 @@ function mailboxWriteRequest(payload) {
   payload = payload || {};
   if (!/^[a-z][a-z0-9_]{0,39}$/.test(payload.kind || '')) throw new Error('mailboxWriteRequest: bad kind');
   var id = uuid();
+  var key = uploadKey(id);
+  if (key) payload = Object.assign({}, payload, { upload_key: key });   // lets the routine POST files to ?route=upload
   var env = { v: 1, id: id, type: REQUEST_TYPE, created_at: nowIso(), producer: HELPER.producer, payload: payload };
   var pj = toJson(env);
   if (pj.length > LIMITS.ENVELOPE_MAX_PAYLOAD_CHARS) throw new Error('request too large');

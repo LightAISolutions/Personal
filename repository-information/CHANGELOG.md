@@ -3,11 +3,26 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 35/100`
+`Sections: 36/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.35r] — 2026-10-01 09:13:26 PM EST
+
+> **Prompt:** "It gave me a short list. I want it to output a link to a pdf file for easier viewing." · "Also, I don't really like Telegram's button click method because it takes a long time to register my clicks. Think of some alternative options we could use for me to input decisions." *(Phase 7 step 5, the pilot `/plan`)*
+
+### Added
+- **Shortlist sheet** (`helpers/packs/tour-guide/shortlist-sheet/`): one research round as a printable PDF in the brochure kit's typeface, numbered like the chat, with Maps links and the round's notes; library and CLI
+- **Upload route** (`helpers/core/16_upload.js`, `?route=upload`): a routine POSTs a PDF or HTML file it made and gets a Drive file id under the helper's folder, for a reply's `drive_file_ids`. Auth is a per-request HMAC key written into each request file as `upload_key`; open or just-answered requests only, ≤ 6 files, ≤ 30 MB, never into the mailbox
+- **`helpers/tools/upload.mjs`**: the routine side of the route (curl through the proxy, checks before sending, never prints the key)
+- **Typed picks** (`helpers/packs/tour-guide/gas/12_flow_plan.js`): in the shortlist choose stage the owner can type `1 3 9 later 2 skip 4-8` (or ✅/🔖/❌) instead of tapping each line; unknown or ambiguous numbers are named back
+- Tests: `core_upload.test.js`, `tools_upload.test.js`, `pack_tour-guide_shortlist-sheet.test.js`, typed-pick cases in `pack_tour-guide_gas_plan.test.js`; HMAC in the GAS mock
+
+### Changed
+- `helpers/SPEC.md` (§3 request `upload_key`, §6 route, §13 tool, §18 limits), `helpers/README.md`, `helpers/packs/tour-guide/README.md`
+- `helpers/decisions/TG-PHASE-7.md` findings F15–F16; `helpers/status/PHASE-7-RESUME.md` steps 4–5 and log
 
 ## [v01.34r] — 2026-10-01 07:48:38 PM EST
 
