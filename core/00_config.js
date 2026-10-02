@@ -33,7 +33,7 @@ var HELPER = _helperMerge(HELPER_DEFAULTS, typeof HELPER_MANIFEST !== 'undefined
 /** Script Property names. Resolved through the manifest's property_prefix (see propName()). */
 var PROP_KEYS = ['BOT_TOKEN', 'OWNER_CHAT_ID', 'WEBHOOK_SECRET', 'ADMIN_SECRET', 'PAIR_CODE', 'SHEET_ID', 'ROOT_FOLDER_ID',
   'MAILBOX_FOLDER_ID', 'TIMEZONE', 'WEBAPP_URL', 'MAX_ROUTINE_FIRES_PER_DAY', 'MAX_PROPOSALS_PER_DAY', 'MAX_WAKES_PER_DAY',
-  'WAKE_MIN_INTERVAL_SEC'];
+  'WAKE_MIN_INTERVAL_SEC', 'APP_SHELL_URL', 'MAX_APP_CALLS_PER_DAY'];
 function propName(key) { return (HELPER.property_prefix ? HELPER.property_prefix + '_' : '') + key; }
 var PROP = {};
 PROP_KEYS.forEach(function (k) { PROP[k] = propName(k); });
@@ -83,7 +83,11 @@ var LIMITS = {
   UPLOAD_MAX_BYTES: 30 * 1024 * 1024,      // one file through ?route=upload (decoded)
   UPLOAD_MAX_BODY_CHARS: 42 * 1024 * 1024, // the JSON body carrying it as base64
   UPLOAD_MAX_PER_REQUEST: 6,
-  UPLOAD_AFTER_ANSWER_MIN: 60              // an answered request still takes uploads this long
+  UPLOAD_AFTER_ANSWER_MIN: 60,             // an answered request still takes uploads this long
+  MAX_APP_CALLS_PER_DAY: 2000,             // verified Mini App calls (registered 'webapp' routes) per local day
+  INITDATA_MAX_AGE_SEC: 86400,
+  INITDATA_MAX_CHARS: 4096,
+  ROUTE_BODY_MAX_CHARS: 65536              // POST body of a registered route (the upload route has its own limit)
 };
 
 /** From-brain envelope types the core handles. The manifest's envelope_types are appended at load. */

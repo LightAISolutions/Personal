@@ -358,10 +358,14 @@ function tgEnvToFlow(type, env) {
   flowResume(chat, { type: 'resume', event: type, payload: env.payload, env_id: env.id, in_reply_to: env.in_reply_to || null });
   return true;
 }
-/** Render through getRenderer('tg_<type>') → { messages: [{ html, keyboard? }] } and send; else send plainHtml. */
-function tgEnvRender(type, payload, plainHtml) {
+/**
+ * Render through getRenderer('tg_<type>') → { messages: [{ html, keyboard? }] } and send; else send plainHtml.
+ * onSent (optional, WP-9b) gets [{ m, r }] — each rendered message and its sendMessage answer — after the sends.
+ */
+function tgEnvRender(type, payload, plainHtml, onSent) {
   var fn = getRenderer('tg_' + type);
   if (fn) {
+    var pairs = [], rendered = false;
     try {
       var out = fn(payload);
       var msgs = typeof out === 'string' ? [{ html: out }] : (out && Array.isArray(out.messages) ? out.messages : []);
@@ -369,16 +373,19 @@ function tgEnvRender(type, payload, plainHtml) {
       msgs.forEach(function (m) {
         var html = typeof m === 'string' ? m : (m && m.html ? String(m.html) : '');
         if (!html) return;
-        tgSendOwner(html, m && m.keyboard ? { keyboard: m.keyboard } : undefined);
+        var r = tgSendOwner(html, m && m.keyboard ? { keyboard: m.keyboard } : undefined);
+        pairs.push({ m: typeof m === 'string' ? { html: m } : m, r: r });
         sent++;
       });
-      if (sent) return 'renderer';
+      rendered = sent > 0;
     } catch (e) { auditFail('tg_render_error', type, describeError(e)); }
+    if (onSent && pairs.length) { try { onSent(pairs); } catch (e2) { auditFail('tg_render_onsent_error', type, describeError(e2)); } }
+    if (rendered) return 'renderer';
   }
   tgSendOwner(plainHtml);
   return 'plain';
 }
-function tgEnvDeliver(type, env, plainHtml) { return tgEnvToFlow(type, env) ? 'flow' : tgEnvRender(type, env.payload, plainHtml); }
+function tgEnvDeliver(type, env, plainHtml, onSent) { return tgEnvToFlow(type, env) ? 'flow' : tgEnvRender(type, env.payload, plainHtml, onSent); }
 function tgEnvCount(groups) { var n = 0; (groups || []).forEach(function (g) { n += (g.items || []).length; }); return n; }
 
 registerEnvelopeHandler('shortlist', {
@@ -388,7 +395,8 @@ registerEnvelopeHandler('shortlist', {
     var trip = tgTripUpsert({ slug: p.trip });
     if (trip.status !== 'done') tgTripSetStatus(p.trip, 'choosing');
     var st = tgShortlistStore(p);
-    var to = tgEnvDeliver('shortlist', env, '🗂 Shortlist for <b>' + tgEscape(p.trip) + '</b> (round ' + st.round + '): ' + st.count + ' options. Send /plan to choose.');
+    var to = tgEnvDeliver('shortlist', env, '🗂 Shortlist for <b>' + tgEscape(p.trip) + '</b> (round ' + st.round + '): ' + st.count + ' options. Send /plan to choose.',
+      function (pairs) { tgAppRememberRound(tgOwnerChat(), p.trip, st.run, st.round, pairs); });   // message ids for the app's keyboard refresh (WP-9b)
     return { trip: p.trip, run: st.run, round: st.round, items: st.count, to: to };
   }
 });

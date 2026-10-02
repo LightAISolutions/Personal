@@ -358,7 +358,8 @@ registerCommand('/places', function (ctx) {
     if (!dests.length) { ctx.reply('📚 No places yet — they arrive with research rounds and plans.'); return; }
     var lines = ['📚 <b>Places I know</b>'].concat(dests.map(function (d) { return tgEscape(d) + ' — ' + counts[d]; }));
     lines.push('', 'Search: <code>/places &lt;name, tag or area&gt;</code>');
-    tgCmdSendAll(ctx.chatId, tgCmdMessages(lines));
+    var app = tgCmdAppRows();
+    tgCmdSendAll(ctx.chatId, tgCmdMessages(lines, app.length ? tgKeyboard(app) : undefined));
     return;
   }
   var hits = tgPlacesSearch(ctx.args, { limit: 8 });
@@ -371,8 +372,14 @@ registerCommand('/places', function (ctx) {
     rows.push([{ text: '📝 ' + (i + 1), data: cbEncode('ps', keys[i], 'n') }, { text: '➕ ' + (i + 1), data: cbEncode('ps', keys[i], 'a') },
       { text: '🔁 ' + (i + 1), data: cbEncode('ps', keys[i], 'c') }]);
   });
-  tgCmdSendAll(ctx.chatId, tgCmdMessages(lines2, tgKeyboard(rows)));
+  tgCmdSendAll(ctx.chatId, tgCmdMessages(lines2, tgKeyboard(rows.concat(tgCmdAppRows()))));
 }, 'the places repository: /places [name, tag or area]');
+/** The /places message's app button (WP-9b): [] without APP_SHELL_URL, so the message is unchanged. */
+function tgCmdAppRows() {
+  if (!getProp(PROP.APP_SHELL_URL)) return [];
+  var cur = tgTripCurrent();
+  return tgAppRows('places', cur ? cur.slug : '', '📱 Browse in the app');
+}
 
 /* ==================== requests ==================== */
 

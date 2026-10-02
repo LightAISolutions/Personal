@@ -185,6 +185,7 @@ Apps Script files bundled after the core in file-name order (`node helpers/tools
 | `21_sheets.js` | Tabs `Trips DayPlans Later Places Choices Shortlist` and their storage API (no Google fields are ever stored) |
 | `30_chat_api.js` | Lane B (`tg_lane_b`): free text answered directly through the Claude API — **off by default**; `/smart on\|off` toggles it, `/status` shows the mode (`core_status`) |
 | `31_route.js` | `/route A → B [mode]` through the Apps Script Maps service |
+| `32_app_api.js` | `?route=app` for the Mini App (16 operations, see "The app"), the setup step `app_menu_button`, the 📱 `web_app` buttons on shortlist, plan and `/places` messages, and the shortlist-keyboard refresh after an app choice |
 | `40_interview_bank.js` | Generated from `kits/prefs/presets/travel.interview.json` by the bundler (`--check` fails when stale) — never edit |
 
 **Answer lanes.** Free text normally becomes a `message` request answered by the CHAT routine (Lane C, inside the subscription). Lane B answers in the chat at once through the Claude API, paid per use: it runs only when the owner has sent `/smart on` (or, before any `/smart`, `CHAT_API_ENABLED=true`) **and** `CLAUDE_API_KEY` is set.
@@ -193,9 +194,20 @@ Apps Script files bundled after the core in file-name order (`node helpers/tools
 
 **Trigger minutes** (measured in the mocks, `helpers/decisions/WP-5c.md` §M): a `/plan` with one extra shortlist round ≈ 45 s of one-off triggers; a typical day ≈ 0.5–1.5 of the 90 trigger-minutes, a heavy day 2.5–3. Webhook and wake-route runs are web-app executions and cost none.
 
+## The app
+
+`gas/32_app_api.js` serves the Telegram Mini App (the shell page `live-site-pages/helper-app.html`, built by WP-9c) through the core route `?route=app` (POST, `auth: 'webapp'`: the core verifies the owner's `initData` and counts the call against `MAX_APP_CALLS_PER_DAY`). Every operation is a request or a tap the chat already has, so the chat keeps working with the app switched off:
+
+- `home` (the snapshot's data), `shortlist.get · choose · choose_many · more · done`, `trip.digest`, `brochure.get` (the stored brochure HTML up to 200 000 characters, else its Drive link), `places.search · get · note · check`, `interview.bank · submit`, `facts.get · confirm`.
+- A choice made in the app re-marks the chat's shortlist keyboard (message ids kept in Settings `tg_app_sl_msgs`).
+- No Google call and no Google field: the app shows the pack's own rows only.
+- Set `APP_SHELL_URL` (https) and run the setup step **Tour Guide: point the chat menu button at the app** to put the app in the chat's menu button. With the property set, the shortlist, plan and `/places` messages also carry one 📱 button that opens the app on the right screen; without it they are unchanged.
+
+Answer shapes and reasons: `helpers/decisions/WP-9b.md`.
+
 ## Tests
 
-`node --test helpers/tests/` runs the pack's suites: `pack_tour-guide_schemas`, `_estimator`, `_later`, `_fixtures`, `_planner` (a small invented world of its own, `pack_tour-guide_planner_world.js`), `_planner_transit-fallback`, `_choices`, `_payloads`, `_gems`, `_brochure-map`, `_brochure-map_units`, `_integration`, and the chatbot's `pack_tour-guide_gas_{commands,interview,plan,review,envelopes,sheets,chat,route,e2e}` (the e2e runs the interview, the `/plan` journey, places, the review and the wake fallbacks against the Apps Script mocks). No test touches the network: Maps answers come from the fixture responder through the Maps kit's mock transport, and the PDF step runs only where `pdfAvailable()` is true (never in CI).
+`node --test helpers/tests/` runs the pack's suites: `pack_tour-guide_schemas`, `_estimator`, `_later`, `_fixtures`, `_planner` (a small invented world of its own, `pack_tour-guide_planner_world.js`), `_planner_transit-fallback`, `_choices`, `_payloads`, `_gems`, `_brochure-map`, `_brochure-map_units`, `_integration`, and the chatbot's `pack_tour-guide_gas_{commands,interview,plan,review,envelopes,sheets,chat,route,app,e2e}` (the e2e runs the interview, the `/plan` journey, places, the review and the wake fallbacks against the Apps Script mocks). No test touches the network: Maps answers come from the fixture responder through the Maps kit's mock transport, and the PDF step runs only where `pdfAvailable()` is true (never in CI).
 
 ## What the pack never does
 

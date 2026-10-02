@@ -129,15 +129,30 @@ function tgPlanShortlistMessages(p, opts) {
     msgs = msgs.concat(tgPlanChunk(head, entries, TG_PLAN_ITEMS_PER_MSG));
   });
   if (!msgs.length) msgs.push({ html: '🗺 <b>' + tgPlanTripTitle(p.trip) + '</b> — nothing new this round.' });
+  var app = tgAppRows('shortlist', p.trip, '📱 Choose in the app');   // [] without APP_SHELL_URL (WP-9b)
+  if (app.length) {
+    var tail = msgs[msgs.length - 1];
+    tail.keyboard = tgKeyboard((tail.keyboard ? tgPlanRowsOf(tail.keyboard) : []).concat(app));
+  }
   if (opts.adopt) {
     var more = p.more === true || (typeof p.more === 'number' && p.more > 0);
     var extra = { text: '▶️ Continue choosing', data: cbEncode('pl', 'sc', tgCmdTripKey(p.trip), run, more ? 1 : 0) };
     var last = msgs[msgs.length - 1];
-    var rows = last.keyboard ? last.keyboard.inline_keyboard.map(function (r) { return r.map(function (b) { return { text: b.text, data: b.callback_data }; }); }) : [];
+    var rows = last.keyboard ? tgPlanRowsOf(last.keyboard) : [];
     rows.push([extra]);
     last.keyboard = tgKeyboard(rows);
   }
   return msgs;
+}
+/** A built keyboard back to tgKeyboard rows — callback, url and web_app buttons alike (WP-9b: the app button survives). */
+function tgPlanRowsOf(kb) {
+  return kb.inline_keyboard.map(function (r) {
+    return r.map(function (b) {
+      if (b.web_app) return { text: b.text, web_app: { url: b.web_app.url } };
+      if (b.url) return { text: b.text, url: b.url };
+      return { text: b.text, data: b.callback_data };
+    });
+  });
 }
 
 /** plan_digest → the day list, the Later reasons and 📄 · 🔁 · 🔖 + day buttons. The files come with the core's reply. */
@@ -161,6 +176,7 @@ function tgPlanDigestMessages(p) {
   if (days.length) act.push({ text: '🔁 Replan a day', data: cbEncode('pl', 'rp', tk) });
   if (later.length) act.push({ text: '🔖 Later', data: cbEncode('pl', 'lt', tk) });
   rows.push(act);
+  rows = rows.concat(tgAppRows('brochure', p.trip, '📱 Open in the app'));   // [] without APP_SHELL_URL (WP-9b)
   return tgCmdMessages(lines, tgKeyboard(rows));
 }
 
@@ -378,7 +394,7 @@ function tgPlanOnShortlist(state, p, chatId) {
   if (state.runs.indexOf(run) < 0) state.runs.push(run);
   state.round = p.round;
   state.more = p.more === true || (typeof p.more === 'number' && p.more > 0);
-  tgCmdSendAll(chatId, tgPlanShortlistMessages(p, { seeds: state.seed_names }));
+  tgAppSendRound(chatId, p.trip, run, p.round, tgPlanShortlistMessages(p, { seeds: state.seed_names }));   // = tgCmdSendAll + message ids (WP-9b)
   return tgPlanChooseStep(state);
 }
 /** After ✅ Continue: the questions for what is still unknown — dates first (required), then the missing kinds. */
