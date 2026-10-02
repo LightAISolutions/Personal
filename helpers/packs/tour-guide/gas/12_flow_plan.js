@@ -9,12 +9,15 @@
  *   choose   → one message per group with sl:<run>:<g><n>:w|l|s taps; fl buttons More options · More gems (scope more,
  *              decided, gems_only; three More rounds at most) · Done choosing; free text or /seed = owner seeds
  *   planning → plan request (picks, later, skip, deliverables) is out; paused until event plan_digest → the day list,
- *              the Later reasons and the 📄 · 🔁 · 🔖 buttons; the flow ends (the core sends the files from the reply)
+ *              the Later reasons and the 📄 · 🔁 · 🔖 buttons; the flow ends (the core sends the files from the reply).
+ *              /repick goes back to choose with every tap kept (a digest of the dropped request is shown, the flow stays);
+ *              with no plan flow, /repick reopens choose on every shortlist run of the current trip.
  * Renderers for envelopes that arrive with no plan flow: tg_trip_facts, tg_shortlist, tg_plan_digest (pack prefixes only).
  * Taps go to WP-5b's Choices tab (tgChoiceSet); shortlist items resolve n → slug through tgShortlistItems.
  */
 var TG_PLAN_TTL_MIN = 14 * 24 * 60;
-var TG_PLAN_MORE_MAX = 3;          // More options + More gems rounds per /plan
+var TG_PLAN_MORE_MAX = 3;
+var TG_PLAN_REPICK_NOTE = '✏️ Back to choosing — your taps are kept. Change them here or in the app, then ✅ Done choosing.';          // More options + More gems rounds per /plan
 var TG_PLAN_ITEMS_PER_MSG = 8;
 var TG_PLAN_FACTS_PER_MSG = 10;
 var TG_PLAN_MSG_MAX = 3700;        // room under LIMITS.TG_SPLIT_AT for one chunk of item lines
@@ -370,10 +373,11 @@ function tgPlanResearchMore(state, kind) {
 function tgPlanBuild(state) {
   var t = tgPlanTaps(state);
   if (!t.picks.length) return tgPlanChooseStep(state, 'Tap ✅ on at least one place first.');
-  tgOpenKindRequest('plan', { trip: state.trip, picks: t.picks, later: t.later, skip: t.skip, deliverables: ['plan', 'notes', 'brochure'] },
+  var r = tgOpenKindRequest('plan', { trip: state.trip, picks: t.picks, later: t.later, skip: t.skip, deliverables: ['plan', 'notes', 'brochure'] },
     { text: 'plan · ' + state.trip + ' (' + t.picks.length + ' picks)' });
+  state.plan_req = r && r.id ? r.id : null;
   state.stage = 'planning';
-  return tgPlanWait(state, '🧭 Building the days from ' + t.picks.length + ' pick' + (t.picks.length === 1 ? '' : 's') + (t.later.length ? ' (' + t.later.length + ' for Later)' : '') + '…');
+  return tgPlanWait(state, '🧭 Building the days from ' + t.picks.length + ' pick' + (t.picks.length === 1 ? '' : 's') + (t.later.length ? ' (' + t.later.length + ' for Later)' : '') + '… /repick changes the picks.');
 }
 
 /* ---------------- events ---------------- */
@@ -420,10 +424,10 @@ registerFlow('plan', {
     if (seed.adopt) {
       var t = tgTripGet(seed.adopt.trip) || { slug: seed.adopt.trip };
       var st = tgPlanNewState(t.slug, t.destination || t.title || t.slug);
-      st.runs = [seed.adopt.run];
+      st.runs = seed.adopt.runs ? seed.adopt.runs.slice() : [seed.adopt.run];
       st.more = !!seed.adopt.more;
       settingSet(TG_SETTINGS.CURRENT_TRIP, t.slug, 'trip being planned');
-      return tgPlanChooseStep(st);
+      return tgPlanChooseStep(st, seed.adopt.note);
     }
     var dest = truncate(String(seed.destination || '').replace(/\s+/g, ' ').trim(), 80);
     var slug = tgPlanSlugFor(dest);
@@ -442,7 +446,16 @@ registerFlow('plan', {
       if (input.event === 'shortlist') return tgPlanOnShortlist(state, p, chatId);
       if (input.event === 'plan_digest') {
         tgCmdSendAll(chatId, tgPlanDigestMessages(p));
+        // A digest of a request /repick dropped: shown, but the flow stays where the owner is.
+        var stale = (state.repicked && state.stage !== 'planning') || (!!input.in_reply_to && (state.dropped || []).indexOf(input.in_reply_to) >= 0);
+        if (stale) return tgPlanSame(state, 'That plan was built from your earlier picks.');
         return { prompt: '', done: true, state: state, result: { trip: state.trip, build_id: p.build_id } };
+      }
+      if (input.event === 'repick' && state.stage === 'planning') {
+        state.repicked = true;
+        if (state.plan_req) state.dropped = (state.dropped || []).concat([state.plan_req]).slice(-5);
+        state.plan_req = null;
+        return tgPlanChooseStep(state, TG_PLAN_REPICK_NOTE);
       }
       if (input.event === 'tf_edit' && state.stage === 'confirm' && !state.ask) return tgPlanEditStep(state, input.n);
       if (input.event === 'seed') return tgPlanAddSeeds(state, input.names || []);
@@ -670,6 +683,18 @@ registerCommand('/plan', function (ctx) {
   }
   return flowStart(ctx.chatId, 'plan', { destination: dest });
 }, 'plan a trip: /plan <destination> (again to see where you are)');
+
+registerCommand('/repick', function (ctx) {
+  var f = flowActive(ctx.chatId);
+  if (f && f.flow === 'plan' && isPlainObject(f.state)) {
+    if (f.state.stage === 'planning') return flowResume(ctx.chatId, { type: 'resume', event: 'repick' });
+    return flowResume(ctx.chatId, { type: 'resume', event: 'reprompt' });
+  }
+  if (f) { ctx.reply('You are in the middle of /' + tgEscape(f.flow) + ' — finish it or send /cancel first.'); return null; }
+  var trip = tgTripCurrent(), runs = trip ? tgShortlistRuns(trip.slug) : [];
+  if (!runs.length) { ctx.reply('No shortlist to choose from — start with <code>/plan &lt;destination&gt;</code>.'); return null; }
+  return flowStart(ctx.chatId, 'plan', { adopt: { trip: trip.slug, runs: runs, more: false, note: TG_PLAN_REPICK_NOTE } });
+}, 'change the picks of the plan being built (or the last one) and build it again');
 
 registerCommand('/seed', function (ctx) {
   var names = tgPlanSeedsFrom(ctx.args);

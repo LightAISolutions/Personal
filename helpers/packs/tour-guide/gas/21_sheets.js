@@ -407,6 +407,13 @@ function tgShortlistItems(trip, run) {
     })
     .sort(function (a, b) { return a.round - b.round || a.n - b.n; });
 }
+/** Every shortlist run key of a trip, in the order first stored. */
+function tgShortlistRuns(trip) {
+  trip = tgShStr(trip);
+  var out = [];
+  storeAll(TG_SHEETS.SHORTLIST).forEach(function (r) { var k = tgShStr(r.run); if (tgShStr(r.trip) === trip && out.indexOf(k) < 0) out.push(k); });
+  return out;
+}
 /** The most recently stored round (of one trip, or of any trip): { trip, run, round } or null. */
 function tgShortlistLatest(trip) {
   var rows = storeAll(TG_SHEETS.SHORTLIST).filter(function (r) { return !trip || tgShStr(r.trip) === tgShStr(trip); });

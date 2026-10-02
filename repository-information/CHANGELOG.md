@@ -3,11 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 40/100`
+`Sections: 41/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.40r] — 2026-10-01 10:52:44 PM EST
+
+> **Prompt:** "Everything in round 2 went to later or skip because I was assuming I was going to [a hotel spa] and [a river]. If these picks are now weaker because they are inaccessible or due to the wrong season, I would like you to make a plan from my Later list as long as the logistics make sense. If my Later list is not enough to make a good plan, then let me know and let's evaluate more places. I plan to get into [the city] from [another town] in the morning of [day 1], then leave [the city] to go to [the next city] around noon of [day 2]. Therefore, I want this plan just to cover [day 1]." *(Phase 7 step 5, the pilot `/plan`; places and dates are redacted)*
+
+### Added
+- **`/repick`** (pack `12_flow_plan.js`): while the days are being built, go back to choosing with every ✅ 🔖 ❌ kept — in the chat or the app — and ✅ Done choosing builds again. A digest that answers the dropped request is still shown but no longer ends the flow. With no plan flow, `/repick` reopens choosing on every shortlist round of the current trip (`tgShortlistRuns` in `21_sheets.js`). The "building the days" line mentions it
+- Test in `pack_tour-guide_gas_plan.test.js`
+
+### Changed
+- `helpers/docs/TG-SWITCH-ON.md` §6 step 5 mentions `/repick`; `helpers/decisions/TG-PHASE-7.md` finding F20; `helpers/status/PHASE-7-RESUME.md` log
 
 ## [v01.39r] — 2026-10-01 10:41:22 PM EST
 

@@ -234,6 +234,47 @@ test('no plan flow: facts and digest go through the renderers; a shortlist offer
   assert.ok(sends(state).some((m) => /🗓 <b>Port Sorrel<\/b> — 2 days/.test(m.text || '')));
 });
 
+test('/repick: back from planning to choosing with taps kept; a dropped digest leaves the flow; no flow reopens every run', () => {
+  const { ctx, state } = fresh();
+  ctx.tgTripUpsert({ slug: TRIP, title: 'Port Sorrel', destination: 'Port Sorrel' });
+  say(ctx, state, '/repick');
+  assert.match(texts(state).pop(), /No shortlist to choose from/);
+  deliver(ctx, state, 'shortlist', shortlist());
+  tap(ctx, state, 'pl:sc:port-sorrel:r1:1');
+  tap(ctx, state, 'sl:r1:a1:w');
+  tap(ctx, state, 'sl:r1:a2:l');
+  press(ctx, state, '✅ Done choosing');
+  assert.match(texts(state).pop(), /Building the days from 1 pick \(1 for Later\)… \/repick changes the picks/);
+  const first = ctx.flowActive('777').state.plan_req;
+  assert.ok(first);
+
+  say(ctx, state, '/repick');
+  assert.equal(ctx.flowActive('777').state.stage, 'choose');
+  assert.match(texts(state).pop(), /Back to choosing — your taps are kept[\s\S]*So far: 1 ✅ · 1 🔖 · 0 ❌/);
+  deliver(ctx, state, 'plan_digest', digest());
+  assert.equal(ctx.flowActive('777').state.stage, 'choose', 'a digest of the dropped request does not end the flow');
+  assert.match(texts(state).pop(), /built from your earlier picks/);
+  tap(ctx, state, 'sl:r1:a2:w');
+  press(ctx, state, '✅ Done choosing');
+  const plans = reqOf(state, 'plan');
+  assert.equal(plans.length, 2);
+  assert.deepEqual(plans[1].picks.slice().sort(), ['lantern-museum', 'signal-hill-lookout']);
+  assert.notEqual(ctx.flowActive('777').state.plan_req, first);
+  H.putEnvelope(state, { ...H.envelope('plan_digest', digest()), in_reply_to: first });
+  assert.equal(J(ctx.pollFromBrain()).processed, 1);
+  assert.equal(ctx.flowActive('777').state.stage, 'planning', 'the dropped request\'s digest does not end the new wait');
+  say(ctx, state, '/cancel');
+
+  // No flow: /repick adopts every run of the current trip.
+  deliver(ctx, state, 'shortlist', shortlist({ run_id: 'r2', round: 2, more: false, groups: [{ id: 'food', items: [item(1, 'fixture-tea-house')] }] }));
+  say(ctx, state, '/repick');
+  const f = ctx.flowActive('777');
+  assert.deepEqual([f.flow, f.state.stage, J(f.state.runs)], ['plan', 'choose', ['r1', 'r2']]);
+  assert.match(texts(state).pop(), /So far: 2 ✅ · 0 🔖 · 0 ❌/);
+  say(ctx, state, '/repick');
+  assert.match(texts(state).pop(), /So far: 2 ✅/, '/repick while choosing just re-shows the step');
+});
+
 test('guards: /plan usage, another flow, /seed without a plan, Done with no picks, three More rounds at most', () => {
   const { ctx, state } = fresh();
   say(ctx, state, '/plan');
