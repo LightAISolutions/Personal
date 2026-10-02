@@ -1,6 +1,6 @@
 /**
- * Helpers core — upload route (?route=upload, POST). A routine that made a file (a PDF, an HTML page) cannot push
- * megabytes through the Drive connector, so it POSTs the file here and gets back a Drive file id it can name in a
+ * Helpers core — upload route (?route=upload, POST). A routine that made a file (a PDF, an HTML page, a JSON data file) cannot
+ * push megabytes through the Drive connector, and a hand-copied data file can be silently corrupted, so it POSTs the file here and gets back a Drive file id it can name in a
  * `reply` envelope's `drive_file_ids` (the core then sends the file to the chat).
  * Auth: the request's upload key — HMAC-SHA256('upload:' + request id) under ADMIN_SECRET, written into
  * to-brain/req_<id>.json as payload.upload_key — valid while the request is open (or answered within the hour) and
@@ -8,7 +8,7 @@
  * Body (text/plain JSON): { req, key, name, mime, data (base64), folder? ("trips/<slug>", ≤ 3 lowercase parts) }.
  * Files land under the helper's Drive root (folder, else `files/`); never overwrite, never delete.
  */
-var UPLOAD_MIMES = { 'application/pdf': 'pdf', 'text/html': 'html' };
+var UPLOAD_MIMES = { 'application/pdf': 'pdf', 'text/html': 'html', 'application/json': 'json' };
 
 function uploadKey(requestId) {
   var secret = getProp(PROP.ADMIN_SECRET);

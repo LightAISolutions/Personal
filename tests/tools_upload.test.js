@@ -28,7 +28,8 @@ test('uploadUrl swaps the wake route for the upload route; uploadBody builds wha
   assert.equal(r.body.req, REQ);
   assert.equal(r.body.mime, 'application/pdf');
   assert.equal(Buffer.from(r.body.data, 'base64').toString(), '%PDF-1.7 x');
-  assert.throws(() => uploadBody({ req: REQ, key: KEY, file: tmpFile('a.zip', 'x') }), /only \.pdf and \.html/);
+  assert.throws(() => uploadBody({ req: REQ, key: KEY, file: tmpFile('a.zip', 'x') }), /only \.pdf, \.html and \.json/);
+  assert.equal(uploadBody({ req: REQ, key: KEY, file: tmpFile('plan-b1.json', '{}') }).body.mime, 'application/json');
   assert.throws(() => uploadBody({ req: REQ, key: KEY, file: f, folder: 'Trips/X' }), /folder/);
   assert.throws(() => uploadBody({ req: REQ, key: 'short', file: f }), /upload_key/);
   assert.throws(() => uploadBody({ req: 'nope', key: KEY, file: f }), /request id/);
