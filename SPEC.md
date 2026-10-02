@@ -89,7 +89,7 @@ The brain never modifies or deletes a mailbox file and never writes outside `fro
 
 `openRequest({kind, text, chat?, routine?, payload?})` (`core/12_wake.js`) is how the core asks the brain for something — an owner's free-text message, `/ask <text>`, or a pack's own `kind`. It:
 
-1. writes `to-brain/req_<uuid>.json`: `{"v":1,"id":"<uuid>","type":"request","created_at":"…","producer":"<manifest producer>","payload":{"kind":"message"|"ask"|"<pack kind>","text":"<the owner's words, ≤4000>","chat":{"chat_id","message_id","ts"}|null,"requested_at":"…", …pack fields}}`;
+1. writes `to-brain/req_<uuid>.json`: `{"v":1,"id":"<uuid>","type":"request","created_at":"…","producer":"<manifest producer>","payload":{"kind":"message"|"ask"|"<pack kind>","text":"<the owner's words, ≤4000>","chat":{"chat_id","message_id","ts"}|null,"requested_at":"…","upload_key":"<64 hex>", …pack fields}}` — `upload_key` is the request's key for `?route=upload` (§6), HMAC-SHA256 of `upload:<id>` under `ADMIN_SECRET`, present once setup is done;
 2. appends a `Requests` row (`status: open`) and rewrites `state.json`;
 3. fires the routine (§10) with **only `req_<id>` as the fire text**, and schedules fallback sweeps at +3 and +10 minutes; while any request is open an hourly sweep is scheduled too;
 4. tells the owner "🧠 Working on it…" (or that the routine could not be fired and will see the request on its next run).
@@ -164,6 +164,7 @@ Core helpers a pack may call: `tgSendOwner(html, opts)`, `tgSend(chatId, html, o
 | `?route=tg` | POST | `?k=<WEBHOOK_SECRET>`; then `from.id` must equal `OWNER_CHAT_ID` (before pairing, only `/start <PAIR_CODE>` from a private chat is accepted, once) | Telegram webhook. Always answers HTTP 200 `OK` (HtmlService) so Telegram never retries. `update_id` deduped for 6 h. Commands → `registerCommand` (always first; `/cancel` ends an active flow); then an active, non-paused flow claims free text and `fl:` buttons; otherwise inline buttons → `registerCallback`; free text → message handlers, else a request. If the script lock is busy for 15 s the update is queued as `tg_update_deferred` and handled by the worker |
 | `?route=wake` | GET or POST | none | The wake contract below |
 | `?route=setup` | GET / POST | `?k=<ADMIN_SECRET>` | Owner setup page (§12) |
+| `?route=upload` | POST | the request's `upload_key` (in the body) | A routine stores one file it made under the helper's Drive root (`core/16_upload.js`), so a `reply` can name it in `drive_file_ids`. Body (JSON): `{req, key, name, mime, data (base64), folder?}`; `mime` is `application/pdf` or `text/html` with a matching extension; `folder` is ≤ 3 lowercase parts (default `files`, never `mailbox`). The request must be open or answered within `UPLOAD_AFTER_ANSWER_MIN`, and younger than `REQUEST_MAX_AGE_HOURS`; at most `UPLOAD_MAX_PER_REQUEST` files. Never overwrites or deletes. Answers `{ok, file_id, url, name, bytes}` or `{ok:false, status, reason}`; refusals are audited `upload_refused`. Routines call it through `tools/upload.mjs` |
 | anything else | GET | none | Health JSON `{ok:true, app, version, core, ts}` — no secrets, no state |
 
 Strangers: an unpaired or foreign sender gets no reply; the first message from each sender per 6 h is audited (`tg_unauthorized`), later ones are dropped silently so a spammer cannot grow the AuditLog.
@@ -278,6 +279,7 @@ All tools are zero-dependency Node ≥ 22 ESM scripts under `helpers/tools/`, ru
 | `bundle.mjs` | `node helpers/tools/bundle.mjs <pack> [--out DIR] [--check]` · `--all [--check]` | Validates `helper.json`, parses every file, emits `helpers/dist/<pack>/Code.gs` + `appsscript.json` (or only checks with `--check`). The bundle is one Apps Script file: banner → `HELPER_MANIFEST` block → `core/*.js` sorted → `packs/<pack>/gas/*.js` sorted. `helpers/dist/` is git-ignored |
 | `envelope.mjs` | `node helpers/tools/envelope.mjs <type> <producer> <payload.json> [--pack NAME] [--dedupe-key K] [--in-reply-to ID] [--out DIR]` | Stamps a real UUID, the real clock and the canonical file name; prints `{"file_name","content","errors"}` and, with `--out`, writes the file. Rejects unknown types (`--pack` adds the pack's), a `reply` without `--in-reply-to`, oversize payloads. Routines keep payload and output files outside the repo |
 | `new-helper.mjs` | `node helpers/tools/new-helper.mjs <name> [--display D] [--drive-root R] [--prefix P] [--routine CHAT] [--memory a,b] [--types x,y] [--private-repo Org/Repo] [--framework-repo Org/Repo] [--private-out DIR] [--force]` | Scaffolds `helpers/packs/<name>/` (manifest, `gas/<name>.js`, README) and, with `--private-out`, the private repo from `templates/private-repo/` with every `{{PLACEHOLDER}}` filled (fails if one is left). Never overwrites without `--force` |
+| `upload.mjs` | `node helpers/tools/upload.mjs --wake-url <state.json wake_url> --req <id> --key <payload.upload_key> --file <path> [--name N] [--folder trips/<slug>] [--dry-run]` | POSTs a routine-made `.pdf`/`.html` (≤ 30 MB) to `?route=upload` with curl (honours the proxy, follows the Apps Script 302) and prints the core's answer; the `file_id` goes in the reply's `drive_file_ids`. Checks name, folder, id and key shape first; never prints the key |
 | `boundary-check.mjs` | `node helpers/tools/boundary-check.mjs [--root DIR] [--allowlist FILE] [--quiet] [path ...]` | Fails on personal-data paths and on secret/PII patterns in file contents (bot tokens, Google/Anthropic/GitHub/OAuth keys, private keys, Apps Script and Drive ids, e-mail addresses outside allowlisted domains, phone numbers, every `deny` pattern). Matches are printed redacted. `tools/boundary-allowlist.txt` lines: `domain <d>` · `literal <s>` · `path <p>` · `deny <regex>`; a custom `--allowlist` **replaces** the default |
 
 ## 14. Tests, CI, `helpers-dist` and deploys
@@ -405,6 +407,10 @@ Constants in `helpers/core/00_config.js` (`LIMITS`). The four marked ⚙ can be 
 | `REPLY_MAX_DOCUMENTS` | 10 | `drive_file_ids` entries accepted on one `reply` envelope |
 | `REQUEST_TEXT_CHARS` | 4 000 | `text` of a `req_<id>.json` request |
 | `REQUEST_MAX_AGE_HOURS` | 24 | An open request older than this is expired and the owner told once |
+| `UPLOAD_MAX_BYTES` | 31 457 280 | One file through `?route=upload` (decoded) |
+| `UPLOAD_MAX_BODY_CHARS` | 44 040 192 | The JSON body carrying it as base64 |
+| `UPLOAD_MAX_PER_REQUEST` | 6 | Files one request may upload |
+| `UPLOAD_AFTER_ANSWER_MIN` | 60 | An answered request still takes uploads this long (a reply may be written before its files) |
 | `FALLBACK_SWEEP_MIN` | [3, 10] | One-off sweeps scheduled when a request opens, in case the wake never comes |
 | `HOURLY_SWEEP_MIN` | 60 | Follow-up sweep interval while any request is open |
 

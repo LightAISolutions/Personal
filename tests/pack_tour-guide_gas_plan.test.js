@@ -174,6 +174,11 @@ test('the whole /plan journey: intake → facts (keep, edit, drop, add) → ques
   tap(ctx, state, 'sl:r1:a1:w', round1[0].reply_markup);
   assert.equal(answers(state).pop(), '✅ Want — Lantern Museum');
   assert.deepEqual(state.fetch.telegram('editMessageReplyMarkup').pop().json.reply_markup.inline_keyboard[0].map((b) => b.text), ['• 1 ✅', '1 🔖', '1 ❌']);
+  say(ctx, state, '✅ 2 later 1, skip 7');
+  assert.match(texts(state).pop(), /^Noted ✅ 2\. No place numbered 7 on your list\. Number 1 is on two lists — tap that one instead\.\nSo far: 2 ✅ · 0 🔖 · 0 ❌/);
+  assert.deepEqual(J(ctx.tgPlanParsePicks('1 3 9 later 2 skip 4-6')), { w: [1, 3, 9], l: [2], s: [4, 5, 6], too_many: false });
+  assert.equal(ctx.tgPlanParsePicks('Cafe 1924'), null, 'a place name with a number stays a seed');
+  assert.equal(ctx.tgPlanParsePicks('later'), null, 'no number, no pick line');
   tap(ctx, state, 'sl:r1:a2:l');
   tap(ctx, state, 'sl:r1:f1:s');
   tap(ctx, state, 'sl:r1:a9:w');

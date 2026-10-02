@@ -1,9 +1,11 @@
 /**
  * Helpers core — web-app router.
  * Routes: ?route=tg (Telegram webhook, POST) · ?route=wake (brain wake-up, GET/POST, no auth) · ?route=setup (owner page,
- *         GET/POST, ?k=ADMIN_SECRET) · anything else → health JSON (no secrets).
+ *         GET/POST, ?k=ADMIN_SECRET) · ?route=upload (routine file upload, POST, per-request key — 16_upload.js) ·
+ *         anything else → health JSON (no secrets).
  * Telegram route ALWAYS returns HtmlService (HTTP 200) — ContentService would 302 and Telegram would retry.
- * Auth: tg → ?k=WEBHOOK_SECRET + from.id === OWNER_CHAT_ID; setup → ?k=ADMIN_SECRET; wake → none (rate-limited, idempotent).
+ * Auth: tg → ?k=WEBHOOK_SECRET + from.id === OWNER_CHAT_ID; setup → ?k=ADMIN_SECRET; wake → none (rate-limited, idempotent);
+ *       upload → the request's HMAC upload key (open or just-answered request only).
  */
 function htmlOut(text) { return HtmlService.createHtmlOutput(text); }
 function jsonOut(obj) { return ContentService.createTextOutput(toJson(obj)).setMimeType(ContentService.MimeType.JSON); }
@@ -28,6 +30,7 @@ function doPost(e) {
     if (route === 'tg') return routeTg(e);
     if (route === 'wake') return routeWake(e);
     if (route === 'setup') return routeSetupPost(e);
+    if (route === 'upload') return routeUpload(e);
     auditFail('route_unknown', route, null);
     return htmlOut('not found');
   } catch (err) {

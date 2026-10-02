@@ -297,7 +297,7 @@ function tgPlanChooseStep(state, note) {
   var t = tgPlanTaps(state);
   var lines = [];
   if (note) lines.push(note);
-  lines.push('So far: ' + t.picks.length + ' ✅ · ' + t.later.length + ' 🔖 · ' + t.skip.length + ' ❌. Tap on the lines above; type a place name to add your own pick.');
+  lines.push('So far: ' + t.picks.length + ' ✅ · ' + t.later.length + ' 🔖 · ' + t.skip.length + ' ❌. Type the numbers in one message, e.g. <code>1 3 9 later 2 skip 4-8</code> (or tap the lines above); type a place name to add your own pick.');
   var kb = [], canMore = !!state.more && state.more_rounds < TG_PLAN_MORE_MAX;
   if (canMore) kb.push([{ text: '➕ More options', value: 'more' }, { text: '💎 More gems', value: 'gems' }]);
   else if (state.seeds_pending.length) kb.push([{ text: '🔎 Look up my picks', value: 'seeds' }]);
@@ -489,6 +489,8 @@ registerFlow('plan', {
         return tgPlanResearchMore(state, v);
       }
       if (v === 'seeds' && state.seeds_pending.length) return tgPlanResearchMore(state, 'seeds');
+      var picks = text ? tgPlanParsePicks(text) : null;
+      if (picks) return tgPlanApplyPicks(state, picks);
       if (text) {
         var sp = tgPlanSeedsProblem(text);
         return sp ? tgPlanChooseStep(state, '⚠️ ' + sp) : tgPlanAddSeeds(state, tgPlanSeedsFrom(text));
@@ -498,6 +500,56 @@ registerFlow('plan', {
     return tgPlanSame(state);
   }
 });
+var TG_PLAN_PICK_WORDS = { want: 'w', yes: 'w', pick: 'w', picks: 'w', keep: 'w', later: 'l', save: 'l', maybe: 'l', skip: 's', no: 's', drop: 's' };
+var TG_PLAN_PICK_MAX = 60;   // numbers per typed message (ranges included)
+/**
+ * Typed picks: "1 3 9", "want 1 3, later 2, skip 4-8", "✅ 1 3 🔖 2 ❌ 5" → { w: [n], l: [n], s: [n] }; numbers before any
+ * word are ✅. null when the text is not a pick line (any other word or character → it is a place name, a seed).
+ */
+function tgPlanParsePicks(text) {
+  var t = String(text || '').toLowerCase().replace(/✅|✔️|✔/g, ' want ').replace(/🔖/g, ' later ').replace(/❌|✖️|✖/g, ' skip ');
+  var words = Object.keys(TG_PLAN_PICK_WORDS).concat(['and', 'to']);
+  var rest = t.replace(new RegExp('\\b(' + words.join('|') + ')\\b', 'g'), ' ').replace(/[\s\d,;:.&+\-–—#]/g, '');
+  if (rest || !/\d/.test(t)) return null;
+  var out = { w: [], l: [], s: [] }, cur = 'w', count = 0, tooMany = false;
+  var add = function (n) { if (count >= TG_PLAN_PICK_MAX) { tooMany = true; return; } count++; out[cur].push(n); };
+  t.replace(/([a-z]+)|(\d{1,3})\s*(?:-|–|—|to)\s*(\d{1,3})|(\d{1,3})/g, function (m, w, a, b, one) {
+    if (w) { if (TG_PLAN_PICK_WORDS[w]) cur = TG_PLAN_PICK_WORDS[w]; return m; }
+    if (one) { add(Number(one)); return m; }
+    var lo = Math.min(Number(a), Number(b)), hi = Math.max(Number(a), Number(b));
+    for (var n = lo; n <= hi; n++) add(n);
+    return m;
+  });
+  out.too_many = tooMany;
+  return out;
+}
+/** Store typed picks against the flow's rounds (a number means the newest round that has it); a later value wins. */
+function tgPlanApplyPicks(state, pk) {
+  var byN = {};   // n → [{ run, it }] from the newest round that has n (two groups numbered from 1 → ambiguous)
+  (state.runs || []).slice().reverse().forEach(function (run) {
+    var here = {};
+    tgShortlistItems(state.trip, run).forEach(function (it) { (here[it.n] = here[it.n] || []).push({ run: run, it: it }); });
+    Object.keys(here).forEach(function (n) { if (!byN[n]) byN[n] = here[n]; });
+  });
+  var done = { w: [], l: [], s: [] }, unknown = [], twice = [], final = {};
+  ['w', 'l', 's'].forEach(function (v) { pk[v].forEach(function (n) { final[n] = v; }); });
+  Object.keys(final).sort(function (a, b) { return a - b; }).forEach(function (n) {
+    var hits = byN[n];
+    if (!hits) { unknown.push(n); return; }
+    if (hits.length > 1) { twice.push(n); return; }
+    tgChoiceSet(state.trip, hits[0].run, 'shortlist', hits[0].it.slug, final[n], hits[0].it.name);
+    done[final[n]].push(n);
+  });
+  var parts = [];
+  if (done.w.length) parts.push('✅ ' + done.w.join(', '));
+  if (done.l.length) parts.push('🔖 ' + done.l.join(', '));
+  if (done.s.length) parts.push('❌ ' + done.s.join(', '));
+  var note = parts.length ? 'Noted ' + parts.join(' · ') + '.' : 'Nothing noted.';
+  if (unknown.length) note += ' No place numbered ' + unknown.join(', ') + ' on your list.';
+  if (twice.length) note += ' Number ' + twice.join(', ') + ' is on two lists — tap that one instead.';
+  if (pk.too_many) note += ' Only the first ' + TG_PLAN_PICK_MAX + ' numbers were read.';
+  return tgPlanChooseStep(state, note);
+}
 /** Owner seeds: remembered for matching (your pick) and sent with the next research round. */
 function tgPlanAddSeeds(state, names) {
   var added = [];

@@ -222,6 +222,7 @@ function createMocks(opts = {}) {
     },
     Utilities: {
       formatDate, getUuid: () => crypto.randomUUID(), computeDigest: (alg, value) => digest(alg, value),
+      computeHmacSha256Signature: (value, key) => Array.from(crypto.createHmac('sha256', toBuf(key)).update(toBuf(value)).digest()).map((b) => (b > 127 ? b - 256 : b)),
       DigestAlgorithm: { MD5: 'MD5', SHA_1: 'SHA_1', SHA_256: 'SHA_256', SHA_512: 'SHA_512' }, Charset: { UTF_8: 'UTF_8', US_ASCII: 'US_ASCII' },
       base64Encode: (d) => toBuf(d).toString('base64'), base64EncodeWebSafe: (d) => toBuf(d).toString('base64url'),
       base64Decode: (s) => Array.from(Buffer.from(String(s), 'base64')), base64DecodeWebSafe: (s) => Array.from(Buffer.from(String(s), 'base64url')),

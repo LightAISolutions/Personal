@@ -11,6 +11,7 @@ The engine behind the Tour Guide helper: it turns a trip, its researched places 
 | `later/` | Later-list operations (promote and demote report which days to re-plan) | below |
 | `brochure-map/` | Maps a Plan onto the brochure kit's model and renders it | below |
 | `gems/` | The Gem Funnel's engine (proposal §4 stages 2–5): screening, the gem score and 💎 rule, evidence flags, the "why it's a gem" line, shortlist floors and the "Gems not chosen" Later list — pure functions, no calls | below |
+| `shortlist-sheet/` | One research round (the `shortlist` payload) as a printable PDF with the chat's numbers, for the owner to read before picking | below |
 | `fixtures/` | Two invented trips with recorded Maps answers in the real API shapes, used by every test | below |
 | `gas/` | The Telegram chatbot: commands, flows, envelope handlers, sheets, Lane B, `/route` (Phase 5) | below |
 
@@ -202,5 +203,8 @@ Apps Script files bundled after the core in file-name order (`node helpers/tools
 - Keep Google content beyond the build: snapshots are read for the plan and the brochure of one build; only `place_id` and (for ≤ 30 days) coordinates are kept, per the Maps kit's rules.
 - Store or read anything of the owner's: every file here is generic or invented; the owner's trips, places and profile live in the private repo and reach the engine as function arguments.
 - Send messages, write to Drive or run a routine outside the framework's contracts: the chatbot (`gas/`) does it only through the core's Telegram, mailbox, request and routine-fire functions.
+
+## Shortlist sheet — `shortlist-sheet/`
+`node helpers/packs/tour-guide/shortlist-sheet/index.mjs shortlist.json out.pdf [--title T] [--dates D] [--stay S] [--notes notes.json] [--built-on YYYY-MM-DD] [--page letter|a4]` (exit 0 PDF · 3 HTML only · 1 error). Library: `shortlistSheetHtml(payload, opts)`, `renderShortlistPdf(payload, outPdf, opts)`. Built from the payload only (names, times, areas, why-you and gem lines, Maps links, the round's notes ≤ 12), in the brochure kit's typeface and colours; items appear in the chat's numbering so the owner can pick by number. The `trip-research` skill renders it and puts it on Drive with `tools/upload.mjs`, then names it in its reply's `drive_file_ids`.
 
 Developed by: LightAISolutions
