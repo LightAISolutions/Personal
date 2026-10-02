@@ -3,11 +3,23 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 42/100`
+`Sections: 43/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.42r] — 2026-10-01 11:57:26 PM EST
+
+> **Prompt:** the owner's answers on two decision cards: "chosen option: Set Opus 5.5" (the routine model) · "chosen option: Try /smart" (Lane B) *(Phase 7 steps 6–9 while the pilot day is rebuilt)*
+
+### Added
+- `helpers/prompts/TG-PHASE-8.md` — Phase 8 kickoff (live review and tuning, after the owner's pilot trip; Opus 5.5 · high): owner questions with defaults, the carried Phase 7 findings, tuning from the pilot evidence, the Phase 9 follow-ups
+
+### Changed
+- `helpers/docs/TG-SWITCH-ON.md`: §4 always pick a routine's model (an empty model runs on the service default) and the Aggregate smoke is a done, never-repeat step; §6 typed picks and the app reach the newest round only, the shortlist PDF, and how a trip's dates change after the facts are confirmed
+- `helpers/decisions/TG-PHASE-7.md` §2: routine models (Opus 5.5, set by the owner) and the `/smart` trial
+- `helpers/BUILD-STATE.md`: Phase 7 row (wrapping up), repos and environments, Phase 7 log, Phase 8 row and Next; `helpers/status/PHASE-7-RESUME.md`; README tree entry for the Phase 8 prompt
 
 ## [v01.41r] — 2026-10-01 11:18:18 PM EST
 

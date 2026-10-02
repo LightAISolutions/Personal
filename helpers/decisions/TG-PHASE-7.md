@@ -37,5 +37,7 @@
 - **`TIMEZONE`**: the owner's own IANA zone (not the core default); trip-check's `CRON_TZ` uses the same zone.
 - **`MAX_ROUTINE_FIRES_PER_DAY`**: `24` as the guide recommends.
 - **Routine environment**: the owner's existing Claude environment that already holds the Maps credentials, with `MAPS_USAGE_LEDGER`, `MAPS_SNAPSHOT_STORE` and `PREFS_REF_SALT` added.
+- **Routine models** (F23, 2026-10-02): the owner chose to set Opus 5.5 in the routine editor (`chat` on medium, the other six on high), as decision 11 says; the owner's step, not the session's.
+- **Lane B `/smart`** (step 6, 2026-10-02): the owner chose to try it — the owner adds `CLAUDE_API_KEY` in Script Properties, sends `/smart on` and one question, reads the count and cost with `/smart`, and decides to keep it or send `/smart off`. Outcome recorded here when known.
 
 Developed by: LightAISolutions
