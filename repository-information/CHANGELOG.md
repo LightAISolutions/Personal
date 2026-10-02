@@ -3,11 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 36/100`
+`Sections: 37/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.36r] — 2026-10-01 09:23:51 PM EST
+
+> **Prompt:** "It gave me a short list. I want it to output a link to a pdf file for easier viewing." *(Phase 7 step 5, the pilot `/plan`: round 1 came out thin, so the screening was fixed before a second round)*
+
+### Changed
+- **Gem Funnel screening** (`helpers/packs/tour-guide/gems/gems-screen.mjs`, `gems-weights.mjs`): three new drop reasons for the activities group. `not_a_visit` drops lodging, spas, tour and travel agencies, stations and parking; `facility` drops smoking areas, restrooms, ticket offices and the like; `part_of` drops a gate, torii, garden section or pavilion listed next to the big kept place it belongs to (a sub-temple with its own name stays). Owner seeds are exempt
+- **Rating floor**: an optional per-country `rating_offset` (±0.5) for places where ratings run low, and two local mentions cap the floor at the default 4.3 so local picks are not cut at appetite ≥ 4
+- `nameWords`, `nameCore`, `isFeatureName`, `partOfParent` exported from `gems/index.mjs`; gems and pack READMEs describe the rules
+- Test for the new rules in `pack_tour-guide_gems.test.js`
+- `helpers/decisions/TG-PHASE-7.md` finding F17; `helpers/status/PHASE-7-RESUME.md` log
 
 ## [v01.35r] — 2026-10-01 09:13:26 PM EST
 

@@ -81,6 +81,45 @@ test('screen: each rule drops its carrier once with the right reason; waivers an
   assert.throws(() => g.screen(fx.pool, { ...screenOpts, modes: ['BOAT'] }), /gems: no usable travel mode/);
 });
 
+test('screen: not-a-visit businesses, facilities and parts of a bigger kept place drop; sub-temples, local picks and the rating offset behave', async () => {
+  const g = await G();
+  const at = (lat, lng) => ({ lat, lng });
+  const P = (id, name, o) => ({ place_id: 'FixtureScr' + id, name, rating: 4.6, rating_count: 120, business_status: 'OPERATIONAL', types: ['tourist_attraction'], location: at(10.0, 20.0), ...o });
+  const two = [{ ref: 'L001', language: 'xx', kind: 'local-language' }, { ref: 'L002', language: 'xx', kind: 'editorial' }];
+  const pool = [
+    P('Parent1', 'Hollow-ji', { rating_count: 60000, types: ['buddhist_temple'], primary_type: 'buddhist_temple' }),
+    P('Sub1', 'Shariden Hollow', { rating_count: 300 }),
+    P('Parent2', 'Lantern Shrine', { rating_count: 30000, location: at(10.01, 20.0) }),
+    P('Sub2', 'Lantern Jinja Nishiromon Gate (Western Tower Gate)', { rating_count: 900, location: at(10.0101, 20.0001) }),
+    P('Parent3', 'Pine-ji', { rating_count: 9000, location: at(10.04, 20.03) }),
+    P('Sub3', 'Pine-ji Ohbai-in', { rating_count: 200, location: at(10.0405, 20.0302) }),
+    P('Gen', 'Second Torii', { rating_count: 300, location: at(10.0002, 20.0002) }),
+    P('Spa', 'Good Spa', { primary_type: 'spa', location: at(10.2, 20.0) }),
+    P('Smoke', 'Smoking Area', { types: ['park'], location: at(10.3, 20.0) }),
+    P('Tour', 'Tours Co', { primary_type: 'travel_agency', location: at(10.4, 20.0) }),
+    P('Inn', 'Riverside Inn', { types: ['lodging', 'hotel'], location: at(10.45, 20.0) }),
+    P('Seed', 'Owner Ryokan', { types: ['lodging'], location: at(10.46, 20.0), streams: ['owner_seed'] }),
+    P('Low', 'Quiet Temple', { rating: 4.4, location: at(10.6, 20.0) }),
+    P('LowLocal', 'Local Temple', { rating: 4.35, location: at(10.7, 20.0), local_mentions: two })
+  ];
+  const r = g.screen(pool, { trip_dates: ['2030-03-04'], rating_floor: 4.5 });
+  const why = Object.fromEntries(r.dropped.map((d) => [d.place_id.slice(10), d.reason_code + (d.detail ? ':' + d.detail : '')]));
+  assert.deepEqual(why, {
+    Spa: 'not_a_visit:spa', Smoke: 'facility', Tour: 'not_a_visit:travel_agency', Inn: 'not_a_visit:lodging', Low: 'low_rating',
+    Sub1: 'part_of:Hollow-ji', Sub2: 'part_of:Lantern Shrine', Gen: 'part_of:Hollow-ji'
+  });
+  const kept = r.kept.map((x) => x.place_id.slice(10)).sort();
+  assert.deepEqual(kept, ['LowLocal', 'Parent1', 'Parent2', 'Parent3', 'Seed', 'Sub3'], 'a sub-temple with its own name stays; owner seeds are never screened as businesses');
+  assert.ok(r.dropped.every((d) => g.DROP_REASONS.includes(d.reason_code)));
+  assert.equal(g.nameCore('Lantern Jinja'), g.nameCore('Lantern Shrine'));
+  assert.equal(g.isFeatureName('Second Torii'), true);
+  assert.equal(g.isFeatureName('Ohbai-in'), false);
+  // a country's rating offset lowers (or raises) the floor within ±0.5
+  const jp = g.screen(pool, { trip_dates: ['2030-03-04'], rating_floor: 4.5, rating_offset: -0.2 });
+  assert.ok(jp.kept.some((x) => x.place_id === 'FixtureScrLow'));
+  assert.throws(() => g.screen(pool, { trip_dates: ['2030-03-04'], rating_offset: -0.8 }), /gems: rating_offset/);
+});
+
 test('geo + hours: straight-line minutes at the conservative speeds; period, snapshot and by_date hours agree on closed and usable days', async () => {
   const g = await G();
   assert.equal(Math.round(g.straightLineMinutes(6.25, ['TRANSIT'])), 25);

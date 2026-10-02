@@ -67,12 +67,21 @@ from a raw search result. Unknown keys are dropped; nonsense throws a `gems: …
 
 ### Stage 2 — `screen(pool, opts) → { kept, dropped: [{ place_id, reason_code, detail? }] }`
 One reason per dropped place, the first that fires: `not_operational` (CLOSED_TEMPORARILY / CLOSED_PERMANENTLY; UNSPECIFIED
-passes) · `avoided_type` (a type, primary type or category in `avoid_types`) · `chain` (detail `repeated`: the same
-normalized display name ≥ 3 times in the pool; `listed`: a `CHAIN_LIST` prefix) · `low_rating` (below `rating_floor`,
-default 4.3, or `ratingFloorFor(appetite)` = 4.5 at appetite ≥ 4) · `too_few_ratings` (< 15 unless ≥ 2 local mentions or an
-owner seed) · `closed_all_dates` (hours known and closed on every trip date) · `too_far` (straight-line minutes to the
-nearest anchor at the fastest of `modes` — WALK 4.5, TRANSIT 15, DRIVE 30 km/h — above `off_track_minutes`, default 25).
-`kept` holds normalized records with `category` set.
+passes) · `avoided_type` (a type, primary type or category in `avoid_types`) · `not_a_visit` (activities only: the
+primary type, else a type, is in `NOT_A_VISIT_TYPES` — lodging, spa, tour or travel agency, transit station, parking …;
+detail = that type) · `facility` (activities only: the name matches `FACILITY_NAME_RE` — smoking area, restroom, ticket
+office, coin lockers …) · `chain` (detail `repeated`: the same normalized display name ≥ 3 times in the pool; `listed`: a
+`CHAIN_LIST` prefix) · `low_rating` (below `rating_floor`, default 4.3, or `ratingFloorFor(appetite)` = 4.5 at appetite
+≥ 4; plus the country's `rating_offset`, within ±0.5; ≥ 2 local mentions cap the floor at the default 4.3 before the
+offset) · `too_few_ratings` (< 15 unless ≥ 2 local mentions or an owner seed) · `closed_all_dates` (hours known and closed
+on every trip date) · `too_far` (straight-line minutes to the nearest anchor at the fastest of `modes` — WALK 4.5,
+TRANSIT 15, DRIVE 30 km/h — above `off_track_minutes`, default 25) · then over what is left, `part_of` (activities only;
+detail = the parent's name): a kept place within `PART_OF_RADIUS_M` (400 m) with ≥ `PART_OF_COUNT_RATIO` (5×) the
+ratings is its parent when this name is the parent's core name plus only `FEATURE_WORDS` (gate, torii, garden, pavilion,
+hall, directions, ordinals …), or this name is nothing but feature words. A sub-temple with a name of its own
+("Pine-ji Ohbai-in") stays. Owner seeds skip `not_a_visit`, `facility` and `part_of`. `nameWords`, `nameCore`,
+`isFeatureName` and `partOfParent(record, pool)` are exported for the skill. `kept` holds normalized records with
+`category` set.
 
 ### Stage 3 — `scoreGems(kept, opts) → [{ …record, q, o, l, f, p, gem_score, gem }]`
 - **Q** `qualityScore`: `(n·r + m·μ) / (n + m)`, m = 30, μ = the kept pool's mean rating for the category when it has ≥ 20

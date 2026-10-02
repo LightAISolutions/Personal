@@ -156,7 +156,7 @@ Defaults and their reasons: `helpers/decisions/WP-3c.md`.
 Library only: pure functions over the candidate pool the `trip-research` skill assembles; no Google call, no fetch, no clock. Every tunable number lives in `gems/gems-weights.mjs`.
 ```js
 import * as gems from './gems/index.mjs';
-const { kept, dropped } = gems.screen(pool, { trip_dates, anchors, off_track_minutes, modes, avoid_types, rating_floor });   // stage 2: one reason_code per drop
+const { kept, dropped } = gems.screen(pool, { trip_dates, anchors, off_track_minutes, modes, avoid_types, rating_floor, rating_offset });   // stage 2: one reason_code per drop (hotels, gates, facilities too)
 const scored = gems.scoreGems(kept, { appetite, city_size, fit_estimates, profile, trip_dates, day_start, day_end, anchors, rough_edges }); // stage 3: q o l f p → gem_score, gem
 const { flags, record } = gems.flagEvidence(scored[0], { trip_dates, today, signals });   // stage 4: unproven | tourist_oriented | closed_day_conflict
 const line = gems.gemLine(record, { category_median_count });                              // ≤ 200 chars, numbers and source kinds only
