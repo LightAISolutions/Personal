@@ -7,7 +7,7 @@ import { hm, localToIso } from './planner-time.mjs';
 import { earliestFit } from './planner-hours.mjs';
 import { solveDay } from './planner-solve.mjs';
 import { fetchMatrix, fetchLeg, crossCheck, legUrl, dayLink, pointKey, transitFallback } from './planner-legs.mjs';
-import { LUNCH_WINDOW, DINNER_EARLIEST } from './planner-input.mjs';
+import { LUNCH_WINDOW, DINNER_EARLIEST, breakfastLen } from './planner-input.mjs';
 
 export const SOLVER_METHOD = 'held-karp/time-windows';
 export const TIGHT_MINUTES = 10;
@@ -15,13 +15,25 @@ export const FREE_MIN = 20;
 export const TRANSIT_ESTIMATED_TEXT = 'Transit times on this day are estimates; check the Maps link before you go';
 const candPoint = (c) => ({ placeId: c.place_id, lat: c.loc.lat, lng: c.loc.lng, name: c.name, id: c.id });
 const windowsOn = (c, date) => (c.hours[date].status === 'open' ? c.hours[date].windows : []);
+/** A chosen restaurant or cafe whose activity is lunch is the day's lunch: no separate lunch slot, and it starts in lunchtime. */
+export const LUNCH_SPOT_EARLIEST = LUNCH_WINDOW.open - 30;
+export const isLunchSpot = (c) => (c.category === 'restaurant' || c.category === 'cafe') && /\blunch\b/i.test(c.activity || '');
+function lunchWindows(c, date) {
+  const ws = windowsOn(c, date);
+  const lo = LUNCH_SPOT_EARLIEST, hi = LUNCH_WINDOW.close + c.minutes;
+  return (ws.length ? ws : [{ open: 0, close: 1440 }]).map((w) => ({ open: Math.max(w.open, lo), close: Math.min(w.close, hi) })).filter((w) => w.close - w.open >= c.minutes);
+}
+/** The pool's lunch spot on `date` (best priority first), or null when none can start inside lunchtime. */
+function lunchSpotOf(pool, date) {
+  return pool.filter((c) => isLunchSpot(c) && lunchWindows(c, date).length).sort((a, b) => a.priority - b.priority)[0] || null;
+}
 
 /** planDay({ ctx, day, cands, maps, build_id, seed, verified_on }) → { dayPlan, dropped, usage } */
 export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_on }) {
   const { trip, pace } = ctx;
   const { date, mode } = day;
   const iso = (min) => localToIso(date, min, trip.timezone);
-  const breakfast = ctx.breakfastAtLodging ? pace.breakfast : 0;
+  const breakfast = breakfastLen(day, ctx.breakfastAtLodging);
   const departAt = day.dayStart + breakfast;
   const S = day.lodging_start, E = day.lodging_end;
   const tp = mode === 'TRANSIT' ? trip.transit_preferences || null : null;
@@ -37,9 +49,11 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
   const dropped = [];
   let pool = cands.slice(), solution = null, timeline = null, resolved = false;
   for (let guard = 0; guard <= cands.length + 2; guard++) {
-    const stops = pool.map((c) => ({ minutes: c.minutes, priority: c.priority, windows: windowsOn(c, date), booking: c.booking ? c.booking.time : null }));
+    let spot = lunchSpotOf(pool, date);
     const tr = (a, b) => { const r = travel.get(key(a === 'S' || a === 'E' ? a : pool[a], b === 'S' || b === 'E' ? b : pool[b])); return r ? r.minutes : Infinity; };
-    solution = solveDay({ stops, travel: tr, departAt, dayEnd: day.dayEnd, lunch: { len: pace.lunch, ...LUNCH_WINDOW } });
+    const solve = () => solveDay({ stops: pool.map((c) => ({ minutes: c.minutes, priority: c.priority, windows: c === spot ? lunchWindows(c, date) : windowsOn(c, date), booking: c.booking ? c.booking.time : null })), travel: tr, departAt, dayEnd: day.dayEnd, lunch: spot ? null : { len: pace.lunch, ...LUNCH_WINDOW } });
+    solution = solve();
+    if (spot && !solution.order.includes(pool.indexOf(spot))) { spot = null; solution = solve(); } // the lunch spot did not make the day: plain lunch slot
     const chain = ['S', ...solution.order.map((i) => pool[i]), 'E'];
     const departures = legDepartures(solution, departAt);
     for (let i = 0; i < chain.length - 1; i++) {
@@ -50,7 +64,7 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
       legs.set(k, leg);
       travel.set(k, { minutes: leg.minutes, distance_m: leg.distance_m, line: leg.line });
     }
-    timeline = retime({ chain, items: solution.items, pool, legs, key, departAt, dayEnd: day.dayEnd, date, lunchLen: pace.lunch });
+    timeline = retime({ chain, items: solution.items, pool, legs, key, departAt, dayEnd: day.dayEnd, date, lunchLen: pace.lunch, spot });
     if (timeline.ok) break;
     if (!resolved) { resolved = true; continue; } // solve once more on the real leg times
     const bad = timeline.failed;
@@ -73,7 +87,7 @@ function legDepartures(solution, departAt) {
 }
 
 /** Walk the solved order on the real legs → { ok: true, events, finish } or { ok: false, failed: cand }. */
-function retime({ chain, items, pool, legs, key, departAt, dayEnd, date, lunchLen }) {
+function retime({ chain, items, pool, legs, key, departAt, dayEnd, date, lunchLen, spot }) {
   const events = [];
   let t = departAt, prev = 'S';
   for (const it of items) {
@@ -92,10 +106,10 @@ function retime({ chain, items, pool, legs, key, departAt, dayEnd, date, lunchLe
     if (c.booking) { if (arrive > c.booking.time) return { ok: false, failed: c }; start = c.booking.time; }
     else {
       const ws = windowsOn(c, date);
-      const f = earliestFit(ws, arrive, c.minutes, dayEnd);
+      const f = earliestFit(c === spot ? lunchWindows(c, date) : ws, arrive, c.minutes, dayEnd);
       if (!f) return { ok: false, failed: c };
       start = f.start;
-      window = ws.length ? f.window : null;
+      window = ws.length ? ws.find((w) => w.open <= start && start + c.minutes <= w.close) || null : null; // report the place's own hours
     }
     events.push({ kind: 'leg', from: prev, to: c, depart: t, arrive, leg });
     events.push({ kind: 'stop', c, arrive, start, depart: start + c.minutes, window });
