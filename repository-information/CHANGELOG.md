@@ -3,11 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 59/100`
+`Sections: 60/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.59r] — 2026-10-03 07:25:24 PM EST
+
+> **Prompt:** "Aside from the decisions made in the Morning Decisions file, I want you to change the size that the app pops up in to match the screenshot. I am tired to manually expanding the app to cover the chatbox." *(followed by the owner's 24 decisions on the project's morning review, recorded in the project — not here)*
+
+### Changed
+- **The Mini App shell opens at full size on the web clients** (`live-site-pages/helper-app.html`, app v01.08w): `boot` now calls `openWide`, which keeps `expand()` for every client and, on `webk`/`weba` with Bot API 8.0 or later, asks for `requestFullscreen()` — the client's own full-size layout, the one the maximise button reaches — so the owner no longer enlarges the window by hand. Phones and the desktop apps are unchanged; a client that refuses fires `fullscreenFailed` and the app stays at the size it opened at. Not run live here: the Playwright shell test stubs Telegram, so the owner's next open on web.telegram.org is the check
+- README timestamp and the app's version line
 
 ## [v01.58r] — 2026-10-03 07:10:25 PM EST
 

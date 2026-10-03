@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.07w">
+  <meta name="build-version" content="v01.08w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -162,7 +162,7 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.07w';
+    var APP_VERSION = 'v01.08w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'compare', label: 'Compare' }, { id: 'facts', label: 'Facts' },
@@ -1187,11 +1187,24 @@
     }
 
     /* ---------- boot ---------- */
+    /* Open at the size the owner would otherwise drag it to. expand() gives the full height everywhere; on the web clients
+     * (web.telegram.org/k and /a), where a Mini App starts as a small floating window over the chat, Bot API 8.0's fullscreen
+     * is the client's own full-size layout — the one the maximise button reaches — so the owner no longer has to press it.
+     * Phones already fill the screen after expand(), and the desktop apps keep their own window, so neither asks for it.
+     * A client that cannot do it fires fullscreenFailed and the app simply stays at the size it opened at. */
+    function openWide() {
+      try { tg.ready(); } catch (e) { /* older clients */ }
+      try { if (!tg.isExpanded) tg.expand(); } catch (e) { /* older clients */ }
+      try {
+        var web = /^(webk|weba)$/.test(str(tg.platform, 20)), can = typeof tg.requestFullscreen === 'function' && (!tg.isVersionAtLeast || tg.isVersionAtLeast('8.0'));
+        if (web && can && !tg.isFullscreen) tg.requestFullscreen();
+      } catch (e) { /* a client without fullscreen */ }
+    }
     function boot() {
       $('appVer').textContent = APP_VERSION;
       try { fetch('html-versions/helper-apphtml.version.txt', { cache: 'no-store' }).then(function (r) { return r.text(); }).then(function (t) { var v = (t.split('|')[1] || '').trim(); if (v) $('appVer').textContent = v; }).catch(function () {}); } catch (e) { /* offline */ }
       if (!tg || !tg.initData) { render(stateView('🤖', 'Open this from your helper\'s bot', 'This page only works inside Telegram, launched by the bot that owns it.')); return; }
-      try { tg.ready(); tg.expand(); } catch (e) { /* older clients */ }
+      openWide();
       applyTheme(); applyViewport();
       try { tg.onEvent('themeChanged', applyTheme); tg.onEvent('viewportChanged', applyViewport); } catch (e) { /* older clients */ }
       document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') flushDraft(); }); window.addEventListener('pagehide', flushDraft);

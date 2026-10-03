@@ -3,11 +3,16 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 7/50`
+`Sections: 8/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.08w] — 2026-10-03 07:25:24 PM EST — v01.59r
+
+### Changed
+- On web.telegram.org the app now opens at its full size over the chat, the way the maximise button leaves it, instead of as a small window you had to enlarge yourself; on a phone nothing changes (it already filled the screen)
 
 ## [v01.07w] — 2026-10-03 09:36:18 AM EST — v01.55r
 
