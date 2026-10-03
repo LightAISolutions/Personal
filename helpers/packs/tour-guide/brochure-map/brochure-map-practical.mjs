@@ -27,10 +27,10 @@ export function dayRoutes(rows) {
   const items = rows.filter((r) => r.url).map((r) => ({ label: `Day ${r.n} · ${r.date}`, text: 'The whole day as one Google Maps route.', url: String(r.url).slice(0, 2000) }));
   return items.length ? { title: 'Day routes', items: items.slice(0, PRACTICAL_LIMITS.items) } : null;
 }
-/** freeDays([{ date, note }]) → a section listing days with no stops, or null. */
+/** freeDays([{ date, note, url? }]) → a section listing days with no stops (url: the day's end or start on Maps), or null. */
 export function freeDays(rows) {
   if (!rows.length) return null;
-  return { title: 'Free days', items: rows.slice(0, PRACTICAL_LIMITS.items).map((r) => ({ label: r.date, text: clip(r.note, TEXT) || 'No stops planned — a free day.' })) };
+  return { title: 'Free days', items: rows.slice(0, PRACTICAL_LIMITS.items).map((r) => compact({ label: r.date, text: clip(r.note, TEXT) || 'No stops planned — a free day.', url: r.url ? String(r.url).slice(0, 2000) : undefined })) };
 }
 /**
  * verifySections([{ name, url, checked }], verifiedOn) → "Verify before you go" sections (split every 30 places).

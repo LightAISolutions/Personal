@@ -3,11 +3,23 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 6/50`
+`Sections: 7/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.07w] — 2026-10-03 09:36:18 AM EST — v01.55r
+
+### Added
+- A **Compare** screen: see two or three outlines of your trip side by side, one row per day; tap a letter to take an outline, or tap a day in another column to take just that day from it, then choose
+- Each day's versions on the same screen — stops, walking, time on transit, spare time, bookings and what each version leaves out — with **Choose this version**, then **Build my plan**; on a day that is already planned, a version you pick replaces that day
+- A day with only one way to go (a free day, or too few places to vary it) shows that one plan without a choice to make
+- A trip with only one way to shape it shows that one outline, taken as it is, and the versions of each day follow
+- While outlines and day versions are switched off, the Compare screen says so and how to turn them on
+
+### Changed
+- Planned days now read like the day card in the chat: where the day starts and where the bags go, honest walking times ("about 25 min walk (estimate)", uphill, taxi), arrival times like "about 10:45", last entry, booking and crowd notes, dinner, spare time, "If you have energy" ideas and sunset; days planned before this update look as they did
 
 ## [v01.06w] — 2026-10-03 05:24:52 AM EST — v01.52r
 

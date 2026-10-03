@@ -1,0 +1,380 @@
+[
+  {
+    "v": 1,
+    "place_id": "FixtureJyFernmoorCastle",
+    "why_you": "An invented viewpoint for testing.",
+    "what_to_do": "keep and ramparts",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/fernmoor-castle",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyWeaversMuseum",
+    "why_you": "An invented museum for testing.",
+    "what_to_do": "loom halls",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/weavers-museum",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyOldTownMarket",
+    "why_you": "An invented market for testing.",
+    "what_to_do": "market stalls",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/old-town-market",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyBellstoneTemple",
+    "why_you": "An invented temple for testing.",
+    "what_to_do": "temple grounds",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/bellstone-temple",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyOldTownQuarter",
+    "why_you": "An invented neighbourhood for testing.",
+    "what_to_do": "lanes and old houses",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/old-town-quarter",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyClockmakersRow",
+    "why_you": "An invented shop for testing.",
+    "what_to_do": "clock workshops",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/clockmakers-row",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyLanternBridge",
+    "why_you": "An invented viewpoint for testing.",
+    "what_to_do": "river bridge",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/lantern-bridge",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyTidewaterBaths",
+    "why_you": "An invented bathhouse for testing.",
+    "what_to_do": "old public baths",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/tidewater-baths",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyPrintworksGallery",
+    "why_you": "An invented gallery for testing.",
+    "what_to_do": "woodblock prints",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/printworks-gallery",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyApothecaryGarden",
+    "why_you": "An invented garden for testing.",
+    "what_to_do": "herb beds",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/apothecary-garden",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyHarbourAquarium",
+    "why_you": "An invented aquarium for testing.",
+    "what_to_do": "tanks and tunnel",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/harbour-aquarium",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJySaltpanLighthouse",
+    "why_you": "An invented viewpoint for testing.",
+    "what_to_do": "lighthouse walk",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/saltpan-lighthouse",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyNetmendersGallery",
+    "why_you": "An invented gallery for testing.",
+    "what_to_do": "harbour paintings",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/netmenders-gallery",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyHarbourfrontPark",
+    "why_you": "An invented park for testing.",
+    "what_to_do": "waterside lawns",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/harbourfront-park",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyKestrelHillGardens",
+    "why_you": "An invented garden for testing.",
+    "what_to_do": "terraced gardens",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/kestrel-hill-gardens",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyMossShrine",
+    "why_you": "An invented shrine for testing.",
+    "what_to_do": "shrine path",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/moss-shrine",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyHilltopObservatory",
+    "why_you": "An invented museum for testing.",
+    "what_to_do": "star hall",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/hilltop-observatory",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyHollinFalls",
+    "why_you": "An invented viewpoint for testing.",
+    "what_to_do": "falls viewing deck",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/hollin-falls",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyHollinGorgeTrail",
+    "why_you": "An invented hike for testing.",
+    "what_to_do": "gorge walk",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/hollin-gorge-trail",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyHollinPotteryVillage",
+    "why_you": "An invented workshop for testing.",
+    "what_to_do": "pottery studios",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/hollin-pottery-village",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyQuillbayMaritimeMuseum",
+    "why_you": "An invented museum for testing.",
+    "what_to_do": "ships and charts",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/quillbay-maritime-museum",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyPierMarket",
+    "why_you": "An invented market for testing.",
+    "what_to_do": "fish and craft stalls",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/pier-market",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJySeawallPromenade",
+    "why_you": "An invented viewpoint for testing.",
+    "what_to_do": "seawall walk",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/seawall-promenade",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyCedarRidgeTemple",
+    "why_you": "An invented temple for testing.",
+    "what_to_do": "temple and cedars",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/cedar-ridge-temple",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyUplandTeaFields",
+    "why_you": "An invented garden for testing.",
+    "what_to_do": "tea terraces",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/upland-tea-fields",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyRidgeLookout",
+    "why_you": "An invented viewpoint for testing.",
+    "what_to_do": "lookout",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/ridge-lookout",
+        "accessed": "2027-10-15"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyLamplightersWorkshop",
+    "why_you": "An invented workshop for testing.",
+    "what_to_do": "lamp making",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/lamplighters-workshop",
+        "accessed": "2027-10-15"
+      }
+    ]
+  }
+]

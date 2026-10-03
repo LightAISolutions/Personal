@@ -61,6 +61,21 @@ function dayBags(b, { start, lodging }) {
   const where = b.at === 'day-start' ? start && start.name : lodging;
   return compact({ kind: b.kind, text: clip(b.text, 160), start: time(b.start), end: time(b.start) && time(b.end), where: clip(where, SHORT) });
 }
+/**
+ * The "Free days" line for a day with no stops (toBrochureModel lists those on the practical page): its real start, the
+ * override's note, the bag step, its free time and its real end, in that order, so a moving day or a last day with
+ * nothing planned still says where and when it starts and ends. → { text, url? }: url is the end's (else the start's)
+ * Maps link; text is '' when the day has none of these.
+ */
+export function freeDay(dp, override) {
+  const ov = override || {};
+  const start = dayPoint(dp.start, ov.start), end = dayPoint(dp.end, ov.end);
+  const bare = (s) => (clip(s, SHORT) || '').replace(/[\s.;·]+$/, '');
+  const free = (dp.free || []).map((f) => bare(f && f.note)).filter(Boolean).join('; ');
+  const parts = [start && `Starts ${start.time} at ${start.name}`, bare(ov.note), dp.bags && bare(dp.bags.text), free, end && `Ends ${end.time} at ${end.name}`].filter(Boolean);
+  const text = parts.map((s) => s[0].toUpperCase() + s.slice(1)).join('. ');
+  return compact({ text: text ? clip(text + '.', TEXT) : '', url: (end && end.maps_url) || (start && start.maps_url) });
+}
 /** Evening extras (≤ 3): an event links to its page (https) or its place card; a saved place to its card or Maps. */
 function dayExtras(list, { cards, placesBySlug, events }) {
   return (Array.isArray(list) ? list : []).filter((x) => x && (x.kind === 'event' || x.kind === 'saved') && clip(x.name, SHORT)).slice(0, 3).map((x) => {

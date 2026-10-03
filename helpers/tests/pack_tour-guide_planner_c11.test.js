@@ -198,6 +198,27 @@ test('dinner: never the same place on two days, falls back to "near <lodging>", 
   assert.ok(!none.plan.places.some((x) => x.id === 'juniper-table'));
 });
 
+test('dinner with shortlist choices: the planner runs, a skipped or kept-for-later dinner place is left out, a pick ranks first', async () => {
+  const L = await loadAll();
+  const { applyChoices } = await import('../packs/tour-guide/planner/planner-choices.mjs');
+  // Shortlist picks of sights only: dinner still comes from the saved pool (this threw before the fix).
+  const picked = await plan(L, null, { choices: { picks: ['copperleaf-garden', 'ninefold-temple'], later: [], skip: [] } });
+  sound(L, picked.plan);
+  assert.equal(picked.day(D1).meals.find((m) => m.kind === 'dinner').at, 'juniper-table');
+  // A dinner place that is also on the shortlist follows the owner's word.
+  const fx = L.fixtures.loadFixture('moving-day');
+  const snapshots = new Map(fx.snapshots.map((s) => [s.place_id, s]));
+  const places = [...fx.places, ...fx.dinners.map((d) => ({ ...d, status: 'candidate' }))];
+  const pool = (choices) => {
+    const ch = applyChoices(places, choices, { explicit: true });
+    return L.planner.prepareDinners(fx.dinners, { snapshots, dates: [D1, D2, D3], places: ch.places, choices: ch });
+  };
+  const kept = pool({ picks: [], later: ['juniper-table'], skip: ['hearth-and-barley'] }).map((d) => d.id);
+  assert.ok(!kept.includes('juniper-table') && !kept.includes('hearth-and-barley'), JSON.stringify(kept));
+  assert.ok(kept.includes('rowan-noodle-bar'), 'the other dinner places stay');
+  assert.deepEqual(pool({ picks: ['rowan-noodle-bar'], later: [], skip: [] }).map((d) => [d.id, d.rank]), [['rowan-noodle-bar', 0]], 'picks are the whole pool and rank first');
+});
+
 test('evening extras: season events near the route, a saved place on an early finish, events first, never more than 3', async () => {
   const L = await loadAll();
   const { plan: p, day } = await plan(L);

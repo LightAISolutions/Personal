@@ -9,7 +9,10 @@
  *   choose   → one message per group with sl:<run>:<g><n>:w|l|s taps; fl buttons More options · More gems (scope more,
  *              decided, gems_only; three More rounds at most) · Done choosing; free text or /seed = owner seeds;
  *              typed numbers (1 3 later 2) mark the newest round that has them, r<round> before numbers marks that round
- *   planning → plan request (picks, later, skip, deliverables) is out; paused until event plan_digest → the day list,
+ *   outline / versions (WP-11f, 17_journey.js) → on a dated trip of 1–31 days ✅ Done choosing asks for outlines of the whole
+ *              trip (3 days or more) or versions of each day (1–2 days) first; ⏩ Plan straight away (value direct) skips them;
+ *              paused steps whose messages and ol: / dv: buttons the journey file sends; 🧱 Build my plan goes on to planning
+ *   planning → plan request (picks, later, skip, deliverables; plus outline and versions after the journey) is out; paused until event plan_digest → the day list,
  *              the Later reasons and the 📄 · 🔁 · 🔖 buttons; the flow ends (the core sends the files from the reply).
  *              /repick goes back to choose with every tap kept (a digest of the dropped request is shown, the flow stays);
  *              /repick <numbers> also marks them (same syntax as typed picks);
@@ -326,7 +329,12 @@ function tgPlanChooseStep(state, note) {
   var kb = [], canMore = !!state.more && state.more_rounds < TG_PLAN_MORE_MAX;
   if (canMore) kb.push([{ text: '➕ More options', value: 'more' }, { text: '💎 More gems', value: 'gems' }]);
   else if (state.seeds_pending.length) kb.push([{ text: '🔎 Look up my picks', value: 'seeds' }]);
-  kb.push([{ text: '✅ Done choosing', value: 'done' }]);
+  var jy = tgJyMode(state.trip);
+  if (jy) {
+    lines.push(jy === 'outline' ? '✅ Done choosing sketches two or three outlines of the whole trip to compare first; ⏩ plans the days straight away.'
+      : '✅ Done choosing drafts two or three versions of each day to pick from; ⏩ plans the days straight away.');
+    kb.push([{ text: '✅ Done choosing', value: 'done' }, { text: '⏩ Plan straight away', value: 'direct' }]);
+  } else kb.push([{ text: '✅ Done choosing', value: 'done' }]);
   return { prompt: lines.join('\n'), keyboard: kb, expect: 'any', state: state };
 }
 /** Re-show where the flow is (/plan again, /seed with nothing new, an unknown event). */
@@ -334,6 +342,7 @@ function tgPlanSame(state, note) {
   if (state.stage === 'confirm' && state.ask) return tgPlanAskStep(state, note);
   if (state.stage === 'confirm') return state.edit ? tgPlanEditStep(state, state.edit) : tgPlanConfirmStep(state, note);
   if (state.stage === 'choose') return tgPlanChooseStep(state, note);
+  if (TG_JY_STAGES.indexOf(state.stage) >= 0) return tgJySame(state, note);
   var what = state.stage === 'planning' ? 'the plan' : state.stage === 'intake' ? 'what I already know' : 'the shortlist';
   return tgPlanWait(state, (note ? note + '\n' : '') + '⏳ Still working on ' + what + ' for <b>' + tgEscape(state.dest || state.trip) + '</b> — I will message you. /cancel stops it.');
 }
@@ -434,6 +443,7 @@ registerFlow('plan', {
       st.more = !!seed.adopt.more;
       settingSet(TG_SETTINGS.CURRENT_TRIP, t.slug, 'trip being planned');
       if (seed.adopt.picks) { st.stage = 'choose'; return tgPlanApplyPicks(st, seed.adopt.picks, seed.adopt.note); }
+      if (seed.adopt.direct) return tgPlanBuild(st);   // ⏩ Plan straight away with no flow (17_journey.js)
       return tgPlanChooseStep(st, seed.adopt.note);
     }
     var dest = truncate(String(seed.destination || '').replace(/\s+/g, ' ').trim(), 80);
@@ -458,7 +468,8 @@ registerFlow('plan', {
         if (stale) return tgPlanSame(state, 'That plan was built from your earlier picks.');
         return { prompt: '', done: true, state: state, result: { trip: state.trip, build_id: p.build_id } };
       }
-      if (input.event === 'repick' && state.stage === 'planning') {
+      if (input.event === 'repick' && (state.stage === 'planning' || TG_JY_STAGES.indexOf(state.stage) >= 0)) {
+        tgJyDrop(state);
         state.repicked = true;
         if (state.plan_req) state.dropped = (state.dropped || []).concat([state.plan_req]).slice(-5);
         state.plan_req = null;
@@ -473,6 +484,8 @@ registerFlow('plan', {
         state.more = !!input.more;
         return tgPlanChooseStep(state);
       }
+      var jyStep = tgJyFlowEvent(state, input);   // outline · day_versions · jy_choose · jy_build · jy_direct (17_journey.js)
+      if (jyStep) return jyStep;
       return tgPlanSame(state);
     }
     var v = input.type === 'button' ? String(input.value || '') : '';
@@ -521,7 +534,8 @@ registerFlow('plan', {
       return tgPlanSame(state);
     }
     if (state.stage === 'choose') {
-      if (v === 'done') return tgPlanBuild(state);
+      if (v === 'done') return tgJyMode(state.trip) ? tgJyStart(state) : tgPlanBuild(state);
+      if (v === 'direct') return tgPlanBuild(state);
       if (v === 'more' || v === 'gems') {
         if (!state.more || state.more_rounds >= TG_PLAN_MORE_MAX) return tgPlanChooseStep(state, 'No more rounds for this plan.');
         return tgPlanResearchMore(state, v);
@@ -737,7 +751,7 @@ registerCommand('/repick', function (ctx) {
   if (args && !picks) { ctx.reply('Send <code>/repick</code>, or <code>/repick 2 6 r1 5 later 7</code> to mark numbers as well.'); return null; }
   var f = flowActive(ctx.chatId);
   if (f && f.flow === 'plan' && isPlainObject(f.state)) {
-    if (f.state.stage === 'planning') return flowResume(ctx.chatId, { type: 'resume', event: 'repick', picks: picks });
+    if (f.state.stage === 'planning' || TG_JY_STAGES.indexOf(f.state.stage) >= 0) return flowResume(ctx.chatId, { type: 'resume', event: 'repick', picks: picks });
     if (picks && f.state.stage === 'choose') return flowResume(ctx.chatId, { type: 'resume', event: 'picks', picks: picks });
     return flowResume(ctx.chatId, { type: 'resume', event: 'reprompt' });
   }

@@ -6,6 +6,7 @@
  *   home · shortlist.get · shortlist.choose · shortlist.choose_many · shortlist.more · shortlist.done · trip.digest ·
  *   brochure.get · places.search · places.get · places.note · places.check · interview.bank · interview.submit · facts.get · facts.confirm ·
  *   people.list · people.add · people.trip (Phase 8: companions, interviewed on the owner's phone; who comes on a trip)
+ *   (scout.* in 35_scout_app.js; journey.get · outline.choose · versions.get · versions.choose · versions.done in 36_journey_app.js)
  * Answers: { status: 200, body: { ok: true, … } } or { status: 400 | 404 | 409 | 503, body: { ok: false, reason, … } }.
  * No Google call and no Google content: the app shows the pack's own rows only, and no key is read here.
  * Also here: the setup step `app_menu_button`, tgAppRows (the one `web_app` button the shortlist, plan_digest and /places
@@ -401,8 +402,11 @@ function tgAppOpDone(args) {
     adopted = true;
   }
   flowResume(chat, { type: 'button', value: 'done' });
-  var after = tgAppPlanFlow(r.trip);
-  return after && after.state.stage === 'planning' ? tgAppOk({ started: true, adopted: adopted }) : tgAppNo(409, 'no_flow');
+  var after = tgAppPlanFlow(r.trip), stage = after ? after.state.stage : '';
+  // WP-11f: on a dated trip Done asks for outlines (stage outline) or day versions (stage versions) instead of the plan.
+  // The answer names the stage only then, so the planning answer keeps its old shape.
+  if (stage === 'planning') return tgAppOk({ started: true, adopted: adopted });
+  return TG_JY_STAGES.indexOf(stage) >= 0 ? tgAppOk({ started: true, adopted: adopted, stage: stage }) : tgAppNo(409, 'no_flow');
 }
 
 /* ==================== operations: the trip, the brochure ==================== */
@@ -428,9 +432,30 @@ function tgAppDayC11(out, d) {
   return out;
 }
 var TG_APP_STOP_C11 = ['last_entry', 'minutes_source', 'crowd_slot', 'facts_line', 'booking_line', 'price_line', 'menu_checked'];
+/**
+ * C10 (WP-11f): a stop's time_style (about | exact) and check_on_day line, a leg's estimated, distance_m, flags (known ones,
+ * display order), taxi_minutes and buffer_minutes — each key only when the stored stop or leg carries it (an older day is
+ * unchanged); the app words them like the chat card (tgCmdDayLegLine, tgCmdDayTime).
+ */
+function tgAppStopC10(out, s) {
+  if (s.time_style === 'about' || s.time_style === 'exact') out.time_style = s.time_style;
+  if (typeof s.check_on_day === 'string' && s.check_on_day) out.check_on_day = s.check_on_day;
+  return out;
+}
+function tgAppLegC10(out, l) {
+  if (l.estimated === true) out.estimated = true;
+  ['distance_m', 'taxi_minutes', 'buffer_minutes'].forEach(function (k) { if (tgAppNum(l[k]) !== null) out[k] = l[k]; });
+  if (Array.isArray(l.flags)) out.flags = TG_CMD_DAY_FLAGS.filter(function (f) { return l.flags.indexOf(f) >= 0; });
+  return out;
+}
 function tgAppStopC11(out, s) {
   TG_APP_STOP_C11.forEach(function (k) { if (s[k] !== undefined && s[k] !== null) out[k] = tgAppS(s[k]); });
   return out;
+}
+/** A stop's note as the chat card shows it: sentences whose timing advice the stop's own time contradicts are dropped
+ *  (tgCmdDayNoteGuard, Phase 10 fix (a)); a note with no such sentence is unchanged. */
+function tgAppNote(s) {
+  return typeof s.note_line === 'string' && s.note_line ? tgCmdDayNoteGuard(s.note_line, { arrive: s.arrive, depart: s.depart }) : s.note_line;
 }
 /** trip.digest { slug } — the trip (title, dates, status, lodging) and its stored days and Later list (DayPlans · Later). */
 function tgAppOpDigest(args) {
@@ -443,17 +468,18 @@ function tgAppOpDigest(args) {
     var out = {
       date: d.date, n: d.n, theme: tgAppS(d.theme),
       stops: arr(d.stops).map(function (s) {
-        return tgAppStopC11({ n: tgAppNum(s.n), slug: tgAppS(s.slug), name: tgAppS(s.name), arrive: tgAppS(s.arrive), depart: tgAppS(s.depart),
-          minutes: tgAppNum(s.minutes), maps_url: tgAppMaps(s.maps_url), note_line: tgAppS(s.note_line) }, s);
+        return tgAppStopC10(tgAppStopC11({ n: tgAppNum(s.n), slug: tgAppS(s.slug), name: tgAppS(s.name), arrive: tgAppS(s.arrive), depart: tgAppS(s.depart),
+          minutes: tgAppNum(s.minutes), maps_url: tgAppMaps(s.maps_url), note_line: tgAppS(tgAppNote(s)) }, s), s);
       }),
       legs: arr(d.legs).map(function (l) {
-        return { from: tgAppS(l.from), to: tgAppS(l.to), mode: tgAppS(l.mode), minutes: tgAppNum(l.minutes), maps_url: tgAppMaps(l.maps_url) };
+        return tgAppLegC10({ from: tgAppS(l.from), to: tgAppS(l.to), mode: tgAppS(l.mode), minutes: tgAppNum(l.minutes), maps_url: tgAppMaps(l.maps_url) }, l);
       }),
       warnings: (Array.isArray(d.warnings) ? d.warnings : []).map(tgAppS),
       rain: arr(d.rain).map(function (r) {
         return { slug: tgAppS(r.slug), name: tgAppS(r.name), instead_of: tgAppS(r.instead_of), km: tgAppNum(r.km), maps_url: tgAppMaps(r.maps_url) };
       })
     };
+    if (tgAppNum(d.spare_minutes) !== null) out.spare_minutes = d.spare_minutes;   // C10
     return tgAppDayC11(out, d);
   });
   var later = tgLaterList(t.slug).map(function (l) {

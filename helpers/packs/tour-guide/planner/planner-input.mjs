@@ -29,6 +29,11 @@ const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
 const fail = (m) => { throw new Error('planner: ' + m); };
 
 /** Lodging covering the night of `date` (from ≤ date < to); on the check-out date the one whose `to` is that date. */
+/** A meal place the routine offered for dinner (its id in `dinnerIds`) is dinner, not a daytime stop — unless it is a lunch spot. */
+export function isWithheldDinner(p, dinnerIds, category = refineCategory(p)) {
+  return !!p && dinnerIds.has(p.id) && MEAL_CATEGORIES.includes(category) && !LUNCH_RE.test(p.activity || '');
+}
+
 export function lodgingForNight(trip, date) {
   return trip.lodging.find((l) => l.from <= date && date < l.to) || (date === trip.end_date ? trip.lodging.find((l) => l.from <= date && l.to === date) : undefined) || null;
 }
@@ -142,7 +147,7 @@ export async function prepare(input) {
     // The gem screen's mark, read as set (never recomputed): `crowd_magnet: true` on the place, or the C11 flag.
     if (crowdRule && (p.crowd_magnet === true || (Array.isArray(p.flags) && p.flags.includes('crowd_magnet')))) cand.crowd = true;
     // A meal place the routine offered for dinner is dinner, not a daytime stop (unless it is the day's lunch spot).
-    if (dinnerIds.has(p.id) && MEAL_CATEGORIES.includes(category) && !LUNCH_RE.test(p.activity || '')) { withheld.push(cand); continue; }
+    if (isWithheldDinner(p, dinnerIds, category)) { withheld.push(cand); continue; }
     cands.push(cand);
   }
   return { trip, days, cands, saved, withheld, crowdRule, chooseMinutes, snapshots, pace: PACE[trip.pace] };

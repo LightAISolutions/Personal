@@ -57,6 +57,11 @@ Every default this work package picked, with its reason. Brief: `helpers/prompts
 - Sunset is hidden on a day that ends at a departure before sunset (the travellers have left).
 - Phone: the facts block switches to a two-column grid (label | text) inside the C11 media block, because the
   stacked rows were ambiguous at 390 px.
+- A day with no stops (coordinator, Phase 11 wave 2): it stays a "Free days" line on the practical page (the kit's day
+  needs a stop), but the line now reads the day in order — the real start, the override's note, the bag step, its free
+  time and the real end ("Carry your bags today · Check out by 10:00. … Ends 15:30 at <station>.") — and links the end
+  (else the start) on Maps. Reason: the wave-2 end-to-end test planned a last day with nothing but a check-out and a
+  train, and the brochure dropped both. A free day with one free-time note and none of these fields reads as before.
 
 ## Place cards and the season page
 

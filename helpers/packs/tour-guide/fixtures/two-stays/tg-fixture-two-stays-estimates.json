@@ -1,0 +1,569 @@
+[
+  {
+    "v": 1,
+    "place_id": "FixtureJyFernmoorCastle",
+    "activity": "keep and ramparts",
+    "category": "viewpoint",
+    "range": {
+      "min": 75,
+      "max": 105
+    },
+    "typical": 90,
+    "chosen_minutes": 90,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/fernmoor-castle",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyWeaversMuseum",
+    "activity": "loom halls",
+    "category": "museum",
+    "range": {
+      "min": 60,
+      "max": 90
+    },
+    "typical": 75,
+    "chosen_minutes": 75,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/weavers-museum",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyOldTownMarket",
+    "activity": "market stalls",
+    "category": "market",
+    "range": {
+      "min": 30,
+      "max": 60
+    },
+    "typical": 45,
+    "chosen_minutes": 45,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/old-town-market",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyBellstoneTemple",
+    "activity": "temple grounds",
+    "category": "temple",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/bellstone-temple",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyOldTownQuarter",
+    "activity": "lanes and old houses",
+    "category": "neighbourhood",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/old-town-quarter",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyClockmakersRow",
+    "activity": "clock workshops",
+    "category": "shop",
+    "range": {
+      "min": 30,
+      "max": 60
+    },
+    "typical": 45,
+    "chosen_minutes": 45,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/clockmakers-row",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyLanternBridge",
+    "activity": "river bridge",
+    "category": "viewpoint",
+    "range": {
+      "min": 15,
+      "max": 35
+    },
+    "typical": 20,
+    "chosen_minutes": 20,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/lantern-bridge",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyTidewaterBaths",
+    "activity": "old public baths",
+    "category": "bathhouse",
+    "range": {
+      "min": 75,
+      "max": 105
+    },
+    "typical": 90,
+    "chosen_minutes": 90,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/tidewater-baths",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyPrintworksGallery",
+    "activity": "woodblock prints",
+    "category": "gallery",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/printworks-gallery",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyApothecaryGarden",
+    "activity": "herb beds",
+    "category": "garden",
+    "range": {
+      "min": 30,
+      "max": 60
+    },
+    "typical": 45,
+    "chosen_minutes": 45,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/apothecary-garden",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyHarbourAquarium",
+    "activity": "tanks and tunnel",
+    "category": "aquarium",
+    "range": {
+      "min": 75,
+      "max": 105
+    },
+    "typical": 90,
+    "chosen_minutes": 90,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/harbour-aquarium",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJySaltpanLighthouse",
+    "activity": "lighthouse walk",
+    "category": "viewpoint",
+    "range": {
+      "min": 30,
+      "max": 60
+    },
+    "typical": 45,
+    "chosen_minutes": 45,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/saltpan-lighthouse",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyNetmendersGallery",
+    "activity": "harbour paintings",
+    "category": "gallery",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/netmenders-gallery",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyHarbourfrontPark",
+    "activity": "waterside lawns",
+    "category": "park",
+    "range": {
+      "min": 25,
+      "max": 55
+    },
+    "typical": 40,
+    "chosen_minutes": 40,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/harbourfront-park",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyKestrelHillGardens",
+    "activity": "terraced gardens",
+    "category": "garden",
+    "range": {
+      "min": 60,
+      "max": 90
+    },
+    "typical": 75,
+    "chosen_minutes": 75,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/kestrel-hill-gardens",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyMossShrine",
+    "activity": "shrine path",
+    "category": "shrine",
+    "range": {
+      "min": 25,
+      "max": 55
+    },
+    "typical": 40,
+    "chosen_minutes": 40,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/moss-shrine",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyHilltopObservatory",
+    "activity": "star hall",
+    "category": "museum",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/hilltop-observatory",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyHollinFalls",
+    "activity": "falls viewing deck",
+    "category": "viewpoint",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/hollin-falls",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyHollinGorgeTrail",
+    "activity": "gorge walk",
+    "category": "hike",
+    "range": {
+      "min": 105,
+      "max": 135
+    },
+    "typical": 120,
+    "chosen_minutes": 120,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/hollin-gorge-trail",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyHollinPotteryVillage",
+    "activity": "pottery studios",
+    "category": "workshop",
+    "range": {
+      "min": 75,
+      "max": 105
+    },
+    "typical": 90,
+    "chosen_minutes": 90,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/hollin-pottery-village",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyQuillbayMaritimeMuseum",
+    "activity": "ships and charts",
+    "category": "museum",
+    "range": {
+      "min": 60,
+      "max": 90
+    },
+    "typical": 75,
+    "chosen_minutes": 75,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/quillbay-maritime-museum",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyPierMarket",
+    "activity": "fish and craft stalls",
+    "category": "market",
+    "range": {
+      "min": 30,
+      "max": 60
+    },
+    "typical": 45,
+    "chosen_minutes": 45,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/pier-market",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJySeawallPromenade",
+    "activity": "seawall walk",
+    "category": "viewpoint",
+    "range": {
+      "min": 25,
+      "max": 55
+    },
+    "typical": 40,
+    "chosen_minutes": 40,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/seawall-promenade",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyCedarRidgeTemple",
+    "activity": "temple and cedars",
+    "category": "temple",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/cedar-ridge-temple",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyUplandTeaFields",
+    "activity": "tea terraces",
+    "category": "garden",
+    "range": {
+      "min": 60,
+      "max": 90
+    },
+    "typical": 75,
+    "chosen_minutes": 75,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/upland-tea-fields",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyRidgeLookout",
+    "activity": "lookout",
+    "category": "viewpoint",
+    "range": {
+      "min": 15,
+      "max": 45
+    },
+    "typical": 30,
+    "chosen_minutes": 30,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/ridge-lookout",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureJyLamplightersWorkshop",
+    "activity": "lamp making",
+    "category": "workshop",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/fernmoor/lamplighters-workshop",
+        "accessed": "2027-10-15",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-15"
+  }
+]

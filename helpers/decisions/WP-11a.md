@@ -26,7 +26,7 @@ Brief: `helpers/prompts/TG-PHASE-11.md` (WP-11a, Contract C11). State, checks an
 ## Dinner
 | Default | Value | Reason |
 |---|---|---|
-| Radius | 1.5 km straight line from the last stop or the night's lodging (`DINNER.RADIUS_KM`) | "About 1.5 km" in the brief: a 20-minute walk. |
+| Radius | 1.5 km straight line from the last stop or the night's lodging (`DINNER.RADIUS_KM`); on a day planned under an outline (Phase 11 wave 2), a place inside the day's own area or the outline's dinner place for that evening may be up to 5 km from the lodging (`DINNER.HOME_KM`) | "About 1.5 km" in the brief: a 20-minute walk. The outline gives a picked restaurant one evening in its own area; a day that ended back at the lodging early would otherwise lose it (`decisions/WP-11e.md` §1). |
 | Latest end | 23:00 | As the old dinner line. Earliest start stays 18:30 (`DINNER_EARLIEST`, existing). |
 | Direct vs via lodging | direct (last stop → dinner → lodging) when within the radius of the last stop and the wait is ≤ 60 min (`MAX_WAIT`); otherwise lodging → dinner → lodging after the day, with 15 min to freshen up (`FRESHEN_MIN`) | No one waits more than an hour on a street corner. |
 | Choice | made on straight-line estimates (walk 4.5 km/h, drive 30 km/h + 5 min, × 1.3 route factor), then timed on the two real legs; if the real legs miss the hours the old dinner stays (the two requests are spent) | No extra requests to compare places. |

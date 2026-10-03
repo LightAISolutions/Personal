@@ -7,6 +7,10 @@
  * a moving day by train with a bag step, a last day ending at a station, a dinner pool, a season sheet, places with
  * facts and a crowd magnet). They load with loadFixture like the others, carry the extra part `dinners`
  * (C11_FIXTURE_PARTS), and are not in listFixtures(), so the suites that walk every fixture are unchanged.
+ * Phase 11 wave 2 (WP-11e): JOURNEY_FIXTURE_NAMES are fixtures for the journey module (two-stays: a week with four nights
+ * in one invented town, a moving day by train with a bag step, two nights in a second town and a last day ending at a
+ * station; a far day-trip cluster, a timed booking, a booked dinner, picks, a saved place, indoor places, a season
+ * sheet and a dinner pool). Same parts as a C11 fixture; not in listFixtures() and not in C11_FIXTURE_NAMES.
  */
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -17,6 +21,7 @@ export const FIXTURE_NAMES = Object.freeze(['transit-city', 'driving-loop', 'hil
 export const FIXTURE_PARTS = Object.freeze(['trip', 'places', 'snapshots', 'estimates', 'notes', 'profile', 'calibration', 'routes']);
 export const C11_FIXTURE_NAMES = Object.freeze(['moving-day']);
 export const C11_FIXTURE_PARTS = Object.freeze([...FIXTURE_PARTS, 'dinners']);
+export const JOURNEY_FIXTURE_NAMES = Object.freeze(['two-stays']);
 
 /** listFixtures() → ['transit-city', 'driving-loop', 'hill-town'] */
 export function listFixtures() { return [...FIXTURE_NAMES]; }
@@ -26,8 +31,8 @@ export function fixturePath(name, part) { return join(FIXTURES_DIR, name, `tg-fi
 
 /** loadFixture(name) → { name, trip, places, snapshots, estimates, notes, profile, calibration, routes } (+ dinners for a C11 fixture) */
 export function loadFixture(name) {
-  const c11 = C11_FIXTURE_NAMES.includes(name);
-  if (!FIXTURE_NAMES.includes(name) && !c11) throw new Error(`tour-guide fixtures: unknown fixture "${name}" (use ${[...FIXTURE_NAMES, ...C11_FIXTURE_NAMES].join(', ')})`);
+  const c11 = C11_FIXTURE_NAMES.includes(name) || JOURNEY_FIXTURE_NAMES.includes(name);
+  if (!FIXTURE_NAMES.includes(name) && !c11) throw new Error(`tour-guide fixtures: unknown fixture "${name}" (use ${[...FIXTURE_NAMES, ...C11_FIXTURE_NAMES, ...JOURNEY_FIXTURE_NAMES].join(', ')})`);
   const out = { name };
   for (const part of c11 ? C11_FIXTURE_PARTS : FIXTURE_PARTS) out[part] = JSON.parse(readFileSync(fixturePath(name, part), 'utf8'));
   return out;

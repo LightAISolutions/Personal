@@ -1,0 +1,150 @@
+{
+  "v": 1,
+  "id": "fernmoor-quillbay-2027",
+  "title": "A week in two invented towns",
+  "destination": "Fernmoor and Quillbay",
+  "country": "Fictional Isles",
+  "timezone": "Etc/GMT-9",
+  "locale": "en-US",
+  "start_date": "2027-11-08",
+  "end_date": "2027-11-14",
+  "travelers": [
+    "Traveller One",
+    "Traveller Two"
+  ],
+  "pace": "normal",
+  "day_start": "09:00",
+  "day_end": "18:00",
+  "lodging": [
+    {
+      "id": "fernmoor-lodge",
+      "name": "Fernmoor Lodge",
+      "place_id": "FixtureJyFernmoorLodge",
+      "lat": 20.3,
+      "lng": 135.3,
+      "address": "1 Fernmoor Lane, Fernmoor, Fictional Isles",
+      "from": "2027-11-08",
+      "to": "2027-11-12",
+      "check_in": "15:00",
+      "check_out": "10:00",
+      "note": "An invented lodge in Fernmoor."
+    },
+    {
+      "id": "quillbay-inn",
+      "name": "Quillbay Inn",
+      "place_id": "FixtureJyQuillbayInn",
+      "lat": 20.6,
+      "lng": 135.2,
+      "address": "2 Quillbay Lane, Quillbay, Fictional Isles",
+      "from": "2027-11-12",
+      "to": "2027-11-15",
+      "check_in": "15:00",
+      "check_out": "10:00",
+      "note": "An invented inn in Quillbay."
+    }
+  ],
+  "modes": {
+    "default": "TRANSIT",
+    "allowed": [
+      "WALK",
+      "TRANSIT",
+      "DRIVE"
+    ]
+  },
+  "status": "intake",
+  "day_overrides": [
+    {
+      "date": "2027-11-12",
+      "start": {
+        "name": "Quillbay Station",
+        "place_id": "FixtureJyQuillbayStation",
+        "lat": 20.5985,
+        "lng": 135.1985,
+        "time": "12:30"
+      },
+      "bags": "hotel",
+      "note": "Morning train from Fernmoor."
+    },
+    {
+      "date": "2027-11-14",
+      "end": {
+        "name": "Quillbay Station",
+        "place_id": "FixtureJyQuillbayStation",
+        "lat": 20.5985,
+        "lng": 135.1985,
+        "time": "15:30"
+      },
+      "bags": "carry",
+      "bags_note": "Check out by 10:00"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "driftwood-dinner",
+      "title": "Dinner at Driftwood Kitchen",
+      "kind": "meal",
+      "rule": "book two days ahead",
+      "status": "booked",
+      "place": "driftwood-kitchen",
+      "for_date": "2027-11-13"
+    }
+  ],
+  "season": {
+    "checked": "2027-10-15",
+    "sources": [
+      {
+        "url": "https://events.example.org/fernmoor/autumn",
+        "title": "Autumn events (invented)",
+        "accessed": "2027-10-15"
+      }
+    ],
+    "weather": {
+      "text": "Mild days, some showers.",
+      "high_c": 21,
+      "low_c": 14,
+      "rain_days": 9
+    },
+    "bloom": [
+      {
+        "kind": "autumn_leaves",
+        "from": "2027-11-05",
+        "to": "2027-11-20",
+        "status": "peak",
+        "note": "Hill maples at their best."
+      }
+    ],
+    "events": [
+      {
+        "id": "kestrel-light-up",
+        "name": "Kestrel Hill evening light-up",
+        "kind": "light_up",
+        "from": "2027-11-08",
+        "to": "2027-11-11",
+        "start": "17:30",
+        "end": "20:30",
+        "place": "kestrel-hill-gardens",
+        "note": "Separate evening ticket."
+      },
+      {
+        "id": "harbour-lantern-fair",
+        "name": "Harbour lantern fair",
+        "kind": "festival",
+        "from": "2027-11-09",
+        "to": "2027-11-09",
+        "start": "17:00",
+        "end": "21:00",
+        "lat": 20.2902,
+        "lng": 135.33
+      },
+      {
+        "id": "gallery-rehang",
+        "name": "Gallery rehang",
+        "kind": "closure",
+        "from": "2027-11-10",
+        "to": "2027-11-10",
+        "place": "netmenders-gallery"
+      }
+    ]
+  },
+  "intro": "An invented week in two towns for testing: four nights in one, a moving day by train, two nights in the other."
+}

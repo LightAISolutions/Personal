@@ -12,6 +12,9 @@
  * (planner-day.mjs); `input.dinners` (saved places that fit the diet) gives each day a real dinner (planner-dinner.mjs);
  * a trip with a season sheet, day overrides or a dinner pool also gets each day's `sunset` and evening `extras`
  * (planner-evening.mjs). Without any of these the output is exactly what it was before Phase 11.
+ * Phase 11 (WP-11e): `input.outline` ({ by_date: { <date>: { kind, area?, anchors? } } }, planner-outline.mjs) shapes
+ * each outlined day — its area, its kind and its anchors; without `outline` the planner plans exactly as before. The
+ * journey module (../journey/) builds on planDates, outlinePools and versionSetBudget below.
  * `maps` is a Maps-kit client (createMapsClient); every unit it spends is counted by its ledger before sending.
  * Contract (entities, codes, warnings): helpers/packs/tour-guide/README.md. Design and limits: helpers/decisions/WP-3b.md.
  */
@@ -28,12 +31,17 @@ import { withBusFallback } from './planner-transit.mjs';
 import { rainSwaps } from './planner-rain.mjs';
 import { prepareDinners, addDinners } from './planner-dinner.mjs';
 import { sunsetFor, eveningExtras, applyExtras } from './planner-evening.mjs';
+import { normalizeOutline, applyOutline, outlineCap } from './planner-outline.mjs';
+import { dayCapacity } from './planner-assign.mjs';
+import { haversineKm } from './planner-geo.mjs';
+import { DINNER_EARLIEST } from './planner-input.mjs';
+import { DINNER } from './planner-dinner.mjs';
 
 export { PlanBudgetError, SKU, extraCallsFor } from './planner-budget.mjs';
 export { solveDay, WEIGHT, MAX_STOPS } from './planner-solve.mjs';
 export { hoursOn, earliestFit, unfitCode, knownWindows, irregularText, IRREGULAR_LINE_RE } from './planner-hours.mjs';
 export { assign, FAR_KM, CAP, dayCapacity } from './planner-assign.mjs';
-export { prepare, buildDays, lodgingForNight, modeFor, PACE } from './planner-input.mjs';
+export { prepare, buildDays, lodgingForNight, modeFor, isWithheldDinner, PACE } from './planner-input.mjs';
 export { localToIso, weekdayOf, dateRange, toMin, hm } from './planner-time.mjs';
 export { DIDNT_FIT, NEXT_TIME, SAVED_BY_YOU } from './planner-later.mjs';
 export { withBusFallback, transitPrefs, railOnly, RAIL_MODES } from './planner-transit.mjs';
@@ -53,7 +61,9 @@ export { prepareDinners, addDinners, dinnerBooking, DINNER } from './planner-din
 export { sunsetFor, eveningExtras, applyExtras, runsThatEvening, EXTRAS } from './planner-evening.mjs';
 export { schedWindows, legRecord, estimatedWarning, BACK_EARLY_NOTE, END_SPARE_NOTE } from './planner-day.mjs';
 export { checkDayChain } from './planner-chain.mjs';
-export { bagLegs } from './planner-budget.mjs';
+export { bagLegs, budgetFor } from './planner-budget.mjs';
+export { normalizeOutline, applyOutline, outlineCode, outlineCap, OUTLINE_KINDS, AREA_KM, OUTLINE, FREE_DAY_NOTE } from './planner-outline.mjs';
+export { mergeLater } from './planner-later.mjs';
 
 const fail = (m) => { throw new Error('planner: ' + m); };
 
@@ -69,6 +79,10 @@ async function context(input) {
   ctx.rng = createRng(ctx.seed);
   const t = ctx.trip;
   ctx.evening = !!(t.season || (Array.isArray(t.day_overrides) && t.day_overrides.length) || Array.isArray(input.dinners));   // Phase 11 output only for Phase 11 input
+  if (input.outline !== undefined && input.outline !== null) {   // WP-11e: only an input with an outline
+    ctx.outline = normalizeOutline(input.outline, ctx.days.map((d) => d.date));
+    applyOutline(ctx, ctx.outline, { places: input.places, dinners: input.dinners });
+  }
   return ctx;
 }
 
@@ -80,7 +94,7 @@ function resolveChoices(places, raw, explicit) {
 }
 
 /** Shared build: plan `dates` from `pool`, merge with `prior` (a previous Plan) when re-planning; `ch` = resolved choices. */
-async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [] }) {
+async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [], sink = null }) {
   const days = ctx.days.filter((d) => dates.includes(d.date));
   const { byDate, later: unassigned } = assign({ days, cands: pool, rng: ctx.rng });
   // Phase 11: the dinner pool (saved places that fit the diet), prepared before the budget so its legs are counted.
@@ -96,6 +110,7 @@ async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [] 
   const maps = input.railEstimates === false ? railFirst : withRailEstimates(railFirst, { points: railPoints });
   for (const day of days) {
     const r = await planDay({ ctx, day, cands: byDate[day.date], maps, build_id: String(input.build_id), seed: ctx.seed, verified_on: ctx.today });
+    if (ctx.outlineNotes && ctx.outlineNotes[day.date]) for (const text of ctx.outlineNotes[day.date]) if (r.dayPlan.warnings.length < 40) r.dayPlan.warnings.push({ severity: 'info', code: 'other', text });
     built.push(r.dayPlan);
     evenings.push({ dayPlan: r.dayPlan, evening: r.evening, day });
     dropped.push(...r.dropped);
@@ -107,8 +122,9 @@ async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [] 
   // Phase 11: dinners — a place serves dinner on one day only (kept days claim theirs first).
   const keptDinners = new Set(allDays.filter((d) => !dates.includes(d.date)).flatMap((d) => d.meals.filter((m) => m.kind === 'dinner' && m.at && m.at !== 'lodging').map((m) => m.at)));
   const dinners = new Map();
+  if (sink) for (const d of built) sink[d.date] = JSON.parse(JSON.stringify({ legs: d.legs, meals: d.meals, free: d.free, warnings: d.warnings }));   // WP-11e: the day before its dinner
   if (dinnerPool.length) {
-    const { chosen, route_calls } = await addDinners({ built: evenings, pool: dinnerPool, used: new Set(keptDinners), exclude: stopIds, maps, trip: ctx.trip, pace: ctx.pace });
+    const { chosen, route_calls } = await addDinners({ built: evenings, pool: dinnerPool, used: new Set(keptDinners), exclude: stopIds, maps, trip: ctx.trip, pace: ctx.pace, ...(ctx.preferDinner && ctx.preferDinner.size ? { prefer: ctx.preferDinner } : {}) });
     usage.route_calls += route_calls;
     for (const c of chosen) dinners.set(c.place.id, c.place);
   }
@@ -206,6 +222,70 @@ export async function replanDays(plan, dates, input) {
   const pool = ctx.cands.filter((c) => !elsewhere.has(c.id));
   const withheld = ctx.withheld.filter((c) => !elsewhere.has(c.id));
   return build(ctx, { ...input, places, build_id: input.build_id || plan.build_id }, { dates, pool, prior: plan, ch, withheld });
+}
+
+/**
+ * WP-11e: plan only `dates` (no prior plan) from the candidates `only` names (a Set of slugs; default every candidate).
+ * `sink` (an object) receives each built day's legs, meals, free and warnings as they were before its dinner.
+ */
+export async function planDates(input, dates, { only = null, sink = null } = {}) {
+  const ch = resolveChoices(input && input.places, input && input.choices, true);
+  const ctx = await context(ch ? { ...input, places: ch.places } : input);
+  for (const d of dates) if (!ctx.days.some((x) => x.date === d)) fail(`date ${d} is not a trip date`);
+  const pool = only ? ctx.cands.filter((c) => only.has(c.id)) : ctx.cands;
+  return build(ctx, input, { dates, pool, prior: null, ch, withheld: ctx.withheld, sink });
+}
+
+/**
+ * WP-11e: the per-date pools of an outlined trip — no API call. Every candidate goes to its best date with no stop cap
+ * (a free day takes none): pools[date] (anchors first, then priority), anchors[date], unplaced (the Later drops),
+ * capacity[date] (the stops one plan of that day can hold), dinners[date] (each dinner place on one date: its booking's
+ * date, else its outline date, else a date whose lodging or area it is near and that it is open for dinner, fewest
+ * first, else the nearest date) and days[date] (the planner's day record).
+ */
+export async function outlinePools(input) {
+  const ch = resolveChoices(input && input.places, input && input.choices, true);
+  const ctx = await context(ch ? { ...input, places: ch.places } : input);
+  const { byDate, later } = assign({ days: ctx.days, cands: ctx.cands, rng: ctx.rng, uncapped: true });
+  const order = (c, date) => [c.booking || c.anchor === date ? 0 : 1, c.priority, ctx.rng.key(c.id)];
+  const cmp = (date) => (a, b) => { const x = order(a, date), y = order(b, date); for (let i = 0; i < x.length; i++) if (x[i] !== y[i]) return x[i] - y[i]; return 0; };
+  const pools = {}, anchors = {}, capacity = {}, days = {};
+  for (const day of ctx.days) {
+    pools[day.date] = byDate[day.date].slice().sort(cmp(day.date));
+    anchors[day.date] = pools[day.date].filter((c) => c.anchor === day.date || (c.booking && c.booking.date === day.date)).map((c) => c.id);
+    capacity[day.date] = outlineCap(day, dayCapacity(day));
+    days[day.date] = day;
+  }
+  const dinnerPool = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch });
+  return { trip: ctx.trip, dates: ctx.days.map((d) => d.date), days, pools, anchors, capacity, unplaced: later, dinners: dinnerHomes(ctx, dinnerPool), dinner: dinnerPool.length > 0, withheld: ctx.withheld.map((c) => c.id), saved: ctx.saved.map((p) => p.id), today: ctx.today };
+}
+
+/** One home date per dinner place (outlinePools). */
+function dinnerHomes(ctx, pool) {
+  const out = Object.fromEntries(ctx.days.map((d) => [d.date, []]));
+  const evenings = ctx.days.filter((d) => !d.end);
+  const bookings = Array.isArray(ctx.trip.bookings) ? ctx.trip.bookings : [];
+  const openFor = (c, date) => { const h = c.hours[date]; return !!h && (h.status === 'always' || (h.status === 'open' && h.windows.some((w) => w.close >= DINNER_EARLIEST + ctx.pace.dinner))); };
+  const near = (c, d) => haversineKm(c.loc, d.lodging_end) <= DINNER.RADIUS_KM || !!(d.outline && d.outline.area && haversineKm(c.loc, d.outline.area) <= d.outline.area.radius_km);
+  for (const c of pool.slice().sort((a, b) => a.id.localeCompare(b.id))) {
+    const booked = bookings.find((b) => b && b.place === c.id && out[b.for_date]);
+    let home = booked ? booked.for_date : ctx.preferDinner && [...ctx.preferDinner].find(([, s]) => s === c.id)?.[0];
+    if (!home) {
+      const ok = evenings.filter((d) => near(c, d) && openFor(c, d.date)).sort((a, b) => out[a.date].length - out[b.date].length || a.date.localeCompare(b.date));
+      home = ok.length ? ok[0].date : (evenings.slice().sort((a, b) => haversineKm(c.loc, a.lodging_end) - haversineKm(c.loc, b.lodging_end) || a.date.localeCompare(b.date))[0] || ctx.days[0]).date;
+    }
+    out[home].push(c.id);
+  }
+  return out;
+}
+
+/**
+ * WP-11e: what `count` versions of one day would spend at most — each version counted as a full day of the pool's first
+ * capacity places (no cache credit), dinner legs included — checked against the ledger. No API call.
+ */
+export function versionSetBudget({ day, pool, capacity, count, ledger = null, dinner = false }) {
+  const days = Array.from({ length: count }, () => day);
+  return budgetFor({ days, byDate: { [day.date]: pool.slice(0, capacity) }, ledger, ...(dinner ? { dinner } : {}) });
 }
 
 /** What a planTrip would spend, checked against the ledger — no API call. */

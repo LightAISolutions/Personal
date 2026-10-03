@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.06w">
+  <meta name="build-version" content="v01.07w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -110,6 +110,38 @@
     .place-actions button { min-height: 44px; min-width: 44px; padding: 0; border-radius: 10px; border: 1px solid var(--line); background: var(--section); font-size: 16px; }
     .place-actions button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
 
+    /* ── a planned day (reads like the chat's day card) ── */
+    .stop { margin-top: 8px; }
+    .stop .name a, .line a, .leg a { color: inherit; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+    .leg { font: 12px/1.45 var(--mono); color: var(--hint); margin: 6px 0 0 14px; overflow-wrap: anywhere; }
+    .sub { font-size: 14px; font-style: italic; color: var(--hint); margin: 2px 0 0 14px; overflow-wrap: anywhere; }
+    .line { margin-top: 8px; overflow-wrap: anywhere; }
+    .card h4 { margin-top: 12px; }
+
+    /* ── compare: outlines as columns, a row per day; versions of each day ── */
+    .opt { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin: 0 0 8px; background: var(--section); }
+    .opt .gain, .opt .give { font-size: 14px; margin-top: 2px; overflow-wrap: anywhere; }
+    .cmp { display: grid; gap: 4px; margin: 10px 0 6px; align-items: stretch; }
+    .cmp .hd { min-height: 44px; border-radius: 10px; border: 1px solid var(--line); background: var(--section); font: 600 15px/1.1 var(--serif); padding: 4px 2px; }
+    .cmp .hd[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+    .cmp .dt { font: 11px/1.25 var(--mono); color: var(--hint); padding: 8px 0 0; overflow-wrap: anywhere; }
+    .cmp .dt b { display: block; font: 600 16px/1 var(--serif); color: var(--fg); margin-bottom: 2px; }
+    .cmp .cell { min-height: 64px; min-width: 0; text-align: left; padding: 6px 7px; border-radius: 10px; border: 1px solid var(--line); background: var(--section);
+      font-size: 13px; line-height: 1.25; overflow-wrap: anywhere; word-break: break-word; }
+    .cmp .cell .k { display: block; font: 10px/1.2 var(--mono); color: var(--hint); margin-bottom: 3px; letter-spacing: 0.02em; }
+    .cmp .cell .a { display: block; font-weight: 600; }
+    .cmp .cell .an { display: block; font-size: 12px; color: var(--hint); margin-top: 2px; }
+    .cmp .cell[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+    .cmp .cell[aria-pressed="true"] .k, .cmp .cell[aria-pressed="true"] .an { color: inherit; opacity: 0.8; }
+    .cmp .cell.mixed { box-shadow: 0 0 0 2px var(--accent); }
+    .legend { font: 11px/1.4 var(--mono); color: var(--hint); margin: 0 0 4px; }
+    .ver { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin-top: 8px; background: var(--section); }
+    .ver.on { border-color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
+    .ver .stops { font-size: 14px; margin: 6px 0 4px; overflow-wrap: anywhere; }
+    .ver .sum { font-size: 14px; color: var(--hint); margin-top: 2px; }
+    .ver .meta { overflow-wrap: anywhere; margin-top: 3px; }
+    .ver .note { font-size: 14px; }
+
     .reveal { animation: rise 0.35s ease both; }
     .reveal:nth-child(2) { animation-delay: 0.04s; } .reveal:nth-child(3) { animation-delay: 0.08s; }
     .reveal:nth-child(4) { animation-delay: 0.12s; } .reveal:nth-child(5) { animation-delay: 0.16s; }
@@ -130,17 +162,17 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.06w';
+    var APP_VERSION = 'v01.07w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
-      { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'facts', label: 'Facts' },
+      { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'compare', label: 'Compare' }, { id: 'facts', label: 'Facts' },
       { id: 'interview', label: 'Interview' }, { id: 'brochure', label: 'Brochure' }, { id: 'places', label: 'Places' },
       { id: 'scout', label: 'Scout' }
     ];
     var SCOUT_ID_RE = /^sc-\d{8}-[a-z0-9-]{1,40}$/;
     var TICKS = [{ v: 'w', text: '✅ Want' }, { v: 'l', text: '🔖 Later' }, { v: 's', text: '❌ Skip' }];
     var tg = (window.Telegram && window.Telegram.WebApp) || null;
-    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', scout: '', busy: false };
+    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', scout: '', jy: null, base: '', mix: {}, busy: false };
     var $ = function (id) { return document.getElementById(id); };
     var main = $('main');
 
@@ -174,14 +206,19 @@
     var WHY = { no_flow: 'Nothing is open for this in the chat right now.', busy: 'The chat is busy with another step — finish it there first.', no_round: 'There is no open shortlist.',
       no_picks: 'Tick ✅ on at least one place first.', no_more: 'No more rounds for this shortlist.', no_trip: 'That trip is not on file.', bad_answer: 'The helper sent an answer the app could not read.',
       no_place: 'Say where to look — there is no current trip to search.', no_scout: 'That scout is not on file any more.', no_pick: 'That pick is not on file any more.',
-      no_board: 'This scout has no board file.', too_long: 'Please keep it under 80 characters.', missing_arg: 'Something is missing — fill it in and try again.' };
+      no_board: 'This scout has no board file.', too_long: 'Please keep it under 80 characters.', missing_arg: 'Something is missing — fill it in and try again.',
+      bad_base: 'Pick one of the outlines shown.', bad_mix: 'That mix does not fit the outline.', bad_date: 'That day is not in the outline.', bad_key: 'That version is not on the list.',
+      no_outline: 'That outline is gone — a newer one may have come in.', no_versions: 'No versions of that day yet.', no_day: 'That day is not part of the trip.',
+      stale: 'That list was replaced by a newer one.', not_planned: 'That day is not planned yet — choose a version, then build the plan.',
+      planning: 'The plan is being built right now.', flow_stage: 'That is from an earlier round.', no_shortlist: 'There is no shortlist to plan from.', no_chat: 'The chat is not paired yet.', off: 'Outlines and day versions are off — /journey on in the chat turns them on.' };
     function stageLine(stage) {
       return stage === 'planning' ? 'the helper is building the days' : stage === 'research' ? 'the helper is looking for more options' : stage === 'confirm' ? 'the chat is confirming the trip facts'
-        : stage === 'choose' ? 'the chat is at the shortlist' : stage === 'intake' ? 'the plan is starting in the chat' : stage;
+        : stage === 'choose' ? 'the chat is at the shortlist' : stage === 'intake' ? 'the plan is starting in the chat'
+        : stage === 'outline' ? 'the chat is comparing outlines of the trip' : stage === 'versions' ? 'the chat is choosing a version of each day' : stage;
     }
     function why(body) {
       body = obj(body); var r = str(body.reason, 80), st = str(body.stage, 20);
-      return (WHY[r] || r || 'Unknown error') + (st ? ' ' + stageLine(st).charAt(0).toUpperCase() + stageLine(st).slice(1) + '.' : '');
+      return (WHY[r] || str(body.text, 200) || r || 'Unknown error') + (st ? ' ' + stageLine(st).charAt(0).toUpperCase() + stageLine(st).slice(1) + '.' : '');
     }
 
     /* ---------- theme & viewport from Telegram ---------- */
@@ -265,7 +302,7 @@
       setMain('', null);
       Array.prototype.forEach.call($('nav').children, function (b) { if (b.getAttribute('data-screen') === screen) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
       try { if (tg && tg.BackButton) { if (screen === 'home') tg.BackButton.hide(); else tg.BackButton.show(); } } catch (e) { /* older clients */ }
-      ({ home: showHome, shortlist: showShortlist, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout })[screen]();
+      ({ home: showHome, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout })[screen]();
     }
     function buildNav() {
       var nav = clear($('nav'));
@@ -290,11 +327,13 @@
         ]);
         if (round) {
           var rs = str(round.stage, 20), open = !rs || rs === 'choose';   // past `choose` the round is closed: the chat has moved on
+          var cmp = rs === 'outline' || rs === 'versions';                // outlines or day versions are waiting to be compared
           var tally = '✅ ' + num(round.want) + ' · 🔖 ' + num(round.later) + ' · ❌ ' + num(round.skip);
           view.appendChild(el('div', { class: 'card reveal' }, [
             el('div', { class: 'meta', text: (open ? 'OPEN CHOICE ROUND ' : 'CHOICE ROUND ') + num(round.round) + (open ? '' : ' · CLOSED') }),
             el('div', { class: 'row between' }, [el('div', { class: 'grow', text: open ? str(round.items) + ' places to decide · ' + tally : tally + ' — ' + stageLine(rs) + '.' }),
-              el('button', { class: open ? 'btn' : 'btn ghost', type: 'button', text: open ? 'Choose' : 'View', on: { click: function () { go('shortlist', str(round.trip, 64)); } } })])
+              cmp ? el('button', { class: 'btn', type: 'button', text: 'Compare', on: { click: function () { go('compare', str(round.trip, 64)); } } })
+                : el('button', { class: open ? 'btn' : 'btn ghost', type: 'button', text: open ? 'Choose' : 'View', on: { click: function () { go('shortlist', str(round.trip, 64)); } } })])
           ]));
         }
         if (facts) view.appendChild(el('div', { class: 'card reveal' }, [
@@ -359,7 +398,8 @@
           var c = { w: 0, l: 0, s: 0 };
           Object.keys(S.ticks).forEach(function (k) { if (Object.prototype.hasOwnProperty.call(c, S.ticks[k])) c[S.ticks[k]]++; });
           setMain('', null);
-          return render(stateView('🧭', 'Round ' + num(b.round) + ' is closed', 'Your choices: ✅ ' + c.w + ' · 🔖 ' + c.l + ' · ❌ ' + c.s + ' — ' + stageLine(rs) + '.', homeBtn()));
+          return render(stateView('🧭', 'Round ' + num(b.round) + ' is closed', 'Your choices: ✅ ' + c.w + ' · 🔖 ' + c.l + ' · ❌ ' + c.s + ' — ' + stageLine(rs) + '.',
+            rs === 'outline' || rs === 'versions' ? el('button', { class: 'btn', type: 'button', text: 'Open Compare', on: { click: function () { go('compare', str(b.trip, 64)); } } }) : homeBtn()));
         }
         var many = secs.length > 1;
         var view = el('div', {}, [el('h2', { text: tripName(b.trip) }), el('p', { class: 'meta', text: many ? secs.length + ' ROUNDS OPEN · NEWEST FIRST' : 'ROUND ' + num(b.round) }), el('p', { class: 'lede', text: 'Tick each place, then save once. ✅ want · 🔖 later · ❌ skip' })]);
@@ -412,7 +452,13 @@
           next(0);
         };
         var refreshMain = function () { var n = pending(); setMain(n ? 'Save ' + n + ' choice' + (n === 1 ? '' : 's') : 'Done choosing', function () { n ? save(refreshMain) : finish(); }); $('saveBtn').textContent = n ? 'Save ' + n : 'All saved'; };
-        var finish = function () { save(function () { call('shortlist.done', { run: str(b.run, 64) }, function () { haptic('ok'); render(stateView('🧭', 'Building your days', 'The helper is planning — the digest arrives in the chat.', homeBtn())); setMain('', null); },
+        var finish = function () { save(function () { call('shortlist.done', { run: str(b.run, 64) }, function (r) {
+          haptic('ok'); setMain('', null);
+          var nx = str(r.stage, 20);
+          if (nx === 'outline' || nx === 'versions') return render(stateView(nx === 'outline' ? '🧭' : '🔀', nx === 'outline' ? 'Outlines of the trip come next' : 'Versions of each day come next',
+            (nx === 'outline' ? 'The helper is sketching two or three ways to shape the trip.' : 'The helper is drafting two or three versions of each day.') + ' Compare them here when they arrive.',
+            el('button', { class: 'btn', type: 'button', text: 'Open Compare', on: { click: function () { go('compare', str(b.trip, 64)); } } })));
+          render(stateView('🧭', 'Building your days', 'The helper is planning — the digest arrives in the chat.', homeBtn())); },
           function (err) { if (str(err.reason, 40) === 'no_picks') return setStatus(WHY.no_picks); setMain('', null); render(stateView('🧭', 'This round is closed', why(err), homeBtn())); }); }); };
         view.appendChild(el('div', { class: 'actions' }, [
           el('button', { class: 'btn grow', type: 'button', id: 'saveBtn', text: 'All saved', on: { click: function () { save(refreshMain); } } }),
@@ -677,6 +723,300 @@
       render(view); refresh();
     }
 
+    /* ---------- compare: the outlines side by side, then each day's versions, then Build my plan ---------- */
+    // The same choices as the chat's ✅ A / /outline and per-day version buttons (the core runs the same actions for both).
+    var KIND_ICON = { full: '●', light: '◐', travel: '🧳', rain_spare: '☔', free: '○' };
+    var KIND_WORD = { full: 'full day', light: 'light day', travel: 'travel day', rain_spare: 'rain spare', free: 'free day' };
+    function showCompare() {
+      render(stateView('', 'Loading…'));
+      var trip = S.trip || (S.home && list(S.home.trips).length ? str(obj(S.home.trips[0]).slug, 64) : '');
+      if (!trip) return render(stateView('🧭', 'No trip yet', 'Plan one in the chat first.', homeBtn()));
+      call('journey.get', { slug: trip }, function (b) {
+        S.jy = b;
+        if (b.on === false) return render(stateView('🧭', 'Outlines and day versions are off', 'Send /journey on in the chat to turn them on.', homeBtn()));
+        var t = obj(b.trip), o = b.outline ? obj(b.outline) : null, days = list(b.days).map(obj), stage = str(b.stage, 20);
+        var anyVer = days.some(function (d) { return !!d.versions; });
+        var again = el('button', { class: 'btn', type: 'button', text: 'Check again', on: { click: function () { go('compare'); } } });
+        if (!o && !anyVer) {
+          return render(stateView('🧭', 'Nothing to compare yet', stage === 'outline' ? 'The helper is sketching outlines of the trip — they arrive here and in the chat.'
+            : stage === 'versions' ? 'The helper is drafting versions of each day — they arrive here and in the chat.' : 'Outlines and day versions come after Done choosing on a dated trip.', stage ? again : homeBtn()));
+        }
+        var allPlanned = days.length && days.every(function (d) { return d.planned; });
+        var head = stage ? stageLine(stage) : allPlanned ? 'planned — a version you choose replaces that day' : '';
+        var view = el('div', {}, [el('h2', { text: tripLabel(t) }), el('p', { class: 'lede', text: [dates(t), head ? head.charAt(0).toUpperCase() + head.slice(1) : ''].filter(Boolean).join(' · ') })]);
+        var buildBox = el('div', { id: 'buildBox' }), outlinePending = false;
+        var refreshBuild = function (can) {
+          clear(buildBox);
+          if (outlinePending) return;   // the outline comes first: its button holds the MainButton
+          if (!can) { setMain('', null); if (stage === 'versions') buildBox.appendChild(el('p', { class: 'meta', text: 'Choose a version of each day, then build the plan.' })); return; }
+          var label = allPlanned && !stage ? 'Rebuild my plan' : 'Build my plan';
+          buildBox.appendChild(el('div', { class: 'card flat' }, [el('p', { class: 'meta', style: 'margin:0 0 6px', text: num(S.jy.have) + ' of ' + days.length + ' days have versions' + (list(S.jy.missing).length ? ' — the others are planned freely.' : '.') }),
+            el('p', { style: 'margin:0', text: 'A day you leave keeps the version marked ✓. One brochure follows.' }),
+            el('button', { class: 'btn wide', type: 'button', id: 'buildBtn', text: '🧱 ' + label, on: { click: build } })]));
+          setMain(label, build);
+        };
+        var build = function () {
+          mainProgress(true);
+          call('versions.done', { slug: trip }, function (r) {
+            mainProgress(false); haptic('ok'); setMain('', null);
+            var miss = list(r.missing).length;
+            render(stateView('🧱', 'Building your plan', 'The helper is planning with your choices — one brochure arrives in the chat.' + (miss ? ' ' + miss + ' day' + (miss === 1 ? ' is' : 's are') + ' planned freely.' : ''), homeBtn()));
+          }, function (err) { mainProgress(false); buildBox.insertBefore(el('div', { class: 'note', text: why(err) }), buildBox.firstChild); });
+        };
+        if (o) { var ob = outlineBlock(trip, o, stage, function () { refreshBuild(!!S.jy.can_build); }); outlinePending = ob.pending; view.appendChild(ob.node); }
+        if (anyVer || (o && o.choice)) view.appendChild(versionsBlock(trip, days, stage, o, function (r) { S.jy.have = r.have; S.jy.missing = r.missing; S.jy.can_build = !!r.can_build; refreshBuild(!!r.can_build); }));
+        view.appendChild(buildBox);
+        render(view);
+        refreshBuild(!!b.can_build);
+      });
+    }
+    /** The outlines: a card per option (➕ gains, ➖ gives up), then a grid — a column per outline, a row per day. A letter
+     *  takes that outline whole; a cell takes that day from another outline (the mix). One option (a trip with only one
+     *  shape): nothing to mix — the chat takes it as it is while it waits for outlines; otherwise Take this outline. → { node, pending } */
+    function outlineBlock(trip, o, stage, restoreMain) {
+      var painted = false;
+      var opts = list(o.options).map(obj), keys = opts.map(function (x) { return str(x.key, 1); }), odates = list(o.dates).map(function (d) { return str(d, 10); });
+      var ch = o.choice ? obj(o.choice) : null;
+      S.base = ch && keys.indexOf(str(ch.base, 1)) >= 0 ? str(ch.base, 1) : keys[0];
+      S.mix = {};
+      if (ch) Object.keys(obj(ch.mix)).forEach(function (d) { var k = str(ch.mix[d], 1); if (odates.indexOf(d) >= 0 && keys.indexOf(k) >= 0 && k !== S.base) S.mix[d] = k; });
+      var saved = JSON.stringify([S.base, S.mix]);
+      var one = opts.length === 1;
+      var box = el('div', { id: 'outlines' }, [el('h3', { text: one ? 'Outline · one way to shape the trip' : 'Outlines · ' + opts.length + ' ways to shape the trip' })]);
+      opts.forEach(function (x) {
+        box.appendChild(el('div', { class: 'opt', 'data-key': str(x.key, 1) }, [el('div', { class: 'name', text: str(x.key, 1) + ' · ' + str(x.title, 80) }),
+          el('div', { class: 'gain', text: '➕ ' + str(x.gains, 200) }), el('div', { class: 'give', text: '➖ ' + str(x.gives_up, 200) })]));
+      });
+      if (o.notes) box.appendChild(el('p', { class: 'meta', text: str(o.notes, 300) }));
+      box.appendChild(el('p', { class: 'lede', style: 'margin:12px 0 4px', text: !one ? 'Tap a letter to take that outline; tap a day in another column to take that day from it.'
+        : ch ? 'Taken as it is: only one way to shape these days came out.' : 'Only one way to shape these days came out: take it, then the versions of each day follow.' }));
+      box.appendChild(el('div', { class: 'legend', text: '● full · ◐ light · 🧳 travel · ☔ rain spare · ○ free' }));
+      var grid = el('div', { class: 'cmp', role: 'group', 'aria-label': 'Outlines day by day', style: 'grid-template-columns: 44px repeat(' + opts.length + ', minmax(0, 1fr))' });
+      var heads = [], cells = [];
+      grid.appendChild(el('div', {}));
+      opts.forEach(function (x) {
+        var k = str(x.key, 1);
+        var h = el('button', { class: 'hd', type: 'button', 'data-key': k, 'aria-label': 'Take outline ' + k, text: k, on: { click: function () {
+          S.base = k; Object.keys(S.mix).forEach(function (d) { if (S.mix[d] === k) delete S.mix[d]; }); haptic(); paint();
+        } } });
+        heads.push(h); grid.appendChild(h);
+      });
+      odates.forEach(function (date, i) {
+        grid.appendChild(el('div', { class: 'dt' }, [el('b', { text: str(i + 1) }), dayDate(date).replace(/ \S+$/, '')]));
+        opts.forEach(function (x) {
+          var k = str(x.key, 1), dd = obj(list(x.days)[i]), kind = str(dd.kind, 20);
+          var anchors = list(dd.anchors).map(function (a) { return str(obj(a).name, 60); }).filter(Boolean).join(', ');
+          var c = el('button', { class: 'cell', type: 'button', 'data-date': date, 'data-key': k, title: str(dd.note, 120), on: { click: function () {
+            if (k === S.base) delete S.mix[date]; else S.mix[date] = k; haptic(); paint();
+          } } }, [el('span', { class: 'k', text: (KIND_ICON[kind] || '•') + ' ' + (KIND_WORD[kind] || kind) }), el('span', { class: 'a', text: str(dd.area, 60) || (KIND_WORD[kind] || kind) }),
+            anchors ? el('span', { class: 'an', text: str(anchors, 90) }) : null]);
+          cells.push(c); grid.appendChild(c);
+        });
+      });
+      box.appendChild(grid);
+      var sum = el('p', { class: 'meta', id: 'mixLine', style: 'margin:8px 0' });
+      var chooseBtn = el('button', { class: 'btn wide', type: 'button', id: 'chooseBtn', on: { click: function () { choose(); } } });
+      var msg = el('div', {});
+      box.appendChild(sum); box.appendChild(chooseBtn); box.appendChild(msg);
+      var pending = stage !== 'versions' && !ch;   // nothing chosen yet: choosing is the next step
+      var words = function () {
+        var w = Object.keys(S.mix).sort().map(function (d) { return 'day ' + (odates.indexOf(d) + 1) + ' from ' + S.mix[d]; }).join(', ');
+        return 'Outline ' + S.base + (w ? ' · ' + w : '');
+      };
+      var choose = function () {
+        mainProgress(true);
+        call('outline.choose', { slug: trip, build_id: str(o.build_id, 120), base: S.base, mix: S.mix }, function () {
+          mainProgress(false); haptic('ok'); setMain('', null);
+          render(stateView('🔀', words() + ' chosen', 'The helper is drafting versions of each day for it — they arrive here and in the chat.', el('button', { class: 'btn', type: 'button', text: 'Back to Compare', on: { click: function () { go('compare', trip); } } })));
+        }, function (err) { mainProgress(false); clear(msg).appendChild(el('div', { class: 'note', text: why(err) })); });
+      };
+      var paint = function () {
+        heads.forEach(function (h) { h.setAttribute('aria-pressed', h.getAttribute('data-key') === S.base ? 'true' : 'false'); });
+        cells.forEach(function (c) {
+          var d = c.getAttribute('data-date'), k = c.getAttribute('data-key'), on = (S.mix[d] || S.base) === k;
+          c.setAttribute('aria-pressed', on ? 'true' : 'false'); c.className = 'cell' + (on && k !== S.base ? ' mixed' : '');
+        });
+        var same = JSON.stringify([S.base, S.mix]) === saved && !!ch;
+        sum.textContent = (same ? 'Chosen: ' : 'Your pick: ') + words();
+        chooseBtn.textContent = same ? '✓ This outline is chosen' : Object.keys(S.mix).length ? 'Choose this mix' : one ? 'Take this outline' : 'Choose outline ' + S.base;
+        chooseBtn.className = same ? 'btn ghost wide' : 'btn wide';
+        if (same) chooseBtn.setAttribute('disabled', 'disabled'); else chooseBtn.removeAttribute('disabled');
+        if (!same) setMain(chooseBtn.textContent, choose); else if (painted) restoreMain();   // back to the stored choice: the build (if any) holds the MainButton
+        painted = true;
+      };
+      paint();
+      return { node: box, pending: pending };
+    }
+    /** Each trip day: its versions as cards (stops, walking, transit, spare time, bookings, what it leaves out) with
+     *  Choose this version; on a planned day (no journey in the chat) the choice replaces that day. A day with one way
+     *  to go (one version) shows it without a button: the plan uses it as it is. */
+    function versionsBlock(trip, days, stage, o, onChosen) {
+      var box = el('div', { id: 'versions' }, [el('h3', { text: 'Each day' })]);
+      var replaceMode = function (d) { return d.planned && stage !== 'outline' && stage !== 'versions'; };
+      days.forEach(function (d) {
+        var card = el('div', { class: 'card', 'data-date': str(d.date, 10) });
+        var paintDay = function () {
+          clear(card);
+          var v = d.versions ? obj(d.versions) : null;
+          card.appendChild(el('div', { class: 'meta', text: 'DAY ' + num(d.n) + ' · ' + dayDate(d.date) + (d.planned ? ' · PLANNED' : '') }));
+          if (!v) { card.appendChild(el('p', { class: 'meta', style: 'margin:6px 0 0', text: o && !o.choice ? 'Versions come after you choose an outline.' : 'No versions of this day yet.' })); return; }
+          var only = list(v.versions).length === 1;
+          list(v.versions).forEach(function (x) {
+            x = obj(x);
+            var k = str(x.key, 1), on = str(v.key, 1) === k, mine = str(v.chosen, 1) === k, stops = list(x.stops).map(obj), rep = replaceMode(d);
+            var names = list(x.leaves_out).map(function (l) { return str(obj(l).name, 60); }).filter(Boolean);
+            var btn = only ? el('p', { class: 'meta', style: 'margin:6px 0 0', text: 'One way to go this day — the plan uses it as it is.' }) : el('button', { class: on && !rep ? 'btn ghost wide' : 'btn wide', type: 'button', 'data-key': k,
+              text: rep ? (on ? '✓ The day is planned with ' + k : 'Use this version instead') : on ? (mine ? '✓ Chosen' : '✓ Suggested — choose to confirm') : 'Choose this version', on: { click: function () {
+                if (rep && on) return;
+                var send = function () {
+                  call('versions.choose', { slug: trip, build_id: str(v.build_id, 120), date: str(d.date, 10), key: k, replace: rep }, function (r) {
+                    haptic('ok');
+                    if (rep) { setMain('', null); return render(stateView('🔁', 'Replacing day ' + num(d.n), 'The helper is replanning that day with version ' + k + ' — the new day arrives in the chat.', homeBtn())); }
+                    v.key = str(r.key, 1) || k; v.chosen = v.key; paintDay(); onChosen(r);
+                  }, function (err) { card.appendChild(el('div', { class: 'note', text: why(err) })); });
+                };
+                if (rep && tg && tg.showConfirm) tg.showConfirm('Replace day ' + num(d.n) + ' with version ' + k + '? The helper replans that day.', function (yes) { if (yes) send(); });
+                else send();
+              } } });
+            card.appendChild(el('div', { class: 'ver' + (on ? ' on' : ''), 'data-key': k }, [
+              el('div', { class: 'name', text: k + ' · ' + str(x.title, 80) }),
+              x.summary ? el('div', { class: 'sum', text: str(x.summary, 160) }) : null,
+              el('div', { class: 'stops', text: stops.length ? stops.map(function (s) { return (clock(s.time) ? s.time + ' ' : '') + str(s.name, 60); }).join(' · ') : 'No stops: a free day.' }),
+              el('div', { class: 'meta', text: '🚶 ' + span(x.walk_minutes) + ' walking · 🚆 ' + span(x.transit_minutes) + ' on transit · spare ' + (num(x.spare_minutes) ? span(x.spare_minutes) : 'none') }),
+              list(x.bookings).length ? el('div', { class: 'meta', text: '🎟 ' + list(x.bookings).map(function (s) { return str(s, 120); }).join('; ') }) : null,
+              names.length ? el('div', { class: 'meta', text: 'Leaves out: ' + names.join(', ') }) : null
+            ].concat(list(x.warnings).map(function (w) { return el('div', { class: 'note', text: '⚠️ ' + str(w, 160) }); }), [btn])));
+          });
+        };
+        paintDay();
+        box.appendChild(card);
+      });
+      return box;
+    }
+
+    /* ---------- a planned day, worded like the chat's day card (Phase 10 and 11 fields when the day carries them) ---------- */
+    var MODES = { WALK: 'walk', TRANSIT: 'transit', DRIVE: 'drive' };
+    var LEG_FLAGS = ['footpath', 'trail', 'uphill', 'downhill'];
+    var CROWD = { opening: 'Go at opening; it gets busy later', late: 'Late is quieter' };
+    var WALK_BETA = 'Walking routes from Google are in beta and may be missing sidewalks or footpaths.';
+    var DAY_NEW = ['spare_minutes', 'sunset', 'start', 'end', 'bags', 'dinner', 'extras'];
+    var STOP_NEW = ['time_style', 'check_on_day', 'last_entry', 'booking_line', 'crowd_slot'];
+    var LEG_NEW = ['estimated', 'distance_m', 'flags', 'taxi_minutes', 'buffer_minutes'];
+    function clock(t) { return typeof t === 'string' && /^([01]\d|2[0-3]):[0-5]\d$/.test(t); }
+    function has(o, keys) { return keys.some(function (k) { return o[k] !== undefined && o[k] !== null; }); }
+    /** 22 → "22 min", 70 → "1 h 10 min" (the chat's span). */
+    function span(m) { m = Math.round(num(m)); if (m < 0) m = 0; return m < 60 ? m + ' min' : Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + (m % 60) + ' min' : ''); }
+    /** A stop's visit length as the chat writes it: 45 → "45 min", 70 → "1 h 10". */
+    function minutes(m) { m = Math.round(num(m)); return m < 60 ? m + ' min' : Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + (m % 60) : ''); }
+    var WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], MO = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    /** "2027-05-13" → "Thu 13 May" (the chat's date). */
+    function dayDate(iso) {
+      var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(str(iso, 10));
+      if (!m) return str(iso, 10);
+      var d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], 12));
+      return WD[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MO[d.getUTCMonth()];
+    }
+    /** A stop's time: "about" → the arrival to the nearest 15 minutes ("about 10:45"); otherwise "11:50–12:55". */
+    function stopTime(s) {
+      var a = str(s.arrive, 5), m = /^(\d{1,2}):(\d{2})$/.exec(a);
+      if (!a) return '';
+      if (s.time_style === 'about' && m) {
+        var q = Math.round((Number(m[1]) * 60 + Number(m[2])) / 15) * 15, h = Math.floor(q / 60) % 24, mm = q % 60;
+        return 'about ' + (h < 10 ? '0' : '') + h + ':' + (mm < 10 ? '0' : '') + mm;
+      }
+      return a + (s.depart ? '–' + str(s.depart, 5) : '');
+    }
+    /** A name that opens its https link (any other link: plain text). */
+    function linkText(text, url) {
+      var u = httpsUrl(url);
+      return u ? el('a', { href: u, rel: 'noopener noreferrer', text: text, on: { click: function (e) { e.preventDefault(); openLink(u); } } }) : el('span', { text: text });
+    }
+    /** One leg: "↳ about 25 min walk (estimate) · uphill · taxi about 8 min · +5 min spare" (an older leg: "↳ 9 min walk"). */
+    function legLine(l, what) {
+      l = obj(l);
+      var mode = MODES[l.mode] || str(l.mode, 20).toLowerCase(), t;
+      if (l.estimated === true) t = 'about ' + span(l.minutes) + ' ' + mode + ' (estimate)';
+      else if (has(l, LEG_NEW)) t = mode + ' ' + span(l.minutes);
+      else t = minutes(l.minutes) + ' ' + mode;
+      var extra = [], flags = list(l.flags);
+      LEG_FLAGS.forEach(function (f) { if (flags.indexOf(f) >= 0) extra.push(f); });
+      if (num(l.taxi_minutes) > 0) extra.push('taxi about ' + span(l.taxi_minutes));
+      if (num(l.buffer_minutes) > 0) extra.push('+' + span(l.buffer_minutes) + ' spare');
+      return el('div', { class: 'leg' }, ['↳ ', linkText(t, l.maps_url), (what ? ' ' + what : '') + (extra.length ? ' · ' + extra.join(' · ') : '')]);
+    }
+    function anchorOk(a) { a = obj(a); return typeof a.name === 'string' && !!a.name; }
+    /** The day as the chat words it; a day without any Phase 10/11 field keeps the earlier card. */
+    function dayCard(d, i, total) {
+      d = obj(d);
+      var stops = list(d.stops).map(obj), legs = list(d.legs).map(obj);
+      var card = el('div', { class: 'card reveal', 'data-day': str(i + 1) }, [el('div', { class: 'meta', text: 'DAY ' + (i + 1) + ' · ' + str(d.date, 10) }), el('div', { class: 'name', text: str(d.theme, 100) })]);
+      var fresh = has(d, DAY_NEW) || stops.some(function (s) { return has(s, STOP_NEW); }) || legs.some(function (l) { return has(l, LEG_NEW); });
+      if (!fresh) {   // an older day: as the app always showed it
+        stops.forEach(function (s) { card.appendChild(el('div', { class: 'row between', style: 'margin-top:6px' }, [el('div', { class: 'grow' }, [el('div', { text: str(s.n, 4) + '. ' + str(s.name, 80) }), el('div', { class: 'meta', text: [str(s.arrive, 5) && str(s.arrive, 5) + '–' + str(s.depart, 5), s.minutes ? num(s.minutes) + ' min' : '', str(s.note_line, 120)].filter(Boolean).join(' · ') })]), linkBtn('Map ↗', s.maps_url, 'pill')])); });
+        list(d.warnings).forEach(function (w) { card.appendChild(el('div', { class: 'note', text: '⚠️ ' + str(w, 200) })); });
+        list(d.rain).forEach(function (r) { r = obj(r); card.appendChild(el('div', { class: 'meta', text: '☔ If it rains: ' + str(r.name, 60) + ' instead of ' + str(r.instead_of, 60) })); });
+        return card;
+      }
+      // Each leg shows once, before what it leads to (a day can reach the lodging more than once).
+      var shown = [];
+      var legWhere = function (ok) { for (var k = 0; k < legs.length; k++) if (shown.indexOf(k) < 0 && ok(legs[k])) { shown.push(k); return legs[k]; } return null; };
+      var add = function (n) { if (n) card.appendChild(n); };
+      var line = function (parts) { return el('div', { class: 'line' }, parts); };
+      var lastSlug = stops.length ? str(stops[stops.length - 1].slug) : null;
+      var dinner = anchorOk(d.dinner) ? obj(d.dinner) : null, dinnerSlug = dinner && dinner.slug ? str(dinner.slug) : null;
+      var bags = str(d.bags, 160);
+      if (anchorOk(d.start)) add(line(['🚩 Starts ' + (clock(d.start.time) ? d.start.time + ' ' : '') + 'at ', linkText(str(d.start.name, 120), d.start.maps_url), bags ? ' · ' + bags : '']));
+      else if (bags) add(line(['🧳 ' + bags]));
+      var toLodging = legWhere(function (l) { return l.from === 'day-start' && l.to === 'lodging'; });
+      if (toLodging) add(legLine(toLodging, 'to your lodging'));
+      stops.forEach(function (s) {
+        var l = legWhere(function (x) { return x.to === s.slug; });
+        if (l) add(legLine(l, ''));
+        var t = stopTime(s), facts = [s.minutes ? minutes(s.minutes) : '', clock(s.last_entry) ? 'last entry ' + s.last_entry : ''].filter(Boolean).join(' · ');
+        add(el('div', { class: 'row between stop', 'data-stop': str(s.slug, 64) }, [el('div', { class: 'grow' }, [
+          el('div', { class: 'name', text: str(s.n, 4) + '. ' + (t ? t + ' ' : '') + str(s.name, 80) }), facts ? el('div', { class: 'meta', text: facts }) : null]), linkBtn('Map ↗', s.maps_url, 'pill')]));
+        if (s.note_line) add(el('div', { class: 'sub', text: str(s.note_line, 240) }));
+        if (s.check_on_day) add(el('div', { class: 'sub', text: '🕑 ' + str(s.check_on_day, 200) }));
+        if (s.booking_line) add(el('div', { class: 'sub', text: '🎟 ' + str(s.booking_line, 200) }));
+        if (Object.prototype.hasOwnProperty.call(CROWD, s.crowd_slot)) add(el('div', { class: 'sub', text: '👥 ' + CROWD[s.crowd_slot] }));
+      });
+      var home = legWhere(function (l) { return l.to === 'lodging' && l.from === lastSlug; }) || legWhere(function (l) { return l.to === 'lodging' && l.from !== 'day-start' && l.from !== dinnerSlug; });
+      if (home) add(legLine(home, 'back to your lodging'));
+      if (dinner) {
+        var toDinner = dinnerSlug ? legWhere(function (l) { return l.to === dinnerSlug; }) : null;
+        if (toDinner) add(legLine(toDinner, ''));
+        add(line(['🍽 ' + (clock(dinner.start) ? dinner.start + ' ' : '') + 'Dinner at ', linkText(str(dinner.name, 120), dinner.maps_url)]));
+        if (dinner.note_line) add(el('div', { class: 'sub', text: str(dinner.note_line, 240) }));
+        if (dinner.booking_line) add(el('div', { class: 'sub', text: '🎟 ' + str(dinner.booking_line, 200) }));
+        var fromDinner = dinnerSlug ? legWhere(function (l) { return l.from === dinnerSlug && l.to === 'lodging'; }) : null;
+        if (fromDinner) add(legLine(fromDinner, 'back to your lodging'));
+      }
+      if (anchorOk(d.end)) {
+        var endLeg = legWhere(function (l) { return l.to === 'day-end'; });
+        if (endLeg) add(legLine(endLeg, ''));
+        add(line(['🏁 Ends ' + (clock(d.end.time) ? d.end.time + ' ' : '') + 'at ', linkText(str(d.end.name, 120), d.end.maps_url)]));
+      }
+      if (!stops.length) add(line([el('i', { text: 'A free day.' })]));
+      if (typeof d.spare_minutes === 'number' && d.spare_minutes >= 0 && stops.length) add(line(['Spare time: ' + (d.spare_minutes ? span(d.spare_minutes) : 'none')]));
+      var extras = list(d.extras).filter(anchorOk).map(obj);
+      if (extras.length) {
+        add(el('h4', { text: 'If you have energy' }));
+        extras.forEach(function (x) {
+          add(line([(x.kind === 'saved' ? '🔖 ' : '✨ ') + (clock(x.time) ? x.time + ' ' : ''), linkText(str(x.name, 120), x.maps_url)]));
+          if (x.note_line) add(el('div', { class: 'sub', text: str(x.note_line, 240) }));
+        });
+      }
+      if (clock(d.sunset)) add(line(['🌅 Sunset ' + d.sunset]));
+      if (legs.some(function (l) { return (l.mode === 'WALK' || l.mode === 'BICYCLE') && l.estimated !== true; })) add(el('div', { class: 'meta', style: 'margin-top:8px', text: WALK_BETA }));
+      list(d.warnings).forEach(function (w) { add(el('div', { class: 'note', text: '⚠️ ' + str(w, 200) })); });
+      list(d.rain).forEach(function (r, k) {
+        r = obj(r);
+        if (!k) add(el('h4', { text: 'If it rains' }));
+        add(line(['☔ ', linkText(str(r.name, 80), r.maps_url), ' instead of ' + str(r.instead_of, 80) + (typeof r.km === 'number' ? ', ' + r.km + ' km away' : '')]));
+      });
+      return card;
+    }
+
     /* ---------- brochure: the trip digest, then the HTML in a sandboxed frame ---------- */
     function showBrochure() {
       render(stateView('', 'Loading…'));
@@ -701,14 +1041,7 @@
             } else frameBox.appendChild(el('p', { class: 'meta', text: 'No brochure file.' }));
           }, function (err) { clear(frameBox).appendChild(el('p', { class: 'meta', text: 'Brochure not available (' + str(err.reason, 40) + ').' })); });
         } else if (days.length) view.appendChild(el('div', { class: 'note', text: 'No brochure yet — ask the bot with /brochure.' }));
-        days.forEach(function (d, i) {
-          d = obj(d);
-          var card = el('div', { class: 'card reveal' }, [el('div', { class: 'meta', text: 'DAY ' + (i + 1) + ' · ' + str(d.date, 10) }), el('div', { class: 'name', text: str(d.theme, 100) })]);
-          list(d.stops).forEach(function (s) { s = obj(s); card.appendChild(el('div', { class: 'row between', style: 'margin-top:6px' }, [el('div', { class: 'grow' }, [el('div', { text: str(s.n, 4) + '. ' + str(s.name, 80) }), el('div', { class: 'meta', text: [str(s.arrive, 5) && str(s.arrive, 5) + '–' + str(s.depart, 5), s.minutes ? num(s.minutes) + ' min' : '', str(s.note_line, 120)].filter(Boolean).join(' · ') })]), linkBtn('Map ↗', s.maps_url, 'pill')])); });
-          list(d.warnings).forEach(function (w) { card.appendChild(el('div', { class: 'note', text: '⚠️ ' + str(w, 200) })); });
-          list(d.rain).forEach(function (r) { r = obj(r); card.appendChild(el('div', { class: 'meta', text: '☔ If it rains: ' + str(r.name, 60) + ' instead of ' + str(r.instead_of, 60) })); });
-          view.appendChild(card);
-        });
+        days.forEach(function (d, i) { view.appendChild(dayCard(d, i, days.length)); });
         if (later.length) { view.appendChild(el('h3', { text: 'Later' })); later.forEach(function (l) { l = obj(l); view.appendChild(el('div', { class: 'row between', style: 'padding:6px 0' }, [el('div', { class: 'grow', text: str(l.name, 80) + (l.reason_text || l.reason ? ' — ' + str(l.reason_text || l.reason, 120) : '') })])); }); }
         if (!days.length && !t.has_brochure) {
           var hr = S.home && S.home.choice_round ? obj(S.home.choice_round) : null, hs = hr && str(hr.trip, 64) === trip ? str(hr.stage, 20) : '';

@@ -1,0 +1,385 @@
+[
+  {
+    "v": 1,
+    "id": "fernmoor-castle",
+    "place_id": "FixtureJyFernmoorCastle",
+    "name": "Fernmoor Castle",
+    "category": "viewpoint",
+    "tags": [
+      "viewpoint"
+    ],
+    "status": "candidate",
+    "activity": "keep and ramparts",
+    "priority": 1,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "weavers-museum",
+    "place_id": "FixtureJyWeaversMuseum",
+    "name": "Weavers' Museum",
+    "category": "museum",
+    "tags": [
+      "museum"
+    ],
+    "status": "candidate",
+    "activity": "loom halls",
+    "priority": 1,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "old-town-market",
+    "place_id": "FixtureJyOldTownMarket",
+    "name": "Old Town Market",
+    "category": "market",
+    "tags": [
+      "market"
+    ],
+    "status": "candidate",
+    "activity": "market stalls",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "bellstone-temple",
+    "place_id": "FixtureJyBellstoneTemple",
+    "name": "Bellstone Temple",
+    "category": "temple",
+    "tags": [
+      "temple"
+    ],
+    "status": "candidate",
+    "activity": "temple grounds",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "old-town-quarter",
+    "place_id": "FixtureJyOldTownQuarter",
+    "name": "Old Town Quarter",
+    "category": "neighbourhood",
+    "tags": [
+      "neighbourhood"
+    ],
+    "status": "candidate",
+    "activity": "lanes and old houses",
+    "priority": 3,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "clockmakers-row",
+    "place_id": "FixtureJyClockmakersRow",
+    "name": "Clockmakers' Row",
+    "category": "shop",
+    "tags": [
+      "shop"
+    ],
+    "status": "candidate",
+    "activity": "clock workshops",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "lantern-bridge",
+    "place_id": "FixtureJyLanternBridge",
+    "name": "Lantern Bridge",
+    "category": "viewpoint",
+    "tags": [
+      "viewpoint"
+    ],
+    "status": "candidate",
+    "activity": "river bridge",
+    "priority": 3,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "tidewater-baths",
+    "place_id": "FixtureJyTidewaterBaths",
+    "name": "Tidewater Baths",
+    "category": "bathhouse",
+    "tags": [
+      "bathhouse"
+    ],
+    "status": "candidate",
+    "activity": "old public baths",
+    "priority": 2,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "printworks-gallery",
+    "place_id": "FixtureJyPrintworksGallery",
+    "name": "Printworks Gallery",
+    "category": "gallery",
+    "tags": [
+      "gallery"
+    ],
+    "status": "candidate",
+    "activity": "woodblock prints",
+    "priority": 2,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "apothecary-garden",
+    "place_id": "FixtureJyApothecaryGarden",
+    "name": "Apothecary Garden",
+    "category": "garden",
+    "tags": [
+      "garden"
+    ],
+    "status": "candidate",
+    "activity": "herb beds",
+    "priority": 3,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "harbour-aquarium",
+    "place_id": "FixtureJyHarbourAquarium",
+    "name": "Harbour Aquarium",
+    "category": "aquarium",
+    "tags": [
+      "aquarium"
+    ],
+    "status": "candidate",
+    "activity": "tanks and tunnel",
+    "priority": 1,
+    "indoor": true,
+    "booking": {
+      "date": "2027-11-09",
+      "time": "10:30",
+      "ref": "FIXTURE-JY-1109"
+    }
+  },
+  {
+    "v": 1,
+    "id": "saltpan-lighthouse",
+    "place_id": "FixtureJySaltpanLighthouse",
+    "name": "Saltpan Lighthouse",
+    "category": "viewpoint",
+    "tags": [
+      "viewpoint"
+    ],
+    "status": "candidate",
+    "activity": "lighthouse walk",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "netmenders-gallery",
+    "place_id": "FixtureJyNetmendersGallery",
+    "name": "Netmenders' Gallery",
+    "category": "gallery",
+    "tags": [
+      "gallery"
+    ],
+    "status": "candidate",
+    "activity": "harbour paintings",
+    "priority": 2,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "harbourfront-park",
+    "place_id": "FixtureJyHarbourfrontPark",
+    "name": "Harbourfront Park",
+    "category": "park",
+    "tags": [
+      "park"
+    ],
+    "status": "candidate",
+    "activity": "waterside lawns",
+    "priority": 3,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "kestrel-hill-gardens",
+    "place_id": "FixtureJyKestrelHillGardens",
+    "name": "Kestrel Hill Gardens",
+    "category": "garden",
+    "tags": [
+      "garden"
+    ],
+    "status": "chosen",
+    "activity": "terraced gardens",
+    "priority": 1,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "moss-shrine",
+    "place_id": "FixtureJyMossShrine",
+    "name": "Moss Shrine",
+    "category": "shrine",
+    "tags": [
+      "shrine"
+    ],
+    "status": "candidate",
+    "activity": "shrine path",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "hilltop-observatory",
+    "place_id": "FixtureJyHilltopObservatory",
+    "name": "Hilltop Observatory",
+    "category": "museum",
+    "tags": [
+      "museum"
+    ],
+    "status": "candidate",
+    "activity": "star hall",
+    "priority": 2,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "hollin-falls",
+    "place_id": "FixtureJyHollinFalls",
+    "name": "Hollin Falls",
+    "category": "viewpoint",
+    "tags": [
+      "viewpoint"
+    ],
+    "status": "candidate",
+    "activity": "falls viewing deck",
+    "priority": 1,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "hollin-gorge-trail",
+    "place_id": "FixtureJyHollinGorgeTrail",
+    "name": "Hollin Gorge Trail",
+    "category": "hike",
+    "tags": [
+      "hike"
+    ],
+    "status": "candidate",
+    "activity": "gorge walk",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "hollin-pottery-village",
+    "place_id": "FixtureJyHollinPotteryVillage",
+    "name": "Hollin Pottery Village",
+    "category": "workshop",
+    "tags": [
+      "workshop"
+    ],
+    "status": "candidate",
+    "activity": "pottery studios",
+    "priority": 1,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "quillbay-maritime-museum",
+    "place_id": "FixtureJyQuillbayMaritimeMuseum",
+    "name": "Quillbay Maritime Museum",
+    "category": "museum",
+    "tags": [
+      "museum"
+    ],
+    "status": "candidate",
+    "activity": "ships and charts",
+    "priority": 1,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "pier-market",
+    "place_id": "FixtureJyPierMarket",
+    "name": "Pier Market",
+    "category": "market",
+    "tags": [
+      "market"
+    ],
+    "status": "candidate",
+    "activity": "fish and craft stalls",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "seawall-promenade",
+    "place_id": "FixtureJySeawallPromenade",
+    "name": "Seawall Promenade",
+    "category": "viewpoint",
+    "tags": [
+      "viewpoint"
+    ],
+    "status": "candidate",
+    "activity": "seawall walk",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "cedar-ridge-temple",
+    "place_id": "FixtureJyCedarRidgeTemple",
+    "name": "Cedar Ridge Temple",
+    "category": "temple",
+    "tags": [
+      "temple"
+    ],
+    "status": "candidate",
+    "activity": "temple and cedars",
+    "priority": 1,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "upland-tea-fields",
+    "place_id": "FixtureJyUplandTeaFields",
+    "name": "Upland Tea Fields",
+    "category": "garden",
+    "tags": [
+      "garden"
+    ],
+    "status": "chosen",
+    "activity": "tea terraces",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "ridge-lookout",
+    "place_id": "FixtureJyRidgeLookout",
+    "name": "Ridge Lookout",
+    "category": "viewpoint",
+    "tags": [
+      "viewpoint"
+    ],
+    "status": "candidate",
+    "activity": "lookout",
+    "priority": 3,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "lamplighters-workshop",
+    "place_id": "FixtureJyLamplightersWorkshop",
+    "name": "Lamplighters' Workshop",
+    "category": "workshop",
+    "tags": [
+      "workshop"
+    ],
+    "status": "saved-for-later",
+    "activity": "lamp making",
+    "priority": 3,
+    "indoor": true
+  }
+]

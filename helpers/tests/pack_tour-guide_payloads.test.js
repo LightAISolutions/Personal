@@ -1,7 +1,7 @@
 'use strict';
-// packs/tour-guide — payload schemas of the pack's eight envelope types (helper.json envelope_types): valid examples
+// packs/tour-guide — payload schemas of the pack's ten envelope types (helper.json envelope_types): valid examples
 // round-trip, the obvious invalid ones are refused with pointer paths, the prefs kit's real review output validates,
-// tools/envelope.mjs --pack tour-guide checks a payload against its schema, and the core mocks accept the eight types.
+// tools/envelope.mjs --pack tour-guide checks a payload against its schema, and the core mocks accept the ten types.
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -12,7 +12,7 @@ const H = require('./harness/gas-mocks');
 const S = () => import('../packs/tour-guide/schemas/index.mjs');
 const clone = (x) => JSON.parse(JSON.stringify(x));
 const TOOL = path.join(H.HELPERS_ROOT, 'tools', 'envelope.mjs');
-const TYPES = ['prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest', 'bookings', 'scout'];
+const TYPES = ['prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest', 'bookings', 'scout', 'outline', 'day_versions'];
 const made = [];
 after(() => { for (const d of made) fs.rmSync(d, { recursive: true, force: true }); });
 const tmp = () => { const d = fs.mkdtempSync(path.join(os.tmpdir(), 'tg-payload-')); made.push(d); return d; };
@@ -60,7 +60,18 @@ const EXAMPLES = {
     items: [{ n: 1, slug: 'tidewater-tea-room', name: 'Tidewater Tea Room', area: 'Old harbour', category: 'cafe', score: 81,
       parts: { topic: 90, quality: 74, fit: 60, reach: 88 }, why_you: 'Named for matcha; very well rated; about 9 min walk.', try: 'Matcha parfait (vegetarian)',
       labels: ['gem', 'veg_verified'], rated: 'very well rated', reach: { minutes: 9, mode: 'WALK', estimated: false }, maps_url: MAPS, place_id: 'FixtureTcTidewaterTea' }],
-    left_out: [{ name: 'Harbour Burger Bar', reason: 'off_topic' }], more: 2, drive: { board_html: 'fixtureDriveScoutBoard01', board_pdf: null } })
+    left_out: [{ name: 'Harbour Burger Bar', reason: 'off_topic' }], more: 2, drive: { board_html: 'fixtureDriveScoutBoard01', board_pdf: null } }),
+  outline: () => ({ v: 1, kind: 'outline', trip: 'port-sorrel-spring-2027', build_id: 'ol-port-sorrel-1', notes: 'Both keep the booked tower on day 2.',
+    options: ['A', 'B'].map((key) => ({ key, title: key === 'A' ? 'Harbour first' : 'Hills first', gains: 'A calm last day.', gives_up: 'No day trip.',
+      days: [{ date: '2027-05-12', area: 'Old harbour', kind: 'travel', note: 'Arrive by noon.' },
+        { date: '2027-05-13', area: 'Clock hill', kind: 'full', anchors: [{ slug: 'clock-tower', name: 'Clock Tower' }] },
+        { date: '2027-05-14', area: '', kind: 'free' }] })) }),
+  day_versions: () => ({ v: 1, kind: 'day_versions', trip: 'port-sorrel-spring-2027', build_id: 'dv-port-sorrel-1', date: '2027-05-13', chosen: 'A',
+    versions: ['A', 'B'].map((key) => ({ key, title: key === 'A' ? 'Museums and the tower' : 'Markets and the shore', summary: 'Two big sights, a long lunch.',
+      stops: [{ slug: key === 'A' ? 'lantern-museum' : 'saffron-row-market', name: key === 'A' ? 'Lantern Museum' : 'Saffron Row Market', time: '10:00' },
+        { slug: 'clock-tower', name: 'Clock Tower' }],
+      walk_minutes: 35, transit_minutes: 20, spare_minutes: 50, bookings: ['Clock Tower 14:00'], leaves_out: [{ slug: 'tide-gallery', name: 'Tide Gallery' }],
+      warnings: ['Steep lane to the tower.'] })) })
 };
 
 async function realReview() {

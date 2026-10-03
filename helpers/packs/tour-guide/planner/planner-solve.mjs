@@ -9,6 +9,7 @@
  *   solveDay({ stops, travel, departAt, dayEnd, lunch, maxWait, maxSpill, buffer }) → { order, items, finish, hasLunch, value, states }
  *   stops[i] = { minutes, priority, windows: [{open, close}] ([] = no constraint), booking: minutes | null }
  *   (Phase 11) stops[i].waitAny = true lets a stop wait past `maxWait` like a booking: a crowd magnet's quiet slot.
+ *   (WP-11e) stops[i].must = true (an outline anchor) is kept whenever it fits at all (MUST_WEIGHT).
  *   travel(a, b) → minutes, a/b ∈ 'S' (start lodging) | 'E' (end lodging) | stop index; Infinity = unreachable
  *   buffer(a, b) → minutes of slack after the leg a → b before stop b starts (optional, default none; Phase 10). A booked
  *   stop's buffer shrinks to the slack before the booking, so a buffer never drops a booking.
@@ -17,6 +18,8 @@ import { earliestFit } from './planner-hours.mjs';
 
 export const WEIGHT = Object.freeze({ 1: 100, 2: 10, 3: 1 });
 export const MAX_STOPS = 12;
+/** WP-11e: an outline anchor (stops[i].must) outweighs any set of other stops (12 × 100 < 10 000). */
+export const MUST_WEIGHT = 10000;
 
 export function solveDay({ stops, travel, departAt, dayEnd, lunch = null, maxWait = 75, maxSpill = 90, buffer = null }) {
   const n = stops.length;
@@ -29,7 +32,7 @@ export function solveDay({ stops, travel, departAt, dayEnd, lunch = null, maxWai
   const parent = new Int32Array(N * W * 2).fill(-1);
   const startAt = new Float64Array(N * W * 2).fill(-1); // visit start (stop) or lunch start
   time[sidx(0, L, 0)] = departAt;
-  const value = (mask) => { let v = 0; for (let i = 0; i < n; i++) if (mask & (1 << i)) v += WEIGHT[stops[i].priority] || 1; return v; };
+  const value = (mask) => { let v = 0; for (let i = 0; i < n; i++) if (mask & (1 << i)) v += stops[i].must ? MUST_WEIGHT : WEIGHT[stops[i].priority] || 1; return v; };
 
   const relax = (to, t, from, s) => { if (t < time[to]) { time[to] = t; parent[to] = from; startAt[to] = s; } };
   for (let mask = 0; mask < N; mask++) {

@@ -16,7 +16,7 @@ import { renderHtml, renderPdf, pdfAvailable } from '../../../kits/brochure/inde
 import { placeUrl } from '../../../kits/maps/lib/maps-urls.mjs';
 import { clip, compact, localDate, snapshotIndex, SHORT, TEXT } from './brochure-map-text.mjs';
 import { placeCard, mapsLink } from './brochure-map-cards.mjs';
-import { mapDay } from './brochure-map-days.mjs';
+import { mapDay, freeDay } from './brochure-map-days.mjs';
 import { mapLater } from './brochure-map-later.mjs';
 import { tripPractical, dayRoutes, freeDays, verifySections, PRACTICAL_LIMITS } from './brochure-map-practical.mjs';
 import { bookingsSection } from './brochure-map-bookings.mjs';
@@ -24,7 +24,7 @@ import { buildAttribution } from './brochure-map-attribution.mjs';
 import { seasonModel, factsSourceRows, seasonSourceRows } from './brochure-map-facts.mjs';
 
 export { placeCard, closedDays, hoursLine, hoursToday, categoryLabel } from './brochure-map-cards.mjs';
-export { mapDay, legMode, MODE_MAP } from './brochure-map-days.mjs';
+export { mapDay, freeDay, legMode, MODE_MAP } from './brochure-map-days.mjs';
 export { mapLater } from './brochure-map-later.mjs';
 export { buildAttribution, mergeSources, sourceKey } from './brochure-map-attribution.mjs';
 export { cardFacts, seasonModel, stopLines, IMPL as FACTS_IMPL } from './brochure-map-facts.mjs';
@@ -91,7 +91,7 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
 
   const bDays = [], free = [], routes = [];
   for (const d of days) {
-    if (!(d.stops || []).length) { free.push({ date: d.date, note: (d.free || []).map((f) => f.note).filter(Boolean).join(' ') }); continue; }
+    if (!(d.stops || []).length) { const f = freeDay(d, overrides.get(d.date)); free.push({ date: d.date, note: f.text, url: f.url }); continue; }
     bDays.push(mapDay(d, { placesBySlug, cards, lodgingName, override: overrides.get(d.date), season: trip.season, factsOptions }));
     routes.push({ n: bDays.length, date: d.date, url: d.day_url });
   }

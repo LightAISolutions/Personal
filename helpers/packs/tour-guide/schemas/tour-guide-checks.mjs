@@ -462,4 +462,41 @@ export function checkScout(p) {
   return errs;
 }
 
+// ── Outline and day versions (TG-PHASE-11 wave 2, WP-11f) ──
+export const OUTLINE_KEYS = Object.freeze(['A', 'B', 'C']);
+/**
+ * Outline payload: option keys unique; every option covers the same dates once and in order — consecutive calendar
+ * days (a trip's dates), at most 31; anchor slugs unique within a day; ≤ 60 000 characters.
+ */
+export function checkOutline(p) {
+  const errs = [];
+  dupes(p.options, 'key', '/options', 'option key', errs);
+  const first = p.options[0].days.map((d) => d.date);
+  p.options.forEach((o, i) => {
+    o.days.forEach((d, j) => {
+      if (!isDate(d.date)) { errs.push({ path: `/options/${i}/days/${j}/date`, message: 'not a calendar date' }); return; }
+      const prev = j ? o.days[j - 1].date : null;
+      if (prev && isDate(prev) && daysBetween(prev, d.date) !== 1) errs.push({ path: `/options/${i}/days/${j}/date`, message: 'every trip date once, in order (the day after the previous one)' });
+      dupes(d.anchors || [], 'slug', `/options/${i}/days/${j}/anchors`, 'anchor', errs);
+    });
+    const dates = o.days.map((d) => d.date);
+    if (i && dates.join() !== first.join()) errs.push({ path: `/options/${i}/days`, message: `covers ${dates[0]} … ${dates[dates.length - 1]} (${dates.length} days); every option covers the same dates as option ${p.options[0].key}` });
+  });
+  sizeCheck(p, errs);
+  return errs;
+}
+/** Day-versions payload: a calendar date, version keys unique, chosen one of them, slugs unique per version, ≤ 60 000 characters. */
+export function checkDayVersions(p) {
+  const errs = [];
+  if (!isDate(p.date)) errs.push({ path: '/date', message: 'not a calendar date' });
+  dupes(p.versions, 'key', '/versions', 'version key', errs);
+  if (p.chosen !== undefined && !p.versions.some((v) => v.key === p.chosen)) errs.push({ path: '/chosen', message: `"${p.chosen}" is not one of the versions` });
+  p.versions.forEach((v, i) => {
+    dupes(v.stops, 'slug', `/versions/${i}/stops`, 'stop', errs);
+    dupes(v.leaves_out, 'slug', `/versions/${i}/leaves_out`, 'place', errs);
+  });
+  sizeCheck(p, errs);
+  return errs;
+}
+
 // Developed by: LightAISolutions

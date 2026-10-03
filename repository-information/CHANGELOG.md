@@ -3,11 +3,28 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 55/100`
+`Sections: 56/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.55r] — 2026-10-03 09:36:18 AM EST
+
+> **Prompt:** "decisions made." *(the owner's choices on the usefulness review, with "Outlines + days" picked for comparing options; this push is wave 2 of step 2 — whole-trip outlines and day versions to compare, one plan and one brochure for the chosen mix)*
+
+### Added
+- **Outlines and day versions** (WP-11e, `helpers/packs/tour-guide/journey/`; the planner's `outline` input, `planner/planner-outline.mjs`): up to three outlines of the whole trip, each date given a kind (full, light, travel, rain spare, free) and an area; a dated booking and the owner's picks are anchors, moving days travel, options differ on at least a third of the days, and each one names what it gives up, the picks it leaves out first; a trip with one shape comes as one outline. Up to three versions of each day, every one holding the day's anchors and at least half as many stops as the first; a busy day also gets "A slower day"; a day with one way to go comes as one version. The chosen mix becomes one plan (`assembleChosen`): Later says which picks are in a version not chosen, and the other versions are kept for `/versions`. A version set asks Maps once per pair of points (`cachedMaps`). Invented fixture `fixtures/two-stays/`
+- **Comparing in the chat and the app** (WP-11f): the `outline` and `day_versions` payloads (two schemas, their checks and the core's mirror; both new envelope types route to the planning routine); `gas/17_journey.js` — outline and version cards after the shortlist, 🧱 Build my plan, `/outline`, `/versions`, another version of a planned day as a replan, `/journey on|off`; `gas/36_journey_app.js` and the app's Compare screen (`live-site-pages/helper-app.html` v01.07w). Off until the private routine update; then the owner sends `/journey on`
+- **End-to-end test** `helpers/tests/pack_tour-guide_phase11_wave2_e2e.test.js` (invented data): the two-stays week from the shortlist through outlines, a mix and day versions to the core, the day cards and one brochure; the plan_digest stand-in it shares with the wave 1 test moved to `helpers/tests/harness/tour-guide-digest.js`. Also new: `pack_tour-guide_journey.test.js`, `pack_tour-guide_journey_payloads.test.js`, `pack_tour-guide_gas_journey.test.js`, `shell_helper-app_compare.playwright.mjs`
+
+### Fixed
+- **Dinners on a trip with shortlist choices** (`planner/planner-dinner.mjs`): the dinner step read the choices from a field the choice step does not return and threw; it now reads them as the choice step gives them (found by the private repo's plan update)
+- **A free last day in the brochure** (`brochure-map/brochure-map-days.mjs`, `brochure-map-practical.mjs`): a day with no stops listed only its free time under "Free days", so a last day's check-out and end point were missing; the line now reads the day in order (start, bags, free time, end) and links the end on Maps
+
+### Changed
+- **The app's planned days read like the chat's day card** (`gas/32_app_api.js`, `live-site-pages/helper-app.html`): `trip.digest` now carries Phase 10's stop and leg fields (estimated times, walk flags, taxi and buffer minutes, check-on-the-day lines) and the app shows the day's start, bags, last entry, booking, crowd, dinner, spare time, extras and sunset; a stop's note drops timing advice its own time contradicts, as the card does
+- `helpers/decisions/TG-PHASE-11.md` (wave 2 merge choices; six faults a probe of the whole journey found before release, each fixed with tests; the checks; items carried to Phase 12), `helpers/decisions/WP-11e.md`, `WP-11f.md`, `WP-11a.md`, `WP-11d.md`, `helpers/status/WP-11e.md`, `WP-11f.md`, `helpers/SPEC.md` §5 and §16, the pack README; the Phase 12 brief `helpers/prompts/TG-PHASE-12.md`; `helpers/BUILD-STATE.md` rows 11 and 12 and the Phase 11 log; the helper app's changelog; README tree and timestamp. 781 tests (780 pass, 1 skipped)
 
 ## [v01.54r] — 2026-10-03 06:28:19 AM EST
 

@@ -21,6 +21,7 @@ import { LUNCH_WINDOW, DINNER_EARLIEST, breakfastLen } from './planner-input.mjs
 import { minVisit } from './planner-category.mjs';
 import { dayAnchors, BAGS, END_MARGIN, START_SLUG, LODGING_SLUG, bagsText } from './planner-anchors.mjs';
 import { crowdWindows, crowdSlotOf, CROWD_SLOT } from './planner-crowd.mjs';
+import { FREE_DAY_NOTE } from './planner-outline.mjs';
 
 export const SOLVER_METHOD = 'held-karp/time-windows';
 export const TIGHT_MINUTES = 10;
@@ -100,7 +101,7 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
   const pt = (x) => (x === 'S' ? S : x === 'E' ? E : x.slug ? x : candPoint(x));
   const key = (a, b) => pointKey(pt(a)) + '|' + pointKey(pt(b));
   const getLeg = async (from, to, at) => {
-    if (day.override && same(pt(from), pt(to))) return { ...STAY, mode };
+    if ((day.override || day.outline) && same(pt(from), pt(to))) return { ...STAY, mode };   // WP-11e: an outline day too
     const leg = await fetchLeg(maps, { from: pt(from), to: pt(to), mode, departureTime: iso(at), transitPreferences: tp, fallback, allowance });
     usage.route_calls += leg.requests;
     return leg;
@@ -152,7 +153,7 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
     const at = (x) => (x === 'S' || x === 'E' ? x : pool[x]);
     const tr = (a, b) => { const r = travel.get(key(at(a), at(b))); return r ? r.minutes : Infinity; };
     const buf = (a, b) => { const r = travel.get(key(at(a), at(b))); return r ? bufferFor({ mode, ...r }) : 0; };
-    const solve = () => solveDay({ stops: pool.map((c) => ({ minutes: c.minutes, priority: c.priority, windows: c === spot ? lunchWindows(c, date) : winOf(c), booking: c.booking ? c.booking.time : null, ...(c.crowd && !relaxed.has(c.id) ? { waitAny: true } : {}) })), travel: tr, buffer: buf, departAt, dayEnd: coreEnd, lunch: spot ? null : { len: pace.lunch, ...LUNCH_WINDOW }, ...(hard !== null ? { maxSpill: 0 } : {}) });
+    const solve = () => solveDay({ stops: pool.map((c) => ({ minutes: c.minutes, priority: c.priority, windows: c === spot ? lunchWindows(c, date) : winOf(c), booking: c.booking ? c.booking.time : null, ...(c.crowd && !relaxed.has(c.id) ? { waitAny: true } : {}), ...(c.anchor === date ? { must: true } : {}) })), travel: tr, buffer: buf, departAt, dayEnd: coreEnd, lunch: spot ? null : { len: pace.lunch, ...LUNCH_WINDOW }, ...(hard !== null ? { maxSpill: 0 } : {}) });
     solution = solve();
     if (spot && !solution.order.includes(pool.indexOf(spot))) { spot = null; solution = solve(); } // the lunch spot did not make the day: plain lunch slot
     // Phase 11: a crowd magnet left out by its quiet slots is planned on its full hours instead (never dropped for this rule).
@@ -363,7 +364,7 @@ function assemble({ ctx, day, ordered, timeline, cc, build_id, seed, verified_on
     else if (hard - finish >= FREE_MIN) free.push({ start: hm(finish), end: hm(hard), note: `${END_SPARE_NOTE} ${A.E.name} before ${hm(day.end.time)}`.slice(0, 300) });
   } else {
     if (finish > day.dayEnd) warnings.push({ severity: 'warn', code: 'over_long_day', text: `back at ${A.E.name} at ${hm(finish)}, ${finish - day.dayEnd} min after your ${hm(day.dayEnd)} day end` });
-    else if (day.dayEnd - finish >= FREE_MIN) free.push({ start: hm(finish), end: hm(day.dayEnd), note: BACK_EARLY_NOTE });
+    else if (day.dayEnd - finish >= FREE_MIN) free.push({ start: hm(finish), end: hm(day.dayEnd), note: day.outline && day.outline.kind === 'free' ? FREE_DAY_NOTE : BACK_EARLY_NOTE });
     const dinnerStart = Math.max(finish + 30, DINNER_EARLIEST);
     if (dinnerStart + pace.dinner <= 23 * 60) meals.push({ kind: 'dinner', start: hm(dinnerStart), end: hm(dinnerStart + pace.dinner), at: 'lodging', note: `near ${A.E.name}` });
   }
