@@ -33,7 +33,8 @@ const PLACES = [{ slug: 'lighthouse-walk', name: 'Lighthouse Walk', destination:
 const BANK = { v: 1, title: 'Travel preferences interview', sections: [
   { id: 'pace', title: 'Pace & rhythm', questions: [{ qid: 'pace-01', text: 'How full should a typical sightseeing day be?', kind: 'scale', dimension: 'pace', options: [{ label: 'Relaxed', value: 'relaxed', polarity: '+' }, { label: 'Normal', value: 'normal', polarity: '+' }, { label: 'Packed', value: 'packed', polarity: '+' }], skip_ok: true }] },
   { id: 'food', title: 'Food', questions: [{ qid: 'food-01', text: 'Which foods do you look forward to? Pick any.', kind: 'multi', dimension: 'food', options: [{ label: 'Local specialties', value: 'local', polarity: '+' }, { label: 'Street food', value: 'street', polarity: '+' }, { label: 'Fine dining', value: 'fine', polarity: '+' }], skip_ok: true, other: true },
-    { qid: 'food-03', text: 'Anything you cannot eat?', kind: 'text', dimension: 'food', options: [], skip_ok: true }] }] };
+    { qid: 'food-03', text: 'Anything you cannot eat?', kind: 'text', dimension: 'food', options: [], skip_ok: true }] },
+  { id: 'budget', title: 'Budget', questions: [{ qid: 'budget-01', text: 'What is your usual travel budget?', kind: 'scale', dimension: 'budget_band', options: [{ label: 'Thrifty', value: 'thrifty', polarity: '+' }, { label: 'Middle', value: 'middle', polarity: '+' }, { label: 'Splurge', value: 'splurge', polarity: '+' }], skip_ok: true }] }] };
 const FACTS = { ok: true, trip: TRIP.slug, found: [{ n: '1', kind: 'dates', text: 'May 12 – May 15, 2027', start: '2027-05-12', end: '2027-05-15', choice: '' }, { n: '2', kind: 'lodging', text: 'Quay Street inn, 3 nights', choice: '' }, { n: '3', kind: 'flight', text: 'Arrives 11:40 on May 12', choice: '' }], missing: ['companions'] };
 const HOME = { ok: true, display_name: 'Fixture Guide', trips: [TRIP, { slug: 'moor-weekend-2026', title: 'Moor weekend', destination: 'High Moor', start: '2026-11-07', end: '2026-11-08', status: 'done', build_id: 'b-fixture-00', has_brochure: false }], trips_total: 2, choice_round: { trip: TRIP.slug, run: 'run-fixture-1', round: 1, items: 7, want: 0, later: 0, skip: 0, stage: '' }, pending_facts: { trip: TRIP.slug }, profile_summary: { updated: '2026-10-01' }, places: { 'Harbor Town': 3, 'High Moor': 5 } };
 
@@ -46,6 +47,7 @@ function answer(op, args, mode) {
     if (op === 'shortlist.get') return { ...SHORTLIST, stage: 'planning', more: false };
     if (op === 'shortlist.done' || op === 'facts.get') return { ok: false, status: 409, reason: 'no_flow', stage: 'planning' };
   }
+  if (mode === 'nosend' && op === 'interview.submit') return { ok: false, status: 409, reason: 'busy' };
   if (mode === 'rounds' && op === 'shortlist.get') {   // a /repick reopened two rounds: the newest on top, an earlier one below
     return { ...SHORTLIST, run: 'run-fixture-2', round: 2, earlier: [{ run: 'run-fixture-1', round: 1, groups: [{ id: 'activities', title: 'Activities', items: [ITEM('a1', 1, 'Cliff Chapel', 'Earlier pick you saved.', 30, 'Headland')] }] }] };
   }
@@ -85,7 +87,8 @@ function tgStub(scheme, withInitData) {
     HapticFeedback: { selectionChanged() {}, notificationOccurred() {} },
     MainButton: { setText(t) { window.__tg.main.text = t; }, show() { window.__tg.main.visible = true; }, hide() { window.__tg.main.visible = false; }, enable() {}, disable() {}, showProgress() { window.__tg.main.progress = true; }, hideProgress() { window.__tg.main.progress = false; }, onClick(f) { window.__tg.main.fn = f; } },
     BackButton: { show() { window.__tg.back.visible = true; }, hide() { window.__tg.back.visible = false; }, onClick(f) { window.__tg.back.fn = f; } },
-    CloudStorage: { setItem(k, v, cb) { window.__tg.storage[k] = v; cb && cb(null, true); }, getItem(k, cb) { cb(null, window.__tg.storage[k] || ''); } }
+    CloudStorage: { setItem(k, v, cb) { window.__tg.storage[k] = v; cb && cb(null, true); }, getItem(k, cb) { cb(null, window.__tg.storage[k] || ''); }, removeItem(k, cb) { delete window.__tg.storage[k]; cb && cb(null, true); } },
+    showConfirm(msg, cb) { window.__tg.confirmed = msg; cb(true); }
   } };`;
 }
 
@@ -213,6 +216,60 @@ try {
     await nav(page, 'interview');
     check(calls.filter((c) => c.op === 'interview.bank').slice(-1)[0].args.person === undefined, 'the Interview tab starts as the owner again');
     check(errors.length === 0, 'no page errors: ' + errors.join(' | '));
+    await ctx.close();
+  }
+
+  console.log('interview: saved as you go, progress, switching who answers');
+  {
+    const { page, ctx, calls, errors } = await open(browser, {});
+    await nav(page, 'interview');
+    const mainText = () => page.evaluate(() => window.__tg.main.text);
+    const progress = () => page.textContent('#iv-progress');
+    check(await progress() === '1 of 4 answered' && await mainText() === 'Send 1 answer', 'progress counts the answer already given in the chat (' + await progress() + ')');
+    await page.click('.choices[data-q="food-01"] button[data-v="local"]'); await page.fill('input[data-q="food-03"]', 'peanuts'); await page.waitForTimeout(450);
+    check(await progress() === '3 of 4 answered' && await mainText() === 'Send 3 answers' && await page.textContent('#iv-send') === 'Send 3 answers', 'progress and both send buttons follow each answer');
+    check(await page.textContent('h3[data-sec="food"] .sec-count') === '2/2' && await page.textContent('h3[data-sec="budget"] .sec-count') === '', 'each section shows how much of it is answered');
+    const key = await page.evaluate(() => Object.keys(localStorage).find((k) => /^iv_[a-z0-9]+_me$/.test(k)) || '');
+    check(!!key && await page.evaluate((k) => typeof window.__tg.storage[k] === 'string', key), 'the draft is kept in this browser and in CloudStorage (' + key + ')');
+    const back = async () => (await page.getAttribute('.choices[data-q="food-01"] button[data-v="local"]', 'aria-pressed')) === 'true' && await page.inputValue('input[data-q="food-03"]') === 'peanuts';
+    await nav(page, 'home'); await nav(page, 'interview');
+    check(await back() && (await text(page)).includes('Picked up where you left off: 3 answers kept'), 'leaving the screen and coming back restores every answer');
+    await shot(page, 'light-8-interview-resumed');
+    await page.reload({ waitUntil: 'load' }); await page.waitForTimeout(400); await nav(page, 'interview');
+    check(await back(), 'closing and reopening the app restores the answers from this browser');
+    await page.evaluate((k) => { const d = localStorage.getItem(k); localStorage.removeItem(k); window.__tg.storage[k] = d; }, key);
+    await nav(page, 'home'); await nav(page, 'interview');
+    check(await back(), 'with the browser copy gone, the CloudStorage copy restores the answers');
+    await page.click('#who button[data-v="robin"]'); await page.waitForTimeout(500);
+    const visibleSecs = await page.$$eval('main h3[data-sec]', (hs) => hs.filter((h) => h.offsetParent !== null).map((h) => h.getAttribute('data-sec')).join());
+    check(visibleSecs === 'food,pace' && await page.textContent('#iv-fold') === 'Show 1 optional question', 'a companion sees what shapes a shared plan first, the optional rest folded (' + visibleSecs + ')');
+    check((await text(page)).includes('Robin’s interview') && (await text(page)).includes('save as you go'), 'the companion screen is titled with their name and says answers are kept');
+    await shot(page, 'light-9-companion-essentials');
+    await page.screenshot({ path: path.join(OUT, 'light-9b-companion-full.png'), fullPage: true });
+    await page.click('#iv-fold');
+    check(await page.isVisible('h3[data-sec="budget"]') && await page.textContent('#iv-fold') === 'Hide the optional questions', 'one tap unfolds the optional questions');
+    await page.click('.choices[data-q="pace-01"] button[data-v="packed"]'); await page.click('#who button[data-v=""]'); await page.waitForTimeout(500);
+    check(await back() && await page.getAttribute('.choices[data-q="pace-01"] button[data-v="packed"]', 'aria-pressed') === 'false', 'switching back to Me keeps my answers, not Robin\'s');
+    await page.click('#who button[data-v="robin"]'); await page.waitForTimeout(500);
+    check(await page.getAttribute('.choices[data-q="pace-01"] button[data-v="packed"]', 'aria-pressed') === 'true', 'Robin\'s answer is still there when Robin takes the phone again');
+    await page.click('#who button[data-v=""]'); await page.waitForTimeout(500);
+    await page.click('#iv-resumed button'); await page.waitForTimeout(500);
+    check(await page.evaluate(() => window.__tg.confirmed) === 'Clear these answers and start over?' && await page.evaluate((k) => localStorage.getItem(k) === null && !(k in window.__tg.storage), key)
+      && !(await page.$('#iv-resumed')) && (await page.getAttribute('.choices[data-q="food-01"] button[data-v="local"]', 'aria-pressed')) === 'false', 'Start over asks first, then clears the draft');
+    await page.click('.choices[data-q="food-01"] button[data-v="street"]'); await page.waitForTimeout(450);
+    check(await page.evaluate((k) => localStorage.getItem(k) !== null, key), 'a new answer starts a new draft');
+    await page.evaluate(() => window.__tg.main.fn()); await page.waitForTimeout(400);
+    check(calls.filter((c) => c.op === 'interview.submit').length === 1 && await page.evaluate((k) => localStorage.getItem(k) === null && !(k in window.__tg.storage), key), 'a successful send clears the draft');
+    check(errors.length === 0, 'no page errors: ' + errors.join(' | '));
+    await ctx.close();
+  }
+  {
+    const { page, ctx, calls } = await open(browser, { mode: 'nosend' });
+    await nav(page, 'interview');
+    await page.click('.choices[data-q="food-01"] button[data-v="local"]');
+    await page.evaluate(() => window.__tg.main.fn()); await page.waitForTimeout(400);
+    const kept = await page.evaluate(() => Object.keys(localStorage).some((k) => /^iv_[a-z0-9]+_me$/.test(k)));
+    check(calls.some((c) => c.op === 'interview.submit') && (await page.textContent('#status')).includes('your answers are kept') && kept, 'a refused send keeps the draft');
     await ctx.close();
   }
 
