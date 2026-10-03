@@ -8,7 +8,7 @@
   "version": "0.1.0",
   "timezone": "America/New_York",
   "inbound_routine": "CHAT",
-  "envelope_types": ["prefs_review", "shortlist", "trip_facts", "plan_digest", "profile_summary", "places_digest", "bookings"],
+  "envelope_types": ["prefs_review", "shortlist", "trip_facts", "plan_digest", "profile_summary", "places_digest", "bookings", "scout"],
   "action_allowlist": [],
   "memory_dirs": ["trips", "places", "profile"],
   "scopes": []

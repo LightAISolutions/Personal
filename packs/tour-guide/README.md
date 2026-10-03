@@ -133,7 +133,7 @@ Every default and its reason (objective weights, mandatory lunch, meal rules, wa
 
 ## Payloads (envelope types) — `schemas/`
 
-`helper.json` declares seven envelope types (no actions: `action_allowlist` is empty). Each has a schema `schemas/tour-guide-<kind>.schema.json` and semantic checks; `PAYLOAD_KINDS` maps type → kind and `validatePayload(type, payload) → { ok, kind, errors }` validates one (an unknown type gives `ok: false, kind: null`). `node helpers/tools/envelope.mjs <type> <skill> <payload.json> --pack tour-guide` refuses a payload that fails it.
+`helper.json` declares eight envelope types (no actions: `action_allowlist` is empty). Each has a schema `schemas/tour-guide-<kind>.schema.json` and semantic checks; `PAYLOAD_KINDS` maps type → kind and `validatePayload(type, payload) → { ok, kind, errors }` validates one (an unknown type gives `ok: false, kind: null`). `node helpers/tools/envelope.mjs <type> <skill> <payload.json> --pack tour-guide` refuses a payload that fails it.
 
 | Type | Kind | Shape (strict: no extra fields) |
 |---|---|---|
@@ -144,8 +144,9 @@ Every default and its reason (objective weights, mandatory lunch, meal rules, wa
 | `profile_summary` | profile-summary | `{ text ≤ 1200 }` — the prefs kit's plain-text summary as is; optional `dimensions_count`, `updated` (ISO date-time) |
 | `prefs_review` | prefs-review | exactly the prefs kit's `buildReview` payload: `{ v: 1, kind, vocab, batch_id, items: [{ cid, dimension, value, stance, statement, suspect, text, buttons }] ≤ 40, held_back, more }` |
 | `places_digest` | places-digest | `{ destination, places: [{ slug, name, area, category, tags, status, last_trip, last_researched, last_verified, note_line, maps_url, history_summary }] }`, ≤ 60 000 characters, no Google content |
+| `scout` | scout | `{ v?, kind?, scout_id (sc-YYYYMMDD-slug), query ≤ 80, destination, place_label ≤ 80, trip?, group: food\|activities, created_on, from? ≤ 80, diet? ≤ 80, items: [{ n, slug, name ≤ 120, area ≤ 80, category, score 0–100, parts: { topic, quality, fit, reach } 0–100, why_you ≤ 200, try? ≤ 120, labels ≤ 8, rated? (a band word), reach?: { minutes, mode, estimated }, maps_url (https), place_id? }] ≤ 20, left_out: [{ name, reason }] ≤ 20, more?, drive?: { board_html, board_pdf } }`, ≤ 60 000 characters, no Google content (TG-SCOUT §3) |
 
-Place records may also carry `destination`, `history[]` (trip, date, event), `last_researched`, `last_verified` and the gem fields `gem_score` (0–100), `gem`, `obscurity` (0–1), `local_mentions[]` and `flags[]`.
+Place records may also carry `destination`, `history[]` (trip, date, event — `scouted` added for Scout), `last_researched`, `last_verified` and the gem fields `gem_score` (0–100), `gem`, `obscurity` (0–1), `local_mentions[]` and `flags[]`.
 
 ## Brochure map — `brochure-map/`
 
@@ -249,5 +250,9 @@ Answer shapes and reasons: `helpers/decisions/WP-9b.md`.
 
 ## Shortlist sheet — `shortlist-sheet/`
 `node helpers/packs/tour-guide/shortlist-sheet/index.mjs shortlist.json out.pdf [--title T] [--dates D] [--stay S] [--notes notes.json] [--built-on YYYY-MM-DD] [--page letter|a4]` (exit 0 PDF · 3 HTML only · 1 error). Library: `shortlistSheetHtml(payload, opts)`, `renderShortlistPdf(payload, outPdf, opts)`. Built from the payload only (names, times, areas, why-you and gem lines, Maps links, the round's notes ≤ 12), in the brochure kit's typeface and colours; items appear in the chat's numbering so the owner can pick by number. The `trip-research` skill renders it and puts it on Drive with `tools/upload.mjs`, then names it in its reply's `drive_file_ids`.
+
+## Scout — `scout/`
+A ranked "find X in Y" list (contract: `helpers/decisions/TG-SCOUT.md`). Library only, no network, no clock:
+`parseScoutText` / `scoutId` / `guessGroup` / `scoutQueries` turn "matcha in Kyoto" into ≤ 3 Text Search strings; `fromScoutResult` maps a Places result to a gems pool record plus in-run `serves_vegetarian`, `editorial` and the first `photo` (name + credits); `rankScout` screens (closed, closed_on_trip, low_rating, unproven, off_topic, diet, diet_unproven, too_far, duplicate) and scores `round(100 × (0.35T + 0.25Q + 0.15F + 0.10L + 0.15R))` (weights in `scout-weights.mjs`; for food with a vegetarian diet every pick needs a vegetarian judgment or Google's `servesVegetarianFood`); `scoutPayload` builds and validates the `scout` envelope payload (own data only: scores, our words, a rating band word, reach, a Maps link; any Google key anywhere throws); `scoutPlaceFields` gives the Place fields and the `scouted` history entry for `places/<slug>.md` (existing places keep their fields; idempotent); `renderScoutBoard` / `renderScoutBoardPdf` draw the Scout board — masthead, one numbered map (a Static Maps image placed with the brochure kit's `fitView`/`projector`, else a drawn sketch), cards with the build-scoped Google facts, a compare table, the left-out list, Google attribution and photo credits; `data:` images and `https:` links only, no script, a CSP meta; one column on screen, two in print; `options.app` drops embedded fonts and photos wider than 360 px.
 
 Developed by: LightAISolutions

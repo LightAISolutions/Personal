@@ -1,7 +1,7 @@
 'use strict';
-// packs/tour-guide — payload schemas of the pack's seven envelope types (helper.json envelope_types): valid examples
+// packs/tour-guide — payload schemas of the pack's eight envelope types (helper.json envelope_types): valid examples
 // round-trip, the obvious invalid ones are refused with pointer paths, the prefs kit's real review output validates,
-// tools/envelope.mjs --pack tour-guide checks a payload against its schema, and the core mocks accept the seven types.
+// tools/envelope.mjs --pack tour-guide checks a payload against its schema, and the core mocks accept the eight types.
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -12,7 +12,7 @@ const H = require('./harness/gas-mocks');
 const S = () => import('../packs/tour-guide/schemas/index.mjs');
 const clone = (x) => JSON.parse(JSON.stringify(x));
 const TOOL = path.join(H.HELPERS_ROOT, 'tools', 'envelope.mjs');
-const TYPES = ['prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest', 'bookings'];
+const TYPES = ['prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest', 'bookings', 'scout'];
 const made = [];
 after(() => { for (const d of made) fs.rmSync(d, { recursive: true, force: true }); });
 const tmp = () => { const d = fs.mkdtempSync(path.join(os.tmpdir(), 'tg-payload-')); made.push(d); return d; };
@@ -54,7 +54,13 @@ const EXAMPLES = {
     bookings: [{ id: 'clock-tower-climb', title: 'Clock tower climb', kind: 'sight', rule: 'Two people; tickets open 14 days ahead at 10:00 on the tower site.', status: 'todo',
       place: 'clock-tower', for_date: '2027-05-13', opens_at: '2027-04-29T10:00:00+12:00', book_by: '2027-05-12T18:00:00+12:00', how: 'tower website',
       party_min: 2, url: 'https://tickets.example.org/clock-tower', note: 'Morning slots go first.', source: 'tower site', updated: '2027-04-20' },
-    { id: 'harbour-lane-guesthouse', title: 'Harbour Lane Guesthouse', kind: 'lodging', rule: 'Three nights.', status: 'booked' }] })
+    { id: 'harbour-lane-guesthouse', title: 'Harbour Lane Guesthouse', kind: 'lodging', rule: 'Three nights.', status: 'booked' }] }),
+  scout: () => ({ v: 1, kind: 'scout', scout_id: 'sc-20270501-matcha', query: 'matcha', destination: 'port-sorrel', place_label: 'Port Sorrel',
+    trip: 'port-sorrel-spring-2027', group: 'food', created_on: '2027-05-01', from: 'your guesthouse', diet: 'vegetarian',
+    items: [{ n: 1, slug: 'tidewater-tea-room', name: 'Tidewater Tea Room', area: 'Old harbour', category: 'cafe', score: 81,
+      parts: { topic: 90, quality: 74, fit: 60, reach: 88 }, why_you: 'Named for matcha; very well rated; about 9 min walk.', try: 'Matcha parfait (vegetarian)',
+      labels: ['gem', 'veg_verified'], rated: 'very well rated', reach: { minutes: 9, mode: 'WALK', estimated: false }, maps_url: MAPS, place_id: 'FixtureTcTidewaterTea' }],
+    left_out: [{ name: 'Harbour Burger Bar', reason: 'off_topic' }], more: 2, drive: { board_html: 'fixtureDriveScoutBoard01', board_pdf: null } })
 };
 
 async function realReview() {
@@ -238,7 +244,7 @@ test('tools/envelope.mjs --pack tour-guide validates a pack payload against its 
   assert.match(JSON.parse(noPack.stdout).errors.join(), /unknown type: shortlist/);
 });
 
-test('core mocks: the manifest\'s seven types are accepted by registerEnvelopeHandler and validateEnvelope', async () => {
+test('core mocks: the manifest\'s eight types are accepted by registerEnvelopeHandler and validateEnvelope', async () => {
   const E = await import('../tools/envelope.mjs');
   const { ctx } = H.loadGas({ pack: 'tour-guide' });
   for (const t of TYPES) assert.ok(ctx.ENVELOPE_TYPES.includes(t), t);

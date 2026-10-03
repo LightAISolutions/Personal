@@ -27,7 +27,7 @@
         "properties": {
           "trip": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
           "on": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" },
-          "event": { "enum": ["shortlisted", "chosen", "later", "skipped", "scheduled", "visited", "rated_up", "rated_down", "checked"] },
+          "event": { "enum": ["shortlisted", "chosen", "later", "skipped", "scheduled", "visited", "rated_up", "rated_down", "checked", "scouted"] },
           "note": { "type": "string", "maxLength": 120 }
         }
       }

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-scout.schema.json",
+  "title": "Tour Guide scout (payload of the `scout` envelope)",
+  "description": "One Scout run (helpers/decisions/TG-SCOUT.md §3): a ranked list of places for one food or activity in one place, with the items left out and why. Own data only: our scores, our words, a rating band word, our reach estimate, a Maps link. No Google field (rating, count, hours, price, address, website, photos) is allowed: every object refuses unknown keys. schemas/index.mjs also checks: the whole payload ≤ 60 000 characters, items numbered 1..N in order, slugs and place ids unique, labels unique, created_on and the scout_id's date are calendar dates.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["scout_id", "query", "destination", "place_label", "group", "created_on", "items", "left_out"],
+  "properties": {
+    "v": { "const": 1 },
+    "kind": { "const": "scout" },
+    "scout_id": { "type": "string", "pattern": "^sc-\\d{8}-[a-z0-9-]{1,40}$" },
+    "query": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "destination": { "$ref": "#/$defs/slug" },
+    "place_label": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "trip": { "$ref": "#/$defs/slug" },
+    "group": { "enum": ["food", "activities"] },
+    "created_on": { "$ref": "#/$defs/date" },
+    "from": { "type": "string", "maxLength": 80 },
+    "diet": { "type": "string", "maxLength": 80 },
+    "items": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/item" } },
+    "left_out": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "reason"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+          "reason": { "enum": ["off_topic", "diet", "diet_unproven", "low_rating", "unproven", "closed", "closed_on_trip", "too_far", "duplicate", "other"] }
+        }
+      }
+    },
+    "more": { "type": "integer", "minimum": 0, "maximum": 1000 },
+    "drive": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "board_html": { "$ref": "#/$defs/drive_id" },
+        "board_pdf": { "$ref": "#/$defs/drive_id" }
+      }
+    }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+    "date": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" },
+    "drive_id": { "anyOf": [{ "type": "null" }, { "type": "string", "pattern": "^[A-Za-z0-9_-]{10,200}$" }] },
+    "part": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "slug", "name", "area", "category", "score", "parts", "why_you", "labels", "maps_url"],
+      "properties": {
+        "n": { "type": "integer", "minimum": 1, "maximum": 20, "description": "Rank, 1-based, in order." },
+        "slug": { "$ref": "#/$defs/slug" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "area": { "type": "string", "maxLength": 80 },
+        "category": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}$" },
+        "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "parts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["topic", "quality", "fit", "reach"],
+          "properties": { "topic": { "$ref": "#/$defs/part" }, "quality": { "$ref": "#/$defs/part" }, "fit": { "$ref": "#/$defs/part" }, "reach": { "$ref": "#/$defs/part" } }
+        },
+        "why_you": { "type": "string", "minLength": 1, "maxLength": 200, "description": "Our own words; never review or page text." },
+        "try": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "labels": { "type": "array", "maxItems": 8, "items": { "enum": ["gem", "veg_verified", "veg_likely", "booking", "queue", "cash_only", "chain", "new", "seen_before", "far"] } },
+        "rated": { "type": "string", "minLength": 1, "maxLength": 40, "pattern": "^[^0-9]*$", "description": "A rating band word; never the number." },
+        "reach": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["minutes", "mode", "estimated"],
+          "properties": {
+            "minutes": { "type": "integer", "minimum": 0, "maximum": 600 },
+            "mode": { "enum": ["WALK", "TRANSIT", "DRIVE"] },
+            "estimated": { "type": "boolean" }
+          }
+        },
+        "maps_url": { "type": "string", "maxLength": 2000, "pattern": "^https://\\S+$" },
+        "place_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,300}$" }
+      }
+    }
+  }
+}
