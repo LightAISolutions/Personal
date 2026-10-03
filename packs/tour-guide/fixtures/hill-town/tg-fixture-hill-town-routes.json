@@ -1,0 +1,90 @@
+{
+  "v": 1,
+  "no_route_modes": [
+    "TRANSIT"
+  ],
+  "modes": {
+    "TRANSIT": {},
+    "WALK": {
+      "FixtureHtKestrelStepsInn|FixtureHtThornbackHillLookout": {
+        "duration_sec": 960,
+        "distance_m": 1050,
+        "warnings": [
+          "Walking directions are in beta. Use caution – This route may be missing sidewalks or pedestrian paths.",
+          "This route uses a pedestrian path with steps."
+        ]
+      },
+      "FixtureHtThornbackHillLookout|FixtureHtKestrelStepsInn": {
+        "duration_sec": 780,
+        "distance_m": 1050,
+        "warnings": [
+          "Walking directions are in beta. Use caution – This route may be missing sidewalks or pedestrian paths.",
+          "This route uses a pedestrian path with steps."
+        ]
+      },
+      "FixtureHtKestrelStepsInn|FixtureHtMossgateTemple": {
+        "duration_sec": 360,
+        "distance_m": 480
+      },
+      "FixtureHtKestrelStepsInn|FixtureHtEmberLaneFolkMuseum": {
+        "duration_sec": 330,
+        "distance_m": 460
+      },
+      "FixtureHtKestrelStepsInn|FixtureHtLanternPondGarden": {
+        "duration_sec": 300,
+        "distance_m": 420,
+        "warnings": [
+          "Walking directions are in beta. Use caution – This route may be missing sidewalks or pedestrian paths."
+        ]
+      },
+      "FixtureHtKestrelStepsInn|FixtureHtWillowmereTeaHouse": {
+        "duration_sec": 210,
+        "distance_m": 270
+      },
+      "FixtureHtKestrelStepsInn|FixtureHtReedmarshShrine": {
+        "duration_sec": 540,
+        "distance_m": 740
+      },
+      "FixtureHtEmberLaneFolkMuseum|FixtureHtLanternPondGarden": {
+        "duration_sec": 480,
+        "distance_m": 640,
+        "warnings": [
+          "This route has restricted usage or private roads."
+        ]
+      },
+      "FixtureHtMossgateTemple|FixtureHtLanternPondGarden": {
+        "duration_sec": 540,
+        "distance_m": 700,
+        "warnings": [
+          "Part of this route is on a pedestrian walkway."
+        ]
+      }
+    },
+    "DRIVE": {
+      "FixtureHtKestrelStepsInn|FixtureHtThornbackHillLookout": {
+        "duration_sec": 540,
+        "distance_m": 2600
+      },
+      "FixtureHtEmberLaneFolkMuseum|FixtureHtLanternPondGarden": {
+        "duration_sec": 360,
+        "distance_m": 1700
+      },
+      "FixtureHtMossgateTemple|FixtureHtLanternPondGarden": {
+        "duration_sec": 240,
+        "distance_m": 900
+      }
+    }
+  },
+  "fallback": {
+    "speed_kmh": {
+      "WALK": 4.5,
+      "TRANSIT": 14,
+      "DRIVE": 30
+    },
+    "overhead_sec": {
+      "WALK": 0,
+      "TRANSIT": 420,
+      "DRIVE": 180
+    }
+  }
+}

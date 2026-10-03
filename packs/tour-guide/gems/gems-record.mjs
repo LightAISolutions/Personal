@@ -8,6 +8,7 @@
 import { LOCAL_MENTION_KINDS, LOCAL_MENTIONS_MAX, LOCAL_MENTION_REF_MAX, ROUGH_EDGES } from './gems-weights.mjs';
 import { isLatLng } from './gems-geo.mjs';
 import { hoursKnown } from './gems-hours.mjs';
+import { refineCategory } from '../planner/planner-category.mjs';
 
 export const STREAMS = Object.freeze(['taste', 'local', 'quiet', 'owner_seed']);
 export const BUSINESS_STATUSES = Object.freeze(['OPERATIONAL', 'CLOSED_TEMPORARILY', 'CLOSED_PERMANENTLY', 'BUSINESS_STATUS_UNSPECIFIED']);
@@ -26,9 +27,13 @@ export const CATEGORY_TYPES = Object.freeze({
   bar: ['bar', 'pub', 'wine_bar', 'night_club'],
   market: ['market', 'grocery_store', 'food_market', 'flea_market'],
   museum: ['museum', 'art_gallery', 'history_museum', 'art_museum', 'planetarium', 'aquarium'],
-  park: ['park', 'garden', 'botanical_garden', 'national_park', 'hiking_area', 'beach'],
+  garden: ['garden', 'botanical_garden'],
+  park: ['park', 'national_park', 'hiking_area', 'beach'],
   viewpoint: ['observation_deck', 'scenic_spot', 'lookout'],
-  church: ['church', 'hindu_temple', 'mosque', 'synagogue', 'place_of_worship', 'buddhist_temple'],
+  temple: ['buddhist_temple', 'hindu_temple'],
+  shrine: ['shinto_shrine'],
+  church: ['church', 'mosque', 'synagogue', 'place_of_worship'],
+  experience: ['cultural_center'],
   shop: ['store', 'book_store', 'clothing_store', 'gift_shop', 'shopping_mall', 'home_goods_store'],
   neighbourhood: ['neighborhood', 'neighbourhood', 'historical_landmark', 'tourist_attraction']
 });
@@ -38,7 +43,7 @@ const err = (m) => new Error('gems: ' + m);
 
 /** categoryOf(record) → the record's own `category`, else the first CATEGORY_TYPES match on primary_type then types, else 'other'. */
 export function categoryOf(record) {
-  if (record.category) return record.category;
+  if (record.category) return record.category === 'church' ? refineCategory(record) : record.category;   // a legacy church named "…-ji" is a temple
   const types = [record.primary_type, ...(record.types || [])].filter(Boolean);
   for (const t of types) for (const [cat, list] of Object.entries(CATEGORY_TYPES)) if (list.includes(t)) return cat;
   return 'other';

@@ -1,0 +1,154 @@
+[
+  {
+    "v": 1,
+    "place_id": "FixtureHtThornbackHillLookout",
+    "activity": "lookout and view",
+    "category": "viewpoint",
+    "range": {
+      "min": 30,
+      "max": 45
+    },
+    "typical": 40,
+    "chosen_minutes": 40,
+    "sources": [
+      {
+        "url": "https://guide.example.org/thornwick/thornback-hill-lookout",
+        "accessed": "2027-08-30",
+        "title": "Fixture Guide: Thornback Hill Lookout",
+        "ref": "H011"
+      },
+      {
+        "url": "https://travelnotes.example.net/thornwick/thornback-hill-lookout",
+        "accessed": "2027-08-30",
+        "title": "Travel Notes (fixture): Thornback Hill Lookout",
+        "ref": "H012"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-08-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureHtMossgateTemple",
+    "activity": "temple grounds",
+    "category": "temple",
+    "range": {
+      "min": 40,
+      "max": 60
+    },
+    "typical": 50,
+    "chosen_minutes": 50,
+    "sources": [
+      {
+        "url": "https://guide.example.org/thornwick/mossgate-temple",
+        "accessed": "2027-08-30",
+        "title": "Fixture Guide: Mossgate Temple",
+        "ref": "H021"
+      }
+    ],
+    "confidence": "single-source",
+    "calibration": null,
+    "estimated_on": "2027-08-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureHtEmberLaneFolkMuseum",
+    "activity": "folk crafts collection",
+    "category": "museum",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/thornwick/ember-lane-folk-museum",
+        "accessed": "2027-08-30",
+        "title": "Fixture Guide: Ember Lane Folk Museum",
+        "ref": "H031"
+      },
+      {
+        "url": "https://travelnotes.example.net/thornwick/ember-lane-folk-museum",
+        "accessed": "2027-08-30",
+        "title": "Travel Notes (fixture): Ember Lane Folk Museum",
+        "ref": "H032"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-08-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureHtLanternPondGarden",
+    "activity": "garden walk",
+    "category": "garden",
+    "range": {
+      "min": 30,
+      "max": 75
+    },
+    "typical": null,
+    "chosen_minutes": 52,
+    "sources": [
+      {
+        "url": "https://guide.example.org/thornwick/lantern-pond-garden",
+        "accessed": "2027-08-30",
+        "title": "Fixture Guide: Lantern Pond Garden",
+        "ref": "H041"
+      },
+      {
+        "url": "https://travelnotes.example.net/thornwick/lantern-pond-garden",
+        "accessed": "2027-08-30",
+        "title": "Travel Notes (fixture): Lantern Pond Garden",
+        "ref": "H042"
+      }
+    ],
+    "confidence": "conflicting",
+    "calibration": null,
+    "estimated_on": "2027-08-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureHtWillowmereTeaHouse",
+    "activity": "tea ceremony",
+    "category": "experience",
+    "range": {
+      "min": 60,
+      "max": 60
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/thornwick/willowmere-tea-house",
+        "accessed": "2027-08-30",
+        "title": "Fixture Guide: Willowmere Tea House",
+        "ref": "H051"
+      },
+      {
+        "url": "https://travelnotes.example.net/thornwick/willowmere-tea-house",
+        "accessed": "2027-08-30",
+        "title": "Travel Notes (fixture): Willowmere Tea House",
+        "ref": "H052"
+      }
+    ],
+    "confidence": "confirmed",
+    "calibration": null,
+    "estimated_on": "2027-08-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureHtReedmarshShrine",
+    "activity": "shrine visit",
+    "category": "shrine",
+    "range": null,
+    "typical": null,
+    "chosen_minutes": 30,
+    "sources": [],
+    "confidence": "unverified",
+    "calibration": null,
+    "estimated_on": "2027-08-30"
+  }
+]

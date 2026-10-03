@@ -34,8 +34,8 @@ async function planFixture(L, name, extra = {}) {
 
 test('both fixtures plan end to end: schemas, hours, closed days, legs, day bounds, Later reasons', async () => {
   const L = await loadAll();
-  const names = L.fixtures.listFixtures();
-  assert.deepEqual(names, ['transit-city', 'driving-loop']);
+  assert.deepEqual(L.fixtures.listFixtures(), ['transit-city', 'driving-loop', 'hill-town']);
+  const names = ['transit-city', 'driving-loop']; // hill-town (Phase 10, no Google transit) has its own test: pack_tour-guide_planner_legs.test.js
   for (const name of names) {
     const { fx, ledger, plan, byId, snapOf } = await planFixture(L, name);
     const v = L.schemas.validate(plan, 'plan');

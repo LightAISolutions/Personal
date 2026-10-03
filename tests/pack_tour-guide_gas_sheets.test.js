@@ -39,8 +39,8 @@ test('ensureSheets creates the six pack tabs with the contract columns', () => {
   const { ctx } = fresh();
   const head = (n) => sheet(ctx, n).getRange(1, 1, 1, sheet(ctx, n).getLastColumn()).getValues()[0];
   assert.deepEqual(head('Trips'), ['slug', 'title', 'destination', 'start', 'end', 'status', 'build_id', 'verified_on', 'drive_plan',
-    'drive_brochure_html', 'drive_brochure_pdf', 'updated_at', 'lodging', 'review_offered_at']);
-  assert.deepEqual(head('DayPlans'), ['slug', 'date', 'theme', 'stops_json', 'legs_json', 'warnings_json', 'part', 'rain_json']);
+    'drive_brochure_html', 'drive_brochure_pdf', 'updated_at', 'lodging', 'review_offered_at', 'tz']);
+  assert.deepEqual(head('DayPlans'), ['slug', 'date', 'theme', 'stops_json', 'legs_json', 'warnings_json', 'part', 'rain_json', 'meta_json']);
   assert.deepEqual(head('Later'), ['slug', 'place_slug', 'name', 'reason']);
   assert.deepEqual(head('Places'), ['slug', 'name', 'destination', 'area', 'category', 'tags', 'status', 'last_trip', 'last_researched',
     'last_verified', 'note_line', 'maps_url', 'history_json']);
@@ -258,7 +258,7 @@ test('shortlist: one row per item, n resolves to slug, re-delivery replaces its 
 
 test('snapshot tour_guide: trips, the open choice round with tap counts, profile date, places per destination', () => {
   const { ctx } = fresh();
-  assert.deepEqual(J(ctx.buildSnapshot().tour_guide), { trips: [], trips_total: 0, choice_round: null, profile_summary: null, places: {} });
+  assert.deepEqual(J(ctx.buildSnapshot().tour_guide), { trips: [], trips_total: 0, choice_round: null, profile_summary: null, places: {}, bookings: {} });
   ctx.tgTripUpsert({ slug: 'port-sorrel-spring-2027', destination: 'Port Sorrel', start: '2027-05-12', end: '2027-05-14', status: 'choosing' });
   ctx.tgTripUpsert({ slug: 'past-trip', status: 'done', start: '2026-01-01' });
   ctx.tgShortlistStore(shortlist());

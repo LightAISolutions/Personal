@@ -1,0 +1,559 @@
+[
+  {
+    "build_id": "fixture-build-hill-town",
+    "place_id": "FixtureHtKestrelStepsInn",
+    "fetched_at": "2027-09-01T12:00:00.000Z",
+    "location": {
+      "lat": 30.5,
+      "lng": 150.5
+    },
+    "content": {
+      "display_name": "Kestrel Steps Inn",
+      "address": "2 Kestrel Steps, Thornwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 180,
+      "website": "https://kestrel-steps-inn.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/kestrel-steps-inn",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-hill-town",
+    "place_id": "FixtureHtThornbackHillLookout",
+    "fetched_at": "2027-09-01T12:00:00.000Z",
+    "location": {
+      "lat": 30.5045,
+      "lng": 150.503
+    },
+    "content": {
+      "display_name": "Thornback Hill Lookout",
+      "address": "10 Hill Road, Thornwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 60,
+      "website": "https://thornback-hill-lookout.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/thornback-hill-lookout",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-hill-town",
+    "place_id": "FixtureHtMossgateTemple",
+    "fetched_at": "2027-09-01T12:00:00.000Z",
+    "location": {
+      "lat": 30.4985,
+      "lng": 150.504
+    },
+    "content": {
+      "display_name": "Mossgate Temple",
+      "address": "17 Hill Road, Thornwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 8:00 AM – 5:00 PM",
+          "Tuesday: 8:00 AM – 5:00 PM",
+          "Wednesday: 8:00 AM – 5:00 PM",
+          "Thursday: 8:00 AM – 5:00 PM",
+          "Friday: 8:00 AM – 5:00 PM",
+          "Saturday: 8:00 AM – 5:00 PM",
+          "Sunday: 8:00 AM – 5:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 100,
+      "website": "https://mossgate-temple.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/mossgate-temple",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-hill-town",
+    "place_id": "FixtureHtEmberLaneFolkMuseum",
+    "fetched_at": "2027-09-01T12:00:00.000Z",
+    "location": {
+      "lat": 30.501,
+      "lng": 150.496
+    },
+    "content": {
+      "display_name": "Ember Lane Folk Museum",
+      "address": "24 Hill Road, Thornwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Closed",
+          "Tuesday: 9:00 AM – 5:00 PM",
+          "Wednesday: 9:00 AM – 5:00 PM",
+          "Thursday: 9:00 AM – 5:00 PM",
+          "Friday: 9:00 AM – 5:00 PM",
+          "Saturday: 9:00 AM – 5:00 PM",
+          "Sunday: 9:00 AM – 5:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 140,
+      "website": "https://ember-lane-folk-museum.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/ember-lane-folk-museum",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-hill-town",
+    "place_id": "FixtureHtLanternPondGarden",
+    "fetched_at": "2027-09-01T12:00:00.000Z",
+    "location": {
+      "lat": 30.497,
+      "lng": 150.4985
+    },
+    "content": {
+      "display_name": "Lantern Pond Garden",
+      "address": "31 Hill Road, Thornwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 9:00 AM – 4:30 PM",
+          "Tuesday: 9:00 AM – 4:30 PM",
+          "Wednesday: 9:00 AM – 4:30 PM",
+          "Thursday: 9:00 AM – 4:30 PM",
+          "Friday: 9:00 AM – 4:30 PM",
+          "Saturday: 9:00 AM – 4:30 PM",
+          "Sunday: 9:00 AM – 4:30 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 16,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 16,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 16,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 16,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 16,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 16,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 16,
+              "minute": 30
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.5,
+      "review_count": 180,
+      "website": "https://lantern-pond-garden.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/lantern-pond-garden",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-hill-town",
+    "place_id": "FixtureHtWillowmereTeaHouse",
+    "fetched_at": "2027-09-01T12:00:00.000Z",
+    "location": {
+      "lat": 30.502,
+      "lng": 150.501
+    },
+    "content": {
+      "display_name": "Willowmere Tea House",
+      "address": "38 Hill Road, Thornwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 AM – 5:00 PM",
+          "Tuesday: 10:00 AM – 5:00 PM",
+          "Wednesday: 10:00 AM – 5:00 PM",
+          "Thursday: 10:00 AM – 5:00 PM",
+          "Friday: 10:00 AM – 5:00 PM",
+          "Saturday: 10:00 AM – 5:00 PM",
+          "Sunday: 10:00 AM – 5:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.6,
+      "review_count": 220,
+      "website": "https://willowmere-tea-house.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/willowmere-tea-house",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-hill-town",
+    "place_id": "FixtureHtReedmarshShrine",
+    "fetched_at": "2027-09-01T12:00:00.000Z",
+    "location": {
+      "lat": 30.4995,
+      "lng": 150.5065
+    },
+    "content": {
+      "display_name": "Reedmarsh Shrine",
+      "address": "45 Hill Road, Thornwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": null,
+      "current_hours": null,
+      "rating": 4.7,
+      "review_count": 260,
+      "website": "https://reedmarsh-shrine.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/reedmarsh-shrine",
+      "time_zone": "Etc/GMT-9"
+    }
+  }
+]

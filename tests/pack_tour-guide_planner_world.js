@@ -15,7 +15,7 @@ const PLACES = [
   { id: 'shut-gallery', place_id: 'FixtureMiniShut07', name: 'Shut Gallery', category: 'museum', priority: 2, lat: 40.009, lng: -70.009, typical: 60, hours: daily(10, 18), business_status: 'CLOSED_TEMPORARILY' },
   { id: 'green-park', place_id: 'FixtureMiniPark08', name: 'Green Park', category: 'park', priority: 3, lat: 40.015, lng: -70.001, typical: 60, hours: always() },
   { id: 'saturday-cafe', place_id: 'FixtureMiniCafe09', name: 'Saturday Cafe', category: 'cafe', priority: 3, lat: 40.007, lng: -70.007, typical: 30, hours: only([6], 8, 14) },
-  { id: 'tile-workshop', place_id: 'FixtureMiniTiles10', name: 'Tile Workshop', category: 'shop', priority: 2, lat: 40.011, lng: -70.013, typical: 45, hours: daily(11, 17) }
+  { id: 'tile-workshop', place_id: 'FixtureMiniTiles10', name: 'Tile Workshop', category: 'workshop', priority: 2, lat: 40.011, lng: -70.013, typical: 45, hours: daily(11, 17) }
 ];
 function period(day, oh, ch, cm = 0) { return { open: { day, hour: oh, minute: 0 }, close: { day, hour: ch, minute: cm } }; }
 function daily(oh, ch, cm = 0) { return [0, 1, 2, 3, 4, 5, 6].map((d) => period(d, oh, ch, cm)); }

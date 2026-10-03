@@ -6,16 +6,18 @@
  * outranks ten nice-to-haves), then the earliest return to the lodging. Lunch is mandatory on any day that runs past
  * the lunch window (a day back at the lodging by `lunch.close` eats there); a day that cannot fit lunch drops stops.
  * Stops end by `dayEnd`; only the return leg may spill, up to `maxSpill` minutes. Up to 12 stops (2^12·13·2 states).
- *   solveDay({ stops, travel, departAt, dayEnd, lunch, maxWait, maxSpill }) → { order, items, finish, hasLunch, value, states }
+ *   solveDay({ stops, travel, departAt, dayEnd, lunch, maxWait, maxSpill, buffer }) → { order, items, finish, hasLunch, value, states }
  *   stops[i] = { minutes, priority, windows: [{open, close}] ([] = no constraint), booking: minutes | null }
  *   travel(a, b) → minutes, a/b ∈ 'S' (start lodging) | 'E' (end lodging) | stop index; Infinity = unreachable
+ *   buffer(a, b) → minutes of slack after the leg a → b before stop b starts (optional, default none; Phase 10). A booked
+ *   stop's buffer shrinks to the slack before the booking, so a buffer never drops a booking.
  */
 import { earliestFit } from './planner-hours.mjs';
 
 export const WEIGHT = Object.freeze({ 1: 100, 2: 10, 3: 1 });
 export const MAX_STOPS = 12;
 
-export function solveDay({ stops, travel, departAt, dayEnd, lunch = null, maxWait = 75, maxSpill = 90 }) {
+export function solveDay({ stops, travel, departAt, dayEnd, lunch = null, maxWait = 75, maxSpill = 90, buffer = null }) {
   const n = stops.length;
   if (n > MAX_STOPS) throw new Error(`planner: solveDay takes at most ${MAX_STOPS} stops (got ${n})`);
   if (lunch && departAt > lunch.close) lunch = null; // the day starts after lunchtime
@@ -45,10 +47,11 @@ export function solveDay({ stops, travel, departAt, dayEnd, lunch = null, maxWai
           const tr = travel(last === L ? 'S' : last, j);
           if (!(tr < Infinity)) continue;
           const arrive = t + tr, st = stops[j];
+          const ready = arrive + (buffer ? buffer(last === L ? 'S' : last, j) || 0 : 0);
           let start;
           if (st.booking != null) { if (arrive > st.booking || st.booking + st.minutes > dayEnd) continue; start = st.booking; }
-          else { const f = earliestFit(st.windows, arrive, st.minutes, dayEnd); if (!f) continue; start = f.start; }
-          if (st.booking == null && start - arrive > maxWait) continue; // a booked stop may wait any length: the wait is free time, never a reason to drop the booking
+          else { const f = earliestFit(st.windows, ready, st.minutes, dayEnd); if (!f) continue; start = f.start; }
+          if (st.booking == null && start - ready > maxWait) continue; // a booked stop may wait any length: the wait is free time, never a reason to drop the booking
           relax(sidx(mask | (1 << j), j, ld), start + st.minutes, from, start);
         }
       }

@@ -3,11 +3,14 @@
  * Routes travel mode to the brochure's (TRANSIT→transit, WALK→walk, DRIVE→drive, anything else→other) and carry the
  * transit `line`; meals at "lodging" name the lodging; warn/alert warnings go to the day's "Mind" block, info
  * warnings become a note on their stop (or stay as an info line when they name no stop of the day); `rain_swaps` become
- * the day's "If it rains" alternatives.
+ * the day's "If it rains" alternatives. Phase 10 fields (Contract C10) pass through when the DayPlan has them: a leg's
+ * `estimated` mark, `flags`, `taxi_minutes` and `buffer_minutes`; a stop's `time_style` and `check_on_day`; the day's
+ * `spare_minutes`. An older DayPlan without them maps as before.
  */
 import { clip, compact, SHORT, TEXT } from './brochure-map-text.mjs';
 
 export const MODE_MAP = Object.freeze({ TRANSIT: 'transit', WALK: 'walk', DRIVE: 'drive', BICYCLE: 'bike', TWO_WHEELER: 'other' });
+export const LEG_FLAGS = Object.freeze(['footpath', 'trail', 'uphill', 'downhill']);
 export const LIMITS = Object.freeze({ stops: 14, legs: 20, meals: 8, free: 8, warnings: 12 });
 const SEVERITY_RANK = { alert: 0, warn: 1, info: 2 };
 const TIME = /^([01]?\d|2[0-3]):[0-5]\d$/;
@@ -46,7 +49,9 @@ export function mapDay(dp, { placesBySlug, cards, lodgingName }) {
   const stops = dp.stops.map((s) => compact({
     place: s.place, arrive: s.arrive, depart: s.depart,
     activity: clip(s.activity, SHORT), minutes: mins(s.minutes),
-    booked: bookedText(s, placesBySlug.get(s.place), dp.date)
+    booked: bookedText(s, placesBySlug.get(s.place), dp.date),
+    time_style: s.time_style === 'about' || s.time_style === 'exact' ? s.time_style : undefined,
+    check_on_day: clip(s.check_on_day, SHORT)
   }));
   const ends = (x) => (x === 'lodging' || cards[x] ? x : undefined);
   const legs = (dp.legs || []).slice(0, LIMITS.legs).map((l) => compact({
@@ -54,7 +59,11 @@ export function mapDay(dp, { placesBySlug, cards, lodgingName }) {
     distance_m: Number.isFinite(l.distance_m) && l.distance_m >= 0 ? l.distance_m : undefined,
     depart_at: time(l.depart_at), arrive_at: time(l.arrive_at),
     maps_url: l.maps_url ? String(l.maps_url).slice(0, 2000) : undefined,
-    line: clip(l.line, SHORT), note: clip(l.note, SHORT)
+    line: clip(l.line, SHORT), note: clip(l.note, SHORT),
+    estimated: l.estimated ? true : undefined,
+    flags: Array.isArray(l.flags) ? [...new Set(l.flags.filter((f) => LEG_FLAGS.includes(f)))] : undefined,
+    taxi_minutes: mins(l.taxi_minutes),
+    buffer_minutes: Number.isInteger(l.buffer_minutes) && l.buffer_minutes >= 0 && l.buffer_minutes <= 120 ? l.buffer_minutes : undefined
   }));
   const meals = (dp.meals || []).slice(0, LIMITS.meals).map((x) => {
     const m = { kind: x.kind, start: x.start, end: time(x.end), note: clip(x.note, SHORT) };
@@ -80,7 +89,8 @@ export function mapDay(dp, { placesBySlug, cards, lodgingName }) {
     stops, legs, meals, free,
     warnings: warnings.slice(0, LIMITS.warnings),
     alternatives: swaps.length ? { title: RAIN_TITLE, items: swaps } : undefined,
-    verified_on: dp.verified_on
+    verified_on: dp.verified_on,
+    spare_minutes: mins(dp.spare_minutes)
   });
 }
 

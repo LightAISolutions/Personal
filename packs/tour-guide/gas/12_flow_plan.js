@@ -227,7 +227,8 @@ function tgPlanDatesProblem(text) {
   if (m.length === 2 && m[1] < m[0]) return 'The end date (' + tgEscape(m[1]) + ') is before the start (' + tgEscape(m[0]) + ') — send them as <code>start to end</code>.';
   var d = tgPlanParseDates(text);
   if (!d) return 'I could not read those dates (one or two dates, at most ' + TG_PLAN_SPAN_MAX_DAYS + ' days).';
-  if (d.start < isoDateLocal()) return 'That trip would start in the past (' + tgCmdDate(d.start) + ') — send dates from today on.';
+  // No trip zone exists yet: accept the earlier of "today" at home and where the owner is now (WP-10a).
+  if (d.start < [isoDateLocal(), isoDateIn(tgOwnerTz())].sort()[0]) return 'That trip would start in the past (' + tgCmdDate(d.start) + ') — send dates from today on.';
   return '';
 }
 /** The seed names of one message before any trimming (same split as tgPlanSeedsFrom). */

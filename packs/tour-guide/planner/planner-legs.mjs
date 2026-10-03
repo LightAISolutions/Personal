@@ -66,16 +66,100 @@ export async function fetchMatrix(maps, { points, mode, departureTime = null, tr
 }
 
 /**
- * One real leg: computeRoutes(from, to) at `departureTime` → { minutes, distance_m, line } (minutes Infinity when
- * Google found no route). With `fallback` (TRANSIT only) a missing route becomes the distance estimate ({ estimated: true }).
+ * Honest legs (Phase 10, WP-10b). The extra Compute Routes (Essentials) requests a planned day may spend on its walked
+ * legs, through the same Maps-kit client, ledger and budget guard as every other call:
+ *   · at most one WALK request per leg the rail estimator decided to walk (Google's own walking minutes and distance);
+ *   · at most one DRIVE request per walked leg that is uphill, on a trail, or on a footpath with no hill-type end (the
+ *     taxi time, and the hill test by route length);
+ *   · at most LEG_EXTRA.MAX_PER_DAY extra requests per day; past it a walked leg keeps its estimate and gets no taxi time.
+ * HILL_RATIO: a footpath walk whose driving route is at least this many times longer is hilly (no elevation service).
  */
-export async function fetchLeg(maps, { from, to, mode, departureTime = null, transitPreferences = null, fallback = null }) {
+export const LEG_EXTRA = Object.freeze({ MAX_PER_DAY: 12, PER_WALKED_LEG: 2, HILL_RATIO: 1.8 });
+/** Route warnings that put a walk on a footpath (restricted-use or pedestrian-only ways, stairs, steps, trails). */
+export const FOOTPATH_RE = /restricted|pedestrian(?:-only| only| path| way| walkway| street|s only)|footpath|foot path|walkway|stairs|steps|private road/i;
+/** Google's WALK beta notice says a route may be MISSING pedestrian paths: that sentence is not a footpath. */
+export const WALK_NOTICE_RE = /\bbeta\b|\bmissing\b|\bmay be missing\b|use caution/i;
+export const TRAIL_RE = /\btrail\b|\bhiking\b|\bhike\b/i;
+const HILL_CATEGORIES = ['viewpoint', 'hike', 'trail'];
+const NOT_HILL_BY_NAME = ['restaurant', 'cafe', 'bar', 'shop', 'mall', 'market'];
+export const HILL_NAME_RE = /\bhill\b|\bhills\b|\bmount\b|\bmt\.? |-yama\b|-san\b|\bpeak\b|\blookout\b|\bsummit\b/i;
+/** isHillPoint(point) → true for a place (never a lodging) that is a viewpoint or summit, or whose name says hill, mount, -yama, -san, peak, lookout. */
+export function isHillPoint(p) {
+  if (!p || !p.id || !p.category) return false;
+  if (HILL_CATEGORIES.includes(p.category)) return true;
+  return !NOT_HILL_BY_NAME.includes(p.category) && HILL_NAME_RE.test(String(p.name || ''));
+}
+/** routeFlags({ from, to, warnings }) → the walk's character from what is known without elevation (sorted, unique). */
+export function routeFlags({ from, to, warnings = [] }) {
+  const f = new Set();
+  const lines = warnings.map(String);
+  if (lines.some((w) => FOOTPATH_RE.test(w) && !WALK_NOTICE_RE.test(w))) f.add('footpath');
+  if ([from, to].some((p) => p && (p.category === 'hike' || p.category === 'trail')) || lines.some((w) => TRAIL_RE.test(w) && !WALK_NOTICE_RE.test(w))) f.add('trail');
+  const up = isHillPoint(to), down = isHillPoint(from);
+  if (up && !down) f.add('uphill');
+  if (down && !up) f.add('downhill');
+  return FLAG_ORDER.filter((x) => f.has(x));
+}
+export const FLAG_ORDER = Object.freeze(['footpath', 'trail', 'uphill', 'downhill']);
+/** A per-day allowance of extra requests: { take() → boolean, used }. */
+export function legAllowance(max = LEG_EXTRA.MAX_PER_DAY) {
+  return { used: 0, max, take() { if (this.used >= this.max) return false; this.used += 1; return true; } };
+}
+/** One optional request: the route, or null when Google has none, refuses, fails or the ledger ceiling is reached. */
+async function tryRoute(maps, opts) {
+  try { const { route } = await maps.computeRoutes(opts); return route && route.durationSec != null ? route : null; } catch { return null; }
+}
+const transfersOf = (route) => Math.max(0, (route.legs || []).reduce((n, l) => n + (l.steps || []).filter((s) => s.travelMode === 'TRANSIT').length, 0) - 1);
+const allWalk = (route) => { const steps = (route.legs || []).flatMap((l) => l.steps || []); return steps.length > 0 && steps.every((s) => s.travelMode === 'WALK'); };
+
+/**
+ * One real leg: computeRoutes(from, to) at `departureTime` →
+ *   { minutes, distance_m, line, mode, transfers, requests, estimated?, warning?, flags?, taxi_minutes? }
+ * minutes is Infinity when Google found no route. `mode` is how the leg is travelled: a TRANSIT leg the rail estimator
+ * walks (or Google answers with walking only) is 'WALK'. `requests` counts every Compute Routes call made here.
+ *   · a rail-estimated walk asks Google once for a WALK route and uses its minutes and distance; if that fails (or the
+ *     day's allowance is spent) the leg keeps the estimate: estimated: true and the estimator's warning;
+ *   · a rail-estimated train leg, or the distance fallback (`fallback`, TRANSIT only), is estimated: true;
+ *   · a walked leg gets `flags` (routeFlags) and, when uphill or on a trail, `taxi_minutes` from one DRIVE request; a
+ *     footpath walk with no hill-type end asks for the DRIVE route too and is hilly (uphill and downhill) when the
+ *     drive is at least LEG_EXTRA.HILL_RATIO times longer.
+ * from/to: { placeId?, lat?, lng?, name, id?, category? } — `id` and `category` only on places (never the lodging).
+ */
+export async function fetchLeg(maps, { from, to, mode, departureTime = null, transitPreferences = null, fallback = null, allowance = null }) {
+  const extra = allowance || legAllowance(0);
   const opts = { origin: waypoint(from), destination: waypoint(to), travelMode: mode };
   if (departureTime) opts.departureTime = departureTime;
   if (mode === 'TRANSIT' && transitPreferences) opts.transitPreferences = transitPreferences;
   const { route } = await maps.computeRoutes(opts);
-  if (!route || route.durationSec == null) return (mode === 'TRANSIT' && estimateTransit(from, to, fallback)) || { minutes: Infinity, distance_m: null, line: null };
-  return { minutes: minutes(route.durationSec), distance_m: route.distanceMeters ?? null, line: transitLine(route) };
+  let requests = 1;
+  if (!route || route.durationSec == null) {
+    const est = mode === 'TRANSIT' && estimateTransit(from, to, fallback);
+    return est ? { ...est, mode, transfers: 0, requests } : { minutes: Infinity, distance_m: null, line: null, mode, transfers: 0, requests };
+  }
+  let leg = { minutes: minutes(route.durationSec), distance_m: route.distanceMeters ?? null, line: transitLine(route), mode, transfers: transitLine(route) ? transfersOf(route) : 0 };
+  let warnings = route.warnings || [];
+  if (route.estimated === 'walk') {
+    leg = { ...leg, mode: 'WALK', line: null, transfers: 0 };
+    const w = extra.take() ? (requests += 1, await tryRoute(maps, { origin: opts.origin, destination: opts.destination, travelMode: 'WALK' })) : null;
+    if (w) { leg.minutes = minutes(w.durationSec); leg.distance_m = w.distanceMeters ?? leg.distance_m; warnings = w.warnings || []; }
+    else { leg.estimated = true; leg.warning = warnings[0] || 'Estimated walk: Google returned no route'; warnings = []; }
+  } else if (route.estimated) {
+    leg.estimated = true; leg.warning = warnings[0] || 'Estimated transit leg';
+    warnings = [];
+  } else if (mode === 'TRANSIT' && allWalk(route)) {
+    leg = { ...leg, mode: 'WALK', line: null, transfers: 0 };
+  }
+  if (leg.mode !== 'WALK') return { ...leg, requests };
+  let flags = routeFlags({ from, to, warnings });
+  const hillTest = flags.includes('footpath') && !flags.includes('uphill') && !flags.includes('downhill');
+  if ((flags.includes('uphill') || flags.includes('trail') || hillTest) && extra.take()) {
+    requests += 1;
+    const d = await tryRoute(maps, { origin: opts.origin, destination: opts.destination, travelMode: 'DRIVE' });
+    if (d && hillTest && leg.distance_m > 0 && d.distanceMeters >= LEG_EXTRA.HILL_RATIO * leg.distance_m) { const hilly = new Set([...flags, 'uphill', 'downhill']); flags = FLAG_ORDER.filter((x) => hilly.has(x)); }
+    if (d && (flags.includes('uphill') || flags.includes('trail'))) leg.taxi_minutes = Math.min(1440, minutes(d.durationSec));
+  }
+  if (flags.length) leg.flags = flags;
+  return { ...leg, requests };
 }
 export function transitLine(route) {
   const names = [];

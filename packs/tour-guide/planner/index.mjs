@@ -23,9 +23,9 @@ import { withRailEstimates } from './planner-rail.mjs';
 import { withBusFallback } from './planner-transit.mjs';
 import { rainSwaps } from './planner-rain.mjs';
 
-export { PlanBudgetError, SKU } from './planner-budget.mjs';
+export { PlanBudgetError, SKU, extraCallsFor } from './planner-budget.mjs';
 export { solveDay, WEIGHT, MAX_STOPS } from './planner-solve.mjs';
-export { hoursOn, earliestFit, unfitCode } from './planner-hours.mjs';
+export { hoursOn, earliestFit, unfitCode, knownWindows, irregularText, IRREGULAR_LINE_RE } from './planner-hours.mjs';
 export { assign, FAR_KM, CAP, dayCapacity } from './planner-assign.mjs';
 export { prepare, buildDays, lodgingForNight, modeFor, PACE } from './planner-input.mjs';
 export { localToIso, weekdayOf, dateRange, toMin, hm } from './planner-time.mjs';
@@ -33,9 +33,12 @@ export { DIDNT_FIT, NEXT_TIME, SAVED_BY_YOU } from './planner-later.mjs';
 export { withBusFallback, transitPrefs, railOnly, RAIL_MODES } from './planner-transit.mjs';
 export { withRailEstimates, railEstimate, railLine, rideMinutes, walkMinutes, RAIL, STATION_TYPES } from './planner-rail.mjs';
 export { normalizeChoices, applyChoices, POOL_STATUSES, CHOICE_LISTS, OWNER_CHOICE_REASON } from './planner-choices.mjs';
-export { transitFallback, estimateTransit, TRANSIT_FALLBACK_DEFAULT, ROUTE_FACTOR } from './planner-legs.mjs';
-export { TRANSIT_ESTIMATED_TEXT } from './planner-day.mjs';
-export { rainSwaps, isIndoor, MAX_SWAPS, SWAP_KM, INDOOR_CATEGORIES, OUTDOOR_CATEGORIES } from './planner-rain.mjs';
+export { transitFallback, estimateTransit, TRANSIT_FALLBACK_DEFAULT, ROUTE_FACTOR, fetchLeg, routeFlags, isHillPoint, legAllowance, LEG_EXTRA, FLAG_ORDER, FOOTPATH_RE, TRAIL_RE } from './planner-legs.mjs';
+export { TRANSIT_ESTIMATED_TEXT, WALK_ESTIMATED_TEXT, TRAVEL_ESTIMATED_TEXT, CHECK_IRREGULAR_TEXT, CHECK_UNKNOWN_TEXT, checkOnDay, timeStyle, shortfall, EXACT_NEAR_LAST_ENTRY, LAST_ENTRY_BEFORE_CLOSE } from './planner-day.mjs';
+export { bufferFor, BUFFER } from './planner-buffer.mjs';
+export { guardNote, guardNoteFields, noteConflict, clockOf, NOTE_RULES } from './planner-notes.mjs';
+export { refineCategory, withRefinedCategory, minVisit, MIN_VISIT, COVERED_SIGHTS, MEAL_CATEGORIES, NEW_CATEGORIES } from './planner-category.mjs';
+export { rainSwaps, isIndoor, isCoveredSight, MAX_SWAPS, SWAP_KM, INDOOR_CATEGORIES, OUTDOOR_CATEGORIES } from './planner-rain.mjs';
 
 const fail = (m) => { throw new Error('planner: ' + m); };
 

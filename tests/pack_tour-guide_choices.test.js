@@ -56,8 +56,9 @@ function properties(L, name, fx, p) {
     const pid = (ref, lodging) => byId.get(ref === 'lodging' ? lodging : ref).place_id;
     for (const leg of day.legs) {
       if (leg.estimated) continue; // estimated TRANSIT legs (WP-3e) are not in the travel table
-      const want = L.fixtures.fixtureTravel(fx, day.mode, pid(leg.from, day.lodging_start), pid(leg.to, day.lodging_end));
-      assert.ok(Math.abs(leg.minutes - want.durationSec / 60) <= 1, `${name}: leg ${leg.from}→${leg.to} matches the recorded time`);
+      // Phase 10: a walked leg on a TRANSIT day carries Google's WALK route (or the TRANSIT answer that was walking only).
+      const want = [...new Set([leg.mode, day.mode])].map((m) => L.fixtures.fixtureTravel(fx, m, pid(leg.from, day.lodging_start), pid(leg.to, day.lodging_end)));
+      assert.ok(want.some((w) => Math.abs(leg.minutes - w.durationSec / 60) <= 1), `${name}: leg ${leg.from}→${leg.to} matches the recorded time`);
     }
     const last = day.legs[day.legs.length - 1];
     if (last && toMin(last.arrive_at) > dayEnd) assert.ok(day.warnings.some((w) => w.code === 'over_long_day'));
@@ -69,7 +70,7 @@ const listed = (p) => new Map(p.later.flatMap((l) => l.items.map((it) => [it.pla
 
 test('choices on both fixtures: picks are the pool, kept places go to "Saved by you", skipped places are rejected', async () => {
   const L = await loadAll();
-  for (const name of L.fixtures.listFixtures()) {
+  for (const name of Object.keys(CHOICES)) { // the choice lists are per fixture (hill-town has too few places to leave three un-picked)
     const choices = CHOICES[name];
     const { fx, plan: p } = await plan(L, name, { choices });
     properties(L, name, fx, p);
@@ -141,7 +142,7 @@ test('a picked place may come from any status; "chosen" input status is pooled; 
 
 test('replanDays keeps the recorded choices; explicit choices win; promoted places join the picks', async () => {
   const L = await loadAll();
-  for (const name of L.fixtures.listFixtures()) {
+  for (const name of Object.keys(CHOICES)) {
     const { input, plan: p } = await plan(L, name, { choices: CHOICES[name] });
     const date = p.days.find((d) => d.stops.length).date;
     const { choices, ...noChoiceInput } = input;

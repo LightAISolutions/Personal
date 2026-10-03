@@ -105,8 +105,7 @@ registerFlow('review', {
 /** The trip /review means: /review <name>; else the latest trip that has ended and is not done; else the current trip. */
 function tgRvPickTrip(arg) {
   if (arg) return tgCmdFindTrip(arg);
-  var today = isoDateLocal();
-  var ended = tgTripList().filter(function (t) { return t.status !== 'done' && t.end && t.end < today; });
+  var ended = tgTripList().filter(function (t) { return t.status !== 'done' && t.end && t.end < tgTripToday(t); });   // each trip's own day
   if (ended.length) return ended[ended.length - 1];
   return tgTripCurrent();
 }
@@ -136,11 +135,11 @@ registerCallback('rv', function (ctx) {
 function tgRvOffer() {
   var chat = tgOwnerChat();
   if (!chat) return { offered: [] };
-  var today = isoDateLocal();
   var map = safeJsonParse(settingGet(TG_SETTINGS.REVIEW_OFFERED, '') || '{}');
   map = map.ok && isPlainObject(map.value) ? map.value : {};
   var offered = [];
   tgTripList().forEach(function (t) {
+    var today = tgTripToday(t);   // the day after the trip ends where the trip was (WP-10a)
     if (!t.end || t.end >= today || map[t.slug] || t.review_offered_at) return;
     if (t.status !== 'planned' && t.status !== 'delivered') return;
     var ago = tgCmdDaysBetween(t.end, today);

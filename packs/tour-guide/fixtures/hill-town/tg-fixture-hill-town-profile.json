@@ -1,0 +1,13 @@
+{
+  "pace": "normal",
+  "interests": {
+    "temple": "high",
+    "viewpoint": "high",
+    "garden": "normal",
+    "museum": "normal"
+  },
+  "meals": {
+    "breakfast_at_lodging": true
+  },
+  "dietary": []
+}

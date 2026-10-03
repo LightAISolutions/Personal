@@ -37,13 +37,14 @@ Input to `planTrip`: `trip`, `places`, `snapshots` (array or map by place id), `
 
 ## Schemas — `schemas/`
 One JSON Schema per entity, `schemas/tour-guide-<kind>.schema.json` (subset of 2020-12, the same one the brochure kit validates).
-Kinds: trip, place, google-snapshot, visit-estimate, place-note, calibration, day-plan, later-list, plan, profile-excerpt, and the six envelope payloads (see "Payloads" below): shortlist, trip-facts, plan-digest, profile-summary, prefs-review, places-digest.
+Kinds: trip, place, google-snapshot, visit-estimate, place-note, calibration, day-plan, later-list, plan, profile-excerpt, booking, and the seven envelope payloads (see "Payloads" below): shortlist, trip-facts, plan-digest, profile-summary, prefs-review, places-digest, bookings.
 - `validate(entity, kind) → { ok, errors: [{ path, message }] }`. It runs the schema first. If that passes, it runs the semantic checks:
   - Trip: real calendar dates, ≤ 31 days, a valid IANA time zone, day_start < day_end, exactly one lodging per night.
-  - Day plan: legs and stops chain lodging → … → lodging; times run in order (they may cross midnight); each leg's minutes match its clock times within 1; each stop sits inside its opening window.
+  - Day plan: legs and stops chain lodging → … → lodging; times run in order (they may cross midnight); each leg's minutes match its clock times within 1; each stop sits inside its opening window; an estimated leg is TRANSIT or WALK and the day then carries exactly one `transit_estimated` warning; a leg's `flags` are listed once.
   - Place: real calendar dates in `last_researched`, `last_verified`, the booking and `history` (oldest first).
   - Plan: each part is validated as its own kind; each non-rejected place is either scheduled or in exactly one Later list. With `plan.choices`: every slug is a known place and sits in one list only; skipped places are rejected and unscheduled; kept places are unscheduled; a candidate that was not picked may be in neither (it was simply not chosen).
   - Payloads: numbering and slugs unique, real dates, end ≥ start, a review's buttons name their own item, digests ≤ 60 000 characters.
+  - Booking: `opens_at` / `book_by` real date-times with an explicit offset (`Z` or `±HH:MM`), `opens_at ≤ book_by`, https links only; a bookings list ≤ 40 records with unique ids.
 - `listKinds()`, `assertValid(entity, kind)` (throws, `err.errors`), `loadSchema(kind)`, `formatErrors(errors)`.
 - Date helpers: `tripDates`, `weekdayOf`, `addDays`, `toMinutes` / `fromMinutes`, `lodgingForNight`, `dayLodgings`.
   - A lodging covers the nights [from, to).
@@ -81,7 +82,7 @@ Kinds: trip, place, google-snapshot, visit-estimate, place-note, calibration, da
 - Pure functions: inputs are never mutated.
 
 ## Fixtures — `fixtures/`
-- Two invented trips, `transit-city` and `driving-loop`. Each has eight JSON parts: trip, places, snapshots, estimates, notes, profile, calibration, routes.
+- Three invented trips, `transit-city`, `driving-loop` and `hill-town` (Phase 10: Google returns no transit routes there, recorded WALK routes carry footpath and trail warnings, recorded DRIVE routes give taxi times, a hill shrine and a lookout, places with `opening_days` / `opening_note`). Each has eight JSON parts: trip, places, snapshots, estimates, notes, profile, calibration, routes.
 - `loadFixture(name)` returns a fresh copy. `listFixtures()`.
 - `fixtureTravel(fx, mode, fromPlaceId, toPlaceId) → { durationSec, distanceMeters, line? }` is the only source of travel times.
   - Lookup order: the tabled pair, then its reverse, then a haversine × 1.3 fallback at the mode's speed.
@@ -111,6 +112,16 @@ const chosen = await planTrip({ …, choices: { picks: ['old-market'], later: ['
 
 **Transit fallback** — Google Routes has no TRANSIT routes in some countries (Japan, for one). The rail estimates above run first; a leg they leave as "no route" (no station in reach, or `railEstimates: false`) falls through to this. When a TRANSIT matrix element is missing or not `ROUTE_EXISTS`, or a TRANSIT Compute Routes call returns no route, the planner does not switch to driving: it estimates the leg as straight-line distance × 1.3 at `trip.transit_fallback.kmh` (default 20) plus `overhead_min` (default 12), rounded up. The solver uses the same estimate for missing matrix pairs. Estimated legs carry `estimated: true`, `estimate_basis: "distance"`, no `line` and the normal transit Maps link; each affected day gets one `transit_estimated` warning ("Transit times on this day are estimates; check the Maps link before you go"). `trip.transit_fallback = { kmh, overhead_min, source?: default|researched, note? }`. DRIVE and WALK days are unchanged. Reasons: `helpers/decisions/WP-3e.md`.
 
+**Honest legs (Phase 10, WP-10b).** A leg that is walked — on a WALK day, or the walk the rail estimates put between two TRANSIT points — gets Google's own WALK route (minutes, `distance_m`, a walking Maps link); a WALK request that fails keeps the distance estimate as `mode: 'WALK', estimated: true`. `routeFlags` reads the route's warnings and the ends: `footpath` (restricted or pedestrian-only ways, stairs), `trail` (a hike or trail end), `uphill` / `downhill` (one end is a hill point: a viewpoint, hike or a name that reads as a hill; a footpath whose road route is ≥ 1.8× longer counts as hilly). An uphill or trail leg gets `taxi_minutes` from one DRIVE request. Every leg but the return gets `buffer_minutes` (`bufferFor`: walk 2/3/5 by length, transit 5 + 5 per change, drive 5, +5 uphill or trail, ≤ 15; shrunk before a booking), and each day `spare_minutes` (its free time after buffers). The extra requests go through the Maps client and its ledger and are counted by `estimateBudget` (`extraCallsFor`: ≤ 2 per walked leg on a TRANSIT day, ≤ 1 on a WALK day, ≤ 12 a day). Google has no elevation in route responses, so hills are inferred, not measured. Reasons: `helpers/decisions/WP-10b.md` 14–21.
+
+**Tidy-up (Phase 10, WP-10b).**
+- New categories `temple`, `shrine`, `garden`, `experience` (Places types `buddhist_temple`/`hindu_temple`, `shinto_shrine`, `garden`/`botanical_garden`, `cultural_center`); `refineCategory` reads an older record's `church` as a temple or shrine by its name when it is loaded, never rewriting it (`planner-category.mjs`).
+- Rain swaps name covered sights only (`isCoveredSight`: museums, galleries, theatres, workshops, experiences, onsen…; a market only when `indoor: true`; never a meal place or a shop).
+- The note guard (`planner-notes.mjs`, `guardNote`): a sentence whose timing advice the schedule contradicts ("go early" on a noon visit) is dropped; the rest stays word for word.
+- A pick that does not fit says how many minutes it was short and offers a shorter visit when one fits (`shortfall`).
+- A place whose opening days are irregular or unknown is planned with a `check_on_day` line instead of being dropped.
+- Each stop gets `time_style`: `exact` for bookings, fixed stops, experiences and visits near last entry, else `about` (shown to the nearest 15 minutes). Reasons: `helpers/decisions/WP-10b.md` 3–13, 22–24.
+
 **Choices** — `input.choices = { picks?, later?, skip? }`, arrays of place slugs (ids); absent → the plan is exactly what it was before choices existed.
 - `picks` is the whole pool: picked places get status `chosen` and are planned; candidates that were not picked stay `candidate`, are not planned and are in no Later list. A place promoted with `scheduled_hint` counts as picked.
 - `later` → the "Saved by you" list (code `owner_choice`), status saved-for-later, never planned.
@@ -122,13 +133,14 @@ Every default and its reason (objective weights, mandatory lunch, meal rules, wa
 
 ## Payloads (envelope types) — `schemas/`
 
-`helper.json` declares six envelope types (no actions: `action_allowlist` is empty). Each has a schema `schemas/tour-guide-<kind>.schema.json` and semantic checks; `PAYLOAD_KINDS` maps type → kind and `validatePayload(type, payload) → { ok, kind, errors }` validates one (an unknown type gives `ok: false, kind: null`). `node helpers/tools/envelope.mjs <type> <skill> <payload.json> --pack tour-guide` refuses a payload that fails it.
+`helper.json` declares seven envelope types (no actions: `action_allowlist` is empty). Each has a schema `schemas/tour-guide-<kind>.schema.json` and semantic checks; `PAYLOAD_KINDS` maps type → kind and `validatePayload(type, payload) → { ok, kind, errors }` validates one (an unknown type gives `ok: false, kind: null`). `node helpers/tools/envelope.mjs <type> <skill> <payload.json> --pack tour-guide` refuses a payload that fails it.
 
 | Type | Kind | Shape (strict: no extra fields) |
 |---|---|---|
 | `shortlist` | shortlist | `{ v?, kind?, trip, run_id, round, groups: [{ id: activities\|food, gems_wanted, gems_shown, items: [{ n, slug, name, why_you, fit 0–1, est_minutes, area, maps_url, labels, place_id?, new?, gem?, gem_line?, seen_before?, changes?, dims? }] ≤ 20 }] ≤ 2, more, decided? }` |
 | `trip_facts` | trip-facts | `{ trip, found: [{ n, kind: dates\|lodging\|flight\|booking\|companions\|other, text ≤ 200, start?, end? }] ≤ 40, missing: [kind] ≤ 10 }` |
-| `plan_digest` | plan-digest | `{ trip, build_id, verified_on, days: [{ date, theme, stops: [{ n, slug, name, arrive, depart, minutes, maps_url, note_line }], legs: [{ from, to, mode, minutes, maps_url? }], warnings: [text], rain?: [{ slug, name, instead_of, km, maps_url }] ≤ 2 }], later: [{ slug, name, reason }], drive: { plan, brochure_html, brochure_pdf } }`, ≤ 60 000 characters |
+| `plan_digest` | plan-digest | `{ trip, build_id, verified_on, days: [{ date, theme, stops: [{ n, slug, name, arrive, depart, minutes, maps_url, note_line }], legs: [{ from, to, mode, minutes, maps_url? }], warnings: [text], rain?: [{ slug, name, instead_of, km, maps_url }] ≤ 2 }], later: [{ slug, name, reason }], drive: { plan, brochure_html, brochure_pdf } }`, ≤ 60 000 characters. Contract C10 (Phase 10, all optional, older digests still valid): `tz` (the trip's IANA zone); day `spare_minutes`; stop `time_style` (about\|exact), `check_on_day`; leg `estimated`, `distance_m`, `flags` (footpath\|trail\|uphill\|downhill), `taxi_minutes`, `buffer_minutes` |
+| `bookings` | bookings | `{ v?, kind?, trip, tz, bookings: [{ id, title ≤ 120, kind: train\|lodging\|meal\|sight\|experience\|other, rule ≤ 200, status: todo\|booked\|not_needed, place?, for_date?, opens_at?, book_by?, how? ≤ 120, party_min? 1–20, url? (https), note? ≤ 200, source? ≤ 120, updated? }] ≤ 40 }` — the trip's whole list (replaces the core's; an owner's tap wins) |
 | `profile_summary` | profile-summary | `{ text ≤ 1200 }` — the prefs kit's plain-text summary as is; optional `dimensions_count`, `updated` (ISO date-time) |
 | `prefs_review` | prefs-review | exactly the prefs kit's `buildReview` payload: `{ v: 1, kind, vocab, batch_id, items: [{ cid, dimension, value, stance, statement, suspect, text, buttons }] ≤ 40, held_back, more }` |
 | `places_digest` | places-digest | `{ destination, places: [{ slug, name, area, category, tags, status, last_trip, last_researched, last_verified, note_line, maps_url, history_summary }] }`, ≤ 60 000 characters, no Google content |
@@ -140,7 +152,7 @@ Place records may also carry `destination`, `history[]` (trip, date, event), `la
 `packs/tour-guide/brochure-map/index.mjs` (library; no CLI, no network):
 
     toBrochureModel({ trip, plan, places?, notes?, snapshots?, estimates?,
-                      options: { generator?, built_on?, verified_on?, show_google_content = true } }) → brochure model
+                      options: { generator?, built_on?, verified_on?, show_google_content = true, owner_tz?, now? } }) → brochure model
     renderPlan(args, { page?, embedFonts? })           → { html, model, warnings }   (kit renderHtml)
     renderPlanPdf(args, outPath, { page?, shotsDir? }) → { …, pdf, pages, available } (PDF only when pdfAvailable())
 
@@ -153,6 +165,14 @@ Place records may also carry `destination`, `history[]` (trip, date, event), `la
   hours, the visit day's line, closed days, rating, reviews count, website, Maps link, business status, fetched
   date) + the note's and the estimate's sources. Every place a stop, meal, warning or Later item uses gets a card.
 - Later lists keep their names and reasons (empty lists are dropped). `trip.practical` passes through.
+- `brochure-map-bookings.mjs` → `bookingsSection(bookings, { tripTz, ownerTz, now })`: a "Bookings" practical section
+  (`{ title, items: [{ label, text, url? }] }` or null) — records still to book first, nearest deadline first, then
+  the booked ones; "not needed" left out; each time in the trip's zone and the owner's ("your time"); https links only.
+  `toBrochureModel` puts it first on the practical page from `trip.bookings`, with `options.owner_tz` and `options.now`
+  (past deadlines read "Was due" / "Open since").
+- Phase 10 (Contract C10) fields pass through to the kit: leg `estimated` (marked "(estimate)"), `flags`, `taxi_minutes`,
+  `buffer_minutes`; stop `time_style` ("about 11:45") and `check_on_day`; day `spare_minutes`. A day with a Google walk
+  or bike route shows Google's walking-route notice.
 - Attribution: the union of note and estimate sources of the brochure's places, deduplicated by URL (latest
   access date, merged "supports"), plus the generator line.
 - `show_google_content: false` prints no Places content. Cards keep only our Maps link and the place id, a dated
@@ -185,13 +205,14 @@ Apps Script files bundled after the core in file-name order (`node helpers/tools
 | File | What it does |
 |---|---|
 | `00_common.js` | Request routing (`research → RESEARCH`, `plan · replan → PLAN`, `notes → NOTES`, `brochure → BROCHURE`, `prefs → PREFS`, `places → PLACES`, `message · ask → CHAT`), `tgOpenKindRequest`, `tgSlug`, `tgLines`, shared Settings keys |
-| `10_commands.js` | `/profile /trip /today /day /later /place /places /replan /notes /brochure /lodging /dates`; the `/start` interview offer (`core_start`); callbacks `dy lt rs ps pl` (`rs`: a day's ☔ Swap in button, confirmed, opens a `replan` that promotes the rainy-day option and demotes the stop it replaces) |
+| `10_commands.js` | `/profile /trip /today /day /later /place /places /replan /notes /brochure /lodging /dates` (`/today` and `/replan today` use the trip's own day while away); the `/start` interview offer (`core_start`); callbacks `dy lt rs ps pl` (`rs`: a day's ☔ Swap in button, confirmed, opens a `replan` that promotes the rainy-day option and demotes the stop it replaces); the day card shows the Contract C10 fields when a digest has them (honest legs with flags, taxi time and buffers, "about" times, 🕑 check-on-the-day lines, spare time), the note guard's port, the day's bookings (`tgBkDayLines`) and Google's walking-route notice |
 | `11_flow_interview.js` | `/interview [section\|all\|restart]` — the preference interview (flow `interview`) → a `prefs` request with `payload.interview` |
 | `12_flow_plan.js` | `/plan <destination>`, `/seed`, `/repick` (typed picks take a round prefix: `r1 5 later 7`) — intake → confirm facts → research → shortlist rounds → plan (flow `plan`); renderers `tg_trip_facts`, `tg_shortlist`, `tg_plan_digest`; callbacks `tf sl` |
+| `14_bookings.js` | Booking deadlines (WP-10a): the `Bookings` tab (created on first use), `/bookings` (every open booking, nearest deadline first) and `/bookings now` (today's reminder), the booking lines on `/trip`, `tgBkDayLines(trip, day)` for the day card, and one core alarm (`registerAlarm('tg_bookings')`): an opening alert about 30 min before `opens_at` and a daily reminder at 09:00 in the owner's current zone; buttons `bk:<key>:b\|n\|t` — ✅ Booked · Not needed · Tomorrow, edited in place |
 | `13_flow_review.js` | `/review [trip]` and the daily `tg_review_offer` (the day after a trip ends, once) — 👍 👎 + visit-length taps → a `prefs` request with `payload.review`; callback `rv` |
-| `20_envelopes.js` | Handlers for the six pack envelope types (validate → store → the active `plan` flow, else the renderer); prefs review buttons `pf:<cid>:y\|e\|n` with ✏️ capture (`tg_capture_pf_edit`) → a `prefs` request with `payload.decisions`; the `tour_guide` snapshot in `state.json` |
+| `20_envelopes.js` | Handlers for the seven pack envelope types (`bookings`: store in `Bookings`, set the trip's zone, one silent notice for new to-book records, re-arm the alarm) (validate → store → the active `plan` flow, else the renderer); prefs review buttons `pf:<cid>:y\|e\|n` with ✏️ capture (`tg_capture_pf_edit`) → a `prefs` request with `payload.decisions`; the `tour_guide` snapshot in `state.json` |
 | `22_people.js` | The people the owner travels with (Settings `tg_people`, ≤ 8), who comes on which trip, the day hours `/dates` sets, and `trip_update` — the dates, hours and travellers every research, plan and replan request carries so the routine writes them into the trip file |
-| `21_sheets.js` | Tabs `Trips DayPlans Later Places Choices Shortlist` and their storage API (no Google fields are ever stored) |
+| `21_sheets.js` | Tabs `Trips DayPlans Later Places Choices Shortlist` and their storage API (no Google fields are ever stored); Trips `tz` — each trip's own zone (`tgTripTz`, `tgTripToday`; `tgOwnerTz` is the zone of the trip in progress, else home), set by a digest's or bookings envelope's `tz`; `tour_guide.bookings` in the snapshot |
 | `30_chat_api.js` | Lane B (`tg_lane_b`): free text answered directly through the Claude API — **off by default**; `/smart on\|off` toggles it, `/status` shows the mode (`core_status`) |
 | `31_route.js` | `/route A → B [mode]` through the Apps Script Maps service |
 | `32_app_api.js` | `?route=app` for the Mini App (16 operations, see "The app"), the setup step `app_menu_button`, the 📱 `web_app` buttons on shortlist, plan and `/places` messages, and the shortlist-keyboard refresh after an app choice |

@@ -9,6 +9,7 @@ import { routeSketch, sketchLegend } from '../sketch.mjs';
 import { tripSequence, mapFigure, mapCredit } from '../mapframe.mjs';
 import { icon, MEAL_ICON } from '../icons.mjs';
 import { secHead, hueStyle, hueOf, clockPlain, pageRef } from './common.mjs';
+import { estMark } from './day.mjs';
 
 function dayColumn(d, i, locale) {
   const rows = d.timeline.filter((t) => t.kind === 'stop' || (t.kind === 'meal' && t.place)).map((t) => {
@@ -16,7 +17,7 @@ function dayColumn(d, i, locale) {
     return `<li${t.kind === 'meal' ? ' class="ismeal"' : ''}><span class="n">${n}</span><span>${esc(t.place.name)}${t.closedToday ? ` <span class="closed">${icon('warn', 10)}</span>` : ''}</span><span class="t">${esc(clockPlain(t.start, locale))}</span></li>`;
   });
   const s = d.stats;
-  const foot = join([s.walkMin ? `${duration(s.walkMin)} on foot` : '', s.transitMin ? `${duration(s.transitMin)} in transit` : '', s.driveMin ? `${duration(s.driveMin)} by road` : '', d.lodging ? `night at ${esc(d.lodging.name)}` : ''], ' · ');
+  const foot = join([s.walkMin ? estMark(`${duration(s.walkMin)} on foot`, s.walkEstimated) : '', s.transitMin ? estMark(`${duration(s.transitMin)} in transit`, s.transitEstimated) : '', s.driveMin ? `${duration(s.driveMin)} by road` : '', d.lodging ? `night at ${esc(d.lodging.name)}` : ''], ' · ');
   return `<div class="gday" style="${hueStyle(i)}"><div class="gday-head"><span class="gday-n">${d.index}</span><span class="gday-date">${esc(shortDate(d.date, locale))}</span></div><p class="gday-theme">${esc(d.theme)}</p><ul class="gday-stops">${rows.join('')}</ul>${foot ? `<p class="gday-foot">${foot}</p>` : ''}</div>`;
 }
 function tripSketch(m) {

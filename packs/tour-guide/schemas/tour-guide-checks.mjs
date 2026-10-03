@@ -15,6 +15,7 @@ export function checkTrip(t) {
   const e = (path, message) => errs.push({ path, message });
   for (const k of ['start_date', 'end_date']) if (!isDate(t[k])) e('/' + k, 'not a calendar date');
   if (!validTimeZone(t.timezone)) e('/timezone', 'unknown time zone');
+  if (t.bookings) checkBookingList(t.bookings, '/bookings', errs);
   if (errs.length) return errs;
   const n = daysBetween(t.start_date, t.end_date) + 1;
   if (n < 1) e('/end_date', 'before start_date');
@@ -116,14 +117,16 @@ export function checkDayPlan(d) {
     if (L[i] && L[i].to !== s.place) e(`/legs/${i}/to`, `must be "${s.place}" (stop ${i + 1})`);
     if (L[i + 1] && L[i + 1].from !== s.place) e(`/legs/${i + 1}/from`, `must be "${s.place}" (stop ${i + 1})`);
   });
-  // Estimated TRANSIT legs (WP-3e): TRANSIT only, `estimated` and `estimate_basis` together, one day warning.
+  // Estimated legs: TRANSIT (WP-3e) or WALK when the WALK request failed (WP-10b); `estimated` and `estimate_basis`
+  // together, one day warning. Leg flags (C10) carry no repeats (the validator has no uniqueItems).
   L.forEach((l, i) => {
-    if (l.estimated && l.mode !== 'TRANSIT') e(`/legs/${i}/estimated`, 'only a TRANSIT leg can be estimated');
+    if (l.estimated && l.mode !== 'TRANSIT' && l.mode !== 'WALK') e(`/legs/${i}/estimated`, 'only a TRANSIT or WALK leg can be estimated');
     if (!!l.estimated !== !!l.estimate_basis) e(`/legs/${i}/estimate_basis`, 'estimated and estimate_basis go together');
+    if (Array.isArray(l.flags) && new Set(l.flags).size !== l.flags.length) e(`/legs/${i}/flags`, 'duplicate flag');
   });
   const estimatedLegs = L.filter((l) => l.estimated).length;
   const estWarnings = (d.warnings || []).filter((w) => w.code === 'transit_estimated').length;
-  if (estimatedLegs && estWarnings !== 1) e('/warnings', `a day with estimated transit legs carries exactly one "transit_estimated" warning (found ${estWarnings})`);
+  if (estimatedLegs && estWarnings !== 1) e('/warnings', `a day with estimated legs carries exactly one "transit_estimated" warning (found ${estWarnings})`);
   if (!estimatedLegs && estWarnings) e('/warnings', '"transit_estimated" on a day without an estimated leg');
   // Walk the timeline in order: leg 0, stop 0, leg 1, stop 1, …, last leg.
   const seq = [];
@@ -274,7 +277,36 @@ export function checkPlanDigest(d) {
     dupes(day.stops, 'n', `/days/${i}/stops`, 'stop number', errs);
   });
   dupes(d.later, 'slug', '/later', 'place', errs);
+  // C10 (TG-PHASE-10): a known zone; leg flags unique.
+  if (d.tz !== undefined && !validTimeZone(d.tz)) errs.push({ path: '/tz', message: 'unknown time zone' });
+  d.days.forEach((day, i) => (day.legs || []).forEach((l, j) => {
+    if (Array.isArray(l.flags) && new Set(l.flags).size !== l.flags.length) errs.push({ path: `/days/${i}/legs/${j}/flags`, message: 'duplicate flag' });
+  }));
   sizeCheck(d, errs);
+  return errs;
+}
+
+// ── Bookings (WP-10a) ──
+/** A date-time that passed the schema pattern and is a real instant (2027-02-30T10:00+13:00 is refused). */
+const isZoned = (s) => typeof s === 'string' && isDate(s.slice(0, 10)) && !Number.isNaN(Date.parse(s));
+/** One booking record (tour-guide-booking.schema.json): real dates and date-times, opens_at ≤ book_by. */
+export function checkBooking(b, base = '') {
+  const errs = [];
+  for (const k of ['for_date', 'updated']) if (b[k] !== undefined && !isDate(b[k])) errs.push({ path: `${base}/${k}`, message: 'not a calendar date' });
+  for (const k of ['opens_at', 'book_by']) if (b[k] !== undefined && !isZoned(b[k])) errs.push({ path: `${base}/${k}`, message: 'not a real date-time' });
+  if (isZoned(b.opens_at) && isZoned(b.book_by) && Date.parse(b.opens_at) > Date.parse(b.book_by)) errs.push({ path: `${base}/book_by`, message: 'book_by is before opens_at' });
+  return errs;
+}
+function checkBookingList(list, base, errs) {
+  (list || []).forEach((b, i) => errs.push(...checkBooking(b, `${base}/${i}`)));
+  dupes(list || [], 'id', base, 'booking id', errs);
+}
+/** The bookings envelope payload: a known zone, unique ids, each record checked, ≤ 60 000 characters. */
+export function checkBookings(p) {
+  const errs = [];
+  if (!validTimeZone(p.tz)) errs.push({ path: '/tz', message: 'unknown time zone' });
+  checkBookingList(p.bookings, '/bookings', errs);
+  sizeCheck(p, errs);
   return errs;
 }
 

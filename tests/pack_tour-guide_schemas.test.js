@@ -44,7 +44,7 @@ function dayPlan() {
 test('every kind has a schema file in the validator subset (only #/$defs refs) and listKinds() names them', async () => {
   const s = await S();
   assert.deepEqual(s.listKinds(), ['trip', 'place', 'google-snapshot', 'visit-estimate', 'place-note', 'calibration', 'day-plan', 'later-list', 'plan', 'profile-excerpt',
-    'shortlist', 'trip-facts', 'plan-digest', 'profile-summary', 'prefs-review', 'places-digest']);
+    'booking', 'shortlist', 'trip-facts', 'plan-digest', 'profile-summary', 'prefs-review', 'places-digest', 'bookings']);
   for (const kind of s.listKinds()) {
     const schema = s.loadSchema(kind);
     assert.equal(schema.$schema, 'https://json-schema.org/draft/2020-12/schema', kind);
@@ -245,6 +245,52 @@ test('plan: recorded choices let an un-picked candidate stay out of every list; 
   assert.ok(s.validate(skipStatus, 'plan').errors.some((e) => /status must be "rejected"/.test(e.message)));
   const keptScheduled = clone(plan); keptScheduled.choices.picks = picked.slice(1); keptScheduled.choices.later.push(picked[0]);
   assert.ok(s.validate(keptScheduled, 'plan').errors.some((e) => /kept for later but is scheduled/.test(e.message)));
+});
+
+const BOOKING = () => ({ id: 'clock-tower-climb', title: 'Clock tower climb', kind: 'sight', rule: 'Two people; tickets open 14 days ahead at 10:00.', status: 'todo',
+  for_date: '2027-06-12', opens_at: '2027-05-29T10:00:00+12:00', book_by: '2027-06-11T18:00:00+12:00', url: 'https://tickets.example.org/tower' });
+
+test('booking: one record validates; offsets, dates, order and https are checked', async () => {
+  const s = await S();
+  assert.deepEqual(s.validate(BOOKING(), 'booking'), { ok: true, errors: [] });
+  const bad = (mutate, p, re) => {
+    const b = BOOKING(); mutate(b);
+    const r = s.validate(b, 'booking');
+    assert.ok(!r.ok && r.errors.some((e) => e.path === p && (!re || re.test(e.message))), `${p}: ${JSON.stringify(r.errors)}`);
+  };
+  bad((b) => { b.opens_at = '2027-05-29 10:00'; }, '/opens_at');
+  bad((b) => { b.opens_at = '2027-05-29T10:00:00.5+12:00'; }, '/opens_at');
+  bad((b) => { b.opens_at = '2027-02-30T10:00:00+12:00'; }, '/opens_at', /date-time/);
+  bad((b) => { b.book_by = '2027-05-28T23:00:00+12:00'; }, '/book_by', /before opens_at/);
+  bad((b) => { b.url = 'javascript:alert(1)'; }, '/url');
+  bad((b) => { b.title = ''; }, '/title');
+  bad((b) => { b.rule = 'r'.repeat(201); }, '/rule');
+  bad((b) => { b.kind = 'flight'; }, '/kind');
+  bad((b) => { b.id = 'Clock Tower'; }, '/id');
+  const tight = BOOKING(); tight.book_by = '2027-05-28T22:00:00Z';   // the same instant as opens_at in another offset
+  assert.ok(s.validate(tight, 'booking').ok, 'opens_at ≤ book_by compares instants, not strings');
+});
+
+test('trip: optional bookings[] (≤ 40, unique ids); the booking definition is the same in all three schemas', async () => {
+  const s = await S(), f = await F();
+  const trip = clone(f.loadFixture('driving-loop').trip);
+  trip.bookings = [BOOKING(), { id: 'dinner', title: 'Dinner', kind: 'meal', rule: 'Ring a day ahead.', status: 'not_needed' }];
+  assert.deepEqual(s.validate(trip, 'trip').errors, []);
+  const dup = clone(trip); dup.bookings[1].id = 'clock-tower-climb';
+  assert.ok(s.validate(dup, 'trip').errors.some((e) => e.path === '/bookings/1/id' && /duplicate booking id/.test(e.message)));
+  const many = clone(trip); many.bookings = Array.from({ length: 41 }, (_, i) => ({ id: `b-${i}`, title: 'T', kind: 'other', rule: 'r', status: 'todo' }));
+  assert.ok(s.validate(many, 'trip').errors.some((e) => e.path === '/bookings'));
+  const http = clone(trip); http.bookings[0].url = 'http://tickets.example.org/tower';
+  assert.ok(s.validate(http, 'trip').errors.some((e) => e.path === '/bookings/0/url'), 'the trip keeps http for its own url but bookings are https only');
+  // The validator subset has no cross-file $ref, so the record is repeated: keep the copies identical.
+  const one = s.loadSchema('booking'), list = s.loadSchema('bookings'), tripSchema = s.loadSchema('trip');
+  const record = { type: one.type, additionalProperties: one.additionalProperties, required: one.required, properties: one.properties };
+  const deref = (schema, node) => JSON.parse(JSON.stringify(node), (k, v) => (v && typeof v === 'object' && typeof v.$ref === 'string' && v.$ref.startsWith('#/$defs/') && Object.keys(v).length <= 2
+    ? { ...schema.$defs[v.$ref.slice(8)], ...(v.description ? { description: v.description } : {}) } : v));
+  const noDesc = (x) => JSON.parse(JSON.stringify(x), (k, v) => (v && typeof v === 'object' && !Array.isArray(v) ? Object.fromEntries(Object.entries(v).filter(([kk]) => kk !== 'description')) : v));
+  const norm = (schema, node) => { const d = noDesc(deref(schema, node)); return JSON.stringify({ type: d.type, additionalProperties: d.additionalProperties, required: d.required, properties: d.properties }); };
+  assert.equal(norm(list, list.$defs.booking), norm(one, record));
+  assert.equal(norm(tripSchema, tripSchema.$defs.booking), norm(one, record));
 });
 
 // Developed by: LightAISolutions

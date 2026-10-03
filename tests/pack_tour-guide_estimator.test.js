@@ -11,7 +11,7 @@ const src = (ref, host) => ({ url: `https://${host}.example.org/page`, title: ho
 
 test('category defaults are the contract table; unknown categories fall back to "other"', async () => {
   const e = await E();
-  assert.deepEqual({ ...e.CATEGORY_DEFAULTS }, { museum: 120, viewpoint: 30, market: 60, hike: 180, park: 60, church: 30, neighbourhood: 90, restaurant: 75, cafe: 30, shop: 45, other: 60 });
+  assert.deepEqual({ ...e.CATEGORY_DEFAULTS }, { museum: 120, viewpoint: 30, market: 60, hike: 180, park: 60, church: 30, neighbourhood: 90, restaurant: 75, cafe: 30, shop: 45, other: 60, temple: 45, shrine: 30, garden: 60, experience: 90 });
   assert.equal(e.categoryDefault('museum'), 120);
   assert.equal(e.categoryDefault('aquarium'), 60);
 });

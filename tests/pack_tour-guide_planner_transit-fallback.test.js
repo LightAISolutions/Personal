@@ -155,7 +155,11 @@ test('schemas: transit_fallback on the trip, estimated legs and the warning on t
   d = clone(); d.legs[0].estimated = false;
   assert.match(msg(d), /\/legs\/0\/estimated/);
   d = clone(); d.legs[0].mode = 'DRIVE';
-  assert.match(msg(d), /\/legs\/0\/estimated only a TRANSIT leg can be estimated/);
+  assert.match(msg(d), /\/legs\/0\/estimated only a TRANSIT or WALK leg can be estimated/);
+  d = clone(); d.legs[0].mode = 'WALK';
+  assert.doesNotMatch(msg(d), /\/legs\/0\/estimated /, 'a WALK leg may be estimated (its WALK request failed, WP-10b)');
+  d = clone(); d.legs[0].flags = ['uphill', 'uphill'];
+  assert.match(msg(d), /\/legs\/0\/flags duplicate flag/);
   d = clone(); for (const l of d.legs) { delete l.estimated; delete l.estimate_basis; }
   assert.match(msg(d), /"transit_estimated" on a day without an estimated leg/);
   d = clone(); d.legs[0].estimate_basis = 'schedule';

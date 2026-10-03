@@ -1,0 +1,58 @@
+{
+  "v": 1,
+  "id": "thornwick-autumn-2027",
+  "title": "Two days in Thornwick",
+  "destination": "Thornwick",
+  "country": "Fictional Isles",
+  "timezone": "Etc/GMT-9",
+  "locale": "en-US",
+  "start_date": "2027-09-14",
+  "end_date": "2027-09-15",
+  "travelers": [
+    "Traveller One"
+  ],
+  "pace": "normal",
+  "day_start": "09:00",
+  "day_end": "18:00",
+  "lodging": [
+    {
+      "id": "kestrel-steps-inn",
+      "name": "Kestrel Steps Inn",
+      "place_id": "FixtureHtKestrelStepsInn",
+      "lat": 30.5,
+      "lng": 150.5,
+      "address": "2 Kestrel Steps, Thornwick, Fictional Isles",
+      "from": "2027-09-14",
+      "to": "2027-09-16",
+      "check_in": "15:00",
+      "check_out": "10:00",
+      "note": "Breakfast included; the inn sits at the foot of the hill steps."
+    }
+  ],
+  "modes": {
+    "default": "TRANSIT",
+    "allowed": [
+      "TRANSIT",
+      "WALK",
+      "DRIVE"
+    ]
+  },
+  "transit_preferences": {
+    "allowedTravelModes": [
+      "TRAIN",
+      "SUBWAY"
+    ],
+    "routingPreference": "FEWER_TRANSFERS"
+  },
+  "status": "intake",
+  "intro": "An invented hill town for testing: everything is a short walk, some of it uphill on steps and footpaths, and Google returns no public-transport route at all.",
+  "practical": [
+    {
+      "title": "Getting around",
+      "text": "Walk: the town is small but steep. Taxis wait at the inn for the hill road.",
+      "items": [
+        "The lookout path is steps most of the way."
+      ]
+    }
+  ]
+}

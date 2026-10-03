@@ -110,7 +110,7 @@ function tgChatContext(text) {
   if (!trip || !trip.slug) return null;
   var lodging = _tgChatParse(trip.lodging, null);
   var ctxObj = {
-    today: isoDateLocal(), trip: { slug: trip.slug, title: trip.title || '', destination: trip.destination || '', start: trip.start || '', end: trip.end || '',
+    today: _tgChatTry(function () { return tgTripToday(trip); }, isoDateLocal()), trip: { slug: trip.slug, title: trip.title || '', destination: trip.destination || '', start: trip.start || '', end: trip.end || '',
       status: trip.status || '', lodging: lodging && lodging.text ? String(lodging.text) : '', verified_on: trip.verified_on || '' },
     days: [], later: [], places: []
   };

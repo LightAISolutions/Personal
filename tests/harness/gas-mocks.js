@@ -302,14 +302,16 @@ function configureRoutine(ctx, state, name) {
   return n;
 }
 
-/** Build a Telegram update. tgUpdate({text}) | tgUpdate({callback:'a:x:y'}) | tgUpdate({document:{...}}) */
+/** Build a Telegram update. tgUpdate({text}) | tgUpdate({callback:'a:x:y', messageText?, replyMarkup?}) | tgUpdate({document:{...}}) */
 let _updateId = 1000;
 function tgUpdate(o = {}) {
   const from = { id: o.fromId !== undefined ? o.fromId : 777, is_bot: false, first_name: 'Owner', username: 'owner' };
   const chat = { id: o.chatId !== undefined ? o.chatId : from.id, type: o.chatType || 'private' };
   const update_id = o.update_id !== undefined ? o.update_id : ++_updateId;
   if (o.callback) {
-    return { update_id, callback_query: { id: 'cq' + update_id, from, message: { message_id: o.messageId || 55, chat: o.callbackChat || chat, text: 'msg' }, chat_instance: 'ci', data: o.callback } };
+    const msg = { message_id: o.messageId || 55, chat: o.callbackChat || chat, text: o.messageText !== undefined ? o.messageText : 'msg' };
+    if (o.replyMarkup) msg.reply_markup = o.replyMarkup;   // the keyboard the tapped message carried (for in-place redraws)
+    return { update_id, callback_query: { id: 'cq' + update_id, from, message: msg, chat_instance: 'ci', data: o.callback } };
   }
   const message = { message_id: o.messageId || update_id, from, chat, date: Math.floor(Date.now() / 1000) };
   if (o.text !== undefined) message.text = o.text;

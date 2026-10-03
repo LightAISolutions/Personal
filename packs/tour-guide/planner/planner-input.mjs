@@ -7,6 +7,7 @@
 import { toMin, isDate, dateRange, assertTimeZone } from './planner-time.mjs';
 import { hoursOn } from './planner-hours.mjs';
 import { isLoc } from './planner-geo.mjs';
+import { refineCategory } from './planner-category.mjs';
 
 export const PACE = Object.freeze({ relaxed: { breakfast: 45, lunch: 75, dinner: 75 }, normal: { breakfast: 35, lunch: 60, dinner: 60 }, packed: { breakfast: 25, lunch: 45, dinner: 45 } });
 export const LUNCH_WINDOW = Object.freeze({ open: 12 * 60, close: 14 * 60 });
@@ -76,18 +77,23 @@ export async function prepare(input) {
     if (p.status !== 'candidate' && p.status !== 'scheduled' && p.status !== 'chosen') continue;
     const snap = snapshots.get(p.place_id) || null;
     const est = estimates.get(p.place_id) || null;
-    const interest = (profile.interests && profile.interests[p.category]) || 'normal';
+    const category = refineCategory(p);   // Phase 10 fix (b): a legacy church named "…-ji" plans as a temple
+    const interest = (profile.interests && (profile.interests[category] || profile.interests[p.category])) || 'normal';
     const booked = p.booking && Number.isInteger(p.booking.minutes) && p.booking.minutes > 0 ? p.booking.minutes : null;   // a booking's own length always wins
-    const cm = chooseMinutes({ estimate: est || undefined, range: est ? est.range : null, typical: est ? est.typical : null, category: p.category, pace: trip.pace, interest, calibration: input.calibration || null,
+    const cm = chooseMinutes({ estimate: est || undefined, range: est ? est.range : null, typical: est ? est.typical : null, category, pace: trip.pace, interest, calibration: input.calibration || null,
       activity: p.activity || null, booked });
     if (!cm || !Number.isInteger(cm.minutes) || cm.minutes < 5) fail(`chooseMinutes returned no usable minutes for ${p.id}`);
     const booking = p.booking && p.booking.date ? { date: p.booking.date, time: toMin(p.booking.time), ref: p.booking.ref || null } : null;
     const hint = p.scheduled_hint && dates.includes(p.scheduled_hint.date) ? p.scheduled_hint.date : null;
-    cands.push({
-      id: p.id, place_id: p.place_id, name: p.name, category: p.category, activity: p.activity, priority: p.priority || 2,
+    const irregular = p.opening_days === 'irregular';   // Phase 10 fix (e): never "closed" on a trip date; scheduled within known hours
+    const cand = {
+      id: p.id, place_id: p.place_id, name: p.name, category, activity: p.activity, priority: p.priority || 2,
       loc: snap && isLoc(snap.location) ? snap.location : null, minutes: booked || cm.minutes, confidence: cm.confidence || (est && est.confidence) || 'unverified',
-      booking, hint, hours: Object.fromEntries(dates.map((d) => [d, hoursOn(snap, d)]))
-    });
+      booking, hint, hours: Object.fromEntries(dates.map((d) => [d, hoursOn(snap, d, { irregular })]))
+    };
+    if (cm.fixed) cand.fixed = true;   // a set session (booking length or a ceremony/class): never shortened, exact time
+    if (typeof p.opening_note === 'string' && p.opening_note.trim()) cand.opening_note = p.opening_note.trim().slice(0, 160);
+    cands.push(cand);
   }
   return { trip, days, cands, saved, chooseMinutes, snapshots, pace: PACE[trip.pace] };
 }

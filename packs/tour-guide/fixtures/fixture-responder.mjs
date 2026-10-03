@@ -6,11 +6,13 @@
  *   POST directions/v2:computeRoutes            one route; legs = fixtureTravel() per consecutive pair (TRANSIT legs carry
  *                                               WALK + TRANSIT steps with transitLine.nameShort = the tabled line);
  *                                               optimizeWaypointOrder → nearest-neighbour order over fixtureTravel()
+ * A fixture whose routes.no_route_modes names the mode gets Google's empty answer ({} — no route) from computeRoutes and
+ * ROUTE_NOT_FOUND matrix elements. A route carries the tabled rows' `warnings` (deduplicated) as Route.warnings.
  * Waypoints resolve from { placeId }, { location: { latLng } } (nearest snapshot within 50 m) or { address } (exact
  * snapshot address). Anything unknown → HTTP 404 with Google's error body, which the kit raises as MapsRequestError
  * code HTTP_404. No network; durations never depend on the departure time.
  */
-import { fixtureTravel, snapshotFor } from './fixture-travel.mjs';
+import { fixtureTravel, snapshotFor, noRoute } from './fixture-travel.mjs';
 import { nearestSnapshot } from './fixture-geo.mjs';
 
 export const SNAP_RADIUS_M = 50;
@@ -124,13 +126,16 @@ function computeRoutes(fixture, body) {
     order = nearestNeighbourOrder(fixture, mode, origin.place_id, inter.map((s) => s.place_id));
     optimized = order;
   }
+  if (noRoute(fixture, mode)) return { status: 200, body: {} };
   const chain = [origin, ...order.map((i) => inter[i]), destination];
   const legs = [];
+  const warnings = [];
   for (let i = 0; i + 1 < chain.length; i++) {
     const a = chain[i], b = chain[i + 1];
     const t = fixtureTravel(fixture, mode, a.place_id, b.place_id);
     const leg = { distanceMeters: t.distanceMeters, duration: secs(t.durationSec), startLocation: latLng(a), endLocation: latLng(b) };
     if (mode === 'TRANSIT') leg.steps = transitSteps(a, b, t, body.departureTime);
+    for (const x of t.warnings || []) if (!warnings.includes(x)) warnings.push(x);
     legs.push(leg);
   }
   const total = legs.reduce((s, l) => s + parseInt(l.duration, 10), 0);
@@ -142,6 +147,7 @@ function computeRoutes(fixture, body) {
   };
   if (mode !== 'TRANSIT') route.staticDuration = secs(total);
   if (optimized) route.optimizedIntermediateWaypointIndex = optimized;
+  if (warnings.length) route.warnings = warnings;
   return { status: 200, body: { routes: [route] } };
 }
 
@@ -150,7 +156,9 @@ function computeRouteMatrix(fixture, body) {
   const O = (body.origins || []).map((o) => resolveWaypoint(fixture, o.waypoint));
   const D = (body.destinations || []).map((d) => resolveWaypoint(fixture, d.waypoint));
   const out = [];
+  const none = noRoute(fixture, mode);
   O.forEach((a, oi) => D.forEach((b, di) => {
+    if (none && a.place_id !== b.place_id) { out.push({ originIndex: oi, destinationIndex: di, status: {}, condition: 'ROUTE_NOT_FOUND' }); return; }
     const t = fixtureTravel(fixture, mode, a.place_id, b.place_id);
     out.push({ originIndex: oi, destinationIndex: di, status: {}, condition: 'ROUTE_EXISTS', distanceMeters: t.distanceMeters, duration: secs(t.durationSec) });
   }));

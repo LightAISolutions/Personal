@@ -1,0 +1,68 @@
+[
+  {
+    "v": 1,
+    "place_id": "FixtureHtThornbackHillLookout",
+    "why_you": "You like a view at the top of a climb.",
+    "what_to_do": "Take the steps from the inn; the last stretch is steep.",
+    "best_time": "Best at sunset, when the town lights come on. Bring water.",
+    "food": "No café at the top.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/thornwick/notes/thornbackhilllookout",
+        "title": "Fixture Guide: Thornwick",
+        "accessed": "2027-08-30",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-08-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureHtMossgateTemple",
+    "why_you": "Temples and moss gardens rank high for you.",
+    "what_to_do": "Walk the moss path behind the main hall.",
+    "best_time": "Arrive at opening, before the tour groups. The bell is rung at noon.",
+    "tickets": "Small entry fee, cash only (fixture).",
+    "sources": [
+      {
+        "url": "https://guide.example.org/thornwick/notes/mossgatetemple",
+        "title": "Fixture Guide: Thornwick",
+        "accessed": "2027-08-30",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-08-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureHtEmberLaneFolkMuseum",
+    "what_to_do": "The lantern-making room upstairs.",
+    "best_time": "Quietest in the afternoon.",
+    "accessibility": "Ground floor only is step-free.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/thornwick/notes/emberlanefolkmuseum",
+        "title": "Fixture Guide: Thornwick",
+        "accessed": "2027-08-30",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-08-30"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureHtWillowmereTeaHouse",
+    "why_you": "A short ceremony in an old townhouse.",
+    "what_to_do": "Sit by the garden window.",
+    "tickets": "Booked ahead; arrive ten minutes early.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/thornwick/notes/willowmereteahouse",
+        "title": "Fixture Guide: Thornwick",
+        "accessed": "2027-08-30",
+        "supports": "what to do"
+      }
+    ],
+    "last_researched": "2027-08-30"
+  }
+]

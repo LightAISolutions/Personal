@@ -15,6 +15,7 @@
     "lodging_start": { "$ref": "#/$defs/slug" },
     "lodging_end": { "$ref": "#/$defs/slug" },
     "theme": { "type": "string", "maxLength": 120 },
+    "spare_minutes": { "type": "integer", "minimum": 0, "maximum": 1440, "description": "The day's unscheduled time after buffers: waits before the next item plus the time left before the day's end." },
     "stops": {
       "type": "array",
       "maxItems": 25,
@@ -41,7 +42,9 @@
             ]
           },
           "confidence": { "enum": ["confirmed", "conflicting", "single-source", "unverified"] },
-          "booked": { "type": "string", "maxLength": 120 }
+          "booked": { "type": "string", "maxLength": 120 },
+          "time_style": { "enum": ["about", "exact"], "description": "exact: a booking, a set session or a visit near closing time (show the minute); about: an estimate (round for display)." },
+          "check_on_day": { "type": "string", "minLength": 1, "maxLength": 160, "description": "Opening days are irregular or unknown: a line telling the owner to check before going." }
         }
       }
     },
@@ -64,8 +67,11 @@
           "maps_url": { "type": "string", "maxLength": 4000, "pattern": "^https://\\S+$" },
           "line": { "type": "string", "minLength": 1, "maxLength": 80 },
           "note": { "type": "string", "maxLength": 300 },
-          "estimated": { "const": true, "description": "Google had no TRANSIT route: minutes are a distance estimate (trip.transit_fallback)." },
-          "estimate_basis": { "enum": ["distance"] }
+          "estimated": { "const": true, "description": "Google returned no route for this leg (no TRANSIT route, or the WALK request failed): minutes are a distance estimate (trip.transit_fallback). The day carries one transit_estimated warning." },
+          "estimate_basis": { "enum": ["distance"] },
+          "flags": { "type": "array", "maxItems": 4, "items": { "enum": ["footpath", "trail", "uphill", "downhill"] }, "description": "Walked legs (Phase 10): footpath = Google's WALK route warns of paths without sidewalks; trail = the route or an end is a trail or hike; uphill / downhill = one end is a hill and the driving route is much longer than the walk." },
+          "taxi_minutes": { "type": "integer", "minimum": 0, "maximum": 1440, "description": "Google's DRIVE minutes for this leg, set when the walk is uphill or on a trail (offer a taxi)." },
+          "buffer_minutes": { "type": "integer", "minimum": 0, "maximum": 120, "description": "Slack the schedule adds after this leg before the next item starts." }
         }
       }
     },

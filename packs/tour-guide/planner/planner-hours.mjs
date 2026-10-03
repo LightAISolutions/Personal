@@ -1,14 +1,47 @@
 /**
  * Tour Guide planner — opening windows for one place on one date, from a GoogleSnapshot's `content.hours.periods`
  * (Google days: 0 = Sunday). Windows are minutes from that date's midnight; an overnight period closes past 1440.
- *   hoursOn(snapshot, date) → { status: 'open' | 'always' | 'closed' | 'unknown' | 'closed_business', windows: [{ open, close }] }
+ *   hoursOn(snapshot, date, { irregular? }) → { status: 'open' | 'always' | 'closed' | 'unknown' | 'irregular' | 'closed_business', windows: [{ open, close }] }
+ * Phase 10 fix (e): a place whose opening days are irregular — its own record says so (`irregular: true`, from the Place's
+ * `opening_days: "irregular"`), or Google's weekday text says the hours vary — is never 'closed' on a date: it is
+ * 'irregular', with the hours Google knows for any weekday (IRREGULAR_WINDOWS_FROM) as its windows, or none.
  */
 import { weekdayOf } from './planner-time.mjs';
 
 export const DAY_MIN = 1440;
 export const ALL_DAY = Object.freeze([{ open: 0, close: DAY_MIN }]);
 
-export function hoursOn(snapshot, date) {
+/** Google weekday text that means the opening days vary (not a fixed weekly pattern). */
+export const IRREGULAR_LINE_RE = /irregular|\bvar(?:y|ies|iable)\b|hours might differ|by appointment|seasonal|check (?:the )?(?:website|instagram|online)/i;
+
+export function hoursOn(snapshot, date, opts = {}) {
+  const base = weeklyHoursOn(snapshot, date);
+  if (base.status === 'closed_business' || base.status === 'open' || base.status === 'always') return base;
+  if (!(opts.irregular || irregularText(snapshot))) return base;
+  return { status: 'irregular', windows: knownWindows(snapshot) };
+}
+
+/** true when Google's weekday text says the hours vary. */
+export function irregularText(snapshot) {
+  const h = snapshot && snapshot.content && snapshot.content.hours;
+  return !!(h && Array.isArray(h.weekday_descriptions) && h.weekday_descriptions.some((l) => IRREGULAR_LINE_RE.test(String(l))));
+}
+
+/** The opening windows of the first weekday (Monday first) Google has periods for — the hours "that are known". */
+export function knownWindows(snapshot) {
+  for (const w of [1, 2, 3, 4, 5, 6, 0]) {
+    const ws = windowsFor(snapshot, w);
+    if (ws.length) return ws;
+  }
+  return [];
+}
+function windowsFor(snapshot, w) {
+  const h = snapshot && snapshot.content && snapshot.content.hours;
+  const periods = h && Array.isArray(h.periods) ? h.periods : [];
+  return periods.length ? periodWindows(periods, w).windows : [];
+}
+
+function weeklyHoursOn(snapshot, date) {
   const c = snapshot && snapshot.content;
   if (!c) return { status: 'unknown', windows: [] };
   if (c.business_status && c.business_status !== 'OPERATIONAL') return { status: 'closed_business', windows: [] };
@@ -21,6 +54,10 @@ export function hoursOn(snapshot, date) {
     const line = lines[(w + 6) % 7] || ''; // Google lists Monday first
     return /closed/i.test(line) ? { status: 'closed', windows: [] } : { status: 'unknown', windows: [] };
   }
+  return periodWindows(periods, w);
+}
+
+function periodWindows(periods, w) {
   const windows = [];
   for (const p of periods) {
     if (!p || !p.open) continue;
@@ -55,7 +92,7 @@ export function earliestFit(windows, t, minutes, latest) {
 export function unfitCode(hours, minutes, dayStart, dayEnd) {
   if (hours.status === 'closed_business') return 'closed_business';
   if (hours.status === 'closed') return 'closed_day';
-  if (hours.status === 'unknown' || hours.status === 'always') return minutes <= dayEnd - dayStart ? null : 'day_full';
+  if (hours.status === 'unknown' || hours.status === 'always' || (hours.status === 'irregular' && !hours.windows.length)) return minutes <= dayEnd - dayStart ? null : 'day_full';
   if (earliestFit(hours.windows, dayStart, minutes, dayEnd)) return null;
   const overlaps = hours.windows.some((w) => w.open < dayEnd && w.close > dayStart);
   return overlaps ? 'outside_hours' : 'outside_day';

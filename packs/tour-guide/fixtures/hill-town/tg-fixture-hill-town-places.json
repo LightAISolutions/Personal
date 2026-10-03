@@ -1,0 +1,100 @@
+[
+  {
+    "v": 1,
+    "id": "thornback-hill-lookout",
+    "place_id": "FixtureHtThornbackHillLookout",
+    "name": "Thornback Hill Lookout",
+    "category": "viewpoint",
+    "tags": [
+      "views",
+      "walk"
+    ],
+    "status": "candidate",
+    "activity": "lookout and view",
+    "priority": 1,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "mossgate-temple",
+    "place_id": "FixtureHtMossgateTemple",
+    "name": "Mossgate Temple",
+    "category": "temple",
+    "tags": [
+      "temple",
+      "moss garden"
+    ],
+    "status": "candidate",
+    "activity": "temple grounds",
+    "priority": 1,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "ember-lane-folk-museum",
+    "place_id": "FixtureHtEmberLaneFolkMuseum",
+    "name": "Ember Lane Folk Museum",
+    "category": "museum",
+    "tags": [
+      "history",
+      "crafts"
+    ],
+    "status": "candidate",
+    "activity": "folk crafts collection",
+    "priority": 2,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "lantern-pond-garden",
+    "place_id": "FixtureHtLanternPondGarden",
+    "name": "Lantern Pond Garden",
+    "category": "garden",
+    "tags": [
+      "garden",
+      "pond"
+    ],
+    "status": "candidate",
+    "activity": "garden walk",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "willowmere-tea-house",
+    "place_id": "FixtureHtWillowmereTeaHouse",
+    "name": "Willowmere Tea House",
+    "category": "experience",
+    "tags": [
+      "tea",
+      "ceremony"
+    ],
+    "status": "candidate",
+    "activity": "tea ceremony",
+    "priority": 1,
+    "booking": {
+      "date": "2027-09-14",
+      "time": "14:00",
+      "ref": "FIXTURE-HT-0914",
+      "minutes": 60
+    },
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "reedmarsh-shrine",
+    "place_id": "FixtureHtReedmarshShrine",
+    "name": "Reedmarsh Shrine",
+    "category": "shrine",
+    "tags": [
+      "shrine",
+      "festival"
+    ],
+    "status": "candidate",
+    "activity": "shrine visit",
+    "priority": 2,
+    "indoor": false,
+    "opening_days": "irregular",
+    "opening_note": "Opens on festival days only; the calendar changes each year."
+  }
+]
