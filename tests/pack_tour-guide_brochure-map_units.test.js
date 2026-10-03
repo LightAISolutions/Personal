@@ -64,6 +64,15 @@ test('a day with no stops becomes a "Free days" practical line; a plan with no s
   assert.deepEqual(m.days.map((d) => d.date), ['2027-05-13']);
   assert.deepEqual(m.practical.find((s) => s.title === 'Free days').items, [{ label: '2027-05-14', text: 'Rest day.' }]);
   assert.deepEqual(kit.validate(m), []);
+  // A last day with nothing planned keeps its bag step and its real end, in the day's order; the line links the end on Maps.
+  input.trip = { ...input.trip, day_overrides: [{ date: '2027-05-14', end: { name: 'Riverside Station', place_id: 'FixtureRiversideStation', time: '16:00' }, bags: 'carry' }] };
+  input.plan.days[1] = { ...input.plan.days[1], end: { name: 'Riverside Station', time: '16:00' }, bags: { kind: 'carry', at: 'lodging', text: 'Carry your bags today · Check out by 11:00' },
+    free: [{ start: '09:00', end: '12:00', note: 'free time before lunch' }, { start: '13:00', end: '15:50', note: 'time to spare near Riverside Station before 16:00' }] };
+  const m2 = bm.toBrochureModel(input);
+  const [line] = m2.practical.find((s) => s.title === 'Free days').items;
+  assert.equal(line.text, 'Carry your bags today · Check out by 11:00. Free time before lunch; time to spare near Riverside Station before 16:00. Ends 16:00 at Riverside Station.');
+  assert.match(line.url, /^https:\/\/www\.google\.com\/maps\/.*query_place_id=FixtureRiversideStation/);
+  assert.deepEqual(kit.validate(m2), []);
   input.plan.days[0] = { ...input.plan.days[0], stops: [], legs: [], meals: [], warnings: [] };
   assert.throws(() => bm.toBrochureModel(input), /no day with a stop/);
 });

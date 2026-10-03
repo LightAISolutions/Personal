@@ -3,7 +3,9 @@
  * with snapshots, that fit the diet). After every day is built, each day (in date order) without a departure gets the
  * best dinner place that is:
  *   · open for dinner that day (Google's hours with the place's own facts; unknown or irregular hours are not promised),
- *   · within DINNER.RADIUS_KM (straight line) of the day's last stop or of the night's lodging,
+ *   · within DINNER.RADIUS_KM (straight line) of the day's last stop or of the night's lodging — on an outlined day,
+ *     a place inside the day's own area (or the outline's dinner place for that evening) may instead be up to
+ *     DINNER.HOME_KM from the lodging: a short ride back out to where the day was spent,
  *   · not used for dinner on another day, not a stop of any day, never `facts.menu.fits: 'no'`, never skipped (rejected)
  *     or kept for later by the owner's choices;
  * ranked by the owner's ✅ picks (status `chosen` / choices.picks), then the Later list (`saved-for-later`), then the
@@ -15,7 +17,9 @@
  * The meal's `at` is the place's slug and its `booking` line comes from trip.bookings (same place and for_date), else the
  * place's facts.booking. The planner never adds a booking.
  *   prepareDinners(list, { snapshots, dates, places, choices }) → pool
- *   addDinners({ built, pool, used, exclude, maps, trip, pace }) → { chosen: [{ date, place }], route_calls } (dayPlans updated in place)
+ *   addDinners({ built, pool, used, exclude, maps, trip, pace, prefer? }) → { chosen: [{ date, place }], route_calls } (dayPlans updated in place)
+ * WP-11e: `prefer` (Map date → place slug, the outline's dinner anchors) ranks that place first on its date and keeps it
+ * off every other date.
  */
 import { hoursOn, earliestFit } from './planner-hours.mjs';
 import { haversineKm, isLoc } from './planner-geo.mjs';
@@ -28,7 +32,7 @@ import { localToIso, hm } from './planner-time.mjs';
 import { DINNER_EARLIEST } from './planner-input.mjs';
 import { legRecord, estimatedWarning, BACK_EARLY_NOTE, FREE_MIN } from './planner-day.mjs';
 
-export const DINNER = Object.freeze({ RADIUS_KM: 1.5, LATEST_END: 23 * 60, MAX_WAIT: 60, FRESHEN_MIN: 15 });
+export const DINNER = Object.freeze({ RADIUS_KM: 1.5, HOME_KM: 5, LATEST_END: 23 * 60, MAX_WAIT: 60, FRESHEN_MIN: 15 });
 /** Straight-line pre-selection speeds (km/h, with the 1.3 route factor); a dinner hop within 1.5 km is a walk unless driving. */
 const EST = Object.freeze({ WALK_KMH: 4.5, DRIVE_KMH: 30, DRIVE_OVERHEAD_MIN: 5, ROUTE_FACTOR: 1.3 });
 const estMinutes = (a, b, mode) => {
@@ -47,12 +51,12 @@ function dinnerWindows(h) {
 /**
  * prepareDinners(list, { snapshots, dates, places, choices }) → [{ id, place_id, name, loc, point, hours, facts, rank, record }]
  * `places` are the planner's (choice-applied) places: a dinner place that is also there takes its status from them.
- * `choices` = the resolved choices (or null): skip and later are left out, picks rank first.
+ * `choices` = applyChoices' result (or null), whose `picks`, `keep` and `skip` are Sets: skip and later are left out, picks rank first.
  */
 export function prepareDinners(list, { snapshots, dates, places = [], choices = null }) {
   if (!Array.isArray(list)) return [];
   const byId = new Map(places.map((p) => [p.id, p]));
-  const picks = choices ? choices.effective.picks : new Set(), keep = choices ? choices.effective.later : new Set(), skip = choices ? choices.effective.skip : new Set();
+  const picks = choices ? choices.picks : new Set(), keep = choices ? choices.keep : new Set(), skip = choices ? choices.skip : new Set();
   const out = [], seen = new Set();
   for (const raw of list) {
     if (!raw || !raw.id || !raw.place_id || seen.has(raw.id)) continue;
@@ -86,8 +90,8 @@ export function dinnerBooking(trip, date, placeId, facts) {
   return [f.required ? 'Booking required' : 'Booking advised', f.lead || null, f.how || null, f.party_min ? `from ${f.party_min} people` : null].filter(Boolean).join(' · ').slice(0, 160);
 }
 
-/** Plan the dinner for one day on straight-line estimates → { route: 'direct' | 'lodging', start } or null. */
-function dryRun(c, ev, date, len, mode) {
+/** Plan the dinner for one day on straight-line estimates → { route: 'direct' | 'lodging', start } or null; `reach` caps lodging → place. */
+function dryRun(c, ev, date, len, mode, reach = DINNER.RADIUS_KM) {
   const ws = dinnerWindows(c.hours[date]);
   if (!ws.length) return null;
   const lastKm = ev.last && ev.last.cand.loc ? haversineKm(ev.last.cand.loc, c.loc) : Infinity;
@@ -96,7 +100,7 @@ function dryRun(c, ev, date, len, mode) {
     const f = earliestFit(ws, Math.max(arrive, DINNER_EARLIEST), len, DINNER.LATEST_END);
     if (f && f.start - arrive <= DINNER.MAX_WAIT) return { route: 'direct', start: f.start };
   }
-  if (haversineKm(ev.lodging, c.loc) > DINNER.RADIUS_KM) return null;
+  if (haversineKm(ev.lodging, c.loc) > reach) return null;
   const t = estMinutes(ev.lodging, c.loc, mode);
   const depart = Math.max(ev.finish + DINNER.FRESHEN_MIN, DINNER_EARLIEST - t);
   const f = earliestFit(ws, depart + t, len, DINNER.LATEST_END);
@@ -107,17 +111,21 @@ function dryRun(c, ev, date, len, mode) {
  * addDinners({ built, pool, used, exclude, maps, trip, pace }) — `built`: [{ dayPlan, evening, day }] in date order;
  * `used`: dinner places already taken (kept days); `exclude`: place slugs scheduled as stops anywhere.
  */
-export async function addDinners({ built, pool, used, exclude, maps, trip, pace }) {
+export async function addDinners({ built, pool, used, exclude, maps, trip, pace, prefer = null }) {
+  const preferred = new Map(prefer ? [...prefer].map(([d, slug]) => [slug, d]) : []);
   const chosen = [];
   let route_calls = 0;
   for (const { dayPlan, evening: ev, day } of built) {
     if (!ev || ev.ends || !pool.length) continue;
     const { date, mode } = day;
     const near = (c) => Math.min(ev.last && ev.last.cand.loc ? haversineKm(ev.last.cand.loc, c.loc) : Infinity, haversineKm(ev.lodging, c.loc));
-    const options = pool.filter((c) => !used.has(c.id) && !exclude.has(c.id) && near(c) <= DINNER.RADIUS_KM)
-      .sort((a, b) => a.rank - b.rank || near(a) - near(b) || a.id.localeCompare(b.id));
+    const mine = (c) => (preferred.get(c.id) === date ? 0 : 1);
+    const area = day.outline && day.outline.area;
+    const reach = (c) => (mine(c) === 0 || (area && haversineKm(c.loc, area) <= area.radius_km) ? DINNER.HOME_KM : DINNER.RADIUS_KM);
+    const options = pool.filter((c) => !used.has(c.id) && !exclude.has(c.id) && near(c) <= reach(c) && (!preferred.has(c.id) || preferred.get(c.id) === date))
+      .sort((a, b) => mine(a) - mine(b) || a.rank - b.rank || near(a) - near(b) || a.id.localeCompare(b.id));
     let pick = null, plan = null;
-    for (const c of options) { plan = dryRun(c, ev, date, pace.dinner, mode); if (plan) { pick = c; break; } }
+    for (const c of options) { plan = dryRun(c, ev, date, pace.dinner, mode, reach(c)); if (plan) { pick = c; break; } }
     if (!pick) continue;
     const timed = await timeDinner({ pick, plan, ev, day, dayPlan, maps, trip, len: pace.dinner });
     route_calls += timed.requests;

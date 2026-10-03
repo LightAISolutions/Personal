@@ -11,10 +11,11 @@
  */
 var TG_KIND_ROUTINE = {
   research: 'RESEARCH', plan: 'PLAN', replan: 'PLAN', notes: 'NOTES', brochure: 'BROCHURE',
-  prefs: 'PREFS', places: 'PLACES', message: 'CHAT', ask: 'CHAT'
+  prefs: 'PREFS', places: 'PLACES', message: 'CHAT', ask: 'CHAT',
+  outline: 'PLAN', day_versions: 'PLAN'   // WP-11f: the journey's outlines and day versions go to the planning routine
 };
 /** Request kinds that carry the owner's trip_update (22_people.js tgTripUpdateOf). */
-var TG_TRIP_UPDATE_KINDS = ['research', 'plan', 'replan'];
+var TG_TRIP_UPDATE_KINDS = ['research', 'plan', 'replan', 'outline', 'day_versions'];
 var TG_SETTINGS = {
   PROFILE_SUMMARY: 'tg_profile_summary',   // JSON { text, dimensions_count?, updated?, received_at } — written by 20_envelopes.js
   CURRENT_TRIP: 'tg_current_trip',         // slug of the trip the owner is working on — written by 12_flow_plan.js

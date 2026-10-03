@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-day-versions.schema.json",
+  "title": "Tour Guide day versions (payload of the `day_versions` envelope)",
+  "description": "Two or three genuinely different versions of one trip day, compared side by side before the plan is built (TG-PHASE-11 wave 2, suggestion 8b); a day with only one way to go (a free day, a tiny pool) carries that one version, so every date of a day_versions request gets its envelope: per version a title, a summary, the stops, minutes walking, on trains and spare, the bookings it needs, the picks it leaves out and its warnings. Every object refuses unknown keys. schemas/index.mjs also checks: date a calendar date, version keys unique, chosen one of them, stop and left-out slugs unique within a version, the whole payload ≤ 60 000 characters.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["trip", "build_id", "date", "versions"],
+  "properties": {
+    "v": { "const": 1 },
+    "kind": { "const": "day_versions" },
+    "trip": { "$ref": "#/$defs/slug" },
+    "build_id": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "date": { "$ref": "#/$defs/date" },
+    "versions": { "type": "array", "minItems": 1, "maxItems": 3, "items": { "$ref": "#/$defs/version" } },
+    "chosen": { "$ref": "#/$defs/key" }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+    "date": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" },
+    "key": { "enum": ["A", "B", "C"] },
+    "minutes": { "type": "integer", "minimum": 0, "maximum": 1440 },
+    "place": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "name"],
+      "properties": {
+        "slug": { "$ref": "#/$defs/slug" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 }
+      }
+    },
+    "version": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "title", "summary", "stops", "walk_minutes", "transit_minutes", "spare_minutes", "bookings", "leaves_out", "warnings"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "summary": { "type": "string", "maxLength": 160 },
+        "stops": {
+          "type": "array",
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["slug", "name"],
+            "properties": {
+              "slug": { "$ref": "#/$defs/slug" },
+              "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+              "time": { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$" }
+            }
+          }
+        },
+        "walk_minutes": { "$ref": "#/$defs/minutes" },
+        "transit_minutes": { "$ref": "#/$defs/minutes" },
+        "spare_minutes": { "$ref": "#/$defs/minutes" },
+        "bookings": { "type": "array", "maxItems": 5, "items": { "type": "string", "minLength": 1, "maxLength": 120 } },
+        "leaves_out": { "type": "array", "maxItems": 10, "items": { "$ref": "#/$defs/place" } },
+        "warnings": { "type": "array", "maxItems": 5, "items": { "type": "string", "minLength": 1, "maxLength": 160 } }
+      }
+    }
+  }
+}

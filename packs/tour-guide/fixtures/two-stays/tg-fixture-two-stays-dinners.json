@@ -1,0 +1,119 @@
+[
+  {
+    "v": 1,
+    "id": "ember-and-oak",
+    "place_id": "FixtureJyEmberAndOak",
+    "name": "Ember and Oak",
+    "category": "restaurant",
+    "tags": [
+      "dinner"
+    ],
+    "status": "chosen",
+    "activity": "dinner",
+    "priority": 2,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-10-15",
+      "sources": [
+        {
+          "url": "https://ember-and-oak.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-10-15"
+        }
+      ],
+      "menu": {
+        "checked": "2027-10-15",
+        "fits": "yes"
+      }
+    }
+  },
+  {
+    "v": 1,
+    "id": "salt-lantern",
+    "place_id": "FixtureJySaltLantern",
+    "name": "Salt Lantern",
+    "category": "restaurant",
+    "tags": [
+      "dinner"
+    ],
+    "status": "candidate",
+    "activity": "dinner",
+    "priority": 2,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-10-15",
+      "sources": [
+        {
+          "url": "https://salt-lantern.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-10-15"
+        }
+      ],
+      "menu": {
+        "checked": "2027-10-15",
+        "fits": "yes"
+      }
+    }
+  },
+  {
+    "v": 1,
+    "id": "driftwood-kitchen",
+    "place_id": "FixtureJyDriftwoodKitchen",
+    "name": "Driftwood Kitchen",
+    "category": "restaurant",
+    "tags": [
+      "dinner"
+    ],
+    "status": "candidate",
+    "activity": "dinner",
+    "priority": 2,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-10-15",
+      "sources": [
+        {
+          "url": "https://driftwood-kitchen.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-10-15"
+        }
+      ],
+      "menu": {
+        "checked": "2027-10-15",
+        "fits": "partly"
+      },
+      "booking": {
+        "required": true,
+        "lead": "2 days ahead",
+        "how": "online"
+      }
+    }
+  },
+  {
+    "v": 1,
+    "id": "pine-hearth",
+    "place_id": "FixtureJyPineHearth",
+    "name": "Pine Hearth",
+    "category": "restaurant",
+    "tags": [
+      "dinner"
+    ],
+    "status": "chosen",
+    "activity": "dinner",
+    "priority": 2,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-10-15",
+      "sources": [
+        {
+          "url": "https://pine-hearth.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-10-15"
+        }
+      ],
+      "menu": {
+        "checked": "2027-10-15",
+        "fits": "yes"
+      }
+    }
+  }
+]

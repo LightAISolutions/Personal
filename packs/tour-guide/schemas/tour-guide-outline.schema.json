@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-outline.schema.json",
+  "title": "Tour Guide outline (payload of the `outline` envelope)",
+  "description": "Up to three whole-journey outlines the owner compares before the days are planned (TG-PHASE-11 wave 2, suggestion 8; one when the trip has only one shape that really differs, which the core takes as it is): per option a title, what it gains and gives up, and per trip date the area, the kind of day, up to three anchors and a note. Every object refuses unknown keys. schemas/index.mjs also checks: option keys unique, every option covers the same dates once and in order (consecutive calendar days, at most 31), anchor slugs unique within a day, the whole payload ≤ 60 000 characters.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["trip", "build_id", "options"],
+  "properties": {
+    "v": { "const": 1 },
+    "kind": { "const": "outline" },
+    "trip": { "$ref": "#/$defs/slug" },
+    "build_id": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "options": { "type": "array", "minItems": 1, "maxItems": 3, "items": { "$ref": "#/$defs/option" } },
+    "notes": { "type": "string", "maxLength": 300 }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+    "date": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" },
+    "option": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "title", "gains", "gives_up", "days"],
+      "properties": {
+        "key": { "enum": ["A", "B", "C"] },
+        "title": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "gains": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "gives_up": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "days": { "type": "array", "minItems": 1, "maxItems": 31, "items": { "$ref": "#/$defs/day" } }
+      }
+    },
+    "day": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "area", "kind"],
+      "properties": {
+        "date": { "$ref": "#/$defs/date" },
+        "area": { "type": "string", "maxLength": 60 },
+        "kind": { "enum": ["full", "light", "travel", "rain_spare", "free"] },
+        "anchors": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["slug", "name"],
+            "properties": {
+              "slug": { "$ref": "#/$defs/slug" },
+              "name": { "type": "string", "minLength": 1, "maxLength": 120 }
+            }
+          }
+        },
+        "note": { "type": "string", "maxLength": 120 }
+      }
+    }
+  }
+}

@@ -1,0 +1,3725 @@
+[
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyFernmoorLodge",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.3,
+      "lng": 135.3
+    },
+    "content": {
+      "display_name": "Fernmoor Lodge",
+      "address": "1 Fernmoor Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 101,
+      "website": "https://fernmoor-lodge.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/fernmoor-lodge",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyQuillbayInn",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.6,
+      "lng": 135.2
+    },
+    "content": {
+      "display_name": "Quillbay Inn",
+      "address": "2 Quillbay Lane, Quillbay, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 102,
+      "website": "https://quillbay-inn.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quillbay-inn",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyQuillbayStation",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.5985,
+      "lng": 135.1985
+    },
+    "content": {
+      "display_name": "Quillbay Station",
+      "address": "3 Quillbay Lane, Quillbay, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 103,
+      "website": "https://quillbay-station.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quillbay-station",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyFernmoorCastle",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.3065,
+      "lng": 135.301
+    },
+    "content": {
+      "display_name": "Fernmoor Castle",
+      "address": "10 Fernmoor Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 09:00 – 17:00",
+          "Tuesday: 09:00 – 17:00",
+          "Wednesday: 09:00 – 17:00",
+          "Thursday: 09:00 – 17:00",
+          "Friday: 09:00 – 17:00",
+          "Saturday: 09:00 – 17:00",
+          "Sunday: 09:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 110,
+      "website": "https://fernmoor-castle.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/fernmoor-castle",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyWeaversMuseum",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.304,
+      "lng": 135.3035
+    },
+    "content": {
+      "display_name": "Weavers' Museum",
+      "address": "11 Weavers' Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Closed",
+          "Tuesday: 09:00 – 17:00",
+          "Wednesday: 09:00 – 17:00",
+          "Thursday: 09:00 – 17:00",
+          "Friday: 09:00 – 17:00",
+          "Saturday: 09:00 – 17:00",
+          "Sunday: 09:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 111,
+      "website": "https://weavers-museum.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/weavers-museum",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyOldTownMarket",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.3055,
+      "lng": 135.3045
+    },
+    "content": {
+      "display_name": "Old Town Market",
+      "address": "12 Old Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 08:00 – 15:00",
+          "Tuesday: 08:00 – 15:00",
+          "Wednesday: 08:00 – 15:00",
+          "Thursday: 08:00 – 15:00",
+          "Friday: 08:00 – 15:00",
+          "Saturday: 08:00 – 15:00",
+          "Sunday: 08:00 – 15:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 15,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 112,
+      "website": "https://old-town-market.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/old-town-market",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyBellstoneTemple",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.303,
+      "lng": 135.2995
+    },
+    "content": {
+      "display_name": "Bellstone Temple",
+      "address": "13 Bellstone Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 08:00 – 17:00",
+          "Tuesday: 08:00 – 17:00",
+          "Wednesday: 08:00 – 17:00",
+          "Thursday: 08:00 – 17:00",
+          "Friday: 08:00 – 17:00",
+          "Saturday: 08:00 – 17:00",
+          "Sunday: 08:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 113,
+      "website": "https://bellstone-temple.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/bellstone-temple",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyOldTownQuarter",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.3048,
+      "lng": 135.3022
+    },
+    "content": {
+      "display_name": "Old Town Quarter",
+      "address": "14 Old Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 06:00 – 22:00",
+          "Tuesday: 06:00 – 22:00",
+          "Wednesday: 06:00 – 22:00",
+          "Thursday: 06:00 – 22:00",
+          "Friday: 06:00 – 22:00",
+          "Saturday: 06:00 – 22:00",
+          "Sunday: 06:00 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 114,
+      "website": "https://old-town-quarter.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/old-town-quarter",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyClockmakersRow",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.3058,
+      "lng": 135.3028
+    },
+    "content": {
+      "display_name": "Clockmakers' Row",
+      "address": "15 Clockmakers' Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 18:00",
+          "Tuesday: 10:00 – 18:00",
+          "Wednesday: 10:00 – 18:00",
+          "Thursday: 10:00 – 18:00",
+          "Friday: 10:00 – 18:00",
+          "Saturday: 10:00 – 18:00",
+          "Sunday: 10:00 – 18:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 115,
+      "website": "https://clockmakers-row.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/clockmakers-row",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyLanternBridge",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.3036,
+      "lng": 135.305
+    },
+    "content": {
+      "display_name": "Lantern Bridge",
+      "address": "16 Lantern Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 06:00 – 22:00",
+          "Tuesday: 06:00 – 22:00",
+          "Wednesday: 06:00 – 22:00",
+          "Thursday: 06:00 – 22:00",
+          "Friday: 06:00 – 22:00",
+          "Saturday: 06:00 – 22:00",
+          "Sunday: 06:00 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 116,
+      "website": "https://lantern-bridge.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/lantern-bridge",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyTidewaterBaths",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.3025,
+      "lng": 135.304
+    },
+    "content": {
+      "display_name": "Tidewater Baths",
+      "address": "17 Tidewater Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 21:00",
+          "Tuesday: 10:00 – 21:00",
+          "Wednesday: 10:00 – 21:00",
+          "Thursday: 10:00 – 21:00",
+          "Friday: 10:00 – 21:00",
+          "Saturday: 10:00 – 21:00",
+          "Sunday: 10:00 – 21:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 21,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 117,
+      "website": "https://tidewater-baths.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/tidewater-baths",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyPrintworksGallery",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.3062,
+      "lng": 135.3
+    },
+    "content": {
+      "display_name": "Printworks Gallery",
+      "address": "18 Printworks Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 17:00",
+          "Tuesday: Closed",
+          "Wednesday: 10:00 – 17:00",
+          "Thursday: 10:00 – 17:00",
+          "Friday: 10:00 – 17:00",
+          "Saturday: 10:00 – 17:00",
+          "Sunday: 10:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 118,
+      "website": "https://printworks-gallery.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/printworks-gallery",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyApothecaryGarden",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.307,
+      "lng": 135.3038
+    },
+    "content": {
+      "display_name": "Apothecary Garden",
+      "address": "19 Apothecary Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 09:00 – 16:00",
+          "Tuesday: 09:00 – 16:00",
+          "Wednesday: 09:00 – 16:00",
+          "Thursday: 09:00 – 16:00",
+          "Friday: 09:00 – 16:00",
+          "Saturday: 09:00 – 16:00",
+          "Sunday: 09:00 – 16:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 16,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 119,
+      "website": "https://apothecary-garden.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/apothecary-garden",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyHarbourAquarium",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.29,
+      "lng": 135.331
+    },
+    "content": {
+      "display_name": "Harbour Aquarium",
+      "address": "20 Harbour Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 09:00 – 18:00",
+          "Tuesday: 09:00 – 18:00",
+          "Wednesday: 09:00 – 18:00",
+          "Thursday: 09:00 – 18:00",
+          "Friday: 09:00 – 18:00",
+          "Saturday: 09:00 – 18:00",
+          "Sunday: 09:00 – 18:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 120,
+      "website": "https://harbour-aquarium.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/harbour-aquarium",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJySaltpanLighthouse",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.288,
+      "lng": 135.3335
+    },
+    "content": {
+      "display_name": "Saltpan Lighthouse",
+      "address": "21 Saltpan Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 09:00 – 17:00",
+          "Tuesday: 09:00 – 17:00",
+          "Wednesday: 09:00 – 17:00",
+          "Thursday: 09:00 – 17:00",
+          "Friday: 09:00 – 17:00",
+          "Saturday: 09:00 – 17:00",
+          "Sunday: 09:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 121,
+      "website": "https://saltpan-lighthouse.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/saltpan-lighthouse",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyNetmendersGallery",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.2912,
+      "lng": 135.329
+    },
+    "content": {
+      "display_name": "Netmenders' Gallery",
+      "address": "22 Netmenders' Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 17:00",
+          "Tuesday: 10:00 – 17:00",
+          "Wednesday: 10:00 – 17:00",
+          "Thursday: 10:00 – 17:00",
+          "Friday: 10:00 – 17:00",
+          "Saturday: 10:00 – 17:00",
+          "Sunday: 10:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 122,
+      "website": "https://netmenders-gallery.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/netmenders-gallery",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyHarbourfrontPark",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.2893,
+      "lng": 135.3272
+    },
+    "content": {
+      "display_name": "Harbourfront Park",
+      "address": "23 Harbourfront Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 06:00 – 20:00",
+          "Tuesday: 06:00 – 20:00",
+          "Wednesday: 06:00 – 20:00",
+          "Thursday: 06:00 – 20:00",
+          "Friday: 06:00 – 20:00",
+          "Saturday: 06:00 – 20:00",
+          "Sunday: 06:00 – 20:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 20,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 123,
+      "website": "https://harbourfront-park.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/harbourfront-park",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyKestrelHillGardens",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.331,
+      "lng": 135.279
+    },
+    "content": {
+      "display_name": "Kestrel Hill Gardens",
+      "address": "24 Kestrel Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 09:00 – 17:00",
+          "Tuesday: 09:00 – 17:00",
+          "Wednesday: 09:00 – 17:00",
+          "Thursday: 09:00 – 17:00",
+          "Friday: 09:00 – 17:00",
+          "Saturday: 09:00 – 17:00",
+          "Sunday: 09:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 124,
+      "website": "https://kestrel-hill-gardens.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/kestrel-hill-gardens",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyMossShrine",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.329,
+      "lng": 135.282
+    },
+    "content": {
+      "display_name": "Moss Shrine",
+      "address": "25 Moss Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 07:00 – 17:00",
+          "Tuesday: 07:00 – 17:00",
+          "Wednesday: 07:00 – 17:00",
+          "Thursday: 07:00 – 17:00",
+          "Friday: 07:00 – 17:00",
+          "Saturday: 07:00 – 17:00",
+          "Sunday: 07:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 125,
+      "website": "https://moss-shrine.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/moss-shrine",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyHilltopObservatory",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.3322,
+      "lng": 135.2808
+    },
+    "content": {
+      "display_name": "Hilltop Observatory",
+      "address": "26 Hilltop Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 17:00",
+          "Tuesday: 10:00 – 17:00",
+          "Wednesday: 10:00 – 17:00",
+          "Thursday: 10:00 – 17:00",
+          "Friday: 10:00 – 17:00",
+          "Saturday: 10:00 – 17:00",
+          "Sunday: 10:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 126,
+      "website": "https://hilltop-observatory.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/hilltop-observatory",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyHollinFalls",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.421,
+      "lng": 135.429
+    },
+    "content": {
+      "display_name": "Hollin Falls",
+      "address": "27 Hollin Lane, Hollin, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 08:00 – 17:00",
+          "Tuesday: 08:00 – 17:00",
+          "Wednesday: 08:00 – 17:00",
+          "Thursday: 08:00 – 17:00",
+          "Friday: 08:00 – 17:00",
+          "Saturday: 08:00 – 17:00",
+          "Sunday: 08:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 127,
+      "website": "https://hollin-falls.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/hollin-falls",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyHollinGorgeTrail",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.4232,
+      "lng": 135.4318
+    },
+    "content": {
+      "display_name": "Hollin Gorge Trail",
+      "address": "28 Hollin Lane, Hollin, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 07:00 – 16:00",
+          "Tuesday: 07:00 – 16:00",
+          "Wednesday: 07:00 – 16:00",
+          "Thursday: 07:00 – 16:00",
+          "Friday: 07:00 – 16:00",
+          "Saturday: 07:00 – 16:00",
+          "Sunday: 07:00 – 16:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 16,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 128,
+      "website": "https://hollin-gorge-trail.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/hollin-gorge-trail",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyHollinPotteryVillage",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.419,
+      "lng": 135.431
+    },
+    "content": {
+      "display_name": "Hollin Pottery Village",
+      "address": "29 Hollin Lane, Hollin, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 17:00",
+          "Tuesday: 10:00 – 17:00",
+          "Wednesday: 10:00 – 17:00",
+          "Thursday: 10:00 – 17:00",
+          "Friday: 10:00 – 17:00",
+          "Saturday: 10:00 – 17:00",
+          "Sunday: 10:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 129,
+      "website": "https://hollin-pottery-village.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/hollin-pottery-village",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyQuillbayMaritimeMuseum",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.6025,
+      "lng": 135.2045
+    },
+    "content": {
+      "display_name": "Quillbay Maritime Museum",
+      "address": "30 Quillbay Lane, Quillbay, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 09:00 – 17:00",
+          "Tuesday: 09:00 – 17:00",
+          "Wednesday: 09:00 – 17:00",
+          "Thursday: 09:00 – 17:00",
+          "Friday: 09:00 – 17:00",
+          "Saturday: 09:00 – 17:00",
+          "Sunday: 09:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 130,
+      "website": "https://quillbay-maritime-museum.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quillbay-maritime-museum",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyPierMarket",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.601,
+      "lng": 135.2062
+    },
+    "content": {
+      "display_name": "Pier Market",
+      "address": "31 Pier Lane, Quillbay, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 07:00 – 14:00",
+          "Tuesday: 07:00 – 14:00",
+          "Wednesday: 07:00 – 14:00",
+          "Thursday: 07:00 – 14:00",
+          "Friday: 07:00 – 14:00",
+          "Saturday: 07:00 – 14:00",
+          "Sunday: 07:00 – 14:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 14,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 14,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 14,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 14,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 14,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 14,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 14,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 131,
+      "website": "https://pier-market.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/pier-market",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJySeawallPromenade",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.6036,
+      "lng": 135.2071
+    },
+    "content": {
+      "display_name": "Seawall Promenade",
+      "address": "32 Seawall Lane, Quillbay, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 06:00 – 21:00",
+          "Tuesday: 06:00 – 21:00",
+          "Wednesday: 06:00 – 21:00",
+          "Thursday: 06:00 – 21:00",
+          "Friday: 06:00 – 21:00",
+          "Saturday: 06:00 – 21:00",
+          "Sunday: 06:00 – 21:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 21,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 132,
+      "website": "https://seawall-promenade.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/seawall-promenade",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyCedarRidgeTemple",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.631,
+      "lng": 135.179
+    },
+    "content": {
+      "display_name": "Cedar Ridge Temple",
+      "address": "33 Cedar Lane, Quillbay, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 08:00 – 17:00",
+          "Tuesday: 08:00 – 17:00",
+          "Wednesday: 08:00 – 17:00",
+          "Thursday: 08:00 – 17:00",
+          "Friday: 08:00 – 17:00",
+          "Saturday: 08:00 – 17:00",
+          "Sunday: 08:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 133,
+      "website": "https://cedar-ridge-temple.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/cedar-ridge-temple",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyUplandTeaFields",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.629,
+      "lng": 135.1822
+    },
+    "content": {
+      "display_name": "Upland Tea Fields",
+      "address": "34 Upland Lane, Quillbay, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 09:00 – 17:00",
+          "Tuesday: 09:00 – 17:00",
+          "Wednesday: 09:00 – 17:00",
+          "Thursday: 09:00 – 17:00",
+          "Friday: 09:00 – 17:00",
+          "Saturday: 09:00 – 17:00",
+          "Sunday: 09:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 134,
+      "website": "https://upland-tea-fields.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/upland-tea-fields",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyRidgeLookout",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.6322,
+      "lng": 135.1808
+    },
+    "content": {
+      "display_name": "Ridge Lookout",
+      "address": "35 Ridge Lane, Quillbay, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 06:00 – 19:00",
+          "Tuesday: 06:00 – 19:00",
+          "Wednesday: 06:00 – 19:00",
+          "Thursday: 06:00 – 19:00",
+          "Friday: 06:00 – 19:00",
+          "Saturday: 06:00 – 19:00",
+          "Sunday: 06:00 – 19:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 19,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 19,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 135,
+      "website": "https://ridge-lookout.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/ridge-lookout",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyLamplightersWorkshop",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.603,
+      "lng": 135.2038
+    },
+    "content": {
+      "display_name": "Lamplighters' Workshop",
+      "address": "36 Lamplighters' Lane, Quillbay, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 16:00",
+          "Tuesday: 10:00 – 16:00",
+          "Wednesday: 10:00 – 16:00",
+          "Thursday: 10:00 – 16:00",
+          "Friday: 10:00 – 16:00",
+          "Saturday: 10:00 – 16:00",
+          "Sunday: 10:00 – 16:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 16,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 136,
+      "website": "https://lamplighters-workshop.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/lamplighters-workshop",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyEmberAndOak",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.301,
+      "lng": 135.3015
+    },
+    "content": {
+      "display_name": "Ember and Oak",
+      "address": "37 Ember Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 17:00 – 22:00",
+          "Tuesday: 17:00 – 22:00",
+          "Wednesday: 17:00 – 22:00",
+          "Thursday: 17:00 – 22:00",
+          "Friday: 17:00 – 22:00",
+          "Saturday: 17:00 – 22:00",
+          "Sunday: 17:00 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 137,
+      "website": "https://ember-and-oak.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/ember-and-oak",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJySaltLantern",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.2905,
+      "lng": 135.3302
+    },
+    "content": {
+      "display_name": "Salt Lantern",
+      "address": "38 Salt Lane, Fernmoor, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 17:00 – 22:00",
+          "Tuesday: 17:00 – 22:00",
+          "Wednesday: 17:00 – 22:00",
+          "Thursday: 17:00 – 22:00",
+          "Friday: 17:00 – 22:00",
+          "Saturday: 17:00 – 22:00",
+          "Sunday: 17:00 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 138,
+      "website": "https://salt-lantern.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/salt-lantern",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyDriftwoodKitchen",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.6015,
+      "lng": 135.203
+    },
+    "content": {
+      "display_name": "Driftwood Kitchen",
+      "address": "39 Driftwood Lane, Quillbay, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 17:00 – 22:00",
+          "Tuesday: 17:00 – 22:00",
+          "Wednesday: 17:00 – 22:00",
+          "Thursday: 17:00 – 22:00",
+          "Friday: 17:00 – 22:00",
+          "Saturday: 17:00 – 22:00",
+          "Sunday: 17:00 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 139,
+      "website": "https://driftwood-kitchen.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/driftwood-kitchen",
+      "time_zone": "Etc/GMT-9"
+    }
+  },
+  {
+    "build_id": "fixture-build-two-stays",
+    "place_id": "FixtureJyPineHearth",
+    "fetched_at": "2027-10-20T12:00:00.000Z",
+    "location": {
+      "lat": 20.6006,
+      "lng": 135.2012
+    },
+    "content": {
+      "display_name": "Pine Hearth",
+      "address": "40 Pine Lane, Quillbay, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 17:00 – 22:00",
+          "Tuesday: 17:00 – 22:00",
+          "Wednesday: 17:00 – 22:00",
+          "Thursday: 17:00 – 22:00",
+          "Friday: 17:00 – 22:00",
+          "Saturday: 17:00 – 22:00",
+          "Sunday: 17:00 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.2,
+      "review_count": 140,
+      "website": "https://pine-hearth.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/pine-hearth",
+      "time_zone": "Etc/GMT-9"
+    }
+  }
+]
