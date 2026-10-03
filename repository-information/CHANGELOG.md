@@ -3,11 +3,36 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 48/100`
+`Sections: 49/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.48r] — 2026-10-03 02:35:05 AM EST
+
+> **Prompt:** "decisions made." *(the owner's choices on a usefulness review of the Tour Guide; this push is step 1 of three — the right day abroad, honest travel legs, a planner tidy-up and booking deadlines)*
+
+### Added
+- **Each trip's own day** (core and pack): `Trips.tz`, `tgTripToday`, `tgOwnerTz`; while a trip is in progress, `/today`, `/replan today|tomorrow` and the current trip use the trip's date, not the home date. A trip with no zone behaves as before. Tests `pack_tour-guide_gas_trip_tz.test.js`
+- **Booking deadlines and reminders** (pack `gas/14_bookings.js`, schemas `tour-guide-booking` and `tour-guide-bookings`): the `bookings` envelope (the pack's seventh type) replaces a trip's list but keeps the owner's taps; a Bookings tab; `/bookings` and `/bookings now`; `/trip` and the day card show each booking in the trip's time and the owner's; an alert about 30 minutes before booking opens and a 09:00 reminder while a window is open, with ✅ Booked · Not needed · Tomorrow. Tests `pack_tour-guide_gas_bookings.test.js`
+- **Core alarms** (`core/17_alarms.js`, `registerAlarm`): pack code that runs at a time, with at most one pending `alarmTrigger`, re-armed after every run. Tests `core_alarm.test.js`
+- **Honest travel legs** (pack planner): a leg the rail estimator walks takes Google's WALK route (minutes, distance, path warnings, a walking link); a failed request keeps a marked estimate; flags footpath · trail · uphill · downhill; taxi minutes from one DRIVE request on hill and trail legs; a buffer per leg and the day's spare time; a per-day budget for the extra requests (`extraCallsFor`). Invented fixture `fixtures/hill-town/`; tests `pack_tour-guide_planner_legs.test.js`
+- **Contract C10**, all optional so old payloads still load: trip `tz`; day `spare_minutes`; stop `time_style`, `check_on_day`; leg `estimated`, `distance_m`, `flags`, `taxi_minutes`, `buffer_minutes` — through the plan digest, the day plan and the brochure kit
+- **The note guard** (pack `planner/planner-notes.mjs`, ported to the day card): a note sentence whose timing advice the schedule contradicts is left out of brochure cards and day-card note lines. Tests `pack_tour-guide_planner_notes.test.js` on the shared table `pack_tour-guide_note_table.js`
+- **Place categories** temple, shrine, garden and experience, with default and shortest visit lengths (`planner/planner-category.mjs`; `refineCategory` for stored records)
+- **Brochure Bookings page** (pack `brochure-map/brochure-map-bookings.mjs`): first on the practical page, still to book before booked, each time in the trip's zone and the owner's. Tests `pack_tour-guide_brochure-map_bookings.test.js`
+- **End-to-end test** `pack_tour-guide_phase10_e2e.test.js`: a C10 digest to the day card abroad; a `bookings` envelope to `/trip`, the day card, a reminder and silence after Booked; the brochure's Bookings page
+- Phase 10 brief `helpers/prompts/TG-PHASE-10.md`; decisions `helpers/decisions/TG-PHASE-10.md`, `WP-10a.md`, `WP-10b.md`; status `helpers/status/WP-10a.md`, `WP-10b.md`
+
+### Changed
+- **Day card**: legs read "walk 22 min · +3 min spare" or "about 20 min walk (estimate)", with flags and taxi time inline; "Spare time" after the last leg; "about 11:45" for loose times, exact times for bookings and set sessions; a 🕑 line for opening days to check; the day's booking lines. An older day reads exactly as before
+- **Google's walking notice** ("Walking routes from Google are in beta…") on every day card and brochure day that shows a Google walking route, as Google requires
+- **Rain swaps** go to covered sights only (museums, galleries, workshops and the like), never a meal stop, a shop or an outdoor place
+- A pick dropped for lack of time says how many minutes it was short and offers a shorter visit when one fits; places with irregular or unknown opening days are kept with "check before you go"
+- The brochure counts walks as walks, marks estimates, and shows leg extras, "about" times and spare time
+- `checkDayPlan` accepts an estimated WALK leg and refuses a repeated leg flag; `tgBkDayLines` takes the stored day or its date
+- Docs: `helpers/SPEC.md` (registerAlarm, the alarm trigger, limits, ownership map), the pack README, `helpers/BUILD-STATE.md` (rows 10–12, Phase 10 log), README tree
 
 ## [v01.47r] — 2026-10-03 12:51:29 AM EST
 

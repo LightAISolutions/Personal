@@ -9,10 +9,10 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const FIXTURES_DIR = dirname(fileURLToPath(import.meta.url));
-export const FIXTURE_NAMES = Object.freeze(['transit-city', 'driving-loop']);
+export const FIXTURE_NAMES = Object.freeze(['transit-city', 'driving-loop', 'hill-town']);
 export const FIXTURE_PARTS = Object.freeze(['trip', 'places', 'snapshots', 'estimates', 'notes', 'profile', 'calibration', 'routes']);
 
-/** listFixtures() → ['transit-city', 'driving-loop'] */
+/** listFixtures() → ['transit-city', 'driving-loop', 'hill-town'] */
 export function listFixtures() { return [...FIXTURE_NAMES]; }
 
 /** fixturePath(name, part) → absolute path of that JSON file. */

@@ -11,7 +11,7 @@
     "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$", "description": "The local place key (also the brochure's place key)." },
     "place_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,300}$", "description": "A Google place id." },
     "name": { "type": "string", "minLength": 1, "maxLength": 120 },
-    "category": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}$", "description": "museum, viewpoint, market, hike, park, church, neighbourhood, restaurant, cafe, shop, other…" },
+    "category": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}$", "description": "museum, gallery, viewpoint, market, hike, park, garden, temple, shrine, church, experience (a set-length session: a ceremony, a class), neighbourhood, restaurant, cafe, bar, shop, other…" },
     "tags": { "type": "array", "maxItems": 20, "items": { "type": "string", "minLength": 1, "maxLength": 40 } },
     "why_fit": { "type": "string", "maxLength": 1000 },
     "source_trip": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$", "description": "The first trip the place was researched for." },
@@ -50,6 +50,8 @@
       }
     },
     "indoor": { "type": "boolean" },
+    "opening_days": { "enum": ["irregular"], "description": "The place opens on irregular days (a festival calendar, by appointment, seasonal): the planner keeps it in the plan, within any hours Google knows, and marks the stop check_on_day." },
+    "opening_note": { "type": "string", "minLength": 1, "maxLength": 160, "description": "A short note on the irregular opening days, shown as the stop's check_on_day line." },
     "scheduled_hint": {
       "type": "object",
       "additionalProperties": false,

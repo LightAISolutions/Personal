@@ -1,7 +1,7 @@
 'use strict';
-// packs/tour-guide — payload schemas of the pack's six envelope types (helper.json envelope_types): valid examples
+// packs/tour-guide — payload schemas of the pack's seven envelope types (helper.json envelope_types): valid examples
 // round-trip, the obvious invalid ones are refused with pointer paths, the prefs kit's real review output validates,
-// tools/envelope.mjs --pack tour-guide checks a payload against its schema, and the core mocks accept the six types.
+// tools/envelope.mjs --pack tour-guide checks a payload against its schema, and the core mocks accept the seven types.
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -12,7 +12,7 @@ const H = require('./harness/gas-mocks');
 const S = () => import('../packs/tour-guide/schemas/index.mjs');
 const clone = (x) => JSON.parse(JSON.stringify(x));
 const TOOL = path.join(H.HELPERS_ROOT, 'tools', 'envelope.mjs');
-const TYPES = ['prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest'];
+const TYPES = ['prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest', 'bookings'];
 const made = [];
 after(() => { for (const d of made) fs.rmSync(d, { recursive: true, force: true }); });
 const tmp = () => { const d = fs.mkdtempSync(path.join(os.tmpdir(), 'tg-payload-')); made.push(d); return d; };
@@ -49,7 +49,12 @@ const EXAMPLES = {
       last_trip: 'port-sorrel-spring-2027', last_researched: '2027-05-01', last_verified: null, note_line: 'Quiet before noon; the lantern hall is the highlight.',
       maps_url: MAPS, history_summary: 'shortlisted, chosen and visited in spring 2027 (rated up)' },
     { slug: 'signal-hill-lookout', name: 'Signal Hill Lookout', area: '', category: 'viewpoint', tags: [], status: 'saved-for-later',
-      last_trip: null, last_researched: null, last_verified: null, note_line: '', maps_url: MAPS, history_summary: '' }] })
+      last_trip: null, last_researched: null, last_verified: null, note_line: '', maps_url: MAPS, history_summary: '' }] }),
+  bookings: () => ({ v: 1, kind: 'bookings', trip: 'port-sorrel-spring-2027', tz: 'Pacific/Auckland',
+    bookings: [{ id: 'clock-tower-climb', title: 'Clock tower climb', kind: 'sight', rule: 'Two people; tickets open 14 days ahead at 10:00 on the tower site.', status: 'todo',
+      place: 'clock-tower', for_date: '2027-05-13', opens_at: '2027-04-29T10:00:00+12:00', book_by: '2027-05-12T18:00:00+12:00', how: 'tower website',
+      party_min: 2, url: 'https://tickets.example.org/clock-tower', note: 'Morning slots go first.', source: 'tower site', updated: '2027-04-20' },
+    { id: 'harbour-lane-guesthouse', title: 'Harbour Lane Guesthouse', kind: 'lodging', rule: 'Three nights.', status: 'booked' }] })
 };
 
 async function realReview() {
@@ -72,7 +77,7 @@ test('PAYLOAD_KINDS maps exactly the manifest envelope_types; each kind has a st
   assert.match(s.validatePayload('notice', { text: 'x' }).errors[0].message, /no payload schema for envelope type "notice"/);
 });
 
-test('valid examples of the five brain payloads round-trip through JSON and validatePayload', async () => {
+test('valid examples of the brain payloads round-trip through JSON and validatePayload', async () => {
   const s = await S();
   for (const [type, make] of Object.entries(EXAMPLES)) {
     const r = s.validatePayload(type, JSON.parse(JSON.stringify(make())));
@@ -84,6 +89,14 @@ test('valid examples of the five brain payloads round-trip through JSON and vali
   assert.ok(s.validatePayload('shortlist', bare).ok, 'v, kind and decided are optional');
   const gemless = EXAMPLES.shortlist(); gemless.groups[0].items = gemless.groups[0].items.map(({ gem, gem_line, seen_before, changes, dims, place_id, ...rest }) => rest);
   assert.ok(s.validatePayload('shortlist', gemless).ok, 'Phase 4 items (no gem, history or dims fields) still validate');
+  const c10 = EXAMPLES.plan_digest(); c10.tz = 'Pacific/Auckland'; c10.days[0].spare_minutes = 45;
+  Object.assign(c10.days[0].stops[0], { time_style: 'about', check_on_day: 'Check the lantern hall is open; it closes for events.' });
+  Object.assign(c10.days[0].legs[0], { estimated: true, distance_m: 2400, flags: ['footpath', 'uphill'], taxi_minutes: 7, buffer_minutes: 10 });
+  assert.deepEqual(s.validatePayload('plan_digest', c10).errors, [], 'every C10 field is accepted');
+  const bare2 = EXAMPLES.bookings(); delete bare2.v; delete bare2.kind; bare2.bookings = [];
+  assert.ok(s.validatePayload('bookings', bare2).ok, 'an empty list clears the trip; v and kind are optional');
+  const z = EXAMPLES.bookings(); z.bookings[0].opens_at = '2027-04-28T22:00Z'; z.bookings[0].book_by = '2027-05-12T06:00:00-00:00';
+  assert.ok(s.validatePayload('bookings', z).ok, 'Z, minute precision and -00:00 are explicit offsets');
   const count = EXAMPLES.shortlist(); count.more = 3;
   assert.ok(s.validatePayload('shortlist', count).ok, 'more may be a count');
 });
@@ -97,6 +110,29 @@ test('invalid payloads are refused with pointer paths', async () => {
     assert.equal(r.ok, false, `${type}: ${pathPrefix}`);
     assert.ok(r.errors.some((e) => e.path.startsWith(pathPrefix) && (!re || re.test(e.message))), `${type} ${pathPrefix}: ${JSON.stringify(r.errors)}`);
   };
+  refuse('bookings', (x) => { x.tz = 'Mars/Olympus'; }, '/tz');
+  refuse('bookings', (x) => { delete x.tz; }, '/', /missing required "tz"/);
+  refuse('bookings', (x) => { x.bookings[0].opens_at = '2027-04-29T10:00:00'; }, '/bookings/0/opens_at');
+  refuse('bookings', (x) => { x.bookings[0].url = 'http://tickets.example.org/x'; }, '/bookings/0/url');
+  refuse('bookings', (x) => { x.bookings[1].id = 'clock-tower-climb'; }, '/bookings/1/id', /duplicate booking id/);
+  refuse('bookings', (x) => { x.bookings = Array.from({ length: 41 }, (_, i) => ({ id: `b-${i}`, title: 'T', kind: 'other', rule: 'r', status: 'todo' })); }, '/bookings');
+  refuse('bookings', (x) => { x.bookings[0].extra = 1; }, '/bookings/0/extra');
+  refuse('bookings', (x) => { x.bookings[0].book_by = '2027-04-29T09:00:00+12:00'; }, '/bookings/0/book_by', /before opens_at/);
+  refuse('bookings', (x) => { x.bookings[0].status = 'maybe'; }, '/bookings/0/status');
+  refuse('bookings', (x) => { x.bookings[0].party_min = 21; }, '/bookings/0/party_min');
+  refuse('bookings', (x) => { x.bookings[0].for_date = '2027-02-30'; }, '/bookings/0/for_date');
+  refuse('plan_digest', (x) => { x.tz = 'Nowhere/Land'; }, '/tz');
+  refuse('plan_digest', (x) => { x.days[0].spare_minutes = 1441; }, '/days/0/spare_minutes');
+  refuse('plan_digest', (x) => { x.days[0].stops[0].time_style = 'roughly'; }, '/days/0/stops/0/time_style');
+  refuse('plan_digest', (x) => { x.days[0].stops[0].check_on_day = ''; }, '/days/0/stops/0/check_on_day');
+  refuse('plan_digest', (x) => { x.days[0].legs[0].estimated = false; }, '/days/0/legs/0/estimated');
+  refuse('plan_digest', (x) => { x.days[0].legs[0].distance_m = 500001; }, '/days/0/legs/0/distance_m');
+  refuse('plan_digest', (x) => { x.days[0].legs[0].flags = ['trail', 'trail']; }, '/days/0/legs/0/flags', /duplicate flag/);
+  refuse('plan_digest', (x) => { x.days[0].legs[0].flags = ['scenic']; }, '/days/0/legs/0/flags/0');
+  refuse('plan_digest', (x) => { x.days[0].legs[0].flags = ['footpath', 'trail', 'uphill', 'downhill', 'trail']; }, '/days/0/legs/0/flags');
+  refuse('plan_digest', (x) => { x.days[0].legs[0].taxi_minutes = -1; }, '/days/0/legs/0/taxi_minutes');
+  refuse('plan_digest', (x) => { x.days[0].legs[0].buffer_minutes = 121; }, '/days/0/legs/0/buffer_minutes');
+  refuse('plan_digest', (x) => { x.days[0].legs[0].wiggle = 1; }, '/days/0/legs/0/wiggle');
   refuse('shortlist', (x) => { x.kind = 'short_list'; }, '/kind');
   refuse('shortlist', (x) => { delete x.run_id; }, '/', /missing required "run_id"/);
   refuse('shortlist', (x) => { x.groups[0].id = 'sights'; }, '/groups/0/id');
@@ -202,7 +238,7 @@ test('tools/envelope.mjs --pack tour-guide validates a pack payload against its 
   assert.match(JSON.parse(noPack.stdout).errors.join(), /unknown type: shortlist/);
 });
 
-test('core mocks: the manifest\'s six types are accepted by registerEnvelopeHandler and validateEnvelope', async () => {
+test('core mocks: the manifest\'s seven types are accepted by registerEnvelopeHandler and validateEnvelope', async () => {
   const E = await import('../tools/envelope.mjs');
   const { ctx } = H.loadGas({ pack: 'tour-guide' });
   for (const t of TYPES) assert.ok(ctx.ENVELOPE_TYPES.includes(t), t);

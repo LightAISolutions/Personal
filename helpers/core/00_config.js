@@ -88,7 +88,11 @@ var LIMITS = {
   INITDATA_MAX_AGE_SEC: 86400,
   INITDATA_MAX_CHARS: 4096,
   ROUTE_BODY_MAX_CHARS: 65536,             // POST body of a registered route (the upload route has its own limit)
-  ROUTE_LOCK_WAIT_MS: 10000                // a registerRoute({ lock }) call waits this long for the script lock, then 503 busy
+  ROUTE_LOCK_WAIT_MS: 10000,               // a registerRoute({ lock }) call waits this long for the script lock, then 503 busy
+  ALARM_EARLY_SEC: 60,                     // an alarm whose next() is at most this far ahead runs when alarmTrigger fires
+  ALARM_MIN_LEAD_SEC: 60,                  // the alarm trigger is never set sooner than this from now
+  ALARM_RETRY_MIN: 15,                     // an alarm still due right after it ran (or a busy lock) waits this long
+  ALARM_MAX_RUNS_PER_DAY: 48               // alarmTrigger runs per local day; past it the next run waits 6 h (trigger quota guard)
 };
 
 /** From-brain envelope types the core handles. The manifest's envelope_types are appended at load. */

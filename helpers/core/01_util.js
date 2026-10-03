@@ -9,6 +9,41 @@ function nowMs() { return nowDate().getTime(); }
 function nowIso() { return nowDate().toISOString(); }
 function isoAfterMinutes(min) { return new Date(nowMs() + min * 60000).toISOString(); }
 function isoDateLocal(d) { return Utilities.formatDate(d || nowDate(), getTz(), 'yyyy-MM-dd'); }
+/**
+ * Zone-aware dates (Phase 10): a trip abroad has its own "today". isoDateIn(tz, d) is the calendar date of d (default now)
+ * in tz, falling back to the owner's zone (getTz()) when tz is empty or not a valid IANA zone.
+ */
+function isoDateIn(tz, d) { return Utilities.formatDate(d || nowDate(), isValidTz(tz) ? tz : getTz(), 'yyyy-MM-dd'); }
+/** true for an IANA zone name the runtime knows (V8 Intl; pattern-only where Intl is missing). */
+function isValidTz(tz) {
+  if (typeof tz !== 'string' || !/^(UTC|Etc\/[A-Za-z0-9+-]{1,10}|[A-Za-z_]+(\/[A-Za-z0-9_+-]+)+)$/.test(tz)) return false;
+  try { if (typeof Intl !== 'undefined' && Intl.DateTimeFormat) new Intl.DateTimeFormat('en-US', { timeZone: tz }); return true; } catch (e) { return false; }
+}
+/** 'YYYY-MM-DD' plus n calendar days (no zone involved). */
+function isoDateAdd(iso, n) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
+  if (!m) return '';
+  return new Date(Date.UTC(+m[1], +m[2] - 1, +m[3] + (n || 0))).toISOString().slice(0, 10);
+}
+/**
+ * The instant (ms) of wall-clock time hh:mm on date iso in zone tz (owner's zone when tz is invalid). Two passes of
+ * offset correction, so a date on either side of a DST change lands on the right hour; a wall time that does not exist
+ * (inside a spring-forward gap) comes back one offset step later.
+ */
+function msAtLocal(tz, iso, hh, mm) {
+  tz = isValidTz(tz) ? tz : getTz();
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
+  if (!m) return NaN;
+  var want = Date.UTC(+m[1], +m[2] - 1, +m[3], hh || 0, mm || 0);
+  if (new Date(Date.UTC(+m[1], +m[2] - 1, +m[3])).toISOString().slice(0, 10) !== iso) return NaN;   // 2027-02-30 is no date
+  var wall = function (ms) {
+    var s = Utilities.formatDate(new Date(ms), tz, 'yyyy-MM-dd HH:mm').split(/[- :]/);
+    return Date.UTC(+s[0], +s[1] - 1, +s[2], +s[3], +s[4]);
+  };
+  var t = want - (wall(want) - want);
+  t = t - (wall(t) - want);
+  return t;
+}
 function localHour(d) { return parseInt(Utilities.formatDate(d || nowDate(), getTz(), 'H'), 10); }
 function localWeekday(d) { return Utilities.formatDate(d || nowDate(), getTz(), 'EEE'); }
 function fmtLocal(d) { return Utilities.formatDate(d || nowDate(), getTz(), 'EEE MMM d, h:mm a'); }

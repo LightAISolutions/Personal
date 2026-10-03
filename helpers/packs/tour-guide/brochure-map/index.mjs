@@ -2,7 +2,9 @@
  * Tour Guide brochure-map — the planner's Plan (plus the Trip, Places, PlaceNotes, build-scoped GoogleSnapshots and
  * VisitEstimates) → the brochure kit's model (helpers/kits/brochure/schema/brochure.schema.json), and a render
  * convenience through the kit.
- *   toBrochureModel({ trip, plan, places?, notes?, snapshots?, estimates?, options:{ generator?, built_on?, verified_on?, show_google_content = true } }) → model
+ *   toBrochureModel({ trip, plan, places?, notes?, snapshots?, estimates?, options:{ generator?, built_on?, verified_on?, show_google_content = true, owner_tz?, now? } }) → model
+ *     trip.bookings (WP-10a) open the practical page as "Bookings", times in the trip's zone and in options.owner_tz;
+ *     options.now (ISO or ms) lets past deadlines read "Was due" / "Open since".
  *   renderPlan(args, { page?, embedFonts? }) → { html, model, warnings }
  *   renderPlanPdf(args, outPath, { page?, shotsDir? }) → { html, model, warnings, pdf, pages, available }   (no PDF when pdfAvailable() is false)
  * Pure: never mutates its input, never calls the network.
@@ -14,6 +16,7 @@ import { placeCard, mapsLink } from './brochure-map-cards.mjs';
 import { mapDay } from './brochure-map-days.mjs';
 import { mapLater } from './brochure-map-later.mjs';
 import { tripPractical, dayRoutes, freeDays, verifySections, PRACTICAL_LIMITS } from './brochure-map-practical.mjs';
+import { bookingsSection } from './brochure-map-bookings.mjs';
 import { buildAttribution } from './brochure-map-attribution.mjs';
 
 export { placeCard, closedDays, hoursLine, hoursToday, categoryLabel } from './brochure-map-cards.mjs';
@@ -51,14 +54,18 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
 
   const days = plan.days.filter((d) => d && d.date >= trip.start_date && d.date <= trip.end_date).slice().sort((a, b) => a.date.localeCompare(b.date));
   // Card order: places as the days use them, then Later-list places. Stops must resolve; other references may not.
-  const order = [], visitDates = new Map();
+  const order = [], visitDates = new Map(), visits = new Map();
   const want = (slug, date) => {
     if (!slug || slug === 'lodging' || !placesBySlug.has(slug)) return;
     if (!visitDates.has(slug)) { visitDates.set(slug, []); order.push(slug); }
     if (date && !visitDates.get(slug).includes(date)) visitDates.get(slug).push(date);
   };
   for (const d of days) {
-    for (const s of d.stops || []) { if (!placesBySlug.has(s.place)) throw new Error(`brochure-map: ${d.date} stop "${s.place}" is not among the places`); want(s.place, d.date); }
+    for (const s of d.stops || []) {
+      if (!placesBySlug.has(s.place)) throw new Error(`brochure-map: ${d.date} stop "${s.place}" is not among the places`);
+      want(s.place, d.date);
+      visits.set(s.place, [...(visits.get(s.place) || []), { arrive: s.arrive, depart: s.depart, window: s.window || null }]);
+    }
     for (const x of d.meals || []) want(x.at);
     for (const l of d.legs || []) { want(l.from); want(l.to); }
     for (const w of d.warnings || []) want(w.place);
@@ -69,7 +76,7 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
   const cards = {};
   for (const slug of order) {
     const p = placesBySlug.get(slug);
-    cards[slug] = placeCard({ place: p, snapshot: snaps.get(p.place_id), notesByPlace, estimatesByPlace, visitDates: visitDates.get(slug), showGoogle, timeZone: trip.timezone });
+    cards[slug] = placeCard({ place: p, snapshot: snaps.get(p.place_id), notesByPlace, estimatesByPlace, visitDates: visitDates.get(slug), visits: visits.get(slug), showGoogle, timeZone: trip.timezone });
   }
 
   const bDays = [], free = [], routes = [];
@@ -95,6 +102,9 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
   });
 
   const practical = tripPractical(trip.practical);
+  // Bookings first: deadlines are what the practical page is opened for before the trip, and the section cap never cuts them.
+  const bookSec = bookingsSection(trip.bookings, { tripTz: trip.timezone, ownerTz: options.owner_tz, now: options.now });
+  if (bookSec) practical.unshift(bookSec);
   const routeSec = dayRoutes(routes); if (routeSec) practical.push(routeSec);
   const freeSec = freeDays(free); if (freeSec) practical.push(freeSec);
   if (!showGoogle) {

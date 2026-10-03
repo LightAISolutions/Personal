@@ -44,9 +44,9 @@ async function client(fx) {
   return { k, transport, ledger, maps: k.createMapsClient({ transport, ledger }) };
 }
 
-test('listFixtures / loadFixture: two fixtures, every part, fresh copies on each load', async () => {
+test('listFixtures / loadFixture: three fixtures, every part, fresh copies on each load', async () => {
   const f = await F();
-  assert.deepEqual(f.listFixtures(), ['transit-city', 'driving-loop']);
+  assert.deepEqual(f.listFixtures(), ['transit-city', 'driving-loop', 'hill-town']);
   const a = f.loadFixture('transit-city');
   assert.deepEqual(Object.keys(a), ['name', 'trip', 'places', 'snapshots', 'estimates', 'notes', 'profile', 'calibration', 'routes']);
   a.trip.title = 'changed';
@@ -171,7 +171,7 @@ test('reserved domains only, invented ids, no e-mail addresses in any fixture fi
       assert.ok(file.startsWith(`tg-fixture-${name}-`), file);
       for (const u of text.match(/https?:\/\/[^"\s]+/g) || []) assert.match(u, /^https:\/\/([a-z0-9-]+\.)*example\.(com|org|net)(\/|$)/, `${file}: ${u}`);
       assert.ok(!text.includes('@'), `${file}: no e-mail`);
-      for (const id of text.match(/"place_id": "[^"]+"/g) || []) assert.match(id, /"Fixture(Tc|Dl)[A-Za-z]+"/, `${file}: ${id}`);
+      for (const id of text.match(/"place_id": "[^"]+"/g) || []) assert.match(id, /"Fixture(Tc|Dl|Ht)[A-Za-z]+"/, `${file}: ${id}`);
     }
   }
 });

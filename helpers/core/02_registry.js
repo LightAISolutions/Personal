@@ -19,6 +19,7 @@ var HB_REGISTRY = {
   observer: {},   // name -> fn(env, result)       (after an envelope was handled successfully)
   flow: {},       // name -> { start(seed, ctx), next(state, input, ctx), onDone?(state, ctx), ttl_min? } (15_flows.js)
   route: {},      // name -> { methods: ['GET'|'POST'], auth: 'none'|'admin'|'webapp', handler(req) -> { status, body } } (10_router.js)
+  alarm: {},      // name -> { next(nowMs) -> ms | null, run(nowMs) }  (17_alarms.js: one pending alarmTrigger at a time)
   help: []        // lines shown by /help
 };
 /** Route names the core owns. registerRoute() refuses them at load time and the router never looks them up in the registry. */
@@ -119,6 +120,19 @@ function registerRoute(name, def) {
   if (def.auth === 'webapp' && (methods.length !== 1 || methods[0] !== 'POST')) throw new Error('registerRoute: auth "webapp" routes are POST only (initData travels in the body)');
   if (def.lock !== undefined && def.lock !== true && def.lock !== false && typeof def.lock !== 'function') throw new Error('registerRoute: lock must be true, false or function (req) → boolean');
   return _regPut('route', name, { methods: methods.slice(), auth: def.auth, handler: def.handler, lock: def.lock || false }, 'Route');
+}
+
+/**
+ * registerAlarm(name, { next(nowMs) → ms | null, run(nowMs) }) — pack code that must run at a time (17_alarms.js).
+ * next() says when the alarm next wants to run (a time already past means "due now"; null means nothing pending); the
+ * core keeps at most ONE pending `alarmTrigger` for every alarm together, at the earliest next(). When it fires, every
+ * alarm whose next() is due runs (each isolated: a throw is audited), then the trigger is re-armed. Re-arm after a
+ * change with alarmArm(). Name ^[a-z][a-z0-9_]{0,31}$.
+ */
+function registerAlarm(name, def) {
+  if (!/^[a-z][a-z0-9_]{0,31}$/.test(name || '')) throw new Error('registerAlarm: name must match /^[a-z][a-z0-9_]{0,31}$/');
+  if (!def || typeof def.next !== 'function' || typeof def.run !== 'function') throw new Error('registerAlarm: need { next(nowMs), run(nowMs) }');
+  return _regPut('alarm', name, { next: def.next, run: def.run }, 'Alarm');
 }
 
 /** Own properties only — `constructor`, `__proto__`, `toString`… from a request must never resolve to an inherited member. */

@@ -84,7 +84,8 @@
         "warnings": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/warning" } },
         "alternatives": { "$ref": "#/$defs/alternatives" },
         "map_image": { "$ref": "#/$defs/mapImage", "description": "A Google static map of this day's route (Maps Static API, fetched during the build and inlined). When present it replaces the day's route sketch." },
-        "verified_on": { "$ref": "#/$defs/date" }
+        "verified_on": { "$ref": "#/$defs/date" },
+        "spare_minutes": { "type": "integer", "minimum": 0, "maximum": 1440, "description": "The day's unscheduled time after buffers (shown as 'Spare')." }
       }
     },
     "stop": {
@@ -96,7 +97,9 @@
         "activity": { "$ref": "#/$defs/short", "description": "What you do there, e.g. 'museum highlights', 'full loop walk'." },
         "minutes": { "type": "integer", "minimum": 0, "maximum": 1440, "description": "Planned visit length; derived from arrive/depart when absent." },
         "note": { "$ref": "#/$defs/text", "description": "A one-line excerpt shown on the rail; the full note lives on the place card." },
-        "booked": { "$ref": "#/$defs/short", "description": "Ticket or reservation reference text, e.g. 'Timed entry 10:30, booked'." }
+        "booked": { "$ref": "#/$defs/short", "description": "Ticket or reservation reference text, e.g. 'Timed entry 10:30, booked'." },
+        "time_style": { "type": "string", "enum": ["exact", "about"], "description": "about: an estimated time, shown rounded to the nearest 15 minutes with no end time; exact (the default): shown as arrive – depart." },
+        "check_on_day": { "$ref": "#/$defs/short", "description": "A line telling the reader to check the opening days or hours before going." }
       }
     },
     "leg": {
@@ -112,7 +115,11 @@
         "maps_url": { "$ref": "#/$defs/url" },
         "line": { "$ref": "#/$defs/short", "description": "Transit line or service name, e.g. 'Tram 4 toward Harbour Baths'." },
         "note": { "$ref": "#/$defs/short" },
-        "polyline": { "type": "string", "maxLength": 20000, "description": "Google encoded polyline of the leg (Routes API encodedPolyline). Drawn on the static maps; a straight segment is used when absent." }
+        "polyline": { "type": "string", "maxLength": 20000, "description": "Google encoded polyline of the leg (Routes API encodedPolyline). Drawn on the static maps; a straight segment is used when absent." },
+        "estimated": { "type": "boolean", "description": "The minutes are a distance estimate (Google returned no route for this leg); shown as 'about … (estimate)'." },
+        "flags": { "type": "array", "maxItems": 4, "items": { "type": "string", "enum": ["footpath", "trail", "uphill", "downhill"] }, "description": "Walked legs: footpath (paths without sidewalks), trail, uphill, downhill." },
+        "taxi_minutes": { "type": "integer", "minimum": 0, "maximum": 1440, "description": "Driving minutes for the same leg, offered as a taxi on an uphill walk or a trail." },
+        "buffer_minutes": { "type": "integer", "minimum": 0, "maximum": 120, "description": "Slack the schedule leaves after this leg before the next item." }
       }
     },
     "endpoint": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$", "description": "A place key, or the literal `lodging`." },

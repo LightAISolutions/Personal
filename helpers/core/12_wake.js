@@ -4,10 +4,11 @@
  *   · the brain calls GET/POST ?route=wake after writing an envelope (unauthenticated, rate-limited, idempotent),
  *   · a one-off trigger fires: fallback sweeps scheduled when a request opens (+3 and +10 min), an hourly follow-up
  *     while a request is open, or the queue worker (06_queue.js),
- *   · the owner presses "Sweep + write snapshot" on the setup page (/wake in Telegram schedules a one-off trigger).
+ *   · the owner presses "Sweep + write snapshot" on the setup page (/wake in Telegram schedules a one-off trigger),
+ *   · the single pending alarm trigger fires (17_alarms.js: registerAlarm — e.g. a booking reminder at a set time).
  * Daily housekeeping (registerDailyJob) runs once per local day inside the first sweep of that day.
  */
-var ONE_OFF_HANDLERS = ['queueTrigger', 'wakeTrigger'];
+var ONE_OFF_HANDLERS = ['queueTrigger', 'wakeTrigger', 'alarmTrigger'];   // alarmTrigger: 17_alarms.js (at most one pending)
 
 function scheduleOneOff(fn, minutes) {
   if (ONE_OFF_HANDLERS.indexOf(fn) < 0) throw new Error('scheduleOneOff: unknown handler ' + fn);
@@ -54,6 +55,7 @@ function wakeSweep(source) {
     r.requests_expired = _safe('requests_expire', expireRequests) || 0;
     r.flows_expired = _safe('flows_expire', expireFlows) || 0;
     r.daily = _safe('daily', runDailyJobs);
+    if (r.daily) r.alarm = _safe('alarm_arm', function () { return alarmArm(); });   // daily backstop for the one alarm trigger (17_alarms.js)
     r.open_requests = _safe('requests_count', openRequestCount) || 0;
     var touched = r.mailbox.processed + r.mailbox.rejected + r.mailbox.failed + r.mailbox.duplicate + r.expired + r.requests_expired + r.flows_expired;
     r.processed = touched;

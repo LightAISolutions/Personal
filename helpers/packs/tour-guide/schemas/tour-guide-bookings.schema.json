@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-bookings.schema.json",
+  "title": "Tour Guide bookings (payload of the `bookings` envelope)",
+  "description": "The brain's full booking list for one trip; it replaces the core's list, except that a status the owner tapped (booked, not needed) stays when the brain still sends todo. tz is the destination's IANA zone (the core keeps it on the trip). tour-guide-checks.mjs also checks: unique ids, tz a known zone, each record's dates and opens_at ≤ book_by, the payload ≤ 60 000 characters.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "trip",
+    "tz",
+    "bookings"
+  ],
+  "properties": {
+    "v": {
+      "const": 1
+    },
+    "kind": {
+      "const": "bookings"
+    },
+    "trip": {
+      "$ref": "#/$defs/slug"
+    },
+    "tz": {
+      "$ref": "#/$defs/timezone"
+    },
+    "bookings": {
+      "type": "array",
+      "maxItems": 40,
+      "items": {
+        "$ref": "#/$defs/booking"
+      }
+    }
+  },
+  "$defs": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"
+    },
+    "datetime": {
+      "type": "string",
+      "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T([01]\\d|2[0-3]):[0-5]\\d(:[0-5]\\d)?(Z|[+-]([01]\\d|2[0-3]):[0-5]\\d)$",
+      "description": "ISO 8601 date-time with an explicit offset (Z or ±HH:MM), e.g. 2027-03-01T10:00:00+13:00; no fractions."
+    },
+    "url": {
+      "type": "string",
+      "maxLength": 2000,
+      "pattern": "^https://\\S+$"
+    },
+    "timezone": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^(UTC|Etc/[A-Za-z0-9+-]{1,10}|[A-Za-z_]+(/[A-Za-z0-9_+-]+)+)$"
+    },
+    "booking": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "kind",
+        "rule",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/slug",
+          "description": "Unique within the trip."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "kind": {
+          "enum": [
+            "train",
+            "lodging",
+            "meal",
+            "sight",
+            "experience",
+            "other"
+          ]
+        },
+        "rule": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "The booking rule in one line, e.g. \"opens 30 days ahead at 10:00\"."
+        },
+        "status": {
+          "enum": [
+            "todo",
+            "booked",
+            "not_needed"
+          ]
+        },
+        "place": {
+          "$ref": "#/$defs/slug",
+          "description": "The place slug it is for, when there is one."
+        },
+        "for_date": {
+          "$ref": "#/$defs/date",
+          "description": "The trip-local day it is for."
+        },
+        "opens_at": {
+          "$ref": "#/$defs/datetime",
+          "description": "When booking opens, with the destination's explicit offset."
+        },
+        "book_by": {
+          "$ref": "#/$defs/datetime",
+          "description": "Book before this (≥ opens_at), with an explicit offset."
+        },
+        "how": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "party_min": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "url": {
+          "$ref": "#/$defs/url"
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "source": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "updated": {
+          "$ref": "#/$defs/date"
+        }
+      }
+    }
+  }
+}

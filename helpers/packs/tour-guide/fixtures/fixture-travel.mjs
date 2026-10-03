@@ -5,7 +5,10 @@
  *   2. else the reverse pair "<to>|<from>" (the tables are symmetric-ish, so an untabled direction reuses its twin);
  *   3. else derived from the snapshots' coordinates: distance = great-circle × 1.3, duration = distance / speed +
  *      overhead (routes.fallback; defaults WALK 4.5 km/h + 0 s, TRANSIT 14 km/h + 420 s, DRIVE 45 km/h + 180 s).
- * The same place to itself is 0 s / 0 m. Durations never depend on the departure time.
+ * The same place to itself is 0 s / 0 m. Durations never depend on the departure time. A tabled row may carry
+ * `warnings` (Google's Route.warnings strings, e.g. a WALK route on restricted-use paths): returned as given.
+ * routes.no_route_modes (optional, e.g. ['TRANSIT']) makes the responder answer "no route" for that mode, as Google's
+ * Routes API does for public transport in some countries; fixtureTravel still answers (the tests' reference).
  */
 import { haversineMeters } from './fixture-geo.mjs';
 
@@ -33,7 +36,13 @@ export function snapshotFor(fixture, placeId) {
   return s;
 }
 
-/** fixtureTravel(fixture, mode, fromPlaceId, toPlaceId) → { durationSec, distanceMeters, line? } */
+/** noRoute(fixture, mode) → true when the fixture says Google has no route for that mode (routes.no_route_modes). */
+export function noRoute(fixture, mode) {
+  const m = fixture.routes && fixture.routes.no_route_modes;
+  return Array.isArray(m) && m.includes(mode);
+}
+
+/** fixtureTravel(fixture, mode, fromPlaceId, toPlaceId) → { durationSec, distanceMeters, line?, warnings? } */
 export function fixtureTravel(fixture, mode, fromPlaceId, toPlaceId) {
   if (!FIXTURE_MODES.includes(mode)) throw Object.assign(new Error(`fixture: travel mode must be one of ${FIXTURE_MODES.join(', ')}`), { code: 'BAD_INPUT' });
   const a = snapshotFor(fixture, fromPlaceId), b = snapshotFor(fixture, toPlaceId);
@@ -43,6 +52,7 @@ export function fixtureTravel(fixture, mode, fromPlaceId, toPlaceId) {
   if (hit) {
     const out = { durationSec: hit.duration_sec, distanceMeters: hit.distance_m };
     if (hit.line) out.line = hit.line;
+    if (Array.isArray(hit.warnings) && hit.warnings.length) out.warnings = [...hit.warnings];
     return out;
   }
   if (!a.location || !b.location) throw Object.assign(new Error(`fixture ${fixture.name}: no coordinates for ${a.location ? toPlaceId : fromPlaceId}`), { code: 'NOT_FOUND' });

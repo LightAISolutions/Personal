@@ -113,9 +113,12 @@ test('planTrip on a TRANSIT fixture with no Google transit: every leg is a stati
   for (const l of transitLegs) {
     assert.ok(Number.isFinite(l.minutes) && l.minutes >= 1);
     if (l.line) assert.match(l.line, /\(estimate\)$/);
-    assert.match(l.maps_url, /travelmode=transit/);
+    // Phase 10: a leg the planner walks asks Google for a WALK route and is shown as a walk.
+    assert.match(l.maps_url, l.mode === 'WALK' ? /travelmode=walking/ : /travelmode=transit/);
+    if (l.mode === 'WALK') assert.ok(!l.line && !l.estimated, 'a walk Google routed is not an estimate');
   }
   assert.ok(transitLegs.some((l) => l.line), 'at least one leg is a train estimate');
+  assert.ok(transitLegs.some((l) => l.mode === 'WALK'), 'at least one leg is a Google walk');
   // With the rail estimates off, a leg Google could not route falls through to the distance fallback (WP-3e):
   // the day still times, every TRANSIT leg is a distance estimate and the day carries one transit_estimated warning.
   const off = await planTrip({ ...fx, maps, railEstimates: false, build_id: 'rail-off', now: '2027-04-30T09:00:00Z', seed: 7 });

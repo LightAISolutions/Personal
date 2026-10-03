@@ -430,4 +430,84 @@ test('limits: long trip slugs use a hash key, every button fits 64 bytes, long v
   assert.ok(allData(state).every(CB_OK), allData(state).filter((d) => !CB_OK(d)).join(' '));
 });
 
+/* ==================== the day card's Phase 10 fields (Contract C10; WP-10b) ==================== */
+
+const TRIP_OBJ = { slug: TRIP, title: 'Port Sorrel' };
+/** A day as tgDigestDays returns it once the digest carries the C10 fields (invented stops on the hill-town pattern). */
+const c10Day = () => ({ n: 2, date: '2027-05-13', theme: 'Old town', spare_minutes: 70, warnings: [],
+  stops: [
+    { n: 1, slug: 'rope-loft', name: 'Rope Loft', arrive: '11:50', depart: '12:55', minutes: 65, time_style: 'about', maps_url: maps('FixtureB'),
+      note_line: 'Arrive at opening, before the tour groups. Cash only.', check_on_day: 'Opening days vary — check before you go' },
+    { n: 2, slug: 'tide-tour', name: 'Tide Tour', arrive: '13:20', depart: '14:30', minutes: 70, time_style: 'exact', maps_url: maps('FixtureC') },
+    { n: 3, slug: 'signal-hill-lookout', name: 'Signal Hill Lookout', arrive: '15:10', depart: '15:40', minutes: 30, time_style: 'about' }],
+  legs: [
+    { from: 'lodging', to: 'rope-loft', mode: 'WALK', minutes: 22, distance_m: 1700, buffer_minutes: 3, maps_url: maps('FixtureLeg1') },
+    { from: 'rope-loft', to: 'tide-tour', mode: 'WALK', minutes: 20, estimated: true, buffer_minutes: 5 },
+    { from: 'tide-tour', to: 'signal-hill-lookout', mode: 'WALK', minutes: 31, distance_m: 1400, flags: ['footpath', 'uphill'], taxi_minutes: 11, buffer_minutes: 10 },
+    { from: 'signal-hill-lookout', to: 'lodging', mode: 'WALK', minutes: 25, distance_m: 1500, flags: ['downhill'] }] });
+const cardText = (msgs) => msgs.map((m) => m.html).join('\n');
+
+test('day card (C10): honest legs, estimates, hills with a taxi time, buffers, spare time, "about" times and check-on-the-day lines', () => {
+  const { ctx } = fresh();
+  const t = cardText(J(ctx.tgCmdDayMessages(TRIP_OBJ, c10Day(), 3)));
+  assert.match(t, /<i>↳ <a href="[^"]+FixtureLeg1">walk 22 min<\/a> · \+3 min spare<\/i>/);
+  assert.match(t, /<i>↳ about 20 min walk \(estimate\) · \+5 min spare<\/i>/);
+  assert.match(t, /<i>↳ walk 31 min · footpath · uphill · taxi about 11 min · \+10 min spare<\/i>/);
+  assert.match(t, /<i>↳ walk 25 min back to your lodging · downhill<\/i>/, 'no buffer on the way home');
+  assert.match(t, /<b>1\.<\/b> about 11:45 <a href="[^"]+">Rope Loft<\/a> · 1 h 5\n/, 'an "about" time: the arrival to the nearest 15 minutes, no end time');
+  assert.match(t, /<b>2\.<\/b> 13:20–14:30 <a href="[^"]+">Tide Tour<\/a> · 1 h 10/, 'an exact time stays as it is');
+  assert.match(t, /<b>3\.<\/b> about 15:15 Signal Hill Lookout · 30 min/);
+  assert.match(t, /🕑 <i>Opening days vary — check before you go<\/i>/);
+  assert.match(t, /\nSpare time: 1 h 10 min\n<i>Walking routes from Google are in beta and may be missing sidewalks or footpaths\.<\/i>$/);
+  assert.match(t, /<i>Cash only\.<\/i>/, 'the note keeps what the schedule does not contradict');
+  assert.doesNotMatch(t, /at opening/, 'a noon stop loses its "arrive at opening" advice');
+  const allEstimated = c10Day(); allEstimated.legs.forEach((l) => { l.estimated = true; });
+  assert.doesNotMatch(cardText(J(ctx.tgCmdDayMessages(TRIP_OBJ, allEstimated, 3))), /Walking routes from Google/, 'no Google walking route, no notice');
+  const packed = c10Day(); packed.spare_minutes = 0;
+  assert.match(cardText(J(ctx.tgCmdDayMessages(TRIP_OBJ, packed, 3))), /\nSpare time: none\n/);
+});
+
+test('day card (C10): an old day without the new fields renders as before, plus the notice Google requires under a walking route', () => {
+  const { ctx } = fresh();
+  const old = digest().days[0];
+  const t = cardText(J(ctx.tgCmdDayMessages(TRIP_OBJ, Object.assign({ n: 1 }, old), 2)));
+  assert.equal(t, [
+    '<b>Day 1 of 2 · Wed 12 May</b> — Harbour',
+    '   <i>↳ <a href="' + maps('FixtureLeg').replace(/&/g, '&amp;') + '">9 min walk</a></i>',
+    '<b>1.</b> 10:00–11:00 <a href="' + maps('FixtureA').replace(/&/g, '&amp;') + '">Lantern &lt;Museum&gt;</a> · 1 h',
+    '   <i>Start upstairs &amp; look down.</i>',
+    '   <i>↳ 20 min transit back to your lodging</i>',
+    '<i>Walking routes from Google are in beta and may be missing sidewalks or footpaths.</i>',
+    '⚠️ Closes &lt;early&gt; on Wednesdays.',
+    '<b>If it rains</b>',
+    '☔ <a href="' + maps('FixtureR').replace(/&/g, '&amp;') + '">Rope &lt;Loft&gt;</a> <i>instead of Harbour Walk, 0.8 km away</i>'
+  ].join('\n'));
+});
+
+test('day card: booking lines from tgBkDayLines when that function exists (WP-10a), none when it does not', () => {
+  const { ctx } = fresh();
+  const day = c10Day();
+  if (typeof ctx.tgBkDayLines !== 'function') assert.doesNotMatch(cardText(J(ctx.tgCmdDayMessages(TRIP_OBJ, day, 3))), /📌/);
+  const seen = [];
+  ctx.tgBkDayLines = (trip, d) => { seen.push([trip.slug, d.date]); return ['📌 <b>Tide Tour</b> booked · ref on the ticket', '', 7]; };
+  const t = cardText(J(ctx.tgCmdDayMessages(TRIP_OBJ, day, 3)));
+  assert.deepEqual(seen, [[TRIP, '2027-05-13']]);
+  assert.match(t, /\nSpare time: 1 h 10 min\n<i>Walking routes[^\n]+\n📌 <b>Tide Tour<\/b> booked · ref on the ticket$/, 'one line each, after the spare time; empty and non-string entries are skipped');
+});
+
+test('day card note guard (fix (a)): the GAS port agrees with planner/planner-notes.mjs on the shared table', async () => {
+  const { ctx } = fresh();
+  const n = await import('../packs/tour-guide/planner/planner-notes.mjs');
+  const { TABLE, NOON, EARLY } = require('./pack_tour-guide_note_table.js');
+  for (const [text, sched, want] of TABLE) {
+    assert.equal(ctx.tgCmdDayNoteConflict(text, sched), want, `${text} @ ${sched.arrive}`);
+    assert.equal(ctx.tgCmdDayNoteGuard(text, sched), n.guardNote(text, sched), `guard: ${text}`);
+  }
+  for (const c of ['5', '10', '10:30', '9am', '12pm', '12am', '3 p.m.', 'noon', '7', '25', 'x']) assert.equal(ctx.tgCmdDayNoteClock(c), n.clockOf(c), c);
+  const text = 'Arrive at opening to beat the crowds. Buy tickets online; the queue is slow.';
+  assert.equal(ctx.tgCmdDayNoteGuard(text, EARLY), text);
+  assert.equal(ctx.tgCmdDayNoteGuard(text, NOON), 'Buy tickets online; the queue is slow.');
+  assert.equal(ctx.tgCmdDayNoteGuard('Best at sunset.', NOON), '');
+});
+
 // Developed by: LightAISolutions

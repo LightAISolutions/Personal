@@ -3,7 +3,10 @@
  * interest factors, the 5-minute rounding and the calibration bounds.
  */
 export const CATEGORY_DEFAULTS = Object.freeze({
-  museum: 120, viewpoint: 30, market: 60, hike: 180, park: 60, church: 30, neighbourhood: 90, restaurant: 75, cafe: 30, shop: 45, other: 60
+  museum: 120, viewpoint: 30, market: 60, hike: 180, park: 60, church: 30, neighbourhood: 90, restaurant: 75, cafe: 30, shop: 45, other: 60,
+  // Phase 10 (WP-10b, fix (b)): temples and shrines were timed as 30-minute churches or 90-minute neighbourhoods, gardens as
+  // parks and set-length sessions as strolls. Typical visit lengths, an inference recorded in helpers/decisions/WP-10b.md.
+  temple: 45, shrine: 30, garden: 60, experience: 90
 });
 export const PACE_FACTORS = Object.freeze({ relaxed: 1.15, normal: 1.0, packed: 0.85 });
 export const INTEREST_FACTORS = Object.freeze({ low: 0.8, normal: 1.0, high: 1.25 });

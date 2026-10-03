@@ -154,27 +154,33 @@ tgCmdPlAction('ivs', function (ctx, args) {
 
 /* ==================== trips and days ==================== */
 
-/** A stored day → [{ html, keyboard? }] with ◀ ▶ buttons (dy:<trip key>:<n>). */
+/** A stored day → [{ html, keyboard? }] with ◀ ▶ buttons (dy:<trip key>:<n>). Reads the Phase 10 fields (Contract C10) when
+ *  the day has them — honest legs, buffers, spare time, "about" times, check-on-the-day lines — and shows an older day as before. */
 function tgCmdDayMessages(trip, day, total) {
   var tk = tgCmdTripKey(trip.slug);
   var lines = ['<b>Day ' + day.n + (total ? ' of ' + total : '') + ' · ' + tgCmdDate(day.date) + '</b>' + (day.theme ? ' — ' + tgEscape(day.theme) : '')];
   var legs = Array.isArray(day.legs) ? day.legs : [];
   var legTo = function (slug) { return legs.filter(function (l) { return l && l.to === slug; })[0] || null; };
-  var legLine = function (l, what) {
-    var t = tgCmdMinutes(l.minutes) + ' ' + (TG_CMD_MODES[l.mode] || String(l.mode || '').toLowerCase());
-    return '   <i>↳ ' + tgCmdHref(l.maps_url, t) + (what ? ' ' + what : '') + '</i>';
-  };
   (day.stops || []).forEach(function (s) {
     var l = legTo(s.slug);
-    if (l) lines.push(legLine(l, ''));
-    var time = s.arrive ? tgEscape(s.arrive) + (s.depart ? '–' + tgEscape(s.depart) : '') + ' ' : '';
-    lines.push('<b>' + tgEscape(s.n) + '.</b> ' + time + tgCmdHref(s.maps_url, s.name) + (s.minutes ? ' · ' + tgCmdMinutes(s.minutes) : ''));
-    if (s.note_line) lines.push('   <i>' + tgEscape(s.note_line) + '</i>');
+    if (l) lines.push(tgCmdDayLegLine(l, ''));
+    var time = tgCmdDayTime(s);
+    lines.push('<b>' + tgEscape(s.n) + '.</b> ' + (time ? time + ' ' : '') + tgCmdHref(s.maps_url, s.name) + (s.minutes ? ' · ' + tgCmdMinutes(s.minutes) : ''));
+    var note = s.note_line ? tgCmdDayNoteGuard(String(s.note_line), { arrive: s.arrive, depart: s.depart }) : '';
+    if (note) lines.push('   <i>' + tgEscape(note) + '</i>');
+    if (typeof s.check_on_day === 'string' && s.check_on_day) lines.push('   🕑 <i>' + tgEscape(s.check_on_day) + '</i>');
   });
   var home = legTo('lodging');
-  if (home) lines.push(legLine(home, 'back to your lodging'));
+  if (home) lines.push(tgCmdDayLegLine(home, 'back to your lodging'));
   if (!(day.stops || []).length) lines.push('<i>A free day.</i>');
+  if (typeof day.spare_minutes === 'number' && day.spare_minutes >= 0 && (day.stops || []).length) {
+    lines.push('Spare time: ' + (day.spare_minutes ? tgCmdDaySpan(day.spare_minutes) : 'none'));
+  }
+  if (legs.some(function (l) { return l && (l.mode === 'WALK' || l.mode === 'BICYCLE') && !l.estimated; })) lines.push('<i>' + TG_CMD_DAY_WALK_BETA + '</i>');
   (day.warnings || []).forEach(function (w) { lines.push('⚠️ ' + tgEscape(w)); });
+  if (typeof tgBkDayLines === 'function') {
+    (tgBkDayLines(trip, day) || []).forEach(function (b) { if (typeof b === 'string' && b) lines.push(b); });
+  }
   (Array.isArray(day.rain) ? day.rain : []).forEach(function (r, i) {
     if (!i) lines.push('<b>If it rains</b>');
     lines.push('☔ ' + tgCmdHref(r.maps_url, r.name) + ' <i>instead of ' + tgEscape(r.instead_of) + (typeof r.km === 'number' ? ', ' + tgEscape(r.km) + ' km away' : '') + '</i>');
@@ -190,6 +196,101 @@ function tgCmdDayMessages(trip, day, total) {
 }
 /** The stop a rainy-day option replaces (the digest names it, as the stop's own name), or null. */
 function tgCmdRainStop(day, r) { return (day.stops || []).filter(function (st) { return st && st.slug && st.name === r.instead_of; })[0] || null; }
+/** The Phase 10 leg fields (Contract C10): a leg carrying any of them shows the honest-leg wording; an older leg shows as before. */
+var TG_CMD_DAY_LEG_FIELDS = ['estimated', 'distance_m', 'flags', 'taxi_minutes', 'buffer_minutes'];
+/** Google requires this notice wherever a WALK or BICYCLE route is shown (Routes API RouteTravelMode; decisions/WP-10b.md). */
+var TG_CMD_DAY_WALK_BETA = 'Walking routes from Google are in beta and may be missing sidewalks or footpaths.';
+/** Leg flags in display order (planner FLAG_ORDER). */
+var TG_CMD_DAY_FLAGS = ['footpath', 'trail', 'uphill', 'downhill'];
+/** One leg → '   <i>↳ walk 22 min · uphill · taxi about 11 min · +5 min spare</i>' (an older leg: '↳ 9 min walk'). */
+function tgCmdDayLegLine(l, what) {
+  var mode = TG_CMD_MODES[l.mode] || String(l.mode || '').toLowerCase();
+  var c10 = TG_CMD_DAY_LEG_FIELDS.some(function (k) { return l[k] !== undefined; });
+  var t;
+  if (l.estimated) t = 'about ' + tgCmdDaySpan(l.minutes) + ' ' + mode + ' (estimate)';
+  else if (c10) t = mode + ' ' + tgCmdDaySpan(l.minutes);
+  else t = tgCmdMinutes(l.minutes) + ' ' + mode;
+  var extra = [];
+  var flags = Array.isArray(l.flags) ? l.flags : [];
+  TG_CMD_DAY_FLAGS.forEach(function (f) { if (flags.indexOf(f) >= 0) extra.push(f); });
+  if (typeof l.taxi_minutes === 'number' && l.taxi_minutes > 0) extra.push('taxi about ' + tgCmdDaySpan(l.taxi_minutes));
+  if (typeof l.buffer_minutes === 'number' && l.buffer_minutes > 0) extra.push('+' + tgCmdDaySpan(l.buffer_minutes) + ' spare');
+  return '   <i>↳ ' + tgCmdHref(l.maps_url, t) + (what ? ' ' + what : '') + (extra.length ? ' · ' + tgEscape(extra.join(' · ')) : '') + '</i>';
+}
+/** 22 → "22 min", 70 → "1 h 10 min", 120 → "2 h". */
+function tgCmdDaySpan(m) {
+  m = parseInt(m, 10);
+  if (!(m >= 0)) return '';
+  if (m < 60) return m + ' min';
+  return Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + (m % 60) + ' min' : '');
+}
+/** A stop's time: exact (or no time_style) → "11:50–12:55" as before; "about" → the arrival to the nearest 15 minutes, "about 11:45". */
+function tgCmdDayTime(s) {
+  if (!s.arrive) return '';
+  var m = /^(\d{1,2}):(\d{2})$/.exec(String(s.arrive));
+  if (s.time_style === 'about' && m) {
+    var q = Math.round((Number(m[1]) * 60 + Number(m[2])) / 15) * 15;
+    var h = Math.floor(q / 60) % 24, mm = q % 60;
+    return 'about ' + (h < 10 ? '0' : '') + h + ':' + (mm < 10 ? '0' : '') + mm;
+  }
+  return tgEscape(s.arrive) + (s.depart ? '–' + tgEscape(s.depart) : '');
+}
+/**
+ * The note guard (Phase 10 fix (a)) — a port of planner/planner-notes.mjs for the day card's note line: drops each sentence whose
+ * timing advice the stop's scheduled time contradicts and keeps the rest as written. helpers/tests/pack_tour-guide_note_table.js
+ * runs one table through both. sched: { arrive: 'HH:MM', depart: 'HH:MM', window?: { open } | null }.
+ */
+var TG_CMD_DAY_NOTE_RULES = { OPENING_SLACK: 30, EARLY_BY: 600, MORNING_BY: 720, AFTERNOON_FROM: 720, LATE_AFTERNOON_FROM: 900, EVENING_FROM: 960, BARE_PM_BELOW: 8 };
+var TG_CMD_DAY_NOTE_RE = {
+  opening: /\b(?:at|for|by|right at|just after|before|around) (?:the )?open(?:ing)?(?: time)?\b|\bwhen (?:it|the doors|the gates|they) opens?\b|\bas soon as (?:it|they) opens?\b|\bfirst thing\b|\bthe moment (?:it|they) opens?\b/i,
+  early: /\bearly[- ]morning\b|\b(?:go|arrive|come|get there|visit) early\b|\bbefore the crowds\b|\bat dawn\b|\bsunrise\b/i,
+  morning: /\b(?:in|during) the morning\b|\bmornings? (?:are|is) (?:best|quietest|calmest)\b|\bbest in the morning\b|\bmorning light\b/i,
+  lateAfternoon: /\blate afternoon\b/i,
+  afternoon: /\b(?:in|during) the afternoon\b|\bafternoon light\b|\bafternoons? (?:are|is) (?:best|quietest|calmest)\b/i,
+  evening: /\bsunset\b|\bdusk\b|\bgolden hour\b|\b(?:in|during) the evening\b|\bat night\b|\bafter dark\b|\bnight view\b|\blit up\b|\billuminat(?:ed|ion)\b/i,
+  before: /\bbefore\s+(noon|midday|\d{1,2}(?:[:.]\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)?)(?![\w:])/i,
+  after: /\bafter\s+(noon|midday|\d{1,2}(?:[:.]\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)?)(?![\w:])/i,
+  hoursTalk: /\b(?:opens?|closes?|closing|last (?:entry|admission)|open daily|hours)\b[^.]*$/i
+};
+function tgCmdDayNoteMin(t) { var m = /^(\d{1,2}):(\d{2})$/.exec(String(t || '')); return m ? Number(m[1]) * 60 + Number(m[2]) : null; }
+/** '5' → 1020, '10:30' → 630, '9am' → 540, 'noon' → 720; null when not a clock time. */
+function tgCmdDayNoteClock(s) {
+  var t = String(s || '').trim().toLowerCase();
+  if (t === 'noon' || t === 'midday') return 720;
+  var m = /^(\d{1,2})(?:[:.](\d{2}))?\s*(a\.?m\.?|p\.?m\.?)?$/.exec(t);
+  if (!m) return null;
+  var h = Number(m[1]), min = m[2] ? Number(m[2]) : 0;
+  if (h > 23 || min > 59) return null;
+  var ampm = m[3] ? m[3].charAt(0) : null;
+  if (ampm === 'p' && h < 12) h += 12;
+  else if (ampm === 'a' && h === 12) h = 0;
+  else if (!ampm && !m[2] && h < TG_CMD_DAY_NOTE_RULES.BARE_PM_BELOW) h += 12;
+  return h * 60 + min;
+}
+/** The rule a sentence's timing advice breaks ('opening' | 'early' | 'morning' | 'afternoon' | 'evening' | 'before' | 'after'), or null. */
+function tgCmdDayNoteConflict(sentence, sched) {
+  var s = String(sentence || ''), X = TG_CMD_DAY_NOTE_RE, R = TG_CMD_DAY_NOTE_RULES;
+  var arrive = tgCmdDayNoteMin(sched && sched.arrive), depart = tgCmdDayNoteMin(sched && sched.depart);
+  if (arrive === null || depart === null) return null;
+  var open = sched.window ? tgCmdDayNoteMin(sched.window.open) : null;
+  if (X.opening.test(s) && (open !== null ? arrive - open > R.OPENING_SLACK : arrive >= R.EARLY_BY)) return 'opening';
+  if (X.early.test(s) && arrive >= R.EARLY_BY) return 'early';
+  if (X.morning.test(s) && arrive >= R.MORNING_BY) return 'morning';
+  if (X.lateAfternoon.test(s) ? depart < R.LATE_AFTERNOON_FROM : X.afternoon.test(s) && depart <= R.AFTERNOON_FROM) return 'afternoon';
+  if (X.evening.test(s) && depart < R.EVENING_FROM) return 'evening';
+  var x, b = X.before.exec(s);
+  if (b && !X.hoursTalk.test(s.slice(0, b.index))) { x = tgCmdDayNoteClock(b[1]); if (x !== null && arrive >= x) return 'before'; }
+  var a = X.after.exec(s);
+  if (a && !X.hoursTalk.test(s.slice(0, a.index))) { x = tgCmdDayNoteClock(a[1]); if (x !== null && arrive < x) return 'after'; }
+  return null;
+}
+/** The note without the sentences the schedule contradicts ('' when nothing is left); unchanged when no sentence conflicts. */
+function tgCmdDayNoteGuard(text, sched) {
+  if (typeof text !== 'string' || !text) return text;
+  var parts = text.match(/[^.!?;]+(?:[.!?;]+(?=\s|$)|[.!?;]*$)\s*/g) || [];
+  var kept = parts.filter(function (p) { return !tgCmdDayNoteConflict(p, sched); });
+  return kept.length === parts.length ? text : kept.join('').trim();
+}
 function tgCmdSendDay(chatId, trip, key) {
   var days = tgDigestDays(trip.slug), day = tgDigestDay(trip.slug, key);
   if (!day) {
@@ -220,6 +321,7 @@ function tgCmdTripMessages(trip) {
   }
   var later = tgLaterList(trip.slug).length;
   if (later) lines.push('🔖 ' + later + ' on the Later list — /later');
+  lines.push.apply(lines, tgBkTripLines(trip));
   var others = tgTripList().filter(function (t) { return t.slug !== trip.slug && t.status !== 'done'; }).slice(0, 5);
   if (others.length) lines.push('', '<i>Other trips: ' + others.map(function (t) { return tgEscape(t.slug); }).join(', ') + ' — /trip &lt;name&gt; to switch</i>');
   var rows = tgCmdRows(days.map(function (d) { return { text: String(d.n), data: cbEncode('dy', tk, d.n) }; }), 7);
@@ -247,17 +349,32 @@ registerCommand('/trip', function (ctx) {
   if (trip) tgCmdSendAll(ctx.chatId, tgCmdTripMessages(trip));
 }, 'the current trip: dates, days and buttons (/trip <name> switches trip)');
 
+/**
+ * "Today in <destination>: Wed 3 Mar" when the trip keeps its own zone and that zone is not at home's offset right now
+ * (WP-10a), so the owner sees which day "today" means; '' otherwise.
+ */
+function tgCmdTodayHeader(trip, today) {
+  if (!tgTripAway(trip)) return '';
+  return '📍 Today in ' + tgEscape(trip.destination || trip.title || trip.slug) + ': ' + tgCmdDate(today);
+}
 registerCommand('/today', function (ctx) {
   var trip = tgCmdCurrent(ctx);
   if (!trip) return;
-  var today = isoDateLocal(), day = tgDigestDay(trip.slug, today);
-  if (day) { tgCmdSendAll(ctx.chatId, tgCmdDayMessages(trip, day, tgDigestDays(trip.slug).length)); return; }
+  var today = tgTripToday(trip), day = tgDigestDay(trip.slug, today), head = tgCmdTodayHeader(trip, today);
+  if (day) {
+    var msgs = tgCmdDayMessages(trip, day, tgDigestDays(trip.slug).length);
+    if (head && msgs.length && msgs[0].html.length + head.length + 1 <= 4000) msgs[0].html = head + '\n' + msgs[0].html;
+    else if (head) msgs.unshift({ html: head });
+    tgCmdSendAll(ctx.chatId, msgs);
+    return;
+  }
+  var pre = head ? head + '\n' : '';
   var days = tgDigestDays(trip.slug);
-  if (!days.length) { ctx.reply('No day plan for ' + tgCmdTitle(trip) + ' yet.'); return; }
+  if (!days.length) { ctx.reply(pre + 'No day plan for ' + tgCmdTitle(trip) + ' yet.'); return; }
   if (today < days[0].date) {
     var n = tgCmdDaysBetween(today, days[0].date);
-    ctx.reply(tgCmdTitle(trip) + ' starts ' + tgCmdDate(days[0].date) + ' (in ' + n + ' day' + (n === 1 ? '' : 's') + ') — /day 1');
-  } else ctx.reply(tgCmdTitle(trip) + ' ended ' + tgCmdDate(days[days.length - 1].date) + '. How was it? /review');
+    ctx.reply(pre + tgCmdTitle(trip) + ' starts ' + tgCmdDate(days[0].date) + ' (in ' + n + ' day' + (n === 1 ? '' : 's') + ') — /day 1');
+  } else ctx.reply(pre + tgCmdTitle(trip) + ' ended ' + tgCmdDate(days[days.length - 1].date) + '. How was it? /review');
 }, "today's plan of the current trip");
 
 registerCommand('/day', function (ctx) {
@@ -387,8 +504,8 @@ function tgCmdAppRows() {
 /** 'YYYY-MM-DD', 'N' / 'day N', 'today', 'tomorrow' → a date of the trip's plan, or null. */
 function tgCmdPlanDate(trip, word) {
   var w = String(word || '').trim().toLowerCase().replace(/^day\s*/, '');
-  if (w === 'today') w = isoDateLocal();
-  else if (w === 'tomorrow') w = isoDateLocal(new Date(nowMs() + 86400000));
+  if (w === 'today') w = tgTripToday(trip);                      // the trip's own day (WP-10a)
+  else if (w === 'tomorrow') w = isoDateAdd(tgTripToday(trip), 1);
   var d = tgDigestDay(trip.slug, w);
   return d ? d.date : null;
 }

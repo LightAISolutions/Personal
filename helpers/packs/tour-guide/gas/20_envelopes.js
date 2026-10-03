@@ -1,5 +1,5 @@
 /**
- * Tour Guide pack — handlers for the pack's six from-brain envelope types (WP-5b; contract
+ * Tour Guide pack — handlers for the pack's seven from-brain envelope types (WP-5b; contract
  * helpers/decisions/TG-PHASE-5.md §1.4, §1.5, §1.8).
  *   shortlist · trip_facts · plan_digest  → store (21_sheets.js), then hand to the active `plan` flow of the same trip
  *                                           (flowResume, event = the type), else the WP-5a renderer tg_<type>, else
@@ -10,6 +10,8 @@
  *                                           `prefs` with payload.decisions = the prefs kit's prefs_decisions document
  *   places_digest                         → Places tab; "still open / changed" lines for a places check, else one
  *                                           count line or silence
+ *   bookings (WP-10a)                     → Bookings tab (14_bookings.js; owner taps win), trip zone, one silent
+ *                                           notice for new to-book records, re-arm the alarm trigger
  * Each validate() is a hand-written mirror of schemas/tour-guide-<kind>.schema.json plus the semantic checks of
  * schemas/tour-guide-checks.mjs (required keys, types, enums, sizes, no unknown keys). Defaults: helpers/decisions/WP-5b.md.
  */
@@ -18,6 +20,7 @@ var TG_ENV_RE = {
   url: /^https:\/\/\S+$/, driveId: /^[A-Za-z0-9_-]{10,200}$/, ident: /^[a-z][a-z0-9_]{0,31}$/, cid: /^c_[0-9a-f]{10}$/,
   batch: /^pfb_[0-9a-f]{16}$/, category: /^[a-z][a-z0-9-]{0,31}$/, placeId: /^[A-Za-z0-9_-]{6,300}$/,
   pfData: /^pf:c_[0-9a-f]{10}:[yen]$/,
+  tz: /^(UTC|Etc\/[A-Za-z0-9+-]{1,10}|[A-Za-z_]+(\/[A-Za-z0-9_+-]+)+)$/,
   zoned: /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):[0-5]\d(:[0-5]\d(\.\d{1,9})?)?(Z|[+-]([01]\d|2[0-3]):[0-5]\d)$/
 };
 var TG_ENV_DIGEST_MAX_CHARS = 60000;
@@ -63,6 +66,11 @@ function tgEnvDate(errs, path, v) { if (!tgEnvRealDate(v)) errs.push(path + ' mu
 function tgEnvDateOrNull(errs, path, v) { if (v !== null) tgEnvDate(errs, path, v); }
 function tgEnvSlug(errs, path, v) { tgEnvStr(errs, path, v, 1, 64, TG_ENV_RE.slug); }
 function tgEnvUrl(errs, path, v) { tgEnvStr(errs, path, v, 1, 2000, TG_ENV_RE.url); }
+/** An IANA zone: the trip schema's timezone pattern, and a zone the runtime knows (Mars/Olympus is refused). */
+function tgEnvTz(errs, path, v) {
+  tgEnvStr(errs, path, v, 1, 64, TG_ENV_RE.tz);
+  if (typeof v === 'string' && TG_ENV_RE.tz.test(v) && !isValidTz(v)) errs.push(path + ' is not a known time zone');
+}
 function tgEnvDupes(errs, path, arr, key, what) {
   var seen = {};
   (Array.isArray(arr) ? arr : []).forEach(function (x, i) {
@@ -182,17 +190,36 @@ function tgEnvValidateTripFacts(p) {
   }
   return tgEnvDone(errs);
 }
+/* C10 (TG-PHASE-10): optional plan fields; old digests without them stay valid. */
+var TG_ENV_TIME_STYLES = ['about', 'exact'];
+var TG_ENV_LEG_FLAGS = ['footpath', 'trail', 'uphill', 'downhill'];
+function tgEnvLegC10(errs, al, l) {
+  if (l.estimated !== undefined && l.estimated !== true) errs.push(al + '.estimated must be true when present');
+  if (l.distance_m !== undefined) tgEnvInt(errs, al + '.distance_m', l.distance_m, 0, 500000);
+  if (l.taxi_minutes !== undefined) tgEnvInt(errs, al + '.taxi_minutes', l.taxi_minutes, 0, 1440);
+  if (l.buffer_minutes !== undefined) tgEnvInt(errs, al + '.buffer_minutes', l.buffer_minutes, 0, 120);
+  if (l.flags !== undefined && tgEnvArr(errs, al + '.flags', l.flags, 4)) {
+    var seen = {};
+    l.flags.forEach(function (f, k) {
+      tgEnvEnum(errs, al + '.flags[' + k + ']', f, TG_ENV_LEG_FLAGS);
+      if (typeof f === 'string' && seen[f]) errs.push(al + '.flags[' + k + ']: duplicate flag ' + truncate(f, 20));
+      seen[f] = true;
+    });
+  }
+}
 function tgEnvValidatePlanDigest(p) {
   var errs = [];
-  if (!tgEnvObj(errs, 'payload', p, ['trip', 'build_id', 'verified_on', 'days', 'later', 'drive'], ['v', 'kind'])) return errs;
+  if (!tgEnvObj(errs, 'payload', p, ['trip', 'build_id', 'verified_on', 'days', 'later', 'drive'], ['v', 'kind', 'tz'])) return errs;
   tgEnvHead(errs, p, 'plan_digest');
   if (p.trip !== undefined) tgEnvSlug(errs, 'trip', p.trip);
+  if (p.tz !== undefined) tgEnvTz(errs, 'tz', p.tz);                                         // C10
   if (p.build_id !== undefined) tgEnvStr(errs, 'build_id', p.build_id, 1, 120);
   if (p.verified_on !== undefined) tgEnvDate(errs, 'verified_on', p.verified_on);
   if (p.days !== undefined && tgEnvArr(errs, 'days', p.days, 31)) {
     p.days.forEach(function (d, i) {
       var at = 'days[' + i + ']';
-      if (!tgEnvObj(errs, at, d, ['date', 'theme', 'stops', 'legs', 'warnings'], ['rain'])) return;
+      if (!tgEnvObj(errs, at, d, ['date', 'theme', 'stops', 'legs', 'warnings'], ['rain', 'spare_minutes'])) return;
+      if (d.spare_minutes !== undefined) tgEnvInt(errs, at + '.spare_minutes', d.spare_minutes, 0, 1440);   // C10
       if (d.date !== undefined) {
         tgEnvDate(errs, at + '.date', d.date);
         var prev = i ? p.days[i - 1] : null;
@@ -202,7 +229,9 @@ function tgEnvValidatePlanDigest(p) {
       if (d.stops !== undefined && tgEnvArr(errs, at + '.stops', d.stops, 25)) {
         d.stops.forEach(function (s, j) {
           var as = at + '.stops[' + j + ']';
-          if (!tgEnvObj(errs, as, s, ['n', 'slug', 'name', 'arrive', 'depart', 'minutes', 'maps_url', 'note_line'])) return;
+          if (!tgEnvObj(errs, as, s, ['n', 'slug', 'name', 'arrive', 'depart', 'minutes', 'maps_url', 'note_line'], ['time_style', 'check_on_day'])) return;
+          if (s.time_style !== undefined) tgEnvEnum(errs, as + '.time_style', s.time_style, TG_ENV_TIME_STYLES);   // C10
+          if (s.check_on_day !== undefined) tgEnvStr(errs, as + '.check_on_day', s.check_on_day, 1, 160);
           if (s.n !== undefined) tgEnvInt(errs, as + '.n', s.n, 1, 99);
           if (s.slug !== undefined) tgEnvSlug(errs, as + '.slug', s.slug);
           if (s.name !== undefined) tgEnvStr(errs, as + '.name', s.name, 1, 120);
@@ -217,7 +246,8 @@ function tgEnvValidatePlanDigest(p) {
       if (d.legs !== undefined && tgEnvArr(errs, at + '.legs', d.legs, 26)) {
         d.legs.forEach(function (l, j) {
           var al = at + '.legs[' + j + ']';
-          if (!tgEnvObj(errs, al, l, ['from', 'to', 'mode', 'minutes'], ['maps_url'])) return;
+          if (!tgEnvObj(errs, al, l, ['from', 'to', 'mode', 'minutes'], ['maps_url', 'estimated', 'distance_m', 'flags', 'taxi_minutes', 'buffer_minutes'])) return;
+          tgEnvLegC10(errs, al, l);
           if (l.from !== undefined) tgEnvSlug(errs, al + '.from', l.from);
           if (l.to !== undefined) tgEnvSlug(errs, al + '.to', l.to);
           if (l.mode !== undefined) tgEnvEnum(errs, al + '.mode', l.mode, ['TRANSIT', 'DRIVE', 'WALK']);
@@ -348,6 +378,52 @@ function tgEnvValidatePlacesDigest(p) {
   return tgEnvDone(errs);
 }
 
+/* ---------------- bookings (WP-10a, suggestion 6): mirror of tour-guide-bookings.schema.json + checkBookings ---------------- */
+var TG_ENV_BOOKING_KINDS = ['train', 'lodging', 'meal', 'sight', 'experience', 'other'];
+var TG_ENV_BOOKING_STATUSES = ['todo', 'booked', 'not_needed'];
+var TG_ENV_BOOKINGS_MAX = 40;
+/** A booking instant: ISO 8601 with an explicit offset (Z or ±HH:MM), seconds optional, no fractions (the schema's datetime). */
+TG_ENV_RE.bkAt = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?(Z|[+-]([01]\d|2[0-3]):[0-5]\d)$/;
+function tgEnvBkAtOk(v) { return typeof v === 'string' && TG_ENV_RE.bkAt.test(v) && tgEnvRealDate(v.slice(0, 10)) && isFinite(Date.parse(v)); }
+function tgEnvBkAt(errs, path, v) {
+  tgEnvStr(errs, path, v, 1, 40, TG_ENV_RE.bkAt);
+  if (typeof v === 'string' && TG_ENV_RE.bkAt.test(v) && !tgEnvBkAtOk(v)) errs.push(path + ' is not a real date-time');
+}
+/** One booking record (tour-guide-booking.schema.json + checkBooking). */
+function tgEnvBooking(errs, at, b) {
+  if (!tgEnvObj(errs, at, b, ['id', 'title', 'kind', 'rule', 'status'],
+    ['place', 'for_date', 'opens_at', 'book_by', 'how', 'party_min', 'url', 'note', 'source', 'updated'])) return;
+  if (b.id !== undefined) tgEnvSlug(errs, at + '.id', b.id);
+  if (b.title !== undefined) tgEnvStr(errs, at + '.title', b.title, 1, 120);
+  if (b.kind !== undefined) tgEnvEnum(errs, at + '.kind', b.kind, TG_ENV_BOOKING_KINDS);
+  if (b.rule !== undefined) tgEnvStr(errs, at + '.rule', b.rule, 1, 200);
+  if (b.status !== undefined) tgEnvEnum(errs, at + '.status', b.status, TG_ENV_BOOKING_STATUSES);
+  if (b.place !== undefined) tgEnvSlug(errs, at + '.place', b.place);
+  if (b.for_date !== undefined) tgEnvDate(errs, at + '.for_date', b.for_date);
+  if (b.opens_at !== undefined) tgEnvBkAt(errs, at + '.opens_at', b.opens_at);
+  if (b.book_by !== undefined) tgEnvBkAt(errs, at + '.book_by', b.book_by);
+  if (b.how !== undefined) tgEnvStr(errs, at + '.how', b.how, 1, 120);
+  if (b.party_min !== undefined) tgEnvInt(errs, at + '.party_min', b.party_min, 1, 20);
+  if (b.url !== undefined) tgEnvUrl(errs, at + '.url', b.url);
+  if (b.note !== undefined) tgEnvStr(errs, at + '.note', b.note, 0, 200);
+  if (b.source !== undefined) tgEnvStr(errs, at + '.source', b.source, 0, 120);
+  if (b.updated !== undefined) tgEnvDate(errs, at + '.updated', b.updated);
+  if (tgEnvBkAtOk(b.opens_at) && tgEnvBkAtOk(b.book_by) && Date.parse(b.book_by) < Date.parse(b.opens_at)) errs.push(at + '.book_by is before opens_at');
+}
+function tgEnvValidateBookings(p) {
+  var errs = [];
+  if (!tgEnvObj(errs, 'payload', p, ['trip', 'tz', 'bookings'], ['v', 'kind'])) return errs;
+  tgEnvHead(errs, p, 'bookings');
+  if (p.trip !== undefined) tgEnvSlug(errs, 'trip', p.trip);
+  if (p.tz !== undefined) tgEnvTz(errs, 'tz', p.tz);
+  if (p.bookings !== undefined && tgEnvArr(errs, 'bookings', p.bookings, TG_ENV_BOOKINGS_MAX)) {
+    p.bookings.forEach(function (b, i) { tgEnvBooking(errs, 'bookings[' + i + ']', b); });
+    tgEnvDupes(errs, 'bookings', p.bookings, 'id', 'booking id');
+  }
+  tgEnvSize(errs, p);
+  return tgEnvDone(errs);
+}
+
 /* ---------------- hand-off: the plan flow, else the WP-5a renderer, else one plain line ---------------- */
 /** true when the owner's active flow is `plan` for this trip and took the envelope (contract §1.4). */
 function tgEnvToFlow(type, env) {
@@ -416,6 +492,25 @@ registerEnvelopeHandler('plan_digest', {
     var st = tgDigestStore(p);
     var to = tgEnvDeliver('plan_digest', env, '🗓 Plan for <b>' + tgEscape(p.trip) + '</b> stored: ' + st.days + ' day(s), ' + st.later + ' saved for later. /trip shows it.');
     return { trip: p.trip, days: st.days, later: st.later, to: to };
+  }
+});
+/**
+ * bookings (WP-10a): the brain's full list for one trip replaces the core's (owner taps win, 14_bookings.js tgBkStore);
+ * `tz` sets the trip's zone. A silent notice only when new to-book records arrived; the one alarm trigger is re-armed.
+ */
+registerEnvelopeHandler('bookings', {
+  validate: tgEnvCleaned(tgEnvValidateBookings),
+  handle: function (env) {
+    var p = env.payload;
+    var st = tgBkStore(p);
+    var sent = false;
+    if (st.added_todo) {
+      var t = tgTripGet(p.trip) || { slug: p.trip };
+      var r = tgSendOwner('🎟 ' + st.added_todo + ' new booking' + (st.added_todo === 1 ? '' : 's') + ' to make for <b>' + tgCmdTitle(t) + '</b> — /bookings', { silent: true });
+      sent = !!(r && r.ok);
+    }
+    var armed = _safe('alarm_arm', function () { return alarmArm(); });
+    return { trip: p.trip, total: st.total, todo: st.todo, added_todo: st.added_todo, removed: st.removed, kept_owner: st.kept_owner, notice: sent, alarm: armed ? armed.at : null };
   }
 });
 registerEnvelopeHandler('profile_summary', {

@@ -2,6 +2,7 @@
  * Tour Guide pack — sheet tabs and the storage API (WP-5b; contract helpers/decisions/TG-PHASE-5.md §1.3).
  * Every other pack file reads and writes the pack tabs ONLY through these functions, never storeAppend on a pack tab.
  *   Trips      tgTripGet · tgTripList · tgTripUpsert · tgTripCurrent · tgTripSetStatus
+ *              tgTripTz · tgTripToday · tgTripSetTz · tgOwnerTz      (WP-10a: each trip's own time zone, `tz` column)
  *   DayPlans   tgDigestStore · tgDigestDays · tgDigestDay        (one row per day; a cell over 50 000 chars continues
  *                                                                  in `part` 1, 2, … rows of the same day)
  *   Later      tgLaterList · tgLaterAdd
@@ -27,8 +28,8 @@ var TG_PLACE_OWN = ['slug', 'name', 'area', 'category', 'tags', 'status', 'last_
   'note_line', 'maps_url', 'history_summary'];
 
 registerSheet(TG_SHEETS.TRIPS, ['slug', 'title', 'destination', 'start', 'end', 'status', 'build_id', 'verified_on', 'drive_plan',
-  'drive_brochure_html', 'drive_brochure_pdf', 'updated_at', 'lodging', 'review_offered_at']);
-registerSheet(TG_SHEETS.DAYS, ['slug', 'date', 'theme', 'stops_json', 'legs_json', 'warnings_json', 'part', 'rain_json']);
+  'drive_brochure_html', 'drive_brochure_pdf', 'updated_at', 'lodging', 'review_offered_at', 'tz']);
+registerSheet(TG_SHEETS.DAYS, ['slug', 'date', 'theme', 'stops_json', 'legs_json', 'warnings_json', 'part', 'rain_json', 'meta_json']);
 registerSheet(TG_SHEETS.LATER, ['slug', 'place_slug', 'name', 'reason']);
 registerSheet(TG_SHEETS.PLACES, ['slug', 'name', 'destination', 'area', 'category', 'tags', 'status', 'last_trip', 'last_researched',
   'last_verified', 'note_line', 'maps_url', 'history_json']);
@@ -74,6 +75,11 @@ function tgShTripOut(r) {
   return out;
 }
 function _tgShCols(name) { return HB_REGISTRY.sheet[name].slice(); }
+/** A tab made before a column existed gets it now (setup is not re-run on every deploy; storeUpdate drops unknown keys). */
+function _tgEnsureCols(name, cols) {
+  var have = sheetHeaders(getSheet(name));
+  if (cols.some(function (c) { return have.indexOf(c) < 0; })) ensureSheets();
+}
 function _tgTripRow(slug) { return storeFind(TG_SHEETS.TRIPS, function (r) { return tgShStr(r.slug) === slug; }, 1)[0] || null; }
 
 function tgTripGet(slug) { return tgShTripOut(_tgTripRow(tgShStr(slug))); }
@@ -94,12 +100,14 @@ function tgTripUpsert(obj) {
   if (obj.status !== undefined && obj.status !== null && obj.status !== '' && TG_TRIP_STATUSES.indexOf(obj.status) < 0) {
     throw new Error('tgTripUpsert: status must be one of ' + TG_TRIP_STATUSES.join(' · '));
   }
+  if (obj.tz !== undefined && obj.tz !== null && obj.tz !== '' && !isValidTz(obj.tz)) throw new Error('tgTripUpsert: tz must be an IANA time zone');
   var patch = {};
   _tgShCols(TG_SHEETS.TRIPS).forEach(function (h) {
     if (h === 'slug' || h === 'updated_at' || obj[h] === undefined || obj[h] === null) return;
     patch[h] = h === 'lodging' && typeof obj[h] === 'object' ? toJson(obj[h]) : obj[h];
   });
   patch.updated_at = nowIso();
+  _tgEnsureCols(TG_SHEETS.TRIPS, Object.keys(patch));
   var row = _tgTripRow(slug);
   if (row) return tgShTripOut(storeUpdate(TG_SHEETS.TRIPS, row._row, patch));
   patch.slug = slug;
@@ -115,17 +123,59 @@ function tgTripSetStatus(slug, status) {
 }
 /**
  * The trip the owner is working on: Settings.tg_current_trip when that row exists and is not done; else the trip in
- * progress today (start ≤ today ≤ end); else the next upcoming one; else null. Done trips are never current.
+ * progress today (start ≤ today ≤ end, "today" in that trip's own zone); else the next upcoming one; else null. Done
+ * trips are never current.
  */
 function tgTripCurrent() {
   var pinned = settingGet(TG_SETTINGS.CURRENT_TRIP, '');
   if (pinned) { var t = tgTripGet(pinned); if (t && t.status !== 'done') return t; }
-  var today = isoDateLocal();
   var open = tgTripList().filter(function (t) { return t.status !== 'done'; });
-  var now = open.filter(function (t) { return t.start && t.start <= today && (t.end || t.start) >= today; });
+  var now = open.filter(tgTripInProgress);
   if (now.length) return now[0];
-  var next = open.filter(function (t) { return t.start && t.start > today; });
+  var next = open.filter(function (t) { return t.start && t.start > tgTripToday(t); });
   return next.length ? next[0] : null;
+}
+
+/* ---------------- Trip time zones (WP-10a) ---------------- */
+/** The trip's own IANA zone (Trips.tz, set by a plan_digest or bookings envelope); the home zone when it has none. */
+function tgTripTz(trip) {
+  var t = typeof trip === 'string' ? tgTripGet(trip) : trip;
+  var tz = t && t.tz ? String(t.tz) : '';
+  return tz && isValidTz(tz) ? tz : getTz();
+}
+/** Today's date (YYYY-MM-DD) where the trip is — the home date for a trip without a zone. */
+function tgTripToday(trip, d) { return isoDateIn(tgTripTz(trip), d); }
+/** True when today (in the trip's zone) falls within start…end. */
+function tgTripInProgress(t) {
+  if (!t || !t.start) return false;
+  var today = tgTripToday(t);
+  return t.start <= today && (t.end || t.start) >= today;
+}
+/** True when the trip has its own zone and it is not at the home zone's offset right now. */
+function tgTripAway(trip) {
+  var t = typeof trip === 'string' ? tgTripGet(trip) : trip;
+  if (!t || !t.tz || !isValidTz(t.tz)) return false;
+  var d = nowDate();
+  return Utilities.formatDate(d, t.tz, 'yyyy-MM-dd HH:mm') !== Utilities.formatDate(d, getTz(), 'yyyy-MM-dd HH:mm');
+}
+/** Store a trip's zone when it is a real IANA zone and differs; true when it changed. Unknown trips are left alone. */
+function tgTripSetTz(slug, tz) {
+  tz = tgShStr(tz);
+  if (!tz || !isValidTz(tz)) return false;
+  var t = tgTripGet(slug);
+  if (!t || t.tz === tz) return false;
+  tgTripUpsert({ slug: t.slug, tz: tz });
+  return true;
+}
+/**
+ * The zone the owner is in now: a trip in progress that has its own zone (the pinned trip first), else the home zone.
+ * Used for "your time" and the 09:00 booking reminder.
+ */
+function tgOwnerTz() {
+  var pinned = settingGet(TG_SETTINGS.CURRENT_TRIP, '');
+  var live = tgTripList().filter(function (t) { return t.status !== 'done' && t.tz && isValidTz(t.tz) && tgTripInProgress(t); });
+  live.sort(function (a, b) { return (b.slug === pinned) - (a.slug === pinned); });
+  return live.length ? live[0].tz : getTz();
 }
 
 /* ---------------- DayPlans + Later (plan_digest) ---------------- */
@@ -143,10 +193,13 @@ function _tgDayRows(slug, day) {
   cols.legs_json = _tgChunks(toJson(day.legs || []));
   cols.warnings_json = _tgChunks(toJson(day.warnings || []));
   cols.rain_json = _tgChunks(toJson(day.rain || []));
+  var meta = {};
+  if (typeof day.spare_minutes === 'number') meta.spare_minutes = day.spare_minutes;   // C10 day-level extras
+  var metaJson = Object.keys(meta).length ? toJson(meta) : '';
   TG_DAY_JSON_COLS.forEach(function (c) { parts = Math.max(parts, cols[c].length); });
   var rows = [];
   for (var p = 0; p < parts; p++) {
-    var r = { slug: slug, date: String(day.date), theme: p === 0 ? String(day.theme || '') : '', part: p };
+    var r = { slug: slug, date: String(day.date), theme: p === 0 ? String(day.theme || '') : '', part: p, meta_json: p === 0 ? metaJson : '' };
     TG_DAY_JSON_COLS.forEach(function (c) { r[c] = cols[c][p] || ''; });
     rows.push(r);
   }
@@ -169,10 +222,11 @@ function tgDigestStore(p) {
   if (!prev || prev.status !== 'done') trip.status = 'planned';
   if (days.length && (!prev || !prev.start)) trip.start = String(days[0].date);
   if (days.length && (!prev || !prev.end)) trip.end = String(days[days.length - 1].date);
+  if (p.tz && isValidTz(p.tz)) trip.tz = String(p.tz);   // C10: the destination's zone
   tgTripUpsert(trip);
 
-  // A tab made before rain_json existed gets the column now (setup is not re-run on every deploy).
-  if (sheetHeaders(getSheet(TG_SHEETS.DAYS)).indexOf('rain_json') < 0) ensureSheets();
+  // A tab made before rain_json / meta_json existed gets the column now (setup is not re-run on every deploy).
+  _tgEnsureCols(TG_SHEETS.DAYS, ['rain_json', 'meta_json']);
   var old = storeFind(TG_SHEETS.DAYS, function (r) { return tgShStr(r.slug) === slug; }).map(function (r) { return r._row; });
   if (old.length) storeDeleteRows(TG_SHEETS.DAYS, old);
   var rows = 0;
@@ -189,7 +243,11 @@ function tgDigestStore(p) {
   keep.forEach(function (r) { storeAppend(TG_SHEETS.LATER, r); });
   return { trip: slug, days: days.length, rows: rows, later: (p.later || []).length, kept_owner_later: keep.length };
 }
-/** The stored days of a trip, in date order: [{ date, n (1-based), theme, stops[], legs[], warnings[], rain[] }]. */
+/**
+ * The stored days of a trip, in date order: [{ date, n (1-based), theme, stops[], legs[], warnings[], rain[],
+ * spare_minutes (number or null) }]. C10 stop fields (time_style, check_on_day) and leg fields (estimated, distance_m,
+ * flags, taxi_minutes, buffer_minutes) pass through inside stops[] / legs[] exactly as the digest sent them.
+ */
 function tgDigestDays(slug) {
   slug = tgShStr(slug);
   var byDate = {};
@@ -201,8 +259,11 @@ function tgDigestDays(slug) {
     var parts = byDate[date].sort(function (a, b) { return tgShInt(a.part, 0) - tgShInt(b.part, 0); });
     var joined = {};
     TG_DAY_JSON_COLS.forEach(function (c) { joined[c] = parts.map(function (r) { return tgShStr(r[c]); }).join(''); });
+    var meta = tgShJson(tgShStr(parts[0].meta_json), {});
+    var spare = isPlainObject(meta) && typeof meta.spare_minutes === 'number' ? meta.spare_minutes : null;
     return { date: date, n: i + 1, theme: tgShStr(parts[0].theme), stops: tgShJson(joined.stops_json, []),
-      legs: tgShJson(joined.legs_json, []), warnings: tgShJson(joined.warnings_json, []), rain: tgShJson(joined.rain_json, []) };
+      legs: tgShJson(joined.legs_json, []), warnings: tgShJson(joined.warnings_json, []), rain: tgShJson(joined.rain_json, []),
+      spare_minutes: spare };
   });
 }
 /** One day by number (1-based, number or numeric string) or by date 'YYYY-MM-DD'; null when absent. */
@@ -433,7 +494,7 @@ function tgSnapshot() {
   var trips = tgTripList();
   var open = trips.filter(function (t) { return t.status !== 'done'; }), done = trips.filter(function (t) { return t.status === 'done'; });
   var shown = open.concat(done).slice(0, TG_SNAPSHOT_TRIPS).map(function (t) {
-    return { slug: t.slug, destination: t.destination, start: t.start, end: t.end, status: t.status, build_id: t.build_id };
+    return { slug: t.slug, destination: t.destination, start: t.start, end: t.end, status: t.status, build_id: t.build_id, tz: t.tz || '' };
   });
   var round = null;
   var rows = storeAll(TG_SHEETS.SHORTLIST);
@@ -452,7 +513,8 @@ function tgSnapshot() {
   return {
     trips: shown, trips_total: trips.length, choice_round: round,
     profile_summary: prof ? { updated: tgShDate(prof.updated || prof.received_at) } : null,
-    places: tgPlacesCounts()
+    places: tgPlacesCounts(),
+    bookings: typeof tgBkSnapshot === 'function' ? tgBkSnapshot() : {}
   };
 }
 registerSnapshotProvider('tour_guide', tgSnapshot);
