@@ -231,7 +231,7 @@ test('the journey through the core: shortlist → three outlines → A with two 
   assert.match(ann, /\n<b>7\.<\/b> Sun 14 Nov <i>\(0 stops\)<\/i>\n/, 'the free last day has no theme');
   const listed = ann.split('🔖 <b>Later</b>\n')[1].split('\n').map((l) => /^• (.+?) — <i>(.+)<\/i>$/.exec(l).slice(1));
   assert.deepEqual(listed, dg.later.map((l) => [l.name, l.reason]));
-  assert.deepEqual(listed[0], ['Hollin Pottery Village', 'Hollin Pottery Village is in another version of 2027-11-08 that you did not choose']);
+  assert.deepEqual(listed[0], ['Hollin Pottery Village', 'Hollin Pottery Village is in another version of Mon 8 Nov that you did not choose']);
 
   // The day cards: the slower first day, dinner a short ride out on the second, the station start with the bags, the
   // station end of a free last day.
@@ -349,11 +349,11 @@ test("the brain: three outlines that place every pick or name the ones left out,
   // skipped place is nowhere.
   assert.deepEqual(plan.later.map((l) => l.name), ["Didn't fit", 'Next time', 'Saved by you']);
   assert.deepEqual(plan.later[0].items.map((i) => [i.place, i.reason]), [
-    ['hollin-pottery-village', 'Hollin Pottery Village is in another version of 2027-11-08 that you did not choose'],
-    ['clockmakers-row', "Clockmakers' Row is in another version of 2027-11-10 that you did not choose"],
-    ['printworks-gallery', 'Printworks Gallery is in another version of 2027-11-10 that you did not choose'],
-    ['tidewater-baths', 'Tidewater Baths is in another version of 2027-11-10 that you did not choose'],
-    ['lantern-bridge', 'Lantern Bridge is in another version of 2027-11-10 that you did not choose']]);
+    ['hollin-pottery-village', 'Hollin Pottery Village is in another version of Mon 8 Nov that you did not choose'],
+    ['clockmakers-row', "Clockmakers' Row is in another version of Wed 10 Nov that you did not choose"],
+    ['printworks-gallery', 'Printworks Gallery is in another version of Wed 10 Nov that you did not choose'],
+    ['tidewater-baths', 'Tidewater Baths is in another version of Wed 10 Nov that you did not choose'],
+    ['lantern-bridge', 'Lantern Bridge is in another version of Wed 10 Nov that you did not choose']]);
   assert.deepEqual(plan.later[2].items.map((i) => i.place), LATER);
   const placed = new Set(plan.days.flatMap((d) => [...stopsOf(d), ...(d.meals || []).map((x) => x.at)]));
   const saved = new Set(plan.later.flatMap((l) => l.items.map((i) => i.place)));
@@ -397,7 +397,7 @@ test('one brochure for the chosen mix: the chosen days, the moving day\'s start 
   const { html, warnings } = bm.renderPlan(args(), { embedFonts: false });
   assert.deepEqual(warnings, []);
   for (const s of ['Start</span> · Quillbay Station', 'Leave your bags at Quillbay Inn', 'Dinner</span> · Ember and Oak', 'Dinner</span> · Salt Lantern',
-    'Dinner</span> · Driftwood Kitchen', 'Carry your bags today', 'Ends 15:30 at Quillbay Station', 'Hollin Pottery Village is in another version of 2027-11-08 that you did not choose']) assert.ok(html.includes(s), s);
+    'Dinner</span> · Driftwood Kitchen', 'Carry your bags today', 'Ends 15:30 at Quillbay Station', 'Hollin Pottery Village is in another version of Mon 8 Nov that you did not choose']) assert.ok(html.includes(s), s);
   assert.doesNotMatch(html, /<script|href="http:/i);
 });
 

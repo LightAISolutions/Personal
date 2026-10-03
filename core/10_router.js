@@ -114,7 +114,7 @@ function routeTg(e) {
   var lock = LockService.getScriptLock();
   if (!lock.tryLock(15000)) {
     // Never lose an update: defer it to the worker instead of letting Telegram retry (we already said 200).
-    enqueue('tg_update_deferred', update, 'telegram');
+    enqueue('tg_update_deferred', tgWithholdLocation(update), 'telegram');
     return htmlOut('OK');
   }
   try { handleTelegramUpdate(update); }
@@ -123,6 +123,24 @@ function routeTg(e) {
   return htmlOut('OK');
 }
 registerQueueHandler('tg_update_deferred', function (item) { handleTelegramUpdate(item.payload); return { ok: true }; });
+/**
+ * A deferred update is stored in the Queue sheet until the worker runs it, so a shared location (message.location or a
+ * venue, also in edited_message for live locations) is taken out first and the message marked hb_location_withheld:
+ * a location serves one request and is never kept (tour-guide's re-plan from here asks for it again). Returns a copy.
+ */
+function tgWithholdLocation(update) {
+  if (!isPlainObject(update)) return update;
+  var out = Object.assign({}, update);
+  ['message', 'edited_message'].forEach(function (k) {
+    var m = out[k];
+    if (!isPlainObject(m) || (m.location === undefined && m.venue === undefined)) return;
+    var c = Object.assign({}, m);
+    delete c.location; delete c.venue;
+    c.hb_location_withheld = true;
+    out[k] = c;
+  });
+  return out;
+}
 
 function handleTelegramUpdate(update) {
   if (update.callback_query) return handleTelegramCallback(update.callback_query);
@@ -168,12 +186,15 @@ function handleTelegramMessage(msg) {
   }
   // Free text (or media with a caption): the active flow has first claim (15_flows.js), then pack message handlers,
   // then the inbound routine via a request.
-  if (flowClaimText(ctx)) return null;
+  // A shared location is never a flow's answer (flows ask for text or buttons): it goes to the pack handlers only.
+  var located = !text && (msg.location !== undefined || msg.venue !== undefined || msg.hb_location_withheld === true);
+  if (!located && flowClaimText(ctx)) return null;
   var names = Object.keys(HB_REGISTRY.message).sort();
   for (var i = 0; i < names.length; i++) {
     try { if (HB_REGISTRY.message[names[i]](ctx) === true) return null; }
     catch (err) { auditFail('message_handler_error', names[i], describeError(err)); }
   }
+  if (located) return null;   // nobody asked for a location: ignored without a word, and never forwarded
   if (!text.trim()) { ctx.reply('I only read text here. Add a caption to send a file.'); return null; }
   return requestFromMessage(ctx, 'message', text);
 }

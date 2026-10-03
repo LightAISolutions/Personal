@@ -226,7 +226,7 @@ function tgEnvDayC11(errs, at, d) {
   if (d.start !== undefined) tgEnvAnchor(errs, at + '.start', d.start);
   if (d.end !== undefined) tgEnvAnchor(errs, at + '.end', d.end);
   if (d.bags !== undefined) tgEnvStr(errs, at + '.bags', d.bags, 1, 160);
-  if (d.dinner !== undefined && tgEnvObj(errs, at + '.dinner', d.dinner, ['name', 'start'], ['slug', 'end', 'maps_url', 'note_line', 'booking_line'])) {
+  if (d.dinner !== undefined && tgEnvObj(errs, at + '.dinner', d.dinner, ['name', 'start'], ['slug', 'end', 'maps_url', 'note_line', 'booking_line'].concat(TG_ENV_DINNER_C12))) {
     var dn = d.dinner, ad = at + '.dinner';
     if (dn.name !== undefined) tgEnvStr(errs, ad + '.name', dn.name, 1, 120);
     if (dn.slug !== undefined) tgEnvSlug(errs, ad + '.slug', dn.slug);
@@ -235,6 +235,8 @@ function tgEnvDayC11(errs, at, d) {
     if (dn.maps_url !== undefined) tgEnvUrl(errs, ad + '.maps_url', dn.maps_url);
     if (dn.note_line !== undefined) tgEnvStr(errs, ad + '.note_line', dn.note_line, 1, 160);
     if (dn.booking_line !== undefined) tgEnvStr(errs, ad + '.booking_line', dn.booking_line, 1, 160);
+    tgEnvPlaceC12(errs, ad, dn);                                                                            // C12
+    if (dn.price_line !== undefined) tgEnvStr(errs, ad + '.price_line', dn.price_line, 1, 160);
   }
   if (d.extras !== undefined && tgEnvArr(errs, at + '.extras', d.extras, 3)) {
     d.extras.forEach(function (x, j) {
@@ -255,14 +257,41 @@ function tgEnvStopC11(errs, as, s) {
   ['facts_line', 'booking_line', 'price_line'].forEach(function (k) { if (s[k] !== undefined) tgEnvStr(errs, as + '.' + k, s[k], 1, 160); });
   if (s.menu_checked !== undefined) tgEnvDate(errs, as + '.menu_checked', s.menu_checked);
 }
+/* C12 (TG-PHASE-12, WP-12b): the day's leave-by time and towns, the stop's local name, address, payment and closing time,
+   a visited stop (kept from before a re-plan from the current time), a train leg's stations, the trip's country for
+   the weather; the dinner carries the same place facts. A leg's ends may be the reserved slug "here" (already slug-valid). */
+var TG_ENV_RE_CC = /^[A-Z]{2}$/;
+function tgEnvPlaceC12(errs, as, s) {
+  if (s.local_name !== undefined) tgEnvStr(errs, as + '.local_name', s.local_name, 1, 80);
+  if (s.address !== undefined) tgEnvStr(errs, as + '.address', s.address, 1, 160);
+  if (s.payment !== undefined) tgEnvStr(errs, as + '.payment', s.payment, 1, 80);
+}
+function tgEnvStopC12(errs, as, s) {
+  tgEnvPlaceC12(errs, as, s);
+  if (s.visited !== undefined && s.visited !== true) errs.push(as + '.visited must be true when present');
+  if (s.close !== undefined) tgEnvTime(errs, as + '.close', s.close);
+}
+function tgEnvDayC12(errs, at, d) {
+  if (d.leave_by !== undefined) tgEnvTime(errs, at + '.leave_by', d.leave_by);
+  if (d.areas !== undefined && tgEnvArr(errs, at + '.areas', d.areas, 2, 1)) d.areas.forEach(function (a, k) { tgEnvStr(errs, at + '.areas[' + k + ']', a, 1, 60); });
+}
+function tgEnvLegC12(errs, al, l) {
+  if (l.stations === undefined || !tgEnvObj(errs, al + '.stations', l.stations, ['from', 'to'], ['from_line', 'to_line'])) return;
+  ['from', 'to', 'from_line', 'to_line'].forEach(function (k) { if (l.stations[k] !== undefined) tgEnvStr(errs, al + '.stations.' + k, l.stations[k], 1, 60); });
+  if (l.mode !== 'TRANSIT') errs.push(al + '.stations: only on a TRANSIT leg');
+}
+var TG_ENV_DAY_C12 = ['leave_by', 'areas'];
+var TG_ENV_STOP_C12 = ['visited', 'local_name', 'address', 'payment', 'close'];
+var TG_ENV_DINNER_C12 = ['local_name', 'address', 'payment', 'price_line'];
 var TG_ENV_DAY_C11 = ['sunset', 'start', 'end', 'bags', 'dinner', 'extras'];
 var TG_ENV_STOP_C11 = ['last_entry', 'minutes_source', 'crowd_slot', 'facts_line', 'booking_line', 'price_line', 'menu_checked'];
 function tgEnvValidatePlanDigest(p) {
   var errs = [];
-  if (!tgEnvObj(errs, 'payload', p, ['trip', 'build_id', 'verified_on', 'days', 'later', 'drive'], ['v', 'kind', 'tz', 'part', 'parts'])) return errs;
+  if (!tgEnvObj(errs, 'payload', p, ['trip', 'build_id', 'verified_on', 'days', 'later', 'drive'], ['v', 'kind', 'tz', 'part', 'parts', 'country_code'])) return errs;
   tgEnvHead(errs, p, 'plan_digest');
   if (p.trip !== undefined) tgEnvSlug(errs, 'trip', p.trip);
   if (p.tz !== undefined) tgEnvTz(errs, 'tz', p.tz);                                         // C10
+  if (p.country_code !== undefined) tgEnvStr(errs, 'country_code', p.country_code, 2, 2, TG_ENV_RE_CC);   // C12
   if (p.part !== undefined) tgEnvInt(errs, 'part', p.part, 1, TG_ENV_PARTS_MAX);             // C11
   if (p.parts !== undefined) tgEnvInt(errs, 'parts', p.parts, 1, TG_ENV_PARTS_MAX);
   if ((p.part === undefined) !== (p.parts === undefined)) errs.push('part and parts go together');
@@ -273,9 +302,10 @@ function tgEnvValidatePlanDigest(p) {
   if (p.days !== undefined && tgEnvArr(errs, 'days', p.days, 31)) {
     p.days.forEach(function (d, i) {
       var at = 'days[' + i + ']';
-      if (!tgEnvObj(errs, at, d, ['date', 'theme', 'stops', 'legs', 'warnings'], ['rain', 'spare_minutes'].concat(TG_ENV_DAY_C11))) return;
+      if (!tgEnvObj(errs, at, d, ['date', 'theme', 'stops', 'legs', 'warnings'], ['rain', 'spare_minutes'].concat(TG_ENV_DAY_C11, TG_ENV_DAY_C12))) return;
       if (d.spare_minutes !== undefined) tgEnvInt(errs, at + '.spare_minutes', d.spare_minutes, 0, 1440);   // C10
       tgEnvDayC11(errs, at, d);                                                                             // C11
+      tgEnvDayC12(errs, at, d);                                                                             // C12
       if (d.date !== undefined) {
         tgEnvDate(errs, at + '.date', d.date);
         var prev = i ? p.days[i - 1] : null;
@@ -285,8 +315,9 @@ function tgEnvValidatePlanDigest(p) {
       if (d.stops !== undefined && tgEnvArr(errs, at + '.stops', d.stops, 25)) {
         d.stops.forEach(function (s, j) {
           var as = at + '.stops[' + j + ']';
-          if (!tgEnvObj(errs, as, s, ['n', 'slug', 'name', 'arrive', 'depart', 'minutes', 'maps_url', 'note_line'], ['time_style', 'check_on_day'].concat(TG_ENV_STOP_C11))) return;
+          if (!tgEnvObj(errs, as, s, ['n', 'slug', 'name', 'arrive', 'depart', 'minutes', 'maps_url', 'note_line'], ['time_style', 'check_on_day'].concat(TG_ENV_STOP_C11, TG_ENV_STOP_C12))) return;
           tgEnvStopC11(errs, as, s);                                                                        // C11
+          tgEnvStopC12(errs, as, s);                                                                        // C12
           if (s.time_style !== undefined) tgEnvEnum(errs, as + '.time_style', s.time_style, TG_ENV_TIME_STYLES);   // C10
           if (s.check_on_day !== undefined) tgEnvStr(errs, as + '.check_on_day', s.check_on_day, 1, 160);
           if (s.n !== undefined) tgEnvInt(errs, as + '.n', s.n, 1, 99);
@@ -303,8 +334,9 @@ function tgEnvValidatePlanDigest(p) {
       if (d.legs !== undefined && tgEnvArr(errs, at + '.legs', d.legs, 30)) {
         d.legs.forEach(function (l, j) {
           var al = at + '.legs[' + j + ']';
-          if (!tgEnvObj(errs, al, l, ['from', 'to', 'mode', 'minutes'], ['maps_url', 'estimated', 'distance_m', 'flags', 'taxi_minutes', 'buffer_minutes'])) return;
+          if (!tgEnvObj(errs, al, l, ['from', 'to', 'mode', 'minutes'], ['maps_url', 'estimated', 'distance_m', 'flags', 'taxi_minutes', 'buffer_minutes', 'stations'])) return;
           tgEnvLegC10(errs, al, l);
+          tgEnvLegC12(errs, al, l);                                                                         // C12
           if (l.from !== undefined) tgEnvSlug(errs, al + '.from', l.from);
           if (l.to !== undefined) tgEnvSlug(errs, al + '.to', l.to);
           if (l.mode !== undefined) tgEnvEnum(errs, al + '.mode', l.mode, ['TRANSIT', 'DRIVE', 'WALK']);

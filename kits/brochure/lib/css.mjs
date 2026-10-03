@@ -7,9 +7,10 @@
 import { tokensCss, pageSpec } from './tokens.mjs';
 import { STACK } from './fonts.mjs';
 
-export function stylesheet({ page = pageSpec(), fontCss = '', c11 = false } = {}) {
-  // C11 (Phase 11) rules are added only when the model uses those fields, so an older brochure's HTML is unchanged.
-  return [fontCss, tokensCss(page), BASE, COVER, GLANCE, DAY, RAIL, CARDS, LATER, PRACTICAL, ATTRIBUTION, ...(c11 ? [C11] : []), SCREEN, printFallback(page), PAGED].join('\n');
+export function stylesheet({ page = pageSpec(), fontCss = '', c11 = false, c12 = false } = {}) {
+  // C11 (Phase 11) and C12 (Phase 12) rules are added only when the model uses those fields, so an older brochure's
+  // HTML does not grow rules it never uses.
+  return [fontCss, tokensCss(page), BASE, COVER, GLANCE, DAY, RAIL, CARDS, LATER, PRACTICAL, ATTRIBUTION, ...(c11 ? [C11] : []), ...(c12 ? [C12] : []), SCREEN, printFallback(page), PAGED].join('\n');
 }
 
 const BASE = `
@@ -278,6 +279,16 @@ html.paged .tight .evening{padding:.38rem .65rem .4rem}
 html.paged .tight .ev-list li{padding:.2rem 0}
 html.paged .tight .dine-card{padding:.32rem .6rem .38rem}
 `;
+/** Contract C12: a re-planned day's visited stops read as done (a tick, muted text, a hollow badge), still in order. */
+const C12 = `
+.ti-done .ti-name,.ti-done .ti-act{color:var(--muted)}
+.ti-done .ti-time .t{color:var(--muted)}
+.ti-done .ti-mark .badge{background:var(--paper);color:var(--muted);border:1.5px solid var(--faint)}
+.chip.tag-done{margin-left:.4rem;vertical-align:.25em;color:var(--moss);border-color:var(--rule)}
+.gday-stops li.isdone{color:var(--muted)}
+.gday-stops li.isdone .n{color:var(--faint)}
+.done-tick{font-size:var(--s-2);color:var(--moss);white-space:nowrap}
+`;
 const SCREEN = `
 html:not(.paged) body{background:var(--cream2)}
 html:not(.paged) .doc{background:var(--paper)}
@@ -301,7 +312,8 @@ html:not(.paged) .sec+.sec{border-top:1px solid var(--rule)}
   html:not(.paged) .day-aside{position:static}
   html:not(.paged) .day-head{grid-template-columns:auto 1fr}
   html:not(.paged) .day-stats{grid-column:1/-1;border-left:0;padding-left:0;grid-template-columns:auto auto auto auto}
-  html:not(.paged) .rail{--tcol:2.6rem;--mcol:1.5rem}
+  html:not(.paged) .rail{--tcol:3.6rem;--mcol:1.5rem}
+  html:not(.paged) .ti-time .t{white-space:nowrap}
   html:not(.paged) .ti-name{font-size:var(--s1)}
   html:not(.paged) .cn{grid-template-columns:1fr}
   html:not(.paged) .cn h4{padding-top:0}

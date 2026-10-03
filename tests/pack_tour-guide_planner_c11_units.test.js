@@ -249,17 +249,41 @@ test('assign: a place near a day it is closed and far from every day it is open 
     cand('beacon', nowhere, open, open),      // open, far from both
     cand('cellar', nowhere, shut, open)] });  // shut on the town day too, but near neither day
   const why = Object.fromEntries(later.map((x) => [x.cand.id, [x.code, x.reason]]));
-  assert.deepEqual(why.museum, ['closed_day', 'museum is closed on 2027-10-18, the day you are near it']);
+  assert.deepEqual(why.museum, ['closed_day', 'museum is closed on Mon 18 Oct, the day you are near it']); // WP-12d: date in words
   assert.deepEqual(why.chapel, ['closed_day', 'chapel is closed on every day of the trip']);
   assert.equal(why.beacon[0], 'too_far');
   assert.equal(why.cellar[0], 'too_far');
   assert.ok(later.every((x) => x.from_date === null), 'never "taken off the plan" for a date it was never on');
 });
 
+// Phase 12 (WP-12a, C12): every built day now carries `leave_by` (its first leg's departure) and nothing else new on an
+// old fixture (no lodging has an `area`). The hashes stay those of 683c9e6: each day's leave_by is checked against its
+// first leg and then removed before hashing, so everything else is still byte-identical.
+function withoutLeaveBy(plan) {
+  if (!plan || !Array.isArray(plan.days)) return plan;
+  const out = JSON.parse(JSON.stringify(plan));
+  for (const d of out.days) {
+    if (d.legs.length) assert.equal(d.leave_by, d.legs[0].depart_at, `${d.date}: leave_by is the first leg's departure`);
+    else assert.equal(d.leave_by, undefined);
+    assert.equal(d.areas, undefined, 'no lodging has an area: no areas');
+    delete d.leave_by;
+  }
+  return out;
+}
+// WP-12d (dates in words): a Later reason now names its day as the day card does ("no room left on Sun 2 May …", not
+// "… on 2027-05-02 …"). Only driving-loop's plan and re-plan have such a reason; their hashes stay those of 683c9e6
+// once each day's words are put back to YYYY-MM-DD, so nothing else in them moved.
+function withIsoReasons(plan, dayDate) {
+  if (!plan || !Array.isArray(plan.days)) return plan;
+  let s = JSON.stringify(plan);
+  for (const { date } of plan.days) s = s.split(` on ${dayDate(date)}`).join(` on ${date}`);
+  return JSON.parse(s);
+}
+
 test('an old fixture plans exactly as before Phase 11 (plans, re-plans and budgets byte-identical)', async () => {
   const L = await loadPlanning();
   const W = require('./pack_tour-guide_planner_world.js');
-  const h = (x) => createHash('sha256').update(JSON.stringify(x)).digest('hex');
+  const h = (x) => createHash('sha256').update(JSON.stringify(withoutLeaveBy(withIsoReasons(x, L.planner.dayDate)))).digest('hex');
   const got = {};
   for (const name of ['transit-city', 'driving-loop', 'hill-town']) {
     const fx = L.fixtures.loadFixture(name);

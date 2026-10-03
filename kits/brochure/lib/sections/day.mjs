@@ -36,13 +36,15 @@ function visitText(t) {
   const src = MINUTES_SOURCE_LABEL[t.minutes_source];
   return `about ${duration(t.minutes)}${src ? ` <span class="src">(${src})</span>` : ''}`;
 }
+/** Contract C12: a stop already done when the day was re-planned — a tick and muted, still in its place. */
+export const DONE_TAG = '<span class="chip tag-done">✓ visited</span>';
 function stopRow(t, locale) {
-  const name = `<h3 class="ti-name">${esc(t.place.name)}${t.booked ? `<span class="chip hue">booked</span>` : ''}${favTag(t.place)}</h3>`;
+  const name = `<h3 class="ti-name">${esc(t.place.name)}${t.booked ? `<span class="chip hue">booked</span>` : ''}${favTag(t.place)}${t.visited === true ? DONE_TAG : ''}</h3>`;
   const meta = metaLine([t.place.category ? esc(t.place.category) : '', visitText(t), hoursFrag(t), t.last_entry ? `last entry ${esc(clockPlain(t.last_entry, locale))}` : '', pageRef(t.place.id)]);
   const when = t.time_style === 'about' && t.start !== null ? aboutCell(t.start, locale) : timeCell(t.start, t.end, locale);
   const rule = t.booking_line && !t.booked ? `<p class="ti-meta ti-book">${icon('ticket', 12)} ${esc(clip(t.booking_line, 160))}</p>` : '';
   const crowd = CROWD_NOTE[t.crowd_slot] ? `<p class="ti-meta ti-crowd">${icon('clock', 12)} ${CROWD_NOTE[t.crowd_slot]}</p>` : '';
-  return `<div class="ti ti-stop" data-pg="block">${when}<div class="ti-mark"><span class="badge">${t.n}</span></div><div class="ti-body">${name}${t.activity ? `<p class="ti-act">${esc(t.activity)}</p>` : ''}${meta ? `<p class="ti-meta">${meta}</p>` : ''}${t.booked ? `<p class="ti-meta">${icon('ticket', 12)} ${esc(t.booked)}</p>` : ''}${rule}${crowd}${t.check_on_day ? `<p class="ti-meta ti-check">${icon('info', 12)} ${esc(t.check_on_day)}</p>` : ''}${t.note ? `<p class="ti-note">${esc(clip(t.note, 400))}</p>` : ''}</div></div>`;
+  return `<div class="ti ti-stop${t.visited === true ? ' ti-done' : ''}" data-pg="block">${when}<div class="ti-mark"><span class="badge">${t.n}</span></div><div class="ti-body">${name}${t.activity ? `<p class="ti-act">${esc(t.activity)}</p>` : ''}${meta ? `<p class="ti-meta">${meta}</p>` : ''}${t.booked ? `<p class="ti-meta">${icon('ticket', 12)} ${esc(t.booked)}</p>` : ''}${rule}${crowd}${t.check_on_day ? `<p class="ti-meta ti-check">${icon('info', 12)} ${esc(t.check_on_day)}</p>` : ''}${t.note ? `<p class="ti-note">${esc(clip(t.note, 400))}</p>` : ''}</div></div>`;
 }
 function legRow(t, locale, d) {
   const inn = d && d.start && d.lodging ? `to ${esc(clip(d.lodging.name, 80))}` : 'back to the inn'; // a moving day reaches its lodging; it does not go back

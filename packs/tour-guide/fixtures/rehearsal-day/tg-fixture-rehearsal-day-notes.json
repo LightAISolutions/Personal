@@ -1,0 +1,170 @@
+[
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereTideMuseum",
+    "why_you": "An invented museum for testing.",
+    "what_to_do": "tide clocks and charts",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-tide-museum",
+        "accessed": "2027-10-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereReedGardens",
+    "why_you": "An invented garden for testing.",
+    "what_to_do": "reed beds and boardwalks",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-reed-gardens",
+        "accessed": "2027-10-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereLighthouseSteps",
+    "why_you": "An invented viewpoint for testing.",
+    "what_to_do": "harbour views",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-lighthouse-steps",
+        "accessed": "2027-10-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereWeaversHall",
+    "why_you": "An invented museum for testing.",
+    "what_to_do": "looms and cloth",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-weavers-hall",
+        "accessed": "2027-10-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereCliffWalk",
+    "why_you": "An invented trail for testing.",
+    "what_to_do": "cliff path",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-cliff-walk",
+        "accessed": "2027-10-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereGlassArcade",
+    "why_you": "An invented arcade for testing.",
+    "what_to_do": "covered glass shops",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-glass-arcade",
+        "accessed": "2027-10-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereNoodleCounter",
+    "why_you": "An invented restaurant for testing.",
+    "what_to_do": "lunch",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-noodle-counter",
+        "accessed": "2027-10-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmerePierStalls",
+    "why_you": "An invented restaurant for testing.",
+    "what_to_do": "lunch",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-pier-stalls",
+        "accessed": "2027-10-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdTarnwickClockMuseum",
+    "why_you": "An invented museum for testing.",
+    "what_to_do": "clockwork collection",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/tarnwick-clock-museum",
+        "accessed": "2027-10-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdTarnwickHeronPark",
+    "why_you": "An invented park for testing.",
+    "what_to_do": "heron ponds",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/tarnwick-heron-park",
+        "accessed": "2027-10-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdTarnwickOldBridge",
+    "why_you": "An invented viewpoint for testing.",
+    "what_to_do": "stone bridge",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/tarnwick-old-bridge",
+        "accessed": "2027-10-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdTarnwickPrintGallery",
+    "why_you": "An invented gallery for testing.",
+    "what_to_do": "woodblock prints",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/tarnwick-print-gallery",
+        "accessed": "2027-10-20"
+      }
+    ]
+  }
+]

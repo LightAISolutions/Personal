@@ -14,7 +14,8 @@ import { estMark } from './day.mjs';
 function dayColumn(d, i, locale) {
   const rows = d.timeline.filter((t) => t.kind === 'stop' || (t.kind === 'meal' && t.place)).map((t) => {
     const n = t.kind === 'stop' ? t.n : icon(MEAL_ICON[t.meal] || 'fork', 11);
-    return `<li${t.kind === 'meal' ? ' class="ismeal"' : ''}><span class="n">${n}</span><span>${esc(t.place.name)}${t.closedToday ? ` <span class="closed">${icon('warn', 10)}</span>` : ''}</span><span class="t">${esc(clockPlain(t.start, locale))}</span></li>`;
+    const cls = t.kind === 'meal' ? 'ismeal' : t.visited === true ? 'isdone' : '';
+    return `<li${cls ? ` class="${cls}"` : ''}><span class="n">${n}</span><span>${esc(t.place.name)}${t.closedToday ? ` <span class="closed">${icon('warn', 10)}</span>` : ''}${cls === 'isdone' ? ' <span class="done-tick">✓ visited</span>' : ''}</span><span class="t">${esc(clockPlain(t.start, locale))}</span></li>`;
   });
   const s = d.stats;
   const foot = join([s.walkMin ? estMark(`${duration(s.walkMin)} on foot`, s.walkEstimated) : '', s.transitMin ? estMark(`${duration(s.transitMin)} in transit`, s.transitEstimated) : '', s.driveMin ? `${duration(s.driveMin)} by road` : '', d.lodging ? `night at ${esc(d.lodging.name)}` : ''], ' · ');

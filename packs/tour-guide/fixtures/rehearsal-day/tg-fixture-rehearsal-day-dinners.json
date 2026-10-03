@@ -1,0 +1,114 @@
+[
+  {
+    "v": 1,
+    "id": "quillmere-kelp-kitchen",
+    "place_id": "FixtureRdQuillmereKelpKitchen",
+    "name": "Quillmere Kelp Kitchen",
+    "category": "restaurant",
+    "tags": [
+      "dinner"
+    ],
+    "status": "chosen",
+    "activity": "dinner",
+    "priority": 2,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-10-28",
+      "sources": [
+        {
+          "url": "https://quillmere-kelp-kitchen.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-10-28"
+        }
+      ],
+      "menu": {
+        "checked": "2027-10-28",
+        "fits": "yes"
+      }
+    }
+  },
+  {
+    "v": 1,
+    "id": "tarnwick-terrace-grill",
+    "place_id": "FixtureRdTarnwickTerraceGrill",
+    "name": "Tarnwick Terrace Grill",
+    "category": "restaurant",
+    "tags": [
+      "dinner"
+    ],
+    "status": "chosen",
+    "activity": "dinner",
+    "priority": 2,
+    "indoor": false,
+    "facts": {
+      "checked": "2027-10-28",
+      "sources": [
+        {
+          "url": "https://tarnwick-terrace-grill.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-10-28"
+        }
+      ],
+      "menu": {
+        "checked": "2027-10-28",
+        "fits": "yes"
+      }
+    }
+  },
+  {
+    "v": 1,
+    "id": "tarnwick-ember-bowl",
+    "place_id": "FixtureRdTarnwickEmberBowl",
+    "name": "Tarnwick Ember Bowl",
+    "category": "restaurant",
+    "tags": [
+      "dinner"
+    ],
+    "status": "chosen",
+    "activity": "dinner",
+    "priority": 2,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-10-28",
+      "sources": [
+        {
+          "url": "https://tarnwick-ember-bowl.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-10-28"
+        }
+      ],
+      "menu": {
+        "checked": "2027-10-28",
+        "fits": "yes"
+      }
+    }
+  },
+  {
+    "v": 1,
+    "id": "tarnwick-cellar-soup",
+    "place_id": "FixtureRdTarnwickCellarSoup",
+    "name": "Tarnwick Cellar Soup",
+    "category": "restaurant",
+    "tags": [
+      "dinner"
+    ],
+    "status": "saved-for-later",
+    "activity": "dinner",
+    "priority": 2,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-10-28",
+      "sources": [
+        {
+          "url": "https://tarnwick-cellar-soup.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-10-28"
+        }
+      ],
+      "menu": {
+        "checked": "2027-10-28",
+        "fits": "yes"
+      }
+    }
+  }
+]

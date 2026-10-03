@@ -19,11 +19,14 @@ registerSheet(TG_PARTS_SHEET, TG_PARTS_COLS);
 
 /** The top fields every part must repeat, as one string in a fixed key order (compared as text). */
 function tgPartsTop(p) {
-  return toJson({ trip: p.trip, build_id: p.build_id, verified_on: p.verified_on, tz: p.tz === undefined ? null : p.tz,
+  var top = { trip: p.trip, build_id: p.build_id, verified_on: p.verified_on, tz: p.tz === undefined ? null : p.tz,
     drive: isPlainObject(p.drive) ? { plan: p.drive.plan === undefined ? null : p.drive.plan,
       brochure_html: p.drive.brochure_html === undefined ? null : p.drive.brochure_html,
       brochure_pdf: p.drive.brochure_pdf === undefined ? null : p.drive.brochure_pdf } : null,
-    parts: p.parts });
+    parts: p.parts };
+  // C12: the country joins the top fields only when sent, so a part staged by the previous build compares unchanged.
+  if (p.country_code !== undefined) top.country_code = p.country_code;
+  return toJson(top);
 }
 function tgPartsRows(trip) { return storeFind(TG_PARTS_SHEET, function (r) { return tgShStr(r.trip) === trip; }); }
 function tgPartsDelete(rows) { if (rows.length) storeDeleteRows(TG_PARTS_SHEET, rows.map(function (r) { return r._row; })); }

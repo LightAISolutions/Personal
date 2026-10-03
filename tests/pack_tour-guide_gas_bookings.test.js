@@ -319,6 +319,34 @@ test('tgBkDayLines(trip, day): the day card lines — booked and still-to-book r
   assert.deepEqual(J(ctx.tgBkDayLines('no-such-trip', '2027-03-15')), []);
 });
 
+test('tgBkDayLines: a booking with a place but no date shows on the first stored day that plans its place, never written into for_date', () => {
+  const { ctx, state } = fresh();
+  const undated = tower({ id: 'tower-undated', for_date: undefined, place: 'clock-tower' });
+  delete undated.for_date;
+  const supper = guesthouse({ id: 'quay-supper', title: 'Quay supper', kind: 'meal', status: 'todo', rule: 'Call two days ahead', place: 'quay-kitchen' });
+  deliver(ctx, state, payload([undated, supper, ferry({ place: 'clock-tower' })]));
+  assert.deepEqual(J(ctx.tgBkDayLines(TRIP, '2027-03-16')), [], 'no stored plan yet: an undated booking has no day');
+  const stop = (slug, n) => ({ n, slug, name: slug, arrive: '10:00', depart: '11:00', minutes: 60 });
+  ctx.tgDigestStore({ v: 1, kind: 'plan_digest', trip: TRIP, build_id: 'b1', tz: AWAY, verified_on: '2027-03-01', later: [],
+    drive: { plan: 'fixtureDrivePlanFile01', brochure_html: null, brochure_pdf: null }, days: [
+      { date: '2027-03-15', theme: 'Harbour', stops: [stop('old-quay', 1)], legs: [], warnings: [] },
+      { date: '2027-03-16', theme: 'Tower', stops: [stop('market', 1), stop('clock-tower', 2)], legs: [], warnings: [],
+        dinner: { name: 'Quay Kitchen', slug: 'quay-kitchen', start: '19:00', end: '20:30' } },
+      { date: '2027-03-17', theme: 'Tower again', stops: [stop('clock-tower', 1)], legs: [], warnings: [] }] });
+  const day = (d) => J(ctx.tgBkDayLines(TRIP, d));
+  assert.deepEqual(day('2027-03-16'), ['🎟 Clock tower climb · ⏳ still to book — Tickets release 14 days ahead at 10:00',
+    '🍽 Quay supper · ⏳ still to book — Call two days ahead'], 'day 2 plans the tower (a stop) and the kitchen (the dinner)');
+  assert.deepEqual(day('2027-03-17'), [], 'the first day that plans the place wins, not every day');
+  assert.deepEqual(day('2027-03-15'), ['🚆 Harbour ferry · ⏳ still to book — Seats sell out a week before'],
+    'a dated booking stays on its own date even when its place is planned elsewhere');
+  assert.equal(row(ctx, 'tower-undated').rec.for_date, undefined, 'the date is never written into for_date');
+  assert.equal(JSON.parse(ctx.storeAll('Bookings').find((r) => r.id === 'tower-undated').record_json).for_date, undefined);
+  say(ctx, state, '/trip');
+  const trip = texts(state).pop();
+  assert.match(trip, /<b>Clock tower climb<\/b>[\s\S]*?planned for Tue 16 Mar/, '/trip says which day it is planned for');
+  assert.doesNotMatch(trip, /Harbour ferry<\/b>[^🎟🍽🚆🛏]*planned for/, 'a dated booking says "for", not "planned for"');
+});
+
 test('red team: HTML in a title or rule is escaped everywhere; a javascript: link that reached the tab is never shown', () => {
   const { ctx, state } = fresh({ now: '2027-03-02T14:00:00Z' });
   const evil = ferry({ title: '<b>Ferry</b> & <a href="javascript:x">co</a>', rule: 'Book <script>alert(1)</script> now', how: '<i>app</i>' });

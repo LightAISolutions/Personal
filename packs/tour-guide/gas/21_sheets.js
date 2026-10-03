@@ -3,6 +3,7 @@
  * Every other pack file reads and writes the pack tabs ONLY through these functions, never storeAppend on a pack tab.
  *   Trips      tgTripGet · tgTripList · tgTripUpsert · tgTripCurrent · tgTripSetStatus
  *              tgTripTz · tgTripToday · tgTripSetTz · tgOwnerTz      (WP-10a: each trip's own time zone, `tz` column)
+ *              country_code column (WP-12b, C12: the destination's country for the weather lookup, from plan_digest)
  *   DayPlans   tgDigestStore · tgDigestDays · tgDigestDay        (one row per day; a cell over 50 000 chars continues
  *                                                                  in `part` 1, 2, … rows of the same day)
  *   Later      tgLaterList · tgLaterAdd
@@ -28,7 +29,7 @@ var TG_PLACE_OWN = ['slug', 'name', 'area', 'category', 'tags', 'status', 'last_
   'note_line', 'maps_url', 'history_summary'];
 
 registerSheet(TG_SHEETS.TRIPS, ['slug', 'title', 'destination', 'start', 'end', 'status', 'build_id', 'verified_on', 'drive_plan',
-  'drive_brochure_html', 'drive_brochure_pdf', 'updated_at', 'lodging', 'review_offered_at', 'tz']);
+  'drive_brochure_html', 'drive_brochure_pdf', 'updated_at', 'lodging', 'review_offered_at', 'tz', 'country_code']);
 registerSheet(TG_SHEETS.DAYS, ['slug', 'date', 'theme', 'stops_json', 'legs_json', 'warnings_json', 'part', 'rain_json', 'meta_json']);
 registerSheet(TG_SHEETS.LATER, ['slug', 'place_slug', 'name', 'reason']);
 registerSheet(TG_SHEETS.PLACES, ['slug', 'name', 'destination', 'area', 'category', 'tags', 'status', 'last_trip', 'last_researched',
@@ -182,6 +183,8 @@ function tgOwnerTz() {
 var TG_DAY_JSON_COLS = ['stops_json', 'legs_json', 'warnings_json', 'rain_json', 'meta_json'];
 /** C11 day-level fields kept in meta_json next to C10's spare_minutes (a day without them stores and reads as before). */
 var TG_DAY_META_C11 = ['sunset', 'start', 'end', 'bags', 'dinner', 'extras'];
+/** C12 day-level fields kept in meta_json the same way (WP-12b): when to leave and the day's towns. */
+var TG_DAY_META_C12 = ['leave_by', 'areas'];
 function _tgChunks(s) {
   if (s.length <= TG_CELL_MAX) return [s];
   var out = [];
@@ -201,7 +204,7 @@ function _tgDayRows(slug, day) {
   cols.rain_json = _tgChunks(toJson(day.rain || []));
   var meta = {};
   if (typeof day.spare_minutes === 'number') meta.spare_minutes = day.spare_minutes;   // C10 day-level extras
-  TG_DAY_META_C11.forEach(function (k) { if (day[k] !== undefined && day[k] !== null) meta[k] = day[k]; });   // C11
+  TG_DAY_META_C11.concat(TG_DAY_META_C12).forEach(function (k) { if (day[k] !== undefined && day[k] !== null) meta[k] = day[k]; });   // C11, C12
   cols.meta_json = Object.keys(meta).length ? _tgChunks(toJson(meta)) : [''];
   TG_DAY_JSON_COLS.forEach(function (c) { parts = Math.max(parts, cols[c].length); });
   var rows = [];
@@ -230,6 +233,7 @@ function tgDigestStore(p) {
   if (days.length && (!prev || !prev.start)) trip.start = String(days[0].date);
   if (days.length && (!prev || !prev.end)) trip.end = String(days[days.length - 1].date);
   if (p.tz && isValidTz(p.tz)) trip.tz = String(p.tz);   // C10: the destination's zone
+  if (typeof p.country_code === 'string' && /^[A-Z]{2}$/.test(p.country_code)) trip.country_code = p.country_code;   // C12
   tgTripUpsert(trip);
 
   // A tab made before rain_json / meta_json existed gets the column now (setup is not re-run on every deploy).
@@ -248,6 +252,8 @@ function tgDigestStore(p) {
   if (oldLater.length) storeDeleteRows(TG_SHEETS.LATER, oldLater.map(function (r) { return r._row; }));
   (p.later || []).forEach(function (l) { storeAppend(TG_SHEETS.LATER, { slug: slug, place_slug: l.slug, name: l.name, reason: l.reason }); });
   keep.forEach(function (r) { storeAppend(TG_SHEETS.LATER, r); });
+  // C12 (WP-12b): a "running late" overlay belongs to the day it was made on; a day this build changed drops it.
+  if (typeof tgLateOnDigest === 'function') _safe('tg_late_digest', function () { return tgLateOnDigest(slug); });
   return { trip: slug, days: days.length, rows: rows, later: (p.later || []).length, kept_owner_later: keep.length };
 }
 /**
@@ -255,7 +261,8 @@ function tgDigestStore(p) {
  * spare_minutes (number or null) }]. C10 stop fields (time_style, check_on_day) and leg fields (estimated, distance_m,
  * flags, taxi_minutes, buffer_minutes) pass through inside stops[] / legs[] exactly as the digest sent them; so do the C11
  * stop fields (last_entry, minutes_source, crowd_slot, facts_line, booking_line, price_line, menu_checked). A day that
- * carried C11's day fields also has sunset, start, end, bags, dinner and extras (each key only when stored).
+ * carried C11's day fields also has sunset, start, end, bags, dinner and extras (each key only when stored); C12's
+ * leave_by and areas the same way, and C12's stop and leg fields pass through inside stops[] / legs[].
  */
 function tgDigestDays(slug) {
   slug = tgShStr(slug);
@@ -274,7 +281,7 @@ function tgDigestDays(slug) {
     var out = { date: date, n: i + 1, theme: tgShStr(parts[0].theme), stops: tgShJson(joined.stops_json, []),
       legs: tgShJson(joined.legs_json, []), warnings: tgShJson(joined.warnings_json, []), rain: tgShJson(joined.rain_json, []),
       spare_minutes: spare };
-    TG_DAY_META_C11.forEach(function (k) { if (meta[k] !== undefined && meta[k] !== null) out[k] = meta[k]; });   // C11
+    TG_DAY_META_C11.concat(TG_DAY_META_C12).forEach(function (k) { if (meta[k] !== undefined && meta[k] !== null) out[k] = meta[k]; });   // C11, C12
     return out;
   });
 }

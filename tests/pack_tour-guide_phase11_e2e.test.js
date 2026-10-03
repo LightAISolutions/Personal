@@ -65,7 +65,7 @@ test('the planner plans the moving days with the C11 fields, and the plan passes
   // says it is closed on the day the trip is near it, not that it is 36 km from the lodging of the days it is open.
   assert.ok(!(d1.rain_swaps || []).some((r) => r.place === 'saltmarsh-craft-museum'));
   const museum = plan.later.flatMap((l) => l.items).find((it) => it.place === 'saltmarsh-craft-museum');
-  assert.deepEqual([museum.code, museum.reason], ['closed_day', 'Saltmarsh Craft Museum is closed on 2027-10-18, the day you are near it']);
+  assert.deepEqual([museum.code, museum.reason], ['closed_day', 'Saltmarsh Craft Museum is closed on Mon 18 Oct, the day you are near it']); // WP-12d: dates in words, as the day card
 
   // The station start: the walk to the hotel with the bags first, then the sights.
   assert.deepEqual(d2.start, { name: 'Ashvale Station', time: '12:10' });
@@ -170,7 +170,7 @@ test('the same plan as a C11 digest in two parts passes both validators, waits f
   assert.deepEqual(staged(ctx), [], 'the staged part is cleared');
   assert.deepEqual(J(ctx.tgDigestDays(TRIP)), whole, 'stored exactly as one envelope');
   assert.deepEqual(texts(state), texts(one.state), 'and announced once, the same way');
-  assert.match(texts(state)[0], /🔖 <b>Later<\/b>\n• Saltmarsh Craft Museum — <i>Saltmarsh Craft Museum is closed on 2027-10-18, the day you are near it<\/i>/);
+  assert.match(texts(state)[0], /🔖 <b>Later<\/b>\n• Saltmarsh Craft Museum — <i>Saltmarsh Craft Museum is closed on Mon 18 Oct, the day you are near it<\/i>/); // WP-12d: dates in words
 
   // The C11 fields arrive as sent: the station start, the bag step, dinner, extras and sunset; the end; day-start and
   // day-end stay leg ends; the stop facts.

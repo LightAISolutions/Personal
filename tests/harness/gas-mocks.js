@@ -302,7 +302,7 @@ function configureRoutine(ctx, state, name) {
   return n;
 }
 
-/** Build a Telegram update. tgUpdate({text}) | tgUpdate({callback:'a:x:y', messageText?, replyMarkup?}) | tgUpdate({document:{...}}) */
+/** Build a Telegram update. tgUpdate({text}) | tgUpdate({callback:'a:x:y', messageText?, replyMarkup?}) | tgUpdate({document:{...}}) | tgUpdate({location:{latitude, longitude}}) */
 let _updateId = 1000;
 function tgUpdate(o = {}) {
   const from = { id: o.fromId !== undefined ? o.fromId : 777, is_bot: false, first_name: 'Owner', username: 'owner' };
@@ -318,6 +318,8 @@ function tgUpdate(o = {}) {
   if (o.caption !== undefined) message.caption = o.caption;
   if (o.voice) message.voice = { file_id: 'VOICE1', duration: 3, mime_type: 'audio/ogg', ...o.voice };
   if (o.document) message.document = { file_id: 'DOC1', file_name: 'x.pdf', mime_type: 'application/pdf', ...o.document };
+  if (o.location) message.location = { ...o.location };   // { latitude, longitude, horizontal_accuracy?, live_period? }
+  if (o.venue) message.venue = { title: 'Venue', address: 'Somewhere', ...o.venue };
   return { update_id, message };
 }
 /** Build a doGet/doPost event: postEvent('tg', {k}, bodyObj) — body objects are JSON-encoded. */

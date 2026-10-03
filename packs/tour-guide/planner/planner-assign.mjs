@@ -17,6 +17,7 @@
  * and without `uncapped` nothing here changes.
  */
 import { haversineKm, centroid } from './planner-geo.mjs';
+import { dayDate } from './planner-time.mjs';
 import { unfitCode } from './planner-hours.mjs';
 import { breakfastLen } from './planner-input.mjs';
 import { dayAnchors } from './planner-anchors.mjs';
@@ -33,11 +34,11 @@ export function dayCapacity(day) {
 const anchorOf = (day) => { if (day.outline && day.outline.area) return day.outline.area; if (!day.override) return centroid([day.lodging_start, day.lodging_end]); const a = dayAnchors(day); return centroid([a.coreS, a.coreE]); };
 const reasonText = {
   closed_business: (c) => `${c.name} is listed as closed (not operational)`,
-  closed_day: (c, d) => (d ? `${c.name} is closed on ${d}, the day you are near it` : `${c.name} is closed on every day of the trip`),
+  closed_day: (c, d) => (d ? `${c.name} is closed on ${dayDate(d)}, the day you are near it` : `${c.name} is closed on every day of the trip`),
   outside_day: (c, d) => `${c.name} only opens outside your planning day (${d})`,
   outside_hours: (c) => `${c.name}'s opening hours are too short for a ${c.minutes}-minute visit inside the day`,
   too_far: (c, km) => `${c.name} is about ${Math.round(km)} km from the nearest lodging`,
-  day_full: (c, d) => `no room left on ${d}, the closest day for ${c.name}`,
+  day_full: (c, d) => `no room left on ${dayDate(d)}, the closest day for ${c.name}`,
   outside_area: (c) => `${c.name} lies outside the areas your outline gives the days near it`,
   outline_kind: (c) => `${c.name} does not suit the kind of day your outline gives the days near it`,
   other: (c) => `${c.name} has no Google location on file`
@@ -87,7 +88,8 @@ export function assign({ days, cands, rng, uncapped = false }) {
     pending.push(c);
   }
 
-  const rank = (c) => [c.booking || c.anchor ? 0 : c.hint ? 1 : 2, c.priority, rng.key(c.id)];
+  // C12: on a rainy re-plan every candidate carries `rain` (covered or not): covered places rank right after bookings and anchors.
+  const rank = (c) => (c.rain === undefined ? [c.booking || c.anchor ? 0 : c.hint ? 1 : 2, c.priority, rng.key(c.id)] : [c.booking || c.anchor ? 0 : 1, c.rain ? 0 : 1, c.hint ? 0 : 1, c.priority, rng.key(c.id)]);
   pending.sort((a, b) => { const ra = rank(a), rb = rank(b); for (let i = 0; i < ra.length; i++) if (ra[i] !== rb[i]) return ra[i] - rb[i]; return 0; });
 
   const score = (c, f) => {

@@ -13,7 +13,8 @@ const loadAll = async () => ({
   journey: await import('../packs/tour-guide/journey/index.mjs'),
   schemas: await import('../packs/tour-guide/schemas/index.mjs'),
   checks: await import('../packs/tour-guide/schemas/tour-guide-checks.mjs'),
-  geo: await import('../packs/tour-guide/planner/planner-geo.mjs')
+  geo: await import('../packs/tour-guide/planner/planner-geo.mjs'),
+  time: await import('../packs/tour-guide/planner/planner-time.mjs')
 });
 const NOW = '2027-10-25T09:00:00Z';
 const DATES = ['2027-11-08', '2027-11-09', '2027-11-10', '2027-11-11', '2027-11-12', '2027-11-13', '2027-11-14'];
@@ -479,8 +480,8 @@ test('planVersions on picked days: only picks, a busy day of picks gets a slower
   const { plan, alternatives } = await L.journey.assembleChosen({ input, outline, choices: choose });
   soundPlan(L, plan);
   const later = new Map(plan.later.flatMap((l) => l.items.map((it) => [it.place, it.reason])));
-  for (const id of dropped) assert.match(later.get(id) || '', /another version of 2027-11-09 that you did not choose/, `${id} is in Later`);
-  assert.match(later.get('old-town-quarter') || '', /another version of 2027-11-10 that you did not choose/);
+  for (const id of dropped) assert.match(later.get(id) || '', /another version of Tue 9 Nov that you did not choose/, `${id} is in Later`);
+  assert.match(later.get('old-town-quarter') || '', /another version of Wed 10 Nov that you did not choose/);
   assert.deepEqual(alternatives['2027-11-09'].map((a) => a.key), ['A'], 'the full day stays as the alternative');
 });
 
@@ -564,7 +565,7 @@ test('assembleChosen: one valid Plan for the chosen mix; Later holds what the ch
     if (scheduled.has(slug)) continue;
     assert.ok(items.has(slug), `${slug} (left out on ${date}) is in Later`);
     const inOther = sets[date].versions.some((v) => v.key !== pick(date) && v.day.stops.some((x) => x.place === slug));
-    if (inOther) assert.match(items.get(slug).reason, new RegExp(`another version of ${date} that you did not choose`));
+    if (inOther) assert.match(items.get(slug).reason, new RegExp(`another version of ${L.time.dayDate(date)} that you did not choose`));
   }
   const dinnerDays = new Map();
   for (const d of plan.days) for (const m of d.meals) if (m.kind === 'dinner' && m.at && m.at !== 'lodging') {

@@ -7,6 +7,7 @@
  *            may still move a record to booked); records missing from the list are removed.
  *   Show     tgBkTripLines(trip) for /trip · /bookings (every open booking, nearest deadline first) · tgBkDayLines(trip, day)
  *            for the day card (WP-10b) · each time in the trip's zone and in the owner's current zone ("your time").
+ *            A booking with a place and no for_date shows on the first stored day that plans its place (tgBkPlannedDate).
  *   Remind   one core alarm (registerAlarm 'tg_bookings', 17_alarms.js): an opening alert ~30 min before opens_at and one
  *            daily reminder at 09:00 in the owner's current zone (tgOwnerTz). Timed triggers run at or after their time,
  *            sometimes minutes late, so every check compares against "now" and nothing depends on exact timing.
@@ -146,6 +147,7 @@ function tgBkLine(b, trip, now, ownerTz, opts) {
   else if (isFinite(o)) out.push('   open since ' + tgBkBoth(o, trip, ownerTz));
   if (isFinite(by)) out.push('   ' + (open && by < now ? '⚠️ <b>overdue</b> — was due ' : 'book by ') + tgBkBoth(by, trip, ownerTz));
   if (tgEnvRealDate(r.for_date)) out.push('   for ' + tgCmdDate(r.for_date));
+  else { var pd = tgBkPlannedDate(b, typeof tgDigestDays === 'function' ? tgDigestDays(trip.slug) : []); if (pd) out.push('   planned for ' + tgCmdDate(pd)); }
   var link = open ? tgBkHref(r.url) : '';
   if (link) out.push('   ' + link);
   if (b.status === 'booked') out.push('   ✅ booked');
@@ -166,6 +168,21 @@ function tgBkTripLines(trip) {
   return out;
 }
 /**
+ * WP-12d REQUEST 2: a booking with a place but no for_date belongs to the first stored day (tgDigestDays order) whose
+ * stops, or dinner, name that place — the same rule as the planner's dinner line and the brochure. Read only: the date
+ * is never written into for_date. → 'YYYY-MM-DD' or ''.
+ */
+function tgBkPlannedDate(b, days) {
+  var r = b && b.rec, place = r && typeof r.place === 'string' ? r.place : '';
+  if (!place || tgEnvRealDate(r.for_date)) return '';
+  for (var i = 0; i < (days || []).length; i++) {
+    var d = days[i] || {};
+    var onStops = (d.stops || []).some(function (s) { return s && s.slug === place; });
+    if (onStops || (isPlainObject(d.dinner) && d.dinner.slug === place)) return String(d.date || '');
+  }
+  return '';
+}
+/**
  * The day card's lines (WP-10b, behind a typeof guard): bookings for that day, booked or still to book ("not needed"
  * ones are left out). trip: slug or trip object; day: the stored day object (its `date`) or a 'YYYY-MM-DD' string.
  */
@@ -173,7 +190,14 @@ function tgBkDayLines(trip, day) {
   var t = trip && typeof trip === 'object' ? trip : tgTripGet(trip);
   var d = day && typeof day === 'object' ? day.date : day;   // the day card passes the stored day; tests pass its date
   if (!t || !d) return [];
-  return tgBkAll(t.slug).filter(function (b) { return b.rec.for_date === d && b.status !== 'not_needed'; })
+  var all = tgBkAll(t.slug), days = null;
+  return all.filter(function (b) {
+    if (b.status === 'not_needed') return false;
+    if (tgEnvRealDate(b.rec.for_date)) return b.rec.for_date === d;   // a dated booking stays on its own date
+    if (!b.rec.place) return false;
+    if (days === null) days = typeof tgDigestDays === 'function' ? tgDigestDays(t.slug) : [];
+    return tgBkPlannedDate(b, days) === d;
+  })
     .sort(function (a, c) { return tgBkDue(a, t) - tgBkDue(c, t); })
     .map(function (b) {
       return (TG_BK_ICON[b.rec.kind] || '🎟') + ' ' + tgEscape(b.rec.title) + ' · ' +

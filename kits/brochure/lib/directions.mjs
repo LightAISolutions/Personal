@@ -11,10 +11,15 @@ export const DIRECTIONS_LABEL = Object.freeze({ taxi: 'by train ↗' });
 const ok = (p) => p && Number.isFinite(p.lat) && Number.isFinite(p.lng);
 const ll = (p) => `${+p.lat.toFixed(6)},${+p.lng.toFixed(6)}`;
 
+/**
+ * A `from` marked `here: true` (Contract C12: where the traveller was when the day was re-planned) gives a link with
+ * no origin at all, so Google starts from the viewer's own location and no coordinate of that point is ever written.
+ */
 export function directionsUrl(from, to, mode) {
-  if (!ok(from) || !ok(to)) return '';
-  const q = new URLSearchParams({ api: '1', origin: ll(from), destination: ll(to), travelmode: TRAVELMODE[mode] || 'transit' });
-  if (from.place_id) q.set('origin_place_id', from.place_id);
+  const here = Boolean(from && from.here === true);
+  if ((!here && !ok(from)) || !ok(to)) return '';
+  const q = here ? new URLSearchParams({ api: '1', destination: ll(to), travelmode: TRAVELMODE[mode] || 'transit' }) : new URLSearchParams({ api: '1', origin: ll(from), destination: ll(to), travelmode: TRAVELMODE[mode] || 'transit' });
+  if (!here && from.place_id) q.set('origin_place_id', from.place_id);
   if (to.place_id) q.set('destination_place_id', to.place_id);
   return `${DIRECTIONS_BASE}?${q}`;
 }

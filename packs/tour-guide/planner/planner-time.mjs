@@ -19,6 +19,18 @@ export function hm(min) {
 export function isDate(s) { return DATE_RE.test(String(s || '')) && !Number.isNaN(Date.parse(s + 'T00:00:00Z')) && new Date(s + 'T00:00:00Z').toISOString().slice(0, 10) === s; }
 /** 0 = Sunday … 6 = Saturday, as Google's `periods[].open.day`. A calendar date's weekday does not depend on the zone. */
 export function weekdayOf(date) { return new Date(date + 'T00:00:00Z').getUTCDay(); }
+const DAY3 = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const MON3 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+/**
+ * dayDate('2027-05-12') → 'Wed 12 May': a date in words for the owner, the format of the Telegram day card
+ * (tgCmdDate in gas/10_commands.js, Utilities.formatDate 'EEE d MMM'; fixed English names, as Apps Script prints them).
+ * Never longer than the YYYY-MM-DD it replaces. Anything that is not a real date comes back unchanged.
+ */
+export function dayDate(date) {
+  if (!isDate(date)) return date;
+  const d = new Date(date + 'T00:00:00Z');
+  return `${DAY3[d.getUTCDay()]} ${d.getUTCDate()} ${MON3[d.getUTCMonth()]}`;
+}
 export function addDays(date, n) { const d = new Date(date + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
 export function dateRange(start, end) { const out = []; for (let d = start; d <= end; d = addDays(d, 1)) out.push(d); return out; }
 export function assertTimeZone(tz) {

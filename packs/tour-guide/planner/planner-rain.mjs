@@ -6,11 +6,13 @@
  * Straight-line distance only, no API call: a swap is a suggestion the owner can promote with a replan, never a stop.
  *   isIndoor(place)  → true | false | null   (the Place's own `indoor`, else its category; null = cannot tell)
  *   rainSwaps({ day, places, snapshots, exclude, used }) → [{ place, place_id, instead_of, km, hours }]
+ * C12 (a rainy re-plan from where you are, planner-restart.mjs): coveredFor(place, category) and rainWeight(cand, date).
  */
 import { hoursOn } from './planner-hours.mjs';
 import { placeFacts, factsHours } from './planner-facts.mjs';
 import { haversineKm, isLoc } from './planner-geo.mjs';
 import { refineCategory, COVERED_SIGHTS, MEAL_CATEGORIES } from './planner-category.mjs';
+import { WEIGHT } from './planner-solve.mjs';
 
 export const MAX_SWAPS = 2;
 /** How far (km, straight line) a swap may be from the outdoor stop it replaces, by the day's travel mode. */
@@ -75,6 +77,25 @@ export function rainSwaps({ day, places, snapshots, exclude = new Set(), used = 
   const out = options.slice(0, MAX_SWAPS).map(({ priority, ...o }) => o);
   for (const o of out) used.add(o.place);
   return out;
+}
+
+/**
+ * Rain weights for the solver: a covered place counts COVERED_FACTOR times its priority weight, so the lightest covered
+ * place (priority 3: 1 × 2000) outweighs a full day of the heaviest outdoor ones (12 × 100 = 1200); an outline anchor
+ * (`must`) outweighs everything (MUST).
+ */
+export const RAIN = Object.freeze({ COVERED_FACTOR: 2000, MUST: 1e9 });
+/** Is a candidate a rainy-day choice: a covered sight, or a meal place that is not outdoors. */
+export function coveredFor(place, category) {
+  if (!place) return false;
+  return isCoveredSight(place) || (MEAL_CATEGORIES.includes(category) && isIndoor(place) !== false);
+}
+
+/** The solver weight of a candidate on a rainy re-plan (RAIN): covered first, an outline anchor above all. */
+export function rainWeight(c, date) {
+  if (c.anchor === date) return RAIN.MUST;
+  const w = WEIGHT[c.priority] || 1;
+  return c.rain ? w * RAIN.COVERED_FACTOR : w;
 }
 
 // Developed by: LightAISolutions

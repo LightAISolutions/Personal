@@ -89,10 +89,14 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
     cards[slug] = placeCard({ place: p, snapshot: snaps.get(p.place_id), notesByPlace, estimatesByPlace, visitDates: visitDates.get(slug), visits: visits.get(slug), showGoogle, timeZone: trip.timezone, factsOptions });
   }
 
+  // WP-12d: an undated booking belongs to the first day its place is planned on (a stop, else that evening's dinner).
+  const firstDay = new Map();
+  for (const d of days) for (const slug of [...(d.stops || []).map((s) => s.place), ...(d.meals || []).filter((x) => x.kind === 'dinner').map((x) => x.at)]) if (slug && !firstDay.has(slug)) firstDay.set(slug, d.date);
+  const bookings = Array.isArray(trip.bookings) ? trip.bookings : [];
   const bDays = [], free = [], routes = [];
   for (const d of days) {
     if (!(d.stops || []).length) { const f = freeDay(d, overrides.get(d.date)); free.push({ date: d.date, note: f.text, url: f.url }); continue; }
-    bDays.push(mapDay(d, { placesBySlug, cards, lodgingName, override: overrides.get(d.date), season: trip.season, factsOptions }));
+    bDays.push(mapDay(d, { placesBySlug, cards, lodgingName, override: overrides.get(d.date), season: trip.season, factsOptions, bookings, firstDay }));
     routes.push({ n: bDays.length, date: d.date, url: d.day_url });
   }
   if (!bDays.length) throw new Error('brochure-map: the plan has no day with a stop; the brochure needs at least one');
@@ -113,7 +117,7 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
 
   const practical = tripPractical(trip.practical);
   // Bookings first: deadlines are what the practical page is opened for before the trip, and the section cap never cuts them.
-  const bookSec = bookingsSection(trip.bookings, { tripTz: trip.timezone, ownerTz: options.owner_tz, now: options.now });
+  const bookSec = bookingsSection(trip.bookings, { tripTz: trip.timezone, ownerTz: options.owner_tz, now: options.now, plannedOn: firstDay });
   if (bookSec) practical.unshift(bookSec);
   const routeSec = dayRoutes(routes); if (routeSec) practical.push(routeSec);
   const freeSec = freeDays(free); if (freeSec) practical.push(freeSec);

@@ -8,15 +8,21 @@
  * `spare_minutes`. Contract C11 fields pass through the same way: the day's real `start`/`end` (with the override's
  * coordinates and a Maps link), the `bags` step, `sunset` and the evening `extras`; a dinner's restaurant and booking
  * line; a stop's `last_entry`, `minutes_source`, `crowd_slot` and the booking line from its place's facts; legs from
- * `day-start` or to `day-end`. An older DayPlan without them maps as before.
+ * `day-start` or to `day-end`. Contract C12 (a day re-planned from where you are): a stop's `visited: true` passes
+ * through (the kit shows it as done, still in order), and the reserved leg start `here` (where the traveller was) maps
+ * to the kit's own `here`, which names it "where you were" and never carries a coordinate; the leg's Maps link from the
+ * planner already has no origin. An older DayPlan without them maps as before.
  */
 import { placeUrl } from '../../../kits/maps/lib/maps-urls.mjs';
 import { clip, compact, SHORT, TEXT } from './brochure-map-text.mjs';
 import { stopLines, https, MINUTES_SOURCES, CROWD_SLOTS } from './brochure-map-facts.mjs';
+import { bookingFor, bookingRecordLine } from '../planner/planner-dinner.mjs';
 
 export const MODE_MAP = Object.freeze({ TRANSIT: 'transit', WALK: 'walk', DRIVE: 'drive', BICYCLE: 'bike', TWO_WHEELER: 'other' });
 export const LEG_FLAGS = Object.freeze(['footpath', 'trail', 'uphill', 'downhill']);
 export const LIMITS = Object.freeze({ stops: 14, legs: 20, meals: 8, free: 8, warnings: 12 });
+/** Contract C12's reserved leg start: where the traveller was when the day was re-planned from a shared location. */
+export const HERE = 'here';
 const SEVERITY_RANK = { alert: 0, warn: 1, info: 2 };
 const TIME = /^([01]?\d|2[0-3]):[0-5]\d$/;
 const time = (t) => (typeof t === 'string' && TIME.test(t) ? t : undefined);
@@ -30,6 +36,11 @@ function bookedText(stop, place, date) {
   const b = place && place.booking;
   if (b && b.date === date && b.time) return clip(`Timed entry ${b.time}, booked${b.ref ? ` (ref ${b.ref})` : ''}`, SHORT);
   return undefined;
+}
+/** The stop's booking record as its booking line (≤ 160), or undefined when the trip has none for it that day. */
+function recordLine(bookings, slug, date, firstDay) {
+  const b = bookingFor(bookings, slug, date, firstDay);
+  return b ? clip(bookingRecordLine(b), 160) : undefined;
 }
 /** Default headline when the plan gives none: the first two stops' names. */
 function defaultTheme(stops, cards) {
@@ -92,10 +103,12 @@ function dayExtras(list, { cards, placesBySlug, events }) {
  * mapDay(dayPlan, { placesBySlug, cards, lodgingName, override?, season?, factsOptions? }) → brochure day.
  * cards: brochure places already built (keys = slugs); lodgingName(slug) → the lodging's name; override: the trip's
  * `day_overrides` entry for this date (coordinates and note of the real start/end); season: the trip's season sheet
- * (event links for the extras); factsOptions: { now, diet, locale } for the facts lines.
+ * (event links for the extras); factsOptions: { now, diet, locale } for the facts lines; bookings: the trip's booking
+ * records and firstDay (Map place → the first date it is planned on): a stop's booking line is its record for that date,
+ * or its undated record on the day the place is planned on (WP-12d), else the facts line.
  * Throws when the day has more stops than the brochure takes (the planner caps clusters well below it).
  */
-export function mapDay(dp, { placesBySlug, cards, lodgingName, override, season, factsOptions = {} }) {
+export function mapDay(dp, { placesBySlug, cards, lodgingName, override, season, factsOptions = {}, bookings, firstDay }) {
   if (dp.stops.length > LIMITS.stops) throw new Error(`brochure-map: ${dp.date} has ${dp.stops.length} stops; the brochure takes at most ${LIMITS.stops}`);
   const stopSlugs = new Set(dp.stops.map((s) => s.place));
   const ov = override || {};
@@ -113,12 +126,13 @@ export function mapDay(dp, { placesBySlug, cards, lodgingName, override, season,
       last_entry: time(s.last_entry),
       minutes_source: MINUTES_SOURCES.includes(s.minutes_source) ? s.minutes_source : undefined,
       crowd_slot: CROWD_SLOTS.includes(s.crowd_slot) ? s.crowd_slot : undefined,
-      booking_line: booked ? undefined : stopLines(place && place.facts, factsOptions).booking_line
+      booking_line: booked ? undefined : recordLine(bookings, s.place, dp.date, firstDay) || stopLines(place && place.facts, factsOptions).booking_line,
+      visited: s.visited === true ? true : undefined
     });
   });
   const ends = (x) => (x === 'lodging' || cards[x] || (x === 'day-start' && start) || (x === 'day-end' && end) ? x : undefined);
   const legs = (dp.legs || []).slice(0, LIMITS.legs).map((l) => compact({
-    from: ends(l.from), to: ends(l.to), mode: legMode(l.mode), minutes: mins(l.minutes) ?? 0,
+    from: l.from === HERE && !cards[HERE] ? HERE : ends(l.from), to: ends(l.to), mode: legMode(l.mode), minutes: mins(l.minutes) ?? 0,
     distance_m: Number.isFinite(l.distance_m) && l.distance_m >= 0 ? l.distance_m : undefined,
     depart_at: time(l.depart_at), arrive_at: time(l.arrive_at),
     maps_url: l.maps_url ? String(l.maps_url).slice(0, 2000) : undefined,

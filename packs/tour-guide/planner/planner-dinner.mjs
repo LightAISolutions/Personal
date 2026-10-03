@@ -50,7 +50,9 @@ function dinnerWindows(h) {
 
 /**
  * prepareDinners(list, { snapshots, dates, places, choices }) → [{ id, place_id, name, loc, point, hours, facts, rank, record }]
- * `places` are the planner's (choice-applied) places: a dinner place that is also there takes its status from them.
+ * `places` are the planner's (choice-applied) places: a dinner place that is also there takes its status from them,
+ * except 'scheduled', which the planner wrote itself (C12: on a re-plan `places` are plan.places, where the owner's
+ * chosen dinner reads 'scheduled'); the list's own status counts then.
  * `choices` = applyChoices' result (or null), whose `picks`, `keep` and `skip` are Sets: skip and later are left out, picks rank first.
  */
 export function prepareDinners(list, { snapshots, dates, places = [], choices = null }) {
@@ -62,26 +64,39 @@ export function prepareDinners(list, { snapshots, dates, places = [], choices = 
     if (!raw || !raw.id || !raw.place_id || seen.has(raw.id)) continue;
     seen.add(raw.id);
     const p = byId.get(raw.id) || raw;
-    if (p.status === 'rejected' || skip.has(p.id) || keep.has(p.id)) continue;
+    const status = p.status === 'scheduled' && raw.status ? raw.status : p.status;
+    if (status === 'rejected' || skip.has(p.id) || keep.has(p.id)) continue;
     const facts = placeFacts(p) || placeFacts(raw);
     if (facts && facts.menu_fits === 'no') continue;   // its current menu does not fit the diet
     const snap = snapshots.get(p.place_id) || null;
     if (!snap || !isLoc(snap.location)) continue;
     const hours = Object.fromEntries(dates.map((d) => [d, factsHours(hoursOn(snap, d, { irregular: p.opening_days === 'irregular' }), facts, d, snap, p.name).hours]));
-    const rank = p.status === 'chosen' || picks.has(p.id) ? RANK.PICK : p.status === 'saved-for-later' ? RANK.LATER : RANK.OTHER;
+    const rank = status === 'chosen' || picks.has(p.id) ? RANK.PICK : status === 'saved-for-later' ? RANK.LATER : RANK.OTHER;
     const loc = snap.location;
     out.push({ id: p.id, place_id: p.place_id, name: p.name, loc, point: { placeId: p.place_id, lat: loc.lat, lng: loc.lng, name: p.name, id: p.id }, hours, facts, rank, record: p });
   }
   return out;
 }
 
-/** The dinner place's booking line: trip.bookings (same place and date) first, then its facts.booking; null when neither. */
+/**
+ * bookingFor(bookings, placeId, date, firstDay?) → the trip.bookings record for a place on a date, or null: one dated that
+ * day first, else one with no date (WP-12d: an undated booking belongs to the day its place is planned on). firstDay
+ * (optional Map place → the first date it is planned on) keeps an undated record to that one day when a caller sees
+ * several; without it the caller is planning the place on `date` itself. A record for another date never matches.
+ */
+export function bookingFor(bookings, placeId, date, firstDay = null) {
+  const mine = (Array.isArray(bookings) ? bookings : []).filter((x) => x && typeof x === 'object' && placeId && x.place === placeId);
+  return mine.find((x) => x.for_date === date) || (!firstDay || firstDay.get(placeId) === date ? mine.find((x) => !x.for_date) : null) || null;
+}
+/** A trip.bookings record as one line (≤ 160): "Booked" · "No booking needed" · "To book: <rule> · <how> · from N people". */
+export function bookingRecordLine(b) {
+  const base = b.status === 'booked' ? 'Booked' : b.status === 'not_needed' ? 'No booking needed' : `To book: ${b.rule}`;
+  return [base, b.status === 'todo' && b.how ? b.how : null, b.status === 'todo' && b.party_min ? `from ${b.party_min} people` : null].filter(Boolean).join(' · ').slice(0, 160);
+}
+/** The dinner place's booking line: trip.bookings (same place; that date, else undated) first, then its facts.booking; null when neither. */
 export function dinnerBooking(trip, date, placeId, facts) {
-  const b = (Array.isArray(trip.bookings) ? trip.bookings : []).find((x) => x && x.place === placeId && x.for_date === date);
-  if (b) {
-    const base = b.status === 'booked' ? 'Booked' : b.status === 'not_needed' ? 'No booking needed' : `To book: ${b.rule}`;
-    return [base, b.status === 'todo' && b.how ? b.how : null, b.status === 'todo' && b.party_min ? `from ${b.party_min} people` : null].filter(Boolean).join(' · ').slice(0, 160);
-  }
+  const b = bookingFor(trip.bookings, placeId, date);
+  if (b) return bookingRecordLine(b);
   const f = facts && facts.booking;
   if (!f) return null;
   if (typeof f.text === 'string' && f.text.trim()) return f.text.trim().slice(0, 160);
@@ -110,8 +125,9 @@ function dryRun(c, ev, date, len, mode, reach = DINNER.RADIUS_KM) {
 /**
  * addDinners({ built, pool, used, exclude, maps, trip, pace }) — `built`: [{ dayPlan, evening, day }] in date order;
  * `used`: dinner places already taken (kept days); `exclude`: place slugs scheduled as stops anywhere.
+ * C12 `rain` ({ date, outdoor: Set of slugs }): on that date an outdoor dinner place is tried only after the others.
  */
-export async function addDinners({ built, pool, used, exclude, maps, trip, pace, prefer = null }) {
+export async function addDinners({ built, pool, used, exclude, maps, trip, pace, prefer = null, rain = null }) {
   const preferred = new Map(prefer ? [...prefer].map(([d, slug]) => [slug, d]) : []);
   const chosen = [];
   let route_calls = 0;
@@ -120,10 +136,11 @@ export async function addDinners({ built, pool, used, exclude, maps, trip, pace,
     const { date, mode } = day;
     const near = (c) => Math.min(ev.last && ev.last.cand.loc ? haversineKm(ev.last.cand.loc, c.loc) : Infinity, haversineKm(ev.lodging, c.loc));
     const mine = (c) => (preferred.get(c.id) === date ? 0 : 1);
+    const wet = (c) => (rain && rain.date === date && rain.outdoor.has(c.id) ? 1 : 0);   // C12: a rainy re-plan seats you indoors first
     const area = day.outline && day.outline.area;
     const reach = (c) => (mine(c) === 0 || (area && haversineKm(c.loc, area) <= area.radius_km) ? DINNER.HOME_KM : DINNER.RADIUS_KM);
     const options = pool.filter((c) => !used.has(c.id) && !exclude.has(c.id) && near(c) <= reach(c) && (!preferred.has(c.id) || preferred.get(c.id) === date))
-      .sort((a, b) => mine(a) - mine(b) || a.rank - b.rank || near(a) - near(b) || a.id.localeCompare(b.id));
+      .sort((a, b) => mine(a) - mine(b) || wet(a) - wet(b) || a.rank - b.rank || near(a) - near(b) || a.id.localeCompare(b.id));
     let pick = null, plan = null;
     for (const c of options) { plan = dryRun(c, ev, date, pace.dinner, mode, reach(c)); if (plan) { pick = c; break; } }
     if (!pick) continue;
