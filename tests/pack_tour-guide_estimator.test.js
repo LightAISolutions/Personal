@@ -106,6 +106,26 @@ test('calibration: bounded to [0.7, 1.4], reversible, about-right counts without
   assert.equal(e.chooseMinutes({ estimate: est, calibration: s1 }).minutes, 100, '90 × 1.1 = 99 → 100');
 });
 
+test('undoTap is applyTap\'s inverse: one tap taken back exactly; nothing to take back is the same state', async () => {
+  const e = await E(), s = await S();
+  const s1 = e.applyTap(e.applyTap(e.createCalibration(), { category: 'museum', tap: 'longer' }), { category: 'park', tap: 'about-right' });
+  for (const tap of ['longer', 'shorter', 'about-right']) for (const category of ['museum', 'park', 'garden']) {
+    const back = e.undoTap(e.applyTap(s1, { category, tap }), { category, tap });
+    assert.deepEqual(back, s1, `${tap} on ${category} is taken back exactly`);
+    assert.equal(JSON.stringify(back), JSON.stringify(s1), 'in the same key order, so a saved state changes only where the tap was');
+  }
+  const s2 = e.undoTap(s1, { category: 'museum', tap: 'longer' });
+  assert.deepEqual(s2, { v: 1, categories: { park: { longer: 0, shorter: 0, about_right: 1, factor: 1 } } }, 'a category left with no taps is removed');
+  assert.equal(e.calibrationFactor(s2, 'museum'), 1);
+  assert.deepEqual(s.validate(s2, 'calibration').errors, []);
+  assert.equal(e.undoTap(s1, { category: 'museum', tap: 'shorter' }), s1, 'a tap never counted: the same state');
+  assert.equal(e.undoTap(s1, { category: 'garden', tap: 'longer' }), s1);
+  assert.equal(e.undoTap(null, { category: 'garden', tap: 'longer' }), null);
+  assert.deepEqual(s1.categories.museum, { longer: 1, shorter: 0, about_right: 0, factor: 1.1 }, 'input untouched');
+  assert.throws(() => e.undoTap(s1, { category: 'museum', tap: 'way-longer' }), /tap must be/);
+  assert.throws(() => e.undoTap(s1, { category: 'Museum!', tap: 'longer' }), /bad category/);
+});
+
 test('every fixture estimate feeds chooseMinutes with the fixture profile and an empty calibration', async () => {
   const e = await E();
   const f = await import('../packs/tour-guide/fixtures/index.mjs');

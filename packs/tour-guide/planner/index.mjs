@@ -122,7 +122,7 @@ async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [],
     let r;
     if (restart && day.date === restart.date) {
       try { r = await planDay({ ctx, day, cands: byDate[day.date], maps, build_id: String(input.build_id), seed: ctx.seed, verified_on: ctx.today }); }
-      catch (err) { throw new Error(`planner: could not re-plan ${day.date} from ${restart.note.replace(/^Re-planned /, '')}: ${String(err.message).replace(/^planner: /, '')}`); }
+      catch (err) { throw new Error(`planner: could not re-plan ${day.date} ${restart.note.replace(/^Re-planned /, '')}: ${String(err.message).replace(/^planner: /, '')}`); }   // "could not re-plan <date> at <time> from <where>: <why>"
       mergeRestart(r, restart, { categoryOf: (slug) => (ctx.cands.find((c) => c.id === slug) || {}).category || null });
     } else r = await planDay({ ctx, day, cands: byDate[day.date], maps, build_id: String(input.build_id), seed: ctx.seed, verified_on: ctx.today });
     if (ctx.outlineNotes && ctx.outlineNotes[day.date]) for (const text of ctx.outlineNotes[day.date]) if (r.dayPlan.warnings.length < 40) r.dayPlan.warnings.push({ severity: 'info', code: 'other', text });

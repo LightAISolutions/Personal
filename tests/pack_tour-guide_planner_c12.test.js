@@ -284,6 +284,18 @@ test('replanDays refuses a restart it cannot honour, before any Maps request', a
   assert.ok(ledger.usage().skus.every((r) => r.requests === 0), 'nothing was sent');
 });
 
+test('a re-plan that Maps cannot serve names the day, the time and where it restarts, and never the shared point', async () => {
+  const w = await planned('rehearsal-day');
+  const date = '2027-11-08', first = 'quillmere-reed-gardens', loc = snapOf(w, first);
+  const point = { lat: Number((loc.lat + 0.03).toFixed(6)), lng: Number((loc.lng + 0.03).toFixed(6)) };   // ~4 km off: no fixture place snaps
+  await assert.rejects(replan(w, date, { from: { time: '11:40', point }, visited: [first] }), (err) => {
+    assert.match(err.message, /^planner: could not re-plan 2027-11-08 at 11:40 from where you were: maps: /);
+    assert.doesNotMatch(err.message, /from at/);
+    for (const v of [point.lat, point.lng]) for (const t of [String(v), v.toFixed(3)]) assert.ok(!err.message.includes(t), `${t} is not in the error`);
+    return true;
+  });
+});
+
 test('checkDayChain (C12): "here" only where the re-plan restarts, never a stop or a destination; visited stops first', async () => {
   const w = await planned('rehearsal-day');
   const date = '2027-11-08', a = 'quillmere-reed-gardens', loc = snapOf(w, a);

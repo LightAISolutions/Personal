@@ -4,8 +4,8 @@
  * CLI: node helpers/kits/prefs/index.mjs <check|ingest|review|apply|interview> … (see README.md). Also the library API.
  * Nothing here reads a connector, sends a message or calls the network; every path is a caller-supplied argument.
  */
-import { readFileSync, writeFileSync, existsSync, mkdirSync, renameSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, renameSync, unlinkSync } from 'node:fs';
+import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadVocab, validateVocab, checkValue } from './lib/vocab.mjs';
 import { normalizeEvidence, parseEvidenceText, injectionReasons, opaqueRef, SOURCE_KINDS } from './lib/evidence.mjs';
@@ -81,6 +81,32 @@ export function ingest({ vocab, held, evidence, ledger = null, salt = '', minSup
   return { added, duplicates: records.length - added, rejected: errors,
     suspect: fresh.filter((r) => r.injection_suspect).map((r) => r.id), candidates: candidates.length,
     written: w.written, unchanged: w.unchanged.length, skipped_files: existing.skipped };
+}
+
+/**
+ * dropEvidence({vocab, held, refs, where?, ledger?, minSupport?}) -> {removed, written, deleted}
+ * Takes held evidence back: every record whose source_ref (as held, i.e. opaqueRef(kind, raw, salt)) is in `refs` and,
+ * when `where` is given, for which where(record) is true. The notes of the candidates it touched are rewritten from the
+ * evidence left and a note left with no evidence is deleted. Refs are required, so a predicate alone never empties the
+ * held notes. The ledger and the profile are never written: a confirmed preference stays confirmed (rule 10).
+ */
+export function dropEvidence({ vocab, held, refs, where = null, ledger = null, minSupport }) {
+  const v = asVocab(vocab), want = new Set(refs || []);
+  const none = { removed: 0, written: [], deleted: [] };
+  if (!want.size) return none;
+  const existing = readHeld(held);
+  const hit = existing.records.map((r) => want.has(r.source_ref) && (!where || Boolean(where(r))));
+  const gone = existing.records.filter((r, i) => hit[i]);
+  if (!gone.length) return none;
+  const touched = new Set(gone.map((r) => candidateId(r.dimension, r.value)));
+  const candidates = buildCandidates(existing.records.filter((r, i) => !hit[i]), v, { minSupport }).filter((c) => touched.has(c.id));
+  const w = writeHeld(held, candidates, ledger ? readLedger(ledger, v) : { entries: {} }, v, existing.files);
+  const live = new Set(candidates.map((c) => c.id)), deleted = [];
+  for (const id of [...touched].sort()) {
+    const name = existing.files.get(id);
+    if (!live.has(id) && name) { unlinkSync(join(held, name)); deleted.push(name); }
+  }
+  return { removed: gone.length, written: w.written, deleted };
 }
 
 /** review({vocab, held, ledger, max?, includeSuspect?, minSupport?}) -> prefs_review payload; read-only. */

@@ -5,7 +5,9 @@
 // C12 (WP-12r): the morning fields — country_code, a day's leave_by and areas, a stop's visited / local_name / address /
 // payment / close, the dinner's local_name / address / payment / price_line, leg ends 'here', and a train leg's stations
 // built only from the two ends' own access notes (place facts.access, the lodging's access) or a day start / end the
-// owner named — never from the planner's rail estimates. A plan and trip without C12 fields digest exactly as before.
+// owner named — never from the planner's rail estimates. A place's own-facts lines (a stop's local_name / address /
+// payment / close, the dinner's local_name / address / payment / price_line) show whenever its facts have them: they
+// are not gated on C12. Everything else in a plan and trip without C12 fields digests exactly as before.
 const keep = (o) => Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined && v !== null));
 const TIME = /^([01]\d|2[0-3]):[0-5]\d$/;
 const clip = (t, max) => (String(t).length > max ? String(t).slice(0, max - 1) + '…' : String(t));
