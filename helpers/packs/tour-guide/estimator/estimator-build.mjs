@@ -1,11 +1,12 @@
 /**
  * Tour Guide estimator — buildEstimate(): duration mentions read in sources → a VisitEstimate, on top of the research
  * kit's durationRange() (median range, typical value, outlier and injection filtering, confidence label).
- * chosen_minutes = typical, else the range midpoint (rounded to 5), else the category default. Pace, interest and
+ * chosen_minutes = typical, else the range midpoint (rounded to 5), else a session's set length (activityDefault: ceremony,
+ * class, workshop, tasting, performance), else the category default. Pace, interest and
  * calibration are NOT applied here (chooseMinutes() does that at plan time), so the estimate stays a research fact.
  */
 import { durationRange } from '../../../kits/research/index.mjs';
-import { categoryDefault, round5 } from './estimator-defaults.mjs';
+import { categoryDefault, activityDefault, round5 } from './estimator-defaults.mjs';
 
 const PLACE_ID_RE = /^[A-Za-z0-9_-]{6,300}$/;
 const CATEGORY_RE = /^[a-z][a-z0-9-]{0,31}$/;
@@ -43,7 +44,7 @@ export function buildEstimate({ place_id, activity, category, mentions = [], sou
   const cited = sources.map(cleanSource).filter((s) => !s.ref || used.has(s.ref) || !flagged.has(s.ref));
   const typical = r.typical ?? null;
   const range = r.range ? { min: r.range.min, max: r.range.max } : null;
-  const chosen = typical ?? (range ? round5((range.min + range.max) / 2) : categoryDefault(category));
+  const chosen = typical ?? (range ? round5((range.min + range.max) / 2) : (activityDefault(activity) || {}).minutes || categoryDefault(category));
   return {
     v: 1, place_id, activity, category, range, typical, chosen_minutes: chosen, sources: cited,
     confidence: r.label, calibration: null, estimated_on: isoDay(now)

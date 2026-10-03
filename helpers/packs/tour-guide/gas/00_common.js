@@ -2,7 +2,8 @@
  * Tour Guide pack — shared helpers for every pack file (owner: the Phase 5 coordinator; WPs call, never edit).
  * Loads first among the pack files (bundle order is by file name). Registries only; no core file is touched.
  *   tgKindRoutine(kind)               → routine fire name for a request kind (TourGuide routines/README.md table)
- *   tgOpenKindRequest(kind, payload, opts) → openRequest() with the right routine; acknowledges in the chat
+ *   tgOpenKindRequest(kind, payload, opts) → openRequest() with the right routine (research / plan / replan add the
+ *                                     owner's trip_update); acknowledges in the chat
  *   tgSlug(text)                      → lower-case [a-z0-9-] slug, ≤ 60 chars
  *   tgOwnerChat()                     → the owner chat id ('' before pairing)
  *   tgLines(lines, max)               → join escaped lines into messages ≤ max chars (default LIMITS.TG_SPLIT_AT)
@@ -12,6 +13,8 @@ var TG_KIND_ROUTINE = {
   research: 'RESEARCH', plan: 'PLAN', replan: 'PLAN', notes: 'NOTES', brochure: 'BROCHURE',
   prefs: 'PREFS', places: 'PLACES', message: 'CHAT', ask: 'CHAT'
 };
+/** Request kinds that carry the owner's trip_update (22_people.js tgTripUpdateOf). */
+var TG_TRIP_UPDATE_KINDS = ['research', 'plan', 'replan'];
 var TG_SETTINGS = {
   PROFILE_SUMMARY: 'tg_profile_summary',   // JSON { text, dimensions_count?, updated?, received_at } — written by 20_envelopes.js
   CURRENT_TRIP: 'tg_current_trip',         // slug of the trip the owner is working on — written by 12_flow_plan.js
@@ -33,7 +36,12 @@ function tgKindRoutine(kind) {
 function tgOpenKindRequest(kind, payload, opts) {
   opts = opts || {};
   var routine = tgKindRoutine(kind);
-  var r = openRequest({ kind: kind, text: String(opts.text || kind), chat: opts.chat || null, routine: routine, payload: payload || {} });
+  payload = payload || {};
+  if (TG_TRIP_UPDATE_KINDS.indexOf(kind) >= 0 && payload.trip && !payload.trip_update && typeof tgTripUpdateOf === 'function') {
+    var tu = tgTripUpdateOf(payload.trip);   // the owner's /dates and app choices reach trips/<slug>.md through the routine
+    if (tu) payload.trip_update = tu;
+  }
+  var r = openRequest({ kind: kind, text: String(opts.text || kind), chat: opts.chat || null, routine: routine, payload: payload });
   r.routine = routine;
   var chat = tgOwnerChat();
   if (chat && opts.ack !== false) {

@@ -2,7 +2,8 @@
  * Tour Guide pack — instant commands and the shared chat helpers (WP-5a; plan §5.9 command table, §5.10).
  * Lane A (answered from the pack tabs through WP-5b's storage API, no routine): /profile, /trip, /today, /day, /later,
  * /place, /places. Requests (Lane C, through tgOpenKindRequest with exactly the TG-PHASE-4B §5 fields): /replan, /notes,
- * /brochure (a resend when the PDF id is stored), /lodging (stored on the trip, sent with the next research round).
+ * /brochure (a resend when the PDF id is stored), /lodging (stored on the trip, sent with the next research round), /dates
+ * (dates and day hours, sent as trip_update with the next research, plan or replan request).
  * Renderer `core_start` (the interview offer after /start when no profile summary is cached).
  * Callbacks: `dy` (a day), `lt` (promote a Later item onto a day → replan), `rs` (swap a rainy-day option in → replan),
  * `ps` (a place: note · add · check),
@@ -465,6 +466,42 @@ registerCommand('/lodging', function (ctx) {
   tgTripUpsert({ slug: trip.slug, lodging: lodging });
   ctx.reply('🏨 Saved for ' + tgCmdTitle(trip) + ': ' + tgEscape(text) + '\nIt goes with the next research round.');
 }, 'where you are staying on the current trip: /lodging <text>');
+
+/**
+ * /dates — the current trip's dates and day hours, set from the chat (Phase 8, pilot finding 3): stored on the trip row
+ * (dates) and in Settings (hours); every research, plan and replan request then carries them as trip_update, and the
+ * routine writes them into the trip file before it works.
+ *   /dates · /dates 2027-05-12 [2027-05-14] · /dates hours 09:30 19:00
+ */
+function tgCmdDatesLine(trip) {
+  var h = tgTripHours(trip.slug);
+  var d = trip.start ? tgCmdDate(trip.start) + (trip.end && trip.end !== trip.start ? ' → ' + tgCmdDate(trip.end) : '') : 'no dates yet';
+  return '📅 ' + tgCmdTitle(trip) + ': ' + d + (h.day_start ? ' · days ' + tgEscape(h.day_start) + '–' + tgEscape(h.day_end) : '');
+}
+registerCommand('/dates', function (ctx) {
+  var trip = tgCmdCurrent(ctx);
+  if (!trip) return;
+  var a = ctx.args.replace(/\s+/g, ' ').trim();
+  var help = 'Change them with <code>/dates 2027-05-12 2027-05-14</code> (one date for a one-day trip) or set the day hours with <code>/dates hours 09:30 19:00</code>.';
+  if (!a) { ctx.reply(tgCmdDatesLine(trip) + '\n' + help); return; }
+  var hm = /^hours?\s+(\d{1,2}):(\d{2})\s*(?:-|–|to)?\s*(\d{1,2}):(\d{2})$/i.exec(a);
+  if (hm) {
+    var st = ('0' + hm[1]).slice(-2) + ':' + hm[2], en = ('0' + hm[3]).slice(-2) + ':' + hm[4];
+    if (!TG_HHMM_RE.test(st) || !TG_HHMM_RE.test(en)) { ctx.reply('Those are not clock times. ' + help); return; }
+    var mins = function (t) { return Number(t.slice(0, 2)) * 60 + Number(t.slice(3)); };
+    if (mins(en) - mins(st) < 120) { ctx.reply('The day must end at least two hours after it starts — nothing was saved.'); return; }
+    tgTripHoursSet(trip.slug, st, en);
+    ctx.reply('🕘 Saved: days of ' + tgCmdTitle(trip) + ' run ' + st + '–' + en + '. The next plan or <code>/replan</code> uses them.');
+    return;
+  }
+  if (/[a-z]/i.test(a.replace(/\bto\b/gi, ''))) { ctx.reply(help); return; }
+  var m = a.match(/\d{4}-\d{2}-\d{2}/g) || [];
+  if (m.length === 2 && m[1] < m[0]) { ctx.reply('The end date is before the start — send them as <code>start end</code>. Nothing was saved.'); return; }
+  var d = tgPlanParseDates(a);
+  if (!d) { ctx.reply('I could not read those dates (one or two dates, at most ' + TG_PLAN_SPAN_MAX_DAYS + ' days). Nothing was saved.'); return; }
+  var t2 = tgTripUpsert({ slug: trip.slug, start: d.start, end: d.end });
+  ctx.reply('📅 Saved. ' + tgCmdDatesLine(t2 || trip).replace(/^📅 /, '') + '\nThe next plan or <code>/replan</code> uses them; the days already planned stay until then.');
+}, 'the current trip\'s dates and day hours: /dates [start [end]] · /dates hours 09:30 19:00');
 
 /** The lodging line a research request carries: the owner's /lodging words (+ nights). */
 function tgCmdLodgingText(trip) {

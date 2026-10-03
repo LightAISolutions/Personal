@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.01w">
+  <meta name="build-version" content="v01.02w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -50,6 +50,8 @@
     /* ── type & blocks ── */
     h2 { margin: 0 0 4px; font: 600 26px/1.15 var(--serif); letter-spacing: -0.015em; }
     h3 { margin: 22px 0 8px; font: 600 15px/1.2 var(--sans); color: var(--hint); letter-spacing: 0.04em; text-transform: uppercase; }
+    h3.round { margin-top: 28px; padding-top: 12px; border-top: 2px solid var(--fg); color: var(--fg); }
+    h4 { margin: 14px 0 6px; font: 600 13px/1.2 var(--sans); color: var(--hint); letter-spacing: 0.04em; text-transform: uppercase; }
     .lede { margin: 0 0 16px; color: var(--hint); font-size: 15px; }
     .meta { font: 12px/1.4 var(--mono); color: var(--hint); }
     .card { background: var(--card); border-radius: 14px; padding: 14px; margin: 0 0 10px; }
@@ -125,7 +127,7 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.01w';
+    var APP_VERSION = 'v01.02w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'facts', label: 'Facts' },
@@ -133,7 +135,7 @@
     ];
     var TICKS = [{ v: 'w', text: '✅ Want' }, { v: 'l', text: '🔖 Later' }, { v: 's', text: '❌ Skip' }];
     var tg = (window.Telegram && window.Telegram.WebApp) || null;
-    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, facts: null, factChoices: {}, factEdits: {}, busy: false };
+    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, facts: null, factChoices: {}, factEdits: {}, person: '', busy: false };
     var $ = function (id) { return document.getElementById(id); };
     var main = $('main');
 
@@ -258,7 +260,7 @@
     }
     function buildNav() {
       var nav = clear($('nav'));
-      SCREENS.forEach(function (s) { nav.appendChild(el('button', { type: 'button', text: s.label, 'data-screen': s.id, on: { click: function () { go(s.id); } } })); });
+      SCREENS.forEach(function (s) { nav.appendChild(el('button', { type: 'button', text: s.label, 'data-screen': s.id, on: { click: function () { if (s.id === 'interview') { S.person = ''; S.addPerson = false; } go(s.id); } } })); });
     }
     function tripLabel(t) { t = obj(t); return str(t.title || t.destination || t.slug, 60); }
     function tripName(slug) { var hit = (S.home ? list(S.home.trips) : []).filter(function (t) { return str(obj(t).slug) === str(slug); })[0]; return hit ? tripLabel(hit) : str(slug, 60); }
@@ -269,6 +271,8 @@
       render(stateView('', 'Loading…'));
       call('home', {}, function (b) {
         S.home = b;
+        var dn = str(b.display_name, 40);
+        if (dn) { $('title').textContent = dn; document.title = dn; }
         var trips = list(b.trips), round = b.choice_round ? obj(b.choice_round) : null, facts = b.pending_facts ? obj(b.pending_facts) : null, pc = obj(b.places);
         if (!S.trip && trips.length) S.trip = str(trips[0].slug, 64);
         var view = el('div', { class: 'stack' }, [
@@ -304,18 +308,41 @@
         view.appendChild(el('button', { class: 'btn ghost wide', type: 'button', text: 'Browse the repository', on: { click: function () { go('places'); } } }));
         view.appendChild(el('h3', { text: 'Profile' }));
         view.appendChild(el('div', { class: 'row between' }, [el('div', { class: 'meta grow', text: b.profile_summary && obj(b.profile_summary).updated ? 'Updated ' + str(obj(b.profile_summary).updated, 20) : 'No interview answers yet' }),
-          el('button', { class: 'btn ghost', type: 'button', text: 'Interview', on: { click: function () { go('interview'); } } })]));
+          el('button', { class: 'btn ghost', type: 'button', text: 'Interview', on: { click: function () { S.person = ''; go('interview'); } } })]));
+        var pp = obj(b.people), ptrip = str(pp.trip, 64), ppl = list(pp.items);
+        if (ptrip) {   // who comes on the current trip: the next plan or research request carries it
+          view.appendChild(el('h3', { text: 'Travelling with' }));
+          var row = el('div', { class: 'choices', id: 'trip-people' });
+          var on = ppl.filter(function (p) { return obj(p).on_trip === true; }).map(function (p) { return str(obj(p).slug, 40); });
+          ppl.forEach(function (p) {
+            p = obj(p); var slug = str(p.slug, 40);
+            row.appendChild(el('button', { type: 'button', text: str(p.name, 40), 'data-v': slug, 'aria-pressed': on.indexOf(slug) >= 0 ? 'true' : 'false', on: { click: function () {
+              var i = on.indexOf(slug), next = on.slice(); haptic();
+              if (i >= 0) next.splice(i, 1); else next.push(slug);
+              call('people.trip', { trip: ptrip, people: next }, function (r) {
+                on = list(r.on_trip).map(function (x) { return str(x, 40); });
+                Array.prototype.forEach.call(row.children, function (x) { if (x.getAttribute('data-v')) x.setAttribute('aria-pressed', on.indexOf(x.getAttribute('data-v')) >= 0 ? 'true' : 'false'); });
+              }, function (err) { setStatus('Not saved: ' + why(err)); });
+            } } }));
+          });
+          view.appendChild(row);
+          view.appendChild(el('div', { class: 'row between' }, [el('div', { class: 'meta grow', text: ppl.length ? 'Tap to say who comes on ' + tripName(ptrip) + '.' : 'Just you so far.' }),
+            el('button', { class: 'btn ghost', type: 'button', text: 'Add someone', on: { click: function () { S.person = ''; S.addPerson = true; go('interview'); } } })]));
+        }
         render(view);
       });
     }
 
-    /* ---------- shortlist: tick locally, one batch call on submit ---------- */
+    /* ---------- shortlist: tick locally, one batch call per round on submit ---------- */
+    // Every round of the open choose flow (a /repick can reopen several), newest first; a tick is keyed run|item key and
+    // each round's ticks are saved to that round's run.
     function showShortlist() {
       render(stateView('', 'Loading…'));
-      call('shortlist.get', {}, function (b) {
+      call('shortlist.get', { all: true }, function (b) {
         S.shortlist = b; S.ticks = {};
-        var groups = list(b.groups), total = 0;
-        groups.forEach(function (g) { list(obj(g).items).forEach(function (it) { total++; if (/^[wls]$/.test(str(obj(it).choice))) S.ticks[str(it.key, 8)] = str(it.choice); }); });
+        var secs = [{ run: str(b.run, 64), round: b.round, groups: list(b.groups) }].concat(list(b.earlier).map(function (e) { e = obj(e); return { run: str(e.run, 64), round: e.round, groups: list(e.groups) }; }));
+        var total = 0;
+        secs.forEach(function (sc) { sc.groups.forEach(function (g) { list(obj(g).items).forEach(function (it) { total++; if (/^[wls]$/.test(str(obj(it).choice))) S.ticks[sc.run + '|' + str(it.key, 8)] = str(it.choice); }); }); });
         S.sent = JSON.parse(JSON.stringify(S.ticks));
         if (!total) return render(stateView('🗺', 'No open shortlist', 'When the helper sends one, choose here or in the chat.', homeBtn()));
         var rs = str(b.stage, 20);
@@ -325,38 +352,55 @@
           setMain('', null);
           return render(stateView('🧭', 'Round ' + num(b.round) + ' is closed', 'Your choices: ✅ ' + c.w + ' · 🔖 ' + c.l + ' · ❌ ' + c.s + ' — ' + stageLine(rs) + '.', homeBtn()));
         }
-        var view = el('div', {}, [el('h2', { text: tripName(b.trip) }), el('p', { class: 'meta', text: 'ROUND ' + num(b.round) }), el('p', { class: 'lede', text: 'Tick each place, then save once. ✅ want · 🔖 later · ❌ skip' })]);
-        groups.forEach(function (g) {
-          g = obj(g);
-          view.appendChild(el('h3', { text: str(g.title || g.id, 40) }));
-          list(g.items).forEach(function (it) {
-            it = obj(it); var key = str(it.key, 8);
-            var ticks = el('div', { class: 'ticks' }, TICKS.map(function (t) {
-              return el('button', { type: 'button', text: t.text, 'data-v': t.v, 'aria-pressed': S.ticks[key] === t.v ? 'true' : 'false', on: { click: function () {
-                S.ticks[key] = S.ticks[key] === t.v ? '' : t.v; haptic();
-                Array.prototype.forEach.call(ticks.children, function (x) { x.setAttribute('aria-pressed', x.getAttribute('data-v') === S.ticks[key] ? 'true' : 'false'); });
-                refreshMain();
-              } } });
-            }));
-            var facts = [it.est_minutes ? num(it.est_minutes) + ' min' : '', str(it.area, 40)].filter(Boolean).join(' · ');
-            view.appendChild(el('div', { class: 'item' + (it.gem ? ' gem' : ''), 'data-key': key }, [
-              el('div', { class: 'n', text: str(it.n, 4) }),
-              el('div', { class: 'grow' }, [el('div', { class: 'name', text: str(it.name, 80) }), el('div', { class: 'why', text: str(it.why_you, 200) }),
-                el('div', { class: 'row between' }, [el('span', { class: 'meta', text: facts }), linkBtn('Map ↗', it.maps_url, 'pill')]), ticks])
-            ]));
+        var many = secs.length > 1;
+        var view = el('div', {}, [el('h2', { text: tripName(b.trip) }), el('p', { class: 'meta', text: many ? secs.length + ' ROUNDS OPEN · NEWEST FIRST' : 'ROUND ' + num(b.round) }), el('p', { class: 'lede', text: 'Tick each place, then save once. ✅ want · 🔖 later · ❌ skip' })]);
+        secs.forEach(function (sc, i) {
+          if (many) view.appendChild(el('h3', { class: 'round', 'data-run': sc.run, text: 'Round ' + num(sc.round) + (i ? '' : ' · newest') }));
+          sc.groups.forEach(function (g) {
+            g = obj(g);
+            view.appendChild(el(many ? 'h4' : 'h3', { text: str(g.title || g.id, 40) }));
+            list(g.items).forEach(function (it) {
+              it = obj(it); var key = sc.run + '|' + str(it.key, 8);
+              var ticks = el('div', { class: 'ticks' }, TICKS.map(function (t) {
+                return el('button', { type: 'button', text: t.text, 'data-v': t.v, 'aria-pressed': S.ticks[key] === t.v ? 'true' : 'false', on: { click: function () {
+                  S.ticks[key] = S.ticks[key] === t.v ? '' : t.v; haptic();
+                  Array.prototype.forEach.call(ticks.children, function (x) { x.setAttribute('aria-pressed', x.getAttribute('data-v') === S.ticks[key] ? 'true' : 'false'); });
+                  refreshMain();
+                } } });
+              }));
+              var facts = [it.est_minutes ? num(it.est_minutes) + ' min' : '', str(it.area, 40)].filter(Boolean).join(' · ');
+              view.appendChild(el('div', { class: 'item' + (it.gem ? ' gem' : ''), 'data-key': str(it.key, 8), 'data-run': sc.run }, [
+                el('div', { class: 'n', text: str(it.n, 4) }),
+                el('div', { class: 'grow' }, [el('div', { class: 'name', text: str(it.name, 80) }), el('div', { class: 'why', text: str(it.why_you, 200) }),
+                  el('div', { class: 'row between' }, [el('span', { class: 'meta', text: facts }), linkBtn('Map ↗', it.maps_url, 'pill')]), ticks])
+              ]));
+            });
           });
         });
         var pending = function () { var n = 0, k; for (k in S.ticks) if (Object.prototype.hasOwnProperty.call(S.ticks, k) && S.ticks[k] !== (S.sent[k] || '')) n++; return n; };
         var save = function (then) {
-          var choices = [], k;
-          for (k in S.ticks) if (Object.prototype.hasOwnProperty.call(S.ticks, k) && S.ticks[k] && S.ticks[k] !== (S.sent[k] || '')) choices.push({ n: k, choice: S.ticks[k] });
-          if (!choices.length) return then();
+          var byRun = {}, runs = [], k;
+          for (k in S.ticks) if (Object.prototype.hasOwnProperty.call(S.ticks, k) && S.ticks[k] && S.ticks[k] !== (S.sent[k] || '')) {
+            var cut = k.lastIndexOf('|'), run = k.slice(0, cut);
+            if (!byRun[run]) { byRun[run] = []; runs.push(run); }
+            byRun[run].push({ n: k.slice(cut + 1), choice: S.ticks[k] });
+          }
+          if (!runs.length) return then();
           mainProgress(true);
-          call('shortlist.choose_many', { run: str(b.run, 64), choices: choices }, function (r) {
-            mainProgress(false); S.sent = JSON.parse(JSON.stringify(S.ticks)); haptic('ok');
-            setStatus(num(r.applied) + ' saved' + (list(r.refused).length ? ', ' + list(r.refused).length + ' refused' : ''));
-            then();
-          }, function (err) { mainProgress(false); setStatus('Not saved: ' + str(err.reason, 40)); });
+          var applied = 0, refused = 0;
+          var next = function (i) {
+            if (i >= runs.length) {
+              mainProgress(false); haptic('ok');
+              setStatus(applied + ' saved' + (refused ? ', ' + refused + ' refused' : ''));
+              return then();
+            }
+            call('shortlist.choose_many', { run: runs[i], choices: byRun[runs[i]] }, function (r) {
+              applied += num(r.applied); refused += list(r.refused).length;
+              byRun[runs[i]].forEach(function (c) { S.sent[runs[i] + '|' + c.n] = c.choice; });
+              next(i + 1);
+            }, function (err) { mainProgress(false); setStatus('Not saved: ' + str(err.reason, 40)); });
+          };
+          next(0);
         };
         var refreshMain = function () { var n = pending(); setMain(n ? 'Save ' + n + ' choice' + (n === 1 ? '' : 's') : 'Done choosing', function () { n ? save(refreshMain) : finish(); }); $('saveBtn').textContent = n ? 'Save ' + n : 'All saved'; };
         var finish = function () { save(function () { call('shortlist.done', { run: str(b.run, 64) }, function () { haptic('ok'); render(stateView('🧭', 'Building your days', 'The helper is planning — the digest arrives in the chat.', homeBtn())); setMain('', null); },
@@ -417,11 +461,38 @@
     /* ---------- interview: one scrollable form from the bank ---------- */
     function showInterview() {
       render(stateView('', 'Loading…'));
-      call('interview.bank', {}, function (b) {
-        var bank = obj(b.bank), sections = list(bank.sections); S.bank = bank; S.answers = {};
+      call('people.list', {}, function (pl) {
+        var people = list(pl.people).map(obj), max = num(pl.max) || 8;
+        if (S.person && !people.some(function (p) { return str(p.slug, 40) === S.person; })) S.person = '';
+        var who = S.person ? people.filter(function (p) { return str(p.slug, 40) === S.person; })[0] : null, whoName = who ? str(who.name, 40) : '';
+        call('interview.bank', S.person ? { person: S.person } : {}, function (b) {
+        var bank = obj(b.bank), sections = list(bank.sections); S.bank = bank; S.answers = {}; S.typed = {};
         list(b.answers).forEach(function (a) { a = obj(a); var q = str(a.qid, 32); (S.answers[q] = S.answers[q] || []).push(str(a.value, 60)); });
         if (!sections.length) return render(stateView('🗣', 'No interview available', 'The helper has no question bank yet.'));
-        var view = el('div', {}, [el('h2', { text: str(bank.title, 80) || 'Interview' }), el('p', { class: 'lede', text: 'Answer what you like and skip the rest — send once at the end.' })]);
+        var view = el('div', {}, [el('h2', { text: str(bank.title, 80) || 'Interview' })]);
+        // Who is answering: the owner, or a companion on the owner's phone (their answers build their own profile, never the owner's).
+        view.appendChild(el('label', { class: 'q', text: 'Who is answering?' }));
+        var whoRow = el('div', { class: 'choices', id: 'who' });
+        var pick = function (slug) { haptic(); S.person = slug; S.addPerson = false; showInterview(); };
+        whoRow.appendChild(el('button', { type: 'button', text: 'Me', 'data-v': '', 'aria-pressed': S.person ? 'false' : 'true', on: { click: function () { pick(''); } } }));
+        people.forEach(function (p) {
+          var slug = str(p.slug, 40);
+          whoRow.appendChild(el('button', { type: 'button', text: str(p.name, 40) + (p.interviewed ? ' ✓' : ''), 'data-v': slug, 'aria-pressed': S.person === slug ? 'true' : 'false', on: { click: function () { pick(slug); } } }));
+        });
+        if (people.length < max) whoRow.appendChild(el('button', { type: 'button', text: '＋ Someone else', 'data-v': '+', 'aria-pressed': S.addPerson ? 'true' : 'false', on: { click: function () { S.addPerson = !S.addPerson; showInterview(); } } }));
+        view.appendChild(whoRow);
+        if (S.addPerson) {
+          var nameIn = el('input', { type: 'text', id: 'person-name', maxlength: '40', placeholder: 'Their first name', autocomplete: 'off' });
+          var addIt = function () {
+            var nm = str(nameIn.value, 40).replace(/\s+/g, ' ').trim();
+            if (!nm) { setStatus('Type a name first'); return; }
+            call('people.add', { name: nm }, function (r) { pick(str(r.slug, 40)); },
+              function (err) { setStatus(str(err.reason, 20) === 'too_many' ? 'That is the most the helper keeps' : 'Use letters only for the name'); });
+          };
+          view.appendChild(el('div', { class: 'row', style: 'margin-top:8px' }, [el('div', { class: 'grow' }, [nameIn]), el('button', { class: 'btn', type: 'button', text: 'Add', on: { click: addIt } })]));
+        }
+        view.appendChild(el('p', { class: 'lede', text: who ? 'Hand the phone to ' + whoName + '. Their answers build ' + whoName + '’s own profile, never yours; plans then respect their limits too.'
+          : 'Answer what you like and skip the rest — send once at the end.' }));
         var count = 0;
         sections.forEach(function (sec) {
           sec = obj(sec); view.appendChild(el('h3', { text: str(sec.title || sec.id, 60) }));
@@ -459,14 +530,17 @@
           }
           if (!answers.length) { setStatus('Nothing answered yet'); return; }
           mainProgress(true);
-          call('interview.submit', { version: num(bank.v) || 1, answers: answers }, function (r) {
+          var sendArgs = { version: num(bank.v) || 1, answers: answers };
+          if (S.person) sendArgs.person = S.person;
+          call('interview.submit', sendArgs, function (r) {
             mainProgress(false); haptic('ok'); setMain('', null);
-            render(stateView('✅', 'Thanks', num(r.answers) + ' answer' + (num(r.answers) === 1 ? '' : 's') + ' noted — the helper updates your profile.', el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } })));
+            render(stateView('✅', 'Thanks', num(r.answers) + ' answer' + (num(r.answers) === 1 ? '' : 's') + ' noted — the helper ' + (whoName ? 'builds ' + whoName + '’s profile.' : 'updates your profile.'), el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } })));
           }, function (err) { mainProgress(false); setStatus('Not sent: ' + str(err.reason, 40)); });
         };
         view.appendChild(el('p', { class: 'meta', text: count + ' questions' }));
         view.appendChild(el('button', { class: 'btn wide', type: 'button', text: 'Send answers', on: { click: submit } }));
         render(view); setMain('Send answers', submit);
+        });
       });
     }
 

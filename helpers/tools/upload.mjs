@@ -3,8 +3,10 @@
 // ?route=upload, and print the Drive file id to name in a `reply` envelope's drive_file_ids (the core then sends the
 // file to the chat). The Drive connector cannot carry megabytes of base64; this POSTs the bytes directly. Zero deps;
 // uses curl so the environment's proxy settings apply (Apps Script answers a POST with a 302 that curl -L follows).
-//   node helpers/tools/upload.mjs --wake-url <state.json wake_url> --req <request id> --key <req payload.upload_key>
+//   node helpers/tools/upload.mjs --wake-url <state.json wake_url> --key-from <saved req_<id>.json> [--req <request id>]
 //        --file <path> [--name NAME] [--folder trips/<slug>] [--dry-run]
+// --key-from reads the request id and payload.upload_key from the request file the routine saved to scratch, so the key
+// is never typed on a command line (Phase 8, F22). --req <id> --key <key> still works for older skills.
 // Prints {"ok":true,"file_id","url","name","bytes"} or {"ok":false,"reason"}; exit 0 / 1. Never log the key.
 import fs from 'node:fs';
 import os from 'node:os';
@@ -41,13 +43,28 @@ export function uploadBody(o) {
   return { body, name, mime: MIMES[ext], bytes: buf.length };
 }
 
+/**
+ * keyFrom(file, req?) → { req, key } from a saved request envelope ({ id, payload: { upload_key } }). A --req that names
+ * another request is refused, so a key is never sent for a request it was not made for.
+ */
+export function keyFrom(file, req) {
+  let env;
+  try { env = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { throw new Error('--key-from must be a saved request file (JSON)'); }
+  const id = String((env && env.id) || ''), key = env && env.payload && env.payload.upload_key;
+  if (!key) throw new Error('the request file has no payload.upload_key');
+  const bare = (x) => String(x || '').replace(/^req_/, '');
+  if (req && id && bare(req) !== bare(id)) throw new Error('--req does not match the request file');
+  return { req: req || id, key: String(key) };
+}
+
 function parse(argv) {
-  const o = {}, flags = { '--wake-url': 'wake_url', '--req': 'req', '--key': 'key', '--file': 'file', '--name': 'name', '--folder': 'folder' };
+  const o = {}, flags = { '--wake-url': 'wake_url', '--req': 'req', '--key': 'key', '--key-from': 'key_from', '--file': 'file', '--name': 'name', '--folder': 'folder' };
   for (let i = 0; i < argv.length; i++) {
     if (flags[argv[i]]) o[flags[argv[i]]] = argv[++i];
     else if (argv[i] === '--dry-run') o.dry = true;
     else throw new Error('unknown argument ' + argv[i]);
   }
+  if (o.key_from) { if (o.key) throw new Error('give --key-from or --key, not both'); Object.assign(o, keyFrom(o.key_from, o.req)); }
   for (const k of ['wake_url', 'req', 'key', 'file']) if (!o[k]) throw new Error('missing --' + k.replace('_', '-'));
   return o;
 }

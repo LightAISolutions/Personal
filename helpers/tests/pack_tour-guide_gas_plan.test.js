@@ -314,3 +314,34 @@ test('guards: /plan usage, another flow, /seed without a plan, Done with no pick
 });
 
 // Developed by: LightAISolutions
+
+test('round-prefixed typed picks (F20/Phase 8): r1 5 reaches an earlier round; /repick 2 r1 1 marks numbers as it reopens', () => {
+  assert.deepEqual(J(fresh().ctx.tgPlanParsePicks('2 r1 1 later 2, round 2: skip 1')),
+    { w: [2], l: [], s: [], at: { 1: { w: [1], l: [2], s: [] }, 2: { w: [], l: [], s: [1] } }, too_many: false });
+  const { ctx, state } = fresh();
+  assert.equal(ctx.tgPlanParsePicks('r1'), null, 'a round with no number is not a pick line');
+  assert.equal(ctx.tgPlanParsePicks('drop 3').s[0], 3, 'words that start with r stay words');
+  ctx.tgTripUpsert({ slug: TRIP, title: 'Port Sorrel', destination: 'Port Sorrel' });
+  deliver(ctx, state, 'shortlist', shortlist({ groups: [{ id: 'activities', items: [item(1, 'lantern-museum'), item(2, 'signal-hill-lookout')] }] }));
+  tap(ctx, state, 'pl:sc:port-sorrel:r1:1');
+  assert.ok(!/put <code>r1<\/code>/.test(texts(state).pop()), 'one round: no round hint');
+  press(ctx, state, '➕ More options');
+  deliver(ctx, state, 'shortlist', shortlist({ run_id: 'r2', round: 2, more: false, groups: [{ id: 'activities', items: [item(1, 'fixture-tea-house'), item(2, 'harbour-steps')] }] }));
+  assert.match(texts(state).pop(), /put <code>r1<\/code> before numbers from an earlier round/);
+  say(ctx, state, '2 r1 1 later 2 r7 1');
+  assert.match(texts(state).pop(), /^Noted ✅ 2, r1 1 · 🔖 r1 2\. There is no round 7 in this plan\./);
+  const val = (run, slug) => (ctx.tgChoiceList(TRIP, run, 'shortlist').find((c) => c.key === slug) || {}).value;
+  assert.deepEqual([val('r2', 'harbour-steps'), val('r1', 'lantern-museum'), val('r1', 'signal-hill-lookout'), val('r2', 'fixture-tea-house')], ['w', 'w', 'l', undefined]);
+  press(ctx, state, '✅ Done choosing');
+  say(ctx, state, '/repick 1 r1 skip 1');
+  const st = ctx.flowActive('777').state;
+  assert.equal(st.stage, 'choose');
+  assert.match(texts(state).pop(), /Back to choosing — your taps are kept\.[\s\S]*\nNoted ✅ 1 · ❌ r1 1\.\nSo far: 2 ✅ · 1 🔖 · 1 ❌/);
+  say(ctx, state, '/repick 3');
+  assert.match(texts(state).pop(), /^Nothing noted\. No place numbered 3 on your list\./, 'while choosing, /repick with numbers applies them');
+  say(ctx, state, '/repick please');
+  assert.match(texts(state).pop(), /Send <code>\/repick<\/code>, or <code>\/repick 2 6 r1 5 later 7<\/code>/);
+  say(ctx, state, '/cancel');
+  say(ctx, state, '/repick r2 skip 2');
+  assert.match(texts(state).pop(), /Back to choosing[\s\S]*Noted ❌ r2 2\.\nSo far: 1 ✅ · 1 🔖 · 2 ❌/, 'no flow: adopts every run, then marks');
+});

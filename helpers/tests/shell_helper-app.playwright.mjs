@@ -35,8 +35,9 @@ const BANK = { v: 1, title: 'Travel preferences interview', sections: [
   { id: 'food', title: 'Food', questions: [{ qid: 'food-01', text: 'Which foods do you look forward to? Pick any.', kind: 'multi', dimension: 'food', options: [{ label: 'Local specialties', value: 'local', polarity: '+' }, { label: 'Street food', value: 'street', polarity: '+' }, { label: 'Fine dining', value: 'fine', polarity: '+' }], skip_ok: true, other: true },
     { qid: 'food-03', text: 'Anything you cannot eat?', kind: 'text', dimension: 'food', options: [], skip_ok: true }] }] };
 const FACTS = { ok: true, trip: TRIP.slug, found: [{ n: '1', kind: 'dates', text: 'May 12 – May 15, 2027', start: '2027-05-12', end: '2027-05-15', choice: '' }, { n: '2', kind: 'lodging', text: 'Quay Street inn, 3 nights', choice: '' }, { n: '3', kind: 'flight', text: 'Arrives 11:40 on May 12', choice: '' }], missing: ['companions'] };
-const HOME = { ok: true, trips: [TRIP, { slug: 'moor-weekend-2026', title: 'Moor weekend', destination: 'High Moor', start: '2026-11-07', end: '2026-11-08', status: 'done', build_id: 'b-fixture-00', has_brochure: false }], trips_total: 2, choice_round: { trip: TRIP.slug, run: 'run-fixture-1', round: 1, items: 7, want: 0, later: 0, skip: 0, stage: '' }, pending_facts: { trip: TRIP.slug }, profile_summary: { updated: '2026-10-01' }, places: { 'Harbor Town': 3, 'High Moor': 5 } };
+const HOME = { ok: true, display_name: 'Fixture Guide', trips: [TRIP, { slug: 'moor-weekend-2026', title: 'Moor weekend', destination: 'High Moor', start: '2026-11-07', end: '2026-11-08', status: 'done', build_id: 'b-fixture-00', has_brochure: false }], trips_total: 2, choice_round: { trip: TRIP.slug, run: 'run-fixture-1', round: 1, items: 7, want: 0, later: 0, skip: 0, stage: '' }, pending_facts: { trip: TRIP.slug }, profile_summary: { updated: '2026-10-01' }, places: { 'Harbor Town': 3, 'High Moor': 5 } };
 
+let PEOPLE = [];   // the companions the stub core keeps; reset by open()
 function answer(op, args, mode) {
   if (mode === 403) return { ok: false, status: 403, reason: 'forbidden' };
   if (mode === 429) return { ok: false, status: 429, reason: 'daily_cap' };
@@ -45,8 +46,14 @@ function answer(op, args, mode) {
     if (op === 'shortlist.get') return { ...SHORTLIST, stage: 'planning', more: false };
     if (op === 'shortlist.done' || op === 'facts.get') return { ok: false, status: 409, reason: 'no_flow', stage: 'planning' };
   }
+  if (mode === 'rounds' && op === 'shortlist.get') {   // a /repick reopened two rounds: the newest on top, an earlier one below
+    return { ...SHORTLIST, run: 'run-fixture-2', round: 2, earlier: [{ run: 'run-fixture-1', round: 1, groups: [{ id: 'activities', title: 'Activities', items: [ITEM('a1', 1, 'Cliff Chapel', 'Earlier pick you saved.', 30, 'Headland')] }] }] };
+  }
   switch (op) {
-    case 'home': return HOME;
+    case 'home': return { ...HOME, people: { trip: TRIP.slug, items: PEOPLE.map((p) => ({ ...p })), max: 8 } };
+    case 'people.list': return { ok: true, trip: TRIP.slug, trip_title: TRIP.title, people: PEOPLE.map((p) => ({ ...p })), max: 8 };
+    case 'people.add': { const slug = String(args.name).toLowerCase().replace(/[^a-z0-9]+/g, '-'); if (!PEOPLE.some((p) => p.slug === slug)) PEOPLE.push({ slug, name: args.name, interviewed: '', on_trip: false }); return { ok: true, slug, name: args.name }; }
+    case 'people.trip': PEOPLE.forEach((p) => { p.on_trip = (args.people || []).includes(p.slug); }); return { ok: true, trip: args.trip, on_trip: PEOPLE.filter((p) => p.on_trip).map((p) => p.slug) };
     case 'shortlist.get': return SHORTLIST;
     case 'shortlist.choose_many': return { ok: true, applied: (args.choices || []).length, refused: [] };
     case 'shortlist.done': case 'shortlist.more': return { ok: true, started: true };
@@ -55,7 +62,7 @@ function answer(op, args, mode) {
     case 'places.search': return { ok: true, rows: PLACES.filter((p) => !args.query || (p.name + p.note_line).toLowerCase().includes(String(args.query).toLowerCase())), total: PLACES.length, filters: { destinations: ['Harbor Town', 'High Moor'], statuses: ['planned', 'wanted', 'later'], tags: ['outdoor', 'free', 'vegetarian', 'lunch', 'gem'] } };
     case 'places.get': return { ok: true, place: { ...PLACES[0], history: [{ trip: 'harbor-town-2027', date: '2027-05-01', text: 'Researched for the May trip; the path is closed in storms.' }] } };
     case 'places.check': return { ok: true, request_id: 'req-fixture-9', count: (args.slugs || []).length };
-    case 'interview.bank': return { ok: true, bank: BANK, answers: [{ qid: 'pace-01', value: 'relaxed', polarity: '+', kind: 'scale' }] };
+    case 'interview.bank': return { ok: true, bank: BANK, answers: args.person ? [] : [{ qid: 'pace-01', value: 'relaxed', polarity: '+', kind: 'scale' }], person: args.person ? { slug: args.person, name: (PEOPLE.find((p) => p.slug === args.person) || {}).name } : null };
     case 'interview.submit': return { ok: true, request_id: 'req-fixture-10', answers: (args.answers || []).length };
     case 'facts.get': return FACTS;
     case 'facts.confirm': return { ok: true, applied: (args.facts || []).length + (args.edits || []).length, refused: [], done: true };
@@ -89,6 +96,7 @@ const PAGE_HTML = fs.readFileSync(path.join(ROOT, 'live-site-pages', 'helper-app
 const VERSION_TXT = fs.readFileSync(path.join(ROOT, 'live-site-pages', 'html-versions', 'helper-apphtml.version.txt'), 'utf8');
 
 async function open(browser, { scheme = 'light', telegram = true, initData = true, mode = null, url = PAGE_URL } = {}) {
+  PEOPLE = [{ slug: 'robin', name: 'Robin', interviewed: '2026-10-01', on_trip: true }];
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, colorScheme: scheme, ignoreHTTPSErrors: true });
   const page = await ctx.newPage();
   const calls = [], foreign = [], errors = [];
@@ -152,6 +160,22 @@ try {
     await ctx.close();
   }
 
+  console.log('shortlist with several open rounds');
+  {
+    const { page, ctx, calls } = await open(browser, { mode: 'rounds' });
+    check(await page.evaluate(() => document.getElementById('title').textContent) === 'Fixture Guide' && await page.title() === 'Fixture Guide', 'masthead and tab title carry the display name');
+    await nav(page, 'shortlist');
+    const heads = await page.$$eval('h3.round', (hs) => hs.map((h) => h.textContent));
+    check(JSON.stringify(heads) === JSON.stringify(['Round 2 · newest', 'Round 1']), 'one heading per round, newest first (' + heads.join(' | ') + ')');
+    await page.click('.item[data-run="run-fixture-2"][data-key="a1"] button[data-v="w"]'); await page.click('.item[data-run="run-fixture-1"][data-key="a1"] button[data-v="l"]');
+    check(await page.evaluate(() => window.__tg.main.text) === 'Save 2 choices', 'the same item key in two rounds counts twice');
+    await page.evaluate(() => window.__tg.main.fn()); await page.waitForTimeout(500);
+    const batch = calls.filter((c) => c.op === 'shortlist.choose_many').map((c) => c.args.run + ':' + JSON.stringify(c.args.choices));
+    check(JSON.stringify(batch) === JSON.stringify(['run-fixture-2:[{"n":"a1","choice":"w"}]', 'run-fixture-1:[{"n":"a1","choice":"l"}]']), 'one choose_many per round, each to its own run (' + batch.join(' | ') + ')');
+    await shot(page, 'state-shortlist-rounds');
+    await ctx.close();
+  }
+
   console.log('facts and interview submit');
   {
     const { page, ctx, calls } = await open(browser, {});
@@ -165,6 +189,30 @@ try {
     await page.evaluate(() => window.__tg.main.fn()); await page.waitForTimeout(400);
     const iv = calls.filter((c) => c.op === 'interview.submit');
     check(iv.length === 1 && JSON.stringify(iv[0].args) === JSON.stringify({ version: 1, answers: [{ qid: 'pace-01', values: ['packed'] }, { qid: 'food-01', values: ['local', 'street', 'shellfish', 'peanuts'] }] }), 'interview.submit carries the picks and the typed values');
+    await ctx.close();
+  }
+
+  console.log('companions: who comes, and an interview on the owner\'s phone');
+  {
+    const { page, ctx, calls, errors } = await open(browser, {});
+    check(await page.evaluate(() => document.querySelector('#trip-people button[data-v="robin"]').getAttribute('aria-pressed')) === 'true', 'home shows who comes on the current trip');
+    await page.click('#trip-people button[data-v="robin"]'); await page.waitForTimeout(400);
+    const pt = calls.filter((c) => c.op === 'people.trip');
+    check(pt.length === 1 && JSON.stringify(pt[0].args) === JSON.stringify({ trip: TRIP.slug, people: [] }) && await page.evaluate(() => document.querySelector('#trip-people button[data-v="robin"]').getAttribute('aria-pressed')) === 'false', 'a tap saves who comes and the toggle follows the answer');
+    await page.click('text=Add someone'); await page.waitForTimeout(500);
+    check(await page.isVisible('#person-name'), 'Add someone opens the interview with a name box');
+    await page.fill('#person-name', 'Sam'); await page.click('button:has-text("Add")'); await page.waitForTimeout(600);
+    check(calls.some((c) => c.op === 'people.add' && c.args.name === 'Sam') && calls.some((c) => c.op === 'interview.bank' && c.args.person === 'sam'), 'adding Sam selects Sam and loads the bank for Sam');
+    const t = await text(page);
+    check(t.includes('Hand the phone to Sam') && !t.includes('Their first name'), 'the interview says whose answers these are');
+    await shot(page, 'light-7-companion-interview');
+    await page.click('.choices button[data-v="packed"]');
+    await page.evaluate(() => window.__tg.main.fn()); await page.waitForTimeout(400);
+    const iv = calls.filter((c) => c.op === 'interview.submit');
+    check(iv.length === 1 && iv[0].args.person === 'sam' && (await text(page)).includes('Sam’s profile'), 'a companion\'s answers are sent for that person');
+    await nav(page, 'interview');
+    check(calls.filter((c) => c.op === 'interview.bank').slice(-1)[0].args.person === undefined, 'the Interview tab starts as the owner again');
+    check(errors.length === 0, 'no page errors: ' + errors.join(' | '));
     await ctx.close();
   }
 

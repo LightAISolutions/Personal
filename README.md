@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-02 07:29:11 PM EST` · Repo version: `v01.44r`
+Last updated: `2026-10-02 08:03:06 PM EST` · Repo version: `v01.45r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -54,7 +54,7 @@ Last updated: `2026-10-02 07:29:11 PM EST` · Repo version: `v01.44r`
 │   │
 │   │
 │   <b>│ ─ Standalone Utilities ─────────────────────────────────────────────────────</b>
-│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/helper-app.html">helper-app.html</a>  →  <a href="https://lightaisolutions.github.io/Personal/helper-app.html">🌐</a>  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/helper-apphtml.changelog.md">v01.01w</a> · vNoGASg | Helper app: the generic Telegram Mini App shell a helper opens from its bot's menu button — no data and no helper-specific text in the page; it talks to the helper's core `?route=app` with the Mini App's signed launch data
+│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/helper-app.html">helper-app.html</a>  →  <a href="https://lightaisolutions.github.io/Personal/helper-app.html">🌐</a>  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/helper-apphtml.changelog.md">v01.02w</a> · vNoGASg | Helper app: the generic Telegram Mini App shell a helper opens from its bot's menu button — no data and no helper-specific text in the page; it talks to the helper's core `?route=app` with the Mini App's signed launch data
 │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/text-compare.html">text-compare.html</a>  →  <a href="https://lightaisolutions.github.io/Personal/text-compare.html">🌐</a>  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/text-comparehtml.changelog.md">v01.00w</a> · vNoGASg | [template] Text comparison tool with side-by-side diff highlighting
 │   │
 │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/MasterACL.html">MasterACL.html</a>  →  <a href="https://LightAISolutions.github.io/Personal/MasterACL.html">🌐</a>🟢 · 🔸 · ◽ · <a href="https://github.com/LightAISolutions/Personal/blob/main/googleAppsScripts/MasterACL/MasterACL.gs">⛽</a> · ◽  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/MasterACLhtml.changelog.md">v01.00w</a> · <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/gs-changelogs/MasterACLgs.changelog.md">v01.00g</a> | [template] MasterACL page
@@ -240,6 +240,7 @@ Last updated: `2026-10-02 07:29:11 PM EST` · Repo version: `v01.44r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-5.md">TG-PHASE-5.md</a> — Phase 5: cross-WP contract, the Lane B toggle, defaults, trigger minutes, carried items
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-6.md">TG-PHASE-6.md</a> — Phase 6 decisions: WP-6a/6b/6c briefs, red-team findings and fixes, cost and quota audit with sources, carried items, accepted risk
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-7.md">TG-PHASE-7.md</a> — Phase 7 decisions: live switch-on findings and the owner's choices
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-8.md">TG-PHASE-8.md</a> — Phase 8 part 1 decisions: owner questions, carried findings fixed before the trip, the Phase 9 follow-ups
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-9.md">TG-PHASE-9.md</a> — Phase 9 decisions: the finalized values, the Step 0 cross-origin verification, WP pointers, the live check
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-1b.md">WP-1b.md</a> — WP-1b core flows + document delivery: defaults (step shape, claim order, expiry, size fallback)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2a.md">WP-2a.md</a>            — WP-2a Maps kit: defaults, Maps terms finding, credential header, live smoke results
@@ -484,6 +485,7 @@ Last updated: `2026-10-02 07:29:11 PM EST` · Repo version: `v01.44r`
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/13_flow_review.js">13_flow_review.js</a> — The post-trip /review flow and daily offer
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/20_envelopes.js">20_envelopes.js</a> — Handlers for the six pack envelope types, prefs review buttons
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/21_sheets.js">21_sheets.js</a> — Pack tabs and their storage API
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/22_people.js">22_people.js</a> — People the owner travels with, who comes, /dates hours, trip_update
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/30_chat_api.js">30_chat_api.js</a> — Lane B (Claude API answers) and the /smart toggle
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/31_route.js">31_route.js</a> — /route through the Apps Script Maps service
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/32_app_api.js">32_app_api.js</a> — `?route=app` (registerRoute, auth webapp): the Mini App's operations — home, shortlist, facts, interview, brochure, places — and the `app_menu_button` setup step
@@ -530,8 +532,12 @@ Last updated: `2026-10-02 07:29:11 PM EST` · Repo version: `v01.44r`
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-trip.schema.json">tour-guide-trip.schema.json</a> — Trip
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-trip-facts.schema.json">tour-guide-trip-facts.schema.json</a> — trip_facts payload (intake)
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-visit-estimate.schema.json">tour-guide-visit-estimate.schema.json</a> — VisitEstimate
-│   │       └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/shortlist-sheet">shortlist-sheet/</a> — One research round as a printable PDF, numbered like the chat
-│   │           └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/shortlist-sheet/index.mjs">index.mjs</a>       — shortlistSheetHtml, renderShortlistPdf, CLI
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/shortlist-sheet">shortlist-sheet/</a> — One research round as a printable PDF, numbered like the chat
+│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/shortlist-sheet/index.mjs">index.mjs</a>       — shortlistSheetHtml, renderShortlistPdf, CLI
+│   │       └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/travellers">travellers/</a>      — The travel profile as the planner reads it, and the party excerpt for trips with companions
+│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/travellers/index.mjs">index.mjs</a>       — Travellers exports
+│   │           ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/travellers/travellers-excerpt.mjs">travellers-excerpt.mjs</a> — profileExcerpt, dietOf: pace, interests, avoid, dietary and diet
+│   │           └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/travellers/travellers-party.mjs">travellers-party.mjs</a> — partyExcerpt: their limits, your lead
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/prompts">prompts/</a>                — The prompt each phase's session starts from
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-1.md">TG-PHASE-1.md</a>       — Phase 1 kickoff: helper framework foundation (Fable 5.1 · Xhigh)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-2.md">TG-PHASE-2.md</a>       — Phase 2 kickoff: shared kits 2a–2d in worktrees (coordinator Opus 5.5 · high)
@@ -551,6 +557,7 @@ Last updated: `2026-10-02 07:29:11 PM EST` · Repo version: `v01.44r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/PHASE-5-RESUME.md">PHASE-5-RESUME.md</a> — Phase 5 resume note (usage-limit pause and resume)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/PHASE-6-RESUME.md">PHASE-6-RESUME.md</a> — Phase 6 resume note (usage-limit safety): step table and log
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/PHASE-7-RESUME.md">PHASE-7-RESUME.md</a> — Phase 7 resume note (usage-limit safety): which switch-on step the owner reached
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/PHASE-8-RESUME.md">PHASE-8-RESUME.md</a> — Phase 8 resume note: part 1 done, the post-trip tuning list
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-1b.md">WP-1b.md</a> — WP-1b progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2a.md">WP-2a.md</a>            — WP-2a progress and requests to the coordinator
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-2b.md">WP-2b.md</a>            — WP-2b progress and requests to the coordinator
@@ -679,6 +686,7 @@ Last updated: `2026-10-02 07:29:11 PM EST` · Repo version: `v01.44r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_redteam_pdf.test.js">pack_tour-guide_redteam_pdf.test.js</a> — Pack red-team I: PDF delivery — `drive_file_ids`, over-size files, `/brochure` resend, files outside the helper root
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_schemas.test.js">pack_tour-guide_schemas.test.js</a> — Tour Guide pack: every schema accepts its fixture and rejects hostile shapes
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_shortlist-sheet.test.js">pack_tour-guide_shortlist-sheet.test.js</a> — Shortlist sheet: chat numbering, escaping, gem badge, notes cap, real PDF when Chromium is present
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_travellers.test.js">pack_tour-guide_travellers.test.js</a> — Tour Guide pack: the excerpt keeps every dietary limit, overrides never lift one, the party excerpt
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/shell_helper-app.playwright.mjs">shell_helper-app.playwright.mjs</a> — Browser test of the shell (Playwright, no network): six screens light/dark, batch submit, brochure sandbox, error states, layout; writes the screenshots
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_boundary.test.js">tools_boundary.test.js</a> — Plants a fake secret and a personal-data path; the boundary check must fail on them
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/tools_bundle.test.js">tools_bundle.test.js</a> — Manifest validation, bundle layout, appsscript.json, CLI, bundle runs in the mocks

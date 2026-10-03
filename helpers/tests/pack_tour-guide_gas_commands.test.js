@@ -367,6 +367,48 @@ test('requests: /replan, /notes, /brochure (resend or build), /lodging, pl:br an
   assert.equal(ctx.tgCmdLodgingText({}), '');
 });
 
+test('/dates sets the trip dates and day hours from the chat; research, plan and replan requests carry them as trip_update (Phase 8)', () => {
+  const { ctx, state } = fresh();
+  planned(ctx, state);
+  say(ctx, state, '/dates');
+  assert.match(last(state), /📅 Port Sorrel: Wed 12 May → Thu 13 May\nChange them with <code>\/dates 2027-05-12 2027-05-14<\/code>/);
+  say(ctx, state, '/dates 2027-05-13 2027-05-12');
+  assert.match(last(state), /The end date is before the start/);
+  say(ctx, state, '/dates soon please');
+  assert.match(last(state), /^Change them with/);
+  say(ctx, state, '/dates 2027-05-13');
+  assert.match(last(state), /📅 Saved\. Port Sorrel: Thu 13 May\nThe next plan or <code>\/replan<\/code> uses them/);
+  assert.deepEqual([ctx.tgTripGet(TRIP).start, ctx.tgTripGet(TRIP).end], ['2027-05-13', '2027-05-13']);
+  say(ctx, state, '/dates hours 11:30 12:30');
+  assert.match(last(state), /at least two hours/);
+  say(ctx, state, '/dates hours 9:30 - 18:00');
+  assert.match(last(state), /🕘 Saved: days of Port Sorrel run 09:30–18:00/);
+  say(ctx, state, '/dates');
+  assert.match(last(state), /Thu 13 May · days 09:30–18:00/);
+  say(ctx, state, '/replan day 1 later start');
+  assert.deepEqual(J(reqOf(state, 'replan').pop().trip_update), { start_date: '2027-05-13', end_date: '2027-05-13', day_start: '09:30', day_end: '18:00' });
+  assert.equal(ctx.tgPeopleAdd('Robin').slug, 'robin');
+  ctx.tgTripPeopleSet(TRIP, ['robin', 'nobody']);
+  say(ctx, state, '/replan day 1 slower');
+  assert.deepEqual(J(reqOf(state, 'replan').pop().trip_update.travelers), [{ slug: 'robin', name: 'Robin' }]);
+  ctx.tgTripPeopleSet(TRIP, []);
+  say(ctx, state, '/replan day 1 again');
+  assert.deepEqual(J(reqOf(state, 'replan').pop().trip_update.travelers), [], 'emptied: the trip file is cleared too');
+  say(ctx, state, '/notes');
+  assert.equal(reqOf(state, 'notes').pop().trip_update, undefined, 'only research, plan and replan carry it');
+});
+
+test('people: names are checked, at most eight, the owner is never one; trip lists keep known people only', () => {
+  const { ctx } = fresh();
+  assert.deepEqual(J(ctx.tgPeopleAdd('  Ana   María ')), { slug: 'ana-maria', name: 'Ana María' });
+  assert.deepEqual(J(ctx.tgPeopleAdd('ana maria')), { slug: 'ana-maria', name: 'Ana María' }, 'the same slug returns the person');
+  ['', 'x'.repeat(41), 'Robert"); DROP', '=HYPERLINK("x")', '<b>Bo</b>', '12345'].forEach((n) => assert.ok(ctx.tgPeopleAdd(n).error, JSON.stringify(n)));
+  for (let i = 0; i < 7; i++) ctx.tgPeopleAdd('Friend ' + 'abcdefg'[i]);
+  assert.equal(ctx.tgPeopleAdd('One More').error, 'too_many');
+  assert.equal(ctx.tgPeopleList().length, 8);
+  assert.equal(ctx.tgTripUpdateOf('no-such-trip'), null);
+});
+
 test('limits: long trip slugs use a hash key, every button fits 64 bytes, long views split', () => {
   const { ctx, state } = fresh();
   const slug = 'a-very-long-trip-slug-for-the-north-coast-2027';

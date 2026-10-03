@@ -4,7 +4,8 @@
  * before tgAppHandle(req) runs; req.body = { initData, op, args }. Every operation IS the request or callback the chat
  * sends (the same storage functions, requests and flow events), so the chat keeps working with the app switched off:
  *   home · shortlist.get · shortlist.choose · shortlist.choose_many · shortlist.more · shortlist.done · trip.digest ·
- *   brochure.get · places.search · places.get · places.note · places.check · interview.bank · interview.submit · facts.get · facts.confirm
+ *   brochure.get · places.search · places.get · places.note · places.check · interview.bank · interview.submit · facts.get · facts.confirm ·
+ *   people.list · people.add · people.trip (Phase 8: companions, interviewed on the owner's phone; who comes on a trip)
  * Answers: { status: 200, body: { ok: true, … } } or { status: 400 | 404 | 409 | 503, body: { ok: false, reason, … } }.
  * No Google call and no Google content: the app shows the pack's own rows only, and no key is read here.
  * Also here: the setup step `app_menu_button`, tgAppRows (the one `web_app` button the shortlist, plan_digest and /places
@@ -16,11 +17,11 @@ var TG_APP_ROWS_MAX = 24;                // places.search rows · places.check s
 var TG_APP_QUERY_MAX = 200;              // places.search query
 var TG_APP_FILTER_MAX = 64;              // places.search destination · status · tag
 var TG_APP_CHOICES_MAX = 200;            // shortlist.choose_many
+var TG_APP_EARLIER_MAX = 8;              // shortlist.get all: earlier rounds of the open flow
 var TG_APP_ANSWERS_MAX = 200;            // interview.submit
 var TG_APP_FACTS_MAX = 40;               // facts.confirm facts · edits (the plan flow's TG_PLAN_FACTS_MAX)
 var TG_APP_MSGS_KEY = 'tg_app_sl_msgs';  // Settings: JSON [{ trip, run, round, chat, mid, kb }] — shortlist messages sent
 var TG_APP_MSGS_MAX_CHARS = 30000;       // oldest entries go first past this
-var TG_APP_LOCK_MS = 10000;
 var TG_APP_RUN_RE = /^[A-Za-z0-9_.-]{1,64}$/;
 var TG_APP_KEY_RE = /^[a-z]\d{1,3}$/;
 var TG_APP_FACT_N_RE = /^x?\d{1,3}$/;
@@ -74,11 +75,15 @@ function tgAppMaps(u) {
   return TG_CMD_MAPS_URL.test(u) && u.length <= TG_CMD_URL_MAX ? u : '';
 }
 function tgAppS(v) { return v === undefined || v === null ? '' : String(v); }
-/** Ops that write (Choices, flows, requests) run under the script lock, like a Telegram update. */
-function tgAppLocked(fn) {
-  var lock = LockService.getScriptLock();
-  if (!lock.tryLock(TG_APP_LOCK_MS)) return tgAppNo(503, 'busy');
-  try { return fn(); } finally { lock.releaseLock(); }
+/**
+ * Ops that write (Choices, flows, requests) run under the script lock, like a Telegram update: the core takes it before
+ * the handler (registerRoute lock predicate, Phase 8) and answers 503 busy when it is held; reads never wait.
+ */
+function tgAppNeedsLock(req) {
+  var b = req && isPlainObject(req.body) ? req.body : {}, op = typeof b.op === 'string' ? b.op : '';
+  var def = op && Object.prototype.hasOwnProperty.call(TG_APP_OPS, op) ? TG_APP_OPS[op] : null;
+  if (!def) return false;
+  return !!def.write || (op === 'places.get' && isPlainObject(b.args) && b.args.note === true);
 }
 
 /* ==================== links into the app (web_app buttons, menu button) ==================== */
@@ -249,7 +254,7 @@ function tgAppPlaceOut(p) {
 
 /* ==================== operations: home, shortlist ==================== */
 
-/** home — the snapshot provider's data (tgSnapshot) with each trip's title and brochure flag, the open round's flow stage, plus an open facts form. */
+/** home — the helper's display name, the snapshot provider's data (tgSnapshot) with each trip's title and brochure flag, the open round's flow stage, plus an open facts form. */
 function tgAppOpHome() {
   var snap = tgSnapshot();
   var trips = (snap.trips || []).map(function (s) { return tgAppTripOut(tgTripGet(s.slug) || s); });
@@ -257,15 +262,17 @@ function tgAppOpHome() {
   var pending = f && f.state.stage === 'confirm' && !f.state.ask ? { trip: f.state.trip } : null;
   var cr = snap.choice_round;
   if (cr) { var pf = tgAppPlanFlow(cr.trip); cr.stage = pf ? tgAppS(pf.state.stage) : ''; }   // '' = no flow: the adopt path still accepts the round
-  return tgAppOk({ trips: trips, trips_total: snap.trips_total, choice_round: cr, pending_facts: pending,
-    profile_summary: snap.profile_summary, places: snap.places });
+  var cur = tgTripCurrent(), ptrip = cur ? cur.slug : '';
+  return tgAppOk({ display_name: tgAppS(HELPER.display_name || 'Helper').slice(0, 40),   // the shell's masthead and tab title
+    trips: trips, trips_total: snap.trips_total, choice_round: cr, pending_facts: pending,
+    profile_summary: snap.profile_summary, places: snap.places,
+    people: { trip: ptrip, items: tgAppPeopleOut(ptrip), max: TG_PEOPLE_MAX } });   // who comes on the current trip
 }
 
 var TG_APP_GROUP_ORDER = ['activities', 'food'];
-/** shortlist.get { run? } — the round's groups and items with their sl: item keys and the owner's choices so far. */
-function tgAppOpShortlistGet(args) {
-  var r = tgAppRound(tgAppStr(args, 'run', { max: 64, re: TG_APP_RUN_RE }));
-  var s = tgAppSlots(r.trip, r.run), val = tgAppChoiceVals(r.trip, r.run);
+/** A run's groups and items with their sl: item keys and the owner's choices so far → { round, groups } (null: no items). */
+function tgAppRoundGroups(trip, run) {
+  var s = tgAppSlots(trip, run), val = tgAppChoiceVals(trip, run);
   var groups = {}, order = [];
   Object.keys(s.by).forEach(function (k) {
     var it = s.by[k], g = it.group, x = isPlainObject(it.item) ? it.item : {};
@@ -277,15 +284,35 @@ function tgAppOpShortlistGet(args) {
       new: x.new === true, seen_before: seen, changes: Array.isArray(x.changes) ? x.changes.slice(0, 3).map(String) : [],
       round: it.round, choice: val[it.slug] || '' });
   });
-  if (!order.length) tgAppRefuse(404, 'no_round');
+  if (!order.length) return null;
   var rank = function (g) { var i = TG_APP_GROUP_ORDER.indexOf(g); return i < 0 ? TG_APP_GROUP_ORDER.length : i; };
   order.sort(function (a, b) { return rank(a) - rank(b) || (a < b ? -1 : a > b ? 1 : 0); });
+  return { round: s.round, groups: order.map(function (g) { groups[g].items.sort(function (a, b) { return a.n - b.n; }); return groups[g]; }) };
+}
+/**
+ * shortlist.get { run?, all? } — the round's groups and items with their sl: item keys and the owner's choices so far.
+ * all: true while the trip's plan flow is choosing → also `earlier`: the flow's other rounds (each { run, round, groups }),
+ * newest first, so a /repick that reopened several rounds is choosable in the app (Phase 8; each round saves to its own run).
+ */
+function tgAppOpShortlistGet(args) {
+  var r = tgAppRound(tgAppStr(args, 'run', { max: 64, re: TG_APP_RUN_RE }));
+  var all = tgAppBool(args, 'all', false);
+  var main = tgAppRoundGroups(r.trip, r.run);
+  if (!main) tgAppRefuse(404, 'no_round');
   var f = tgAppPlanFlow(r.trip), st = f ? f.state : null, choosing = !!st && st.stage === 'choose';
   var t = tgTripGet(r.trip) || { slug: r.trip };
-  return tgAppOk({ trip: r.trip, title: tgAppS(t.title || t.destination || t.slug), run: r.run, round: s.round, flow: choosing,
+  var earlier = [];
+  if (all && choosing) {
+    (st.runs || []).slice().reverse().forEach(function (run) {
+      if (run === r.run || earlier.length >= TG_APP_EARLIER_MAX) return;
+      var g = tgAppRoundGroups(r.trip, run);
+      if (g) earlier.push({ run: run, round: g.round, groups: g.groups });
+    });
+  }
+  return tgAppOk({ trip: r.trip, title: tgAppS(t.title || t.destination || t.slug), run: r.run, round: main.round, flow: choosing,
     stage: st ? tgAppS(st.stage) : '',   // the trip's plan flow stage ('' = none): past `choose` the round is closed for the shell
     more: choosing && !!st.more && (st.more_rounds || 0) < TG_PLAN_MORE_MAX,
-    groups: order.map(function (g) { groups[g].items.sort(function (a, b) { return a.n - b.n; }); return groups[g]; }) });
+    groups: main.groups, earlier: earlier });
 }
 /** { n: item key, choice: w | l | s } from an object; nested entries refuse unknown keys. */
 function tgAppChoiceArg(o, nested) {
@@ -492,7 +519,7 @@ function tgAppOpPlacesGet(args) {
   var p = tgAppPlace(args), out = tgAppPlaceOut(p), note = tgAppBool(args, 'note', false);
   out.history = p.history_summary ? [{ trip: p.last_trip, date: p.last_verified || p.last_researched, text: p.history_summary }] : [];
   if (!note) return tgAppOk({ place: out });
-  return tgAppLocked(function () { return tgAppOk({ place: out, request_id: tgAppNoteRequest(p) }); });
+  return tgAppOk({ place: out, request_id: tgAppNoteRequest(p) });   // the core holds the lock for this call (tgAppNeedsLock)
 }
 /** places.note { slug } — the full note alone. */
 function tgAppOpPlacesNote(args) { return tgAppOk({ request_id: tgAppNoteRequest(tgAppPlace(args)) }); }
@@ -525,9 +552,18 @@ function tgAppOpPlacesCheck(args) {
 /* ==================== operations: the interview ==================== */
 
 /** interview.bank — the bank as generated, plus the answers of an interview in progress in the chat ([] otherwise). */
-function tgAppOpInterviewBank() {
+/** The person an interview is for: '' = the owner; else a slug of the people list (404 no_person). */
+function tgAppPersonArg(args) {
+  var slug = tgAppStr(args, 'person', { max: 40, re: TG_PERSON_SLUG_RE });
+  if (!slug) return null;
+  var p = tgPerson(slug);
+  if (!p) tgAppRefuse(404, 'no_person');
+  return p;
+}
+function tgAppOpInterviewBank(args) {
+  var person = tgAppPersonArg(args || {});
   var chat = tgOwnerChat(), f = chat ? flowActive(chat) : null, answers = [];
-  var live = !!f && f.flow === 'interview' && isPlainObject(f.state);
+  var live = !person && !!f && f.flow === 'interview' && isPlainObject(f.state);   // the chat interview is always the owner's
   if (live && isPlainObject(f.state.ans)) {
     (Array.isArray(f.state.qids) ? f.state.qids : []).forEach(function (qid) {
       (Array.isArray(f.state.ans[qid]) ? f.state.ans[qid] : []).forEach(function (a) {
@@ -535,7 +571,7 @@ function tgAppOpInterviewBank() {
       });
     });
   }
-  return tgAppOk({ bank: tgIvBank(), answers: answers, in_progress: live });
+  return tgAppOk({ bank: tgIvBank(), answers: answers, in_progress: live, person: person ? { slug: person.slug, name: person.name } : null });
 }
 /** One answered question → kit answers, mapped exactly as the chat's interview does (_tgIvAnswer). */
 function tgAppIvAnswers(q, values) {
@@ -560,9 +596,11 @@ function tgAppIvAnswers(q, values) {
     .concat(typed.map(function (t) { var a = _tgIvAnswer(q, t, pol); a.kind = 'text'; return a; }));
 }
 /**
- * interview.submit { version: 1, answers: [{ qid, values }] } — the whole form at once: values are option values or typed
- * words (≤ TG_IV_TEXT_VALUES_MAX typed per question, each ≤ TG_IV_VALUE_MAX after whitespace is folded). Answers go in bank
- * order into one prefs request exactly like the chat's last question (tgIvFinish); an interview open in the chat ends.
+ * interview.submit { version: 1, answers: [{ qid, values }], person? } — the whole form at once: values are option values or
+ * typed words (≤ TG_IV_TEXT_VALUES_MAX typed per question, each ≤ TG_IV_VALUE_MAX after whitespace is folded). Answers go in
+ * bank order into one prefs request exactly like the chat's last question (tgIvFinish); an interview open in the chat ends.
+ * person (a slug of the people list) → the request carries person { slug, name } and the routine writes that person's
+ * own profile (Phase 8: companions answer on the owner's phone; the chat interview stays the owner's).
  */
 function tgAppOpInterviewSubmit(args) {
   if (args.version === undefined || args.version === null) tgAppRefuse(400, 'missing_arg', { field: 'version' });
@@ -587,12 +625,54 @@ function tgAppOpInterviewSubmit(args) {
   var answers = [];
   tgIvQids('').forEach(function (qid) { (by[qid] || []).forEach(function (a) { answers.push(a); }); });
   if (!answers.length) tgAppRefuse(400, 'empty');
-  var chat = tgOwnerChat(), live = chat ? flowActive(chat) : null;
-  if (live && live.flow === 'interview') flowCancel(chat);
-  var n = answers.length;
-  var r = tgOpenKindRequest('prefs', { interview: { version: 1, answers: answers } }, { text: 'interview answers (' + n + ') · app',
-    ack: '✅ ' + n + ' answer' + (n === 1 ? '' : 's') + ' from the app noted. Building your profile…' });
-  return tgAppOk({ request_id: r.id, answers: n });
+  var person = tgAppPersonArg(args), n = answers.length, payload = { interview: { version: 1, answers: answers } };
+  if (person) {   // a companion's interview, answered on the owner's phone: their own profile, never the owner's
+    payload.person = { slug: person.slug, name: person.name };
+    tgPersonInterviewed(person.slug);
+  } else {
+    var chat = tgOwnerChat(), live = chat ? flowActive(chat) : null;
+    if (live && live.flow === 'interview') flowCancel(chat);
+  }
+  var r = tgOpenKindRequest('prefs', payload, { text: 'interview answers (' + n + ') · app' + (person ? ' · ' + person.slug : ''),
+    ack: '✅ ' + n + ' answer' + (n === 1 ? '' : 's') + ' from the app noted. Building ' + (person ? tgEscape(person.name) + '’s' : 'your') + ' profile…' });
+  return tgAppOk({ request_id: r.id, answers: n, person: person ? person.slug : null });
+}
+
+/* ==================== operations: the people the owner travels with (Phase 8) ==================== */
+
+function tgAppPeopleOut(trip) {
+  var on = trip ? tgTripPeople(trip) : [];
+  return tgPeopleList().map(function (p) { return { slug: p.slug, name: p.name, interviewed: p.interviewed, on_trip: on.indexOf(p.slug) >= 0 }; });
+}
+/** The trip a people op is about: the slug given, else the current trip ('' when there is none). */
+function tgAppPeopleTrip(args) {
+  var slug = tgAppStr(args, 'trip', { max: 64, re: TG_SLUG_RE });
+  if (slug) { if (!tgTripGet(slug)) tgAppRefuse(404, 'no_trip'); return slug; }
+  var cur = tgTripCurrent();
+  return cur ? cur.slug : '';
+}
+/** people.list { trip? } — everyone the owner added, each with whether they come on the trip (the current one by default). */
+function tgAppOpPeopleList(args) {
+  var trip = tgAppPeopleTrip(args), t = trip ? tgTripGet(trip) : null;
+  return tgAppOk({ trip: trip, trip_title: t ? tgAppS(t.title || t.destination || t.slug) : '', people: tgAppPeopleOut(trip), max: TG_PEOPLE_MAX });
+}
+/** people.add { name } — a companion by first name (letters, spaces, . ' -; ≤ 40); a name already there returns that person. */
+function tgAppOpPeopleAdd(args) {
+  var name = tgAppStr(args, 'name', { required: true, max: 80 });
+  var r = tgPeopleAdd(name);
+  if (r.error) tgAppRefuse(400, r.error === 'too_many' ? 'too_many' : 'bad_name', r.error === 'too_many' ? { max: TG_PEOPLE_MAX } : { field: 'name' });
+  return tgAppOk({ slug: r.slug, name: r.name });
+}
+/** people.trip { trip?, people: [slug] } — who comes on the trip; the next research, plan or replan request carries it. */
+function tgAppOpPeopleTrip(args) {
+  var trip = tgAppPeopleTrip(args);
+  if (!trip) tgAppRefuse(404, 'no_trip');
+  var slugs = tgAppArr(args, 'people', TG_PEOPLE_MAX, true).map(function (s) {
+    if (typeof s !== 'string' || !TG_PERSON_SLUG_RE.test(s)) tgAppRefuse(400, 'bad_args', { field: 'people' });
+    if (!tgPerson(s)) tgAppRefuse(404, 'no_person', { slug: s });
+    return s;
+  });
+  return tgAppOk({ trip: trip, on_trip: tgTripPeopleSet(trip, slugs) });
 }
 
 /* ==================== operations: the trip facts (plan flow, stage confirm) ==================== */
@@ -669,10 +749,10 @@ function tgAppOpFactsConfirm(args) {
 
 /* ==================== the route ==================== */
 
-/** op → { args: allowed argument names, write: runs under the script lock, fn }. */
+/** op → { args: allowed argument names, write: runs under the script lock (tgAppNeedsLock), fn }. */
 var TG_APP_OPS = {
   'home': { args: [], fn: tgAppOpHome },
-  'shortlist.get': { args: ['run'], fn: tgAppOpShortlistGet },
+  'shortlist.get': { args: ['run', 'all'], fn: tgAppOpShortlistGet },
   'shortlist.choose': { args: ['run', 'n', 'choice'], write: true, fn: tgAppOpChoose },
   'shortlist.choose_many': { args: ['run', 'choices'], write: true, fn: tgAppOpChooseMany },
   'shortlist.more': { args: ['run', 'gems'], write: true, fn: tgAppOpMore },
@@ -683,8 +763,11 @@ var TG_APP_OPS = {
   'places.get': { args: ['slug', 'note'], fn: tgAppOpPlacesGet },
   'places.note': { args: ['slug'], write: true, fn: tgAppOpPlacesNote },
   'places.check': { args: ['slugs'], write: true, fn: tgAppOpPlacesCheck },
-  'interview.bank': { args: [], fn: tgAppOpInterviewBank },
-  'interview.submit': { args: ['version', 'answers'], write: true, fn: tgAppOpInterviewSubmit },
+  'interview.bank': { args: ['person'], fn: tgAppOpInterviewBank },
+  'interview.submit': { args: ['version', 'answers', 'person'], write: true, fn: tgAppOpInterviewSubmit },
+  'people.list': { args: ['trip'], fn: tgAppOpPeopleList },
+  'people.add': { args: ['name'], write: true, fn: tgAppOpPeopleAdd },
+  'people.trip': { args: ['trip', 'people'], write: true, fn: tgAppOpPeopleTrip },
   'facts.get': { args: ['trip'], fn: tgAppOpFactsGet },
   'facts.confirm': { args: ['trip', 'facts', 'edits', 'advance'], write: true, fn: tgAppOpFactsConfirm }
 };
@@ -699,13 +782,13 @@ function tgAppHandle(req) {
   if (!isPlainObject(args)) return tgAppNo(400, 'bad_args', { field: 'args' });
   try {
     tgAppKeys(args, def.args);
-    return def.write ? tgAppLocked(function () { return def.fn(args); }) : def.fn(args);
+    return def.fn(args);
   } catch (e) {
     if (e instanceof TgAppRefusal) return tgAppNo(e.status, e.reason, e.extra);
     throw e;
   }
 }
 
-registerRoute('app', { methods: ['POST'], auth: 'webapp', handler: tgAppHandle });
+registerRoute('app', { methods: ['POST'], auth: 'webapp', handler: tgAppHandle, lock: tgAppNeedsLock });
 
 // Developed by: LightAISolutions

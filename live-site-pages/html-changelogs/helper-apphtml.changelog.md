@@ -3,11 +3,21 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 1/50`
+`Sections: 2/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.02w] — 2026-10-02 08:03:06 PM EST — v01.45r
+
+### Added
+- **Travelling with** on Home: add the people you travel with and tick who comes on the current trip
+- The interview asks who is answering, so someone travelling with you can answer it on your phone; their answers build their own profile, never yours
+
+### Changed
+- The Shortlist shows every round of the open plan, newest first, and each tap goes to its own round
+- The title shows the helper's name
 
 ## [v01.01w] — 2026-10-01 10:41:22 PM EST — v01.39r
 

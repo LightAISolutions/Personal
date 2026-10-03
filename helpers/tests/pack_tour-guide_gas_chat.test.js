@@ -76,6 +76,7 @@ test('mode resolution: CHAT_API_ENABLED only when never toggled; /smart override
   tg(t, '/smart on');
   assert.equal(t.ctx.settingGet('tg_smart', ''), 'on');
   assert.match(last(t.state), /Smart answers on/);
+  assert.match(last(t.state), /plain text, with no \/ask/);
   t.state.props.CHAT_API_ENABLED = 'false';
   assert.equal(t.ctx.tgChatEnabled(), true); // the owner's toggle wins over the property
   assert.ok(t.ctx.storeAll('AuditLog').some((a) => a.event === 'tg_smart' && a.ref === 'on'));

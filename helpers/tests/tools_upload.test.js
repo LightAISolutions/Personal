@@ -62,3 +62,21 @@ test('CLI: --dry-run prints the target and size without the key; a bad argument 
 });
 
 // Developed by: LightAISolutions
+
+test('CLI --key-from: the request id and key come from the saved request file, never the command line (F22)', async () => {
+  const { keyFrom } = await import('../tools/upload.mjs');
+  const reqFile = tmpFile('req_' + REQ + '.json', JSON.stringify({ v: 1, id: REQ, type: 'request', payload: { kind: 'plan', upload_key: KEY } }));
+  assert.deepEqual(keyFrom(reqFile), { req: REQ, key: KEY });
+  assert.deepEqual(keyFrom(reqFile, 'req_' + REQ), { req: 'req_' + REQ, key: KEY });
+  assert.throws(() => keyFrom(reqFile, '11111111-2222-4333-8444-555555555555'), /does not match/);
+  assert.throws(() => keyFrom(tmpFile('r.json', JSON.stringify({ id: REQ, payload: {} }))), /no payload.upload_key/);
+  assert.throws(() => keyFrom(tmpFile('r.json', 'not json')), /saved request file/);
+  const f = tmpFile('s.pdf', '%PDF');
+  const ok = spawnSync(process.execPath, [TOOL, '--wake-url', 'https://script.google.com/macros/s/FIXTURE/exec?route=wake', '--key-from', reqFile, '--file', f, '--dry-run'], { encoding: 'utf8' });
+  assert.equal(ok.status, 0, ok.stdout + ok.stderr);
+  assert.equal(JSON.parse(ok.stdout).dry_run, true);
+  assert.ok(!ok.stdout.includes(KEY));
+  const both = spawnSync(process.execPath, [TOOL, '--wake-url', 'https://script.google.com/macros/s/FIXTURE/exec?route=wake', '--key-from', reqFile, '--key', KEY, '--file', f, '--dry-run'], { encoding: 'utf8' });
+  assert.equal(both.status, 1);
+  assert.match(JSON.parse(both.stdout).reason, /not both/);
+});

@@ -78,13 +78,21 @@ function _cellOut(v) {
   if (typeof v === 'object') return JSON.stringify(v);
   return v;
 }
+/**
+ * What actually goes to the Sheet: text that Sheets would read as a formula (or as a number / control character)
+ * — a leading = + - @ tab or CR — is written as literal text with a leading apostrophe, so chat or page text can never
+ * become a live formula (formula injection). A leading apostrophe is escaped too, so it survives the round trip.
+ * Sheets hides the apostrophe: reads return the text exactly as written.
+ */
+var _CELL_ESCAPE_RE = /^[=+\-@\t\r']/;
+function _cellEsc(v) { return typeof v === 'string' && _CELL_ESCAPE_RE.test(v) ? "'" + v : v; }
 function _cellIn(v) { return isDate(v) ? v.toISOString() : v; }
 
 function storeAppend(name, obj) {
   var sh = getSheet(name);
   var headers = sheetHeaders(sh);
   var row = headers.map(function (h) { return _cellOut(obj[h]); });
-  sh.appendRow(row);
+  sh.appendRow(row.map(_cellEsc));
   var out = {}; headers.forEach(function (h, i) { out[h] = row[i]; });
   out._row = sh.getLastRow();
   return out;
@@ -116,7 +124,7 @@ function storeUpdate(name, rowNumber, patch) {
   var range = sh.getRange(rowNumber, 1, 1, headers.length);
   var vals = range.getValues()[0];
   Object.keys(patch).forEach(function (k) { var i = headers.indexOf(k); if (i >= 0) vals[i] = _cellOut(patch[k]); });
-  range.setValues([vals]);
+  range.setValues([vals.map(_cellEsc)]);   // every cell, not just the patched ones: reads come back unescaped
   var o = { _row: rowNumber }; headers.forEach(function (h, i) { o[h] = _cellIn(vals[i]); });
   return o;
 }

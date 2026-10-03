@@ -3,11 +3,33 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 45/100`
+`Sections: 46/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.45r] — 2026-10-02 08:03:06 PM EST
+
+> **Prompt:** "i want to do as much as I can do now" *(Phase 8, everything that does not need the trip's evidence)*
+
+### Added
+- **Other travellers** (pack `gas/22_people.js`, `gas/32_app_api.js` `people.list · add · trip`, `interview.bank · submit` with `person`): the owner adds people in the app, ticks who comes on a trip and hands the phone over for the interview; a companion's answers build their own profile. Home carries the trip's people and the display name (masthead)
+- **`/dates`** (pack `gas/10_commands.js`) and `trip_update` (`gas/00_common.js`): dates, day hours and travellers ride every research, plan and replan request, so a date change never needs a pull request
+- **`packs/tour-guide/travellers/`** — `profileExcerpt` / `dietOf` (moved from the private repo, F12) and `partyExcerpt` ("their limits, your lead"); the excerpt schema requires `dietary` and documents `avoid`, `diet`, `diet_rule`, `day_rhythm`, `also_like`, `party`; tests `pack_tour-guide_travellers.test.js`
+- **Session lengths for set activities** (estimator `activityDefault`) and `booking.minutes` on a place, which the planner always takes (F21)
+- **`tools/upload.mjs --key-from <saved request>`** — the upload key never goes on a command line (F22)
+- **Core `registerRoute` `lock`** (`true` or a predicate; `503 busy`; `LIMITS.ROUTE_LOCK_WAIT_MS`); the app route uses it for writes and note requests
+- `helpers/decisions/TG-PHASE-8.md`, `helpers/status/PHASE-8-RESUME.md`
+
+### Changed
+- Typed picks take a round prefix (`r1 5 later 7`) and `/repick 2 6 r1 5` marks numbers in the same message (pack `gas/12_flow_plan.js`, F20)
+- The app Shortlist shows every round of the open plan, newest first (`shortlist.get { all }`, shell v01.02w)
+- The `/smart on` reply says to type questions as plain text (F25)
+- Docs: `helpers/docs/TG-SWITCH-ON.md` (`/dates`, round prefixes, travelling with others), the pack README, `kits/prefs/README.md` (reading a profile back), `SPEC.md` (route lock, `--key-from`); `helpers/prompts/TG-PHASE-9.md` marked done; `helpers/BUILD-STATE.md` Phase 8 part 1 done
+
+### Security
+- **Formula escaping** in `core/03_store.js`: text starting with `=` `+` `-` `@`, tab, CR or an apostrophe is written as literal text; updates rewrite the whole row escaped. The Sheet mock models it; test in `core_store.test.js`
 
 ## [v01.44r] — 2026-10-02 07:29:11 PM EST
 

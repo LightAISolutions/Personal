@@ -101,11 +101,13 @@ function registerProposalGuard(name, fn) { return _regPut('proposal_guard', name
 function registerEnvelopeObserver(name, fn) { return _regPut('observer', name, _regFn(fn, 'registerEnvelopeObserver'), 'EnvelopeObserver'); }
 
 /**
- * registerRoute(name, { methods, auth, handler }) — an extra `?route=<name>` on the web app (10_router.js).
+ * registerRoute(name, { methods, auth, handler, lock? }) — an extra `?route=<name>` on the web app (10_router.js).
  * methods ⊆ ['GET','POST'] (non-empty); auth: 'none' | 'admin' (?k=ADMIN_SECRET) | 'webapp' (Telegram Mini App initData in
  * the POST body `{ initData, op, args }`, verified against BOT_TOKEN and OWNER_CHAT_ID before the handler runs — POST only);
  * handler(req) → { status, body } with req = { method, params, body, user, auth_date, start_param }. The router serialises
  * `body` as JSON. Core route names (CORE_ROUTES) cannot be registered — the throw is the bundle-time refusal.
+ * lock: true runs every call under the script lock (like a Telegram update); a function (req) → boolean decides per call
+ * (a throwing predicate locks). Taken after auth and the daily cap; held elsewhere for LIMITS.ROUTE_LOCK_WAIT_MS → 503 busy.
  */
 function registerRoute(name, def) {
   if (!/^[a-z][a-z0-9_-]{0,31}$/.test(name || '')) throw new Error('registerRoute: name must match /^[a-z][a-z0-9_-]{0,31}$/');
@@ -115,7 +117,8 @@ function registerRoute(name, def) {
   if (!methods.length || methods.some(function (m) { return m !== 'GET' && m !== 'POST'; })) throw new Error('registerRoute: methods must be a non-empty subset of [GET, POST]');
   if (['none', 'admin', 'webapp'].indexOf(def.auth) < 0) throw new Error('registerRoute: auth must be none | admin | webapp');
   if (def.auth === 'webapp' && (methods.length !== 1 || methods[0] !== 'POST')) throw new Error('registerRoute: auth "webapp" routes are POST only (initData travels in the body)');
-  return _regPut('route', name, { methods: methods.slice(), auth: def.auth, handler: def.handler }, 'Route');
+  if (def.lock !== undefined && def.lock !== true && def.lock !== false && typeof def.lock !== 'function') throw new Error('registerRoute: lock must be true, false or function (req) → boolean');
+  return _regPut('route', name, { methods: methods.slice(), auth: def.auth, handler: def.handler, lock: def.lock || false }, 'Route');
 }
 
 /** Own properties only — `constructor`, `__proto__`, `toString`… from a request must never resolve to an inherited member. */

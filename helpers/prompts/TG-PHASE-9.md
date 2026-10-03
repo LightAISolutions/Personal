@@ -1,5 +1,7 @@
 # Phase 9 — The Tour Guide app (Telegram Mini App): shortlist cards, the brochure on screen, the places repository, the interview as a form
 
+> **Done** 2026-10-02 (v01.37r–v01.39r; record: `decisions/TG-PHASE-9.md`). The §7 follow-ups — interviews for other travellers, the masthead, `registerRoute` `lock` and formula escaping — were built by Phase 8 part 1 (v01.45r, `decisions/TG-PHASE-8.md` §3). Kept below as the record of the brief.
+
 > Start this in a **new session** on **Fable 5.1 · effort high** with the prompt: `Read helpers/prompts/TG-PHASE-9.md and execute it exactly.`
 > Plan: `repository-information/TOUR-GUIDE-BUILD-PLAN.md` §5.10, §5.11, §6 row 9, §9 (the four app risks), §10 decisions 18–19. Written 2026-10-01 by the v01.16r plan amendment as a **draft**; **finalized by Phase 8** — the block marked `FINALIZE (Phase 8)` below is filled in before this prompt is used (if the owner pulled the phase forward per decision 19, Phase 6 fills it instead). If it still shows placeholders, stop and ask in the thread which phase finalizes it. Progress in `helpers/BUILD-STATE.md`.
 

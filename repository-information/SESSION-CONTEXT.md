@@ -7,6 +7,36 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
+**Date:** 2026-10-02 08:03:06 PM EST
+**Repo version:** v01.45r
+**Branch:** `claude/project-thread-rarais` (Tour Guide project, thread started by "i want to do as much as I can do now", Opus 5.5 · high)
+
+**What we worked on**
+- Phase 8 part 1: every Phase 8 item that needs no trip evidence (decisions in `helpers/decisions/TG-PHASE-8.md`)
+- Round-prefixed typed picks, `/repick` with numbers, the app Shortlist with every round, `/dates` and `trip_update`
+- Other travellers: people list, who comes, in-app interviews on the owner's phone, the party excerpt
+- The profile excerpt moved into the pack (`packs/tour-guide/travellers/`) with `dietary` required; booking and activity visit lengths; `upload.mjs --key-from`; the `/smart on` wording; core route `lock` and formula escaping; masthead name
+
+**Where we left off**
+- Personal v01.45r pushed; the private repo re-pin and skill changes go on its `claude/project-thread-rarais` branch as a PR for the owner to merge
+- Two decision cards open with the owner: Japan train estimates (Keep · Tune · Pay) and how companions count (default: their limits, your lead)
+
+**Key decisions made**
+- Stored Google hours in the quick lane declined (Maps terms forbid storing hours)
+- The module is named `travellers/` because the boundary check treats `profile*` names as personal data
+- Companion interviews run on the owner's phone (the app opens only for the owner)
+
+**Active context**
+- Trip is mid-November; Phase 8 part 2 (tuning) waits for the owner's account of it
+- `/smart` off by default; routines on Opus 5.5
+
+**Recommendation for next session**
+- After the trip, run Phase 8 part 2 from `helpers/status/PHASE-8-RESUME.md`, starting with the owner's account of the trip and the two decision cards' answers.
+
+**To continue:** type `Read helpers/prompts/TG-PHASE-8.md and execute it exactly.`
+
+## Previous Sessions
+
 **Date:** 2026-10-02 07:29:11 PM EST
 **Repo version:** v01.44r
 **Branch:** `claude/project-thread-yjuszy` (Tour Guide project, thread "Tour Guide Phase 7 switch-on", Opus 5.5 · high)
@@ -32,35 +62,5 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 **Recommendation for next session**
 - After the trip, start Phase 8 on Opus 5.5 · high and begin with the owner's trip feedback and the Japan train-estimate question
-
-**To continue:** type `Read helpers/prompts/TG-PHASE-8.md and execute it exactly.`
-
-## Previous Sessions
-
-**Date:** 2026-10-01 10:41:22 PM EST
-**Repo version:** v01.39r
-**Branch:** `claude/project-thread-rf0581` (Tour Guide project, thread "Tour Guide Phase 9 — Mini App", Fable 5.1 · high)
-
-**What we worked on**
-- Phase 9, the Telegram Mini App: WP-9a core contract (`registerRoute`, `CORE_ROUTES`, `tgVerifyInitData`, `tgSetMenuButton`), WP-9b pack `32_app_api.js` (`?route=app`, 16 ops, setup step `app_menu_button`), WP-9c shell `live-site-pages/helper-app.html` with a no-network Playwright check; security review, single push v01.37r auto-merged, Pages and "Deploy helper" green
-- Step 4 live check with the owner: menu button set, Home/Shortlist/Interview/Brochure/Places open from the app; "Done choosing" and Facts returned `no_flow` because the shell showed a closed round as open (trip status stays `choosing` while the plan flow is at `planning`)
-- v01.39r fix: `home.choice_round.stage` and `shortlist.get.stage` from the trip's plan flow; the shell shows closed rounds read-only, maps refusals to plain words, quiet Facts/Brochure empty states; shell v01.01w; Playwright `state-round-closed` check
-- Step 5 bookkeeping: `helpers/decisions/TG-PHASE-9.md` §6 live findings + §7 next-phase items, `helpers/BUILD-STATE.md` Phase 9 row done + Phase 9 log + Next, `helpers/docs/TG-SWITCH-ON.md` §3 "Open from the app", `helpers/decisions/TG-PHASE-7.md` §1 row F18
-
-**Where we left off**
-- Phase 9 is done (v01.39r pushed; auto-merge → Pages → Deploy helper). The owner retests the app after the deploy (Home shows the round as closed with the stage, Facts "Nothing to confirm", Shortlist "Round N is closed")
-- Phase 7 (switch-on) continues in its own thread and has one Personal bookkeeping push pending; it rebases on v01.39r and keeps the Phase 9 rows in BUILD-STATE and TG-PHASE-7 §1
-
-**Key decisions made**
-- The shell never guesses flow state: the pack reports `stage` and the shell renders closed rounds and `no_flow` as quiet states with a "Back home" button; the adopt path (`stage: ''`) still accepts a round with no flow
-- Owner request (live check): future interviews for other travellers should run in the app, not in Telegram — needs a profile slot in the pack, scoped in Phase 8 (`TG-PHASE-9.md` §7)
-- Owner trip data seen in screenshots stays out of the public repo (redacted in CHANGELOG and decisions)
-
-**Active context**
-- Branch `claude/project-thread-rf0581` is the single Phase 9 push (auto-merges to `main`); `APP_SHELL_URL` is the Pages URL of `helper-app.html`; the owner's web-app URL is session-only and never written anywhere
-- Open items for Phase 8 are in `helpers/decisions/TG-PHASE-9.md` §7 and `helpers/prompts/TG-PHASE-8.md` (written by the Phase 7 thread)
-
-**Recommendation for next session**
-- After Phase 7 finishes, start Phase 8 on Opus 5.5 · high and take the Phase 9 items in `helpers/decisions/TG-PHASE-9.md` §7 (in-app interviews for other travellers, masthead name, carried `lock: true` and formula escaping) into its scope
 
 **To continue:** type `Read helpers/prompts/TG-PHASE-8.md and execute it exactly.`

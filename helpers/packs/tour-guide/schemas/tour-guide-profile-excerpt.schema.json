@@ -1,10 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "tour-guide-profile-excerpt.schema.json",
-  "title": "Tour Guide profile excerpt (estimator and planner input; not an entity file)",
+  "title": "Tour Guide profile excerpt (estimator and planner input; not an entity file). dietary is a hard limit and always present.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["pace", "interests"],
+  "required": ["pace", "interests", "dietary"],
   "properties": {
     "pace": { "enum": ["relaxed", "normal", "packed"] },
     "interests": {
@@ -17,6 +17,13 @@
       "type": "object",
       "additionalProperties": false,
       "properties": { "breakfast_at_lodging": { "type": "boolean" } }
-    }
+    },
+    "avoid": { "type": "array", "maxItems": 50, "items": { "type": "string", "minLength": 1, "maxLength": 80 } },
+    "dietary": { "type": "array", "maxItems": 30, "items": { "type": "string", "minLength": 1, "maxLength": 60 } },
+    "diet": { "enum": ["vegetarian", "vegan"] },
+    "diet_rule": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "day_rhythm": { "enum": ["early", "flexible", "late"] },
+    "also_like": { "type": "array", "maxItems": 20, "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}$" } },
+    "party": { "type": "integer", "minimum": 1, "maximum": 13 }
   }
 }
