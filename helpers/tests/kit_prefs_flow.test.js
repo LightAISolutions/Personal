@@ -321,4 +321,32 @@ test('deleting held notes loses no confirmed preference: the profile renders fro
   assert.equal(after.split('\n').filter((l) => l.startsWith('- ')).length, before.split('\n').filter((l) => l.startsWith('- ')).length - 1);
 });
 
+test('dropEvidence takes held evidence back by ref and predicate; an emptied note is deleted; decisions and the profile stand', async () => {
+  const { m, t } = await seeded();
+  const doc07 = m.opaqueRef('drive', 'doc-07'), none = { removed: 0, written: [], deleted: [] };
+  const before = snapshot(t.held);
+  assert.deepEqual(m.dropEvidence({ vocab: 'travel', held: t.held, refs: [] }), none, 'refs are required');
+  assert.deepEqual(m.dropEvidence({ vocab: 'travel', held: t.held, refs: [m.opaqueRef('drive', 'doc-99')], where: () => true }), none, 'a predicate alone takes nothing');
+  assert.deepEqual(snapshot(t.held), before);
+  const ok = m.apply({ vocab: 'travel', held: t.held, profile: t.profile, ledger: t.ledger, decisions: decisionsDoc([{ cid: CID.street, decision: 'confirm', decided_at: at(0) }]) });
+  assert.equal(ok.ok, true, ok.errors.join());
+  const profile = fs.readFileSync(t.profile, 'utf8'), ledger = fs.readFileSync(t.ledger, 'utf8');
+  // the predicate narrows within a ref: only doc-07's street-food record goes; its note is rewritten with the decision
+  const r1 = m.dropEvidence({ vocab: 'travel', held: t.held, ledger: t.ledger, refs: [doc07], where: (r) => r.value === 'street food' });
+  assert.deepEqual([r1.removed, r1.written.length, r1.deleted], [1, 1, []]);
+  const held1 = m.readHeld(t.held), street = fs.readFileSync(path.join(t.held, held1.files.get(CID.street)), 'utf8');
+  assert.deepEqual(held1.records.filter((r) => r.value === 'street food').map((r) => r.source_ref), [m.opaqueRef('calendar', 'evt-11')]);
+  assert.match(street, /status \*\*confirm\*\*/);
+  // the ref alone takes the rest: the very-spicy note, left with no evidence, is deleted
+  const spicy = held1.files.get(CID.spicy);
+  const r2 = m.dropEvidence({ vocab: 'travel', held: t.held, ledger: t.ledger, refs: new Set([doc07]) });
+  assert.deepEqual([r2.removed, r2.written, r2.deleted], [1, [], [spicy]]);
+  assert.ok(!fs.existsSync(path.join(t.held, spicy)) && !m.readHeld(t.held).records.some((r) => r.source_ref === doc07));
+  assert.equal(fs.readFileSync(t.profile, 'utf8'), profile, 'the profile is never written');
+  assert.equal(fs.readFileSync(t.ledger, 'utf8'), ledger, 'nor the ledger');
+  const after = snapshot(t.dir);
+  assert.deepEqual(m.dropEvidence({ vocab: 'travel', held: t.held, ledger: t.ledger, refs: [doc07] }), none, 'dropping again changes nothing');
+  assert.deepEqual(snapshot(t.dir), after);
+});
+
 // Developed by: LightAISolutions

@@ -61,7 +61,7 @@ function resolveWaypoint(fixture, w) {
   if (ll && Number.isFinite(ll.latitude) && Number.isFinite(ll.longitude)) {
     const s = nearestSnapshot(fixture.snapshots, { lat: ll.latitude, lng: ll.longitude }, SNAP_RADIUS_M);
     if (s) return s;
-    throw new Unresolved(`No fixture place within ${SNAP_RADIUS_M} m of ${ll.latitude},${ll.longitude}.`);
+    throw new Unresolved(`No fixture place within ${SNAP_RADIUS_M} m of that point.`);   // never echo a shared point's coordinates
   }
   if (w && typeof w.address === 'string') {
     const s = fixture.snapshots.find((x) => x.content && x.content.address && x.content.address.toLowerCase() === w.address.trim().toLowerCase());

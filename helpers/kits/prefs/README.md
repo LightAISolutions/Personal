@@ -211,6 +211,11 @@ the triple is what the owner tapped; the bank only cross-checks it.
    Callers pass only a core-written file (the `to-brain/req_*.json` or its payload), never anything assembled from
    mail, documents or web pages. Even so, its values are scanned like any evidence: a pick that looks like an
    instruction is not saved, and other clean evidence that outvotes a pick sends it to review instead.
+10. **Evidence leaves only by ref.** `ingest` only ever adds evidence. `dropEvidence({vocab, held, refs, where?, ledger?,
+    minSupport?})` takes back the held records whose `source_ref` (as held, the hashed ref) is in `refs` and, optionally,
+    that `where(record)` accepts; it rewrites the touched notes and deletes a note left with no evidence. `refs` is
+    required, so no predicate alone can empty the held notes. It never writes the ledger or the profile: a confirmed
+    preference stays confirmed, with its evidence ids kept as history.
 
 ## Caps
 
@@ -240,12 +245,13 @@ subset validator (`../brochure/lib/validate.mjs`, imported, not copied) for the 
 
 ## Library
 
-`import * as prefs from './index.mjs'` exposes `check`, `ingest`, `review`, `apply`, `interview` (alias `runInterview`;
-same options as the CLI, as an object: `{vocab, bank, held, profile, ledger?, answers, now?, salt?, minSupport?, max?,
-includeSuspect?}`) and the building blocks (`loadVocab`, `validateVocab`, `normalizeEvidence`, `buildCandidates`,
-`buildReview`, `readDecisions`, `applyDecisions`, `renderProfile`, `loadBank`, `validateBank`, `loadBankSchema`,
-`readAnswers`, `profileSummary`, …). Fixtures: `fixtures/evidence-sample.json` (invented trip evidence with one planted
-injection), `fixtures/decisions-sample.json` and `fixtures/interview-answers-sample.json` (invented answers: picks, a
-superseded pick, text answers, one planted injection, one prose-only answer and one unknown dimension).
+`import * as prefs from './index.mjs'` exposes `check`, `ingest`, `dropEvidence` (rule 10), `review`, `apply`,
+`interview` (alias `runInterview`; same options as the CLI, as an object: `{vocab, bank, held, profile, ledger?, answers,
+now?, salt?, minSupport?, max?, includeSuspect?}`) and the building blocks (`loadVocab`, `validateVocab`,
+`normalizeEvidence`, `buildCandidates`, `buildReview`, `readDecisions`, `applyDecisions`, `renderProfile`, `loadBank`,
+`validateBank`, `loadBankSchema`, `readAnswers`, `profileSummary`, …). Fixtures: `fixtures/evidence-sample.json`
+(invented trip evidence with one planted injection), `fixtures/decisions-sample.json` and
+`fixtures/interview-answers-sample.json` (invented answers: picks, a superseded pick, text answers, one planted injection,
+one prose-only answer and one unknown dimension).
 
 Developed by: LightAISolutions

@@ -3,11 +3,27 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 58/100`
+`Sections: 59/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.58r] — 2026-10-03 07:10:25 PM EST
+
+> **Prompt:** "decisions made." *(the owner's choices on the usefulness review; this push makes the five small framework follow-ups that step 3's private side asked for — none blocks the trip)*
+
+### Added
+- **`dropEvidence` in the prefs kit** (`helpers/kits/prefs/index.mjs`, the kit README's rule 10): takes held evidence back by ref and, optionally, a predicate; rewrites the notes it touched, deletes a note left with no evidence, and never writes the ledger or the profile, so a confirmed preference stays confirmed. Refs are required, so no predicate alone can empty the held notes. A second post-trip review can now replace the first without rewriting notes by hand
+- **`undoTap` in the estimator** (`helpers/packs/tour-guide/estimator/`): `applyTap`'s exact inverse; a category left with no taps is removed and the key order is kept; nothing to take back returns the same state
+
+### Fixed
+- **A re-plan error read "from at 11:40"** (`planner/index.mjs`): when Maps could not serve a re-plan from where you are, the message said "could not re-plan <date> from at 11:40 from where you were"; it now reads "could not re-plan <date> at 11:40 from where you were: <why>" (reproduced first)
+- **The fixture Maps responder echoed a shared point's coordinates** in its not-found error (`fixtures/fixture-responder.mjs`); it now says "that point"
+
+### Changed
+- The shared test digest's header (`helpers/tests/harness/tour-guide-digest.js`) now says that a place's own-facts lines (local name, address, payment, closing time, the dinner's price line) show whenever its facts have them, not only with C12 fields
+- `helpers/decisions/TG-PHASE-12.md` §3, §4 and §7, `helpers/BUILD-STATE.md` row 12 and the Phase 12 log, the pack README's calibration lines; README timestamp. 882 tests (881 pass, 1 skipped); bundle and boundary clean. The private side adopts these at its next re-pin; its open pull request stays pinned to v01.56r
 
 ## [v01.57r] — 2026-10-03 06:57:30 PM EST
 

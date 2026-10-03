@@ -33,6 +33,7 @@ Brief: `helpers/prompts/TG-PHASE-12.md`. Every work package was built by `hb-bui
 - v01.55r (the start): 781 tests, 780 pass, 1 skipped (the live Maps smoke, by hand only).
 - WP-12a: 805 tests, 804 pass, 1 skipped. WP-12b: 845, 844 pass, 1 skipped. WP-12d: 862, 861 pass, 1 skipped. WP-12r: 879, 876 pass, 1 skipped, 2 `todo` (its two planner REQUESTs). Bundle ok and boundary clean each time.
 - After the coordinator's fixes, before the push: 879 tests, 878 pass, 1 skipped, 0 `todo`; bundle ok (hello 19 files, tour-guide 42 files); boundary clean (591 files). The Chromium phone-clock test (`kit_brochure_c12.test.js`) runs here, and each planner fix fails its rehearsal test without it.
+- v01.58r (the five framework follow-ups in §4): 882 tests, 881 pass, 1 skipped; bundle ok; boundary clean (591 files). The re-plan error test and the fixture's not-found check each fail on the old code.
 
 ## 4 Private repo (WP-12c)
 Built by `hb-builder-opus` (Opus 5.5 · high) in the private repo re-pinned to helpers-dist at v01.56r, then reviewed and amended by the coordinator; up as the private repo's PR #22 for the owner, who merges it before the trip. Its decisions are in the private repo (`repository-information/decisions/WP-12c.md`). In short:
@@ -42,12 +43,12 @@ Built by `hb-builder-opus` (Opus 5.5 · high) in the private repo re-pinned to h
 - **Research fills the C12 inputs**: a place's local name, address and access from its own site through `normalizeFacts`, with a lines-only top-up for places researched before; the lodging's access and area and the trip's country code from the owner's words or a cited source, never Google.
 - **A second review replaces the first**: the earlier calibration tap is undone and its evidence replaced, so each stop counts once.
 - **Checks in the private repo**: the vendored tests 879 (878 pass, 1 skipped); the journey dry run ok at 252 checks (176 at the re-pin) and the integration dry run ok at 592 (554 at the re-pin, one failing then: the Later reason now in day words).
-- **REQUESTs for the framework** (none blocks the trip; for a later push):
-  1. Prefs kit: a function to remove held evidence by ref and predicate (the private side rewrites the held notes with `writeHeld` itself).
-  2. Estimator: export an `undoTap` beside `applyTap` (the private side takes a tap back with `factorFor`).
-  3. The rehearsal-day fixture's Maps responder echoes the request's coordinates in its 404 message (the private side scrubs them; the fixture should not echo them).
-  4. A restart error's text can read "from at 12:10" (reported by WP-12c; reproduce before fixing).
-  5. The shared test digest's header should say that `payment`, `close` and `price_line` show whenever a place's own facts have them; they are not gated on C12.
+- **REQUESTs for the framework** (none blocks the trip), all done in v01.58r:
+  1. Prefs kit: a function to remove held evidence by ref and predicate (the private side rewrites the held notes with `writeHeld` itself). Done: `dropEvidence({vocab, held, refs, where?, ledger?, minSupport?})`, the kit README's rule 10; refs are required, and it never writes the ledger or the profile.
+  2. Estimator: export an `undoTap` beside `applyTap` (the private side takes a tap back with `factorFor`). Done: `applyTap`'s exact inverse, key order kept; nothing to take back returns the same state.
+  3. The rehearsal-day fixture's Maps responder echoes the request's coordinates in its 404 message (the private side scrubs them; the fixture should not echo them). Done: every fixture shares the responder, and its not-found error now says "that point".
+  4. A restart error's text can read "from at 12:10" (reported by WP-12c; reproduce before fixing). Reproduced with a shared point no fixture place is near, and fixed: "could not re-plan <date> at 11:40 from where you were: …".
+  5. The shared test digest's header should say that `payment`, `close` and `price_line` show whenever a place's own facts have them; they are not gated on C12. Done (with `local_name` and `address`, which come the same way).
 
 ## 5 Live checks
 *Filled after the owner merges WP-12c's pull request and runs the rehearsal steps (the brief's coordinator step 6).*
@@ -64,6 +65,7 @@ The morning message, running late, the re-plan from here and the check-in are ne
 ## 7 Carried on
 - **The private side must merge before the trip.** Until the private repo pins v01.56r (WP-12c, up as a PR, §4), its routine ignores a re-plan's `from`, `visited` and `rain` and would re-plan the whole date, and it plans a lodging change from the lodging it already knows. The core refuses a re-plan from here before the trip, but a lodging-change re-plan can be tapped at any time.
 - **The new lodging travels only in the `replan` request's `reason`** (`trip_update` has no lodging field). The private side reads the nights from the owner's words and asks when they do not say (§4); a `lodging` field with dates in the contract is the next step if those questions prove a nuisance.
+- **The private side picks up v01.58r at its next re-pin**: `dropEvidence`, `undoTap` and the re-plan error's wording. Its own versions of the first two work until then, so its open pull request stays pinned to v01.56r.
 - **The re-plan from here needs a real trip day**, so it is first checked on the trip's first morning; what that shows goes to Phase 8 part 2 with the rest of the trip's notes.
 
 Developed by: LightAISolutions

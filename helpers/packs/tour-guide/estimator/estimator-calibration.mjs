@@ -3,7 +3,8 @@
  * State (kept by the brain): { v: 1, categories: { "<category>": { longer, shorter, about_right, factor } } }.
  * factor = clamp(1 + 0.1 · (longer − shorter), 0.7, 1.4): bounded, and reversible because it depends only on the
  * difference of the counts (a "longer" tap and a "shorter" tap cancel). "about-right" is counted but never moves it.
- * Every function returns a new object; the input state is never mutated.
+ * Every function returns a new object (undoTap returns its input when there is nothing to take back); the input state is
+ * never mutated.
  */
 import { CALIBRATION_STEP, CALIBRATION_MIN, CALIBRATION_MAX, clamp } from './estimator-defaults.mjs';
 
@@ -29,6 +30,26 @@ export function applyTap(state, { category, tap } = {}) {
   row[TAPS[tap]] += 1;
   row.factor = factorFor(row.longer, row.shorter);
   categories[category] = row;
+  return { v: 1, categories };
+}
+
+/**
+ * undoTap(state, { category, tap }) → new state with one such tap taken back: the inverse of applyTap, so
+ * undoTap(applyTap(s, t), t) deep-equals s (a category left with no taps is removed). A tap that was never counted leaves
+ * the state as it is — the same object — so `undoTap(s, t) === s` tells the caller nothing was taken back.
+ */
+export function undoTap(state, { category, tap } = {}) {
+  if (!CATEGORY_RE.test(String(category))) throw new TypeError(`estimator: bad category "${category}"`);
+  if (!Object.prototype.hasOwnProperty.call(TAPS, tap)) throw new TypeError(`estimator: tap must be longer, shorter or about-right (got "${tap}")`);
+  const row = state && state.categories && state.categories[category];
+  if (!row || !(row[TAPS[tap]] > 0)) return state;
+  const next = { ...row, [TAPS[tap]]: row[TAPS[tap]] - 1 };
+  next.factor = factorFor(next.longer, next.shorter);
+  const categories = {};   // same key order as before, so a saved state's text changes only where the tap was
+  for (const [k, r] of Object.entries(state.categories)) {
+    if (k !== category) categories[k] = { ...r };
+    else if (next.longer + next.shorter + next.about_right > 0) categories[k] = next;
+  }
   return { v: 1, categories };
 }
 

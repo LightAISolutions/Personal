@@ -292,7 +292,8 @@ test('unknown ids and unresolvable waypoints → the kit\'s not-found error (HTT
   const isNotFound = (e) => e.name === 'MapsRequestError' && e.code === 'HTTP_404' && e.status === 404 && e.apiStatus === 'NOT_FOUND';
   await assert.rejects(maps.placeDetails('FixtureDlNowhere'), isNotFound);
   await assert.rejects(maps.computeRoutes({ origin: { placeId: 'FixtureDlNowhere' }, destination: { placeId: inn.place_id }, travelMode: 'DRIVE' }), isNotFound);
-  await assert.rejects(maps.computeRoutes({ origin: { lat: inn.lat + 0.01, lng: inn.lng }, destination: { placeId: inn.place_id }, travelMode: 'DRIVE' }), isNotFound, '1 km away does not snap');
+  await assert.rejects(maps.computeRoutes({ origin: { lat: inn.lat + 0.01, lng: inn.lng }, destination: { placeId: inn.place_id }, travelMode: 'DRIVE' }),
+    (e) => isNotFound(e) && /within 50 m of that point/.test(e.message) && !/\d\.\d{3,}/.test(e.message), '1 km away does not snap, and the error never echoes the point');
   await assert.rejects(maps.computeRouteMatrix({ origins: [{ placeId: inn.place_id }], destinations: [{ placeId: 'FixtureDlNowhere' }], travelMode: 'DRIVE' }), isNotFound);
   const { route } = await maps.computeRoutes({ origin: { address: inn.address }, destination: { placeId: 'FixtureDlSealCove' }, travelMode: 'DRIVE' });
   assert.equal(route.durationSec, f.fixtureTravel(fx, 'DRIVE', inn.place_id, 'FixtureDlSealCove').durationSec, 'address waypoints resolve too');

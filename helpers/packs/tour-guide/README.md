@@ -64,7 +64,7 @@ Kinds: trip, place, google-snapshot, visit-estimate, place-note, calibration, da
 - Calibration:
   - `createCalibration()`; `applyTap(state, { category, tap: 'longer' | 'shorter' | 'about-right' })` returns a new state.
   - `calibrationFactor(state, category)` = 1 + 0.1 × (longer − shorter), clamped to 0.7–1.4.
-  - It is reversible: an opposite tap undoes a tap.
+  - It is reversible: an opposite tap undoes a tap's factor, and `undoTap(state, { category, tap })` takes one tap back exactly (a second review replacing the first). Nothing to take back returns the same state.
 
 ## Travellers — `travellers/`
 - `profileExcerpt(markdown, overrides)` → the planner's excerpt of a profile file: pace, day rhythm, interests by level, `avoid`, `dietary`, `diet` and its `diet_rule`. Overrides may add dietary limits, never lift one.
