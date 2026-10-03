@@ -1,0 +1,100 @@
+[
+  {
+    "v": 1,
+    "place_id": "FixtureMdCopperleafGarden",
+    "why_you": "An invented garden for testing.",
+    "what_to_do": "garden walk",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/ashvale/copperleaf-garden",
+        "accessed": "2027-09-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureMdNinefoldTemple",
+    "why_you": "An invented temple for testing.",
+    "what_to_do": "temple halls",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/ashvale/ninefold-temple",
+        "accessed": "2027-09-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureMdSaltmarshCraftMuseum",
+    "why_you": "An invented museum for testing.",
+    "what_to_do": "craft collection",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/ashvale/saltmarsh-craft-museum",
+        "accessed": "2027-09-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureMdAshvaleCastleRuins",
+    "why_you": "An invented viewpoint for testing.",
+    "what_to_do": "ruins and ramparts",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/ashvale/ashvale-castle-ruins",
+        "accessed": "2027-09-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureMdLanternQuayGallery",
+    "why_you": "An invented museum for testing.",
+    "what_to_do": "harbour paintings",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/ashvale/lantern-quay-gallery",
+        "accessed": "2027-09-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureMdMistralShrine",
+    "why_you": "An invented shrine for testing.",
+    "what_to_do": "shrine grounds",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/ashvale/mistral-shrine",
+        "accessed": "2027-09-20"
+      }
+    ]
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureMdGlassblowersYard",
+    "why_you": "An invented workshop for testing.",
+    "what_to_do": "glass workshop",
+    "best_time": "Any time it is open.",
+    "food": "Cafes nearby.",
+    "sources": [
+      {
+        "url": "https://guide.example.org/ashvale/glassblowers-yard",
+        "accessed": "2027-09-20"
+      }
+    ]
+  }
+]

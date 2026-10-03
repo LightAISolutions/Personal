@@ -13,7 +13,8 @@
     "places": { "type": "object", "description": "Keyed by the place's local id (the key stops refer to).", "propertyNames": { "pattern": "^[A-Za-z0-9_-]{1,64}$" }, "additionalProperties": { "$ref": "#/$defs/place" }, "maxProperties": 200 },
     "later": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/laterList" } },
     "practical": { "type": "array", "maxItems": 30, "items": { "$ref": "#/$defs/practicalSection" } },
-    "attribution": { "$ref": "#/$defs/attribution" }
+    "attribution": { "$ref": "#/$defs/attribution" },
+    "season": { "$ref": "#/$defs/season" }
   },
   "$defs": {
     "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
@@ -85,7 +86,46 @@
         "alternatives": { "$ref": "#/$defs/alternatives" },
         "map_image": { "$ref": "#/$defs/mapImage", "description": "A Google static map of this day's route (Maps Static API, fetched during the build and inlined). When present it replaces the day's route sketch." },
         "verified_on": { "$ref": "#/$defs/date" },
-        "spare_minutes": { "type": "integer", "minimum": 0, "maximum": 1440, "description": "The day's unscheduled time after buffers (shown as 'Spare')." }
+        "spare_minutes": { "type": "integer", "minimum": 0, "maximum": 1440, "description": "The day's unscheduled time after buffers (shown as 'Spare')." },
+        "start": { "$ref": "#/$defs/dayPoint", "description": "Where and when the day really starts (an arrival) when it does not start at the lodging; legs name it `day-start`." },
+        "end": { "$ref": "#/$defs/dayPoint", "description": "Where and when the day really ends (a departure); legs name it `day-end`." },
+        "bags": { "$ref": "#/$defs/bags" },
+        "sunset": { "$ref": "#/$defs/time", "description": "Sunset at the night's lodging, in the trip's zone; opens the day's 'This evening' box." },
+        "extras": { "type": "array", "maxItems": 3, "items": { "$ref": "#/$defs/extra" }, "description": "Optional evening extras: season events near the route, and saved places for an early finish." }
+      }
+    },
+    "dayPoint": {
+      "type": "object", "additionalProperties": false, "required": ["name", "time"],
+      "properties": {
+        "name": { "$ref": "#/$defs/short" },
+        "time": { "$ref": "#/$defs/time" },
+        "maps_url": { "$ref": "#/$defs/url" },
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lng": { "type": "number", "minimum": -180, "maximum": 180 },
+        "note": { "$ref": "#/$defs/short" }
+      }
+    },
+    "bags": {
+      "type": "object", "additionalProperties": false, "required": ["kind"],
+      "description": "The bag step on a moving day. With `start` it is its own row on the rail at that time; without, a line under the day's start.",
+      "properties": {
+        "kind": { "type": "string", "enum": ["carry", "locker", "hotel", "forward"] },
+        "text": { "$ref": "#/$defs/short" },
+        "start": { "$ref": "#/$defs/time" },
+        "end": { "$ref": "#/$defs/time" },
+        "where": { "$ref": "#/$defs/short", "description": "Where the bags are left: the lodging's or the start point's name." }
+      }
+    },
+    "extra": {
+      "type": "object", "additionalProperties": false, "required": ["kind", "name"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["event", "saved"] },
+        "name": { "$ref": "#/$defs/short" },
+        "place": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$", "description": "Key into `places` when the extra has a card." },
+        "time": { "$ref": "#/$defs/time" },
+        "km": { "type": "number", "minimum": 0, "maximum": 100, "description": "Straight-line distance from the day's route." },
+        "note": { "$ref": "#/$defs/short" },
+        "url": { "$ref": "#/$defs/url" }
       }
     },
     "stop": {
@@ -99,7 +139,11 @@
         "note": { "$ref": "#/$defs/text", "description": "A one-line excerpt shown on the rail; the full note lives on the place card." },
         "booked": { "$ref": "#/$defs/short", "description": "Ticket or reservation reference text, e.g. 'Timed entry 10:30, booked'." },
         "time_style": { "type": "string", "enum": ["exact", "about"], "description": "about: an estimated time, shown rounded to the nearest 15 minutes with no end time; exact (the default): shown as arrive – depart." },
-        "check_on_day": { "$ref": "#/$defs/short", "description": "A line telling the reader to check the opening days or hours before going." }
+        "check_on_day": { "$ref": "#/$defs/short", "description": "A line telling the reader to check the opening days or hours before going." },
+        "last_entry": { "$ref": "#/$defs/time", "description": "The place's own last entry on that day." },
+        "minutes_source": { "type": "string", "enum": ["official", "research", "estimate"], "description": "Where the visit length comes from: the place's own site, other research, or a category default." },
+        "crowd_slot": { "type": "string", "enum": ["opening", "late"], "description": "A busy place put at opening or late on purpose; shown as a crowd note." },
+        "booking_line": { "$ref": "#/$defs/short", "description": "The place's booking rule in one line (shown when the stop is not already booked)." }
       }
     },
     "leg": {
@@ -132,7 +176,8 @@
         "place": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$", "description": "Optional place key (rendered as a stop-like card)." },
         "name": { "$ref": "#/$defs/short", "description": "Free-text venue or suggestion when there is no place key." },
         "note": { "$ref": "#/$defs/short" },
-        "maps_url": { "$ref": "#/$defs/url" }
+        "maps_url": { "$ref": "#/$defs/url" },
+        "booking": { "$ref": "#/$defs/short", "description": "The meal's booking, or the place's booking rule, in one line." }
       }
     },
     "freeBlock": {
@@ -181,7 +226,66 @@
         "note": { "$ref": "#/$defs/placeNote" },
         "reviews": { "type": "array", "maxItems": 3, "items": { "$ref": "#/$defs/review" } },
         "sources": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/source" } },
-        "fetched_on": { "$ref": "#/$defs/date", "description": "When the Google fields were fetched (snapshot date)." }
+        "fetched_on": { "$ref": "#/$defs/date", "description": "When the Google fields were fetched (snapshot date)." },
+        "facts": { "$ref": "#/$defs/placeFacts" },
+        "flags": { "type": "array", "maxItems": 2, "items": { "type": "string", "enum": ["local_favourite", "crowd_magnet"] }, "description": "local_favourite: praised by two or more independent local sources (a tag on the card and the rail); crowd_magnet: busy at peak hours." }
+      }
+    },
+    "placeFacts": {
+      "type": "object", "additionalProperties": false, "required": ["checked"],
+      "description": "Researched facts as display lines (from the place's own site), shown as the card's facts block with their sources and the date checked.",
+      "properties": {
+        "checked": { "$ref": "#/$defs/date" },
+        "stale": { "type": "boolean", "description": "Older than the freshness limit: marked 'check again'." },
+        "visit": { "$ref": "#/$defs/short", "description": "e.g. 'about 60–90 min'." },
+        "last_entry": { "$ref": "#/$defs/short" },
+        "closed": { "$ref": "#/$defs/short", "description": "When it is closed, e.g. 'Mondays'." },
+        "booking": { "$ref": "#/$defs/short" },
+        "price": { "$ref": "#/$defs/short", "description": "What it costs and what the price includes." },
+        "payment": { "$ref": "#/$defs/short" },
+        "gate": { "$ref": "#/$defs/short", "description": "Which gate or entrance to use." },
+        "menu": { "$ref": "#/$defs/short", "description": "The menu against the travellers' diet, one line." },
+        "menu_fits": { "type": "string", "enum": ["yes", "partly", "no", "unknown"] },
+        "menu_checked": { "$ref": "#/$defs/date" },
+        "menu_stale": { "type": "boolean" },
+        "sources": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/source" } }
+      }
+    },
+    "season": {
+      "type": "object", "additionalProperties": false, "required": ["checked"],
+      "description": "The trip's season sheet, shown as a page after the overview: typical weather, the leaf or blossom forecast, events by date, the sources and the date checked.",
+      "properties": {
+        "title": { "$ref": "#/$defs/short", "description": "The page title; default 'The season'." },
+        "checked": { "$ref": "#/$defs/date" },
+        "lead": { "$ref": "#/$defs/short", "description": "One line about the trip's dates, e.g. 'Autumn leaves: at their peak'." },
+        "weather": {
+          "type": "object", "additionalProperties": false, "required": ["text"],
+          "properties": { "text": { "$ref": "#/$defs/short" }, "high_c": { "type": "number", "minimum": -60, "maximum": 60 }, "low_c": { "type": "number", "minimum": -60, "maximum": 60 }, "rain_days": { "type": "integer", "minimum": 0, "maximum": 31 } }
+        },
+        "bloom": {
+          "type": "array", "maxItems": 6,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["label"],
+            "properties": { "label": { "$ref": "#/$defs/short" }, "from": { "$ref": "#/$defs/date" }, "to": { "$ref": "#/$defs/date" }, "status": { "type": "string", "enum": ["before", "starting", "peak", "past"] }, "note": { "$ref": "#/$defs/short" }, "url": { "$ref": "#/$defs/url" } }
+          }
+        },
+        "events": {
+          "type": "array", "maxItems": 40,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["name", "kind", "from", "to"],
+            "properties": {
+              "name": { "$ref": "#/$defs/short" },
+              "kind": { "type": "string", "enum": ["light_up", "special_opening", "festival", "market", "holiday", "closure"] },
+              "from": { "$ref": "#/$defs/date" }, "to": { "$ref": "#/$defs/date" },
+              "start": { "$ref": "#/$defs/time" }, "end": { "$ref": "#/$defs/time" },
+              "area": { "$ref": "#/$defs/short" },
+              "place": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$" },
+              "note": { "$ref": "#/$defs/short" },
+              "url": { "$ref": "#/$defs/url" }
+            }
+          }
+        },
+        "sources": { "type": "array", "maxItems": 10, "items": { "$ref": "#/$defs/source" } }
       }
     },
     "mapImage": {

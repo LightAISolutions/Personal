@@ -37,13 +37,26 @@ export function semanticErrors(m) {
       if (a !== null && a < last) push(q + '/arrive', 'earlier than the previous stop');
       if (b !== null) last = b;
     });
-    (d.legs || []).forEach((l, j) => ['from', 'to'].forEach((k) => { if (l[k] && l[k] !== 'lodging' && !key(l[k])) push(`${p}/legs/${j}/${k}`, `unknown place "${l[k]}"`); }));
+    (d.legs || []).forEach((l, j) => ['from', 'to'].forEach((k) => {
+      const v = l[k];
+      if (!v || v === 'lodging') return;
+      if (POINT[v]) { if (!d[POINT[v]]) push(`${p}/legs/${j}/${k}`, `"${v}" needs the day's ${POINT[v]}`); return; }
+      if (!key(v)) push(`${p}/legs/${j}/${k}`, `unknown place "${v}"`);
+    }));
+    (d.extras || []).forEach((x, j) => { if (x.place && !key(x.place)) push(`${p}/extras/${j}/place`, `unknown place "${x.place}"`); });
+    if (d.bags && d.bags.start && d.bags.end && minutesBetween(d.bags.start, d.bags.end) === null) push(`${p}/bags`, 'ends before it starts');
     (d.meals || []).forEach((x, j) => { if (x.place && !key(x.place)) push(`${p}/meals/${j}/place`, `unknown place "${x.place}"`); if (x.end && minutesBetween(x.start, x.end) === null) push(`${p}/meals/${j}`, 'ends before it starts'); });
     (d.free || []).forEach((x, j) => { if (minutesBetween(x.start, x.end) === null) push(`${p}/free/${j}`, 'ends before it starts'); });
     (d.warnings || []).forEach((x, j) => { if (x.place && !key(x.place)) push(`${p}/warnings/${j}/place`, `unknown place "${x.place}"`); });
     ((d.alternatives && d.alternatives.items) || []).forEach((x, j) => { if (!key(x.place)) push(`${p}/alternatives/items/${j}/place`, `unknown place "${x.place}"`); });
   });
   (m.later || []).forEach((l, i) => l.items.forEach((it, j) => { if (it.place && !key(it.place)) push(`/later/${i}/items/${j}/place`, `unknown place "${it.place}"`); }));
+  ((m.season && m.season.events) || []).forEach((x, j) => {
+    if (!parseDate(x.from) || !parseDate(x.to)) push(`/season/events/${j}`, 'not a real date');
+    else if (x.to < x.from) push(`/season/events/${j}`, 'ends before it starts');
+    if (x.place && !key(x.place)) push(`/season/events/${j}/place`, `unknown place "${x.place}"`);
+  });
+  ((m.season && m.season.bloom) || []).forEach((x, j) => { if (x.from && x.to && x.to < x.from) push(`/season/bloom/${j}`, 'ends before it starts'); });
   return errs;
 }
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -63,8 +76,20 @@ export function isClosedOn(place, date) {
   if ((place.closed_days || []).some((c) => String(c).toLowerCase().startsWith(name.slice(0, 3)))) return true;
   return /^closed$/i.test(hoursOn(place, date));
 }
-const sortKey = { leg: 0, stop: 1, meal: 2, free: 3 };
+const sortKey = { start: -1, leg: 0, stop: 1, bags: 1.5, meal: 2, free: 3, end: 4 };
+/** Reserved leg endpoints (Contract C11): the day's real start and end points, when the day has them. */
+export const POINT = Object.freeze({ 'day-start': 'start', 'day-end': 'end' });
+const isPoint = (v) => Object.prototype.hasOwnProperty.call(POINT, v);
 
+/** The Contract C11 fields (Phase 11). A model without any of them renders byte for byte as before (usesC11 false). */
+export const C11_DAY = ['start', 'end', 'bags', 'sunset', 'extras'];
+export const C11_STOP = ['last_entry', 'minutes_source', 'crowd_slot', 'booking_line'];
+export function usesC11(m) {
+  const has = (o, keys) => o && keys.some((k) => o[k] !== undefined);
+  return Boolean(m.season)
+    || Object.values(m.places || {}).some((p) => p.facts || (p.flags && p.flags.length))
+    || (m.days || []).some((d) => has(d, C11_DAY) || (d.stops || []).some((s) => has(s, C11_STOP)) || (d.meals || []).some((x) => x.booking !== undefined));
+}
 /** prepare(model) → derived model; throws ModelError. The input is not mutated. */
 export function prepare(input) {
   const errors = validate(input).concat(validate(input).length ? [] : semanticErrors(input));
@@ -85,26 +110,44 @@ export function prepare(input) {
     const meals = (d.meals || []).map((x) => ({ ...x, kind: 'meal', meal: x.kind, place: x.place ? places[x.place] : null, start: parseTime(x.start), end: x.end ? parseTime(x.end) : null }));
     const free = (d.free || []).map((x) => ({ kind: 'free', ...x, start: parseTime(x.start), end: parseTime(x.end) }));
     const endOf = (ref) => { const s = stops.find((x) => x.place.id === ref); if (s) return s.end; const ml = meals.find((x) => x.place && x.place.id === ref); return ml ? (ml.end ?? ml.start) : null; };
+    const point = (v) => (isPoint(v) ? d[POINT[v]] || null : null);
     const legs = (d.legs || []).map((l, j) => {
       let start = l.depart_at ? parseTime(l.depart_at) : null;
+      if (start === null && isPoint(l.from)) start = parseTime(point(l.from) && point(l.from).time);
       if (start === null) start = l.from && l.from !== 'lodging' ? endOf(l.from) : (stops[0] ? stops[0].start - l.minutes : null);
-      const end = (k) => (l[k] === 'lodging' ? lodging : l[k] ? places[l[k]] : null);
-      return { kind: 'leg', ...l, j, start: start ?? 0, end: l.arrive_at ? parseTime(l.arrive_at) : (start ?? 0) + l.minutes, fromPlace: l.from && l.from !== 'lodging' ? places[l.from] : null, toPlace: l.to && l.to !== 'lodging' ? places[l.to] : null, transit: TRANSIT.has(l.mode), directions_url: l.maps_url || directionsUrl(end('from'), end('to'), l.mode) };
+      const end = (k) => (l[k] === 'lodging' ? lodging : isPoint(l[k]) ? point(l[k]) : l[k] ? places[l[k]] : null);
+      const placeAt = (k) => (l[k] && l[k] !== 'lodging' && !isPoint(l[k]) ? places[l[k]] : null);
+      return { kind: 'leg', ...l, j, start: start ?? 0, end: l.arrive_at ? parseTime(l.arrive_at) : (start ?? 0) + l.minutes, fromPlace: placeAt('from'), toPlace: placeAt('to'), fromPoint: point(l.from), toPoint: point(l.to), transit: TRANSIT.has(l.mode), directions_url: l.maps_url || directionsUrl(end('from'), end('to'), l.mode) };
     });
-    const timeline = [...legs, ...stops, ...meals, ...free].sort((a, b) => (a.start - b.start) || (sortKey[a.kind] - sortKey[b.kind]) || ((a.j ?? a.n ?? 0) - (b.j ?? b.n ?? 0)));
+    // C11 rows, only when the day has them: the real start (with an untimed bag step), a timed bag step, the real end.
+    const anchors = [];
+    const bags = d.bags || null, bagsTimed = Boolean(bags && bags.start);
+    if (d.start) anchors.push({ kind: 'start', point: d.start, start: parseTime(d.start.time), end: null, bags: bags && !bagsTimed ? bags : null });
+    if (bags && (bagsTimed || !d.start)) anchors.push({ kind: 'bags', bags, start: bagsTimed ? parseTime(bags.start) : null, end: bags.end ? parseTime(bags.end) : null });
+    if (d.end) anchors.push({ kind: 'end', point: d.end, start: parseTime(d.end.time), end: null });
+    const at = (t) => (t.start === null ? -1 : t.start);
+    const timeline = [...legs, ...stops, ...meals, ...free, ...anchors].sort((a, b) => (at(a) - at(b)) || (sortKey[a.kind] - sortKey[b.kind]) || ((a.j ?? a.n ?? 0) - (b.j ?? b.n ?? 0)));
+    // Evening extras in clock order (untimed ones last, otherwise as given).
+    const xt = (x) => (x.time ? parseTime(x.time) : 1e9);
+    const extras = (d.extras || []).map((x, j) => ({ ...x, j, place: x.place ? places[x.place] : null })).sort((a, b) => (xt(a) - xt(b)) || (a.j - b.j));
+    // Sunset is left out on a day that ends at a departure before it (the travellers are gone by then).
+    const sunset = d.sunset && !(d.end && parseTime(d.sunset) > parseTime(d.end.time)) ? parseTime(d.sunset) : null;
+    const evening = sunset !== null || extras.length ? { sunset, extras } : null;
     const sum = (f) => legs.filter(f).reduce((a, l) => a + (l.minutes || 0), 0);
     const starts = timeline.map((t) => t.start).filter((t) => t !== null), ends = timeline.map((t) => t.end ?? t.start).filter((t) => t !== null);
     const stats = { stops: stops.length, visitMin: stops.reduce((a, s) => a + s.minutes, 0), walkMin: sum((l) => l.mode === 'walk'), transitMin: sum((l) => l.transit), walkEstimated: legs.some((l) => l.mode === 'walk' && l.estimated), transitEstimated: legs.some((l) => l.transit && l.estimated), spareMin: Number.isInteger(d.spare_minutes) ? d.spare_minutes : null, driveMin: sum((l) => ['drive', 'taxi', 'bike'].includes(l.mode)), firstStart: starts.length ? Math.min(...starts) : null, lastEnd: ends.length ? Math.max(...ends) : null };
     for (const t of timeline) if ((t.kind === 'stop' || t.kind === 'meal') && t.place && !cardSeen.has(t.place.id)) { cardSeen.add(t.place.id); cardOrder.push({ place: t.place, day: i + 1, n: t.kind === 'stop' ? t.n : null, mealKind: t.kind === 'meal' ? t.meal : null }); }
     const alternatives = d.alternatives ? { title: d.alternatives.title || 'If it rains', items: d.alternatives.items.map((x) => ({ ...x, place: places[x.place] })) } : null;
-    return { ...d, index: i + 1, weekday: WEEKDAYS[parseDate(d.date).getUTCDay()], lodging, stops, meals, free, legs, timeline, stats, warnings: d.warnings || [], alternatives };
+    return { ...d, index: i + 1, weekday: WEEKDAYS[parseDate(d.date).getUTCDay()], lodging, stops, meals, free, legs, timeline, stats, warnings: d.warnings || [], alternatives, evening };
   });
+  // An evening extra links to a place card only when that place has one (cards are for the stops and meals).
+  for (const d of days) if (d.evening) for (const x of d.evening.extras) x.hasCard = Boolean(x.place && cardSeen.has(x.place.id));
   const later = (m.later || []).map((l) => ({ ...l, items: l.items.map((it) => ({ ...it, place: it.place ? places[it.place] : null })) }));
   const hasImg = (x) => Boolean(x && typeof x.src === 'string' && x.src.trim());
   const google = { maps: hasImg(m.trip.map_image) || days.some((d) => hasImg(d.map_image)), photos: Object.values(places).some((p) => hasImg(p.google_photo)) };
   const anyGoogle = Object.values(places).some((p) => p.google) || google.maps;
   const attribution = { ...(m.attribution || {}), google: m.attribution && m.attribution.google !== undefined ? m.attribution.google : anyGoogle, reviews: Object.values(places).flatMap((p) => (p.reviews || []).map((r) => ({ ...r, place: p }))), ...google };
-  return { trip: m.trip, locale, places, days, cards: cardOrder, later, practical: m.practical || [], attribution, span: daySpan(m.trip.start_date, m.trip.end_date), dates: Array.from({ length: daySpan(m.trip.start_date, m.trip.end_date) }, (_, i) => addDays(m.trip.start_date, i)) };
+  return { trip: m.trip, locale, places, days, cards: cardOrder, later, practical: m.practical || [], attribution, season: m.season || null, span: daySpan(m.trip.start_date, m.trip.end_date), dates: Array.from({ length: daySpan(m.trip.start_date, m.trip.end_date) }, (_, i) => addDays(m.trip.start_date, i)) };
 }
 
 // Developed by: LightAISolutions

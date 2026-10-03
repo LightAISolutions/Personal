@@ -42,6 +42,51 @@ export function checkTrip(t) {
     if (!isDate(d) || d < t.start_date || d > t.end_date) e(`/modes/by_date/${d}`, 'not a trip date');
     if (!allowed.includes(m)) e(`/modes/by_date/${d}`, 'mode not in modes.allowed');
   }
+  if (t.day_overrides) checkDayOverrides(t, errs);
+  if (t.season) checkSeason(t.season, '/season', errs);
+  return errs;
+}
+
+/** C11 — the shortest day an override may leave (minutes): the same 2-hour rule as `/dates hours`. */
+export const MIN_OVERRIDE_DAY_MINUTES = 120;
+
+/**
+ * checkDayOverrides(trip, errs) — C11 day_overrides: dates real, unique and inside the trip; each day at least 2 hours
+ * from its start (start.time, else the override's day_start, else the trip's) to its end (end.time, else day_end, else the trip's).
+ */
+function checkDayOverrides(t, errs) {
+  const seen = new Set();
+  t.day_overrides.forEach((o, i) => {
+    const p = `/day_overrides/${i}`;
+    if (!isDate(o.date)) { errs.push({ path: p + '/date', message: 'not a calendar date' }); return; }
+    if (seen.has(o.date)) errs.push({ path: p + '/date', message: `duplicate override for ${o.date}` });
+    seen.add(o.date);
+    if (o.date < t.start_date || o.date > t.end_date) errs.push({ path: p + '/date', message: 'not a trip date' });
+    const start = toMinutes(o.start ? o.start.time : o.day_start || t.day_start);
+    const end = toMinutes(o.end ? o.end.time : o.day_end || t.day_end);
+    if (start !== null && end !== null && end - start < MIN_OVERRIDE_DAY_MINUTES) {
+      errs.push({ path: p + (o.end ? '/end/time' : '/day_end'), message: `the day must end at least ${MIN_OVERRIDE_DAY_MINUTES / 60} hours after it starts` });
+    }
+  });
+}
+
+/** checkSeason(season, path, errs) — C11 season sheet: real dates, bloom and event from ≤ to, event ids unique. Shared with season/normalizeSeason. */
+export function checkSeason(s, path, errs) {
+  const e = (q, message) => errs.push({ path: path + q, message });
+  if (!isDate(s.checked)) e('/checked', 'not a calendar date');
+  (s.sources || []).forEach((src, i) => { if (!isDate(src.accessed)) e(`/sources/${i}/accessed`, 'not a calendar date'); });
+  (s.bloom || []).forEach((b, i) => {
+    for (const k of ['from', 'to']) if (b[k] !== undefined && !isDate(b[k])) e(`/bloom/${i}/${k}`, 'not a calendar date');
+    if (isDate(b.from) && isDate(b.to) && b.from > b.to) e(`/bloom/${i}/to`, 'before from');
+  });
+  const ids = new Set();
+  (s.events || []).forEach((ev, i) => {
+    if (ids.has(ev.id)) e(`/events/${i}/id`, `duplicate event id "${ev.id}"`);
+    ids.add(ev.id);
+    for (const k of ['from', 'to']) if (!isDate(ev[k])) e(`/events/${i}/${k}`, 'not a calendar date');
+    if (isDate(ev.from) && isDate(ev.to) && ev.from > ev.to) e(`/events/${i}/to`, 'before from');
+    if ((ev.lat === undefined) !== (ev.lng === undefined)) e(`/events/${i}/${ev.lat === undefined ? 'lat' : 'lng'}`, 'lat and lng go together');
+  });
   return errs;
 }
 
@@ -54,6 +99,18 @@ export function checkPlace(p) {
     if (!isDate(h.on)) e(`/history/${i}/on`, 'not a calendar date');
     else if (i && isDate(p.history[i - 1].on) && h.on < p.history[i - 1].on) e(`/history/${i}/on`, 'history runs oldest first');
   });
+  if (p.facts) checkFacts(p.facts, '/facts', errs);
+  return errs;
+}
+
+/** checkFacts(facts, path, errs) — C11 place facts: real dates, visit_minutes.min ≤ max, closed_weekdays unique. Shared with facts/normalizeFacts. */
+export function checkFacts(f, path, errs) {
+  const e = (q, message) => errs.push({ path: path + q, message });
+  if (!isDate(f.checked)) e('/checked', 'not a calendar date');
+  (f.sources || []).forEach((src, i) => { if (!isDate(src.accessed)) e(`/sources/${i}/accessed`, 'not a calendar date'); });
+  if (f.visit_minutes && f.visit_minutes.min > f.visit_minutes.max) e('/visit_minutes', 'min must not exceed max');
+  if (Array.isArray(f.closed_weekdays) && new Set(f.closed_weekdays).size !== f.closed_weekdays.length) e('/closed_weekdays', 'each weekday is listed once');
+  if (f.menu && !isDate(f.menu.checked)) e('/menu/checked', 'not a calendar date');
   return errs;
 }
 
@@ -89,34 +146,33 @@ export function checkLaterList(l) {
   return errs;
 }
 
+/** C11 — the reserved point names in a day's legs (the planner's planner-anchors.mjs uses the same three). */
+export const DAY_START = 'day-start';
+export const DAY_END = 'day-end';
+export const LODGING = 'lodging';
+const DAY_ANCHORS = new Set([DAY_START, DAY_END, LODGING]);
+
+/** The day's dinner out (Phase 11): its dinner meal when it is at a place rather than at an anchor, else null. */
+export function dinnerOut(d) {
+  return (d.meals || []).find((m) => m.kind === 'dinner' && m.at && !DAY_ANCHORS.has(m.at)) || null;
+}
+
 /**
- * Day timeline: lodging → stop 1 → … → lodging. Times are unwrapped across midnight (a time more than 12 h earlier
- * than the previous one counts as the next day) so a night stop ending after 24:00 still reads in order.
+ * Day plan rules. A plain day (no real start or end, no hotel or locker bag step, no dinner out) keeps the old shape:
+ * lodging → stop 1 → … → lodging, one leg more than stops. Every day then passes the leg chain and timeline
+ * (checkDayChain). Times are unwrapped across midnight (a time more than 12 h earlier than the previous one counts as
+ * the next day) so a night stop ending after 24:00 still reads in order.
  */
 export function checkDayPlan(d) {
   const errs = [];
   const e = (path, message) => errs.push({ path, message });
   if (!isDate(d.date)) e('/date', 'not a calendar date');
   if (!isDate(d.verified_on)) e('/verified_on', 'not a calendar date');
-  let last = null;
-  const at = (t) => {
-    let m = toMinutes(t);
-    while (last !== null && m < last - 720) m += 1440;
-    last = Math.max(last ?? m, m);
-    return m;
-  };
   const S = d.stops, L = d.legs;
-  if (S.length) {
-    if (L.length !== S.length + 1) e('/legs', `expected ${S.length + 1} legs (lodging → each stop → lodging), got ${L.length}`);
-  } else if (L.length > 1) e('/legs', 'a day without stops has at most one lodging → lodging leg');
-  if (L.length) {
-    if (L[0].from !== 'lodging') e('/legs/0/from', 'the first leg starts at "lodging"');
-    if (L[L.length - 1].to !== 'lodging') e(`/legs/${L.length - 1}/to`, 'the last leg ends at "lodging"');
-  }
-  S.forEach((s, i) => {
-    if (L[i] && L[i].to !== s.place) e(`/legs/${i}/to`, `must be "${s.place}" (stop ${i + 1})`);
-    if (L[i + 1] && L[i + 1].from !== s.place) e(`/legs/${i + 1}/from`, `must be "${s.place}" (stop ${i + 1})`);
-  });
+  const plain = !d.start && !d.end && !dinnerOut(d) && !(d.bags && (d.bags.kind === 'hotel' || d.bags.kind === 'locker'));
+  if (plain && S.length && L.length !== S.length + 1) e('/legs', `expected ${S.length + 1} legs (lodging → each stop → lodging), got ${L.length}`);
+  if (plain && !S.length && L.length > 1) e('/legs', 'a day without stops has at most one lodging → lodging leg');
+  errs.push(...checkDayChain(d));
   // Estimated legs: TRANSIT (WP-3e) or WALK when the WALK request failed (WP-10b); `estimated` and `estimate_basis`
   // together, one day warning. Leg flags (C10) carry no repeats (the validator has no uniqueItems).
   L.forEach((l, i) => {
@@ -128,39 +184,81 @@ export function checkDayPlan(d) {
   const estWarnings = (d.warnings || []).filter((w) => w.code === 'transit_estimated').length;
   if (estimatedLegs && estWarnings !== 1) e('/warnings', `a day with estimated legs carries exactly one "transit_estimated" warning (found ${estWarnings})`);
   if (!estimatedLegs && estWarnings) e('/warnings', '"transit_estimated" on a day without an estimated leg');
-  // Walk the timeline in order: leg 0, stop 0, leg 1, stop 1, …, last leg.
-  const seq = [];
-  for (let i = 0; i < Math.max(L.length, S.length); i++) {
-    if (L[i]) seq.push({ kind: 'leg', i, a: L[i].depart_at, b: L[i].arrive_at });
-    if (S[i]) seq.push({ kind: 'stop', i, a: S[i].arrive, b: S[i].depart });
-  }
-  let prevEnd = null;
-  for (const x of seq) {
-    const base = x.kind === 'leg' ? `/legs/${x.i}` : `/stops/${x.i}`;
-    const a = at(x.a), b = at(x.b);
-    if (prevEnd !== null && a < prevEnd) e(base, `starts at ${x.a}, before the previous item ends`);
-    if (b < a) e(base, `ends (${x.b}) before it starts (${x.a})`);
-    if (x.kind === 'leg' && Math.abs(b - a - L[x.i].minutes) > 1) e(`${base}/minutes`, `${L[x.i].minutes} min does not match ${x.a}–${x.b}`);
-    if (x.kind === 'stop') {
-      const s = S[x.i];
-      if (s.minutes > b - a) e(`${base}/minutes`, `${s.minutes} min does not fit ${x.a}–${x.b}`);
-      if (s.window) {
-        let open = toMinutes(s.window.open), close = toMinutes(s.window.close);
-        if (close <= open) close += 1440;
-        const day = Math.floor(a / 1440) * 1440;
-        if (a - day < open) e(`${base}/arrive`, `arrives ${x.a}, before it opens (${s.window.open})`);
-        if (b - day > close) e(`${base}/depart`, `leaves ${x.b}, after it closes (${s.window.close})`);
-      }
-    }
-    prevEnd = b;
-  }
   const span = (arr, name) => arr.forEach((m, i) => { if (toMinutes(m.end) < toMinutes(m.start)) e(`/${name}/${i}`, 'ends before it starts'); });
   span(d.meals, 'meals');
   span(d.free, 'free');
   return errs;
 }
 
-/** Plan-level rules on top of each part's own schema: day order, one trip, every place scheduled or in exactly one Later list. */
+/**
+ * checkDayChain(day) → [{ path, message }] — the leg chain and timeline of any day (WP-11a's rule, adopted at the
+ * Phase 11 merge; on an old day it agrees with the old lodging → stops → lodging rule):
+ *   · the legs form one chain (each leg starts where the previous one ended);
+ *   · it starts at 'day-start' when the day has a `start`, else at 'lodging'; it ends at 'day-end' when the day has an
+ *     `end`, else at 'lodging';
+ *   · the points that are not 'lodging', 'day-start' or 'day-end' are the stops in order, each once, then at most the
+ *     dinner's place (the dinner meal's `at`) as the last one;
+ *   · times run forward (unwrapped across midnight): each leg's minutes match its times, a stop after the leg that
+ *     reaches it, inside its window and starting by its last entry; the first leg leaves at or after the start's time and
+ *     the day reaches 'day-end' by the end's time; the hotel bag step sits between the first two legs; dinner sits
+ *     between the legs to and from its place.
+ */
+export function checkDayChain(d) {
+  const errs = [];
+  const e = (path, message) => errs.push({ path, message });
+  const L = d.legs || [], S = d.stops || [];
+  const dinner = dinnerOut(d);
+  if (!L.length) { if (S.length) e('/legs', 'a day with stops needs legs'); return errs; }
+  const first = d.start ? DAY_START : LODGING, last = d.end ? DAY_END : LODGING;
+  if (L[0].from !== first) e('/legs/0/from', `the first leg starts at "${first}"`);
+  if (L[L.length - 1].to !== last) e(`/legs/${L.length - 1}/to`, `the last leg ends at "${last}"`);
+  for (let i = 1; i < L.length; i++) if (L[i].from !== L[i - 1].to) e(`/legs/${i}/from`, `must be "${L[i - 1].to}", where leg ${i} ended`);
+  const visits = L.map((l, i) => ({ place: l.to, i })).filter((x) => !DAY_ANCHORS.has(x.place));
+  const want = [...S.map((s) => s.place), ...(dinner ? [dinner.at] : [])];
+  if (visits.length !== want.length || visits.some((x, k) => x.place !== want[k])) {
+    e('/legs', `the places the legs reach (${visits.map((x) => x.place).join(', ') || 'none'}) must be the stops in order${dinner ? ', then dinner' : ''} (${want.join(', ') || 'none'})`);
+    visits.forEach((x, k) => {
+      if (k < want.length && x.place !== want[k]) e(`/legs/${x.i}/to`, `must be "${want[k]}" (${k < S.length ? 'stop ' + (k + 1) : 'dinner'})`);
+      else if (k >= want.length) e(`/legs/${x.i}/to`, `"${x.place}" is not a stop of this day`);
+    });
+  }
+  // Timeline: unwrap across midnight (each time read moves the floor, so a stop from 22:30 to 00:15 reads in order);
+  // every leg, then the stop (or dinner) it reaches.
+  let floor = null;
+  const at = (t) => { let m = toMinutes(t); while (floor !== null && m < floor - 720) m += 1440; floor = Math.max(floor ?? m, m); return m; };
+  let prevEnd = null;
+  const item = (path, a, b) => {
+    const A = at(a), B = at(b);
+    if (prevEnd !== null && A < prevEnd) e(path, `starts at ${a}, before the previous item ends`);
+    if (B < A) e(path, `ends (${b}) before it starts (${a})`);
+    prevEnd = Math.max(prevEnd ?? B, B);
+    return { A, B };
+  };
+  if (d.start && toMinutes(L[0].depart_at) < toMinutes(d.start.time)) e('/legs/0/depart_at', `leaves before the day starts at ${d.start.time}`);
+  const stopAt = new Map(S.map((s, k) => [s.place, k]));
+  L.forEach((l, i) => {
+    const { A, B } = item(`/legs/${i}`, l.depart_at, l.arrive_at);
+    if (Math.abs(B - A - l.minutes) > 1) e(`/legs/${i}/minutes`, `${l.minutes} min does not match ${l.depart_at}–${l.arrive_at}`);
+    if (i === 0 && d.bags && d.bags.kind === 'hotel' && d.bags.start && d.bags.end) item('/bags', d.bags.start, d.bags.end);
+    if (stopAt.has(l.to) && visits.some((x) => x.i === i)) {
+      const k = stopAt.get(l.to), s = S[k];
+      const { A: a, B: b } = item(`/stops/${k}`, s.arrive, s.depart);
+      if (s.minutes > b - a) e(`/stops/${k}/minutes`, `${s.minutes} min does not fit ${s.arrive}–${s.depart}`);
+      if (s.window) {
+        let open = toMinutes(s.window.open), close = toMinutes(s.window.close);
+        if (close <= open) close += 1440;
+        const base = Math.floor(a / 1440) * 1440;
+        if (a - base < open) e(`/stops/${k}/arrive`, `arrives ${s.arrive}, before it opens (${s.window.open})`);
+        if (b - base > close) e(`/stops/${k}/depart`, `leaves ${s.depart}, after it closes (${s.window.close})`);
+      }
+      if (s.last_entry && a - Math.floor(a / 1440) * 1440 > toMinutes(s.last_entry)) e(`/stops/${k}/arrive`, `arrives ${s.arrive}, after the last entry (${s.last_entry})`);
+    } else if (dinner && l.to === dinner.at) item('/meals/dinner', dinner.start, dinner.end);
+    if (d.end && l.to === DAY_END && toMinutes(l.arrive_at) > toMinutes(d.end.time)) e(`/legs/${i}/arrive_at`, `reaches ${DAY_END} after ${d.end.time}`);
+  });
+  return errs;
+}
+
+/** Plan-level rules on top of each part's own schema: day order, one trip, every place scheduled (a stop or a dinner out) or in exactly one Later list. */
 export function checkPlan(p) {
   const errs = [];
   const e = (path, message) => errs.push({ path, message });
@@ -174,6 +272,12 @@ export function checkPlan(p) {
       scheduled.add(s.place);
       if (!keys.has(s.place)) e(`/days/${i}/stops/${j}/place`, `unknown place "${s.place}"`);
     });
+    // Phase 11: a dinner out is a scheduled place too (a known place, never in a Later list), though not a stop.
+    const dinner = dinnerOut(d);
+    if (dinner) {
+      scheduled.add(dinner.at);
+      if (!keys.has(dinner.at)) e(`/days/${i}/meals/${d.meals.indexOf(dinner)}/at`, `unknown place "${dinner.at}"`);
+    }
   });
   const later = new Map(), names = new Set();
   p.later.forEach((l, i) => {
@@ -281,6 +385,14 @@ export function checkPlanDigest(d) {
   if (d.tz !== undefined && !validTimeZone(d.tz)) errs.push({ path: '/tz', message: 'unknown time zone' });
   d.days.forEach((day, i) => (day.legs || []).forEach((l, j) => {
     if (Array.isArray(l.flags) && new Set(l.flags).size !== l.flags.length) errs.push({ path: `/days/${i}/legs/${j}/flags`, message: 'duplicate flag' });
+  }));
+  // C11 (TG-PHASE-11): a digest in parts names both its part and the count; a later part carries no Later list (part 1's
+  // is the plan's). The size cap applies to each part; the core joins the days and checks them as one plan.
+  if ((d.part === undefined) !== (d.parts === undefined)) errs.push({ path: d.part === undefined ? '/part' : '/parts', message: 'part and parts go together' });
+  else if (d.part !== undefined && d.part > d.parts) errs.push({ path: '/part', message: `part ${d.part} of ${d.parts}` });
+  if (d.part !== undefined && d.part > 1 && d.later.length) errs.push({ path: '/later', message: 'only part 1 carries the Later list (send [] in later parts)' });
+  d.days.forEach((day, i) => (day.stops || []).forEach((s, j) => {
+    if (s.menu_checked !== undefined && !isDate(s.menu_checked)) errs.push({ path: `/days/${i}/stops/${j}/menu_checked`, message: 'not a calendar date' });
   }));
   sizeCheck(d, errs);
   return errs;

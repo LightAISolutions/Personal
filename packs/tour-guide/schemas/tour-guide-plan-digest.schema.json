@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "tour-guide-plan-digest.schema.json",
   "title": "Tour Guide plan digest (payload of the `plan_digest` envelope)",
-  "description": "The chat-sized view of a built Plan: per day the theme, numbered stops with times and Maps links, legs and warnings; the Later items; the Drive ids of the plan and the brochure. schemas/index.mjs also checks: the whole payload ≤ 60 000 characters, days in date order, stop numbers unique per day, Later slugs unique, leg flags unique, tz a known zone. Contract C10 (TG-PHASE-10) added optional fields: top-level tz, day spare_minutes, stop time_style and check_on_day, leg estimated, distance_m, flags, taxi_minutes and buffer_minutes; a digest without them stays valid.",
+  "description": "The chat-sized view of a built Plan: per day the theme, numbered stops with times and Maps links, legs and warnings; the Later items; the Drive ids of the plan and the brochure. schemas/index.mjs also checks: the whole payload ≤ 60 000 characters, days in date order, stop numbers unique per day, Later slugs unique, leg flags unique, tz a known zone. Contract C10 (TG-PHASE-10) added optional fields: top-level tz, day spare_minutes, stop time_style and check_on_day, leg estimated, distance_m, flags, taxi_minutes and buffer_minutes; a digest without them stays valid. Contract C11 (TG-PHASE-11) added optional fields: top-level part and parts (a digest too large for one envelope arrives in parts sharing one build_id; part ≤ parts, a part after the first sends later: []), day sunset, start, end, bags, dinner and extras, stop last_entry, minutes_source, crowd_slot, facts_line, booking_line, price_line and menu_checked; the 60 000-character cap applies per part.",
   "type": "object",
   "additionalProperties": false,
   "required": ["trip", "build_id", "verified_on", "days", "later", "drive"],
@@ -12,6 +12,8 @@
     "trip": { "$ref": "#/$defs/slug" },
     "tz": { "$ref": "#/$defs/timezone", "description": "C10: the destination's IANA time zone; the core keeps it on the trip for today/tomorrow and booking times." },
     "build_id": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "part": { "type": "integer", "minimum": 1, "maximum": 8, "description": "C11: this envelope's part number (1-based); with parts, never alone." },
+    "parts": { "type": "integer", "minimum": 1, "maximum": 8, "description": "C11: how many parts the build has; the core stages parts until every one of this build_id has arrived." },
     "verified_on": { "$ref": "#/$defs/date" },
     "days": {
       "type": "array",
@@ -24,6 +26,42 @@
           "date": { "$ref": "#/$defs/date" },
           "theme": { "type": "string", "maxLength": 80 },
           "spare_minutes": { "type": "integer", "minimum": 0, "maximum": 1440, "description": "C10: unplanned minutes left in the day." },
+          "sunset": { "$ref": "#/$defs/time", "description": "C11: sunset at the night's lodging, in the trip's zone." },
+          "start": { "$ref": "#/$defs/anchor", "description": "C11: where and when the day really starts (an arrival), only on an overridden day." },
+          "end": { "$ref": "#/$defs/anchor", "description": "C11: where and when the day really ends (a departure), only on an overridden day." },
+          "bags": { "type": "string", "minLength": 1, "maxLength": 160, "description": "C11: the bag step, one line." },
+          "dinner": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "start"],
+            "description": "C11: dinner at a real place, with its booking rule.",
+            "properties": {
+              "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+              "slug": { "$ref": "#/$defs/slug" },
+              "start": { "$ref": "#/$defs/time" },
+              "end": { "$ref": "#/$defs/time" },
+              "maps_url": { "$ref": "#/$defs/url" },
+              "note_line": { "type": "string", "minLength": 1, "maxLength": 160 },
+              "booking_line": { "type": "string", "minLength": 1, "maxLength": 160 }
+            }
+          },
+          "extras": {
+            "type": "array",
+            "maxItems": 3,
+            "description": "C11: nearby evening events and saved places for an early finish.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "name"],
+              "properties": {
+                "kind": { "enum": ["event", "saved"] },
+                "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+                "time": { "$ref": "#/$defs/time" },
+                "maps_url": { "$ref": "#/$defs/url" },
+                "note_line": { "type": "string", "minLength": 1, "maxLength": 160 }
+              }
+            }
+          },
           "stops": {
             "type": "array",
             "maxItems": 25,
@@ -41,20 +79,27 @@
                 "maps_url": { "$ref": "#/$defs/url" },
                 "note_line": { "type": "string", "maxLength": 160 },
                 "time_style": { "enum": ["about", "exact"], "description": "C10: \"about\" = flexible times shown as approximate; \"exact\" = a fixed time (a booking, a tour)." },
-                "check_on_day": { "type": "string", "minLength": 1, "maxLength": 160, "description": "C10: one thing to check on the day itself." }
+                "check_on_day": { "type": "string", "minLength": 1, "maxLength": 160, "description": "C10: one thing to check on the day itself." },
+                "last_entry": { "$ref": "#/$defs/time", "description": "C11: the place's own last entry." },
+                "minutes_source": { "enum": ["official", "research", "estimate"], "description": "C11: where the visit length comes from." },
+                "crowd_slot": { "enum": ["opening", "late"], "description": "C11: a crowd magnet placed at opening or late." },
+                "facts_line": { "type": "string", "minLength": 1, "maxLength": 160, "description": "C11: researched facts, one line (the app and the brochure)." },
+                "booking_line": { "type": "string", "minLength": 1, "maxLength": 160, "description": "C11: the place's booking rule, one line." },
+                "price_line": { "type": "string", "minLength": 1, "maxLength": 160, "description": "C11: the price and what it includes (the app and the brochure)." },
+                "menu_checked": { "$ref": "#/$defs/date", "description": "C11: when the menu was last checked against the diet." }
               }
             }
           },
           "legs": {
             "type": "array",
-            "maxItems": 26,
+            "maxItems": 30,
             "items": {
               "type": "object",
               "additionalProperties": false,
               "required": ["from", "to", "mode", "minutes"],
               "properties": {
-                "from": { "$ref": "#/$defs/slug", "description": "A stop slug or \"lodging\"." },
-                "to": { "$ref": "#/$defs/slug", "description": "A stop slug or \"lodging\"." },
+                "from": { "$ref": "#/$defs/slug", "description": "A stop slug, \"lodging\", or (C11) \"day-start\" / \"day-end\"." },
+                "to": { "$ref": "#/$defs/slug", "description": "A stop slug, \"lodging\", or (C11) \"day-start\" / \"day-end\"." },
                 "mode": { "enum": ["TRANSIT", "DRIVE", "WALK"] },
                 "minutes": { "type": "integer", "minimum": 0, "maximum": 1440 },
                 "maps_url": { "$ref": "#/$defs/url" },
@@ -118,6 +163,16 @@
     "time": { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$" },
     "url": { "type": "string", "maxLength": 2000, "pattern": "^https://\\S+$" },
     "timezone": { "type": "string", "maxLength": 64, "pattern": "^(UTC|Etc/[A-Za-z0-9+-]{1,10}|[A-Za-z_]+(/[A-Za-z0-9_+-]+)+)$" },
+    "anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "time"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "time": { "$ref": "#/$defs/time" },
+        "maps_url": { "$ref": "#/$defs/url" }
+      }
+    },
     "drive_id": { "anyOf": [{ "type": "null" }, { "type": "string", "pattern": "^[A-Za-z0-9_-]{10,200}$" }], "description": "A Drive file id, or null when that file was not written." }
   }
 }

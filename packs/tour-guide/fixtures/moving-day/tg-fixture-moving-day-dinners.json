@@ -1,0 +1,128 @@
+[
+  {
+    "v": 1,
+    "id": "juniper-table",
+    "place_id": "FixtureMdJuniperTable",
+    "name": "Juniper Table",
+    "category": "restaurant",
+    "tags": [
+      "dinner"
+    ],
+    "status": "chosen",
+    "activity": "dinner",
+    "priority": 2,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-09-28",
+      "sources": [
+        {
+          "url": "https://juniper-table.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-09-28"
+        }
+      ],
+      "menu": {
+        "checked": "2027-09-28",
+        "fits": "yes",
+        "note": "Vegetarian set menu"
+      },
+      "booking": {
+        "text": "Walk-ins welcome; book for 6 or more"
+      },
+      "price": {
+        "text": "Set dinner about 40",
+        "includes": "three courses"
+      }
+    }
+  },
+  {
+    "v": 1,
+    "id": "quayside-grill",
+    "place_id": "FixtureMdQuaysideGrill",
+    "name": "Quayside Grill",
+    "category": "restaurant",
+    "tags": [
+      "dinner"
+    ],
+    "status": "candidate",
+    "activity": "dinner",
+    "priority": 2,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-09-28",
+      "sources": [
+        {
+          "url": "https://quayside-grill.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-09-28"
+        }
+      ],
+      "menu": {
+        "checked": "2027-09-28",
+        "fits": "no",
+        "note": "Grill menu, no vegetarian mains"
+      }
+    }
+  },
+  {
+    "v": 1,
+    "id": "hearth-and-barley",
+    "place_id": "FixtureMdHearthAndBarley",
+    "name": "Hearth and Barley",
+    "category": "restaurant",
+    "tags": [
+      "dinner"
+    ],
+    "status": "saved-for-later",
+    "activity": "dinner",
+    "priority": 2,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-09-28",
+      "sources": [
+        {
+          "url": "https://hearth-and-barley.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-09-28"
+        }
+      ],
+      "menu": {
+        "checked": "2027-09-28",
+        "fits": "partly"
+      },
+      "booking": {
+        "required": true,
+        "lead": "1 day ahead",
+        "how": "by phone"
+      }
+    }
+  },
+  {
+    "v": 1,
+    "id": "rowan-noodle-bar",
+    "place_id": "FixtureMdRowanNoodleBar",
+    "name": "Rowan Noodle Bar",
+    "category": "restaurant",
+    "tags": [
+      "dinner"
+    ],
+    "status": "chosen",
+    "activity": "dinner",
+    "priority": 2,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-09-28",
+      "sources": [
+        {
+          "url": "https://rowan-noodle-bar.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-09-28"
+        }
+      ],
+      "menu": {
+        "checked": "2027-09-28",
+        "fits": "yes"
+      }
+    }
+  }
+]

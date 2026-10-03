@@ -32,7 +32,12 @@ const PATHS = {
   book: `<path d="M4 5a2 2 0 0 1 2-2h5v17H6a2 2 0 0 0-2 2zM20 5a2 2 0 0 0-2-2h-5v17h5a2 2 0 0 1 2 2z" ${S}/>`,
   star: `<path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z" fill="currentColor"/>`,
   compass: `<circle cx="12" cy="12" r="8.5" ${S}/><path d="M15 9l-2 6-4 2 2-6z" fill="currentColor"/>`,
-  arrow: `<path d="M5 12h13M13 7l5 5-5 5" ${S}/>`
+  arrow: `<path d="M5 12h13M13 7l5 5-5 5" ${S}/>`,
+  // Contract C11 (Phase 11): the bag step, the evening box, price and a checked menu
+  bag: `<rect x="4" y="8" width="16" height="11" rx="2" ${S}/><path d="M9 8V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V8M8 8v11M16 8v11" ${S}/>`,
+  sunset: `<path d="M7 16a5 5 0 0 1 10 0M3 16h18M5 20h14M12 4v4M9.5 6.5L12 4l2.5 2.5M5.2 10.7l1.4 1.4M18.8 10.7l-1.4 1.4" ${S}/>`,
+  coin: `<circle cx="12" cy="12" r="8.5" ${S}/><circle cx="12" cy="12" r="5" ${S}/>`,
+  check: `<path d="M5 12.5l4.2 4.2L19 7" ${S}/>`
 };
 export const MODE_LABEL = { walk: 'Walk', transit: 'Transit', train: 'Train', drive: 'Drive', taxi: 'Taxi', bike: 'Bike', ferry: 'Ferry', other: 'Travel' };
 export const MEAL_ICON = { breakfast: 'cup', coffee: 'cup', lunch: 'fork', snack: 'cup', dinner: 'fork', drinks: 'cup' };

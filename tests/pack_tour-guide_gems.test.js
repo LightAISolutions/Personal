@@ -255,7 +255,7 @@ test('flagEvidence: unproven clears the gem, tourist_oriented from the skill\'s 
   assert.throws(() => g.flagEvidence(ramen, { trip_dates: fx.trip.dates }), /gems: flagEvidence needs today/);
   const fig = byId(fx.carriers.gem_candidates[0]);
   const f = g.flagEvidence(fig, { trip_dates: fx.trip.dates, today: fx.today });
-  assert.deepEqual(f.flags, [], 'old reviews, 180 ratings, local mentions, open on every trip date');
+  assert.deepEqual(f.flags, ['local_favourite'], 'old reviews, 180 ratings, open on every trip date; two local mentions make it a local favourite (the screen\'s flag rides along)');
   assert.equal(f.record.gem, true);
   const sunset = byId(fx.carriers.tourist_oriented);
   assert.deepEqual(g.flagEvidence(sunset, { trip_dates: fx.trip.dates, today: fx.today }).flags, ['tourist_oriented']);
@@ -277,10 +277,11 @@ test('gemLine: our own words and source kinds only (no Google digit), ≤ 200 ch
   const medians = g.categoryMedianCounts(kept);
   const fig = byId(fx.carriers.gem_candidates[0]);
   const line = g.gemLine(fig, { category_median_count: medians[fig.category] });
-  assert.equal(line, 'exceptionally well rated by more reviewers than its peers; named by two local-language guides; no English menu.');
+  assert.equal(line, 'exceptionally well rated by more reviewers than its peers; a local favourite named by two local-language guides; no English menu.');
   assert.equal(g.gemLine(fig, { category_median_count: medians[fig.category] }), line);
   const lantern = byId(fx.carriers.gem_candidates[1]);
-  assert.equal(g.gemLine(lantern), 'exceptionally well rated; named by one local-language guide and one local editorial list.');
+  assert.equal(g.gemLine(lantern), 'exceptionally well rated; a local favourite named by one local-language guide and one local editorial list.');
+  assert.equal(g.gemLine({ ...lantern, flags: [] }), 'exceptionally well rated; named by one local-language guide and one local editorial list.', 'without the screen\'s flag the clause is as before');
   const seeds = g.gemLine(byId(fx.carriers.owner_seeds[0]));
   assert.ok(seeds.includes('one of your own seeds'), seeds);
   const flagged = g.flagEvidence(byId(fx.carriers.unproven), { trip_dates: fx.trip.dates, today: fx.today }).record;
@@ -382,7 +383,7 @@ test('toPlaceFields / toShortlistFields: exactly the WP-3d field names, our own 
   const fig = g.flagEvidence(byId(fx.carriers.gem_candidates[0]), { trip_dates: fx.trip.dates, today: fx.today }).record;
   const fields = g.toPlaceFields(fig);
   assert.deepEqual(Object.keys(fields).sort(), [...g.PLACE_FIELDS].sort());
-  assert.deepEqual(fields, { gem_score: fig.gem_score, gem: true, obscurity: fig.o, local_mentions: [{ ref: 'L003', language: 'pt', kind: 'local-language' }, { ref: 'L007.2', language: 'pt', kind: 'local-language' }], flags: [] });
+  assert.deepEqual(fields, { gem_score: fig.gem_score, gem: true, obscurity: fig.o, local_mentions: [{ ref: 'L003', language: 'pt', kind: 'local-language' }, { ref: 'L007.2', language: 'pt', kind: 'local-language' }], flags: ['local_favourite'] });
   assert.ok(fields.gem_score >= 0 && fields.gem_score <= 100 && fields.obscurity >= 0 && fields.obscurity <= 1);
   for (const k of g.GOOGLE_FIELDS) assert.ok(!(k in fields), k);
   assert.ok(!JSON.stringify(fields).includes('Fig Tree') && !JSON.stringify(fields).includes('180') && !JSON.stringify(fields).includes('4.7'), 'no name, count or rating leaks');
@@ -399,6 +400,8 @@ test('toPlaceFields / toShortlistFields: exactly the WP-3d field names, our own 
   assert.throws(() => g.toPlaceFields(byId(fx.carriers.gem_candidates[0]) && { name: 'unscored' }), /gems: toPlaceFields needs a scored record/);
   const sl = g.toShortlistFields(fig, { category_median_count: 145 });
   assert.deepEqual(Object.keys(sl).sort(), [...g.SHORTLIST_FIELDS].sort());
+  assert.equal(sl.local_favourite, true, 'a local favourite carries the C11 shortlist flag');
+  assert.deepEqual(Object.keys(g.toShortlistFields({ ...fig, flags: [] })).sort(), ['gem', 'gem_line'], 'and nothing else does');
   assert.equal(sl.gem, true);
   assert.ok(sl.gem_line.length <= 200 && sl.gem_line.startsWith('exceptionally well rated by more reviewers than its peers'));
   assert.doesNotMatch(sl.gem_line, /\d/, 'R3: the shortlist projection carries no Google digit');

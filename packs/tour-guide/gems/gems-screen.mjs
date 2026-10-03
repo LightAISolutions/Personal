@@ -1,20 +1,26 @@
 /**
  * Gem Funnel — stage 2, free screening (proposal §4): no calls, one reason per dropped place, the first rule that
  * fires in this order: not_operational · avoided_type · not_a_visit · facility · chain · low_rating · too_few_ratings ·
- * closed_all_dates · too_far, then part_of over what is left (a gate, a sub-garden or a pavilion listed on its own next to
- * the big place it belongs to). not_a_visit, facility and part_of apply to the activities group only; owner seeds skip them.
+ * closed_all_dates · out_of_season · too_far, then part_of over what is left (a gate, a sub-garden or a pavilion listed on
+ * its own next to the big place it belongs to). not_a_visit, facility, out_of_season and part_of apply to the activities
+ * group only (out_of_season: a garden or park that is mainly one bloom, season/outOfSeason); owner seeds skip them.
  * Unknowns are never treated as the bad case: BUSINESS_STATUS_UNSPECIFIED passes, unknown hours pass, a record
  * without a location passes the distance test and is never part_of (the skill resolves locations before the funnel).
- * Rating floor: `rating_floor` (+ the country's `rating_offset`); two local mentions lower it to the default floor.
+ * Rating floor: `rating_floor` (+ the country's `rating_offset`). A local favourite (mentions from ≥ 2 distinct
+ * publishers, WP-11b) has the floor LOCAL_FAVOURITE_RATING_FLOOR (3.8, + the offset) and 1.5 × the off-track limit, and
+ * leaves the screen flagged `local_favourite`; a mass-tourism top-ten place or one in the pool's top decile of rating
+ * counts (≥ CROWD_MAGNET_MIN_COUNT) leaves it flagged `crowd_magnet`. Flags never drop a place.
  */
 import { RATING_FLOOR_DEFAULT, MIN_RATING_COUNT, MIN_LOCAL_MENTIONS_TO_WAIVE_COUNT, OFF_TRACK_MINUTES_DEFAULT, MODES_DEFAULT, ratingFloorFor,
+  LOCAL_FAVOURITE_RATING_FLOOR, LOCAL_FAVOURITE_OFF_TRACK_FACTOR, CROWD_MAGNET_TOP_SHARE, CROWD_MAGNET_MIN_COUNT, MASS_TOURISM_TOP_N,
   RATING_OFFSET_MAX, NOT_A_VISIT_TYPES, FACILITY_NAME_RE, PART_OF_RADIUS_M, PART_OF_COUNT_RATIO, PART_OF_CORE_MIN, NAME_SUFFIX_WORDS, FEATURE_WORDS } from './gems-weights.mjs';
 import { CHAIN_LIST, nameCounts, chainReason } from './gems-chains.mjs';
-import { normalizePool, mentionCount, isOwnerSeed, groupOf } from './gems-record.mjs';
+import { normalizePool, mentionCount, isOwnerSeed, isLocalFavourite, groupOf } from './gems-record.mjs';
+import { outOfSeason, bloomKindOf } from '../season/season-bloom.mjs';
 import { closedOnAll } from './gems-hours.mjs';
 import { minutesToNearestAnchor, isLatLng, haversineKm } from './gems-geo.mjs';
 
-export const DROP_REASONS = Object.freeze(['not_operational', 'avoided_type', 'not_a_visit', 'facility', 'chain', 'low_rating', 'too_few_ratings', 'closed_all_dates', 'too_far', 'part_of']);
+export const DROP_REASONS = Object.freeze(['not_operational', 'avoided_type', 'not_a_visit', 'facility', 'chain', 'low_rating', 'too_few_ratings', 'closed_all_dates', 'out_of_season', 'too_far', 'part_of']);
 const NOT_A_VISIT = new Set(NOT_A_VISIT_TYPES), SUFFIX = new Set(NAME_SUFFIX_WORDS), FEATURE = new Set(FEATURE_WORDS);
 
 /** nameWords('Kinkaku-ji (金閣寺)') → ['kinkaku', 'ji'] — Latin words only, accents folded, lower case. */
@@ -52,13 +58,32 @@ export function partOfParent(r, pool) {
   return best;
 }
 const CLOSED_STATUSES = ['CLOSED_TEMPORARILY', 'CLOSED_PERMANENTLY'];
+
+/**
+ * crowdMagnetIds(records) → the place ids of the pool's crowd magnets: a mass-tourism rank ≤ MASS_TOURISM_TOP_N, or a
+ * rating count in the pool's top CROWD_MAGNET_TOP_SHARE (top decile, by rank among the records with a count; ties at the
+ * cut-off count in) that is also ≥ CROWD_MAGNET_MIN_COUNT.
+ */
+export function crowdMagnetIds(records) {
+  const ids = new Set();
+  for (const r of records) if (r.mass_tourism_rank != null && r.mass_tourism_rank <= MASS_TOURISM_TOP_N) ids.add(r.place_id);
+  const counted = records.filter((r) => Number.isFinite(r.rating_count)).map((r) => r.rating_count).sort((a, b) => b - a);
+  if (counted.length) {
+    const cut = counted[Math.max(0, Math.ceil(counted.length * CROWD_MAGNET_TOP_SHARE) - 1)];
+    for (const r of records) if (Number.isFinite(r.rating_count) && r.rating_count >= cut && r.rating_count >= CROWD_MAGNET_MIN_COUNT) ids.add(r.place_id);
+  }
+  return ids;
+}
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 /**
  * screen(pool, { trip_dates, anchors = [], off_track_minutes = 25, modes = ['TRANSIT','WALK'], avoid_types = [],
- *                chain_list = CHAIN_LIST, rating_floor = 4.3 (or ratingFloorFor(appetite) when `appetite` is given) })
+ *                chain_list = CHAIN_LIST, rating_floor = 4.3 (or ratingFloorFor(appetite) when `appetite` is given),
+ *                rating_offset = 0, season?, lat? })
  *   → { kept: [normalized record…], dropped: [{ place_id, reason_code, detail? }] }
- * `pool` may be raw records; `kept` carries normalized records (with `category`) for the scoring stage.
+ * `pool` may be raw records; `kept` carries normalized records (with `category`) for the scoring stage, and `flags`
+ * (local_favourite, crowd_magnet) on the records that earn them. `season` is the trip's season sheet (C11) and `lat` the
+ * fallback latitude for the bloom months when a record has no location (default: the first anchor's).
  */
 export function screen(pool, opts = {}) {
   const records = normalizePool(pool);
@@ -72,6 +97,8 @@ export function screen(pool, opts = {}) {
   if (!(Number.isFinite(rating_floor) && rating_floor >= 0 && rating_floor <= 5)) throw new Error('gems: rating_floor must be 0–5');
   if (!Array.isArray(avoid_types)) throw new Error('gems: avoid_types must be an array');
   const avoid = new Set(avoid_types.map(String));
+  if (opts.season != null && typeof opts.season !== 'object') throw new Error('gems: season must be the trip\'s season sheet object');
+  const lat = Number.isFinite(opts.lat) ? opts.lat : anchors.length ? anchors[0].lat : undefined;
   const counts = nameCounts(records);
   const kept = [], dropped = [];
   for (const r of records) {
@@ -86,20 +113,28 @@ export function screen(pool, opts = {}) {
     const chain = chainReason(r, counts, chain_list);
     if (chain) { drop('chain', chain); continue; }
     const count = r.rating_count ?? 0;
+    const favourite = isLocalFavourite(r);
     const tooFew = count < MIN_RATING_COUNT && mentionCount(r) < MIN_LOCAL_MENTIONS_TO_WAIVE_COUNT && !isOwnerSeed(r);
+    const floor = favourite ? Math.min(rating_floor, LOCAL_FAVOURITE_RATING_FLOOR) : rating_floor;
     if (r.rating == null) { if (tooFew) { drop('too_few_ratings'); continue; } }
-    else if (r.rating < Math.round(((mentionCount(r) >= MIN_LOCAL_MENTIONS_TO_WAIVE_COUNT ? Math.min(rating_floor, RATING_FLOOR_DEFAULT) : rating_floor) + rating_offset) * 100) / 100) { drop('low_rating'); continue; }
+    else if (r.rating < Math.round((floor + rating_offset) * 100) / 100) { drop('low_rating'); continue; }
     else if (tooFew) { drop('too_few_ratings'); continue; }
     if (closedOnAll(r.hours, trip_dates)) { drop('closed_all_dates'); continue; }
+    if (visit && outOfSeason(r, { season: opts.season, dates: trip_dates, lat })) { drop('out_of_season', bloomKindOf(r)); continue; }
     const minutes = minutesToNearestAnchor(r.location, anchors, modes);
-    if (minutes !== null && minutes > off_track_minutes) { drop('too_far', `${Math.round(minutes)} min`); continue; }
+    const limit = favourite ? off_track_minutes * LOCAL_FAVOURITE_OFF_TRACK_FACTOR : off_track_minutes;
+    if (minutes !== null && minutes > limit) { drop('too_far', `${Math.round(minutes)} min`); continue; }
     kept.push(r);
   }
   const out = [];
+  const magnets = crowdMagnetIds(records);
   for (const r of kept) {
     const parent = groupOf(r) === 'activities' && !isOwnerSeed(r) ? partOfParent(r, records) : null;
-    if (parent) dropped.push({ place_id: r.place_id, reason_code: 'part_of', detail: String(parent.name || parent.place_id).slice(0, 120) });
-    else out.push(r);
+    if (parent) { dropped.push({ place_id: r.place_id, reason_code: 'part_of', detail: String(parent.name || parent.place_id).slice(0, 120) }); continue; }
+    const flags = [];
+    if (isLocalFavourite(r)) flags.push('local_favourite');
+    if (magnets.has(r.place_id)) flags.push('crowd_magnet');
+    out.push(flags.length ? { ...r, flags } : r);
   }
   return { kept: out, dropped };
 }

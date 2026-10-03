@@ -103,4 +103,19 @@ test('plan checks: a rain swap must be a known, unscheduled place offered once, 
   assert.match(msgs, /"nowhere-here" is not a stop of/);
 });
 
+test('rain swaps follow a place\'s own facts: a weekday its own site says it is closed, it is not offered', async () => {
+  const { w, input } = await setup();
+  const { planTrip } = await planner();
+  const plain = await planTrip({ ...input, choices: picksBut(w, 'tile-workshop') });
+  const d = plain.days.find((x) => (x.rain_swaps || []).some((r) => r.place === 'tile-workshop'));
+  const weekday = new Date(d.date + 'T12:00:00Z').getUTCDay();
+  const facts = { checked: '2027-05-30', sources: [{ url: 'https://tile-workshop.example.com/hours', title: 'Hours (invented)', accessed: '2027-05-30' }], closed_weekdays: [weekday] };
+  const places = w.places.map((p) => (p.id === 'tile-workshop' ? { ...p, facts } : p));
+  const shut = await planTrip({ ...input, places, choices: picksBut(w, 'tile-workshop') });
+  assert.ok(!(shut.days.find((x) => x.date === d.date).rain_swaps || []).some((r) => r.place === 'tile-workshop'), 'not on the weekday its own site closes it');
+  const other = { ...facts, closed_weekdays: [(weekday + 1) % 7] };
+  const open = await planTrip({ ...input, places: w.places.map((p) => (p.id === 'tile-workshop' ? { ...p, facts: other } : p)), choices: picksBut(w, 'tile-workshop') });
+  assert.deepEqual(open.days.find((x) => x.date === d.date).rain_swaps.map((r) => r.place), ['tile-workshop'], 'another closed weekday changes nothing');
+});
+
 // Developed by: LightAISolutions

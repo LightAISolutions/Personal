@@ -1,6 +1,7 @@
 /**
  * Gem Funnel — the persisted projections (proposal §6 data-model row; WP-3d adds the fields to the schemas).
- * Place gains `gem_score`, `gem`, `obscurity`, `local_mentions[]`, `flags[]`; a Shortlist item gains `gem` and `gem_line`.
+ * Place gains `gem_score`, `gem`, `obscurity`, `local_mentions[]`, `flags[]`; a Shortlist item gains `gem` and `gem_line`,
+ * and `local_favourite: true` when the screen flagged the place a local favourite (C11; omitted otherwise).
  * These are OUR numbers and OUR notes. No Google field (rating, counts, hours, address, website, business status,
  * coordinates, names, types, reviews) is ever emitted here — `assertNoGoogleFields` is the guard and the tests use it.
  */
@@ -9,7 +10,7 @@ import { LANGUAGE_RE } from './gems-record.mjs';
 import { gemLine } from './gems-line.mjs';
 
 export const PLACE_FIELDS = Object.freeze(['gem_score', 'gem', 'obscurity', 'local_mentions', 'flags']);
-export const SHORTLIST_FIELDS = Object.freeze(['gem', 'gem_line']);
+export const SHORTLIST_FIELDS = Object.freeze(['gem', 'gem_line', 'local_favourite']);   // local_favourite only when true
 /** Keys that are Google content and must never appear in a persisted projection. */
 export const GOOGLE_FIELDS = Object.freeze(['rating', 'rating_count', 'review_count', 'userRatingCount', 'hours', 'regularOpeningHours', 'location', 'lat', 'lng', 'website', 'websiteUri', 'address', 'formattedAddress', 'business_status', 'businessStatus', 'price_level', 'priceLevel', 'name', 'display_name', 'displayName', 'types', 'primary_type', 'primaryType', 'reviews', 'maps_uri', 'googleMapsUri']);
 
@@ -40,10 +41,12 @@ export function toPlaceFields(record) {
   return assertNoGoogleFields(out, 'Place projection');
 }
 
-/** toShortlistFields(record, { category_median_count? }) → { gem, gem_line } for a shortlist item. */
+/** toShortlistFields(record, { category_median_count? }) → { gem, gem_line, local_favourite? } for a shortlist item. */
 export function toShortlistFields(record, opts = {}) {
   if (!record || typeof record.gem_score !== 'number') throw new Error('gems: toShortlistFields needs a scored record');
-  return assertNoGoogleFields({ gem: record.gem === true, gem_line: gemLine(record, opts) }, 'Shortlist projection');
+  const out = { gem: record.gem === true, gem_line: gemLine(record, opts) };
+  if ((record.flags || []).includes('local_favourite')) out.local_favourite = true;
+  return assertNoGoogleFields(out, 'Shortlist projection');
 }
 
 // Developed by: LightAISolutions

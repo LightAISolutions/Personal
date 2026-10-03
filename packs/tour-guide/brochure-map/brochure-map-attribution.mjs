@@ -63,15 +63,17 @@ export function placeSourceRows(placeId, { notesByPlace, estimatesByPlace }) {
   return rows.filter(Boolean);
 }
 /**
- * buildAttribution({ notes, estimates, generator, showGoogle, verifiedOn }) → brochure attribution.
- * sources = union of every note and estimate source (deduplicated by URL). With Google content hidden the Google
+ * buildAttribution({ notes, estimates, generator, showGoogle, extra }) → brochure attribution.
+ * sources = union of every note and estimate source, then the `extra` rows (C11 facts and season sources, built by
+ * brochure-map-facts.mjs), deduplicated by URL. With Google content hidden the Google
  * block is forced off (nothing from Places is printed); otherwise the kit's default applies (on when a card carries
  * Google fields) and the note says when the Google fields were read.
  */
-export function buildAttribution({ notes = [], estimates = [], generator, showGoogle = true }) {
+export function buildAttribution({ notes = [], estimates = [], generator, showGoogle = true, extra = [] }) {
   const rows = [];
   for (const n of notes) for (const s of (n && n.sources) || []) rows.push(toSource(s, null));
   for (const e of estimates) for (const s of (e && e.sources) || []) rows.push(toSource(s, ESTIMATE_SUPPORTS));
+  for (const r of Array.isArray(extra) ? extra : []) rows.push(r && r.url ? r : null); // C11: facts and season sources, already rows
   const a = { generator: clip(generator || DEFAULT_GENERATOR, SHORT), sources: mergeSources(rows) };
   if (!a.sources.length) delete a.sources;
   if (showGoogle) a.note = 'Opening hours, ratings and review counts were read from Google Maps on the date shown on each card; check anything that matters on the morning.';

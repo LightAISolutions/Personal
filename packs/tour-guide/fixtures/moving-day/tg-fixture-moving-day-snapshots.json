@@ -1,0 +1,1320 @@
+[
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdBrindleQuayInn",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.2,
+      "lng": 160.3
+    },
+    "content": {
+      "display_name": "Brindle Quay Inn",
+      "address": "10 Brindle Lane, Brindlecombe, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 120,
+      "website": "https://brindle-quay-inn.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/brindle-quay-inn",
+      "time_zone": "Etc/GMT-11"
+    }
+  },
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdAshvaleLanternHotel",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.45,
+      "lng": 160.55
+    },
+    "content": {
+      "display_name": "Ashvale Lantern Hotel",
+      "address": "11 Ashvale Lane, Ashvale, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 127,
+      "website": "https://ashvale-lantern-hotel.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/ashvale-lantern-hotel",
+      "time_zone": "Etc/GMT-11"
+    }
+  },
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdAshvaleStation",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.4462,
+      "lng": 160.5458
+    },
+    "content": {
+      "display_name": "Ashvale Station",
+      "address": "12 Ashvale Lane, Ashvale, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 134,
+      "website": "https://ashvale-station.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/ashvale-station",
+      "time_zone": "Etc/GMT-11"
+    }
+  },
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdCopperleafGarden",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.205,
+      "lng": 160.304
+    },
+    "content": {
+      "display_name": "Copperleaf Garden",
+      "address": "13 Copperleaf Lane, Brindlecombe, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 09:00 – 17:00",
+          "Tuesday: 09:00 – 17:00",
+          "Wednesday: 09:00 – 17:00",
+          "Thursday: 09:00 – 17:00",
+          "Friday: 09:00 – 17:00",
+          "Saturday: 09:00 – 17:00",
+          "Sunday: 09:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 141,
+      "website": "https://copperleaf-garden.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/copperleaf-garden",
+      "time_zone": "Etc/GMT-11"
+    }
+  },
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdNinefoldTemple",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.197,
+      "lng": 160.296
+    },
+    "content": {
+      "display_name": "Ninefold Temple",
+      "address": "14 Ninefold Lane, Brindlecombe, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 08:00 – 17:00",
+          "Tuesday: 08:00 – 17:00",
+          "Wednesday: 08:00 – 17:00",
+          "Thursday: 08:00 – 17:00",
+          "Friday: 08:00 – 17:00",
+          "Saturday: 08:00 – 17:00",
+          "Sunday: 08:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 148,
+      "website": "https://ninefold-temple.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/ninefold-temple",
+      "time_zone": "Etc/GMT-11"
+    }
+  },
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdSaltmarshCraftMuseum",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.203,
+      "lng": 160.297
+    },
+    "content": {
+      "display_name": "Saltmarsh Craft Museum",
+      "address": "15 Saltmarsh Lane, Brindlecombe, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 17:00",
+          "Tuesday: 10:00 – 17:00",
+          "Wednesday: 10:00 – 17:00",
+          "Thursday: 10:00 – 17:00",
+          "Friday: 10:00 – 17:00",
+          "Saturday: 10:00 – 17:00",
+          "Sunday: 10:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 155,
+      "website": "https://saltmarsh-craft-museum.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/saltmarsh-craft-museum",
+      "time_zone": "Etc/GMT-11"
+    }
+  },
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdAshvaleCastleRuins",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.452,
+      "lng": 160.552
+    },
+    "content": {
+      "display_name": "Ashvale Castle Ruins",
+      "address": "16 Ashvale Lane, Ashvale, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 09:00 – 17:00",
+          "Tuesday: 09:00 – 17:00",
+          "Wednesday: 09:00 – 17:00",
+          "Thursday: 09:00 – 17:00",
+          "Friday: 09:00 – 17:00",
+          "Saturday: 09:00 – 17:00",
+          "Sunday: 09:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 162,
+      "website": "https://ashvale-castle-ruins.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/ashvale-castle-ruins",
+      "time_zone": "Etc/GMT-11"
+    }
+  },
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdLanternQuayGallery",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.448,
+      "lng": 160.548
+    },
+    "content": {
+      "display_name": "Lantern Quay Gallery",
+      "address": "17 Lantern Lane, Ashvale, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 18:00",
+          "Tuesday: 10:00 – 18:00",
+          "Wednesday: 10:00 – 18:00",
+          "Thursday: 10:00 – 18:00",
+          "Friday: 10:00 – 18:00",
+          "Saturday: 10:00 – 18:00",
+          "Sunday: 10:00 – 18:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 169,
+      "website": "https://lantern-quay-gallery.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/lantern-quay-gallery",
+      "time_zone": "Etc/GMT-11"
+    }
+  },
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdMistralShrine",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.455,
+      "lng": 160.556
+    },
+    "content": {
+      "display_name": "Mistral Shrine",
+      "address": "18 Mistral Lane, Ashvale, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 176,
+      "website": "https://mistral-shrine.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/mistral-shrine",
+      "time_zone": "Etc/GMT-11"
+    }
+  },
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdGlassblowersYard",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.4505,
+      "lng": 160.5505
+    },
+    "content": {
+      "display_name": "Glassblowers' Yard",
+      "address": "19 Glassblowers' Lane, Ashvale, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 20:00",
+          "Tuesday: 10:00 – 20:00",
+          "Wednesday: 10:00 – 20:00",
+          "Thursday: 10:00 – 20:00",
+          "Friday: 10:00 – 20:00",
+          "Saturday: 10:00 – 20:00",
+          "Sunday: 10:00 – 20:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 20,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 183,
+      "website": "https://glassblowers-yard.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/glassblowers-yard",
+      "time_zone": "Etc/GMT-11"
+    }
+  },
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdJuniperTable",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.2025,
+      "lng": 160.3015
+    },
+    "content": {
+      "display_name": "Juniper Table",
+      "address": "20 Juniper Lane, Brindlecombe, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 17:30 – 22:00",
+          "Tuesday: 17:30 – 22:00",
+          "Wednesday: 17:30 – 22:00",
+          "Thursday: 17:30 – 22:00",
+          "Friday: 17:30 – 22:00",
+          "Saturday: 17:30 – 22:00",
+          "Sunday: 17:30 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 190,
+      "website": "https://juniper-table.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/juniper-table",
+      "time_zone": "Etc/GMT-11"
+    }
+  },
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdQuaysideGrill",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.2005,
+      "lng": 160.3005
+    },
+    "content": {
+      "display_name": "Quayside Grill",
+      "address": "21 Quayside Lane, Brindlecombe, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 17:00 – 22:00",
+          "Tuesday: 17:00 – 22:00",
+          "Wednesday: 17:00 – 22:00",
+          "Thursday: 17:00 – 22:00",
+          "Friday: 17:00 – 22:00",
+          "Saturday: 17:00 – 22:00",
+          "Sunday: 17:00 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 197,
+      "website": "https://quayside-grill.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quayside-grill",
+      "time_zone": "Etc/GMT-11"
+    }
+  },
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdHearthAndBarley",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.4495,
+      "lng": 160.5495
+    },
+    "content": {
+      "display_name": "Hearth and Barley",
+      "address": "22 Hearth Lane, Ashvale, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 18:00 – 22:00",
+          "Tuesday: 18:00 – 22:00",
+          "Wednesday: 18:00 – 22:00",
+          "Thursday: 18:00 – 22:00",
+          "Friday: 18:00 – 22:00",
+          "Saturday: 18:00 – 22:00",
+          "Sunday: 18:00 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 204,
+      "website": "https://hearth-and-barley.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/hearth-and-barley",
+      "time_zone": "Etc/GMT-11"
+    }
+  },
+  {
+    "build_id": "fixture-build-moving-day",
+    "place_id": "FixtureMdRowanNoodleBar",
+    "fetched_at": "2027-10-01T12:00:00.000Z",
+    "location": {
+      "lat": 34.4502,
+      "lng": 160.5502
+    },
+    "content": {
+      "display_name": "Rowan Noodle Bar",
+      "address": "23 Rowan Lane, Ashvale, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 17:00 – 22:00",
+          "Tuesday: Closed",
+          "Wednesday: 17:00 – 22:00",
+          "Thursday: 17:00 – 22:00",
+          "Friday: 17:00 – 22:00",
+          "Saturday: 17:00 – 22:00",
+          "Sunday: 17:00 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.3,
+      "review_count": 211,
+      "website": "https://rowan-noodle-bar.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/rowan-noodle-bar",
+      "time_zone": "Etc/GMT-11"
+    }
+  }
+]

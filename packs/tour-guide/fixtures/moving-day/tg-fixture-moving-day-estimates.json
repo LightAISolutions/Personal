@@ -1,0 +1,128 @@
+[
+  {
+    "v": 1,
+    "place_id": "FixtureMdCopperleafGarden",
+    "activity": "garden walk",
+    "category": "garden",
+    "range": {
+      "min": 60,
+      "max": 90
+    },
+    "typical": 75,
+    "chosen_minutes": 75,
+    "sources": [
+      {
+        "url": "https://guide.example.org/ashvale/copperleaf-garden",
+        "accessed": "2027-09-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-09-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureMdNinefoldTemple",
+    "activity": "temple halls",
+    "category": "temple",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/ashvale/ninefold-temple",
+        "accessed": "2027-09-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-09-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureMdSaltmarshCraftMuseum",
+    "activity": "craft collection",
+    "category": "museum",
+    "range": {
+      "min": 60,
+      "max": 90
+    },
+    "typical": 75,
+    "chosen_minutes": 75,
+    "sources": [
+      {
+        "url": "https://guide.example.org/ashvale/saltmarsh-craft-museum",
+        "accessed": "2027-09-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-09-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureMdAshvaleCastleRuins",
+    "activity": "ruins and ramparts",
+    "category": "viewpoint",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/ashvale/ashvale-castle-ruins",
+        "accessed": "2027-09-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-09-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureMdLanternQuayGallery",
+    "activity": "harbour paintings",
+    "category": "museum",
+    "range": {
+      "min": 60,
+      "max": 90
+    },
+    "typical": 75,
+    "chosen_minutes": 75,
+    "sources": [
+      {
+        "url": "https://guide.example.org/ashvale/lantern-quay-gallery",
+        "accessed": "2027-09-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-09-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureMdGlassblowersYard",
+    "activity": "glass workshop",
+    "category": "workshop",
+    "range": {
+      "min": 30,
+      "max": 60
+    },
+    "typical": 45,
+    "chosen_minutes": 45,
+    "sources": [
+      {
+        "url": "https://guide.example.org/ashvale/glassblowers-yard",
+        "accessed": "2027-09-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-09-20"
+  }
+]

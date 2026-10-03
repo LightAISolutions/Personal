@@ -1,14 +1,15 @@
 /**
- * Gem Funnel — stage 4, evidence flags (proposal §4): unproven · tourist_oriented · closed_day_conflict.
+ * Gem Funnel — stage 4, evidence flags (proposal §4): unproven · tourist_oriented · closed_day_conflict. The screen's
+ * flags (local_favourite, crowd_magnet — stage 2, WP-11b) ride along: flagEvidence keeps them after its own.
  * Reviews are inputs only (publish times and ratings); the signals behind tourist_oriented are booleans the skill
  * sets after reading the place's own site and the research sources — no page or review text reaches this module.
  */
-import { UNPROVEN_REVIEW_WINDOW_DAYS, UNPROVEN_MAX_RATING_COUNT, FLAGS, FLAGS_MAX } from './gems-weights.mjs';
+import { UNPROVEN_REVIEW_WINDOW_DAYS, UNPROVEN_MAX_RATING_COUNT, FLAGS, FLAGS_MAX, SCREEN_FLAGS } from './gems-weights.mjs';
 import { mentionCount } from './gems-record.mjs';
 import { closedOn, closedDates } from './gems-hours.mjs';
 
 /** Display labels for the flags (our own words, no Google content). */
-export const FLAG_LABELS = Object.freeze({ unproven: 'New: only a few, recent ratings', tourist_oriented: 'Reads tourist-oriented', closed_day_conflict: 'Closed on a trip day' });
+export const FLAG_LABELS = Object.freeze({ unproven: 'New: only a few, recent ratings', tourist_oriented: 'Reads tourist-oriented', closed_day_conflict: 'Closed on a trip day', local_favourite: 'Local favourite', crowd_magnet: 'Busy at peak hours' });
 export const TOURIST_SIGNALS = Object.freeze(['english_only_menu', 'tourist_pricing', 'visitor_wording', 'mass_tourism_listing']);
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -33,6 +34,7 @@ export function isTouristOriented(record, signals = {}) {
 /**
  * flagEvidence(record, { trip_dates = [], today, visit_date?, signals? }) → { flags: [...], record }
  * `record` is a copy carrying `flags` and, when unproven, `gem: false` (an unproven place is never shown as a 💎).
+ * The evidence flags are derived afresh; the screen's flags already on the record (SCREEN_FLAGS) follow them, once each.
  * closed_day_conflict: closed on `visit_date` when given, else closed on at least one trip date.
  */
 export function flagEvidence(record, { trip_dates = [], today, visit_date, signals } = {}) {
@@ -43,6 +45,7 @@ export function flagEvidence(record, { trip_dates = [], today, visit_date, signa
   if (isUnproven(record, today)) flags.push('unproven');
   if (isTouristOriented(record, signals)) flags.push('tourist_oriented');
   if (visit_date != null ? closedOn(record.hours, visit_date) : closedDates(record.hours, trip_dates).length > 0) flags.push('closed_day_conflict');
+  for (const f of record.flags || []) if (SCREEN_FLAGS.includes(f) && !flags.includes(f)) flags.push(f);
   const out = flags.filter((f) => FLAGS.includes(f)).slice(0, FLAGS_MAX);
   const next = { ...record, flags: out };
   if (out.includes('unproven') && next.gem === true) next.gem = false;

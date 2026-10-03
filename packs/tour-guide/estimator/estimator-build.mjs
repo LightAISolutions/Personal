@@ -31,10 +31,10 @@ function cleanSource(s, i) {
 }
 
 /**
- * buildEstimate({ place_id, activity, category, mentions: [{ min, max, ref, source_key, injection_suspect? }], sources, now })
+ * buildEstimate({ place_id, activity, category, mentions: [{ min, max, ref, source_key, injection_suspect? }], sources, now, country? })
  * → VisitEstimate. A source whose `ref` is cited only by injection-suspect mentions is not kept as a citation.
  */
-export function buildEstimate({ place_id, activity, category, mentions = [], sources = [], now = new Date() } = {}) {
+export function buildEstimate({ place_id, activity, category, mentions = [], sources = [], now = new Date(), country = null } = {}) {
   if (!PLACE_ID_RE.test(String(place_id || ''))) throw new TypeError('estimator: place_id must be a Google place id');
   if (!activity || typeof activity !== 'string') throw new TypeError('estimator: activity is required');
   if (!CATEGORY_RE.test(String(category || ''))) throw new TypeError('estimator: category must be a lowercase slug');
@@ -44,7 +44,7 @@ export function buildEstimate({ place_id, activity, category, mentions = [], sou
   const cited = sources.map(cleanSource).filter((s) => !s.ref || used.has(s.ref) || !flagged.has(s.ref));
   const typical = r.typical ?? null;
   const range = r.range ? { min: r.range.min, max: r.range.max } : null;
-  const chosen = typical ?? (range ? round5((range.min + range.max) / 2) : (activityDefault(activity) || {}).minutes || categoryDefault(category));
+  const chosen = typical ?? (range ? round5((range.min + range.max) / 2) : (activityDefault(activity, country) || {}).minutes || categoryDefault(category, country));
   return {
     v: 1, place_id, activity, category, range, typical, chosen_minutes: chosen, sources: cited,
     confidence: r.label, calibration: null, estimated_on: isoDay(now)

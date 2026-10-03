@@ -107,7 +107,8 @@ var TG_ENV_LABELS = ['verified', 'single source', 'conflicting', 'unverified'];
 var TG_ENV_OUTCOMES = ['chosen', 'later', 'skipped', 'visited'];
 function tgEnvShortlistItem(errs, at, it) {
   if (!tgEnvObj(errs, at, it, ['n', 'slug', 'name', 'why_you', 'fit', 'est_minutes', 'area', 'maps_url', 'labels'],
-    ['place_id', 'new', 'gem', 'gem_line', 'seen_before', 'changes', 'dims'])) return;
+    ['place_id', 'new', 'gem', 'gem_line', 'seen_before', 'changes', 'dims', 'local_favourite'])) return;
+  if (it.local_favourite !== undefined && it.local_favourite !== true) errs.push(at + '.local_favourite must be true when present');   // C11
   if (it.n !== undefined) tgEnvInt(errs, at + '.n', it.n, 1, 999);
   if (it.slug !== undefined) tgEnvSlug(errs, at + '.slug', it.slug);
   if (it.name !== undefined) tgEnvStr(errs, at + '.name', it.name, 1, 120);
@@ -207,19 +208,74 @@ function tgEnvLegC10(errs, al, l) {
     });
   }
 }
+/* C11 (TG-PHASE-11): optional plan fields — the day's real start and end, the bag step, dinner, evening extras and sunset;
+   each stop's researched facts; part / parts for a digest too large for one envelope. Old digests stay valid. */
+var TG_ENV_MINUTES_SOURCES = ['official', 'research', 'estimate'];
+var TG_ENV_CROWD_SLOTS = ['opening', 'late'];
+var TG_ENV_EXTRA_KINDS = ['event', 'saved'];
+var TG_ENV_PARTS_MAX = 8;
+function tgEnvTime(errs, path, v) { tgEnvStr(errs, path, v, 5, 5, TG_ENV_RE.time); }
+function tgEnvAnchor(errs, at, a) {
+  if (!tgEnvObj(errs, at, a, ['name', 'time'], ['maps_url'])) return;
+  if (a.name !== undefined) tgEnvStr(errs, at + '.name', a.name, 1, 120);
+  if (a.time !== undefined) tgEnvTime(errs, at + '.time', a.time);
+  if (a.maps_url !== undefined) tgEnvUrl(errs, at + '.maps_url', a.maps_url);
+}
+function tgEnvDayC11(errs, at, d) {
+  if (d.sunset !== undefined) tgEnvTime(errs, at + '.sunset', d.sunset);
+  if (d.start !== undefined) tgEnvAnchor(errs, at + '.start', d.start);
+  if (d.end !== undefined) tgEnvAnchor(errs, at + '.end', d.end);
+  if (d.bags !== undefined) tgEnvStr(errs, at + '.bags', d.bags, 1, 160);
+  if (d.dinner !== undefined && tgEnvObj(errs, at + '.dinner', d.dinner, ['name', 'start'], ['slug', 'end', 'maps_url', 'note_line', 'booking_line'])) {
+    var dn = d.dinner, ad = at + '.dinner';
+    if (dn.name !== undefined) tgEnvStr(errs, ad + '.name', dn.name, 1, 120);
+    if (dn.slug !== undefined) tgEnvSlug(errs, ad + '.slug', dn.slug);
+    if (dn.start !== undefined) tgEnvTime(errs, ad + '.start', dn.start);
+    if (dn.end !== undefined) tgEnvTime(errs, ad + '.end', dn.end);
+    if (dn.maps_url !== undefined) tgEnvUrl(errs, ad + '.maps_url', dn.maps_url);
+    if (dn.note_line !== undefined) tgEnvStr(errs, ad + '.note_line', dn.note_line, 1, 160);
+    if (dn.booking_line !== undefined) tgEnvStr(errs, ad + '.booking_line', dn.booking_line, 1, 160);
+  }
+  if (d.extras !== undefined && tgEnvArr(errs, at + '.extras', d.extras, 3)) {
+    d.extras.forEach(function (x, j) {
+      var ax = at + '.extras[' + j + ']';
+      if (!tgEnvObj(errs, ax, x, ['kind', 'name'], ['time', 'maps_url', 'note_line'])) return;
+      if (x.kind !== undefined) tgEnvEnum(errs, ax + '.kind', x.kind, TG_ENV_EXTRA_KINDS);
+      if (x.name !== undefined) tgEnvStr(errs, ax + '.name', x.name, 1, 120);
+      if (x.time !== undefined) tgEnvTime(errs, ax + '.time', x.time);
+      if (x.maps_url !== undefined) tgEnvUrl(errs, ax + '.maps_url', x.maps_url);
+      if (x.note_line !== undefined) tgEnvStr(errs, ax + '.note_line', x.note_line, 1, 160);
+    });
+  }
+}
+function tgEnvStopC11(errs, as, s) {
+  if (s.last_entry !== undefined) tgEnvTime(errs, as + '.last_entry', s.last_entry);
+  if (s.minutes_source !== undefined) tgEnvEnum(errs, as + '.minutes_source', s.minutes_source, TG_ENV_MINUTES_SOURCES);
+  if (s.crowd_slot !== undefined) tgEnvEnum(errs, as + '.crowd_slot', s.crowd_slot, TG_ENV_CROWD_SLOTS);
+  ['facts_line', 'booking_line', 'price_line'].forEach(function (k) { if (s[k] !== undefined) tgEnvStr(errs, as + '.' + k, s[k], 1, 160); });
+  if (s.menu_checked !== undefined) tgEnvDate(errs, as + '.menu_checked', s.menu_checked);
+}
+var TG_ENV_DAY_C11 = ['sunset', 'start', 'end', 'bags', 'dinner', 'extras'];
+var TG_ENV_STOP_C11 = ['last_entry', 'minutes_source', 'crowd_slot', 'facts_line', 'booking_line', 'price_line', 'menu_checked'];
 function tgEnvValidatePlanDigest(p) {
   var errs = [];
-  if (!tgEnvObj(errs, 'payload', p, ['trip', 'build_id', 'verified_on', 'days', 'later', 'drive'], ['v', 'kind', 'tz'])) return errs;
+  if (!tgEnvObj(errs, 'payload', p, ['trip', 'build_id', 'verified_on', 'days', 'later', 'drive'], ['v', 'kind', 'tz', 'part', 'parts'])) return errs;
   tgEnvHead(errs, p, 'plan_digest');
   if (p.trip !== undefined) tgEnvSlug(errs, 'trip', p.trip);
   if (p.tz !== undefined) tgEnvTz(errs, 'tz', p.tz);                                         // C10
+  if (p.part !== undefined) tgEnvInt(errs, 'part', p.part, 1, TG_ENV_PARTS_MAX);             // C11
+  if (p.parts !== undefined) tgEnvInt(errs, 'parts', p.parts, 1, TG_ENV_PARTS_MAX);
+  if ((p.part === undefined) !== (p.parts === undefined)) errs.push('part and parts go together');
+  else if (typeof p.part === 'number' && typeof p.parts === 'number' && p.part > p.parts) errs.push('part ' + p.part + ' of ' + p.parts);
+  if (typeof p.part === 'number' && p.part > 1 && Array.isArray(p.later) && p.later.length) errs.push('later: only part 1 carries the Later list (send [] in later parts)');
   if (p.build_id !== undefined) tgEnvStr(errs, 'build_id', p.build_id, 1, 120);
   if (p.verified_on !== undefined) tgEnvDate(errs, 'verified_on', p.verified_on);
   if (p.days !== undefined && tgEnvArr(errs, 'days', p.days, 31)) {
     p.days.forEach(function (d, i) {
       var at = 'days[' + i + ']';
-      if (!tgEnvObj(errs, at, d, ['date', 'theme', 'stops', 'legs', 'warnings'], ['rain', 'spare_minutes'])) return;
+      if (!tgEnvObj(errs, at, d, ['date', 'theme', 'stops', 'legs', 'warnings'], ['rain', 'spare_minutes'].concat(TG_ENV_DAY_C11))) return;
       if (d.spare_minutes !== undefined) tgEnvInt(errs, at + '.spare_minutes', d.spare_minutes, 0, 1440);   // C10
+      tgEnvDayC11(errs, at, d);                                                                             // C11
       if (d.date !== undefined) {
         tgEnvDate(errs, at + '.date', d.date);
         var prev = i ? p.days[i - 1] : null;
@@ -229,7 +285,8 @@ function tgEnvValidatePlanDigest(p) {
       if (d.stops !== undefined && tgEnvArr(errs, at + '.stops', d.stops, 25)) {
         d.stops.forEach(function (s, j) {
           var as = at + '.stops[' + j + ']';
-          if (!tgEnvObj(errs, as, s, ['n', 'slug', 'name', 'arrive', 'depart', 'minutes', 'maps_url', 'note_line'], ['time_style', 'check_on_day'])) return;
+          if (!tgEnvObj(errs, as, s, ['n', 'slug', 'name', 'arrive', 'depart', 'minutes', 'maps_url', 'note_line'], ['time_style', 'check_on_day'].concat(TG_ENV_STOP_C11))) return;
+          tgEnvStopC11(errs, as, s);                                                                        // C11
           if (s.time_style !== undefined) tgEnvEnum(errs, as + '.time_style', s.time_style, TG_ENV_TIME_STYLES);   // C10
           if (s.check_on_day !== undefined) tgEnvStr(errs, as + '.check_on_day', s.check_on_day, 1, 160);
           if (s.n !== undefined) tgEnvInt(errs, as + '.n', s.n, 1, 99);
@@ -243,7 +300,7 @@ function tgEnvValidatePlanDigest(p) {
         });
         tgEnvDupes(errs, at + '.stops', d.stops, 'n', 'stop number');
       }
-      if (d.legs !== undefined && tgEnvArr(errs, at + '.legs', d.legs, 26)) {
+      if (d.legs !== undefined && tgEnvArr(errs, at + '.legs', d.legs, 30)) {
         d.legs.forEach(function (l, j) {
           var al = at + '.legs[' + j + ']';
           if (!tgEnvObj(errs, al, l, ['from', 'to', 'mode', 'minutes'], ['maps_url', 'estimated', 'distance_m', 'flags', 'taxi_minutes', 'buffer_minutes'])) return;
@@ -488,9 +545,17 @@ registerEnvelopeHandler('trip_facts', {
 registerEnvelopeHandler('plan_digest', {
   validate: tgEnvCleaned(tgEnvValidatePlanDigest),
   handle: function (env) {
-    var p = env.payload;
-    var st = tgDigestStore(p);
-    var to = tgEnvDeliver('plan_digest', env, '🗓 Plan for <b>' + tgEscape(p.trip) + '</b> stored: ' + st.days + ' day(s), ' + st.later + ' saved for later. /trip shows it.');
+    var p = env.payload, st;
+    if (typeof p.parts === 'number' && p.parts > 1) {
+      // C11 plans in parts (23_plan_parts.js): staged until the last part, then stored and delivered once, joined.
+      var pt = tgPartsTake(env);
+      if (pt.state !== 'complete') return pt;
+      env = pt.env; p = env.payload; st = pt.stored;
+    } else {
+      st = tgDigestStore(p);
+      _safe('tg_parts_supersede', function () { return tgPartsSupersede(p.trip, String(p.build_id)); });
+    }
+    var to = tgEnvDeliver('plan_digest', env,'🗓 Plan for <b>' + tgEscape(p.trip) + '</b> stored: ' + st.days + ' day(s), ' + st.later + ' saved for later. /trip shows it.');
     return { trip: p.trip, days: st.days, later: st.later, to: to };
   }
 });

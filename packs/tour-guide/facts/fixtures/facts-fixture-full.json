@@ -1,0 +1,30 @@
+{
+  "description": "Invented place facts (C11) carrying every field, for the facts tests and the end-to-end test. Made-up places, reserved domains.",
+  "garden": {
+    "checked": "2031-04-02",
+    "sources": [
+      { "url": "https://gull-hollow-garden.example.org/visit", "title": "Visiting the Gull Hollow Garden", "accessed": "2031-04-02" },
+      { "url": "https://gull-hollow-garden.example.org/tea", "title": "Tea house", "accessed": "2031-04-02" }
+    ],
+    "visit_minutes": { "min": 60, "max": 90 },
+    "last_entry": "16:00",
+    "last_entry_note": "tea house 15:30",
+    "close": "16:30",
+    "closed_weekdays": [1],
+    "booking": { "required": false, "text": "Groups of ten or more write ahead" },
+    "price": { "text": "800 credits", "includes": "tea and a sweet included" },
+    "payment": "cash only",
+    "gate_name": "the Lantern Gate"
+  },
+  "restaurant": {
+    "checked": "2031-04-05",
+    "sources": [{ "url": "https://kelp-and-cedar.example.net/menu", "title": "Kelp and Cedar menu", "accessed": "2031-04-05" }],
+    "visit_minutes": { "min": 90, "max": 120 },
+    "close": "22:00",
+    "closed_weekdays": [0, 3],
+    "booking": { "required": true, "party_min": 2, "lead": "2 days ahead", "how": "by phone", "text": "Course only after 18:00" },
+    "price": { "text": "6,500 credits course", "includes": "eight dishes and tea" },
+    "payment": "cards accepted",
+    "menu": { "checked": "2031-04-05", "fits": "partly", "note": "ask for the course without fish stock" }
+  }
+}

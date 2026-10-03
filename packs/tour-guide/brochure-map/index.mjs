@@ -4,7 +4,10 @@
  * convenience through the kit.
  *   toBrochureModel({ trip, plan, places?, notes?, snapshots?, estimates?, options:{ generator?, built_on?, verified_on?, show_google_content = true, owner_tz?, now? } }) → model
  *     trip.bookings (WP-10a) open the practical page as "Bookings", times in the trip's zone and in options.owner_tz;
- *     options.now (ISO or ms) lets past deadlines read "Was due" / "Open since".
+ *     options.now (ISO or ms) lets past deadlines read "Was due" / "Open since", and marks C11 facts older than the
+ *     freshness limits "check again" (without it, the build date); options.diet (e.g. 'vegetarian') words the menu line.
+ *     Contract C11: trip.day_overrides, trip.season (the season page after the overview), place.facts and place.flags,
+ *     and the DayPlan's start/end/bags/sunset/extras, dinner booking and stop facts map through brochure-map-facts.mjs.
  *   renderPlan(args, { page?, embedFonts? }) → { html, model, warnings }
  *   renderPlanPdf(args, outPath, { page?, shotsDir? }) → { html, model, warnings, pdf, pages, available }   (no PDF when pdfAvailable() is false)
  * Pure: never mutates its input, never calls the network.
@@ -18,11 +21,13 @@ import { mapLater } from './brochure-map-later.mjs';
 import { tripPractical, dayRoutes, freeDays, verifySections, PRACTICAL_LIMITS } from './brochure-map-practical.mjs';
 import { bookingsSection } from './brochure-map-bookings.mjs';
 import { buildAttribution } from './brochure-map-attribution.mjs';
+import { seasonModel, factsSourceRows, seasonSourceRows } from './brochure-map-facts.mjs';
 
 export { placeCard, closedDays, hoursLine, hoursToday, categoryLabel } from './brochure-map-cards.mjs';
 export { mapDay, legMode, MODE_MAP } from './brochure-map-days.mjs';
 export { mapLater } from './brochure-map-later.mjs';
 export { buildAttribution, mergeSources, sourceKey } from './brochure-map-attribution.mjs';
+export { cardFacts, seasonModel, stopLines, IMPL as FACTS_IMPL } from './brochure-map-facts.mjs';
 export { pdfAvailable };
 
 const LOCALE = /^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$/;
@@ -51,6 +56,11 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
   const snaps = snapshotIndex(snapshots, plan.build_id);
   const lodgingBySlug = new Map((trip.lodging || []).map((l) => [l.id, l]));
   const lodgingName = (slug) => (lodgingBySlug.get(slug) || {}).name;
+  // Contract C11: facts lines need a "now" for the stale marks (options.now, else the build date; none → never stale),
+  // the travellers' diet for the menu line, and the trip's locale for the times.
+  const locale = LOCALE.test(String(trip.locale || '')) ? trip.locale : 'en-US';
+  const factsOptions = { now: options.now ?? (DATE.test(String(options.built_on || plan.built_on || '')) ? (options.built_on || plan.built_on) : undefined), diet: typeof options.diet === 'string' || (Array.isArray(options.diet) && options.diet.every((x) => typeof x === 'string')) ? options.diet : undefined, locale };
+  const overrides = new Map((Array.isArray(trip.day_overrides) ? trip.day_overrides : []).filter((o) => o && DATE.test(String(o.date || ''))).map((o) => [o.date, o]));
 
   const days = plan.days.filter((d) => d && d.date >= trip.start_date && d.date <= trip.end_date).slice().sort((a, b) => a.date.localeCompare(b.date));
   // Card order: places as the days use them, then Later-list places. Stops must resolve; other references may not.
@@ -76,13 +86,13 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
   const cards = {};
   for (const slug of order) {
     const p = placesBySlug.get(slug);
-    cards[slug] = placeCard({ place: p, snapshot: snaps.get(p.place_id), notesByPlace, estimatesByPlace, visitDates: visitDates.get(slug), visits: visits.get(slug), showGoogle, timeZone: trip.timezone });
+    cards[slug] = placeCard({ place: p, snapshot: snaps.get(p.place_id), notesByPlace, estimatesByPlace, visitDates: visitDates.get(slug), visits: visits.get(slug), showGoogle, timeZone: trip.timezone, factsOptions });
   }
 
   const bDays = [], free = [], routes = [];
   for (const d of days) {
     if (!(d.stops || []).length) { free.push({ date: d.date, note: (d.free || []).map((f) => f.note).filter(Boolean).join(' ') }); continue; }
-    bDays.push(mapDay(d, { placesBySlug, cards, lodgingName }));
+    bDays.push(mapDay(d, { placesBySlug, cards, lodgingName, override: overrides.get(d.date), season: trip.season, factsOptions }));
     routes.push({ n: bDays.length, date: d.date, url: d.day_url });
   }
   if (!bDays.length) throw new Error('brochure-map: the plan has no day with a stop; the brochure needs at least one');
@@ -116,9 +126,11 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
   const attribution = buildAttribution({
     notes: [...notesByPlace.values()].filter((n) => ids.has(n.place_id)),
     estimates: [...estimatesByPlace.values()].flat().filter((e) => ids.has(e.place_id)),
-    generator: options.generator, showGoogle
+    generator: options.generator, showGoogle,
+    extra: [...order.flatMap((s) => factsSourceRows(placesBySlug.get(s).facts)), ...seasonSourceRows(trip.season)]
   });
-  return compact({ version: 1, trip: tripOut, days: bDays, places: cards, later: mapLater(plan.later, { cards }), practical: practical.slice(0, PRACTICAL_LIMITS.sections), attribution });
+  const season = seasonModel(trip.season, { start_date: trip.start_date, end_date: trip.end_date, cards });
+  return compact({ version: 1, trip: tripOut, season, days: bDays, places: cards, later: mapLater(plan.later, { cards }), practical: practical.slice(0, PRACTICAL_LIMITS.sections), attribution });
 }
 
 /** renderPlan(args, renderOptions) → { html, model, warnings } — model is the brochure model (not the kit's prepared one). */

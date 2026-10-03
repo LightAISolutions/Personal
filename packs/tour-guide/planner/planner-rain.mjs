@@ -1,11 +1,14 @@
 /**
  * Tour Guide planner — rainy-day swaps. For each planned day with an outdoor stop: up to MAX_SWAPS indoor places that
  * are covered sights (isCoveredSight — never a meal or a shop), are not on the plan, are open (or of unknown hours) that date and lie within reach of one of the day's outdoor stops.
+ * "Open that date" follows the place's own facts where they speak (factsHours, Phase 11): a museum whose own site says it
+ * is closed on Mondays is never a Monday swap, whatever Google says.
  * Straight-line distance only, no API call: a swap is a suggestion the owner can promote with a replan, never a stop.
  *   isIndoor(place)  → true | false | null   (the Place's own `indoor`, else its category; null = cannot tell)
  *   rainSwaps({ day, places, snapshots, exclude, used }) → [{ place, place_id, instead_of, km, hours }]
  */
 import { hoursOn } from './planner-hours.mjs';
+import { placeFacts, factsHours } from './planner-facts.mjs';
 import { haversineKm, isLoc } from './planner-geo.mjs';
 import { refineCategory, COVERED_SIGHTS, MEAL_CATEGORIES } from './planner-category.mjs';
 
@@ -60,7 +63,8 @@ export function rainSwaps({ day, places, snapshots, exclude = new Set(), used = 
     if (!SWAP_STATUSES.includes(p.status) || exclude.has(p.id) || used.has(p.id) || onDay.has(p.id) || !isCoveredSight(p)) continue;
     const loc = locOf(snapshots, p.place_id);
     if (!loc) continue;
-    const h = hoursOn(snapshots.get(p.place_id), day.date).status;
+    const snap = snapshots.get(p.place_id);
+    const h = factsHours(hoursOn(snap, day.date), placeFacts(p), day.date, snap, p.name).hours.status;
     if (h === 'closed' || h === 'closed_business') continue;
     let best = null;
     for (const o of outdoor) { const km = haversineKm(o.loc, loc); if (!best || km < best.km) best = { km, slug: o.slug }; }

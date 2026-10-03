@@ -30,7 +30,8 @@ export function peerComparison(ratio) {
   if (ratio <= 1.1) return 'by about as many reviewers as its peers';
   return 'by more reviewers than its peers';
 }
-const FLAG_WORDS = Object.freeze({ unproven: 'new: all its ratings are recent', tourist_oriented: 'reads tourist-oriented', closed_day_conflict: 'closed on a trip day' });
+const FLAG_WORDS = Object.freeze({ unproven: 'new: all its ratings are recent', tourist_oriented: 'reads tourist-oriented', closed_day_conflict: 'closed on a trip day', crowd_magnet: 'busy at peak hours' });
+// local_favourite has no word of its own here: it leads the "named by" clause ("a local favourite named by two local-language guides").
 
 /**
  * gemLineClauses(record, { category_median_count }) → the clauses in order, before joining and trimming. The first clause
@@ -51,7 +52,10 @@ export function gemLineClauses(record, { category_median_count } = {}) {
   if (ll) named.push(plural(ll, 'local-language guide', 'local-language guides'));
   if (ed) named.push(plural(ed, 'local editorial list', 'local editorial lists'));
   if (co) named.push(plural(co, 'community thread', 'community threads'));
-  if (named.length) parts.push('named by ' + (named.length > 1 ? named.slice(0, -1).join(', ') + ' and ' + named[named.length - 1] : named[0]));
+  const favourite = (record.flags || []).includes('local_favourite');
+  const namedBy = named.length ? 'named by ' + (named.length > 1 ? named.slice(0, -1).join(', ') + ' and ' + named[named.length - 1] : named[0]) : '';
+  if (favourite) parts.push(namedBy ? `a local favourite ${namedBy}` : 'a local favourite');
+  else if (namedBy) parts.push(namedBy);
   if (isOwnerSeed(record)) parts.push('one of your own seeds');
   if (record.mass_tourism_rank != null && record.mass_tourism_rank <= MASS_TOURISM_TOP_N) parts.push('on a mass-tourism top-ten list');
   const edges = (record.friction || []).map((f) => FRICTION_WORDS[f]).filter(Boolean);

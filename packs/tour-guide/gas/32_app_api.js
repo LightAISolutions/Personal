@@ -281,7 +281,8 @@ function tgAppRoundGroups(trip, run) {
     groups[g].items.push({ key: k, n: it.n, slug: it.slug, name: it.name, why_you: tgAppS(x.why_you),
       est_minutes: typeof x.est_minutes === 'number' ? x.est_minutes : null, area: tgAppS(x.area), maps_url: tgAppMaps(x.maps_url),
       gem: it.gem === true, gem_line: it.gem === true ? tgAppS(x.gem_line) : '', labels: Array.isArray(x.labels) ? x.labels.map(String) : [],
-      new: x.new === true, seen_before: seen, changes: Array.isArray(x.changes) ? x.changes.slice(0, 3).map(String) : [],
+      new: x.new === true, local_favourite: x.local_favourite === true,   // C11
+      seen_before: seen, changes: Array.isArray(x.changes) ? x.changes.slice(0, 3).map(String) : [],
       round: it.round, choice: val[it.slug] || '' });
   });
   if (!order.length) return null;
@@ -407,6 +408,30 @@ function tgAppOpDone(args) {
 /* ==================== operations: the trip, the brochure ==================== */
 
 function tgAppNum(v) { return typeof v === 'number' && isFinite(v) ? v : null; }
+/**
+ * C11 (WP-11c): the day's sunset, start, end, bags, dinner and extras and a stop's last entry, visit-length source, crowd
+ * slot, facts, booking and price lines and menu date — each key only when the stored day or stop carries it, so an older
+ * day's object is unchanged. Every string is a plain string (the app escapes), every link a Google Maps https URL or ''.
+ */
+function tgAppAnchor(a, keys) {
+  var o = { name: tgAppS(a.name) };
+  keys.forEach(function (k) { if (a[k] !== undefined && a[k] !== null) o[k] = k === 'maps_url' ? tgAppMaps(a[k]) : tgAppS(a[k]); });
+  return o;
+}
+function tgAppDayC11(out, d) {
+  if (d.sunset !== undefined) out.sunset = tgAppS(d.sunset);
+  if (isPlainObject(d.start)) out.start = tgAppAnchor(d.start, ['time', 'maps_url']);
+  if (isPlainObject(d.end)) out.end = tgAppAnchor(d.end, ['time', 'maps_url']);
+  if (d.bags !== undefined) out.bags = tgAppS(d.bags);
+  if (isPlainObject(d.dinner)) out.dinner = tgAppAnchor(d.dinner, ['slug', 'start', 'end', 'maps_url', 'note_line', 'booking_line']);
+  if (Array.isArray(d.extras)) out.extras = d.extras.filter(isPlainObject).slice(0, 3).map(function (x) { return tgAppAnchor(x, ['kind', 'time', 'maps_url', 'note_line']); });
+  return out;
+}
+var TG_APP_STOP_C11 = ['last_entry', 'minutes_source', 'crowd_slot', 'facts_line', 'booking_line', 'price_line', 'menu_checked'];
+function tgAppStopC11(out, s) {
+  TG_APP_STOP_C11.forEach(function (k) { if (s[k] !== undefined && s[k] !== null) out[k] = tgAppS(s[k]); });
+  return out;
+}
 /** trip.digest { slug } — the trip (title, dates, status, lodging) and its stored days and Later list (DayPlans · Later). */
 function tgAppOpDigest(args) {
   var t = tgAppTrip(args);
@@ -415,11 +440,11 @@ function tgAppOpDigest(args) {
   trip.lodging = t.lodging && t.lodging.text ? { text: tgAppS(t.lodging.text), nights: tgAppNum(t.lodging.nights) } : null;
   var days = tgDigestDays(t.slug).map(function (d) {
     var arr = function (a) { return Array.isArray(a) ? a.filter(isPlainObject) : []; };
-    return {
+    var out = {
       date: d.date, n: d.n, theme: tgAppS(d.theme),
       stops: arr(d.stops).map(function (s) {
-        return { n: tgAppNum(s.n), slug: tgAppS(s.slug), name: tgAppS(s.name), arrive: tgAppS(s.arrive), depart: tgAppS(s.depart),
-          minutes: tgAppNum(s.minutes), maps_url: tgAppMaps(s.maps_url), note_line: tgAppS(s.note_line) };
+        return tgAppStopC11({ n: tgAppNum(s.n), slug: tgAppS(s.slug), name: tgAppS(s.name), arrive: tgAppS(s.arrive), depart: tgAppS(s.depart),
+          minutes: tgAppNum(s.minutes), maps_url: tgAppMaps(s.maps_url), note_line: tgAppS(s.note_line) }, s);
       }),
       legs: arr(d.legs).map(function (l) {
         return { from: tgAppS(l.from), to: tgAppS(l.to), mode: tgAppS(l.mode), minutes: tgAppNum(l.minutes), maps_url: tgAppMaps(l.maps_url) };
@@ -429,6 +454,7 @@ function tgAppOpDigest(args) {
         return { slug: tgAppS(r.slug), name: tgAppS(r.name), instead_of: tgAppS(r.instead_of), km: tgAppNum(r.km), maps_url: tgAppMaps(r.maps_url) };
       })
     };
+    return tgAppDayC11(out, d);
   });
   var later = tgLaterList(t.slug).map(function (l) {
     var known = Object.prototype.hasOwnProperty.call(TG_CMD_LATER_REASONS, l.reason);

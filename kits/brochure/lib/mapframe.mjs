@@ -67,6 +67,13 @@ export function daySequence(d) {
       if (t.to === 'lodging' && d.lodging && prev !== 0) { pairs.push({ from: prev, to: 0, mode, leg }); prev = 0; leg = null; }
       continue;
     }
+    // C11: a day's real start or end point (an arrival or a departure) is drawn as a labelled diamond
+    if ((t.kind === 'start' || t.kind === 'end') && t.point && Number.isFinite(t.point.lat) && Number.isFinite(t.point.lng)) {
+      const k = add(`day-${t.kind}`, t.point, { kind: 'point', label: t.kind });
+      if (t.kind === 'end' && prev !== null && prev !== k) pairs.push({ from: prev, to: k, mode, leg });
+      prev = k; mode = 'walk'; leg = null;
+      continue;
+    }
     if (!t.place || !Number.isFinite(t.place.lat)) continue;
     const k = add(t.place.id, t.place, { kind: t.kind === 'stop' ? 'stop' : 'meal', n: t.n });
     if (prev !== null && prev !== k) pairs.push({ from: prev, to: k, mode, leg });
