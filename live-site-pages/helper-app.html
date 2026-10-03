@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.08w">
+  <meta name="build-version" content="v01.09w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -33,10 +33,13 @@
     .hidden { display: none !important; }
 
     /* ── chrome ── */
-    header { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+    header { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding-top: var(--safe-top, 0px); }
     .masthead { display: flex; align-items: baseline; justify-content: space-between; padding: 14px 16px 6px; }
     .masthead h1 { margin: 0; font: 600 22px/1.1 var(--serif); letter-spacing: -0.01em; }
     .masthead .kicker { font: 11px/1 var(--mono); color: var(--hint); letter-spacing: 0.08em; text-transform: uppercase; }
+    .masthead .side { display: flex; align-items: center; gap: 10px; }
+    .masthead .full { min-width: 44px; min-height: 44px; margin: -12px -8px -12px 0; border: 0; background: none; color: var(--hint); font: 20px/1 var(--sans); cursor: pointer; border-radius: 10px; }
+    .masthead .full:hover { color: var(--fg); background: var(--card); }
     nav { display: flex; gap: 6px; padding: 6px 16px 10px; overflow-x: auto; scrollbar-width: none; }
     nav::-webkit-scrollbar { display: none; }
     nav button { flex: 0 0 auto; min-height: 44px; padding: 0 14px; border: 1px solid var(--line); border-radius: 22px;
@@ -151,7 +154,7 @@
 </head>
 <body>
   <header id="chrome" class="hidden">
-    <div class="masthead"><h1 id="title">Helper</h1><span class="kicker" id="kicker"></span></div>
+    <div class="masthead"><h1 id="title">Helper</h1><span class="side"><span class="kicker" id="kicker"></span><button id="full" class="full hidden" type="button" aria-label="Full screen" title="Full screen">⤢</button></span></div>
     <nav id="nav" aria-label="Screens"></nav>
   </header>
   <main id="main"></main>
@@ -162,7 +165,7 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.08w';
+    var APP_VERSION = 'v01.09w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'compare', label: 'Compare' }, { id: 'facts', label: 'Facts' },
@@ -1187,18 +1190,28 @@
     }
 
     /* ---------- boot ---------- */
-    /* Open at the size the owner would otherwise drag it to. expand() gives the full height everywhere; on the web clients
-     * (web.telegram.org/k and /a), where a Mini App starts as a small floating window over the chat, Bot API 8.0's fullscreen
-     * is the client's own full-size layout — the one the maximise button reaches — so the owner no longer has to press it.
-     * Phones already fill the screen after expand(), and the desktop apps keep their own window, so neither asks for it.
-     * A client that cannot do it fires fullscreenFailed and the app simply stays at the size it opened at. */
+    /* ---------- size: full height everywhere, full screen on the web clients ----------
+     * expand() gives the full height on every client. On web.telegram.org (k and a) a Mini App is a floating, resizable window
+     * that the client opens at one fixed size and that no event can enlarge (web_app_expand is ignored there), and its
+     * fullscreen is the browser's own, which a page may only ask for from a tap. So on those clients the masthead carries a
+     * ⤢ button: one tap takes the whole window, ⤡ (or Esc) gives it back. The client overlays its close button in that mode
+     * and says how tall the overlay is (contentSafeAreaInset.top); the header pads by that much. Phones fill the screen
+     * already, and the desktop apps keep their own window, so neither shows the button. */
     function openWide() {
       try { tg.ready(); } catch (e) { /* older clients */ }
       try { if (!tg.isExpanded) tg.expand(); } catch (e) { /* older clients */ }
-      try {
-        var web = /^(webk|weba)$/.test(str(tg.platform, 20)), can = typeof tg.requestFullscreen === 'function' && (!tg.isVersionAtLeast || tg.isVersionAtLeast('8.0'));
-        if (web && can && !tg.isFullscreen) tg.requestFullscreen();
-      } catch (e) { /* a client without fullscreen */ }
+    }
+    function webFull() {
+      return !!tg && /^(webk|weba)$/.test(str(tg.platform, 20)) && typeof tg.requestFullscreen === 'function' && (!tg.isVersionAtLeast || tg.isVersionAtLeast('8.0'));
+    }
+    function applyFull() {
+      var on = !!(tg && tg.isFullscreen), b = $('full'), label = on ? 'Exit full screen' : 'Full screen';
+      b.classList.toggle('hidden', !webFull()); b.textContent = on ? '\u2921' : '\u2922'; b.setAttribute('aria-label', label); b.title = label;
+      var inset = tg && tg.contentSafeAreaInset ? num(tg.contentSafeAreaInset.top) : 0;
+      document.documentElement.style.setProperty('--safe-top', Math.max(0, inset) + 'px');
+    }
+    function toggleFull() {
+      try { if (tg.isFullscreen) tg.exitFullscreen(); else tg.requestFullscreen(); } catch (e) { setStatus('Full screen is not available here.'); }
     }
     function boot() {
       $('appVer').textContent = APP_VERSION;
@@ -1207,6 +1220,8 @@
       openWide();
       applyTheme(); applyViewport();
       try { tg.onEvent('themeChanged', applyTheme); tg.onEvent('viewportChanged', applyViewport); } catch (e) { /* older clients */ }
+      $('full').addEventListener('click', toggleFull); applyFull();
+      try { tg.onEvent('fullscreenChanged', applyFull); tg.onEvent('contentSafeAreaChanged', applyFull); tg.onEvent('fullscreenFailed', function () { applyFull(); setStatus('Full screen is not available here.'); }); } catch (e) { /* older clients */ }
       document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') flushDraft(); }); window.addEventListener('pagehide', flushDraft);
       try { if (tg.MainButton) tg.MainButton.onClick(function () { if (mainBtn.fn && !S.busy) mainBtn.fn(); }); if (tg.BackButton) tg.BackButton.onClick(function () { go('home'); }); } catch (e) { /* older clients */ }
       var fromUrl = readParams();

@@ -3,11 +3,19 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 8/50`
+`Sections: 9/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.09w] — 2026-10-03 07:48:06 PM EST — v01.60r
+
+### Added
+- On web.telegram.org a ⤢ button in the app's header takes the whole window in one tap; ⤡ or Esc gives it back. The page keeps clear of Telegram's own buttons while it is full screen
+
+### Changed
+- The app no longer asks for full screen on its own when it opens: the web client only allows it from a tap, so the earlier change did nothing there
 
 ## [v01.08w] — 2026-10-03 07:25:24 PM EST — v01.59r
 

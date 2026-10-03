@@ -3,11 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 60/100`
+`Sections: 61/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.60r] — 2026-10-03 07:48:06 PM EST
+
+> **Prompt:** "I retried it and it still opens small"
+
+### Added
+- **A full-screen button in the Mini App shell on the web clients** (`live-site-pages/helper-app.html`, app v01.09w): read from Telegram Web K's source (`src/components/browser.tsx`, `src/components/webApp.tsx`), a Mini App there is a floating, resizable window opened at a fixed 480×688, `web_app_expand` has no handler, and `web_app_request_fullscreen` maps to the browser's Fullscreen API on the window's body, which the browser allows only from a user gesture — so the v01.59r request on open failed (`fullscreenFailed`). The masthead now shows ⤢ on `webk`/`weba` (Bot API 8.0+): one tap calls `requestFullscreen()`, ⤡ calls `exitFullscreen()`; `fullscreenChanged` and `contentSafeAreaChanged` set `--safe-top` so the header pads by the client's overlay (`contentSafeAreaInset.top`, 56 px on Web K); `fullscreenFailed` shows a one-line status. `openWide` keeps `ready()` + `expand()` only
+- README timestamp and the app's version line
 
 ## [v01.59r] — 2026-10-03 07:25:24 PM EST
 
