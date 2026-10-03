@@ -14,7 +14,7 @@ test('output passes core validateEnvelope and uses the canonical file name; the 
   const { ctx } = H.loadGas();
   assert.deepEqual([...TYPES], [...ctx.ENVELOPE_TYPES]);
   assert.deepEqual(typesFor('hello'), [...TYPES, 'greeting']);
-  assert.deepEqual(typesFor('tour-guide'), [...TYPES, 'prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest', 'bookings']);
+  assert.deepEqual(typesFor('tour-guide'), [...TYPES, 'prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest', 'bookings', 'scout']);
   assert.throws(() => typesFor('nope'), /unknown pack/);
   const now = new Date('2026-09-29T17:03:07.123Z');
   ctx.__TEST_NOW = now.getTime();

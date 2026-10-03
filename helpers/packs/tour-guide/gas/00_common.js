@@ -24,6 +24,7 @@ var TG_SETTINGS = {
 
 function tgKindRoutine(kind) {
   var k = String(kind || '');
+  if (k === 'scout') return routineConfigured('SCOUT') ? 'SCOUT' : 'RESEARCH';   // TG-SCOUT §2: own routine when set
   return Object.prototype.hasOwnProperty.call(TG_KIND_ROUTINE, k) ? TG_KIND_ROUTINE[k] : HELPER.inbound_routine;
 }
 

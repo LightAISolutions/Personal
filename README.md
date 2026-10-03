@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-03 04:50:16 AM EST` · Repo version: `v01.51r`
+Last updated: `2026-10-03 05:24:52 AM EST` · Repo version: `v01.52r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -54,7 +54,7 @@ Last updated: `2026-10-03 04:50:16 AM EST` · Repo version: `v01.51r`
 │   │
 │   │
 │   <b>│ ─ Standalone Utilities ─────────────────────────────────────────────────────</b>
-│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/helper-app.html">helper-app.html</a>  →  <a href="https://lightaisolutions.github.io/Personal/helper-app.html">🌐</a>  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/helper-apphtml.changelog.md">v01.05w</a> · vNoGASg | Helper app: the generic Telegram Mini App shell a helper opens from its bot's menu button — no data and no helper-specific text in the page; it talks to the helper's core `?route=app` with the Mini App's signed launch data
+│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/helper-app.html">helper-app.html</a>  →  <a href="https://lightaisolutions.github.io/Personal/helper-app.html">🌐</a>  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/helper-apphtml.changelog.md">v01.06w</a> · vNoGASg | Helper app: the generic Telegram Mini App shell a helper opens from its bot's menu button — no data and no helper-specific text in the page; it talks to the helper's core `?route=app` with the Mini App's signed launch data
 │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/text-compare.html">text-compare.html</a>  →  <a href="https://lightaisolutions.github.io/Personal/text-compare.html">🌐</a>  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/text-comparehtml.changelog.md">v01.00w</a> · vNoGASg | [template] Text comparison tool with side-by-side diff highlighting
 │   │
 │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/MasterACL.html">MasterACL.html</a>  →  <a href="https://LightAISolutions.github.io/Personal/MasterACL.html">🌐</a>🟢 · 🔸 · ◽ · <a href="https://github.com/LightAISolutions/Personal/blob/main/googleAppsScripts/MasterACL/MasterACL.gs">⛽</a> · ◽  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/MasterACLhtml.changelog.md">v01.00w</a> · <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/gs-changelogs/MasterACLgs.changelog.md">v01.00g</a> | [template] MasterACL page
@@ -245,6 +245,7 @@ Last updated: `2026-10-03 04:50:16 AM EST` · Repo version: `v01.51r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-9.md">TG-PHASE-9.md</a> — Phase 9 decisions: the finalized values, the Step 0 cross-origin verification, WP pointers, the live check
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-10.md">TG-PHASE-10.md</a> — Phase 10 decisions: the coordinator's merge choices, the private-repo side, the live check, what moves to Phase 11
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-11.md">TG-PHASE-11.md</a> — Phase 11 decisions: the coordinator's merge choices for both waves, the private-repo side, the live checks, what moves to Phase 12
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-SCOUT.md">TG-SCOUT.md</a> — Scout contract: the /scout request, the scout payload, ranking, the board, places, and the decisions log
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-1b.md">WP-1b.md</a> — WP-1b core flows + document delivery: defaults (step shape, claim order, expiry, size fallback)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2a.md">WP-2a.md</a>            — WP-2a Maps kit: defaults, Maps terms finding, credential header, live smoke results
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2b.md">WP-2b.md</a>            — WP-2b Research kit: defaults (budgets, independence, labels, scanner)
@@ -274,6 +275,8 @@ Last updated: `2026-10-03 04:50:16 AM EST` · Repo version: `v01.51r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-9c.md">WP-9c.md</a> — WP-9c shell page: design, behaviour decisions, the core-only-from-URL rule, screenshot table
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-10a.md">WP-10a.md</a> — WP-10a trip time zones, Contract C10, bookings and the alarm: defaults
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-10b.md">WP-10b.md</a> — WP-10b honest travel legs and the planner tidy-up: defaults and the Google facts checked
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-S-engine.md">WP-S-engine.md</a> — WP-S engine decisions: weights, screens, the gem rule, payload and board choices
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-S-gas.md">WP-S-gas.md</a> — WP-S core decisions: /scout, the Scouts tab, the ➕ callback, the app operations
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/hidden-gems-proposal.md">hidden-gems-proposal.md</a> — Hidden gems: the sweep idea evaluated against other methods, the Gem Funnel recommendation, costs, plan changes implied, decisions 22–26 (answered by the owner)
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/decisions/screenshots">screenshots/</a> — Screenshots a work package attached to its decisions file
 │   │       └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/decisions/screenshots/wp-9c">wp-9c/</a> — The helper app shell at 390×844: six screens in light and dark, the error and closed-round states (from the shell test, invented fixtures)
@@ -499,12 +502,14 @@ Last updated: `2026-10-03 04:50:16 AM EST` · Repo version: `v01.51r`
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/12_flow_plan.js">12_flow_plan.js</a> — The /plan journey and /seed
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/13_flow_review.js">13_flow_review.js</a> — The post-trip /review flow and daily offer
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/14_bookings.js">14_bookings.js</a> — Booking deadlines: Bookings tab, /bookings, reminders through one core alarm, ✅ Booked · Not needed · Tomorrow
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/16_scout.js">16_scout.js</a> — /scout and /scouts: the scout request, the Scouts tab, the numbered list with ➕ Later buttons
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/20_envelopes.js">20_envelopes.js</a> — Handlers for the seven pack envelope types, prefs review buttons
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/21_sheets.js">21_sheets.js</a> — Pack tabs and their storage API
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/22_people.js">22_people.js</a> — People the owner travels with, who comes, /dates hours, trip_update
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/30_chat_api.js">30_chat_api.js</a> — Lane B (Claude API answers) and the /smart toggle
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/31_route.js">31_route.js</a> — /route through the Apps Script Maps service
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/32_app_api.js">32_app_api.js</a> — `?route=app` (registerRoute, auth webapp): the Mini App's operations — home, shortlist, facts, interview, brochure, places — and the `app_menu_button` setup step
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/35_scout_app.js">35_scout_app.js</a> — The Mini App's Scout operations: list, get, board, new, add
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/40_interview_bank.js">40_interview_bank.js</a> — Interview bank, generated by the bundler (never edit)
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/gas/.gitkeep">.gitkeep</a>        — Keeps the directory
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/helper.json">helper.json</a>     — Pack manifest: name, drive root, memory dirs, timezone default
@@ -550,10 +555,18 @@ Last updated: `2026-10-03 04:50:16 AM EST` · Repo version: `v01.51r`
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-prefs-review.schema.json">tour-guide-prefs-review.schema.json</a> — prefs_review payload (the prefs kit's review)
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-profile-excerpt.schema.json">tour-guide-profile-excerpt.schema.json</a> — Profile excerpt
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-profile-summary.schema.json">tour-guide-profile-summary.schema.json</a> — profile_summary payload
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-scout.schema.json">tour-guide-scout.schema.json</a> — scout payload (one Scout board: ranked picks, left out, Drive ids)
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-shortlist.schema.json">tour-guide-shortlist.schema.json</a> — shortlist payload (one /plan round)
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-trip.schema.json">tour-guide-trip.schema.json</a> — Trip
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-trip-facts.schema.json">tour-guide-trip-facts.schema.json</a> — trip_facts payload (intake)
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-visit-estimate.schema.json">tour-guide-visit-estimate.schema.json</a> — VisitEstimate
+│   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/scout">scout/</a> — Scout engine: one food or activity across a destination, ranked, with a comparison board
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/scout/index.mjs">index.mjs</a> — Public API of the Scout engine
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/scout/scout-board.mjs">scout-board.mjs</a> — The Scout board: map, cards, compare table, left out (HTML for the app, PDF for the chat)
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/scout/scout-payload.mjs">scout-payload.mjs</a> — The scout payload and the Place fields a pick writes (no Google field)
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/scout/scout-rank.mjs">scout-rank.mjs</a> — Pool records, screens with reasons, the score and labels
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/scout/scout-text.mjs">scout-text.mjs</a> — "matcha in Kyoto" parsing, scout ids, groups, search queries
+│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/scout/scout-weights.mjs">scout-weights.mjs</a> — Weights, thresholds and limits
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/shortlist-sheet">shortlist-sheet/</a> — One research round as a printable PDF, numbered like the chat
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/shortlist-sheet/index.mjs">index.mjs</a>       — shortlistSheetHtml, renderShortlistPdf, CLI
 │   │       └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/travellers">travellers/</a>      — The travel profile as the planner reads it, and the party excerpt for trips with companions
@@ -609,7 +622,9 @@ Last updated: `2026-10-03 04:50:16 AM EST` · Repo version: `v01.51r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-9b.md">WP-9b.md</a> — WP-9b progress, files, tests, requests
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-9c.md">WP-9c.md</a> — WP-9c progress, the shell test, screenshots
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-10a.md">WP-10a.md</a> — WP-10a progress and checks
-│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-10b.md">WP-10b.md</a> — WP-10b progress and checks
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-10b.md">WP-10b.md</a> — WP-10b progress and checks
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-S-engine.md">WP-S-engine.md</a> — WP-S engine progress, checks and requests
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-S-gas.md">WP-S-gas.md</a> — WP-S core progress, checks and requests
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates">templates/</a>              — Skeletons copied by tools/new-helper.mjs
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates/private-repo">private-repo/</a>       — Skeleton of a helper's private repo ({{…}} placeholders filled by new-helper.mjs)
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/templates/private-repo/.gitattributes">.gitattributes</a>  — log/*.md merge=union so daily logs merge line by line; the Maps ledger uses the maps-ledger driver
@@ -722,6 +737,9 @@ Last updated: `2026-10-03 04:50:16 AM EST` · Repo version: `v01.51r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_redteam_envelopes.test.js">pack_tour-guide_redteam_envelopes.test.js</a> — Pack red-team A: hostile from-brain envelopes refused or neutralised
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_redteam_pdf.test.js">pack_tour-guide_redteam_pdf.test.js</a> — Pack red-team I: PDF delivery — `drive_file_ids`, over-size files, `/brochure` resend, files outside the helper root
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_schemas.test.js">pack_tour-guide_schemas.test.js</a> — Tour Guide pack: every schema accepts its fixture and rejects hostile shapes
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_scout.test.js">pack_tour-guide_scout.test.js</a> — Tour Guide pack: Scout parsing, ranking, payload, Place fields and board
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_scout_gas.test.js">pack_tour-guide_scout_gas.test.js</a> — Tour Guide pack: the core's /scout, Scouts tab, ➕ callback and app operations
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_scout_redteam.test.js">pack_tour-guide_scout_redteam.test.js</a> — Tour Guide pack: Scout red team (Google fields, hostile text, data URIs, injection)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_shortlist-sheet.test.js">pack_tour-guide_shortlist-sheet.test.js</a> — Shortlist sheet: chat numbering, escaping, gem badge, notes cap, real PDF when Chromium is present
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_travellers.test.js">pack_tour-guide_travellers.test.js</a> — Tour Guide pack: the excerpt keeps every dietary limit, overrides never lift one, the party excerpt
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/shell_helper-app.playwright.mjs">shell_helper-app.playwright.mjs</a> — Browser test of the shell (Playwright, no network): six screens light/dark, batch submit, brochure sandbox, error states, layout; writes the screenshots

@@ -334,4 +334,20 @@ export function checkPlacesDigest(d) {
   return errs;
 }
 
+/** Scout payload (TG-SCOUT §3): ranks 1..N in order, slugs / place ids / labels unique, real dates, ≤ 60 000 chars. */
+export function checkScout(p) {
+  const errs = [];
+  if (!isDate(p.created_on)) errs.push({ path: '/created_on', message: 'not a calendar date' });
+  const d = /^sc-(\d{4})(\d{2})(\d{2})-/.exec(p.scout_id);
+  if (d && !isDate(`${d[1]}-${d[2]}-${d[3]}`)) errs.push({ path: '/scout_id', message: 'the date part is not a calendar date' });
+  p.items.forEach((it, i) => {
+    if (it.n !== i + 1) errs.push({ path: `/items/${i}/n`, message: `rank ${it.n} out of order (expected ${i + 1})` });
+    if (new Set(it.labels).size !== it.labels.length) errs.push({ path: `/items/${i}/labels`, message: 'duplicate label' });
+  });
+  dupes(p.items, 'slug', '/items', 'slug', errs);
+  dupes(p.items.filter((it) => it.place_id !== undefined), 'place_id', '/items', 'place id', errs);
+  sizeCheck(p, errs);
+  return errs;
+}
+
 // Developed by: LightAISolutions

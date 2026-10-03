@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.05w">
+  <meta name="build-version" content="v01.06w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -130,15 +130,17 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.05w';
+    var APP_VERSION = 'v01.06w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'facts', label: 'Facts' },
-      { id: 'interview', label: 'Interview' }, { id: 'brochure', label: 'Brochure' }, { id: 'places', label: 'Places' }
+      { id: 'interview', label: 'Interview' }, { id: 'brochure', label: 'Brochure' }, { id: 'places', label: 'Places' },
+      { id: 'scout', label: 'Scout' }
     ];
+    var SCOUT_ID_RE = /^sc-\d{8}-[a-z0-9-]{1,40}$/;
     var TICKS = [{ v: 'w', text: '✅ Want' }, { v: 'l', text: '🔖 Later' }, { v: 's', text: '❌ Skip' }];
     var tg = (window.Telegram && window.Telegram.WebApp) || null;
-    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', busy: false };
+    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', scout: '', busy: false };
     var $ = function (id) { return document.getElementById(id); };
     var main = $('main');
 
@@ -170,7 +172,9 @@
     function homeBtn() { return el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } }); }
     /* A refusal in plain words: the reason the helper sent, plus what the chat is doing when it says which stage it is at. */
     var WHY = { no_flow: 'Nothing is open for this in the chat right now.', busy: 'The chat is busy with another step — finish it there first.', no_round: 'There is no open shortlist.',
-      no_picks: 'Tick ✅ on at least one place first.', no_more: 'No more rounds for this shortlist.', no_trip: 'That trip is not on file.', bad_answer: 'The helper sent an answer the app could not read.' };
+      no_picks: 'Tick ✅ on at least one place first.', no_more: 'No more rounds for this shortlist.', no_trip: 'That trip is not on file.', bad_answer: 'The helper sent an answer the app could not read.',
+      no_place: 'Say where to look — there is no current trip to search.', no_scout: 'That scout is not on file any more.', no_pick: 'That pick is not on file any more.',
+      no_board: 'This scout has no board file.', too_long: 'Please keep it under 80 characters.', missing_arg: 'Something is missing — fill it in and try again.' };
     function stageLine(stage) {
       return stage === 'planning' ? 'the helper is building the days' : stage === 'research' ? 'the helper is looking for more options' : stage === 'confirm' ? 'the chat is confirming the trip facts'
         : stage === 'choose' ? 'the chat is at the shortlist' : stage === 'intake' ? 'the plan is starting in the chat' : stage;
@@ -212,6 +216,7 @@
       var screen = str(q.screen || extra.screen), trip = str(q.trip || extra.trip, 64);
       S.screen = SCREENS.some(function (s) { return s.id === screen; }) ? screen : 'home';
       S.trip = /^[a-z0-9][a-z0-9-]{0,63}$/.test(trip) ? trip : '';
+      var scout = str(q.scout || extra.scout, 64); S.scout = SCOUT_ID_RE.test(scout) ? scout : '';
       return str(q.core, 400);
     }
     function resolveCore(fromUrl, done) {
@@ -260,11 +265,11 @@
       setMain('', null);
       Array.prototype.forEach.call($('nav').children, function (b) { if (b.getAttribute('data-screen') === screen) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
       try { if (tg && tg.BackButton) { if (screen === 'home') tg.BackButton.hide(); else tg.BackButton.show(); } } catch (e) { /* older clients */ }
-      ({ home: showHome, shortlist: showShortlist, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces })[screen]();
+      ({ home: showHome, shortlist: showShortlist, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout })[screen]();
     }
     function buildNav() {
       var nav = clear($('nav'));
-      SCREENS.forEach(function (s) { nav.appendChild(el('button', { type: 'button', text: s.label, 'data-screen': s.id, on: { click: function () { if (s.id === 'interview') { S.person = ''; S.addPerson = false; } go(s.id); } } })); });
+      SCREENS.forEach(function (s) { nav.appendChild(el('button', { type: 'button', text: s.label, 'data-screen': s.id, on: { click: function () { if (s.id === 'interview') { S.person = ''; S.addPerson = false; } if (s.id === 'scout') S.scout = ''; go(s.id); } } })); });
     }
     function tripLabel(t) { t = obj(t); return str(t.title || t.destination || t.slug, 60); }
     function tripName(slug) { var hit = (S.home ? list(S.home.trips) : []).filter(function (t) { return str(obj(t).slug) === str(slug); })[0]; return hit ? tripLabel(hit) : str(slug, 60); }
@@ -759,6 +764,93 @@
       [selDest, selStatus, selTag].forEach(function (s) { s.addEventListener('change', search); });
       view.appendChild(q); view.appendChild(el('div', { class: 'filters' }, [selDest, selStatus, selTag])); view.appendChild(results);
       render(view); search();
+    }
+
+    /* ---------- scout: one food or activity in one place, ranked for you; the board and the picks ---------- */
+    var SCOUT_LEFT = { off_topic: 'off topic', diet: 'nothing you can eat', diet_unproven: 'vegetarian not confirmed', low_rating: 'poorly rated', unproven: 'too little evidence',
+      closed: 'closed', closed_on_trip: 'closed on your days', too_far: 'too far', duplicate: 'duplicate', other: 'other' };
+    var SCOUT_LABELS = { gem: '💎 gem', veg_verified: '🌱 vegetarian', veg_likely: '🌱 likely vegetarian', booking: 'book ahead', queue: 'expect a queue', cash_only: 'cash only',
+      chain: 'chain', 'new': 'new', seen_before: 'seen before', far: 'far' };
+    var SCOUT_MODES = { WALK: '🚶', TRANSIT: '🚇', DRIVE: '🚗' };
+    function scoutTitle(s) { s = obj(s); var q = str(s.query, 80), p = str(s.place_label, 80).split(',')[0].trim(); return (q.charAt(0).toUpperCase() + q.slice(1)) + (p ? ' in ' + p : ''); }
+    function scoutsBtn() { return el('button', { class: 'btn ghost', type: 'button', text: 'All scouts', on: { click: function () { S.scout = ''; showScout(); } } }); }
+    function showScout() {
+      if (S.scout) return showScoutOne(S.scout);
+      var view = el('div', {}, [el('h2', { text: 'Scout' }), el('p', { class: 'lede', text: 'One thing in one place, ranked for you — matcha, ramen, a quiet garden.' })]);
+      var what = el('input', { type: 'text', placeholder: 'What should I look for?', maxlength: '80', 'aria-label': 'What to look for' });
+      var where = el('input', { type: 'text', placeholder: 'Where? Blank = your current trip', maxlength: '80', 'aria-label': 'Where' });
+      var msg = el('div', {}), past = el('div', {}, [el('p', { class: 'meta', text: 'Loading your scouts…' })]);
+      var ask = function () {
+        var q = str(what.value, 80).trim(), w = str(where.value, 80).trim();
+        if (!q) { setStatus('Say what to look for first.'); what.focus(); return; }
+        var args = { query: q }; if (w) args.where = w;
+        mainProgress(true);
+        call('scout.new', args, function (r) {
+          mainProgress(false); haptic('ok'); what.value = '';
+          clear(msg).appendChild(el('div', { class: 'note', text: '🔎 Scouting ' + str(r.query, 80) + ' in ' + str(r.where, 80) + ' — the ranked list arrives in the chat, then here.' }));
+        }, function (err) { mainProgress(false); clear(msg).appendChild(el('div', { class: 'note', text: 'Not asked: ' + why(err) })); });
+      };
+      [what, where].forEach(function (i) { i.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); ask(); } }); });
+      view.appendChild(el('div', { class: 'stack' }, [what, where, el('button', { class: 'btn wide', type: 'button', text: '🔎 Scout it', on: { click: ask } }), msg]));
+      view.appendChild(past);
+      render(view); setMain('Scout it', ask);
+      call('scout.list', {}, function (b) {
+        clear(past);
+        var rows = list(b.scouts).map(obj).filter(function (s) { return SCOUT_ID_RE.test(str(s.id, 64)); });
+        if (!rows.length) { past.appendChild(el('p', { class: 'meta', text: 'No scouts yet.' })); return; }
+        past.appendChild(el('h3', { text: 'Past scouts' }));
+        rows.forEach(function (s) {
+          var id = str(s.id, 64), n = num(s.count);
+          past.appendChild(el('div', { class: 'card reveal' }, [el('div', { class: 'row between' }, [
+            el('div', { class: 'grow' }, [el('div', { class: 'name', text: scoutTitle(s) }), el('div', { class: 'meta', text: [str(s.created_on, 10), n + ' pick' + (n === 1 ? '' : 's'), s.has_board ? 'board' : ''].filter(Boolean).join(' · ') })]),
+            el('button', { class: 'btn ghost', type: 'button', text: 'Open', on: { click: function () { S.scout = id; showScoutOne(id); } } })])]));
+        });
+      }, function (err) { clear(past).appendChild(el('p', { class: 'meta', text: 'Scouts not available (' + why(err) + ').' })); });
+    }
+    function showScoutOne(id) {
+      render(stateView('', 'Loading…')); setMain('', null);
+      call('scout.get', { id: id }, function (b) {
+        var s = obj(b.scout), items = list(s.items).map(obj), left = list(s.left_out).map(obj), to = s.add_to ? obj(s.add_to) : null;
+        var view = el('div', {}, [el('h2', { text: scoutTitle(s) }), el('p', { class: 'lede', text: [str(s.created_on, 10), items.length ? items.length + ' pick' + (items.length === 1 ? '' : 's') + ', ranked for you' : 'nothing worth the trip this time'].filter(Boolean).join(' · ') })]);
+        if (s.has_board) {
+          var frameBox = el('div', {}, [el('p', { class: 'meta', text: 'Opening the board…' })]);
+          view.appendChild(frameBox);
+          call('scout.board', { id: id }, function (r) {
+            clear(frameBox);
+            if (typeof r.html === 'string' && r.html) {
+              var fr = el('iframe', { class: 'frame', sandbox: '', title: 'Scout board', referrerpolicy: 'no-referrer' });
+              fr.srcdoc = r.html;            // sandbox="" — no scripts, no same-origin, no forms, no navigation
+              frameBox.appendChild(fr);
+            } else if (httpsUrl(r.link)) {
+              frameBox.appendChild(el('div', { class: 'card' }, [el('p', { text: 'The board is too large to show here — open it in Drive.' }), linkBtn('Open the board ↗', r.link, 'btn')]));
+            } else frameBox.appendChild(el('p', { class: 'meta', text: 'No board file.' }));
+            if (httpsUrl(r.pdf_link)) frameBox.appendChild(el('div', { class: 'row' }, [linkBtn('Board as PDF ↗', r.pdf_link, 'btn ghost')]));
+          }, function (err) { clear(frameBox).appendChild(el('p', { class: 'meta', text: 'Board not available (' + why(err) + ').' })); });
+        }
+        view.appendChild(el('h3', { text: 'Picks' }));
+        if (to && items.length) view.appendChild(el('p', { class: 'meta', text: '➕ puts a pick on the Later list of ' + str(to.title, 60) + '.' }));
+        items.forEach(function (it) {
+          var n = num(it.n), r = obj(it.reach), mode = SCOUT_MODES[str(r.mode, 10)];
+          var meta = [str(it.area, 80), mode && r.minutes !== undefined ? mode + ' ' + (r.estimated ? '~' : '') + num(r.minutes) + ' min' : '', str(it.rated, 40)].filter(Boolean).join(' · ');
+          var add = to ? el('button', { class: 'pill', type: 'button', text: '➕', 'aria-label': 'Put on the Later list', 'aria-pressed': 'false', on: { click: function (ev) {
+            var btn = ev.currentTarget; if (btn.getAttribute('aria-pressed') === 'true') return; btn.disabled = true;
+            call('scout.add', { id: id, n: n }, function (rr) { haptic('ok'); btn.disabled = false; btn.textContent = '🔖'; btn.setAttribute('aria-pressed', 'true'); setStatus(str(rr.name, 60) + ' is on the Later list'); },
+              function (err) { btn.disabled = false; setStatus('Not added: ' + (str(err.reason, 40) === 'no_trip' ? 'there is no current trip — plan one in the chat first.' : why(err))); });
+          } } }) : null;
+          view.appendChild(el('div', { class: 'item reveal' }, [el('div', { class: 'n', text: String(n) }), el('div', {}, [
+            el('div', { class: 'row between' }, [el('div', { class: 'grow' }, [el('div', { class: 'name', text: str(it.name, 120) }), meta ? el('div', { class: 'meta', text: meta }) : null]),
+              el('div', { class: 'row' }, [add, linkBtn('Map ↗', it.maps_url, 'pill')])]),
+            el('div', { class: 'why', text: str(it.why_you, 200) }),
+            it.try ? el('div', { class: 'meta', text: 'Try: ' + str(it.try, 120) }) : null,
+            list(it.labels).length ? el('div', {}, list(it.labels).slice(0, 8).map(function (l) { l = str(l, 20); return el('span', { class: 'pill', text: SCOUT_LABELS[l] || l }); })) : null])]));
+        });
+        if (left.length) {
+          view.appendChild(el('h3', { text: 'Left out' }));
+          left.forEach(function (l) { view.appendChild(el('div', { class: 'meta', style: 'padding:4px 0', text: str(l.name, 120) + ' — ' + (SCOUT_LEFT[str(l.reason, 20)] || str(l.reason, 20)) })); });
+        }
+        view.appendChild(el('div', { class: 'row', style: 'margin-top:16px' }, [scoutsBtn()]));
+        render(view);
+      }, function (err) { S.scout = ''; render(stateView('🔎', 'Scout not available', why(err), scoutsBtn())); });
     }
 
     /* ---------- boot ---------- */

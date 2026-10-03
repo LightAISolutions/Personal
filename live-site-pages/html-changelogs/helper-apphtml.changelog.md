@@ -3,11 +3,16 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 5/50`
+`Sections: 6/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.06w] — 2026-10-03 05:24:52 AM EST — v01.52r
+
+### Added
+- A **Scout** screen: ask for one thing in one place (say, matcha in a city, or leave the place blank for your current trip), see your past scouts, open a scout's comparison board, and put any pick on your trip's Later list or open it on the map
 
 ## [v01.05w] — 2026-10-03 03:50:11 AM EST — v01.50r
 

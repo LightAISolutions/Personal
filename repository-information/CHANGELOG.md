@@ -3,11 +3,25 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 52/100`
+`Sections: 53/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.52r] — 2026-10-03 05:24:52 AM EST
+
+> **Prompt:** "I want Tour Guide to have a separate feature (recommend some names) where I can direct it to search a trip location (example: Kyoto, Japan) for a specific food or activity (example: matcha or yuzu) and have it output a ranked list of related options for me to choose from. I want to be able to easily see multiple options at a glance instead of having to open up their google map links one at a time. This feature/output should differentiate itself from the Brochure feature. Tour Guide should also save these places down in the Places tab. If you think this task should use Fable 5.1, then wait for my Fable weekly reset in approximately 2hrs 22 minutes and start this thread then. I will be going to sleep soon, so I want you to do as much as possible without me."
+
+### Added
+- **Scout contract** `helpers/decisions/TG-SCOUT.md`: `/scout <food or activity> [in <place>]` (or the app's Scout screen) asks the routine to rank the places in one destination that are about that one thing; the answer is a numbered list with ➕ Later buttons, a Scout board (one map with every pick numbered, compact cards, a compare table, the left-out list with reasons) as HTML in the app and PDF in the chat, and every pick saved to Places. Not a brochure: one question across a city, before or without a plan. Decisions log §8
+- **Scout engine** `helpers/packs/tour-guide/scout/` (WP-S engine): text parsing and scout ids, search queries, ranking (on topic, quality against the pool, fit, local word of mouth, reach from the lodging) with screens and reasons (closed, closed on every trip day, off topic, the party's diet, too far), labels (hidden gem, vegetarian verified or likely, chain, far, book ahead, queue, cash only, new), the `scout` payload with no Google field, the Place fields a pick writes (a `scouted` history entry), and the board renderer (HTML for the app, PDF through Chromium); `schemas/tour-guide-scout.schema.json`, the Place history event `scouted`, the `scout` envelope type in `helper.json`
+- **Scout in the core** (WP-S gas): `gas/16_scout.js` — `/scout`, `/scouts`, the Scouts tab, the numbered list with ➕ buttons that put a pick on the trip's Later list, the `scout` envelope handler and validator (refuses Google field names anywhere); `gas/35_scout_app.js` — the app's `scout.list`, `scout.get`, `scout.board`, `scout.new`, `scout.add`; a `scout` request routes to a `SCOUT` routine when configured, else to trip-research
+- **Scout screen** in the Tour Guide app (`live-site-pages/helper-app.html` v01.06w): ask, past scouts, the board, ➕ Later and the map link per pick
+- Tests: `pack_tour-guide_scout.test.js`, `pack_tour-guide_scout_redteam.test.js`, `pack_tour-guide_scout_gas.test.js`; schema, payload and envelope tests extended (651 tests)
+
+### Changed
+- `helpers/BUILD-STATE.md`: row S and the Scout log; README tree and timestamp
 
 ## [v01.51r] — 2026-10-03 04:50:16 AM EST
 
