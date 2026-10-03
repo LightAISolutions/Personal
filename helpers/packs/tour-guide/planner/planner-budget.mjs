@@ -7,9 +7,14 @@
  * LEG_EXTRA): per leg at most one WALK route (TRANSIT days, a leg the rail estimator walks) and one DRIVE route (a walked
  * leg that is uphill, on a trail or on a footpath) — `extra_calls`, capped at LEG_EXTRA.MAX_PER_DAY, counted under the
  * same Compute Routes (Essentials) SKU.
+ * Phase 11 (WP-11a): an overridden day's matrix holds its own points (planner-anchors.mjs: the start, the end, the bag
+ * stop's lodging) and adds one route for the bag leg (`hotel`: start → the night's lodging; `locker`: start → the end
+ * when they differ) with its honest-leg extras. With `dinner: true` (a dinner pool was given) every day that can have a
+ * dinner (no `end` override) adds the two dinner legs — `dinner_calls` 2 plus their own extras (extraCallsFor(mode, 2)).
  */
 import { estimateUsd } from '../../../kits/maps/index.mjs';
 import { pointKey, LEG_EXTRA } from './planner-legs.mjs';
+import { dayAnchors } from './planner-anchors.mjs';
 
 export const SKU = Object.freeze({ matrix: 'routes.route_matrix.essentials', routes: 'routes.compute_routes.essentials', pro: 'routes.compute_routes.pro' });
 export class PlanBudgetError extends Error {
@@ -22,15 +27,27 @@ export function extraCallsFor(mode, legs) {
   return Math.min(LEG_EXTRA.MAX_PER_DAY, per * Math.max(0, legs));
 }
 
-/** budgetFor({ days, byDate, ledger }) → { skus, usd_estimate, within_ceiling, short, per_day } */
-export function budgetFor({ days, byDate, ledger = null }) {
+/** The bag leg an overridden day fetches outside its matrix chain: 1 (hotel; locker ending elsewhere) or 0. */
+export function bagLegs(day) {
+  if (!day.override || !day.bags) return 0;
+  const a = dayAnchors(day);
+  if (a.hotel) return pointKey(a.S) === pointKey(a.hotel) ? 0 : 1;
+  if (a.locker) return pointKey(a.S) === pointKey(a.E) ? 0 : 1;
+  return 0;
+}
+
+/** budgetFor({ days, byDate, ledger, dinner? }) → { skus, usd_estimate, within_ceiling, short, per_day } */
+export function budgetFor({ days, byDate, ledger = null, dinner = false }) {
   const skus = { [SKU.matrix]: 0, [SKU.routes]: 0, [SKU.pro]: 0 };
   const per_day = {};
   for (const day of days) {
     const stops = byDate[day.date] || [];
-    const points = new Set([pointKey(day.lodging_start), pointKey(day.lodging_end), ...stops.map((c) => 'id:' + c.place_id)]).size;
-    const d = { matrix_elements: points > 1 ? points * points : 0, route_calls: stops.length + 1, extra_calls: stops.length ? extraCallsFor(day.mode, stops.length + 1) : 0, pro_calls: day.mode !== 'TRANSIT' && stops.length >= 2 ? 1 : 0 };
-    skus[SKU.matrix] += d.matrix_elements; skus[SKU.routes] += d.route_calls + d.extra_calls; skus[SKU.pro] += d.pro_calls;
+    const ends = day.override ? dayAnchors(day).points.map(pointKey) : [pointKey(day.lodging_start), pointKey(day.lodging_end)];
+    const points = new Set([...ends, ...stops.map((c) => 'id:' + c.place_id)]).size;
+    const bag = bagLegs(day);
+    const d = { matrix_elements: points > 1 ? points * points : 0, route_calls: stops.length + 1 + bag, extra_calls: stops.length || bag ? extraCallsFor(day.mode, stops.length + 1 + bag) : 0, pro_calls: day.mode !== 'TRANSIT' && stops.length >= 2 ? 1 : 0 };
+    if (dinner && !day.end) { d.dinner_calls = 2; d.extra_calls += extraCallsFor(day.mode, 2); }
+    skus[SKU.matrix] += d.matrix_elements; skus[SKU.routes] += d.route_calls + (d.dinner_calls || 0) + d.extra_calls; skus[SKU.pro] += d.pro_calls;
     per_day[day.date] = d;
   }
   const used = {};

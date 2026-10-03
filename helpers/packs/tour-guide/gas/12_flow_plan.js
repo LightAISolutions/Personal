@@ -97,6 +97,7 @@ function tgPlanItemHtml(it, seeds) {
   var bits = [];
   if (it.est_minutes) bits.push('~' + tgCmdMinutes(it.est_minutes));
   if (it.area) bits.push(tgEscape(truncate(it.area, 60)));
+  if (it.local_favourite === true) bits.push('local favourite');   // C11: two or more independent local sources
   if (tgPlanIsSeed(it, seeds)) bits.push('<b>your pick</b>');
   if (it.seen_before) bits.push('seen ' + tgEscape(it.seen_before.on) + ' (' + tgEscape(it.seen_before.outcome) + ')');
   var labels = it.labels || [];

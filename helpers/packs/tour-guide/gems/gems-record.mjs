@@ -5,7 +5,7 @@
  * ever copies review text into an output, and the record keeps only publish_time, rating and (optionally) the author
  * attribution the display layer needs.
  */
-import { LOCAL_MENTION_KINDS, LOCAL_MENTIONS_MAX, LOCAL_MENTION_REF_MAX, ROUGH_EDGES } from './gems-weights.mjs';
+import { LOCAL_MENTION_KINDS, LOCAL_MENTIONS_MAX, LOCAL_MENTION_REF_MAX, ROUGH_EDGES, LOCAL_FAVOURITE_MIN_PUBLISHERS } from './gems-weights.mjs';
 import { isLatLng } from './gems-geo.mjs';
 import { hoursKnown } from './gems-hours.mjs';
 import { refineCategory } from '../planner/planner-category.mjs';
@@ -176,5 +176,7 @@ export function mentionCount(record, kind) {
   return new Set((record.local_mentions || []).filter((m) => !kind || m.kind === kind).map((m) => (m.publisher ? 'p:' + m.publisher : 'r:' + m.ref))).size;
 }
 export const isOwnerSeed = (record) => (record.streams || []).includes('owner_seed');
+/** isLocalFavourite(record) → mentions from ≥ LOCAL_FAVOURITE_MIN_PUBLISHERS distinct publishers (refs when no publisher), as mentionCount counts. */
+export const isLocalFavourite = (record) => mentionCount(record) >= LOCAL_FAVOURITE_MIN_PUBLISHERS;
 
 // Developed by: LightAISolutions

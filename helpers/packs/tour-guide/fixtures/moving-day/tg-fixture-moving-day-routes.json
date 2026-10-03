@@ -1,0 +1,8 @@
+{
+  "v": 1,
+  "modes": {
+    "WALK": {},
+    "TRANSIT": {},
+    "DRIVE": {}
+  }
+}

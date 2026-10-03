@@ -15,7 +15,7 @@ skill. Defaults and their reasons: `helpers/decisions/WP-2g-engine.md`; every tu
 | `gems-chains.mjs` | Chain detection: a repeated display name or the short generic `CHAIN_LIST` |
 | `gems-geo.mjs` | Straight-line distance to our own anchors at conservative speeds |
 | `gems-hours.mjs` | Opening hours against trip dates (Google periods, snapshot hours or a per-date map) |
-| `gems-screen.mjs` | Stage 2 `screen` |
+| `gems-screen.mjs` | Stage 2 `screen`, `crowdMagnetIds`; sets the screen flags `local_favourite` / `crowd_magnet` on kept records |
 | `gems-score.mjs` | Stage 3 `scoreGems` and its components Q · O · L · F · P |
 | `gems-flags.mjs` | Stage 4 `flagEvidence` |
 | `gems-line.mjs` | Stage 5 `gemLine` |
@@ -28,7 +28,7 @@ skill. Defaults and their reasons: `helpers/decisions/WP-2g-engine.md`; every tu
 ```js
 import * as gems from './gems/index.mjs';
 
-const { kept, dropped } = gems.screen(pool, { trip_dates, anchors, off_track_minutes: 25, modes: ['TRANSIT', 'WALK'], avoid_types, rating_floor: 4.3 });
+const { kept, dropped } = gems.screen(pool, { trip_dates, anchors, off_track_minutes: 25, modes: ['TRANSIT', 'WALK'], avoid_types, rating_floor: 4.3, season, lat });
 const scored = gems.scoreGems(kept, { appetite: 3, city_size, aggregate_counts, fit_estimates, profile, trip_dates, day_start, day_end, anchors, rough_edges });
 const ctx = gems.scoringContext(kept, { appetite: 3, city_size });              // weights, μ and median counts by category
 const flagged = scored.map((r) => gems.flagEvidence(r, { trip_dates, today, signals: signalsFor(r) }).record);   // after stage 4's evidence pass
@@ -36,7 +36,7 @@ const line = gems.gemLine(flagged[0], { category_median_count: ctx.median_count_
 const { groups, not_shown } = gems.selectShortlist(flagged, { appetite: 3, per_group: { activities: 8, food: 6 }, decided });
 const later = gems.gemsNotChosenList({ trip_id, not_shown, today });
 const placeFields = gems.toPlaceFields(flagged[0]);                             // → Place.gem_score, gem, obscurity, local_mentions, flags
-const itemFields = gems.toShortlistFields(flagged[0], { category_median_count }); // → Shortlist item gem, gem_line
+const itemFields = gems.toShortlistFields(flagged[0], { category_median_count }); // → Shortlist item gem, gem_line, local_favourite?
 ```
 
 ### The pool record (stage 1's output, this module's input)
@@ -56,8 +56,9 @@ from a raw search result. Unknown keys are dropped; nonsense throws a `gems: …
                                   or a normalized { by_date: { 'YYYY-MM-DD': [{ open: 'HH:MM', close: 'HH:MM' }] } }; null = unknown
   website?,                       http(s) URL (in-run only)
   streams: ['taste' | 'local' | 'quiet' | 'owner_seed'],
-  local_mentions: [{ ref, language, kind }],   ref = research-ledger ref (L003, L007.2; ≤ 120 chars), language a BCP-47-like
-                                  tag (^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$), kind editorial | community | local-language
+  local_mentions: [{ ref, language, kind, publisher? }],   ref = research-ledger ref (L003, L007.2; ≤ 120 chars), language a
+                                  BCP-47-like tag (^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$), kind editorial | community | local-language;
+                                  publisher = the outlet's domain or name, so two pages of one outlet count once
   mass_tourism_rank?,             the place's rank on a mass-tourism list the research found (≤ 10 earns the penalty)
   reviews?: [{ publish_time, rating, author? }],   in-run only, never persisted; review TEXT is dropped at normalization
   slug?,                          our place key when the place is already known
@@ -72,16 +73,28 @@ primary type, else a type, is in `NOT_A_VISIT_TYPES` — lodging, spa, tour or t
 detail = that type) · `facility` (activities only: the name matches `FACILITY_NAME_RE` — smoking area, restroom, ticket
 office, coin lockers …) · `chain` (detail `repeated`: the same normalized display name ≥ 3 times in the pool; `listed`: a
 `CHAIN_LIST` prefix) · `low_rating` (below `rating_floor`, default 4.3, or `ratingFloorFor(appetite)` = 4.5 at appetite
-≥ 4; plus the country's `rating_offset`, within ±0.5; ≥ 2 local mentions cap the floor at the default 4.3 before the
-offset) · `too_few_ratings` (< 15 unless ≥ 2 local mentions or an owner seed) · `closed_all_dates` (hours known and closed
-on every trip date) · `too_far` (straight-line minutes to the nearest anchor at the fastest of `modes` — WALK 4.5,
-TRANSIT 15, DRIVE 30 km/h — above `off_track_minutes`, default 25) · then over what is left, `part_of` (activities only;
+≥ 4; plus the country's `rating_offset`, within ±0.5; a **local favourite** — ≥ `LOCAL_FAVOURITE_MIN_PUBLISHERS` (2)
+distinct publishers among its local mentions, distinct refs when no publisher is given — has its floor capped at
+`LOCAL_FAVOURITE_RATING_FLOOR` (3.8) before the offset) · `too_few_ratings` (< 15 unless ≥ 2 local mentions or an owner
+seed) · `closed_all_dates` (hours known and closed on every trip date) · `out_of_season` (activities only, not owner
+seeds; detail = the bloom: a garden or park whose name and tags name exactly one bloom — roses, hydrangea, lavender … —
+and `outOfSeason` from `../season/` says that bloom is out on every trip date; the trip's `season` sheet wins when it
+speaks for that bloom, otherwise the usual months at the place's latitude, else `lat`, else the first anchor's,
+shifted six months south of the equator; anything unknown keeps the place) · `too_far` (straight-line minutes to the
+nearest anchor at the fastest of `modes` — WALK 4.5, TRANSIT 15, DRIVE 30 km/h — above `off_track_minutes`, default
+25; a local favourite may be `LOCAL_FAVOURITE_OFF_TRACK_FACTOR` (1.5×) as far) · then over what is left, `part_of` (activities only;
 detail = the parent's name): a kept place within `PART_OF_RADIUS_M` (400 m) with ≥ `PART_OF_COUNT_RATIO` (5×) the
 ratings is its parent when this name is the parent's core name plus only `FEATURE_WORDS` (gate, torii, garden, pavilion,
 hall, directions, ordinals …), or this name is nothing but feature words. A sub-temple with a name of its own
 ("Pine-ji Ohbai-in") stays. Owner seeds skip `not_a_visit`, `facility` and `part_of`. `nameWords`, `nameCore`,
 `isFeatureName` and `partOfParent(record, pool)` are exported for the skill. `kept` holds normalized records with
-`category` set.
+`category` set and, only when one applies, `flags` in this order:
+- `local_favourite` — the local-favourite rule above (`isLocalFavourite(record)`).
+- `crowd_magnet` — `crowdMagnetIds(records)`: a `mass_tourism_rank` ≤ 10, or a rating count in the pool's top
+  `CROWD_MAGNET_TOP_SHARE` (10 %, rounded up) of counts and ≥ `CROWD_MAGNET_MIN_COUNT` (2 000), over every place that
+  passed the drop rules (food included).
+
+Neither flag ever drops a place. A `flags` key on an input record is dropped at normalisation; the screen decides afresh.
 
 ### Stage 3 — `scoreGems(kept, opts) → [{ …record, q, o, l, f, p, gem_score, gem }]`
 - **Q** `qualityScore`: `(n·r + m·μ) / (n + m)`, m = 30, μ = the kept pool's mean rating for the category when it has ≥ 20
@@ -109,15 +122,17 @@ hall, directions, ordinals …), or this name is nothing but feature words. A su
 - `tourist_oriented`: `english_only_menu ∧ tourist_pricing`, or `visitor_wording`, or `mass_tourism_listing`, or a
   `mass_tourism_rank` (signals from `record.signals` merged with `opts.signals`).
 - `closed_day_conflict`: closed on `visit_date` when given, else on at least one trip date (unknown hours never conflict).
-`FLAG_LABELS` gives display words. Reviews are read for their publish times only.
+The screen flags on the record (`local_favourite`, `crowd_magnet`, `SCREEN_FLAGS`) follow the three evidence flags, once
+each, so a second pass repeats nothing. `FLAG_LABELS` gives display words (`Local favourite`, `Busy at peak hours`).
+Reviews are read for their publish times only.
 
 ### Stage 5 — `gemLine`, `selectShortlist`, `gemsNotChosenList`
 - `gemLine(record, { category_median_count?, max = 200 })` → one sentence from clauses in this order: a words-only rating
   clause built from our own bands (`exceptionally well rated by far fewer reviewers than its peers` — `ratingBand` ×
   `peerComparison`, never a Google digit: no rating value, no rating count, no peer-median number; Maps Platform ToS
   §3.2.3(b), Service Specific Terms §3 and §14.3 — R3, Phase 6 terms review) · `named by two local-language guides, one
-  local editorial list and a community thread` · `one of your own seeds` · `on a mass-tourism top-ten list` · the friction
-  words (`cash only`, `no English menu`, …) · the flag words. Clauses are dropped from the end until the line fits; only
+  local editorial list and a community thread` (`a local favourite named by …` when flagged) · `one of your own seeds` · `on a mass-tourism top-ten list` · the friction
+  words (`cash only`, `no English menu`, …) · the flag words (`busy at peak hours` for a crowd magnet). Clauses are dropped from the end until the line fits; only
   when the first clause alone is too long is it cut with `…`. Built from our own words and source kinds and counts only —
   this module never sees review or page text.
 - `selectShortlist(scored, { appetite, per_group = { activities: 8, food: 6 }, decided = [], group_of = groupOf })` →
@@ -133,7 +148,9 @@ hall, directions, ordinals …), or this name is nothing but feature words. A su
 
 ### Projections — `toPlaceFields(record)`, `toShortlistFields(record, opts)`
 `toPlaceFields` → `{ gem_score (0–100), gem (boolean), obscurity (0–1), local_mentions (≤ 20 of { ref ≤ 120, language, kind }),
-flags (≤ 5) }` — the optional Place fields WP-3d adds. `toShortlistFields` → `{ gem, gem_line (≤ 200) }` for a shortlist item.
+flags (≤ 5) }` — the optional Place fields WP-3d adds; the flags now include `local_favourite` and `crowd_magnet` (C11).
+`toShortlistFields` → `{ gem, gem_line (≤ 200) }` for a shortlist item, plus `local_favourite: true` when the record is
+flagged (C11; the key is absent otherwise, so older items are unchanged).
 Both pass `assertNoGoogleFields`: no rating, count, hours, address, website, business status, coordinates, name, types or
 reviews ever leave this module in a persisted shape.
 
@@ -154,6 +171,9 @@ drops its carrier with the right reason and the waivers pass; scoring is determi
 follows the formula above; the weight shift at appetite 1 / 3 / 5 moves rankings but not the 💎 set; the large- and
 small-city bands; `unproven` clears a gem; gem lines contain no review text and fit 200 characters; floors, `decided` and
 unmet floors in selection; the Later list's shape (schema validation once WP-3d lands `not_shown`); projection field names
-with no Google field. No test touches the network.
+with no Google field. `helpers/tests/pack_tour-guide_gems_c11.test.js` (WP-11b): local favourites (floor, offset,
+off-track stretch, one publisher is not enough), `out_of_season` on both hemispheres with the forecast winning and owner
+seeds kept, crowd magnets (top decile, minimum, mass-tourism list) and the flags reaching the evidence stage, the
+projections and the shortlist. No test touches the network.
 
 Developed by: LightAISolutions

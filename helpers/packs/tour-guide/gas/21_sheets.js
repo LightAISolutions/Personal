@@ -179,14 +179,20 @@ function tgOwnerTz() {
 }
 
 /* ---------------- DayPlans + Later (plan_digest) ---------------- */
-var TG_DAY_JSON_COLS = ['stops_json', 'legs_json', 'warnings_json', 'rain_json'];
+var TG_DAY_JSON_COLS = ['stops_json', 'legs_json', 'warnings_json', 'rain_json', 'meta_json'];
+/** C11 day-level fields kept in meta_json next to C10's spare_minutes (a day without them stores and reads as before). */
+var TG_DAY_META_C11 = ['sunset', 'start', 'end', 'bags', 'dinner', 'extras'];
 function _tgChunks(s) {
   if (s.length <= TG_CELL_MAX) return [s];
   var out = [];
   for (var i = 0; i < s.length; i += TG_CELL_CHUNK) out.push(s.slice(i, i + TG_CELL_CHUNK));
   return out;
 }
-/** Rows for one digest day: part 0 holds date + theme + the first chunk of each JSON column, part 1… the rest. */
+/**
+ * Rows for one digest day: part 0 holds date + theme + the first chunk of each JSON column, part 1… the rest. meta_json
+ * (C10 spare_minutes, C11 sunset · start · end · bags · dinner · extras) is chunked like the other JSON columns; rows an
+ * older build wrote carry it whole in part 0, which joins the same way.
+ */
 function _tgDayRows(slug, day) {
   var cols = {}, parts = 1;
   cols.stops_json = _tgChunks(toJson(day.stops || []));
@@ -195,11 +201,12 @@ function _tgDayRows(slug, day) {
   cols.rain_json = _tgChunks(toJson(day.rain || []));
   var meta = {};
   if (typeof day.spare_minutes === 'number') meta.spare_minutes = day.spare_minutes;   // C10 day-level extras
-  var metaJson = Object.keys(meta).length ? toJson(meta) : '';
+  TG_DAY_META_C11.forEach(function (k) { if (day[k] !== undefined && day[k] !== null) meta[k] = day[k]; });   // C11
+  cols.meta_json = Object.keys(meta).length ? _tgChunks(toJson(meta)) : [''];
   TG_DAY_JSON_COLS.forEach(function (c) { parts = Math.max(parts, cols[c].length); });
   var rows = [];
   for (var p = 0; p < parts; p++) {
-    var r = { slug: slug, date: String(day.date), theme: p === 0 ? String(day.theme || '') : '', part: p, meta_json: p === 0 ? metaJson : '' };
+    var r = { slug: slug, date: String(day.date), theme: p === 0 ? String(day.theme || '') : '', part: p };
     TG_DAY_JSON_COLS.forEach(function (c) { r[c] = cols[c][p] || ''; });
     rows.push(r);
   }
@@ -246,7 +253,9 @@ function tgDigestStore(p) {
 /**
  * The stored days of a trip, in date order: [{ date, n (1-based), theme, stops[], legs[], warnings[], rain[],
  * spare_minutes (number or null) }]. C10 stop fields (time_style, check_on_day) and leg fields (estimated, distance_m,
- * flags, taxi_minutes, buffer_minutes) pass through inside stops[] / legs[] exactly as the digest sent them.
+ * flags, taxi_minutes, buffer_minutes) pass through inside stops[] / legs[] exactly as the digest sent them; so do the C11
+ * stop fields (last_entry, minutes_source, crowd_slot, facts_line, booking_line, price_line, menu_checked). A day that
+ * carried C11's day fields also has sunset, start, end, bags, dinner and extras (each key only when stored).
  */
 function tgDigestDays(slug) {
   slug = tgShStr(slug);
@@ -259,11 +268,14 @@ function tgDigestDays(slug) {
     var parts = byDate[date].sort(function (a, b) { return tgShInt(a.part, 0) - tgShInt(b.part, 0); });
     var joined = {};
     TG_DAY_JSON_COLS.forEach(function (c) { joined[c] = parts.map(function (r) { return tgShStr(r[c]); }).join(''); });
-    var meta = tgShJson(tgShStr(parts[0].meta_json), {});
-    var spare = isPlainObject(meta) && typeof meta.spare_minutes === 'number' ? meta.spare_minutes : null;
-    return { date: date, n: i + 1, theme: tgShStr(parts[0].theme), stops: tgShJson(joined.stops_json, []),
+    var meta = tgShJson(joined.meta_json, {});
+    if (!isPlainObject(meta)) meta = {};
+    var spare = typeof meta.spare_minutes === 'number' ? meta.spare_minutes : null;
+    var out = { date: date, n: i + 1, theme: tgShStr(parts[0].theme), stops: tgShJson(joined.stops_json, []),
       legs: tgShJson(joined.legs_json, []), warnings: tgShJson(joined.warnings_json, []), rain: tgShJson(joined.rain_json, []),
       spare_minutes: spare };
+    TG_DAY_META_C11.forEach(function (k) { if (meta[k] !== undefined && meta[k] !== null) out[k] = meta[k]; });   // C11
+    return out;
   });
 }
 /** One day by number (1-based, number or numeric string) or by date 'YYYY-MM-DD'; null when absent. */

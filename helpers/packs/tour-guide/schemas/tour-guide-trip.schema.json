@@ -56,6 +56,8 @@
     "status": { "enum": ["intake", "researched", "choosing", "planned", "delivered", "done"], "description": "intake → researched → choosing → planned → delivered → done." },
     "intro": { "type": "string", "maxLength": 4000 },
     "bookings": { "type": "array", "maxItems": 40, "items": { "$ref": "#/$defs/booking" }, "description": "Things to book (WP-10a); ids unique (tour-guide-checks.mjs)." },
+    "day_overrides": { "type": "array", "maxItems": 31, "items": { "$ref": "#/$defs/day_override" }, "description": "C11: days with their own hours, or that do not start or end at the lodging. Dates unique and inside the trip; each overridden day at least 2 hours long (tour-guide-checks.mjs)." },
+    "season": { "$ref": "#/$defs/season" },
     "practical": {
       "type": "array",
       "maxItems": 20,
@@ -97,6 +99,103 @@
     "mode": { "enum": ["TRANSIT", "DRIVE", "WALK"] },
     "datetime": {"type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T([01]\\d|2[0-3]):[0-5]\\d(:[0-5]\\d)?(Z|[+-]([01]\\d|2[0-3]):[0-5]\\d)$", "description": "ISO 8601 date-time with an explicit offset (Z or ±HH:MM), e.g. 2027-03-01T10:00:00+13:00; no fractions."},
     "https_url": { "type": "string", "maxLength": 2000, "pattern": "^https://\\S+$" },
+    "day_anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "lat", "lng", "time"],
+      "description": "C11: where and when a day really starts (an arrival) or ends (a departure).",
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "place_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,300}$" },
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lng": { "type": "number", "minimum": -180, "maximum": 180 },
+        "time": { "$ref": "#/$defs/time" }
+      }
+    },
+    "day_override": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date"],
+      "description": "C11: one day's own hours (day_start / day_end replace the trip's), its real start or end (start.time / end.time win), and its bag step.",
+      "properties": {
+        "date": { "$ref": "#/$defs/date" },
+        "start": { "$ref": "#/$defs/day_anchor" },
+        "end": { "$ref": "#/$defs/day_anchor" },
+        "day_start": { "$ref": "#/$defs/time" },
+        "day_end": { "$ref": "#/$defs/time" },
+        "bags": { "enum": ["carry", "locker", "hotel", "forward"] },
+        "bags_note": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "note": { "type": "string", "minLength": 1, "maxLength": 200 }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "title", "accessed"],
+      "properties": {
+        "url": { "$ref": "#/$defs/https_url" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "accessed": { "$ref": "#/$defs/date" }
+      }
+    },
+    "season": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checked", "sources"],
+      "description": "C11: the trip's season sheet — typical weather, the leaf or blossom forecast and the season's events (season/normalizeSeason).",
+      "properties": {
+        "checked": { "$ref": "#/$defs/date" },
+        "sources": { "type": "array", "minItems": 1, "maxItems": 10, "items": { "$ref": "#/$defs/source" } },
+        "weather": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["text"],
+          "properties": {
+            "text": { "type": "string", "minLength": 1, "maxLength": 200 },
+            "high_c": { "type": "number", "minimum": -60, "maximum": 60 },
+            "low_c": { "type": "number", "minimum": -60, "maximum": 60 },
+            "rain_days": { "type": "number", "minimum": 0, "maximum": 31 }
+          }
+        },
+        "bloom": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/bloom" } },
+        "events": { "type": "array", "maxItems": 40, "items": { "$ref": "#/$defs/season_event" } }
+      }
+    },
+    "bloom": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "note"],
+      "properties": {
+        "kind": { "enum": ["autumn_leaves", "cherry", "plum", "wisteria", "hydrangea", "iris", "lotus", "roses", "lavender", "other"] },
+        "from": { "$ref": "#/$defs/date" },
+        "to": { "$ref": "#/$defs/date" },
+        "status": { "enum": ["before", "starting", "peak", "past"] },
+        "note": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "url": { "$ref": "#/$defs/https_url" }
+      }
+    },
+    "season_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "kind", "from", "to"],
+      "description": "An evening light-up, special opening, festival, market, holiday or seasonal closure. Ids unique, from ≤ to (tour-guide-checks.mjs).",
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "kind": { "enum": ["light_up", "special_opening", "festival", "market", "holiday", "closure"] },
+        "from": { "$ref": "#/$defs/date" },
+        "to": { "$ref": "#/$defs/date" },
+        "start": { "$ref": "#/$defs/time" },
+        "end": { "$ref": "#/$defs/time" },
+        "place": { "$ref": "#/$defs/slug" },
+        "place_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,300}$" },
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lng": { "type": "number", "minimum": -180, "maximum": 180 },
+        "area": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "note": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "url": { "$ref": "#/$defs/https_url" }
+      }
+    },
     "booking": {
       "type": "object",
       "additionalProperties": false,

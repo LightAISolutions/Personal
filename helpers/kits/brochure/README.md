@@ -68,8 +68,24 @@ Street View is never used: Google forbids it in print. Model fields: `trip.map_i
 | `practical[]` | sections for the practical page: `title*`, `text` and/or `items[]` (`label*`, `text*`, `url`) |
 | `attribution` | `google` (force the Google block on/off; default: on when any place carries Google-sourced fields), `sources[]` (trip-level ledger), `generator`, `note` |
 
+**Contract C11 fields (Phase 11, all optional).** A model with none of them renders byte for byte as before: the C11
+styles are added only when `usesC11(model)` is true, and each piece of markup only when its field is there.
+
+| Field | What it is | Where it shows |
+|---|---|---|
+| `days[].start` / `end` | `{name*, time*, maps_url, lat, lng, note}`: the day's real start (an arrival) or end (a departure); legs may use `day-start` / `day-end` | first / last row of the rail |
+| `days[].bags` | `{kind*: carry/locker/hotel/forward, text, start, end, where}` | a timed rail row, or a line under the start when untimed |
+| `days[].sunset`, `extras[]` | `HH:MM`; at most 3 `{kind*: event/saved, name*, place, time, km, note, url}` | the "This evening" box, in clock order at sunset (hidden when the day ends at a departure before sunset) |
+| `stops[]` | `last_entry`, `minutes_source` (official/research/estimate), `crowd_slot` (opening/late), `booking_line` (shown only when not booked) | the stop's meta lines |
+| `meals[].booking` | the booking rule | a meal with a booking, or a dinner at a place with `facts`, becomes the dinner card |
+| `places{}.facts` | `{checked*, stale, visit, last_entry, closed, booking, price, payment, gate, menu, menu_fits, menu_checked, menu_stale, sources[] ≤ 6}`: display lines, already written | a facts block on the card with the date checked and "check again" when stale |
+| `places{}.flags` | `local_favourite`, `crowd_magnet` | a "local favourite" tag on the rail and the card |
+| `season` | `{checked*, lead, weather {text*, high_c, low_c, rain_days}, bloom[] ≤ 6, events[] ≤ 40, sources[]}` | a season page after the overview, before day 1 |
+
 Semantic checks beyond the schema (`lib/model.mjs`): every place key resolves, days fall inside the trip and are not
-duplicated, stops are in clock order and do not depart before they arrive, meal/free blocks end after they start.
+duplicated, stops are in clock order and do not depart before they arrive, meal/free blocks end after they start; for
+C11, a `day-start` / `day-end` leg needs the day's start / end, extras and season events name known places, and the
+bag step, season events and blooms end after they start.
 `prepare()` then derives what the sections render: numbered days with a merged timeline (stops, legs, meals, free
 time in clock order), per-day statistics, hours for the day from the weekday lines, the cards in order of first
 appearance, and page cross-references. Images: `src` is a path relative to the model file or a `data:image/…` URI;

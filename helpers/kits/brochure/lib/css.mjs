@@ -7,8 +7,9 @@
 import { tokensCss, pageSpec } from './tokens.mjs';
 import { STACK } from './fonts.mjs';
 
-export function stylesheet({ page = pageSpec(), fontCss = '' } = {}) {
-  return [fontCss, tokensCss(page), BASE, COVER, GLANCE, DAY, RAIL, CARDS, LATER, PRACTICAL, ATTRIBUTION, SCREEN, printFallback(page), PAGED].join('\n');
+export function stylesheet({ page = pageSpec(), fontCss = '', c11 = false } = {}) {
+  // C11 (Phase 11) rules are added only when the model uses those fields, so an older brochure's HTML is unchanged.
+  return [fontCss, tokensCss(page), BASE, COVER, GLANCE, DAY, RAIL, CARDS, LATER, PRACTICAL, ATTRIBUTION, ...(c11 ? [C11] : []), SCREEN, printFallback(page), PAGED].join('\n');
 }
 
 const BASE = `
@@ -220,6 +221,62 @@ const ATTRIBUTION = `
 .src-list .place{color:var(--muted)}
 .colophon{margin-top:1.6rem;padding-top:.7rem;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:1rem;font-size:var(--s-2);color:var(--muted);line-height:1.45}
 .colophon .orn{margin:0}
+`;
+/** Contract C11: the day's real start and bags, sourced visit facts, the dinner card, "This evening", the card's facts block, the season page. Existing tokens and components only. */
+const C11 = `
+.stale{color:var(--warn);font-style:italic}
+.ti-meta .src{color:var(--faint);font-style:italic}
+.ti-book .ic,.ti-crowd .ic,.ti-bags-line .ic{color:var(--hue)}
+.ti-crowd{color:var(--ink2);font-style:italic}
+.card-day .chip{margin-left:.5rem;font-size:var(--s-3);padding:.1em .45em .06em;vertical-align:.08em}
+.ti-point .ti-mark .pt{display:inline-flex;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--paper);border:1.5px solid var(--hue);color:var(--hue);align-items:center;justify-content:center;box-shadow:0 0 0 3px var(--paper);margin-top:.05rem}
+.ti-point .ti-mark .ic{width:.8rem;height:.8rem}
+.ti-point .ti-name{font-size:var(--s1)}
+.ti-point .ti-kind{color:var(--hue);font-style:italic}
+.ti-point .ti-meta a,.ti-dine .ti-meta a,.ev-m a{color:var(--sea);border-bottom-color:var(--sea-soft)}
+.dine-card{border:1px solid var(--hair);border-top:2px solid var(--hue);padding:.42rem .65rem .5rem}
+.dine-card .ti-note{margin-top:.35rem}
+.ti-evening .ti-mark span{display:inline-flex;width:1.35rem;height:1.35rem;border-radius:50%;background:var(--cream);border:1px solid var(--rule);color:var(--accent);align-items:center;justify-content:center;box-shadow:0 0 0 3px var(--paper)}
+.ti-evening .ti-mark .ic{width:.82rem;height:.82rem}
+.ti-evening .ti-time .t2{letter-spacing:.1em;text-transform:uppercase;font-size:var(--s-3)}
+.evening{background:var(--cream);border-left:2px solid var(--hue);padding:.5rem .75rem .55rem}
+.evening .eyebrow{margin-bottom:.25rem}
+.evening .eyebrow b{color:var(--ink);font-weight:400}
+.ev-list li{display:grid;grid-template-columns:3.3rem .9rem minmax(0,1fr);gap:.4rem;align-items:baseline;padding:.3rem 0;border-top:1px solid var(--cream2);font-size:var(--s-1);line-height:1.35}
+.ev-list li:first-child{border-top:0;padding-top:.1rem}
+.ev-t{text-align:right;color:var(--ink2);font-variant-numeric:tabular-nums}
+.ev-t small{font-size:.62em;letter-spacing:.04em;margin-left:.1em}
+.ev-i .ic{width:.72rem;height:.72rem;color:var(--hue);transform:translateY(.08em)}
+.ev-b .chip{margin-left:.4rem;vertical-align:.12em}
+.ev-m{margin-left:.45rem;font-size:var(--s-2);color:var(--muted)}
+.ev-m .sep{margin:0 .3em;color:var(--faint)}
+.ev-n{display:block;font-size:var(--s-2);color:var(--ink2);font-style:italic;margin-top:.05rem}
+.ti-sunset .ti-body{font-size:var(--s-1);font-style:italic;color:var(--muted);padding-top:.12rem}
+.ti-sunset .ti-body b{font-style:normal;font-weight:400;color:var(--ink2)}
+.card-facts{margin:0 0 .6rem;padding:0 0 .5rem;border-bottom:1px solid var(--hair)}
+.card-facts .eyebrow{font-size:var(--s-3);margin-bottom:.3rem}
+.card-facts .card-notes{gap:.22rem;font-size:var(--s-2);line-height:1.38}
+.card-facts .cn h4{color:var(--muted);padding-top:.12em}
+.card-facts .card-src{margin-top:.3rem}
+.season-lead{font-style:italic;margin:-.3rem 0 1.3rem;max-width:40rem}
+.sec-season .pblock dl div{grid-template-columns:6.2rem 1fr}
+.sec-season .pblock .chip{margin-right:.15rem;vertical-align:.1em}
+.sec-season .pblock dd b{font-weight:400}
+.ev-meta{font-size:var(--s-2);color:var(--muted)}
+.ev-kind{font-size:var(--s-3);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.ev-kind.ev-closure{color:var(--alert)}
+.season-src ul{margin-top:.2rem}
+.season-src li a{color:var(--sea);border-bottom-color:var(--sea-soft)}
+@media (max-width:760px){
+  html:not(.paged) .ev-list li{grid-template-columns:2.7rem .9rem minmax(0,1fr);gap:.3rem}
+  html:not(.paged) .ev-m{display:block;margin-left:0}
+  html:not(.paged) .sec-season .pblock dl div{grid-template-columns:5rem 1fr}
+  html:not(.paged) .card-facts .cn{grid-template-columns:5.4rem minmax(0,1fr);gap:.45rem}
+  html:not(.paged) .card-facts .cn h4{padding-top:.12em}
+}
+html.paged .tight .evening{padding:.38rem .65rem .4rem}
+html.paged .tight .ev-list li{padding:.2rem 0}
+html.paged .tight .dine-card{padding:.32rem .6rem .38rem}
 `;
 const SCREEN = `
 html:not(.paged) body{background:var(--cream2)}

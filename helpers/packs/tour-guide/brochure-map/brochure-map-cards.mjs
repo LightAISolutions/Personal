@@ -9,6 +9,10 @@ import { placeUrl } from '../../../kits/maps/lib/maps-urls.mjs';
 import { clip, compact, localDate, weekdayName, WEEKDAYS, SHORT, TEXT } from './brochure-map-text.mjs';
 import { mergeSources, placeSourceRows, MAX_PLACE_SOURCES } from './brochure-map-attribution.mjs';
 import { guardNoteFields } from '../planner/planner-notes.mjs';
+import { cardFacts } from './brochure-map-facts.mjs';
+
+/** The place flags the brochure draws (C11); the gem screen's other flags stay off the page. */
+export const CARD_FLAGS = Object.freeze(['local_favourite', 'crowd_magnet']);
 
 const STATUSES = new Set(['OPERATIONAL', 'CLOSED_TEMPORARILY', 'CLOSED_PERMANENTLY']);
 const NOTE_TEXT = ['why_you', 'what_to_do', 'what_to_skip', 'best_time', 'tickets', 'accessibility', 'food'];
@@ -58,11 +62,12 @@ function noteFields(note) {
 export function mapsLink(place) { return placeUrl({ name: place.name, placeId: place.place_id }); }
 
 /**
- * placeCard({ place, snapshot, notesByPlace, estimatesByPlace, visitDates, visits, showGoogle, timeZone }) → brochure place.
+ * placeCard({ place, snapshot, notesByPlace, estimatesByPlace, visitDates, visits, showGoogle, timeZone, factsOptions }) → brochure place.
+ * factsOptions: { now, diet, locale } for the C11 facts block (brochure-map-facts.mjs).
  * visits: the place's scheduled stops [{ arrive, depart, window }]; the note's timing advice is guarded against each
  * (Phase 10 fix (a): a sentence any visit contradicts — "arrive at opening" on a noon stop — is left out).
  */
-export function placeCard({ place, snapshot, notesByPlace, estimatesByPlace, visitDates = [], visits = [], showGoogle = true, timeZone }) {
+export function placeCard({ place, snapshot, notesByPlace, estimatesByPlace, visitDates = [], visits = [], showGoogle = true, timeZone, factsOptions = {} }) {
   const content = snapshot && snapshot.content ? snapshot.content : null;
   const card = {
     name: clip(place.name, SHORT) || clip(content && content.display_name, SHORT) || place.id,
@@ -92,6 +97,9 @@ export function placeCard({ place, snapshot, notesByPlace, estimatesByPlace, vis
   }
   card.note = noteFields(guardNoteFields(notesByPlace.get(place.place_id), visits, NOTE_TEXT));
   card.sources = mergeSources(placeSourceRows(place.place_id, { notesByPlace, estimatesByPlace }), MAX_PLACE_SOURCES);
+  // Contract C11: the researched facts block (our own research, shown in both modes) and the two gem-screen flags.
+  card.facts = cardFacts(place.facts, factsOptions);
+  card.flags = Array.isArray(place.flags) ? CARD_FLAGS.filter((f) => place.flags.includes(f)) : undefined;
   return compact(card);
 }
 

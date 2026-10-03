@@ -3,11 +3,31 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 53/100`
+`Sections: 54/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.53r] — 2026-10-03 06:13:06 AM EST
+
+> **Prompt:** "decisions made." *(the owner's choices on the usefulness review; this push is wave 1 of step 2 — a day's real start and end, dinners and evenings, researched place facts, season, local favourites and crowd timing, and the brochure pass)*
+
+### Added
+- **Contract C11** (Tour Guide schemas; every field optional, so old records and payloads still load): trip `day_overrides` (a day's own start, end, hours and bag step) and `season` (typical weather, the leaf or blossom forecast, the season's events); place `facts` (visit length, last entry, closing time, closed weekdays, booking rule, price, menu check, each with sources and the date checked) and the flags `local_favourite` and `crowd_magnet`; a day plan's real start and end, bag step, dinner place, evening extras and sunset; the plan digest's matching day and stop fields; plans sent in parts
+- **Place facts and the season sheet** (WP-11b, `helpers/packs/tour-guide/facts/`, `season/`): normalizers, one display line per kind (≤ 160 characters), staleness (90 days, a menu check 30), disagreements with Google's hours, the events and blooms on a date; the gem screen drops a single-bloom garden that is out of season on every trip date and flags local favourites (two or more publishers) and crowd magnets (never a drop)
+- **Real days in the planner** (WP-11a, `planner/planner-anchors`, `-dinner`, `-evening`, `-facts`, `-crowd`, `-sun`, `-chain`): a day starts where and when it really starts (no breakfast at the lodging on an arrival) and reaches a departure 10 minutes early; the bag step is a timeline row; dinner at a saved place that fits the diet, open that evening, within 1.5 km of the last stop or the lodging, with its booking line (the planner never adds a booking); up to three evening extras within 2 km, events first; sunset from the NOAA algorithm; a place's own facts win over Google's hours; a crowd magnet gets the opening or the late slot when the travellers avoid crowds, and is never dropped. Invented fixture `fixtures/moving-day/`
+- **The core** (WP-11c): both validators take every C11 field; plans in parts (`gas/23_plan_parts.js`: staged in a `DigestParts` tab, joined and checked as one plan, stored and delivered once; an incomplete plan is dropped after 24 hours with one notice); the day card's 🚩 start, bags, last entry, 🎟 booking, 👥 crowd, 🍽 dinner, 🏁 end, "If you have energy" and 🌅 sunset lines; "local favourite" on a shortlist; per-day `/dates <date> start|end|hours|bags|clear`, sent to the brain as `trip_update.day_overrides`
+- **The brochure pass** (WP-11d, `kits/brochure/`, `brochure-map/`): the real start, end and bag step as timeline rows; a stop's last entry, where its length comes from, its booking line (only when not booked) and its crowd note; a dinner card; "This evening" with sunset and the extras; a facts block on place cards with sources, the date checked and a stale mark; a season page after the overview. A plan without C11 fields renders the same HTML byte for byte
+- **End-to-end test** `helpers/tests/pack_tour-guide_phase11_e2e.test.js` (invented data): the moving-day trip through the planner and the checks, the brochure, a two-part digest through the core, the day card and the app's `trip.digest`
+
+### Fixed
+- **The day card's walks** (`helpers/packs/tour-guide/gas/10_commands.js`): each walk now shows once, before what it leads to. On a day whose bags go to the hotel first, the walk to the hotel no longer reads "back to your lodging" after the sights, and the walks to and from dinner show. Days without these fields read as before
+- **Rainy-day swaps** (`planner/planner-rain.mjs`) follow a place's own facts, as the schedule does: a museum its own site closes on Mondays is no longer offered on a Monday
+- **Why a place was left out** (`planner/planner-assign.mjs`): a place near a day it is closed and far from every day it is open now reads "closed on <date>, the day you are near it" instead of its distance from the nearest lodging
+
+### Changed
+- `helpers/decisions/TG-PHASE-11.md` (merge choices, checks, notes for wave 2), the WP-11a–WP-11d decisions and status files, SPEC §16, the pack README; `helpers/BUILD-STATE.md` row 11 and the Phase 11 log; README tree and timestamp. 735 tests (734 pass, 1 skipped)
 
 ## [v01.52r] — 2026-10-03 05:24:52 AM EST
 

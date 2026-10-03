@@ -21,6 +21,13 @@ export const MIN_RATING_COUNT = 15;              // fewer than this is "too new 
 export const MIN_LOCAL_MENTIONS_TO_WAIVE_COUNT = 2; // … unless this many local mentions vouch for it
 export const CHAIN_REPEAT_MIN = 3;               // the same display name this many times in the pool = a chain
 export const RATING_OFFSET_MAX = 0.5;            // |rating_offset| a country may apply to the floor (ratings run lower in some countries)
+/** Local favourites (WP-11b): mentions from this many distinct publishers (refs when no publisher) make a place a local favourite … */
+export const LOCAL_FAVOURITE_MIN_PUBLISHERS = 2;
+export const LOCAL_FAVOURITE_RATING_FLOOR = 3.8;  // … its rating floor (plus the country's rating_offset), below the 4.3 default …
+export const LOCAL_FAVOURITE_OFF_TRACK_FACTOR = 1.5; // … and its off-track limit grows by half.
+/** Crowd magnets (WP-11b): a mass-tourism rank ≤ MASS_TOURISM_TOP_N, or the pool's top decile of rating counts with at least this many ratings. */
+export const CROWD_MAGNET_TOP_SHARE = 0.1;
+export const CROWD_MAGNET_MIN_COUNT = 2000;
 /** Activities only: a primary type that is not a visit (a hotel, its spa, a tour desk, a car park, a station). */
 export const NOT_A_VISIT_TYPES = Object.freeze(['lodging', 'hotel', 'resort_hotel', 'motel', 'hostel', 'bed_and_breakfast', 'guest_house', 'inn',
   'japanese_inn', 'spa', 'travel_agency', 'tour_agency', 'tourist_information_center', 'parking', 'car_rental', 'transit_station',
@@ -93,7 +100,9 @@ export const GEM_SCORE_DECIMALS = 1;
 /** Stage 4 — evidence flags. */
 export const UNPROVEN_REVIEW_WINDOW_DAYS = 60;
 export const UNPROVEN_MAX_RATING_COUNT = 50;
-export const FLAGS = Object.freeze(['unproven', 'tourist_oriented', 'closed_day_conflict']);
+export const FLAGS = Object.freeze(['unproven', 'tourist_oriented', 'closed_day_conflict', 'local_favourite', 'crowd_magnet']);
+/** The flags the screen sets (stage 2, from the pool); flagEvidence keeps them and adds its own evidence flags. */
+export const SCREEN_FLAGS = Object.freeze(['local_favourite', 'crowd_magnet']);
 export const FLAGS_MAX = 5;
 export const LOCAL_MENTIONS_MAX = 20;
 export const LOCAL_MENTION_REF_MAX = 120;

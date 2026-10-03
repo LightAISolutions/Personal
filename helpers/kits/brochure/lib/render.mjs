@@ -6,7 +6,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { prepare } from './model.mjs';
+import { prepare, usesC11 } from './model.mjs';
 import { stylesheet } from './css.mjs';
 import { pageSpec } from './tokens.mjs';
 import { fontFaceCss } from './fonts.mjs';
@@ -19,6 +19,7 @@ import { cards } from './sections/cards.mjs';
 import { later } from './sections/later.mjs';
 import { practical } from './sections/practical.mjs';
 import { attribution } from './sections/attribution.mjs';
+import { season } from './sections/season.mjs';
 
 export const ASSET_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'assets');
 const LOGO = join(ASSET_DIR, 'google-maps-logo.svg');
@@ -33,7 +34,7 @@ export function renderHtml(input, { page = undefined, baseDir = process.cwd(), e
   if (embedFonts && fonts.embedded < 4) warnings.push(`fonts: ${fonts.embedded}/4 Charter faces found — system serif fallback in use`);
   const logo = existsSync(LOGO) ? readFileSync(LOGO, 'utf8').replace(/<\?xml[^>]*>|<!--[\s\S]*?-->/g, '').trim() : '';
   const ctx = { m, locale: m.locale, img, logo, page: spec, warnings };
-  const body = [cover(ctx), glance(ctx), ...m.days.map((d, i) => day(d, i, ctx)), cards(ctx), later(ctx), practical(ctx), attribution(ctx)].filter(Boolean).join('\n');
+  const body = [cover(ctx), glance(ctx), season(ctx), ...m.days.map((d, i) => day(d, i, ctx)), cards(ctx), later(ctx), practical(ctx), attribution(ctx)].filter(Boolean).join('\n');
   const title = `${m.trip.title} — ${m.days.length}-day brochure`;
   const html = `<!doctype html>
 <html lang="${attr((m.locale || 'en').split('-')[0])}" data-page="${spec.key}">
@@ -44,7 +45,7 @@ export function renderHtml(input, { page = undefined, baseDir = process.cwd(), e
 <meta name="brochure-page" content="${spec.key}">
 <meta name="color-scheme" content="light">
 <title>${esc(title)}</title>
-<style>${stylesheet({ page: spec, fontCss: fonts.css })}</style>
+<style>${stylesheet({ page: spec, fontCss: fonts.css, c11: usesC11(m) })}</style>
 </head>
 <body><main class="doc">
 ${body}

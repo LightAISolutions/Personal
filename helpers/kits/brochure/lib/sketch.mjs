@@ -58,6 +58,7 @@ export function markersSvg(points, xy, { hue = '#b2492f', ink = '#1c1a17', halo 
     drawn.push([x, y, p.kind]);
     const c = p.hue || hue;
     if (p.kind === 'lodging') out += `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><path d="${HOUSE}" fill="#fff" stroke="${ink}" stroke-width="1.3" stroke-linejoin="round"/>${p.label ? `<text x="9" y="3.5" font-size="8.5" font-style="italic" fill="${ink}"${ring}>${esc(p.label)}</text>` : ''}</g>`;
+    else if (p.kind === 'point') out += `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><path d="M0 -5.5L5.5 0L0 5.5L-5.5 0Z" fill="#fff" stroke="${ink}" stroke-width="1.3" stroke-linejoin="round"/>${p.label ? `<text x="8" y="3.2" font-size="8.5" font-style="italic" fill="${ink}"${ring}>${esc(p.label)}</text>` : ''}</g>`;
     else if (p.kind === 'meal') out += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.6" fill="#fff" stroke="${c}" stroke-width="1.4"/>`;
     else out += `<g><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8.5" fill="${c}" stroke="#fff" stroke-width="1.5"/><text x="${x.toFixed(1)}" y="${(y + 3.3).toFixed(1)}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">${esc(p.n ?? '')}</text></g>`;
   });

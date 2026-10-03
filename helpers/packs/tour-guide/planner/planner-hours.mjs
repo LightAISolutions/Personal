@@ -78,12 +78,13 @@ function periodWindows(periods, w) {
 /**
  * Earliest start ≥ `t` of a visit of `minutes` that lies inside one window and ends by `latest`.
  * Returns { start, window } or null. `windows` empty = no constraint (hours unknown → treated as all day).
+ * A window may carry `last` (Phase 11: the place's last entry, or a crowd slot's latest start): the visit starts by it.
  */
 export function earliestFit(windows, t, minutes, latest) {
   const ws = windows && windows.length ? windows : ALL_DAY;
   for (const w of ws) {
     const start = Math.max(t, w.open);
-    if (start + minutes <= w.close && start + minutes <= latest) return { start, window: w };
+    if (start + minutes <= w.close && start + minutes <= latest && !(Number.isFinite(w.last) && start > w.last)) return { start, window: w };
   }
   return null;
 }

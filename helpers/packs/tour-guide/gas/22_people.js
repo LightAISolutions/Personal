@@ -4,7 +4,9 @@
  *   tgPeopleAdd(name) → { slug, name } | { error }   (a name already there returns that person)
  *   tgTripPeople(trip) → [slug] · tgTripPeopleSet(trip, slugs) → [slug]   (Settings tg_trip_people: who comes on which trip)
  *   tgTripHours(trip) → { day_start?, day_end? } · tgTripHoursSet(trip, start, end)   (Settings tg_trip_hours)
- *   tgTripUpdateOf(trip) → { start_date?, end_date?, day_start?, day_end?, travelers? } | null — what the owner set here,
+ *   tgTripDays(trip) · tgTripDay(trip, date) · tgTripDaySet(trip, date, patch) · tgTripDayClear(trip, date)
+ *     (Settings tg_trip_days: the /dates per-day forms — start, end, hours, bags; WP-11c)
+ *   tgTripUpdateOf(trip) → { start_date?, end_date?, day_start?, day_end?, travelers?, day_overrides? } | null — what the owner set here,
  *     carried by every research / plan / replan request so the routine writes it into trips/<slug>.md before it works
  *     (the owner never needs a pull request to change a date). Names and slugs stay in the core and the private repo.
  */
@@ -77,6 +79,57 @@ function tgTripHoursSet(trip, start, end) {
   all[trip] = { day_start: start, day_end: end };
   settingSet(TG_TRIP_HOURS_KEY, toJson(all), 'day hours the owner set with /dates');
 }
+/**
+ * Per-day settings (WP-11c, Contract C11) — Settings tg_trip_days: { <trip>: { <YYYY-MM-DD>: { start?: { text, time },
+ * end?: { text, time }, day_start?, day_end?, bags?, bags_note? } } }. The place words are the owner's, kept as typed
+ * (hidden characters stripped) and escaped wherever shown; the routine reads them through trip_update.day_overrides.
+ */
+var TG_TRIP_DAYS_KEY = 'tg_trip_days';
+var TG_TRIP_BAGS = ['hotel', 'locker', 'forward', 'carry'];
+var TG_TRIP_DAY_KEYS = ['start', 'end', 'day_start', 'day_end', 'bags', 'bags_note'];
+var TG_TRIP_DAY_PLACE_MAX = 120;
+var TG_TRIP_DAY_NOTE_MAX = 120;
+function _tgTripDayClean(date, e) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !isPlainObject(e)) return null;
+  var o = { date: date };
+  ['start', 'end'].forEach(function (k) {
+    var a = e[k];
+    if (isPlainObject(a) && typeof a.text === 'string' && a.text && TG_HHMM_RE.test(String(a.time || ''))) o[k] = { text: a.text, time: a.time };
+  });
+  if (TG_HHMM_RE.test(String(e.day_start || '')) && TG_HHMM_RE.test(String(e.day_end || ''))) { o.day_start = e.day_start; o.day_end = e.day_end; }
+  if (TG_TRIP_BAGS.indexOf(e.bags) >= 0) { o.bags = e.bags; if (typeof e.bags_note === 'string' && e.bags_note) o.bags_note = e.bags_note; }
+  return Object.keys(o).length > 1 ? o : null;
+}
+/** The trip's per-day settings in date order: [{ date, start?, end?, day_start?, day_end?, bags?, bags_note? }]. */
+function tgTripDays(trip) {
+  var m = _tgPeopleJson(TG_TRIP_DAYS_KEY, {})[trip];
+  if (!isPlainObject(m)) return [];
+  return Object.keys(m).sort().map(function (d) { return _tgTripDayClean(d, m[d]); }).filter(function (x) { return !!x; });
+}
+function tgTripDay(trip, date) { return tgTripDays(trip).filter(function (d) { return d.date === date; })[0] || null; }
+/** Merge patch into one day (a null value removes that key); returns the day's settings after the change, or null when empty. */
+function tgTripDaySet(trip, date, patch) {
+  var all = _tgPeopleJson(TG_TRIP_DAYS_KEY, {});
+  if (!isPlainObject(all[trip])) all[trip] = {};
+  var cur = isPlainObject(all[trip][date]) ? all[trip][date] : {};
+  Object.keys(patch || {}).forEach(function (k) {
+    if (TG_TRIP_DAY_KEYS.indexOf(k) < 0) return;
+    if (patch[k] === null) delete cur[k]; else cur[k] = patch[k];
+  });
+  var clean = _tgTripDayClean(date, cur);
+  if (clean) { delete clean.date; all[trip][date] = clean; } else delete all[trip][date];
+  settingSet(TG_TRIP_DAYS_KEY, toJson(all), 'per-day settings the owner set with /dates');
+  return clean ? tgTripDay(trip, date) : null;
+}
+/** Remove one day's settings; true when there was something. The trip key stays (an empty map), so the next request
+ *  carries day_overrides: [] and the routine clears the trip file too (the tg_trip_people rule). */
+function tgTripDayClear(trip, date) {
+  var all = _tgPeopleJson(TG_TRIP_DAYS_KEY, {});
+  if (!isPlainObject(all[trip]) || !all[trip][date]) return false;
+  delete all[trip][date];
+  settingSet(TG_TRIP_DAYS_KEY, toJson(all), 'per-day settings the owner set with /dates');
+  return true;
+}
 function tgTripUpdateOf(trip) {
   var t = trip ? tgTripGet(trip) : null;
   if (!t) return null;
@@ -84,6 +137,7 @@ function tgTripUpdateOf(trip) {
   if (/^\d{4}-\d{2}-\d{2}$/.test(String(t.start || ''))) { out.start_date = t.start; out.end_date = /^\d{4}-\d{2}-\d{2}$/.test(String(t.end || '')) ? t.end : t.start; }
   if (TG_HHMM_RE.test(String(h.day_start || '')) && TG_HHMM_RE.test(String(h.day_end || ''))) { out.day_start = h.day_start; out.day_end = h.day_end; }
   if (set) out.travelers = ppl.map(function (s) { var p = tgPerson(s); return { slug: s, name: p ? p.name : s }; });
+  if (isPlainObject(_tgPeopleJson(TG_TRIP_DAYS_KEY, {})[t.slug])) out.day_overrides = tgTripDays(t.slug);   // C11
   return Object.keys(out).length ? out : null;
 }
 

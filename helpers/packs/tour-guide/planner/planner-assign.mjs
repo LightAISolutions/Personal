@@ -1,7 +1,9 @@
 /**
  * Tour Guide planner — day assignment (no API calls). Each candidate goes to one trip date or to a Later reason:
  *   1. no location / closed business / closed or outside hours on every date → Later (closed_business, closed_day, outside_day, outside_hours, other);
- *   2. farther than FAR_KM[mode] from every day's lodging → Later (too_far) before any matrix element is spent;
+ *   2. farther than FAR_KM[mode] from every day's lodging → Later (too_far) before any matrix element is spent; a place
+ *      that is near a day it is closed and far from every day it is open says so (closed_day, "closed on <date>, the day
+ *      you are near it") rather than giving the distance to a town it is open in;
  *   3. bookings pin the date; a `scheduled_hint` (a promoted place) prefers its date;
  *   4. the rest, priority first, go to the feasible date with the best score = 0.5·km-to-anchor + mean km to the
  *      stops already on that date (or the anchor km when none) + 1.5·stops already there; capacity is capped per day
@@ -11,18 +13,20 @@
 import { haversineKm, centroid } from './planner-geo.mjs';
 import { unfitCode } from './planner-hours.mjs';
 import { breakfastLen } from './planner-input.mjs';
+import { dayAnchors } from './planner-anchors.mjs';
 
 export const FAR_KM = Object.freeze({ TRANSIT: 30, WALK: 12, DRIVE: 120 });
 export const CAP = Object.freeze({ TRANSIT_POINTS: 10, STOPS: 12 });
 
 export function dayCapacity(day) {
-  const lodgingPoints = day.lodging_start.id === day.lodging_end.id ? 1 : 2;
+  // Phase 11: an overridden day counts its own matrix points (start, end, the bag stop's lodging).
+  const lodgingPoints = day.override ? dayAnchors(day).points.length : day.lodging_start.id === day.lodging_end.id ? 1 : 2;
   return day.mode === 'TRANSIT' ? Math.min(CAP.STOPS, CAP.TRANSIT_POINTS - lodgingPoints) : CAP.STOPS;
 }
-const anchorOf = (day) => centroid([day.lodging_start, day.lodging_end]);
+const anchorOf = (day) => { if (!day.override) return centroid([day.lodging_start, day.lodging_end]); const a = dayAnchors(day); return centroid([a.coreS, a.coreE]); };
 const reasonText = {
   closed_business: (c) => `${c.name} is listed as closed (not operational)`,
-  closed_day: (c) => `${c.name} is closed on every day of the trip`,
+  closed_day: (c, d) => (d ? `${c.name} is closed on ${d}, the day you are near it` : `${c.name} is closed on every day of the trip`),
   outside_day: (c, d) => `${c.name} only opens outside your planning day (${d})`,
   outside_hours: (c) => `${c.name}'s opening hours are too short for a ${c.minutes}-minute visit inside the day`,
   too_far: (c, km) => `${c.name} is about ${Math.round(km)} km from the nearest lodging`,
@@ -42,14 +46,14 @@ export function assign({ days, cands, rng }) {
   for (const c of cands) {
     if (!c.loc) { drop(c, 'other'); continue; }
     const codes = {};
-    const ok = [];
+    const ok = [], shut = [];
     for (const day of days) {
       let code = unfitCode(c.hours[day.date], c.minutes, day.dayStart + breakfastLen(day), day.dayEnd);
       if (!code && c.booking) {
         if (c.booking.date !== day.date) code = 'booked_elsewhere';
         else if (c.booking.time < day.dayStart || c.booking.time + c.minutes > day.dayEnd) code = 'outside_day';
       }
-      if (code) { codes[code] = (codes[code] || 0) + 1; continue; }
+      if (code) { codes[code] = (codes[code] || 0) + 1; if (code === 'closed_day') shut.push({ date: day.date, day, km: haversineKm(c.loc, anchorOf(day)) }); continue; }
       ok.push({ date: day.date, day, km: haversineKm(c.loc, anchorOf(day)) });
     }
     if (!ok.length) {
@@ -59,7 +63,11 @@ export function assign({ days, cands, rng }) {
       continue;
     }
     const nearest = ok.reduce((a, b) => (b.km < a.km ? b : a));
-    if (nearest.km > FAR_KM[nearest.day.mode]) { drop(c, 'too_far', nearest.km); continue; }
+    if (nearest.km > FAR_KM[nearest.day.mode]) {
+      const near = shut.filter((f) => f.km <= FAR_KM[f.day.mode]).sort((a, b) => a.km - b.km || a.date.localeCompare(b.date))[0];
+      if (near) drop(c, 'closed_day', near.date); else drop(c, 'too_far', nearest.km);
+      continue;
+    }
     feasible.set(c.id, ok);
     pending.push(c);
   }

@@ -1,0 +1,187 @@
+{
+  "v": 1,
+  "id": "ashvale-moving-2027",
+  "title": "Two towns in the Fictional Isles",
+  "destination": "Brindlecombe and Ashvale",
+  "country": "Fictional Isles",
+  "timezone": "Etc/GMT-11",
+  "locale": "en-US",
+  "start_date": "2027-10-18",
+  "end_date": "2027-10-20",
+  "travelers": [
+    "Traveller One",
+    "Traveller Two"
+  ],
+  "pace": "normal",
+  "day_start": "09:00",
+  "day_end": "18:00",
+  "lodging": [
+    {
+      "id": "brindle-quay-inn",
+      "name": "Brindle Quay Inn",
+      "place_id": "FixtureMdBrindleQuayInn",
+      "lat": 34.2,
+      "lng": 160.3,
+      "address": "10 Brindle Lane, Brindlecombe, Fictional Isles",
+      "from": "2027-10-18",
+      "to": "2027-10-19",
+      "check_in": "15:00",
+      "check_out": "10:00",
+      "note": "An invented inn in Brindlecombe."
+    },
+    {
+      "id": "ashvale-lantern-hotel",
+      "name": "Ashvale Lantern Hotel",
+      "place_id": "FixtureMdAshvaleLanternHotel",
+      "lat": 34.45,
+      "lng": 160.55,
+      "address": "11 Ashvale Lane, Ashvale, Fictional Isles",
+      "from": "2027-10-19",
+      "to": "2027-10-21",
+      "check_in": "15:00",
+      "check_out": "10:00",
+      "note": "An invented inn in Ashvale."
+    }
+  ],
+  "modes": {
+    "default": "WALK",
+    "allowed": [
+      "WALK",
+      "TRANSIT",
+      "DRIVE"
+    ]
+  },
+  "status": "intake",
+  "day_overrides": [
+    {
+      "date": "2027-10-18",
+      "day_start": "10:00",
+      "note": "A slow first morning."
+    },
+    {
+      "date": "2027-10-19",
+      "start": {
+        "name": "Ashvale Station",
+        "place_id": "FixtureMdAshvaleStation",
+        "lat": 34.4462,
+        "lng": 160.5458,
+        "time": "12:10"
+      },
+      "bags": "hotel",
+      "note": "Morning train from Brindlecombe."
+    },
+    {
+      "date": "2027-10-20",
+      "end": {
+        "name": "Ashvale Station",
+        "place_id": "FixtureMdAshvaleStation",
+        "lat": 34.4462,
+        "lng": 160.5458,
+        "time": "17:00"
+      },
+      "bags": "carry",
+      "bags_note": "Check out by 10:00"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "hearth-and-barley-dinner",
+      "title": "Dinner at Hearth and Barley",
+      "kind": "meal",
+      "rule": "book a day ahead",
+      "status": "todo",
+      "place": "hearth-and-barley",
+      "for_date": "2027-10-19",
+      "how": "by phone",
+      "party_min": 2
+    }
+  ],
+  "season": {
+    "checked": "2027-09-28",
+    "sources": [
+      {
+        "url": "https://events.example.org/ashvale/autumn",
+        "title": "Autumn events (invented)",
+        "accessed": "2027-09-28"
+      }
+    ],
+    "weather": {
+      "text": "Mild days, cool evenings.",
+      "high_c": 19,
+      "low_c": 10,
+      "rain_days": 8
+    },
+    "bloom": [
+      {
+        "kind": "autumn_leaves",
+        "from": "2027-10-25",
+        "to": "2027-11-15",
+        "status": "before",
+        "note": "Maples just starting to turn."
+      }
+    ],
+    "events": [
+      {
+        "id": "copperleaf-light-up",
+        "name": "Copperleaf Garden evening light-up",
+        "kind": "light_up",
+        "from": "2027-10-15",
+        "to": "2027-10-25",
+        "start": "18:00",
+        "end": "21:00",
+        "place": "copperleaf-garden",
+        "note": "Separate evening ticket."
+      },
+      {
+        "id": "ashvale-harvest-fair",
+        "name": "Ashvale harvest fair",
+        "kind": "festival",
+        "from": "2027-10-19",
+        "to": "2027-10-19",
+        "start": "17:30",
+        "end": "21:00",
+        "lat": 34.4475,
+        "lng": 160.5475
+      },
+      {
+        "id": "far-cape-fireworks",
+        "name": "Far Cape fireworks",
+        "kind": "festival",
+        "from": "2027-10-18",
+        "to": "2027-10-20",
+        "start": "19:00",
+        "end": "20:00",
+        "lat": 34.9,
+        "lng": 161.2
+      },
+      {
+        "id": "harbour-night-market",
+        "name": "Harbour night market",
+        "kind": "market",
+        "from": "2027-10-18",
+        "to": "2027-10-20",
+        "start": "18:00",
+        "end": "22:00",
+        "area": "the old harbour"
+      },
+      {
+        "id": "gallery-closure",
+        "name": "Gallery rehang",
+        "kind": "closure",
+        "from": "2027-10-10",
+        "to": "2027-10-12",
+        "place": "lantern-quay-gallery"
+      }
+    ]
+  },
+  "intro": "An invented two-town trip for testing: a slow first day, a moving day by train, and a last day that ends at the station.",
+  "practical": [
+    {
+      "title": "Getting around",
+      "text": "Both towns are small and walkable.",
+      "items": [
+        "Trains between the towns run hourly."
+      ]
+    }
+  ]
+}

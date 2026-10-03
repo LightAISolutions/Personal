@@ -51,6 +51,7 @@
         "new": { "type": "boolean" },
         "gem": { "type": "boolean" },
         "gem_line": { "type": "string", "maxLength": 200, "description": "The one-sentence \"why it's a gem\", from numbers and sources." },
+        "local_favourite": { "const": true, "description": "C11: two or more independent local sources name it; shown as \"local favourite\"." },
         "seen_before": {
           "type": "object",
           "additionalProperties": false,

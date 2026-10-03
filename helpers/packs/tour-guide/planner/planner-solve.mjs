@@ -8,6 +8,7 @@
  * Stops end by `dayEnd`; only the return leg may spill, up to `maxSpill` minutes. Up to 12 stops (2^12·13·2 states).
  *   solveDay({ stops, travel, departAt, dayEnd, lunch, maxWait, maxSpill, buffer }) → { order, items, finish, hasLunch, value, states }
  *   stops[i] = { minutes, priority, windows: [{open, close}] ([] = no constraint), booking: minutes | null }
+ *   (Phase 11) stops[i].waitAny = true lets a stop wait past `maxWait` like a booking: a crowd magnet's quiet slot.
  *   travel(a, b) → minutes, a/b ∈ 'S' (start lodging) | 'E' (end lodging) | stop index; Infinity = unreachable
  *   buffer(a, b) → minutes of slack after the leg a → b before stop b starts (optional, default none; Phase 10). A booked
  *   stop's buffer shrinks to the slack before the booking, so a buffer never drops a booking.
@@ -51,7 +52,7 @@ export function solveDay({ stops, travel, departAt, dayEnd, lunch = null, maxWai
           let start;
           if (st.booking != null) { if (arrive > st.booking || st.booking + st.minutes > dayEnd) continue; start = st.booking; }
           else { const f = earliestFit(st.windows, ready, st.minutes, dayEnd); if (!f) continue; start = f.start; }
-          if (st.booking == null && start - ready > maxWait) continue; // a booked stop may wait any length: the wait is free time, never a reason to drop the booking
+          if (st.booking == null && !st.waitAny && start - ready > maxWait) continue; // a booked stop may wait any length: the wait is free time, never a reason to drop the booking
           relax(sidx(mask | (1 << j), j, ld), start + st.minutes, from, start);
         }
       }

@@ -8,6 +8,7 @@ import { esc, attr, join, clip, prettyUrl } from '../escape.mjs';
 import { shortDate, number } from '../format.mjs';
 import { icon, stars, MEAL_ICON } from '../icons.mjs';
 import { secHead, hueStyle, link } from './common.mjs';
+import { favTag } from './day.mjs';
 
 const NOTE_ORDER = [['why_you', 'Why you'], ['what_to_do', 'Do'], ['what_to_skip', 'Skip'], ['best_time', 'When'], ['tickets', 'Tickets'], ['food', 'Eat'], ['accessibility', 'Access']];
 const PRICE = (n) => (Number.isInteger(n) && n > 0 ? '$'.repeat(Math.min(4, n)) : '');
@@ -44,6 +45,20 @@ function sources(p) {
   const s = (p.sources || []).filter((x) => x && x.title);
   return s.length ? `<p class="card-src tiny">Sources: ${s.map((x) => `${link(x.url, esc(clip(x.title, 70)))}${x.accessed ? ` (${esc(shortDate(x.accessed))})` : ''}`).join('; ')}.</p>` : '';
 }
+/** Contract C11: the researched facts (from the place's own site) with their sources and the date checked. */
+export const FACT_ROWS = [['visit', 'Visit'], ['last_entry', 'Last entry'], ['closed', 'Closed'], ['booking', 'Booking'], ['price', 'Price'], ['payment', 'Pay'], ['gate', 'Gate'], ['menu', 'Menu']];
+function facts(p, m) {
+  const f = p.facts;
+  if (!f) return '';
+  const menuWhen = f.menu_checked ? `checked ${esc(shortDate(f.menu_checked, m.locale))}${f.menu_stale ? ' · <span class="stale">check again</span>' : ''}` : '';
+  const rows = FACT_ROWS.filter(([k]) => f[k] || (k === 'menu' && menuWhen)).map(([k, label]) => {
+    const text = k === 'menu' ? join([f.menu ? esc(clip(f.menu, 200)) : '', menuWhen ? `<span class="muted">${menuWhen}</span>` : ''], ' · ') : esc(clip(f[k], 200));
+    return `<div class="cn fact-${k}"><h4>${label}</h4><p>${text}</p></div>`;
+  });
+  const src = (f.sources || []).filter((x) => x && x.url);
+  const from = src.length ? `<p class="card-src tiny">From ${src.map((x) => `${link(x.url, esc(clip(x.title || prettyUrl(x.url, 40) || 'source', 70)))}${x.accessed ? ` (${esc(shortDate(x.accessed))})` : ''}`).join('; ')}.</p>` : '';
+  return `<div class="card-facts"><p class="eyebrow">Facts checked ${esc(shortDate(f.checked, m.locale))}${f.stale ? ' · <span class="stale">check again</span>' : ''}</p>${rows.length ? `<div class="card-notes">${rows.join('')}</div>` : ''}${from}</div>`;
+}
 function card(c, m) {
   const p = c.place;
   const badge = c.n ? `<span class="badge">${c.n}</span>` : `<span class="badge meal">${icon(MEAL_ICON[c.mealKind] || 'fork', 12)}</span>`;
@@ -51,7 +66,7 @@ function card(c, m) {
   const credit = gp ? `<figcaption class="photo-credit">Photo${gp.author ? ` by ${link(gp.author_url, esc(clip(gp.author, 60)))}` : ''} · Google Maps</figcaption>` : (p.image && p.image.credit ? `<figcaption class="photo-credit">${esc(p.image.credit)}</figcaption>` : '');
   const img = c.image ? `<figure class="card-fig"><img class="card-img${c.photo ? ' gphoto' : ''}" src="${attr(c.image)}" alt="${attr((c.photo ? gp && gp.alt : p.image && p.image.alt) || p.name)}">${credit}</figure>` : '';
   const edit = p.editorial ? `<p class="card-edit">${esc(clip(p.editorial, 240))} <span class="tiny">— Google Maps</span></p>` : '';
-  return `<article class="card" id="place-${attr(p.id)}" style="${hueStyle(c.day - 1)}">${img}<div class="card-head">${badge}<div><p class="card-day">Day ${c.day}${p.category ? ` · ${esc(p.category)}` : ''}</p><h3>${esc(p.name)}</h3>${p.tagline ? `<p class="card-tag">${esc(clip(p.tagline, 140))}</p>` : ''}</div></div>${edit}${metaList(p, m)}${notes(p, m)}${review(p)}${sources(p)}</article>`;
+  return `<article class="card" id="place-${attr(p.id)}" style="${hueStyle(c.day - 1)}">${img}<div class="card-head">${badge}<div><p class="card-day">Day ${c.day}${p.category ? ` · ${esc(p.category)}` : ''}${favTag(p)}</p><h3>${esc(p.name)}</h3>${p.tagline ? `<p class="card-tag">${esc(clip(p.tagline, 140))}</p>` : ''}</div></div>${edit}${metaList(p, m)}${facts(p, m)}${notes(p, m)}${review(p)}${sources(p)}</article>`;
 }
 export function cards(ctx) {
   const { m } = ctx;

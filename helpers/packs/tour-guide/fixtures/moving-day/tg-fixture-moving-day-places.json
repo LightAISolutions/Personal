@@ -1,0 +1,134 @@
+[
+  {
+    "v": 1,
+    "id": "copperleaf-garden",
+    "place_id": "FixtureMdCopperleafGarden",
+    "name": "Copperleaf Garden",
+    "category": "garden",
+    "tags": [
+      "garden",
+      "maples"
+    ],
+    "status": "candidate",
+    "activity": "garden walk",
+    "priority": 1,
+    "indoor": false,
+    "flags": [
+      "crowd_magnet"
+    ]
+  },
+  {
+    "v": 1,
+    "id": "ninefold-temple",
+    "place_id": "FixtureMdNinefoldTemple",
+    "name": "Ninefold Temple",
+    "category": "temple",
+    "tags": [
+      "temple"
+    ],
+    "status": "candidate",
+    "activity": "temple halls",
+    "priority": 1,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-09-28",
+      "sources": [
+        {
+          "url": "https://ninefold-temple.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-09-28"
+        }
+      ],
+      "visit_minutes": {
+        "min": 45,
+        "max": 60
+      },
+      "last_entry": "15:30",
+      "close": "16:00"
+    }
+  },
+  {
+    "v": 1,
+    "id": "saltmarsh-craft-museum",
+    "place_id": "FixtureMdSaltmarshCraftMuseum",
+    "name": "Saltmarsh Craft Museum",
+    "category": "museum",
+    "tags": [
+      "crafts"
+    ],
+    "status": "candidate",
+    "activity": "craft collection",
+    "priority": 2,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-09-28",
+      "sources": [
+        {
+          "url": "https://saltmarsh-craft-museum.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-09-28"
+        }
+      ],
+      "closed_weekdays": [
+        1
+      ]
+    }
+  },
+  {
+    "v": 1,
+    "id": "ashvale-castle-ruins",
+    "place_id": "FixtureMdAshvaleCastleRuins",
+    "name": "Ashvale Castle Ruins",
+    "category": "viewpoint",
+    "tags": [
+      "castle",
+      "views"
+    ],
+    "status": "candidate",
+    "activity": "ruins and ramparts",
+    "priority": 1,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "lantern-quay-gallery",
+    "place_id": "FixtureMdLanternQuayGallery",
+    "name": "Lantern Quay Gallery",
+    "category": "museum",
+    "tags": [
+      "art"
+    ],
+    "status": "candidate",
+    "activity": "harbour paintings",
+    "priority": 2,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "mistral-shrine",
+    "place_id": "FixtureMdMistralShrine",
+    "name": "Mistral Shrine",
+    "category": "shrine",
+    "tags": [
+      "shrine"
+    ],
+    "status": "candidate",
+    "activity": "shrine grounds",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "glassblowers-yard",
+    "place_id": "FixtureMdGlassblowersYard",
+    "name": "Glassblowers' Yard",
+    "category": "workshop",
+    "tags": [
+      "glass"
+    ],
+    "status": "saved-for-later",
+    "activity": "glass workshop",
+    "priority": 3,
+    "indoor": true
+  }
+]

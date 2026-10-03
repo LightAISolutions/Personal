@@ -155,27 +155,56 @@ tgCmdPlAction('ivs', function (ctx, args) {
 /* ==================== trips and days ==================== */
 
 /** A stored day → [{ html, keyboard? }] with ◀ ▶ buttons (dy:<trip key>:<n>). Reads the Phase 10 fields (Contract C10) when
- *  the day has them — honest legs, buffers, spare time, "about" times, check-on-the-day lines — and shows an older day as before. */
+ *  the day has them — honest legs, buffers, spare time, "about" times, check-on-the-day lines — and the Phase 11 fields
+ *  (Contract C11): the day's start and end lines, last entry, booking and crowd lines on a stop, dinner, "If you have energy"
+ *  and sunset. facts_line and price_line stay off the chat card (the brochure carries them). An older day shows as before. */
 function tgCmdDayMessages(trip, day, total) {
   var tk = tgCmdTripKey(trip.slug);
   var lines = ['<b>Day ' + day.n + (total ? ' of ' + total : '') + ' · ' + tgCmdDate(day.date) + '</b>' + (day.theme ? ' — ' + tgEscape(day.theme) : '')];
   var legs = Array.isArray(day.legs) ? day.legs : [];
-  var legTo = function (slug) { return legs.filter(function (l) { return l && l.to === slug; })[0] || null; };
-  (day.stops || []).forEach(function (s) {
-    var l = legTo(s.slug);
+  // Each leg shows once, before what it leads to: a C11 day can reach the lodging more than once (station → hotel with the
+  // bags, back after the last stop, back after dinner), so "the first leg to X" is not enough.
+  var shown = [];
+  var legWhere = function (ok) {
+    for (var i = 0; i < legs.length; i++) if (legs[i] && shown.indexOf(i) < 0 && ok(legs[i])) { shown.push(i); return legs[i]; }
+    return null;
+  };
+  var stops = day.stops || [], lastSlug = stops.length ? stops[stops.length - 1].slug : null;
+  var dinnerSlug = tgCmdDayAnchorOk(day.dinner) && typeof day.dinner.slug === 'string' ? day.dinner.slug : null;
+  var startLine = tgCmdDayStartLine(day);
+  if (startLine) lines.push(startLine);
+  var toLodging = legWhere(function (l) { return l.from === 'day-start' && l.to === 'lodging'; });
+  if (toLodging) lines.push(tgCmdDayLegLine(toLodging, 'to your lodging'));
+  stops.forEach(function (s) {
+    var l = legWhere(function (x) { return x.to === s.slug; });
     if (l) lines.push(tgCmdDayLegLine(l, ''));
     var time = tgCmdDayTime(s);
-    lines.push('<b>' + tgEscape(s.n) + '.</b> ' + (time ? time + ' ' : '') + tgCmdHref(s.maps_url, s.name) + (s.minutes ? ' · ' + tgCmdMinutes(s.minutes) : ''));
+    lines.push('<b>' + tgEscape(s.n) + '.</b> ' + (time ? time + ' ' : '') + tgCmdHref(s.maps_url, s.name) + (s.minutes ? ' · ' + tgCmdMinutes(s.minutes) : '') +
+      (tgCmdDayClock(s.last_entry) ? ' · last entry ' + tgEscape(s.last_entry) : ''));
     var note = s.note_line ? tgCmdDayNoteGuard(String(s.note_line), { arrive: s.arrive, depart: s.depart }) : '';
     if (note) lines.push('   <i>' + tgEscape(note) + '</i>');
     if (typeof s.check_on_day === 'string' && s.check_on_day) lines.push('   🕑 <i>' + tgEscape(s.check_on_day) + '</i>');
+    if (typeof s.booking_line === 'string' && s.booking_line) lines.push('   🎟 <i>' + tgEscape(s.booking_line) + '</i>');
+    if (TG_CMD_DAY_CROWD.hasOwnProperty(s.crowd_slot)) lines.push('   👥 <i>' + TG_CMD_DAY_CROWD[s.crowd_slot] + '</i>');
   });
-  var home = legTo('lodging');
+  var home = legWhere(function (l) { return l.to === 'lodging' && l.from === lastSlug; }) ||
+    legWhere(function (l) { return l.to === 'lodging' && l.from !== 'day-start' && l.from !== dinnerSlug; });
   if (home) lines.push(tgCmdDayLegLine(home, 'back to your lodging'));
+  var dinnerLines = tgCmdDayDinnerLines(day.dinner);
+  var toDinner = dinnerLines.length && dinnerSlug ? legWhere(function (l) { return l.to === dinnerSlug; }) : null;
+  if (toDinner) lines.push(tgCmdDayLegLine(toDinner, ''));
+  dinnerLines.forEach(function (l) { lines.push(l); });
+  var fromDinner = dinnerLines.length && dinnerSlug ? legWhere(function (l) { return l.from === dinnerSlug && l.to === 'lodging'; }) : null;
+  if (fromDinner) lines.push(tgCmdDayLegLine(fromDinner, 'back to your lodging'));
+  var endLeg = legWhere(function (l) { return l.to === 'day-end'; }), endLine = tgCmdDayEndLine(day);
+  if (endLeg && endLine) lines.push(tgCmdDayLegLine(endLeg, ''));
+  if (endLine) lines.push(endLine);
   if (!(day.stops || []).length) lines.push('<i>A free day.</i>');
   if (typeof day.spare_minutes === 'number' && day.spare_minutes >= 0 && (day.stops || []).length) {
     lines.push('Spare time: ' + (day.spare_minutes ? tgCmdDaySpan(day.spare_minutes) : 'none'));
   }
+  tgCmdDayExtraLines(day.extras).forEach(function (l) { lines.push(l); });
+  if (tgCmdDayClock(day.sunset)) lines.push('🌅 Sunset ' + tgEscape(day.sunset));
   if (legs.some(function (l) { return l && (l.mode === 'WALK' || l.mode === 'BICYCLE') && !l.estimated; })) lines.push('<i>' + TG_CMD_DAY_WALK_BETA + '</i>');
   (day.warnings || []).forEach(function (w) { lines.push('⚠️ ' + tgEscape(w)); });
   if (typeof tgBkDayLines === 'function') {
@@ -193,6 +222,44 @@ function tgCmdDayMessages(trip, day, total) {
   if (total && day.n < total) nav.push({ text: 'Day ' + (day.n + 1) + ' ▶', data: cbEncode('dy', tk, day.n + 1, 'e') });
   if (nav.length) rows.push(nav);
   return tgCmdMessages(lines, rows.length ? tgKeyboard(rows) : null);
+}
+/* ---- the Phase 11 day lines (Contract C11); each gives '' / [] when the day does not carry the field ---- */
+/** The crowd note for a stop's crowd_slot. */
+var TG_CMD_DAY_CROWD = { opening: 'Go at opening; it gets busy later', late: 'Late is quieter' };
+/** An HH:MM the validators accepted, else false (a stored row is not trusted to be well formed). */
+function tgCmdDayClock(t) { return typeof t === 'string' && /^([01]\d|2[0-3]):[0-5]\d$/.test(t); }
+function tgCmdDayAnchorOk(a) { return isPlainObject(a) && typeof a.name === 'string' && !!a.name; }
+/** "🚩 Starts 12:10 at <place> · bags to the hotel" (bags but no start: "🧳 bags to the hotel"). */
+function tgCmdDayStartLine(day) {
+  var bags = typeof day.bags === 'string' && day.bags ? tgEscape(day.bags) : '';
+  if (!tgCmdDayAnchorOk(day.start)) return bags ? '🧳 ' + bags : '';
+  var a = day.start;
+  return '🚩 Starts ' + (tgCmdDayClock(a.time) ? tgEscape(a.time) + ' ' : '') + 'at ' + tgCmdHref(a.maps_url, a.name) + (bags ? ' · ' + bags : '');
+}
+/** "🏁 Ends 21:00 at <place>". */
+function tgCmdDayEndLine(day) {
+  if (!tgCmdDayAnchorOk(day.end)) return '';
+  var a = day.end;
+  return '🏁 Ends ' + (tgCmdDayClock(a.time) ? tgEscape(a.time) + ' ' : '') + 'at ' + tgCmdHref(a.maps_url, a.name);
+}
+/** "🍽 19:00 Dinner at <place>" (linked), then its note and booking lines. */
+function tgCmdDayDinnerLines(d) {
+  if (!tgCmdDayAnchorOk(d)) return [];
+  var out = ['🍽 ' + (tgCmdDayClock(d.start) ? tgEscape(d.start) + ' ' : '') + 'Dinner at ' + tgCmdHref(d.maps_url, d.name)];
+  if (typeof d.note_line === 'string' && d.note_line) out.push('   <i>' + tgEscape(d.note_line) + '</i>');
+  if (typeof d.booking_line === 'string' && d.booking_line) out.push('   🎟 <i>' + tgEscape(d.booking_line) + '</i>');
+  return out;
+}
+/** "<b>If you have energy</b>" and one line per extra: ✨ an event, 🔖 a saved place. */
+function tgCmdDayExtraLines(extras) {
+  var list = (Array.isArray(extras) ? extras : []).filter(tgCmdDayAnchorOk);
+  if (!list.length) return [];
+  var out = ['<b>If you have energy</b>'];
+  list.forEach(function (x) {
+    out.push((x.kind === 'saved' ? '🔖 ' : '✨ ') + (tgCmdDayClock(x.time) ? tgEscape(x.time) + ' ' : '') + tgCmdHref(x.maps_url, x.name));
+    if (typeof x.note_line === 'string' && x.note_line) out.push('   <i>' + tgEscape(x.note_line) + '</i>');
+  });
+  return out;
 }
 /** The stop a rainy-day option replaces (the digest names it, as the stop's own name), or null. */
 function tgCmdRainStop(day, r) { return (day.stops || []).filter(function (st) { return st && st.slug && st.name === r.instead_of; })[0] || null; }
@@ -589,6 +656,8 @@ registerCommand('/lodging', function (ctx) {
  * (dates) and in Settings (hours); every research, plan and replan request then carries them as trip_update, and the
  * routine writes them into the trip file before it works.
  *   /dates · /dates 2027-05-12 [2027-05-14] · /dates hours 09:30 19:00
+ *   /dates <date> start <place> HH:MM · end <place> HH:MM · hours HH:MM HH:MM · bags hotel|locker|forward|carry [note] · clear
+ *     (WP-11c: one day's settings, Settings tg_trip_days, carried as trip_update.day_overrides)
  */
 function tgCmdDatesLine(trip) {
   var h = tgTripHours(trip.slug);
@@ -599,8 +668,15 @@ registerCommand('/dates', function (ctx) {
   var trip = tgCmdCurrent(ctx);
   if (!trip) return;
   var a = ctx.args.replace(/\s+/g, ' ').trim();
-  var help = 'Change them with <code>/dates 2027-05-12 2027-05-14</code> (one date for a one-day trip) or set the day hours with <code>/dates hours 09:30 19:00</code>.';
-  if (!a) { ctx.reply(tgCmdDatesLine(trip) + '\n' + help); return; }
+  var help = 'Change them with <code>/dates 2027-05-12 2027-05-14</code> (one date for a one-day trip) or set the day hours with <code>/dates hours 09:30 19:00</code>.' +
+    ' For one day: <code>/dates 2027-05-12 start &lt;place&gt; 12:10</code> · <code>end &lt;place&gt; 18:00</code> · <code>hours 10:00 18:00</code> · <code>bags hotel|locker|forward|carry [note]</code> · <code>clear</code>.';
+  if (!a) {
+    var dayLines = tgTripDays(trip.slug).map(tgCmdDatesDayLine);
+    ctx.reply(tgCmdDatesLine(trip) + (dayLines.length ? '\n' + dayLines.join('\n') : '') + '\n' + help);
+    return;
+  }
+  var per = /^(\d{4}-\d{2}-\d{2})\s+(start|end|hours?|bags|clear)\b\s*(.*)$/i.exec(a);
+  if (per) { tgCmdDatesDay(ctx, trip, per[1], per[2].toLowerCase(), per[3], help); return; }
   var hm = /^hours?\s+(\d{1,2}):(\d{2})\s*(?:-|–|to)?\s*(\d{1,2}):(\d{2})$/i.exec(a);
   if (hm) {
     var st = ('0' + hm[1]).slice(-2) + ':' + hm[2], en = ('0' + hm[3]).slice(-2) + ':' + hm[4];
@@ -618,7 +694,70 @@ registerCommand('/dates', function (ctx) {
   if (!d) { ctx.reply('I could not read those dates (one or two dates, at most ' + TG_PLAN_SPAN_MAX_DAYS + ' days). Nothing was saved.'); return; }
   var t2 = tgTripUpsert({ slug: trip.slug, start: d.start, end: d.end });
   ctx.reply('📅 Saved. ' + tgCmdDatesLine(t2 || trip).replace(/^📅 /, '') + '\nThe next plan or <code>/replan</code> uses them; the days already planned stay until then.');
-}, 'the current trip\'s dates and day hours: /dates [start [end]] · /dates hours 09:30 19:00');
+}, 'the current trip\'s dates and day hours: /dates [start [end]] · /dates hours 09:30 19:00 · /dates <date> start|end|hours|bags|clear …');
+
+/* ---- /dates <date> start|end|hours|bags|clear (WP-11c, Contract C11): one day's start point, end point, hours and bags ---- */
+var TG_CMD_BAGS_TEXT = { hotel: 'bags to the hotel', locker: 'bags in a locker', forward: 'bags sent ahead', carry: 'bags carried along' };
+var TG_CMD_DATES_NEXT = ' The next plan or <code>/replan</code> uses it.';
+function tgCmdHm(h, m) { var t = ('0' + h).slice(-2) + ':' + m; return TG_HHMM_RE.test(t) ? t : ''; }
+function tgCmdHmMin(t) { return Number(t.slice(0, 2)) * 60 + Number(t.slice(3)); }
+/** One stored day → '· Thu 10 Jun: start Reed Station 12:10 · end Gull Inn 21:00 · 09:30–19:00 · bags to the hotel (note)'. */
+function tgCmdDatesDayLine(d) {
+  var bits = [];
+  if (d.start) bits.push('start ' + tgEscape(d.start.text) + ' ' + tgEscape(d.start.time));
+  if (d.end) bits.push('end ' + tgEscape(d.end.text) + ' ' + tgEscape(d.end.time));
+  if (d.day_start) bits.push(tgEscape(d.day_start) + '–' + tgEscape(d.day_end));
+  if (d.bags) bits.push(TG_CMD_BAGS_TEXT[d.bags] + (d.bags_note ? ' (' + tgEscape(d.bags_note) + ')' : ''));
+  return '· ' + tgCmdDate(d.date) + ': ' + bits.join(' · ');
+}
+/** The day's start and end times after a change: its own start/end point, else its hours, else the trip's hours. */
+function tgCmdDatesSpan(trip, d) {
+  var h = tgTripHours(trip.slug);
+  var st = d.start ? d.start.time : (d.day_start || h.day_start || ''), en = d.end ? d.end.time : (d.day_end || h.day_end || '');
+  return { start: TG_HHMM_RE.test(String(st)) ? st : '', end: TG_HHMM_RE.test(String(en)) ? en : '' };
+}
+function tgCmdDatesDay(ctx, trip, date, verb, rest, help) {
+  rest = String(rest || '').trim();
+  var nothing = ' Nothing was saved.';
+  if (!tgEnvRealDate(date)) { ctx.reply(tgEscape(date) + ' is not a real date (YYYY-MM-DD).' + nothing); return; }
+  if (!trip.start) { ctx.reply('Set the trip\'s dates first with <code>/dates 2027-05-12 2027-05-14</code>.' + nothing); return; }
+  var end = trip.end || trip.start;
+  if (date < trip.start || date > end) { ctx.reply(tgCmdDate(date) + ' is not inside the trip (' + tgCmdDatesLine(trip).replace(/^📅 [^:]*: /, '') + ').' + nothing); return; }
+  var day = tgCmdDate(date), patch = null, said = '';
+  if (verb === 'clear') {
+    if (rest) { ctx.reply(help); return; }
+    ctx.reply(tgTripDayClear(trip.slug, date) ? '🧹 Cleared what was set for ' + day + '. The next plan or <code>/replan</code> uses the trip\'s usual hours.' : 'Nothing was set for ' + day + '.');
+    return;
+  }
+  if (verb === 'start' || verb === 'end') {
+    var m = /^(.+?)\s+(\d{1,2}):(\d{2})$/.exec(rest), text = m ? stripHidden(m[1]).replace(/\s+/g, ' ').trim() : '', time = m ? tgCmdHm(m[2], m[3]) : '';
+    if (!text || !time) { ctx.reply('Send the place and the time: <code>/dates ' + tgEscape(date) + ' ' + verb + ' &lt;place&gt; 12:10</code>.' + nothing); return; }
+    if (text.length > TG_TRIP_DAY_PLACE_MAX) { ctx.reply('That place name is longer than ' + TG_TRIP_DAY_PLACE_MAX + ' characters.' + nothing); return; }
+    patch = {}; patch[verb] = { text: text, time: time };
+    said = (verb === 'start' ? '🚩 Saved for ' + day + ': the day starts at ' : '🏁 Saved for ' + day + ': the day ends at ') + tgEscape(text) + ' at ' + time + '.';
+  } else if (verb === 'hours' || verb === 'hour') {
+    var hm = /^(\d{1,2}):(\d{2})\s*(?:-|–|to)?\s*(\d{1,2}):(\d{2})$/i.exec(rest), st = hm ? tgCmdHm(hm[1], hm[2]) : '', en = hm ? tgCmdHm(hm[3], hm[4]) : '';
+    if (!st || !en) { ctx.reply('Those are not clock times: <code>/dates ' + tgEscape(date) + ' hours 10:00 18:00</code>.' + nothing); return; }
+    patch = { day_start: st, day_end: en };
+    said = '🕘 Saved for ' + day + ': the day runs ' + st + '–' + en + '.';
+  } else {
+    var bm = /^(hotel|locker|forward|carry)\b\s*(.*)$/i.exec(rest), note = bm ? stripHidden(bm[2]).replace(/\s+/g, ' ').trim() : '';
+    if (!bm) { ctx.reply('Bags go one of four ways: <code>/dates ' + tgEscape(date) + ' bags hotel|locker|forward|carry [note]</code>.' + nothing); return; }
+    if (note.length > TG_TRIP_DAY_NOTE_MAX) { ctx.reply('That note is longer than ' + TG_TRIP_DAY_NOTE_MAX + ' characters.' + nothing); return; }
+    var mode = bm[1].toLowerCase();
+    patch = { bags: mode, bags_note: note || null };
+    said = '🧳 Saved for ' + day + ': ' + TG_CMD_BAGS_TEXT[mode] + (note ? ' (' + tgEscape(note) + ')' : '') + '.';
+  }
+  var after = tgTripDay(trip.slug, date) || { date: date };
+  Object.keys(patch).forEach(function (k) { if (patch[k] === null) delete after[k]; else after[k] = patch[k]; });
+  var span = tgCmdDatesSpan(trip, after);
+  if (span.start && span.end && tgCmdHmMin(span.end) - tgCmdHmMin(span.start) < 120) {
+    ctx.reply('The day must end at least two hours after it starts (' + span.start + '–' + span.end + ' on ' + day + ') — nothing was saved.');
+    return;
+  }
+  tgTripDaySet(trip.slug, date, patch);
+  ctx.reply(said + TG_CMD_DATES_NEXT);
+}
 
 /** The lodging line a research request carries: the owner's /lodging words (+ nights). */
 function tgCmdLodgingText(trip) {

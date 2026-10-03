@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "tour-guide-day-plan.schema.json",
   "title": "Tour Guide DayPlan (planner output, one per trip date)",
-  "description": "Stops in clock order; legs chain lodging → stop 1 → … → lodging. schemas/index.mjs also checks: arrive ≤ depart, clock order, window.open ≤ arrive and depart ≤ window.close, the leg chain and leg times.",
+  "description": "Stops in clock order; legs chain lodging (or the day's start, \"day-start\") → stop 1 → … → lodging (or \"day-end\"), with a moving day's bag legs and the dinner legs where the day has them (Phase 11). schemas/index.mjs also checks: arrive ≤ depart, clock order, window.open ≤ arrive and depart ≤ window.close, the leg chain and leg times.",
   "type": "object",
   "additionalProperties": false,
   "required": ["v", "trip_id", "date", "build_id", "mode", "lodging_start", "lodging_end", "stops", "legs", "meals", "free", "warnings", "day_url", "verified_on", "solver"],
@@ -16,6 +16,40 @@
     "lodging_end": { "$ref": "#/$defs/slug" },
     "theme": { "type": "string", "maxLength": 120 },
     "spare_minutes": { "type": "integer", "minimum": 0, "maximum": 1440, "description": "The day's unscheduled time after buffers: waits before the next item plus the time left before the day's end." },
+    "start": { "$ref": "#/$defs/anchor", "description": "Phase 11: only on a day whose override gives a real start (an arrival). Legs name it \"day-start\"." },
+    "end": { "$ref": "#/$defs/anchor", "description": "Phase 11: only on a day whose override gives a real end (a departure); the day reaches it before its time. Legs name it \"day-end\"." },
+    "bags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "at", "text"],
+      "description": "Phase 11: a moving day's bag step. hotel: a stop at the night's lodging before the first sight (start–end); locker: stored at the start point (start) and collected there on the way out (end); forward / carry: the line only.",
+      "properties": {
+        "kind": { "enum": ["carry", "locker", "hotel", "forward"] },
+        "at": { "enum": ["lodging", "day-start"] },
+        "start": { "$ref": "#/$defs/time" },
+        "end": { "$ref": "#/$defs/time" },
+        "text": { "type": "string", "minLength": 1, "maxLength": 160 }
+      }
+    },
+    "sunset": { "$ref": "#/$defs/time", "description": "Phase 11: sunset at the night's lodging, in the trip's zone (NOAA solar algorithm, no network)." },
+    "extras": {
+      "type": "array",
+      "maxItems": 3,
+      "description": "Phase 11: evening extras near the last stop or the lodging — season events running that evening, then (on an early finish) saved places open then. Events first.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "ref", "name", "km"],
+        "properties": {
+          "kind": { "enum": ["event", "saved"] },
+          "ref": { "$ref": "#/$defs/slug", "description": "The season event's id, or the saved place's slug." },
+          "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+          "time": { "$ref": "#/$defs/time" },
+          "km": { "type": "number", "minimum": 0, "maximum": 100, "description": "Straight-line distance from the last stop or the lodging, whichever is nearer." },
+          "note": { "type": "string", "maxLength": 160 }
+        }
+      }
+    },
     "stops": {
       "type": "array",
       "maxItems": 25,
@@ -44,13 +78,16 @@
           "confidence": { "enum": ["confirmed", "conflicting", "single-source", "unverified"] },
           "booked": { "type": "string", "maxLength": 120 },
           "time_style": { "enum": ["about", "exact"], "description": "exact: a booking, a set session or a visit near closing time (show the minute); about: an estimate (round for display)." },
-          "check_on_day": { "type": "string", "minLength": 1, "maxLength": 160, "description": "Opening days are irregular or unknown: a line telling the owner to check before going." }
+          "check_on_day": { "type": "string", "minLength": 1, "maxLength": 160, "description": "Opening days are irregular or unknown: a line telling the owner to check before going." },
+          "last_entry": { "$ref": "#/$defs/time", "description": "Phase 11: the place's own last entry (facts); the visit starts by it." },
+          "minutes_source": { "enum": ["official", "research", "estimate"], "description": "Phase 11: where the visit length came from — the place's own site or a booking (official), a sourced estimate (research), a default (estimate)." },
+          "crowd_slot": { "enum": ["opening", "late"], "description": "Phase 11: a crowd magnet visited within 60 minutes of opening or in the last 90 minutes before its close, because the profile asks to avoid crowds." }
         }
       }
     },
     "legs": {
       "type": "array",
-      "maxItems": 26,
+      "maxItems": 30,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -86,8 +123,9 @@
           "kind": { "enum": ["breakfast", "lunch", "dinner", "coffee", "snack", "drinks"] },
           "start": { "$ref": "#/$defs/time" },
           "end": { "$ref": "#/$defs/time" },
-          "at": { "$ref": "#/$defs/slug" },
-          "note": { "type": "string", "maxLength": 300 }
+          "at": { "$ref": "#/$defs/slug", "description": "\"lodging\", the stop or start point a meal is near, or (dinner, Phase 11) the restaurant's slug." },
+          "note": { "type": "string", "maxLength": 300 },
+          "booking": { "type": "string", "minLength": 1, "maxLength": 160, "description": "Phase 11: the dinner place's booking rule or status (trip.bookings, else the place's facts). The planner never makes a booking." }
         }
       }
     },
@@ -165,7 +203,13 @@
     }
   },
   "$defs": {
-    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$", "description": "A local key, or \"lodging\" in legs and meals." },
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$", "description": "A local key, or \"lodging\", \"day-start\" or \"day-end\" in legs and meals." },
+    "anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "time"],
+      "properties": { "name": { "type": "string", "minLength": 1, "maxLength": 120 }, "time": { "$ref": "#/$defs/time" } }
+    },
     "date": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$", "description": "A date YYYY-MM-DD." },
     "time": { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$", "description": "A wall-clock time HH:MM (24 h)." },
     "close_time": { "type": "string", "pattern": "^(([01]\\d|2[0-3]):[0-5]\\d|24:00)$", "description": "A closing time HH:MM; 24:00 = midnight; earlier than open = after midnight." },

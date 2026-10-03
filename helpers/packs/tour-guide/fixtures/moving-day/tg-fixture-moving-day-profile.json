@@ -1,0 +1,15 @@
+{
+  "pace": "normal",
+  "interests": {
+    "museum": "high"
+  },
+  "meals": {
+    "breakfast_at_lodging": true
+  },
+  "dietary": [
+    "vegetarian"
+  ],
+  "avoid": [
+    "peak-hour crowds"
+  ]
+}

@@ -28,14 +28,56 @@ export const ACTIVITY_DEFAULTS = Object.freeze([
   { kind: 'tasting', re: /\btastings?\b/i, minutes: 60 },
   { kind: 'performance', re: /\b(performance|recital|concert)s?\b/i, minutes: 90 }
 ]);
-/** activityDefault('tea ceremony in a machiya') → { kind: 'ceremony', minutes: 60 }; null when no session word is there. */
-export function activityDefault(activity) {
+/** activityDefault('tea ceremony in a machiya') → { kind: 'ceremony', minutes: 60 }; null when no session word is there. A country's own sessions are checked first. */
+export function activityDefault(activity, country = null) {
+  const c = country ? countryActivityDefault(activity, country) : null;
+  if (c) return c;
   const a = String(activity || '');
   for (const d of ACTIVITY_DEFAULTS) if (d.re.test(a)) return { kind: d.kind, minutes: d.minutes };
   return null;
 }
-/** categoryDefault('museum') → 120; unknown categories use 'other' (60). */
-export function categoryDefault(category) {
+/**
+ * Country-aware defaults (Phase 11, WP-11a; Contract C11 suggestion 4). Keyed by an ISO 3166-1 alpha-2 code that
+ * countryCode() reads from the trip's free-text `country`. A country entry overrides category defaults and adds sessions
+ * with a set length that are checked before the generic ACTIVITY_DEFAULTS. Japan first; every number and its source is in
+ * helpers/decisions/WP-11a.md. Outside these countries nothing changes.
+ */
+export const COUNTRY_DEFAULTS = Object.freeze({
+  JP: Object.freeze({
+    categories: Object.freeze({ temple: 60, shrine: 40, garden: 75 }),
+    activities: Object.freeze([
+      { kind: 'tea_ceremony', re: /\btea\b[^.]*\bceremon(y|ies)\b|\bchanoyu\b|\bsad[oō]\b/i, minutes: 45 },
+      { kind: 'course_meal', re: /\bkaiseki\b|\bomakase\b|\bsh[oō]jin(?:[- ]ry[oō]ri)?\b|\bcourse (?:meal|dinner|lunch)\b|\btasting menu\b|\bmulti-course\b/i, minutes: 120 }
+    ])
+  })
+});
+const COUNTRY_NAMES = Object.freeze({ jp: 'JP', jpn: 'JP', japan: 'JP', nippon: 'JP', nihon: 'JP', '日本': 'JP' });
+/** countryCode('Japan') → 'JP'; a two-letter code is taken as is; anything unknown → null. */
+export function countryCode(country) {
+  const s = String(country || '').trim();
+  if (!s) return null;
+  const k = s.toLowerCase();
+  if (Object.prototype.hasOwnProperty.call(COUNTRY_NAMES, k)) return COUNTRY_NAMES[k];
+  return /^[A-Za-z]{2}$/.test(s) ? s.toUpperCase() : null;
+}
+const countryEntry = (country) => { const c = countryCode(country); return c && Object.prototype.hasOwnProperty.call(COUNTRY_DEFAULTS, c) ? COUNTRY_DEFAULTS[c] : null; };
+/** countryCategoryDefault('temple', 'Japan') → 60; null when the country has no override for that category. */
+export function countryCategoryDefault(category, country) {
+  const e = countryEntry(country);
+  return e && Object.prototype.hasOwnProperty.call(e.categories, category) ? e.categories[category] : null;
+}
+/** countryActivityDefault('tea ceremony', 'Japan') → { kind: 'tea_ceremony', minutes: 45 }; null when none applies. */
+export function countryActivityDefault(activity, country) {
+  const e = countryEntry(country);
+  if (!e) return null;
+  const a = String(activity || '');
+  for (const d of e.activities) if (d.re.test(a)) return { kind: d.kind, minutes: d.minutes };
+  return null;
+}
+/** categoryDefault('museum') → 120; unknown categories use 'other' (60). With a country, its override wins. */
+export function categoryDefault(category, country = null) {
+  const c = country ? countryCategoryDefault(category, country) : null;
+  if (c !== null) return c;
   return Object.prototype.hasOwnProperty.call(CATEGORY_DEFAULTS, category) ? CATEGORY_DEFAULTS[category] : CATEGORY_DEFAULTS.other;
 }
 /** round5(37) → 35; never below 5. */
