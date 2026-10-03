@@ -32,7 +32,7 @@ const PLACES = [{ slug: 'lighthouse-walk', name: 'Lighthouse Walk', destination:
   { slug: 'kelp-and-barley', name: 'Kelp & Barley', destination: 'Harbor Town', area: 'Rope Quarter', category: 'restaurant', tags: ['gem'], status: 'later', last_trip: '', last_verified: '', note_line: 'Brewery canteen; the barley bowl is the local plate.', maps_url: 'https://maps.google.com/?q=Kelp' }];
 const BANK = { v: 1, title: 'Travel preferences interview', sections: [
   { id: 'pace', title: 'Pace & rhythm', questions: [{ qid: 'pace-01', text: 'How full should a typical sightseeing day be?', kind: 'scale', dimension: 'pace', options: [{ label: 'Relaxed', value: 'relaxed', polarity: '+' }, { label: 'Normal', value: 'normal', polarity: '+' }, { label: 'Packed', value: 'packed', polarity: '+' }], skip_ok: true }] },
-  { id: 'food', title: 'Food', questions: [{ qid: 'food-01', text: 'Which foods do you look forward to? Pick any.', kind: 'multi', dimension: 'food', options: [{ label: 'Local specialties', value: 'local', polarity: '+' }, { label: 'Street food', value: 'street', polarity: '+' }, { label: 'Fine dining', value: 'fine', polarity: '+' }], skip_ok: true, other: true },
+  { id: 'food', title: 'Food', questions: [{ qid: 'food-01', text: 'Which foods do you look forward to? Pick any.', kind: 'multi', dimension: 'food', options: [{ label: 'Local specialties', value: 'local', polarity: '+' }, { label: 'Street food', value: 'street', polarity: '+' }, { label: 'Fine dining', value: 'fine', polarity: '+' }, { label: 'Noodles', value: 'noodles', polarity: '+' }, { label: 'Bakeries', value: 'bakeries', polarity: '+' }, { label: 'Seafood', value: 'seafood', polarity: '+' }, { label: 'Desserts', value: 'desserts', polarity: '+' }, { label: 'Curries', value: 'curries', polarity: '+' }], skip_ok: true, other: true },
     { qid: 'food-03', text: 'Anything you cannot eat?', kind: 'text', dimension: 'food', options: [], skip_ok: true }] },
   { id: 'budget', title: 'Budget', questions: [{ qid: 'budget-01', text: 'What is your usual travel budget?', kind: 'scale', dimension: 'budget_band', options: [{ label: 'Thrifty', value: 'thrifty', polarity: '+' }, { label: 'Middle', value: 'middle', polarity: '+' }, { label: 'Splurge', value: 'splurge', polarity: '+' }], skip_ok: true }] }] };
 const FACTS = { ok: true, trip: TRIP.slug, found: [{ n: '1', kind: 'dates', text: 'May 12 – May 15, 2027', start: '2027-05-12', end: '2027-05-15', choice: '' }, { n: '2', kind: 'lodging', text: 'Quay Street inn, 3 nights', choice: '' }, { n: '3', kind: 'flight', text: 'Arrives 11:40 on May 12', choice: '' }], missing: ['companions'] };
@@ -194,6 +194,24 @@ try {
     check(iv.length === 1 && JSON.stringify(iv[0].args) === JSON.stringify({ version: 1, answers: [{ qid: 'pace-01', values: ['packed'] }, { qid: 'food-01', values: ['local', 'street', 'shellfish', 'peanuts'] }] }), 'interview.submit carries the picks and the typed values');
     await ctx.close();
   }
+  console.log('interview: "pick any" takes every option');
+  {
+    const { page, ctx, calls, errors } = await open(browser, {});
+    await nav(page, 'interview');
+    const all = ['local', 'street', 'fine', 'noodles', 'bakeries', 'seafood', 'desserts', 'curries'];
+    for (const v of all) await page.click(`.choices[data-q="food-01"] button[data-v="${v}"]`);
+    const lit = () => page.$$eval('.choices[data-q="food-01"] button[aria-pressed="true"]', (bs) => bs.map((b) => b.getAttribute('data-v')).join());
+    check(await lit() === all.join(), 'all 8 options of a "pick any" question can be chosen (' + await lit() + ')');
+    await page.fill('input[data-q="food-01"]', 'ramen, tofu'); await page.waitForTimeout(450);
+    await nav(page, 'home'); await nav(page, 'interview');
+    check(await lit() === all.join() && await page.inputValue('input[data-q="food-01"]') === 'ramen, tofu', 'every pick comes back with the saved draft');
+    await page.evaluate(() => window.__tg.main.fn()); await page.waitForTimeout(400);
+    const iv = calls.filter((c) => c.op === 'interview.submit').slice(-1)[0];
+    const food = iv ? iv.args.answers.find((a) => a.qid === 'food-01') : null;
+    check(!!food && JSON.stringify(food.values) === JSON.stringify(all.concat(['ramen', 'tofu'])), 'all 8 picks and both typed words are sent (' + (food ? food.values.length : 0) + ' values)');
+    check(errors.length === 0, 'no page errors: ' + errors.join(' | '));
+    await ctx.close();
+  }
 
   console.log('companions: who comes, and an interview on the owner\'s phone');
   {
@@ -204,6 +222,9 @@ try {
     check(pt.length === 1 && JSON.stringify(pt[0].args) === JSON.stringify({ trip: TRIP.slug, people: [] }) && await page.evaluate(() => document.querySelector('#trip-people button[data-v="robin"]').getAttribute('aria-pressed')) === 'false', 'a tap saves who comes and the toggle follows the answer');
     await page.click('text=Add someone'); await page.waitForTimeout(500);
     check(await page.isVisible('#person-name'), 'Add someone opens the interview with a name box');
+    const whoNow = () => page.$$eval('#who button', (bs) => bs.map((b) => b.getAttribute('data-v') + '=' + b.getAttribute('aria-pressed')).join(' '));
+    check(await whoNow() === '=false robin=false +=true' && !(await page.$('.choices[data-q]')) && !(await page.evaluate(() => window.__tg.main.visible)) && (await text(page)).includes('Add someone'),
+      'naming someone new lights only Someone else: no questions and no Send until they have a name (' + await whoNow() + ')');
     await page.fill('#person-name', 'Sam'); await page.click('button:has-text("Add")'); await page.waitForTimeout(600);
     check(calls.some((c) => c.op === 'people.add' && c.args.name === 'Sam') && calls.some((c) => c.op === 'interview.bank' && c.args.person === 'sam'), 'adding Sam selects Sam and loads the bank for Sam');
     const t = await text(page);
@@ -260,6 +281,26 @@ try {
     check(await page.evaluate((k) => localStorage.getItem(k) !== null, key), 'a new answer starts a new draft');
     await page.evaluate(() => window.__tg.main.fn()); await page.waitForTimeout(400);
     check(calls.filter((c) => c.op === 'interview.submit').length === 1 && await page.evaluate((k) => localStorage.getItem(k) === null && !(k in window.__tg.storage), key), 'a successful send clears the draft');
+    check(errors.length === 0, 'no page errors: ' + errors.join(' | '));
+    await ctx.close();
+  }
+  console.log('interview: Someone else from the Interview tab');
+  {
+    const { page, ctx, calls, errors } = await open(browser, {});
+    await nav(page, 'interview');
+    const who = () => page.$$eval('#who button', (bs) => bs.map((b) => b.getAttribute('data-v') + '=' + b.getAttribute('aria-pressed')).join(' '));
+    check(await who() === '=true robin=false +=false', 'the Interview tab opens with Me chosen');
+    await page.click('#who button[data-v="+"]'); await page.waitForTimeout(500);
+    check(await who() === '=false robin=false +=true' && await page.isVisible('#person-name') && !(await page.$('.choices[data-q]')) && !(await page.evaluate(() => window.__tg.main.visible)),
+      'tapping Someone else unlights Me and hides my questions until a name is added (' + await who() + ')');
+    check(await page.evaluate(() => document.activeElement && document.activeElement.id) === 'person-name', 'the name box takes the cursor');
+    await shot(page, 'light-10-someone-else');
+    await page.click('#who button[data-v=""]'); await page.waitForTimeout(500);
+    check(await who() === '=true robin=false +=false' && !(await page.$('#person-name')) && !!(await page.$('.choices[data-q]')), 'tapping Me goes back to my questions');
+    await page.click('#who button[data-v="+"]'); await page.waitForTimeout(500);
+    await page.fill('#person-name', 'Lee'); await page.press('#person-name', 'Enter'); await page.waitForTimeout(600);
+    check(calls.some((c) => c.op === 'people.add' && c.args.name === 'Lee') && await who() === '=false robin=false lee=true +=false' && calls.filter((c) => c.op === 'interview.bank').slice(-1)[0].args.person === 'lee',
+      'Enter adds the name, and the new person is the one chosen (' + await who() + ')');
     check(errors.length === 0, 'no page errors: ' + errors.join(' | '));
     await ctx.close();
   }

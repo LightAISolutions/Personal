@@ -3,11 +3,17 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 3/50`
+`Sections: 4/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.04w] — 2026-10-03 03:21:54 AM EST — v01.49r
+
+### Fixed
+- Tapping **＋ Someone else** in the interview no longer leaves **Me** looking chosen: only the new person's button lights up, and the questions wait until you have added their name (Enter adds it too)
+- Questions that say **Pick any** now take every option, not just five; anything typed in "Something else?" is added on top instead of pushing a pick out
 
 ## [v01.03w] — 2026-10-03 12:51:29 AM EST — v01.47r
 

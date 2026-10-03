@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-03 02:35:05 AM EST` · Repo version: `v01.48r`
+Last updated: `2026-10-03 03:21:54 AM EST` · Repo version: `v01.49r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -54,7 +54,7 @@ Last updated: `2026-10-03 02:35:05 AM EST` · Repo version: `v01.48r`
 │   │
 │   │
 │   <b>│ ─ Standalone Utilities ─────────────────────────────────────────────────────</b>
-│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/helper-app.html">helper-app.html</a>  →  <a href="https://lightaisolutions.github.io/Personal/helper-app.html">🌐</a>  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/helper-apphtml.changelog.md">v01.03w</a> · vNoGASg | Helper app: the generic Telegram Mini App shell a helper opens from its bot's menu button — no data and no helper-specific text in the page; it talks to the helper's core `?route=app` with the Mini App's signed launch data
+│   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/helper-app.html">helper-app.html</a>  →  <a href="https://lightaisolutions.github.io/Personal/helper-app.html">🌐</a>  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/helper-apphtml.changelog.md">v01.04w</a> · vNoGASg | Helper app: the generic Telegram Mini App shell a helper opens from its bot's menu button — no data and no helper-specific text in the page; it talks to the helper's core `?route=app` with the Mini App's signed launch data
 │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/text-compare.html">text-compare.html</a>  →  <a href="https://lightaisolutions.github.io/Personal/text-compare.html">🌐</a>  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/text-comparehtml.changelog.md">v01.00w</a> · vNoGASg | [template] Text comparison tool with side-by-side diff highlighting
 │   │
 │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/MasterACL.html">MasterACL.html</a>  →  <a href="https://LightAISolutions.github.io/Personal/MasterACL.html">🌐</a>🟢 · 🔸 · ◽ · <a href="https://github.com/LightAISolutions/Personal/blob/main/googleAppsScripts/MasterACL/MasterACL.gs">⛽</a> · ◽  — <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/html-changelogs/MasterACLhtml.changelog.md">v01.00w</a> · <a href="https://github.com/LightAISolutions/Personal/blob/main/live-site-pages/gs-changelogs/MasterACLgs.changelog.md">v01.00g</a> | [template] MasterACL page

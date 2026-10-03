@@ -3,11 +3,23 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 49/100`
+`Sections: 50/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.49r] — 2026-10-03 03:21:54 AM EST
+
+> **Prompt:** "I tapped +Someone else" in the Interview tab and it showed "Me" still chosen. That's confusing - fix it." · "In question #1, [companion] wants to pick more than 5 options, but you only allow max 5 choices. Is that intended? If not, then open up the choices." · "Let me know when you have pushed the fixes live. I will reopen the app and have [companion] keep going." *(three messages; a companion's name redacted)*
+
+### Fixed
+- **Who is answering** (`live-site-pages/helper-app.html` v01.04w): while a new person is being named, only **＋ Someone else** is lit (Me and everyone else unlit), no questions or Send button show until the name is added, the name box takes the cursor and Enter adds it. The Home screen's **Add someone** opens the same state; at the people limit it says so instead
+- **"Pick any" questions take every option** (same page): the app no longer caps a multiple-choice answer at five picks (the old cap would also have cut off a sixth food someone cannot eat). Picks are bounded only by the options a question offers (the bank allows 12); typed "Something else?" words stay at five per question, as the core allows, and now join the picks instead of replacing the last ones; a send of more than 200 answers (the prefs kit's limit) is stopped with a line asking to untick a few. Supersedes `helpers/decisions/WP-9c.md` §12's "multi up to 5"; the chat interview never had the cap and the core already accepted every option
+
+### Changed
+- `helpers/tests/shell_helper-app.playwright.mjs`: the fixture's "pick any" question has eight options; new checks for all eight picks plus typed words (chosen, kept in the draft, sent), the Someone else state from the Interview tab and from Home, Me going back to the owner's questions, and Enter adding a name
+- `helpers/decisions/WP-9c.md` §12 amended to match; README tree and timestamp
 
 ## [v01.48r] — 2026-10-03 02:35:05 AM EST
 
