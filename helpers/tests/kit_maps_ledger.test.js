@@ -27,6 +27,9 @@ test('every fixed Places mask bills exactly the tier it is named for (plan fact 
   }
   assert.deepEqual(Object.keys(k.NEARBY_SEARCH_MASKS), ['pro', 'enterprise', 'enterprise_atmosphere'], 'Nearby Search has no IDs-only or Essentials SKU');
   assert.ok(k.TEXT_SEARCH_MASKS.enterprise_atmosphere.split(',').includes('places.reviews'));
+  for (const t of ['pro', 'enterprise', 'enterprise_atmosphere']) assert.ok(k.TEXT_SEARCH_MASKS[t].split(',').includes('places.photos') && k.NEARBY_SEARCH_MASKS[t].split(',').includes('places.photos'), 'search results carry photo names from Pro up (no Details call per pick): ' + t);
+  assert.ok(!k.TEXT_SEARCH_MASKS.ids_only.includes('photos'), 'photos is a Pro field in Text Search, never in the IDs-only mask');
+  assert.equal(k.fieldTier('places.photos'), 'pro'); assert.equal(k.fieldTier('photos'), 'ids_only', 'Details photos stay IDs-only');
   assert.ok(k.AGGREGATE_SKU in k.SKUS);
   for (const t of ['enterprise', 'enterprise_atmosphere']) assert.equal(k.NEARBY_SEARCH_MASKS[t], k.TEXT_SEARCH_MASKS[t].replace(',nextPageToken', ''), 'Nearby and Text Search return places of the same shape: ' + t);
   assert.ok(!k.PLACE_DETAILS_MASKS.enterprise.includes('reviews'), 'reviews only in the Atmosphere mask');

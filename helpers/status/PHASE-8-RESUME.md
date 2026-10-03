@@ -13,5 +13,6 @@
 7. Visit-length accuracy: planned versus the owner's account, per category; the activity session lengths (ceremony 60, class 150, workshop 120, tasting 60, performance 90) are typical values to check.
 8. Step 3 tuning: objective weights, the 75-minute wait cap, the 90-minute spill, shortlist caps and the `fit` formula, gem weights from the taps, brochure polish, costs and repository use.
 9. Third-party review sources only if the local-source stream was thin.
+10. Scout routine (owner asked to be reminded, 2026-10-03): count `scout` runs in the private repo's `log/` and check whether any scout waited behind a trip-research run. If scouts ran about three times a week or more, or one waited, recommend a dedicated `SCOUT` routine (`routines/scout.prompt.md` is ready; the owner creates the routine and its fire token and sets the core's SCOUT properties). Raise it sooner if either condition shows up before the trip ends. `helpers/decisions/TG-SCOUT.md` §8.
 
 Developed by: LightAISolutions

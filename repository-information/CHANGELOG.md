@@ -3,11 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 54/100`
+`Sections: 55/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.54r] — 2026-10-03 06:28:19 AM EST
+
+> **Prompt:** "1. Keep Scout. 2. I am ok with no for now, but I want you to explain your reasoning. Then, whenever conditions are right, remind me to get Scout its own routine. 3. I allow the change. 4. Yes."
+
+### Changed
+- **Search results carry photo names** (`helpers/kits/maps/lib/maps-masks.mjs`): `places.photos` joins the Text Search Pro mask (Google bills it as a Text Search Pro field, so no SKU changes) and, through it, the Nearby Search masks (Pro is Nearby's floor); `fieldTier('places.photos')` is Pro while Details' bare `photos` stays IDs-only. A Scout board no longer needs one Place Details call per pick for its photo. Test in `kit_maps_ledger.test.js`, a line in the kit README
+- `helpers/decisions/TG-SCOUT.md` §8 records the owner's answers: the name stays Scout, no dedicated routine for now (with the conditions for a reminder), the photos change allowed, Google facts on the board yes; `helpers/status/WP-S-engine.md` (request done), `helpers/status/PHASE-8-RESUME.md` item 10 (the Scout routine reminder), `helpers/BUILD-STATE.md` row S and the Scout log; README timestamp. 735 tests (734 pass, 1 skipped)
 
 ## [v01.53r] — 2026-10-03 06:13:06 AM EST
 
