@@ -20,6 +20,7 @@ import { normalizeChoices, applyChoices, choiceStatus, OWNER_CHOICE_REASON } fro
 import { createRng } from './planner-rng.mjs';
 import { dateIn } from './planner-time.mjs';
 import { withRailEstimates } from './planner-rail.mjs';
+import { withBusFallback } from './planner-transit.mjs';
 import { rainSwaps } from './planner-rain.mjs';
 
 export { PlanBudgetError, SKU } from './planner-budget.mjs';
@@ -29,6 +30,7 @@ export { assign, FAR_KM, CAP, dayCapacity } from './planner-assign.mjs';
 export { prepare, buildDays, lodgingForNight, modeFor, PACE } from './planner-input.mjs';
 export { localToIso, weekdayOf, dateRange, toMin, hm } from './planner-time.mjs';
 export { DIDNT_FIT, NEXT_TIME, SAVED_BY_YOU } from './planner-later.mjs';
+export { withBusFallback, transitPrefs, railOnly, RAIL_MODES } from './planner-transit.mjs';
 export { withRailEstimates, railEstimate, railLine, rideMinutes, walkMinutes, RAIL, STATION_TYPES } from './planner-rail.mjs';
 export { normalizeChoices, applyChoices, POOL_STATUSES, CHOICE_LISTS, OWNER_CHOICE_REASON } from './planner-choices.mjs';
 export { transitFallback, estimateTransit, TRANSIT_FALLBACK_DEFAULT, ROUTE_FACTOR } from './planner-legs.mjs';
@@ -65,8 +67,10 @@ async function build(ctx, input, { dates, pool, prior, ch = null }) {
   if (!budget.within_ceiling && !input.allowOverBudget) throw new PlanBudgetError(budget);
   const built = [], dropped = unassigned.slice();
   const usage = { matrix_elements: 0, route_calls: 0 };
-  // Where Google has no transit route (Japan), TRANSIT legs become station-based train estimates (planner-rail.mjs).
-  const maps = input.railEstimates === false ? input.maps : withRailEstimates(input.maps, { points: [...pool.map((c) => ({ placeId: c.place_id, ...(c.loc || {}) })), ...days.flatMap((d) => [d.lodging_start, d.lodging_end])] });
+  // TRANSIT asks rail first and re-asks with buses only for pairs rail could not serve (planner-transit.mjs); where Google
+  // has no transit route at all (Japan), TRANSIT legs become station-based train estimates (planner-rail.mjs).
+  const railFirst = withBusFallback(input.maps);
+  const maps = input.railEstimates === false ? railFirst : withRailEstimates(railFirst, { points: [...pool.map((c) => ({ placeId: c.place_id, ...(c.loc || {}) })), ...days.flatMap((d) => [d.lodging_start, d.lodging_end])] });
   for (const day of days) {
     const r = await planDay({ ctx, day, cands: byDate[day.date], maps, build_id: String(input.build_id), seed: ctx.seed, verified_on: ctx.today });
     built.push(r.dayPlan);
