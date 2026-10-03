@@ -35,7 +35,19 @@ Brief: `helpers/prompts/TG-PHASE-12.md`. Every work package was built by `hb-bui
 - After the coordinator's fixes, before the push: 879 tests, 878 pass, 1 skipped, 0 `todo`; bundle ok (hello 19 files, tour-guide 42 files); boundary clean (591 files). The Chromium phone-clock test (`kit_brochure_c12.test.js`) runs here, and each planner fix fails its rehearsal test without it.
 
 ## 4 Private repo (WP-12c)
-*Filled when its pull request is up.*
+Built by `hb-builder-opus` (Opus 5.5 · high) in the private repo re-pinned to helpers-dist at v01.56r, then reviewed and amended by the coordinator; up as the private repo's PR #22 for the owner, who merges it before the trip. Its decisions are in the private repo (`repository-information/decisions/WP-12c.md`). In short:
+- **The plan digest maps C12** as the shared test digest (`tests/harness/tour-guide-digest.js`) does: train stations from the two ends' own access notes only, day warnings clipped to 20 × 200 characters, and a plan and trip without C12 fields digested byte for byte as before. A day built by an older planner (a kept day after a one-date re-plan) gets `leave_by` from the planner's `leaveBy` once the plan or trip carries any C12 field.
+- **Re-plans from where you are**: `from`, `visited` and `rain` go from the saved request straight to `replanDays` for that one date; a bad field is one plain reply line, never a whole-date re-plan. A shared point lands in no file, reply or envelope (coordinate-shaped numbers in an error message are scrubbed before a finding). Kept days' dinner places stay in the places, and the owner's chosen dinner keeps its slot.
+- **A lodging change**: the coordinator's review found that reading "N nights" from the first listed date put a stay meant for the trip's end on its first nights, because the core lists every planned day not yet over. The nights now come only from the owner's words: a check-in date with nights or a check-out date; nights from the first listed day only when they reach the trip's last day; no nights only when one stay is left. Only the listed days those nights touch are re-planned, and anything unclear gets one question with a line to copy, before any Maps call. A day's lodging is the trip's lodging nights (the brief's open question, confirmed).
+- **Research fills the C12 inputs**: a place's local name, address and access from its own site through `normalizeFacts`, with a lines-only top-up for places researched before; the lodging's access and area and the trip's country code from the owner's words or a cited source, never Google.
+- **A second review replaces the first**: the earlier calibration tap is undone and its evidence replaced, so each stop counts once.
+- **Checks in the private repo**: the vendored tests 879 (878 pass, 1 skipped); the journey dry run ok at 252 checks (176 at the re-pin) and the integration dry run ok at 592 (554 at the re-pin, one failing then: the Later reason now in day words).
+- **REQUESTs for the framework** (none blocks the trip; for a later push):
+  1. Prefs kit: a function to remove held evidence by ref and predicate (the private side rewrites the held notes with `writeHeld` itself).
+  2. Estimator: export an `undoTap` beside `applyTap` (the private side takes a tap back with `factorFor`).
+  3. The rehearsal-day fixture's Maps responder echoes the request's coordinates in its 404 message (the private side scrubs them; the fixture should not echo them).
+  4. A restart error's text can read "from at 12:10" (reported by WP-12c; reproduce before fixing).
+  5. The shared test digest's header should say that `payment`, `close` and `price_line` show whenever a place's own facts have them; they are not gated on C12.
 
 ## 5 Live checks
 *Filled after the owner merges WP-12c's pull request and runs the rehearsal steps (the brief's coordinator step 6).*
@@ -50,8 +62,8 @@ The morning message, running late, the re-plan from here and the check-in are ne
 - The hello pack ignores a location-only message silently (it used to answer "I only read text").
 
 ## 7 Carried on
-- **The private side must merge before the trip.** Until the private repo pins v01.56r (WP-12c), its routine ignores a re-plan's `from`, `visited` and `rain` and would re-plan the whole date, and it plans a lodging change from the lodging it already knows. The core refuses a re-plan from here before the trip, but a lodging-change re-plan can be tapped at any time.
-- **The new lodging travels only in the `replan` request's `reason`** (`trip_update` has no lodging field). If the private side finds the words too loose to plan from, a `lodging` field in the contract is the next step.
+- **The private side must merge before the trip.** Until the private repo pins v01.56r (WP-12c, up as a PR, §4), its routine ignores a re-plan's `from`, `visited` and `rain` and would re-plan the whole date, and it plans a lodging change from the lodging it already knows. The core refuses a re-plan from here before the trip, but a lodging-change re-plan can be tapped at any time.
+- **The new lodging travels only in the `replan` request's `reason`** (`trip_update` has no lodging field). The private side reads the nights from the owner's words and asks when they do not say (§4); a `lodging` field with dates in the contract is the next step if those questions prove a nuisance.
 - **The re-plan from here needs a real trip day**, so it is first checked on the trip's first morning; what that shows goes to Phase 8 part 2 with the rest of the trip's notes.
 
 Developed by: LightAISolutions

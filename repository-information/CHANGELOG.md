@@ -3,11 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 57/100`
+`Sections: 58/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.57r] — 2026-10-03 06:57:30 PM EST
+
+> **Prompt:** "decisions made." *(the owner's choices on the usefulness review; this push records step 3's private side: its pull request is up for the owner, to merge before the trip)*
+
+### Changed
+- **Phase 12's private side is up as a pull request** (`helpers/decisions/TG-PHASE-12.md` §4): what WP-12c built (the digest's C12 fields, re-plans from where you are, a lodging change, the research that fills the morning fields, a second review that replaces the first), the coordinator's fix to how a lodging change picks its nights (from the owner's own words; only the days they touch are re-planned; unclear words get one question), its checks, and five small framework REQUESTs for a later push; §7 updated to match
+- `helpers/BUILD-STATE.md` row 12, the Phase 12 log and the summary; README timestamp. No code changed; 879 tests (878 pass, 1 skipped)
 
 ## [v01.56r] — 2026-10-03 05:10:35 PM EST
 
