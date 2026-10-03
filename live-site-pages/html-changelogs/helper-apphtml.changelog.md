@@ -3,11 +3,17 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 4/50`
+`Sections: 5/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.05w] — 2026-10-03 03:50:11 AM EST — v01.50r
+
+### Fixed
+- Yes-or-no questions (busiest hours, heat, cold, humidity, rain and fine dining) now light only the answer you tap, and the answer you tapped is the one that is sent
+- If one of those questions was answered before this update, it is asked again; every other saved answer stays
 
 ## [v01.04w] — 2026-10-03 03:21:54 AM EST — v01.49r
 

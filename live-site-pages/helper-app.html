@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.04w">
+  <meta name="build-version" content="v01.05w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -130,7 +130,7 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.04w';
+    var APP_VERSION = 'v01.05w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'facts', label: 'Facts' },
@@ -494,11 +494,18 @@
       try { if (tg && tg.CloudStorage) tg.CloudStorage.removeItem(key, function () {}); } catch (e) { /* older clients */ }
     }
     function answered(qid) { return (S.answers[qid] || []).length > 0 || str(S.typed[qid]).trim() !== ''; }
+    // Each option's key: its value, or "value|polarity" when another option of the question shares the value — a yes/no pair
+    // such as "Heat is fine" / "Avoid the heat" — so tapping one never lights both and the core knows which was meant
+    // (the same keys as tgIvOptionKey in the pack's 32_app_api.js).
+    function optKeys(q) {
+      var opts = list(obj(q).options).map(obj), vals = opts.map(function (o) { return str(o.value, 60); });
+      return opts.map(function (o, k) { var v = vals[k]; return vals.indexOf(v) !== k || vals.lastIndexOf(v) !== k ? v + '|' + (str(o.polarity) === '-' ? '-' : '+') : v; });
+    }
     function restoreDraft(d, qs) {   // only questions the bank still asks and options it still offers; returns how many came back
       var answers = obj(d.answers), typed = obj(d.typed), back = {}, own = function (qid) { return Object.prototype.hasOwnProperty.call(qs, qid); };
       Object.keys(answers).forEach(function (qid) {
         if (!own(qid)) return;
-        var q = qs[qid], vals = list(answers[qid]).map(function (v) { return str(v, 60); }).filter(function (v, i, all) { return q.values.indexOf(v) >= 0 && all.indexOf(v) === i; }).slice(0, q.single ? 1 : IV_PICKS_MAX);
+        var q = qs[qid], vals = list(answers[qid]).map(function (v) { return str(v, 64); }).filter(function (v, i, all) { return q.values.indexOf(v) >= 0 && all.indexOf(v) === i; }).slice(0, q.single ? 1 : IV_PICKS_MAX);
         if (vals.length) { S.answers[qid] = vals; back[qid] = 1; }
       });
       Object.keys(typed).forEach(function (qid) { var t = str(typed[qid], 300); if (own(qid) && (qs[qid].text || qs[qid].other) && t.trim()) { S.typed[qid] = t; back[qid] = 1; } });
@@ -520,12 +527,16 @@
         var who = S.person ? people.filter(function (p) { return str(p.slug, 40) === S.person; })[0] : null, key = draftKey(S.person), got = { b: null, d: undefined };
         var both = function () {   // the bank and the draft arrive in either order
           if (!got.b || got.d === undefined || !live()) return;
-          var b = got.b, d = got.d, bank = obj(b.bank), sections = list(bank.sections).map(obj), qs = {}, total = 0;
+          var b = got.b, d = got.d, bank = obj(b.bank), sections = list(bank.sections).map(obj), qs = {}, qo = {}, total = 0;
           S.bank = bank; S.answers = {}; S.typed = {};
           if (!sections.length) return render(stateView('🗣', 'No interview available', 'The helper has no question bank yet.'));
           sections.forEach(function (sec) { list(sec.questions).forEach(function (q) { q = obj(q); var kind = str(q.kind, 10); total++;
-            qs[str(q.qid, 32)] = { text: kind === 'text', other: !!q.other, single: kind === 'scale' || kind === 'pick', values: list(q.options).map(function (o) { return str(obj(o).value, 60); }) }; }); });
-          list(b.answers).forEach(function (a) { a = obj(a); var q = str(a.qid, 32); (S.answers[q] = S.answers[q] || []).push(str(a.value, 60)); });
+            qo[str(q.qid, 32)] = q; qs[str(q.qid, 32)] = { text: kind === 'text', other: !!q.other, single: kind === 'scale' || kind === 'pick', values: optKeys(q) }; }); });
+          list(b.answers).forEach(function (a) {   // answers already given in the chat: option keys by value and polarity, typed words as they are
+            a = obj(a); var q = str(a.qid, 32), v = str(a.value, 60), opts = list(obj(qo[q]).options).map(obj), keys = optKeys(qo[q]), key = v;
+            opts.forEach(function (o, k) { if (str(o.value, 60) === v && (keys[k] === v || str(o.polarity) === str(a.polarity))) key = keys[k]; });
+            (S.answers[q] = S.answers[q] || []).push(key);
+          });
           var kept = d ? restoreDraft(d, qs) : 0;
           drawInterview({ people: people, max: max, who: who || null, whoName: who ? str(who.name, 40) : '', bank: bank, sections: sections, qs: qs, total: total, key: key, kept: kept, keptAt: kept ? str(d.at, 40) : '' });
         };
@@ -595,9 +606,9 @@
         sendBtn.textContent = label; setMain(label, submit);
       };
       var choiceRow = function (q, qid, single) {
-        var row = el('div', { class: 'choices', 'data-q': qid });
-        list(q.options).slice(0, 12).forEach(function (o) {
-          o = obj(o); var v = str(o.value, 60);
+        var row = el('div', { class: 'choices', 'data-q': qid }), keys = optKeys(q);
+        list(q.options).slice(0, 12).forEach(function (o, k) {
+          o = obj(o); var v = keys[k];
           row.appendChild(el('button', { type: 'button', text: str(o.label, 40), 'data-v': v, 'aria-pressed': (S.answers[qid] || []).indexOf(v) >= 0 ? 'true' : 'false', on: { click: function () {
             var cur = (S.answers[qid] || []).slice(), i = cur.indexOf(v); haptic();
             if (single) cur = i >= 0 ? [] : [v]; else if (i >= 0) cur.splice(i, 1); else if (cur.length < IV_PICKS_MAX) cur.push(v);

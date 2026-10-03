@@ -3,11 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 50/100`
+`Sections: 51/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.50r] — 2026-10-03 03:50:11 AM EST
+
+> **Prompt:** "For question: "Should famous sights be kept away from their busiest hours?", choosing either option lights up both options. Fix it, save [companion]'s current answers, and let me know when to relaunch the app to continue." *(a companion's name redacted)*
+
+### Fixed
+- **Yes/no questions light only the answer tapped** (`live-site-pages/helper-app.html` v01.05w): six questions of the travel interview offer two options with the same value and opposite polarity (`crowds-02` busiest hours, `climate-01`–`04` heat, cold, humidity and rain, `budget-02` fine dining). The app keyed its buttons by value, so one tap lit both. Each option now has a key, its value or `value|polarity` when another option of the question shares the value, used by the buttons, the saved draft and the send. A draft saved by an earlier version holds only the shared value for such a question: that one answer is dropped (both buttons unlit, asked again) and every other saved answer comes back
+- **The core records the half that was tapped** (`helpers/packs/tour-guide/gas/32_app_api.js`): `interview.submit` mapped a shared value to the last option, so "Yes, avoid peak hours", "Heat is fine", "Cold is fine", "Humidity is fine", "Rain is fine" and "Yes, worth it" sent from the app would have been recorded as their opposites. `tgIvOptionKey` builds the same keys as the app; a pair's bare value (sent by an app before v01.05w) is refused as `ambiguous_value` instead of guessed. The chat interview sends the option's position and was never affected
+
+### Changed
+- `helpers/tests/pack_tour-guide_gas_app.test.js`: keys for pairs and for unique values, the bare value refused for three pairs, both halves of a pick refused, each half recorded with its own polarity
+- `helpers/tests/shell_helper-app.playwright.mjs`: a fixture section with two pairs; one tap lights only that half, the other half moves the choice, the draft keeps the half, an answer from the chat lights its own half, the send names the half, an old draft's bare value is dropped while the other answers return
+- `helpers/decisions/WP-9c.md` §12 amended; README tree and timestamp
 
 ## [v01.49r] — 2026-10-03 03:21:54 AM EST
 
