@@ -15,7 +15,7 @@ const DETAILS_FIELDS = {
 const SEARCH_ATMOSPHERE = DETAILS_FIELDS.enterprise_atmosphere.map((f) => 'places.' + f);
 const TEXT_FIELDS = {
   ids_only: ['places.id'],
-  pro: ['places.displayName', 'places.formattedAddress', 'places.location', 'places.types', 'places.primaryType', 'places.businessStatus', 'places.googleMapsUri'],
+  pro: ['places.displayName', 'places.formattedAddress', 'places.location', 'places.types', 'places.primaryType', 'places.businessStatus', 'places.googleMapsUri', 'places.photos'], // photos: a Pro field in Text Search (IDs-only in Details); Nearby's floor is Pro and photos is in none of its higher lists
   enterprise: ['places.rating', 'places.userRatingCount', 'places.regularOpeningHours', 'places.websiteUri', 'places.priceLevel'],
   enterprise_atmosphere: SEARCH_ATMOSPHERE
 };
@@ -55,8 +55,9 @@ export const ROUTE_MASKS = Object.freeze({
 });
 export const ROUTE_MATRIX_MASK = 'originIndex,destinationIndex,status,condition,distanceMeters,duration';
 
-/** Tier of one Places field name (with or without the `places.` prefix), or null if the kit does not know it. */
+/** Tier of one Places field name (with or without the `places.` prefix), or null if the kit does not know it. The prefixed form is a search field. */
 export function fieldTier(field) {
+  if (field === 'places.photos') return 'pro'; // search-layer photos bill as Pro (Text Search SKU page); bare `photos` (Details) stays IDs-only
   const f = field.replace(/^places\./, '');
   if (f === 'nextPageToken' || f === 'id' || f === 'photos') return 'ids_only';
   for (const [t, list] of Object.entries(DETAILS_FIELDS)) if (list.includes(f)) return t;
