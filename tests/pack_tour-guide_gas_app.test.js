@@ -242,6 +242,35 @@ test('a round inside the plan flow: ids remembered, more and gems open research 
   assert.deepEqual(reqOf(state, 'plan')[0].picks, ['tide-gallery']);
 });
 
+test('shortlist.get all: every round of the open choose flow, newest first; each round saves to its own run (Phase 8)', () => {
+  const { ctx, state } = fresh();
+  say(ctx, state, '/plan Port Sorrel');
+  deliver(ctx, state, 'shortlist', shortlist());
+  assert.deepEqual(J(app(ctx, state, 'shortlist.get', { all: true })).earlier, [], 'one round: nothing earlier');
+  app(ctx, state, 'shortlist.more', { run: 'r1' });
+  deliver(ctx, state, 'shortlist', shortlist({ run_id: 'r2', round: 2, more: false, groups: [{ id: 'activities', items: [item(1, 'tide-gallery')] }] }));
+  assert.deepEqual(J(ctx.flowActive('777').state.runs), ['r1', 'r2']);
+  const plain = J(app(ctx, state, 'shortlist.get', {}));
+  assert.deepEqual([plain.run, plain.round, plain.earlier], ['r2', 2, []], 'without all: the newest round only, as before');
+  const g = J(app(ctx, state, 'shortlist.get', { all: true }));
+  assert.equal(g.run, 'r2');
+  assert.deepEqual(g.earlier.map((e) => [e.run, e.round, e.groups.map((x) => x.id + ':' + x.items.map((i) => i.key).join(','))]),
+    [['r1', 1, ['activities:a1,a2', 'food:f1']]]);
+  assert.equal(app(ctx, state, 'shortlist.get', { all: 'yes' }).reason, 'bad_args');
+  assert.equal(J(app(ctx, state, 'shortlist.choose_many', { run: 'r1', choices: [{ n: 'a2', choice: 'w' }] })).applied, 1);
+  assert.equal(J(app(ctx, state, 'shortlist.choose_many', { run: 'r2', choices: [{ n: 'a1', choice: 'l' }] })).applied, 1);
+  assert.deepEqual([choices(ctx, 'r1'), choices(ctx, 'r2')], [['signal-hill-lookout=w'], ['tide-gallery=l']]);
+  assert.equal(J(app(ctx, state, 'shortlist.get', { all: true })).earlier[0].groups[0].items[1].choice, 'w');
+  assert.deepEqual(J(app(ctx, state, 'shortlist.done', { run: 'r2' })), { ok: true, started: true, adopted: false });
+  assert.deepEqual(reqOf(state, 'plan')[0].picks, ['signal-hill-lookout'], 'the earlier round pick reaches the plan');
+  assert.deepEqual(J(app(ctx, state, 'shortlist.get', { all: true })).earlier, [], 'past choose: read-only, nothing earlier');
+});
+
+test('home carries the helper display name for the masthead', () => {
+  const { ctx, state } = fresh();
+  assert.equal(J(app(ctx, state, 'home', {})).display_name, ctx.HELPER.display_name);
+});
+
 test('shortlist.done: another flow open is busy; a round that is not the latest is no_flow; a held lock is 503', () => {
   const { ctx, state } = fresh();
   deliver(ctx, state, 'shortlist', shortlist());
@@ -425,6 +454,38 @@ test('interview.bank and interview.submit: the bank as is, answers mapped like t
     { qid: 'favourites-01', dimension: q('favourites-01').dimension, value: 'Old harbours', polarity: '+', kind: 'text' }] }, 'bank order; options in option order');
   assert.equal(ctx.flowActive('777'), null, 'the chat interview ended');
   assert.match(texts(state).pop(), /6 answers from the app noted/);
+});
+
+test('people.list · people.add · people.trip and a companion interview: their own prefs request, the chat interview untouched (Phase 8)', () => {
+  const { ctx, state } = fresh();
+  ctx.tgTripUpsert({ slug: TRIP, title: 'Port Sorrel', destination: 'Port Sorrel', start: '2027-05-12', end: '2027-05-14' });
+  assert.deepEqual(J(app(ctx, state, 'people.list', {})), { ok: true, trip: TRIP, trip_title: 'Port Sorrel', people: [], max: 8 });
+  assert.equal(app(ctx, state, 'people.add', { name: '<script>' }).reason, 'bad_name');
+  assert.equal(app(ctx, state, 'people.add', {}).reason, 'missing_arg');
+  assert.deepEqual(J(app(ctx, state, 'people.add', { name: 'Robin' })), { ok: true, slug: 'robin', name: 'Robin' });
+  assert.equal(app(ctx, state, 'people.trip', { people: ['robin', 'kim'] }).reason, 'no_person');
+  assert.equal(app(ctx, state, 'people.trip', { people: ['Robin!'] }).reason, 'bad_args');
+  assert.equal(app(ctx, state, 'people.trip', { trip: 'nowhere', people: [] }).reason, 'no_trip');
+  assert.deepEqual(J(app(ctx, state, 'people.trip', { people: ['robin'] })).on_trip, ['robin']);
+  assert.deepEqual(J(app(ctx, state, 'people.list', { trip: TRIP })).people, [{ slug: 'robin', name: 'Robin', interviewed: '', on_trip: true }]);
+  assert.deepEqual(J(app(ctx, state, 'home', {})).people, { trip: TRIP, items: [{ slug: 'robin', name: 'Robin', interviewed: '', on_trip: true }], max: 8 });
+
+  say(ctx, state, '/interview');
+  post(ctx, state, H.tgUpdate({ callback: sends(state).pop().reply_markup.inline_keyboard[0][0].callback_data, messageId: 91 }));
+  const b = J(app(ctx, state, 'interview.bank', { person: 'robin' }));
+  assert.deepEqual([b.in_progress, b.answers, b.person], [false, [], { slug: 'robin', name: 'Robin' }], 'the owner\'s chat answers are not Robin\'s');
+  assert.equal(app(ctx, state, 'interview.bank', { person: 'kim' }).reason, 'no_person');
+  const r = J(app(ctx, state, 'interview.submit', { version: 1, person: 'robin', answers: [{ qid: 'pace-01', values: ['packed'] }] }));
+  assert.deepEqual([r.ok, r.answers, r.person], [true, 1, 'robin']);
+  const pr = requests(state).filter((x) => x.kind === 'prefs');
+  assert.equal(pr.length, 1);
+  assert.deepEqual(J(pr[0].person), { slug: 'robin', name: 'Robin' });
+  assert.equal(ctx.flowActive('777').flow, 'interview', 'the owner\'s chat interview goes on');
+  assert.match(texts(state).pop(), /Building Robin’s profile…/);
+  assert.equal(J(app(ctx, state, 'people.list', {})).people[0].interviewed, '2027-05-01');
+  say(ctx, state, '/cancel');
+  say(ctx, state, '/plan Port Sorrel');
+  assert.deepEqual(J(reqOf(state, 'research')[0].trip_update), { start_date: '2027-05-12', end_date: '2027-05-14', travelers: [{ slug: 'robin', name: 'Robin' }] });
 });
 
 test('no Google field is written: 32_app_api.js never names a photo, place id or the Maps key, and no write carries maps_', () => {

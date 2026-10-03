@@ -63,8 +63,10 @@ registerCommand('/smart', function (ctx) {
     }
     settingSet(TG_SETTINGS.SMART, 'on', 'owner /smart');
     audit('tg_smart', 'on', {});
-    ctx.reply('⚡ Smart answers on: quick questions about your trip are answered right away by the Claude API (paid per use). ' +
-      'Research and changes still go to the routines. /smart off to switch back.');
+    // F25 (Phase 8): say how to ask — plain text, not /ask (always the routine) — and what still takes minutes.
+    ctx.reply('⚡ Smart answers on: type a question about your trip as plain text, with no /ask, and the Claude API answers ' +
+      'right away from your plan (paid per use). /ask, opening hours, prices, research and changes still go to the routines ' +
+      'and take a few minutes. /smart off to switch back.');
     return;
   }
   if (arg === 'off') {

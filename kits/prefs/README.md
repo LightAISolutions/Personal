@@ -172,6 +172,11 @@ the triple is what the owner tapped; the bank only cross-checks it.
 - **Profile** — Markdown rendered from the ledger alone, one `## <Label>` section per dimension, each line with its
   provenance (`— confirmed 2026-09-20 · evidence e_…` or `— edited 2026-09-20 from "museums" · …`), and a trailer
   `<!-- prefs-kit profile v1 · vocab <name> · body sha256 <16 hex> -->`.
+- **Reading a profile back** — a pack that plans from the profile reads the Markdown above, never the ledger. The
+  tour-guide pack's `packs/tour-guide/travellers/` (`profileExcerpt`) is the reference reader: the `dietary`
+  dimension's `-` lines become the excerpt's `dietary` list (always present, possibly empty) and a vegetarian or vegan
+  line its `diet` and `diet_rule`; an override can add a limit but never lift one, and a test holds that the excerpt
+  never drops it. A pack that adds companions reads their profiles the same way and folds them in (`partyExcerpt`).
 - **Interview result** (`interview`) —
   `{ok, errors, decided_at, ref, applied, already, held, rejected, superseded, warnings, review, profile_summary, profile_entries}`:
   - `applied` — picks confirmed now `{index, qid, kind, cid, dimension, value, polarity, decided_at, effective}`;

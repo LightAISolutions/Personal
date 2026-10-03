@@ -52,14 +52,20 @@ Kinds: trip, place, google-snapshot, visit-estimate, place-note, calibration, da
 ## Estimator — `estimator/`
 - `buildEstimate({ place_id, activity, category, mentions, sources, now }) → VisitEstimate`.
   - It runs the research kit's `durationRange`. Confidence is confirmed, conflicting, single-source or unverified.
-  - chosen_minutes is the typical value, else the midpoint, else the category default.
-- `chooseMinutes({ estimate | range+typical, category, pace, interest | profile, calibration }) → { minutes, min, max, confidence, factors }`.
+  - chosen_minutes is the typical value, else the midpoint, else the session length of a set activity (`activityDefault`: a tea ceremony 60, a class or lesson 150, a workshop 120, a tasting 60, a performance 90), else the category default.
+- `chooseMinutes({ estimate | range+typical, category, activity, booked, pace, interest | profile, calibration }) → { minutes, min, max, confidence, factors, fixed? }`.
+  - A booked length (`booking.minutes` on the place) or a set activity's session length with no sourced figure is fixed: no pace, interest or calibration factor (`fixed: true`). The planner always takes `booking.minutes` when the place has one.
   - Factors: pace (relaxed 1.15, normal 1, packed 0.85), interest (low 0.8, normal 1, high 1.25) and the category calibration.
   - The result is rounded to 5 minutes and kept within half the range minimum and twice the range maximum.
 - Calibration:
   - `createCalibration()`; `applyTap(state, { category, tap: 'longer' | 'shorter' | 'about-right' })` returns a new state.
   - `calibrationFactor(state, category)` = 1 + 0.1 × (longer − shorter), clamped to 0.7–1.4.
   - It is reversible: an opposite tap undoes a tap.
+
+## Travellers — `travellers/`
+- `profileExcerpt(markdown, overrides)` → the planner's excerpt of a profile file: pace, day rhythm, interests by level, `avoid`, `dietary`, `diet` and its `diet_rule`. Overrides may add dietary limits, never lift one.
+- `partyExcerpt(owner, companions)` → the excerpt for a trip with other travellers ("their limits, your lead"): every traveller's dietary limits and things to avoid, the strictest diet, the most relaxed pace, the owner's interests, and `also_like` (companions' high interests the owner did not rate); `party` counts the travellers. With no companions it returns the owner's excerpt unchanged.
+- The private repo keeps companions' profiles in `profile/people/<slug>.md`; this module holds no names.
 
 ## Later lists — `later/`
 - Statuses: candidate · chosen · scheduled · saved-for-later · rejected. `chosen` = the owner picked it from the shortlist; the planner treats it like a candidate.
@@ -177,11 +183,12 @@ Apps Script files bundled after the core in file-name order (`node helpers/tools
 | File | What it does |
 |---|---|
 | `00_common.js` | Request routing (`research → RESEARCH`, `plan · replan → PLAN`, `notes → NOTES`, `brochure → BROCHURE`, `prefs → PREFS`, `places → PLACES`, `message · ask → CHAT`), `tgOpenKindRequest`, `tgSlug`, `tgLines`, shared Settings keys |
-| `10_commands.js` | `/profile /trip /today /day /later /place /places /replan /notes /brochure /lodging`; the `/start` interview offer (`core_start`); callbacks `dy lt rs ps pl` (`rs`: a day's ☔ Swap in button, confirmed, opens a `replan` that promotes the rainy-day option and demotes the stop it replaces) |
+| `10_commands.js` | `/profile /trip /today /day /later /place /places /replan /notes /brochure /lodging /dates`; the `/start` interview offer (`core_start`); callbacks `dy lt rs ps pl` (`rs`: a day's ☔ Swap in button, confirmed, opens a `replan` that promotes the rainy-day option and demotes the stop it replaces) |
 | `11_flow_interview.js` | `/interview [section\|all\|restart]` — the preference interview (flow `interview`) → a `prefs` request with `payload.interview` |
-| `12_flow_plan.js` | `/plan <destination>`, `/seed` — intake → confirm facts → research → shortlist rounds → plan (flow `plan`); renderers `tg_trip_facts`, `tg_shortlist`, `tg_plan_digest`; callbacks `tf sl` |
+| `12_flow_plan.js` | `/plan <destination>`, `/seed`, `/repick` (typed picks take a round prefix: `r1 5 later 7`) — intake → confirm facts → research → shortlist rounds → plan (flow `plan`); renderers `tg_trip_facts`, `tg_shortlist`, `tg_plan_digest`; callbacks `tf sl` |
 | `13_flow_review.js` | `/review [trip]` and the daily `tg_review_offer` (the day after a trip ends, once) — 👍 👎 + visit-length taps → a `prefs` request with `payload.review`; callback `rv` |
 | `20_envelopes.js` | Handlers for the six pack envelope types (validate → store → the active `plan` flow, else the renderer); prefs review buttons `pf:<cid>:y\|e\|n` with ✏️ capture (`tg_capture_pf_edit`) → a `prefs` request with `payload.decisions`; the `tour_guide` snapshot in `state.json` |
+| `22_people.js` | The people the owner travels with (Settings `tg_people`, ≤ 8), who comes on which trip, the day hours `/dates` sets, and `trip_update` — the dates, hours and travellers every research, plan and replan request carries so the routine writes them into the trip file |
 | `21_sheets.js` | Tabs `Trips DayPlans Later Places Choices Shortlist` and their storage API (no Google fields are ever stored) |
 | `30_chat_api.js` | Lane B (`tg_lane_b`): free text answered directly through the Claude API — **off by default**; `/smart on\|off` toggles it, `/status` shows the mode (`core_status`) |
 | `31_route.js` | `/route A → B [mode]` through the Apps Script Maps service |
@@ -198,7 +205,8 @@ Apps Script files bundled after the core in file-name order (`node helpers/tools
 
 `gas/32_app_api.js` serves the Telegram Mini App (the shell page `live-site-pages/helper-app.html`, built by WP-9c) through the core route `?route=app` (POST, `auth: 'webapp'`: the core verifies the owner's `initData` and counts the call against `MAX_APP_CALLS_PER_DAY`). Every operation is a request or a tap the chat already has, so the chat keeps working with the app switched off:
 
-- `home` (the snapshot's data), `shortlist.get · choose · choose_many · more · done`, `trip.digest`, `brochure.get` (the stored brochure HTML up to 200 000 characters, else its Drive link), `places.search · get · note · check`, `interview.bank · submit`, `facts.get · confirm`.
+- `home` (the snapshot's data, the owner's display name and the current trip's people), `shortlist.get` (`all: true` adds the earlier rounds) `· choose · choose_many · more · done`, `people.list · add · trip`, `trip.digest`, `brochure.get` (the stored brochure HTML up to 200 000 characters, else its Drive link), `places.search · get · note · check`, `interview.bank · submit` (`person` answers for a companion: their own profile, never the owner's), `facts.get · confirm`.
+- Writes and note requests run under the script lock (`registerRoute` `lock`), so two quick taps cannot interleave.
 - A choice made in the app re-marks the chat's shortlist keyboard (message ids kept in Settings `tg_app_sl_msgs`).
 - No Google call and no Google field: the app shows the pack's own rows only.
 - Set `APP_SHELL_URL` (https) and run the setup step **Tour Guide: point the chat menu button at the app** to put the app in the chat's menu button. With the property set, the shortlist, plan and `/places` messages also carry one 📱 button that opens the app on the right screen; without it they are unchanged.
@@ -207,7 +215,7 @@ Answer shapes and reasons: `helpers/decisions/WP-9b.md`.
 
 ## Tests
 
-`node --test helpers/tests/` runs the pack's suites: `pack_tour-guide_schemas`, `_estimator`, `_later`, `_fixtures`, `_planner` (a small invented world of its own, `pack_tour-guide_planner_world.js`), `_planner_transit-fallback`, `_choices`, `_payloads`, `_gems`, `_brochure-map`, `_brochure-map_units`, `_integration`, and the chatbot's `pack_tour-guide_gas_{commands,interview,plan,review,envelopes,sheets,chat,route,app,e2e}` (the e2e runs the interview, the `/plan` journey, places, the review and the wake fallbacks against the Apps Script mocks). No test touches the network: Maps answers come from the fixture responder through the Maps kit's mock transport, and the PDF step runs only where `pdfAvailable()` is true (never in CI).
+`node --test helpers/tests/` runs the pack's suites: `pack_tour-guide_schemas`, `_estimator`, `_travellers`, `_later`, `_fixtures`, `_planner` (a small invented world of its own, `pack_tour-guide_planner_world.js`), `_planner_transit-fallback`, `_choices`, `_payloads`, `_gems`, `_brochure-map`, `_brochure-map_units`, `_integration`, and the chatbot's `pack_tour-guide_gas_{commands,interview,plan,review,envelopes,sheets,chat,route,app,e2e}` (the e2e runs the interview, the `/plan` journey, places, the review and the wake fallbacks against the Apps Script mocks). No test touches the network: Maps answers come from the fixture responder through the Maps kit's mock transport, and the PDF step runs only where `pdfAvailable()` is true (never in CI).
 
 ## What the pack never does
 

@@ -74,9 +74,11 @@ function routeRegistered(e, name, def, method) {
     if (settingDailyCount('app_calls') >= cap) { if (!seenOnce('app:cap:' + isoDateLocal())) auditFail('app_cap_reached', name, { cap: cap }); return routeError(429, 'daily_cap'); }
     settingIncrDaily('app_calls');
   }
-  var out;
+  var out, lock = _routeWantsLock(def, req) ? LockService.getScriptLock() : null;
+  if (lock && !lock.tryLock(LIMITS.ROUTE_LOCK_WAIT_MS)) return routeError(503, 'busy');
   try { out = def.handler(req); }
   catch (err) { auditFail('route_error', name, describeError(err)); return routeError(500, 'internal'); }
+  finally { if (lock) lock.releaseLock(); }
   if (!isPlainObject(out)) return jsonOut(out === undefined ? { ok: true } : out);
   var status = clampInt(out.status, 100, 599, 200), body = out.body === undefined ? (status === 200 ? { ok: true } : {}) : out.body;
   if (status !== 200 && isPlainObject(body)) {
@@ -85,6 +87,13 @@ function routeRegistered(e, name, def, method) {
     if (body.reason === undefined) body.reason = status === 404 ? 'not_found' : status === 403 ? 'forbidden' : status === 429 ? 'daily_cap' : 'bad_request';
   }
   return jsonOut(body);
+}
+
+/** registerRoute({ lock }): true, or a predicate on the request (a predicate that throws locks — the safe side). */
+function _routeWantsLock(def, req) {
+  if (def.lock === true) return true;
+  if (typeof def.lock !== 'function') return false;
+  try { return !!def.lock(req); } catch (err) { return true; }
 }
 
 /** Dedupe key seen within DEDUPE_TTL_SEC → true (and does NOT re-mark). First sight marks it. */

@@ -69,7 +69,6 @@ test('pack sheets: registerSheet adds a tab and extra columns on a core tab; aud
   assert.equal(ctx.storeAll('AuditLog').slice(-1)[0].ok, 'false');
 });
 
-// Developed by: LightAISolutions
 
 test('getSpreadsheet keeps the Sheet on the owner zone once per zone, so date cells read back as the day written', () => {
   const { ctx, state } = H.loadGas({ pack: 'hello' });
@@ -87,3 +86,24 @@ test('getSpreadsheet keeps the Sheet on the owner zone once per zone, so date ce
   assert.equal(ctx.syncSheetTimeZone(ss), true, 'a changed TIMEZONE syncs again');
   assert.equal(ss.getSpreadsheetTimeZone(), 'Asia/Tokyo');
 });
+
+test('free text never becomes a formula: = + - @ and a leading apostrophe go in as literal text and read back unchanged', () => {
+  const { ctx, state } = H.loadGas({ pack: 'hello' });
+  H.bootstrap(ctx, state);
+  const nasty = ['=IMPORTXML("https://evil.example/","//a")', '+1+1', '-2+3', '@SUM(A1)', "'quoted", '\tTAB', 'plain', '2+2=4'];
+  nasty.forEach((v, i) => ctx.storeAppend('Settings', { key: 'k' + i, value: v }));
+  const sh = ctx.getSheet('Settings');
+  assert.deepEqual([...sh.formulas], [], 'no cell was written as a live formula');
+  assert.deepEqual([...ctx.storeAll('Settings')].map((r) => r.value), nasty, 'reads give the text back exactly');
+  const a = ctx.storeAppend('Settings', { key: 'x', value: '=1+1' });
+  assert.equal(a.value, '=1+1', 'append returns the logical value, not the escaped one');
+  // An update rewrites the whole row: a formula-looking cell it did not touch must stay text too.
+  const u = ctx.storeUpdate('Settings', a._row, { note: '=HYPERLINK("x")' });
+  assert.equal(u.value, '=1+1');
+  assert.equal(u.note, '=HYPERLINK("x")');
+  assert.deepEqual([...sh.formulas], []);
+  assert.equal(ctx.storeGet('Queue', 'none'), null);
+  assert.equal(ctx.storeAppend('Settings', { key: 'n', value: -5 }).value, -5, 'numbers stay numbers');
+});
+
+// Developed by: LightAISolutions

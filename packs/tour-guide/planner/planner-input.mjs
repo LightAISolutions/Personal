@@ -77,13 +77,15 @@ export async function prepare(input) {
     const snap = snapshots.get(p.place_id) || null;
     const est = estimates.get(p.place_id) || null;
     const interest = (profile.interests && profile.interests[p.category]) || 'normal';
-    const cm = chooseMinutes({ estimate: est || undefined, range: est ? est.range : null, typical: est ? est.typical : null, category: p.category, pace: trip.pace, interest, calibration: input.calibration || null });
+    const booked = p.booking && Number.isInteger(p.booking.minutes) && p.booking.minutes > 0 ? p.booking.minutes : null;   // a booking's own length always wins
+    const cm = chooseMinutes({ estimate: est || undefined, range: est ? est.range : null, typical: est ? est.typical : null, category: p.category, pace: trip.pace, interest, calibration: input.calibration || null,
+      activity: p.activity || null, booked });
     if (!cm || !Number.isInteger(cm.minutes) || cm.minutes < 5) fail(`chooseMinutes returned no usable minutes for ${p.id}`);
     const booking = p.booking && p.booking.date ? { date: p.booking.date, time: toMin(p.booking.time), ref: p.booking.ref || null } : null;
     const hint = p.scheduled_hint && dates.includes(p.scheduled_hint.date) ? p.scheduled_hint.date : null;
     cands.push({
       id: p.id, place_id: p.place_id, name: p.name, category: p.category, activity: p.activity, priority: p.priority || 2,
-      loc: snap && isLoc(snap.location) ? snap.location : null, minutes: cm.minutes, confidence: cm.confidence || (est && est.confidence) || 'unverified',
+      loc: snap && isLoc(snap.location) ? snap.location : null, minutes: booked || cm.minutes, confidence: cm.confidence || (est && est.confidence) || 'unverified',
       booking, hint, hours: Object.fromEntries(dates.map((d) => [d, hoursOn(snap, d)]))
     });
   }

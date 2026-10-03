@@ -7,10 +7,12 @@
  *              confirmed values
  *   research → paused until event shortlist
  *   choose   → one message per group with sl:<run>:<g><n>:w|l|s taps; fl buttons More options · More gems (scope more,
- *              decided, gems_only; three More rounds at most) · Done choosing; free text or /seed = owner seeds
+ *              decided, gems_only; three More rounds at most) · Done choosing; free text or /seed = owner seeds;
+ *              typed numbers (1 3 later 2) mark the newest round that has them, r<round> before numbers marks that round
  *   planning → plan request (picks, later, skip, deliverables) is out; paused until event plan_digest → the day list,
  *              the Later reasons and the 📄 · 🔁 · 🔖 buttons; the flow ends (the core sends the files from the reply).
  *              /repick goes back to choose with every tap kept (a digest of the dropped request is shown, the flow stays);
+ *              /repick <numbers> also marks them (same syntax as typed picks);
  *              with no plan flow, /repick reopens choose on every shortlist run of the current trip.
  * Renderers for envelopes that arrive with no plan flow: tg_trip_facts, tg_shortlist, tg_plan_digest (pack prefixes only).
  * Taps go to WP-5b's Choices tab (tgChoiceSet); shortlist items resolve n → slug through tgShortlistItems.
@@ -317,6 +319,8 @@ function tgPlanChooseStep(state, note) {
   var lines = [];
   if (note) lines.push(note);
   lines.push('So far: ' + t.picks.length + ' ✅ · ' + t.later.length + ' 🔖 · ' + t.skip.length + ' ❌. Type the numbers in one message, e.g. <code>1 3 9 later 2 skip 4-8</code> (or tap the lines above); type a place name to add your own pick.');
+  var rds = tgPlanRounds(state);
+  if (rds.length > 1) lines.push('Plain numbers go to the newest round; put <code>r' + rds[0].round + '</code> before numbers from an earlier round, e.g. <code>r' + rds[0].round + ' 5 later 7</code>.');
   var kb = [], canMore = !!state.more && state.more_rounds < TG_PLAN_MORE_MAX;
   if (canMore) kb.push([{ text: '➕ More options', value: 'more' }, { text: '💎 More gems', value: 'gems' }]);
   else if (state.seeds_pending.length) kb.push([{ text: '🔎 Look up my picks', value: 'seeds' }]);
@@ -427,6 +431,7 @@ registerFlow('plan', {
       st.runs = seed.adopt.runs ? seed.adopt.runs.slice() : [seed.adopt.run];
       st.more = !!seed.adopt.more;
       settingSet(TG_SETTINGS.CURRENT_TRIP, t.slug, 'trip being planned');
+      if (seed.adopt.picks) { st.stage = 'choose'; return tgPlanApplyPicks(st, seed.adopt.picks, seed.adopt.note); }
       return tgPlanChooseStep(st, seed.adopt.note);
     }
     var dest = truncate(String(seed.destination || '').replace(/\s+/g, ' ').trim(), 80);
@@ -455,8 +460,10 @@ registerFlow('plan', {
         state.repicked = true;
         if (state.plan_req) state.dropped = (state.dropped || []).concat([state.plan_req]).slice(-5);
         state.plan_req = null;
-        return tgPlanChooseStep(state, TG_PLAN_REPICK_NOTE);
+        state.stage = 'choose';
+        return input.picks ? tgPlanApplyPicks(state, input.picks, TG_PLAN_REPICK_NOTE) : tgPlanChooseStep(state, TG_PLAN_REPICK_NOTE);
       }
+      if (input.event === 'picks' && input.picks && state.stage === 'choose') return tgPlanApplyPicks(state, input.picks);
       if (input.event === 'tf_edit' && state.stage === 'confirm' && !state.ask) return tgPlanEditStep(state, input.n);
       if (input.event === 'seed') return tgPlanAddSeeds(state, input.names || []);
       if (input.event === 'adopt' && input.run) {
@@ -533,16 +540,27 @@ var TG_PLAN_PICK_WORDS = { want: 'w', yes: 'w', pick: 'w', picks: 'w', keep: 'w'
 var TG_PLAN_PICK_MAX = 60;   // numbers per typed message (ranges included)
 /**
  * Typed picks: "1 3 9", "want 1 3, later 2, skip 4-8", "✅ 1 3 🔖 2 ❌ 5" → { w: [n], l: [n], s: [n] }; numbers before any
- * word are ✅. null when the text is not a pick line (any other word or character → it is a place name, a seed).
+ * word are ✅. A round prefix — "r1 5", "round 1: 5 7", "r2 later 3" — points the numbers after it at that round:
+ * those go to at['<round>'] = { w, l, s } (key present only when a prefix was typed). null when the text is not a pick
+ * line (any other word or character → it is a place name, a seed).
  */
 function tgPlanParsePicks(text) {
   var t = String(text || '').toLowerCase().replace(/✅|✔️|✔/g, ' want ').replace(/🔖/g, ' later ').replace(/❌|✖️|✖/g, ' skip ');
   var words = Object.keys(TG_PLAN_PICK_WORDS).concat(['and', 'to']);
-  var rest = t.replace(new RegExp('\\b(' + words.join('|') + ')\\b', 'g'), ' ').replace(/[\s\d,;:.&+\-–—#]/g, '');
-  if (rest || !/\d/.test(t)) return null;
-  var out = { w: [], l: [], s: [] }, cur = 'w', count = 0, tooMany = false;
-  var add = function (n) { if (count >= TG_PLAN_PICK_MAX) { tooMany = true; return; } count++; out[cur].push(n); };
-  t.replace(/([a-z]+)|(\d{1,3})\s*(?:-|–|—|to)\s*(\d{1,3})|(\d{1,3})/g, function (m, w, a, b, one) {
+  var bare = t.replace(/\b(?:r|round)\s*#?\s*\d{1,2}\b/g, ' ');
+  var rest = bare.replace(new RegExp('\\b(' + words.join('|') + ')\\b', 'g'), ' ').replace(/[\s\d,;:.&+\-–—#]/g, '');
+  if (rest || !/\d/.test(bare)) return null;
+  var out = { w: [], l: [], s: [] }, cur = 'w', count = 0, tooMany = false, round = null;
+  var add = function (n) {
+    if (count >= TG_PLAN_PICK_MAX) { tooMany = true; return; }
+    count++;
+    if (round === null) { out[cur].push(n); return; }
+    out.at = out.at || {};
+    var b = out.at[round] = out.at[round] || { w: [], l: [], s: [] };
+    b[cur].push(n);
+  };
+  t.replace(/\b(?:r|round)\s*#?\s*(\d{1,2})\b|([a-z]+)|(\d{1,3})\s*(?:-|–|—|to)\s*(\d{1,3})|(\d{1,3})/g, function (m, r, w, a, b, one) {
+    if (r) { round = String(Number(r)); cur = 'w'; return m; }
     if (w) { if (TG_PLAN_PICK_WORDS[w]) cur = TG_PLAN_PICK_WORDS[w]; return m; }
     if (one) { add(Number(one)); return m; }
     var lo = Math.min(Number(a), Number(b)), hi = Math.max(Number(a), Number(b));
@@ -552,28 +570,55 @@ function tgPlanParsePicks(text) {
   out.too_many = tooMany;
   return out;
 }
-/** Store typed picks against the flow's rounds (a number means the newest round that has it); a later value wins. */
-function tgPlanApplyPicks(state, pk) {
-  var byN = {};   // n → [{ run, it }] from the newest round that has n (two groups numbered from 1 → ambiguous)
-  (state.runs || []).slice().reverse().forEach(function (run) {
-    var here = {};
-    tgShortlistItems(state.trip, run).forEach(function (it) { (here[it.n] = here[it.n] || []).push({ run: run, it: it }); });
-    Object.keys(here).forEach(function (n) { if (!byN[n]) byN[n] = here[n]; });
+/** The flow's rounds, oldest first: [{ round, run, items }] (one per stored run and round). */
+function tgPlanRounds(state) {
+  var out = [];
+  (state.runs || []).forEach(function (run) {
+    var by = {};
+    tgShortlistItems(state.trip, run).forEach(function (it) { (by[it.round] = by[it.round] || []).push(it); });
+    Object.keys(by).sort(function (a, b) { return a - b; }).forEach(function (r) { out.push({ round: Number(r), run: run, items: by[r] }); });
   });
-  var done = { w: [], l: [], s: [] }, unknown = [], twice = [], final = {};
-  ['w', 'l', 's'].forEach(function (v) { pk[v].forEach(function (n) { final[n] = v; }); });
-  Object.keys(final).sort(function (a, b) { return a - b; }).forEach(function (n) {
-    var hits = byN[n];
-    if (!hits) { unknown.push(n); return; }
-    if (hits.length > 1) { twice.push(n); return; }
-    tgChoiceSet(state.trip, hits[0].run, 'shortlist', hits[0].it.slug, final[n], hits[0].it.name);
-    done[final[n]].push(n);
+  return out;
+}
+/**
+ * Store typed picks against the flow's rounds; a later value wins. A plain number means the newest round that has it;
+ * a round-prefixed one (pk.at) means that round (the newest run that has a round with that number).
+ */
+function tgPlanApplyPicks(state, pk, lead) {
+  var rounds = tgPlanRounds(state);
+  var index = function (list) {   // n → [{ run, it }] (two groups numbered from 1 → ambiguous)
+    var byN = {};
+    list.slice().reverse().forEach(function (rd) {
+      var here = {};
+      rd.items.forEach(function (it) { (here[it.n] = here[it.n] || []).push({ run: rd.run, it: it }); });
+      Object.keys(here).forEach(function (n) { if (!byN[n]) byN[n] = here[n]; });
+    });
+    return byN;
+  };
+  var done = { w: [], l: [], s: [] }, unknown = [], twice = [], noRound = [];
+  var apply = function (pick, byN, label) {
+    var final = {};
+    ['w', 'l', 's'].forEach(function (v) { (pick[v] || []).forEach(function (n) { final[n] = v; }); });
+    Object.keys(final).sort(function (a, b) { return a - b; }).forEach(function (n) {
+      var hits = byN[n], shown = label + n;
+      if (!hits) { unknown.push(shown); return; }
+      if (hits.length > 1) { twice.push(shown); return; }
+      tgChoiceSet(state.trip, hits[0].run, 'shortlist', hits[0].it.slug, final[n], hits[0].it.name);
+      done[final[n]].push(shown);
+    });
+  };
+  apply(pk, index(rounds), '');
+  Object.keys(pk.at || {}).sort(function (a, b) { return a - b; }).forEach(function (r) {
+    var these = rounds.filter(function (rd) { return String(rd.round) === r; });
+    if (!these.length) { noRound.push(r); return; }
+    apply(pk.at[r], index(these.slice(-1)), 'r' + r + ' ');
   });
   var parts = [];
   if (done.w.length) parts.push('✅ ' + done.w.join(', '));
   if (done.l.length) parts.push('🔖 ' + done.l.join(', '));
   if (done.s.length) parts.push('❌ ' + done.s.join(', '));
-  var note = parts.length ? 'Noted ' + parts.join(' · ') + '.' : 'Nothing noted.';
+  var note = (lead ? lead + '\n' : '') + (parts.length ? 'Noted ' + parts.join(' · ') + '.' : 'Nothing noted.');
+  if (noRound.length) note += ' There is no round ' + noRound.join(', ') + ' in this plan.';
   if (unknown.length) note += ' No place numbered ' + unknown.join(', ') + ' on your list.';
   if (twice.length) note += ' Number ' + twice.join(', ') + ' is on two lists — tap that one instead.';
   if (pk.too_many) note += ' Only the first ' + TG_PLAN_PICK_MAX + ' numbers were read.';
@@ -685,16 +730,20 @@ registerCommand('/plan', function (ctx) {
 }, 'plan a trip: /plan <destination> (again to see where you are)');
 
 registerCommand('/repick', function (ctx) {
+  // /repick alone reopens choosing; /repick 2 6 r1 5 later 7 also marks those numbers (F20: picks Claude suggested).
+  var args = String(ctx.args || '').trim(), picks = args ? tgPlanParsePicks(args) : null;
+  if (args && !picks) { ctx.reply('Send <code>/repick</code>, or <code>/repick 2 6 r1 5 later 7</code> to mark numbers as well.'); return null; }
   var f = flowActive(ctx.chatId);
   if (f && f.flow === 'plan' && isPlainObject(f.state)) {
-    if (f.state.stage === 'planning') return flowResume(ctx.chatId, { type: 'resume', event: 'repick' });
+    if (f.state.stage === 'planning') return flowResume(ctx.chatId, { type: 'resume', event: 'repick', picks: picks });
+    if (picks && f.state.stage === 'choose') return flowResume(ctx.chatId, { type: 'resume', event: 'picks', picks: picks });
     return flowResume(ctx.chatId, { type: 'resume', event: 'reprompt' });
   }
   if (f) { ctx.reply('You are in the middle of /' + tgEscape(f.flow) + ' — finish it or send /cancel first.'); return null; }
   var trip = tgTripCurrent(), runs = trip ? tgShortlistRuns(trip.slug) : [];
   if (!runs.length) { ctx.reply('No shortlist to choose from — start with <code>/plan &lt;destination&gt;</code>.'); return null; }
-  return flowStart(ctx.chatId, 'plan', { adopt: { trip: trip.slug, runs: runs, more: false, note: TG_PLAN_REPICK_NOTE } });
-}, 'change the picks of the plan being built (or the last one) and build it again');
+  return flowStart(ctx.chatId, 'plan', { adopt: { trip: trip.slug, runs: runs, more: false, note: TG_PLAN_REPICK_NOTE, picks: picks } });
+}, 'change the picks of the plan being built (or the last one) and build it again; /repick 2 6 r1 5 marks numbers too');
 
 registerCommand('/seed', function (ctx) {
   var names = tgPlanSeedsFrom(ctx.args);

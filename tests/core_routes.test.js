@@ -128,4 +128,28 @@ test('daily cap: MAX_APP_CALLS_PER_DAY (property over LIMITS default 2000) answe
   assert.equal(ctx.settingDailyCount('app_calls'), 1);
 });
 
+test('lock: true or a predicate serialises the handler under the script lock; held → 503 busy; released after a throw', () => {
+  const { ctx, state } = fresh();
+  const held = [];
+  ctx.registerRoute('always', { methods: ['POST'], auth: 'none', lock: true, handler: () => { held.push(state.lock.busy); return { status: 200, body: { ok: true } }; } });
+  ctx.registerRoute('writes', { methods: ['POST'], auth: 'none', lock: (req) => req.body.write === true, handler: () => { held.push(state.lock.busy); return { status: 200 }; } });
+  ctx.registerRoute('oops', { methods: ['POST'], auth: 'none', lock: () => { throw new Error('bad predicate'); }, handler: () => { held.push(state.lock.busy); throw new Error('handler blew up'); } });
+  ctx.registerRoute('free', { methods: ['POST'], auth: 'none', handler: () => { held.push(state.lock.busy); return { status: 200 }; } });
+  assert.throws(() => ctx.registerRoute('badlock', { methods: ['POST'], auth: 'none', lock: 'yes', handler: () => ({}) }), /lock/);
+
+  assert.equal(J(ctx.doPost(H.postEvent('always', {}, {}))).ok, true);
+  assert.equal(J(ctx.doPost(H.postEvent('writes', {}, { write: true }))).ok, true);
+  assert.equal(J(ctx.doPost(H.postEvent('writes', {}, { write: false }))).ok, true);
+  assert.equal(J(ctx.doPost(H.postEvent('oops', {}, {}))).reason, 'internal');
+  assert.deepEqual(held, [true, true, false, true], 'locked while the handler ran; a throwing predicate locks to be safe');
+  assert.equal(state.lock.busy, false, 'released after every call, including the throw');
+
+  state.lock.busy = true;   // another execution holds the lock
+  assert.deepEqual(J(ctx.doPost(H.postEvent('always', {}, {}))), { ok: false, status: 503, reason: 'busy' });
+  assert.deepEqual(J(ctx.doPost(H.postEvent('writes', {}, { write: false }))), { ok: true }, 'a read the predicate leaves unlocked still runs');
+  assert.equal(J(ctx.doPost(H.postEvent('free', {}, {}))).ok, true, 'routes without lock never wait');
+  assert.equal(held.length, 6, 'the busy call never reached its handler');
+  state.lock.busy = false;
+});
+
 // Developed by: LightAISolutions

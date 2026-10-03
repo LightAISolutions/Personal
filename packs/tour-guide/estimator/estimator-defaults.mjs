@@ -13,6 +13,24 @@ export const CALIBRATION_MAX = 1.4;
 export const MIN_VISIT_MINUTES = 15;
 export const MAX_VISIT_MINUTES = 1440;
 
+/**
+ * Sessions with a set length (Phase 8, F21 follow-up: a booked tea ceremony was timed as a 95-minute stroll). Read from the
+ * place's `activity` words before the category default; pace and interest do not stretch a session. The minutes are
+ * typical session lengths (an inference, not a measurement); a booking's own `minutes` always wins.
+ */
+export const ACTIVITY_DEFAULTS = Object.freeze([
+  { kind: 'ceremony', re: /\bceremon(y|ies)\b/i, minutes: 60 },
+  { kind: 'class', re: /\b(cooking |craft )?(class|lesson)(es|s)?\b/i, minutes: 150 },
+  { kind: 'workshop', re: /\bworkshops?\b/i, minutes: 120 },
+  { kind: 'tasting', re: /\btastings?\b/i, minutes: 60 },
+  { kind: 'performance', re: /\b(performance|recital|concert)s?\b/i, minutes: 90 }
+]);
+/** activityDefault('tea ceremony in a machiya') → { kind: 'ceremony', minutes: 60 }; null when no session word is there. */
+export function activityDefault(activity) {
+  const a = String(activity || '');
+  for (const d of ACTIVITY_DEFAULTS) if (d.re.test(a)) return { kind: d.kind, minutes: d.minutes };
+  return null;
+}
 /** categoryDefault('museum') → 120; unknown categories use 'other' (60). */
 export function categoryDefault(category) {
   return Object.prototype.hasOwnProperty.call(CATEGORY_DEFAULTS, category) ? CATEGORY_DEFAULTS[category] : CATEGORY_DEFAULTS.other;

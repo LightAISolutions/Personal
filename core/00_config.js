@@ -87,7 +87,8 @@ var LIMITS = {
   MAX_APP_CALLS_PER_DAY: 2000,             // verified Mini App calls (registered 'webapp' routes) per local day
   INITDATA_MAX_AGE_SEC: 86400,
   INITDATA_MAX_CHARS: 4096,
-  ROUTE_BODY_MAX_CHARS: 65536              // POST body of a registered route (the upload route has its own limit)
+  ROUTE_BODY_MAX_CHARS: 65536,             // POST body of a registered route (the upload route has its own limit)
+  ROUTE_LOCK_WAIT_MS: 10000                // a registerRoute({ lock }) call waits this long for the script lock, then 503 busy
 };
 
 /** From-brain envelope types the core handles. The manifest's envelope_types are appended at load. */

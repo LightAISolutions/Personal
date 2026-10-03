@@ -5,8 +5,11 @@
  *   with a range: clamped to [max(15, ½·min), 2·max] (bounds rounded inward to 5); without: at least 15.
  * Returns { minutes, min, max, confidence, factors: { pace, interest, calibration } }; min / max are the range scaled
  * by the same factors and clamped the same way (min = max = minutes when no range is known).
+ * A session (Phase 8): `booked` minutes (the booking's own length) are used as they are; with no sourced range or typical,
+ * an `activity` with a set length (ceremony, class, workshop, tasting, performance) takes that length — neither is
+ * stretched by pace, interest or calibration (factors all 1, `fixed: true`).
  */
-import { PACE_FACTORS, INTEREST_FACTORS, MIN_VISIT_MINUTES, MAX_VISIT_MINUTES, categoryDefault, round5, clamp } from './estimator-defaults.mjs';
+import { PACE_FACTORS, INTEREST_FACTORS, MIN_VISIT_MINUTES, MAX_VISIT_MINUTES, categoryDefault, activityDefault, round5, clamp } from './estimator-defaults.mjs';
 import { calibrationFactor } from './estimator-calibration.mjs';
 
 const ceil5 = (x) => Math.ceil(x / 5) * 5;
@@ -18,13 +21,18 @@ function factor(table, key, name) {
 }
 
 /**
- * chooseMinutes({ estimate? | range?, typical?, category?, pace = 'normal', interest?, profile?, calibration? })
+ * chooseMinutes({ estimate? | range?, typical?, category?, pace = 'normal', interest?, profile?, calibration?, activity?, booked? })
  * interest defaults to profile.interests[category], else 'normal'; calibration is a calibration state or a number.
  */
-export function chooseMinutes({ estimate = null, range = null, typical = null, category, pace = 'normal', interest, profile = null, calibration = null } = {}) {
+export function chooseMinutes({ estimate = null, range = null, typical = null, category, pace = 'normal', interest, profile = null, calibration = null, activity = null, booked = null } = {}) {
   const cat = category || (estimate && estimate.category) || 'other';
   const r = (estimate ? estimate.range : range) || null;
   const typ = estimate ? estimate.typical : typical;
+  const session = Number.isInteger(booked) && booked > 0 ? booked : !r && !typ ? (activityDefault(activity || (estimate && estimate.activity)) || {}).minutes : null;
+  if (session) {
+    const minutes = clamp(round5(session), MIN_VISIT_MINUTES, MAX_VISIT_MINUTES);
+    return { minutes, min: minutes, max: minutes, confidence: (estimate && estimate.confidence) || 'unverified', factors: { pace: 1, interest: 1, calibration: 1 }, fixed: true };
+  }
   const level = interest || (profile && profile.interests && profile.interests[cat]) || 'normal';
   const factors = {
     pace: factor(PACE_FACTORS, pace, 'pace'),

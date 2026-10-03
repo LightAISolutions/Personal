@@ -148,4 +148,15 @@ test('input validation: bad trip, missing lodging night, unknown mode', async ()
   await assert.rejects(planTrip({ ...input, trip: { ...input.trip, timezone: 'Mars/Olympus' } }), /time zone/);
 });
 
+test('a booking with its own length is booked exactly that long (Phase 8: a ceremony is not a stroll)', async () => {
+  const { input } = await setup();
+  const { planTrip } = await planner();
+  const places = input.places.map((p) => (p.id === 'old-church' ? { ...p, booking: { ...p.booking, minutes: 75 } } : p));
+  const plan = await planTrip({ ...input, places });
+  const church = plan.days[1].stops.find((s) => s.place === 'old-church');
+  assert.equal(church.arrive, '14:00');
+  assert.equal(church.minutes, 75);   // 45 without the booked length
+  assert.equal(church.depart, '15:15');
+});
+
 // Developed by: LightAISolutions

@@ -20,6 +20,13 @@ let _ids = 0;
 const nid = (p) => `${p}_${(++_ids).toString(36)}${crypto.randomBytes(3).toString('hex')}`;
 
 /* ---------------- Spreadsheet ---------------- */
+/** A value as Sheets stores it: a leading apostrophe marks literal text and is dropped; unescaped text starting with = is a formula. */
+function sheetsStore(sheet, v) {
+  if (typeof v !== 'string') return v;
+  if (v.startsWith("'")) return v.slice(1);
+  if (v.startsWith('=')) sheet.formulas.push(v);
+  return v;
+}
 class Range {
   constructor(sheet, row, col, numRows, numCols) { Object.assign(this, { sheet, row, col, numRows, numCols }); }
   getValues() {
@@ -35,7 +42,7 @@ class Range {
     for (let r = 0; r < this.numRows; r++) {
       const idx = this.row - 1 + r;
       while (this.sheet.data.length <= idx) this.sheet.data.push([]);
-      for (let c = 0; c < this.numCols; c++) this.sheet.data[idx][this.col - 1 + c] = vals[r][c];
+      for (let c = 0; c < this.numCols; c++) this.sheet.data[idx][this.col - 1 + c] = sheetsStore(this.sheet, vals[r][c]);
     }
     return this;
   }
@@ -44,7 +51,7 @@ class Range {
   clearContent() { return this.setValues(Array.from({ length: this.numRows }, () => Array(this.numCols).fill(''))); }
 }
 class Sheet {
-  constructor(ss, name) { this.ss = ss; this.name = name; this.data = []; this.frozen = 0; }
+  constructor(ss, name) { this.ss = ss; this.name = name; this.data = []; this.frozen = 0; this.formulas = []; }
   getName() { return this.name; }
   getLastRow() { let last = 0; this.data.forEach((row, i) => { if (row.some((c) => c !== '' && c !== undefined && c !== null)) last = i + 1; }); return last; }
   getLastColumn() { let last = 0; this.data.forEach((row) => row.forEach((c, j) => { if (c !== '' && c !== undefined && c !== null) last = Math.max(last, j + 1); })); return last; }
@@ -52,7 +59,7 @@ class Sheet {
   getMaxColumns() { return 26; }
   getRange(row, col, numRows = 1, numCols = 1) { if (row < 1 || col < 1) throw new Error('getRange: bad coordinates'); return new Range(this, row, col, numRows, numCols); }
   getDataRange() { const r = this.getLastRow(), c = this.getLastColumn(); return new Range(this, 1, 1, Math.max(1, r), Math.max(1, c)); }
-  appendRow(values) { const idx = this.getLastRow(); while (this.data.length < idx) this.data.push([]); this.data[idx] = values.slice(); return this; }
+  appendRow(values) { const idx = this.getLastRow(); while (this.data.length < idx) this.data.push([]); this.data[idx] = values.map((v) => sheetsStore(this, v)); return this; }
   deleteRow(r) { this.data.splice(r - 1, 1); return this; }
   deleteRows(r, n) { this.data.splice(r - 1, n); return this; }
   insertRowsAfter() { return this; }

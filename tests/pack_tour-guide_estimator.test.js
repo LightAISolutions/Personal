@@ -119,4 +119,27 @@ test('every fixture estimate feeds chooseMinutes with the fixture profile and an
   }
 });
 
+test('sessions with a set length: a ceremony is not timed as a stroll; a booking’s own minutes win; sourced estimates still lead (Phase 8)', async () => {
+  const { activityDefault, buildEstimate, chooseMinutes } = await E();
+  assert.deepEqual(activityDefault('Tea ceremony in a townhouse'), { kind: 'ceremony', minutes: 60 });
+  assert.deepEqual(activityDefault('vegetarian cooking classes'), { kind: 'class', minutes: 150 });
+  assert.equal(activityDefault('classic old town wander'), null);
+  assert.equal(activityDefault('mill tour'), null);
+  // no mentions: the estimate's chosen length is the session's, not the neighbourhood default
+  const e = buildEstimate({ place_id: PID, activity: 'tea ceremony', category: 'neighbourhood', now: '2027-04-01' });
+  assert.equal(e.chosen_minutes, 60);
+  const c = chooseMinutes({ estimate: e, pace: 'relaxed', interest: 'high' });
+  assert.deepEqual([c.minutes, c.min, c.max, c.fixed], [60, 60, 60, true]);
+  assert.deepEqual(c.factors, { pace: 1, interest: 1, calibration: 1 });
+  // the activity alone, with no estimate at all
+  assert.equal(chooseMinutes({ category: 'neighbourhood', activity: 'sake tasting', pace: 'relaxed' }).minutes, 60);
+  assert.equal(chooseMinutes({ category: 'neighbourhood', pace: 'relaxed' }).minutes, 105);   // round5(90 × 1.15): the old stroll
+  // the booked length wins over everything, even a sourced range
+  assert.equal(chooseMinutes({ range: { min: 30, max: 60 }, typical: 45, category: 'museum', booked: 90, pace: 'packed' }).minutes, 90);
+  // sources that give a length still lead, with the usual factors
+  const sourced = chooseMinutes({ range: { min: 80, max: 100 }, typical: 90, category: 'other', activity: 'tea ceremony', pace: 'relaxed' });
+  assert.equal(sourced.fixed, undefined);
+  assert.equal(sourced.minutes, 105);
+});
+
 // Developed by: LightAISolutions

@@ -8,5 +8,6 @@
   },
   "meals": {
     "breakfast_at_lodging": true
-  }
+  },
+  "dietary": []
 }
