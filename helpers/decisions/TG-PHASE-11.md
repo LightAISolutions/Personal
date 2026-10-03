@@ -21,7 +21,7 @@ Each work package was squash-merged onto the v01.51r main as it finished (11b, 1
 After the wave 1 merge and the coordinator's fixes: `node --test helpers/tests/` 695 tests, 694 pass, 1 skipped (the live Maps smoke, by hand only); `node helpers/tools/bundle.mjs --all --check` ok (hello 19 files, tour-guide 32 files); `node helpers/tools/boundary-check.mjs` clean (502 files). Each fix was also checked to fail without it: the day card on the old code fails the end-to-end test, and so does the planner without the two planner fixes. On v01.52r (with Scout), before the push: 735 tests, 734 pass, 1 skipped; bundle ok (hello 19 files, tour-guide 34 files); boundary clean (519 files). After the wave 2 merge and the coordinator's fixes (on v01.54r): 781 tests, 780 pass, 1 skipped; bundle ok (hello 19 files, tour-guide 36 files); boundary clean (551 files); the helper app's two Playwright runs (`shell_helper-app.playwright.mjs`, and `shell_helper-app_compare.playwright.mjs` with the one-outline and one-way-day screens added) pass at 390×844, and their screenshots were read.
 
 ## 4 Private repo (WP-11g)
-The private-repo pull request for wave 1 (open; the owner merges it):
+The private-repo pull request for wave 1 (with wave 2's, WP-11h; the owner merged it on 2026-10-03):
 - `plan-days` maps every C11 digest field, splits a big digest by whole days (at most 8 parts), and passes the dinner pool, the profile's avoid lines and the day overrides to the planner.
 - A day's start or end words are looked up once in Maps by a new tool; words that name no particular place, or match two places far apart, leave that start or end out, and the reply asks for a Maps link: never a guess. The core's list of day overrides is the whole truth (a `trip_update` replaces the list).
 - A place's facts are written only through `normalizeFacts`, with an official source; trip research writes the season sheet from named sources; page text never enters memory, and the passages relied on go to `quarantine/`.
@@ -32,14 +32,14 @@ The private-repo pull request for wave 1 (open; the owner merges it):
 - It found one framework fault: on a trip with shortlist choices and a dinner pool, the planner's dinner step read the choices from a field the choice step does not return, and threw. Fixed at the wave 2 merge with a test (§6). Until the re-pin after wave 2, its plan builder passes no dinner pool on such a trip; WP-11h removes that guard.
 
 ## 5 Live checks
-*Filled after the owner merges the private-repo PR.*
+The owner merged the private-repo pull request on 2026-10-03. The live check follows the owner's `/journey on`: the outlines, the day versions in the app and the brochure for the chosen mix on the real trip. Its result goes here and in BUILD-STATE row 11.
 
 ## 6 Wave 2 (WP-11e, WP-11f, WP-11h)
 Notes for the wave 2 briefs (written before it): the Mini App's trip view shows none of the C11 day fields yet (start, end, bags, dinner, extras, sunset), and `trip.digest` leaves out Phase 10's stop and leg fields (`time_style`, `check_on_day`, `estimated`, `flags`, `taxi_minutes`, `buffer_minutes`, `spare_minutes`), so the app's day can read differently from the chat card ("10:46" against "about 10:45"); WP-11f's Compare cards should show a day the way the chat card does. *Phase 10's carried items: a booking with a date becomes an anchor on that date in every outline (prompt, wave 2); the home-zone reminders and a lodging change re-planning finished days are checked here and carried on if still open.*
 
 - WP-11e: `helpers/decisions/WP-11e.md`: outlines (`journey/` and the planner's `outline` input) give up to three ways to shape the whole trip; each date gets a kind (full, light, travel, rain spare, free) and an area; a dated booking and the owner's picks are anchors, moving days travel, and options differ on at least a third of the days; a trip with one shape comes as one outline. Day versions: up to three per date, each holding the day's anchors; a place version must bring a new stop and hold at least half as many as the first; a day with under 2 hours to spare also gets "A slower day"; a day with one way to go comes as one version. The chosen mix becomes one plan (`assembleChosen`): Later says which picks are in a version not chosen, and the other versions are kept for `/versions`.
 - WP-11f: `helpers/decisions/WP-11f.md`: the `outline` and `day_versions` payloads (schemas, checks and the core's mirror); the core's outline and versions stages after the shortlist, with chat cards, `/outline`, `/versions`, 🧱 Build my plan and a planned day's other version (a replan); the app's Compare screen (v01.07w); `trip.digest` now carries Phase 10's stop and leg fields, so the app's day reads like the chat card. The journey ships switched off: the owner sends `/journey on` after the private update (WP-11h).
-- WP-11h: *filled after the re-pin.*
+- WP-11h (the private repo's side of wave 2, in the same pull request as §4; its defaults in that repo's own decisions note): re-pinned to `helpers-dist` at v01.55r. `plan-days` answers the `outline` and `day_versions` requests with the framework's journey functions and builds the plan from the chosen versions; an "another version" replan replaces just that day. The outline and version sets go to Drive as data files through the core's upload route (every request carries an upload key), and the trip file keeps a short record of them. A missing data file is drafted again from the same build id and seed, except for an alternative replan, which never guesses and asks for `/replan`. The dinner guard of §4 is gone. The pull request also merged in the open Scout re-pin, so merging it completes that one too. Checks: 781 vendored tests (780 pass, 1 skipped), the journey dry run (176 checks) and the integration dry run (554 checks) pass; `log/` untouched. The journey stays off until the owner sends `/journey on`.
 
 Merge choices (coordinator):
 - Both built from v01.53r and were squash-merged onto v01.54r (Scout's photo-name fix), WP-11e first. They touch disjoint paths and merged without a conflict.
@@ -62,6 +62,6 @@ Merge choices (coordinator):
 - A booking with no date shows on no day card: give it the day its place is planned on (Phase 10's item 1, half met).
 - Reminders follow the home zone until a trip is in progress: the rehearsal checks that the trip record covers the whole journey (Phase 10's item 2).
 - A lodging change keeps a planned day's legs until `/replan`: the core could offer a replan of the days the change touches (Phase 10's item 3).
-- *The rest is filled at the end of the phase.*
+- All five were met in Phase 12 (`TG-PHASE-12.md` §2).
 
 Developed by: LightAISolutions

@@ -32,7 +32,7 @@ export function bagLegs(day) {
   if (!day.override || !day.bags) return 0;
   const a = dayAnchors(day);
   if (a.hotel) return pointKey(a.S) === pointKey(a.hotel) ? 0 : 1;
-  if (a.locker) return pointKey(a.S) === pointKey(a.E) ? 0 : 1;
+  if (a.locker) return pointKey(a.L) === pointKey(a.E) ? 0 : 1;
   return 0;
 }
 

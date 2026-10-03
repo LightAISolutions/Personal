@@ -3,10 +3,12 @@
  * raw facts object; `normalizeFacts` returns a clean copy that passes the place schema's `facts` block and `checkFacts`,
  * or the errors. Clean-up is mechanical only (trim strings, drop null / undefined values, sort and de-duplicate
  * `closed_weekdays`, lower-case `menu.fits`); every bound and every unknown key is still refused — nothing is clipped.
+ * C12: `local_name` (1–80), `address` (1–160) and `access` (≤ 2 of { station 1–60, line? 1–60, exit? 1–20,
+ * walk_minutes? 0–60 }, no station and line twice) come from the place schema like every other field.
  */
 import { validate as validateSubset } from '../../../kits/brochure/lib/validate.mjs';
 import { loadSchema } from '../schemas/index.mjs';
-import { checkFacts } from '../schemas/tour-guide-checks.mjs';
+import { checkFacts, checkAccess } from '../schemas/tour-guide-checks.mjs';
 
 /** The place schema's `facts` block as a standalone schema (the subset resolves `$ref` against its own root). */
 export function factsSchema() {
@@ -37,6 +39,7 @@ export function normalizeFacts(raw) {
   if (facts.menu && typeof facts.menu.fits === 'string') facts.menu.fits = facts.menu.fits.toLowerCase();
   const errors = validateSubset(facts, factsSchema());
   if (!errors.length) checkFacts(facts, '', errors);
+  if (!errors.length && facts.access) checkAccess(facts.access, '/access', errors);   // C12: no station twice
   return errors.length ? { ok: false, facts: null, errors: errors.map((x) => ({ path: x.path || '/', message: x.message })) } : { ok: true, facts, errors: [] };
 }
 

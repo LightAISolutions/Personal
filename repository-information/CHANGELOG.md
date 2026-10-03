@@ -3,11 +3,37 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 56/100`
+`Sections: 57/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.56r] — 2026-10-03 05:10:35 PM EST
+
+> **Prompt:** "decisions made." *(the owner's choices on the usefulness review; this push is step 3 — the morning message, running late, re-plans from where you are, the evening check-in, and a rehearsal of one trip day before the trip)*
+
+### Added
+- **The morning fields and re-plans from where you are** (WP-12a, Contract C12; `planner/planner-morning.mjs`, `planner/planner-restart.mjs`): every built day with a leg carries `leave_by` (its first leg's departure) and `areas` (the lodgings' towns); `replanDays` takes `from` (a stop of that day, or a shared point that becomes the reserved `here`, "where you were", whose coordinates reach only the Routes requests), `visited` and `rain`, and plans the rest of one day — visited stops keep their times, the history costs no Maps request, a place the day ran out of time for is a candidate again, and a re-plan without `from` is byte for byte the old one; rain puts covered places first (`planner/planner-rain.mjs`). Place facts gain `local_name`, `address` and `access` (station notes), lodgings `access` and `area`, the trip `country_code`; the digest carries them (day `leave_by` and `areas`; stop `visited`, `local_name`, `address`, `payment`, `close`; a transit leg's `stations`). Invented fixture `fixtures/rehearsal-day/`
+- **The morning message** (WP-12b, `gas/18_morning.js`, `gas/15_weather.js`): the whole day, unasked, at 07:00 or the owner's `/morning at HH:MM`, or 30 min before leave-by when that is earlier; pinned silently; leave by, the weather (Open-Meteo, no key, credited; data CC BY 4.0, place names from GeoNames), paying, bookings, each stop with its local name, address, map and last entry, trains from the places' own access notes only, dinner with its local name, address and paying, the day's end and sunset; it reads in airplane mode. `/morning day N` rehearses any day; `/morning off|on`; `/dates <date> weather <town>|clear`
+- **Running late** (`gas/19_late.js`): `/late <5–240>` and the ⏰ buttons move the rest of today later as an overlay, never an edit of the plan; booked and exact-time stops and the day's end stay put; a stop that no longer fits drops with its reason; ↩️ Undo; a new plan that changes the day clears it
+- **Re-plan from here** (`gas/24_here.js`): 📍 on the trip's own day re-plans from the current stop, a location shared once (rounded, kept only in the request), or rain first; one `replan` request with `from`, `visited` and `rain`
+- **The evening check-in** (`gas/25_checkin.js`): at 21:00, or 15 min after the day's planned end when that is later (22:30 at the latest), the day's stops with 👍 👎 ⏭ ⏩ 👌 ⏪ and ✅ Done; `/checkin day N` rehearses; `/review` skips stops already rated and, when all are, sends in one tap
+- **The brochure's re-planned day** (WP-12d): visited stops shown as done; a leg "from where you were" with no origin and no coordinates anywhere
+- **The rehearsal** (WP-12r): `helpers/tests/pack_tour-guide_phase12_rehearsal.test.js` plays one invented trip day through the planner, the digest and the core (the 06:59 morning message, running late, re-plans from the current stop and from a shared location, the 21:00 check-in, `/review` after the trip, home and trip zones); a lodging change now offers to re-plan the planned days it touches, or to keep the plan (`gas/26_lodging.js`). Also new: the C12 contract, planner C12, dates, gas C12, morning, late, here, check-in, brochure-map C12, undated-booking and brochure-kit C12 tests
+
+### Fixed
+- **A booked stop is a must on any plan** (`planner/planner-day.mjs`): a re-plan from mid-afternoon kept an unbooked museum and dropped the gallery booked for later, which then sat under "If you have energy" while the day card said booked; no fixture's first plan moved
+- **A re-plan keeps the chosen dinner** (`planner/planner-dinner.mjs`): the dinner the plan had scheduled ranked below a saved-for-later one, so a re-plan swapped it
+- **Paying said the same thing twice** in the morning message, and **a train leg joined with a walk read "walk"** after running late dropped the stop between them (both found by the rehearsal)
+- **A digest with one long warning** was rejected whole: the shared test digest (`tests/harness/tour-guide-digest.js`) clips day warnings to 20 × 200 characters with "…"; the private builder follows (WP-12c)
+
+### Changed
+- **Dates in words**: Later reasons ("no room left on Thu 10 Jun for …", "closed on Mon 18 Oct"), journey plans and the brochure's "Taken off the plan for …" note name the day as the day card does, instead of `YYYY-MM-DD`; a stored reason keeps its text until the next build; the Bookings page reads "Sep", not "Sept"
+- **The brochure's phone clock** sits whole beside a numbered stop badge (one rule in the phone layout; A4 pixel-identical; golden hashes moved deliberately)
+- **A booking with a place and no date** shows on the first day its place is planned (the stop, the Bookings page, the day card and reminders: "planned for <day>"), never written into its date
+- **The core ignores a location nobody asked for** on every pack (the hello pack used to answer "I only read text") and keeps a location out of deferred updates (`core/10_router.js`)
+- `helpers/decisions/TG-PHASE-12.md` (merge choices, the coordinator's fixes, the checks, the old output that moves, what is carried on), `WP-12a.md`, `WP-12b.md`, `WP-12d.md`, `WP-12r.md`; `helpers/status/WP-12a.md`, `WP-12b.md`, `WP-12d.md`, `WP-12r.md`; `helpers/SPEC.md` §5; the pack, brochure-kit and facts READMEs; `TG-PHASE-11.md` §4–§7 (the private side merged); `helpers/BUILD-STATE.md` rows 11, 12 and S and the Phase 11 and 12 logs; README tree (including two older gaps, `planner-rain.mjs` and its test) and timestamp. 879 tests (878 pass, 1 skipped); bundle and boundary clean. The private repo's side (WP-12c) must merge before the trip
 
 ## [v01.55r] — 2026-10-03 09:36:18 AM EST
 

@@ -82,10 +82,19 @@ styles are added only when `usesC11(model)` is true, and each piece of markup on
 | `places{}.flags` | `local_favourite`, `crowd_magnet` | a "local favourite" tag on the rail and the card |
 | `season` | `{checked*, lead, weather {text*, high_c, low_c, rain_days}, bloom[] ≤ 6, events[] ≤ 40, sources[]}` | a season page after the overview, before day 1 |
 
+**Contract C12 fields (Phase 12, a day re-planned from where you are, optional).** Their styles are added only when
+`usesC12(model)` is true.
+
+| Field | What it is | Where it shows |
+|---|---|---|
+| `stops[].visited` | `true` only: the stop was done before the re-plan (visited stops come first) | the rail row muted with a hollow badge and a "✓ visited" tag, still numbered in order; a tick on the glance list |
+| `legs[].from: "here"` | where the traveller was when the day was re-planned from a shared location; it has no coordinates | "from where you were"; the kit's own link for that leg has no origin (Google starts from the viewer's location) |
+
 Semantic checks beyond the schema (`lib/model.mjs`): every place key resolves, days fall inside the trip and are not
 duplicated, stops are in clock order and do not depart before they arrive, meal/free blocks end after they start; for
 C11, a `day-start` / `day-end` leg needs the day's start / end, extras and season events name known places, and the
-bag step, season events and blooms end after they start.
+bag step, season events and blooms end after they start; for C12, `here` may only start a leg (it is reserved while
+no place is keyed `here`).
 `prepare()` then derives what the sections render: numbered days with a merged timeline (stops, legs, meals, free
 time in clock order), per-day statistics, hours for the day from the weekday lines, the cards in order of first
 appearance, and page cross-references. Images: `src` is a path relative to the model file or a `data:image/…` URI;

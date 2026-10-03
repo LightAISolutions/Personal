@@ -1,7 +1,7 @@
 {
   "name": "tour-guide",
   "display_name": "Tour Guide",
-  "description": "Travel planner: preferences from approved connectors, deep research, visit-time estimates, day plans over Google Maps, saved-for-later lists, a printed brochure and a Telegram chatbot.",
+  "description": "Travel planner: preferences from approved connectors, deep research, visit-time estimates, day plans over Google Maps, saved-for-later lists, a printed brochure and a Telegram chatbot with a morning message, weather, running late, re-plan from here and an evening check-in.",
   "drive_root": "TourGuide",
   "producer": "tour-guide-core",
   "property_prefix": "",

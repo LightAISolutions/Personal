@@ -115,6 +115,9 @@
         },
         "payment": { "type": "string", "minLength": 1, "maxLength": 80 },
         "gate_name": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "local_name": { "type": "string", "minLength": 1, "maxLength": 80, "description": "C12: the place's name in the local script, as its own site writes it." },
+        "address": { "type": "string", "minLength": 1, "maxLength": 160, "description": "C12: the address as the place publishes it (the local script allowed)." },
+        "access": { "$ref": "#/$defs/access", "description": "C12: how the place's own site says to reach it by train." },
         "menu": {
           "type": "object",
           "additionalProperties": false,
@@ -140,6 +143,22 @@
         "url": { "$ref": "#/$defs/https_url" },
         "title": { "type": "string", "minLength": 1, "maxLength": 120 },
         "accessed": { "$ref": "#/$defs/date" }
+      }
+    },
+    "access": {
+      "type": "array",
+      "maxItems": 2,
+      "description": "C12: how to reach a place by train, as its own site (or the owner's booking) says. Two entries naming the same station and line are refused (tour-guide-checks.mjs checkAccess).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["station"],
+        "properties": {
+          "station": { "type": "string", "minLength": 1, "maxLength": 60 },
+          "line": { "type": "string", "minLength": 1, "maxLength": 60 },
+          "exit": { "type": "string", "minLength": 1, "maxLength": 20 },
+          "walk_minutes": { "type": "integer", "minimum": 0, "maximum": 60 }
+        }
       }
     }
   }

@@ -1,0 +1,1686 @@
+[
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdQuillmereReedHouse",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.6,
+      "lng": -148.4
+    },
+    "content": {
+      "display_name": "Quillmere Reed House",
+      "address": "1 House Row, Quillmere, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 91,
+      "website": "https://quillmere-reed-house.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quillmere-reed-house",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdTarnwickLampLodge",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.645,
+      "lng": -148.37
+    },
+    "content": {
+      "display_name": "Tarnwick Lamp Lodge",
+      "address": "2 Lodge Row, Tarnwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 92,
+      "website": "https://tarnwick-lamp-lodge.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/tarnwick-lamp-lodge",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdTarnwickStation",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.644,
+      "lng": -148.3712
+    },
+    "content": {
+      "display_name": "Tarnwick Station",
+      "address": "3 Station Row, Tarnwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 93,
+      "website": "https://tarnwick-station.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/tarnwick-station",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdQuillmereTideMuseum",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.604,
+      "lng": -148.3985
+    },
+    "content": {
+      "display_name": "Quillmere Tide Museum",
+      "address": "4 Museum Row, Quillmere, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 17:00",
+          "Tuesday: 10:00 – 17:00",
+          "Wednesday: 10:00 – 17:00",
+          "Thursday: 10:00 – 17:00",
+          "Friday: 10:00 – 17:00",
+          "Saturday: 10:00 – 17:00",
+          "Sunday: 10:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 94,
+      "website": "https://quillmere-tide-museum.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quillmere-tide-museum",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdQuillmereReedGardens",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.597,
+      "lng": -148.403
+    },
+    "content": {
+      "display_name": "Quillmere Reed Gardens",
+      "address": "5 Gardens Row, Quillmere, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 09:00 – 17:00",
+          "Tuesday: 09:00 – 17:00",
+          "Wednesday: 09:00 – 17:00",
+          "Thursday: 09:00 – 17:00",
+          "Friday: 09:00 – 17:00",
+          "Saturday: 09:00 – 17:00",
+          "Sunday: 09:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 95,
+      "website": "https://quillmere-reed-gardens.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quillmere-reed-gardens",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdQuillmereLighthouseSteps",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.608,
+      "lng": -148.404
+    },
+    "content": {
+      "display_name": "Quillmere Lighthouse Steps",
+      "address": "6 Steps Row, Quillmere, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 96,
+      "website": "https://quillmere-lighthouse-steps.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quillmere-lighthouse-steps",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdQuillmereWeaversHall",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.6015,
+      "lng": -148.395
+    },
+    "content": {
+      "display_name": "Quillmere Weavers Hall",
+      "address": "7 Hall Row, Quillmere, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 17:00",
+          "Tuesday: 10:00 – 17:00",
+          "Wednesday: 10:00 – 17:00",
+          "Thursday: 10:00 – 17:00",
+          "Friday: 10:00 – 17:00",
+          "Saturday: 10:00 – 17:00",
+          "Sunday: 10:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 97,
+      "website": "https://quillmere-weavers-hall.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quillmere-weavers-hall",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdQuillmereCliffWalk",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.594,
+      "lng": -148.408
+    },
+    "content": {
+      "display_name": "Quillmere Cliff Walk",
+      "address": "8 Walk Row, Quillmere, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 98,
+      "website": "https://quillmere-cliff-walk.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quillmere-cliff-walk",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdQuillmereGlassArcade",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.603,
+      "lng": -148.402
+    },
+    "content": {
+      "display_name": "Quillmere Glass Arcade",
+      "address": "9 Arcade Row, Quillmere, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 20:00",
+          "Tuesday: 10:00 – 20:00",
+          "Wednesday: 10:00 – 20:00",
+          "Thursday: 10:00 – 20:00",
+          "Friday: 10:00 – 20:00",
+          "Saturday: 10:00 – 20:00",
+          "Sunday: 10:00 – 20:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 20,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 20,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 99,
+      "website": "https://quillmere-glass-arcade.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quillmere-glass-arcade",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdQuillmereNoodleCounter",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.601,
+      "lng": -148.401
+    },
+    "content": {
+      "display_name": "Quillmere Noodle Counter",
+      "address": "10 Counter Row, Quillmere, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 11:00 – 15:00",
+          "Tuesday: 11:00 – 15:00",
+          "Wednesday: 11:00 – 15:00",
+          "Thursday: 11:00 – 15:00",
+          "Friday: 11:00 – 15:00",
+          "Saturday: 11:00 – 15:00",
+          "Sunday: 11:00 – 15:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 15,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 100,
+      "website": "https://quillmere-noodle-counter.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quillmere-noodle-counter",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdQuillmerePierStalls",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.606,
+      "lng": -148.406
+    },
+    "content": {
+      "display_name": "Quillmere Pier Stalls",
+      "address": "11 Stalls Row, Quillmere, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 11:00 – 15:00",
+          "Tuesday: 11:00 – 15:00",
+          "Wednesday: 11:00 – 15:00",
+          "Thursday: 11:00 – 15:00",
+          "Friday: 11:00 – 15:00",
+          "Saturday: 11:00 – 15:00",
+          "Sunday: 11:00 – 15:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 15,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 11,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 15,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 101,
+      "website": "https://quillmere-pier-stalls.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quillmere-pier-stalls",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdTarnwickClockMuseum",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.648,
+      "lng": -148.369
+    },
+    "content": {
+      "display_name": "Tarnwick Clock Museum",
+      "address": "12 Museum Row, Tarnwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 17:00",
+          "Tuesday: 10:00 – 17:00",
+          "Wednesday: 10:00 – 17:00",
+          "Thursday: 10:00 – 17:00",
+          "Friday: 10:00 – 17:00",
+          "Saturday: 10:00 – 17:00",
+          "Sunday: 10:00 – 17:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 17,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 17,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 102,
+      "website": "https://tarnwick-clock-museum.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/tarnwick-clock-museum",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdTarnwickHeronPark",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.642,
+      "lng": -148.366
+    },
+    "content": {
+      "display_name": "Tarnwick Heron Park",
+      "address": "13 Park Row, Tarnwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 103,
+      "website": "https://tarnwick-heron-park.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/tarnwick-heron-park",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdTarnwickOldBridge",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.647,
+      "lng": -148.374
+    },
+    "content": {
+      "display_name": "Tarnwick Old Bridge",
+      "address": "14 Bridge Row, Tarnwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 104,
+      "website": "https://tarnwick-old-bridge.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/tarnwick-old-bridge",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdTarnwickPrintGallery",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.646,
+      "lng": -148.372
+    },
+    "content": {
+      "display_name": "Tarnwick Print Gallery",
+      "address": "15 Gallery Row, Tarnwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 10:00 – 18:00",
+          "Tuesday: 10:00 – 18:00",
+          "Wednesday: 10:00 – 18:00",
+          "Thursday: 10:00 – 18:00",
+          "Friday: 10:00 – 18:00",
+          "Saturday: 10:00 – 18:00",
+          "Sunday: 10:00 – 18:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 105,
+      "website": "https://tarnwick-print-gallery.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/tarnwick-print-gallery",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdQuillmereKelpKitchen",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.6005,
+      "lng": -148.3995
+    },
+    "content": {
+      "display_name": "Quillmere Kelp Kitchen",
+      "address": "16 Kitchen Row, Quillmere, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 17:30 – 22:00",
+          "Tuesday: 17:30 – 22:00",
+          "Wednesday: 17:30 – 22:00",
+          "Thursday: 17:30 – 22:00",
+          "Friday: 17:30 – 22:00",
+          "Saturday: 17:30 – 22:00",
+          "Sunday: 17:30 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 106,
+      "website": "https://quillmere-kelp-kitchen.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/quillmere-kelp-kitchen",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdTarnwickTerraceGrill",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.6448,
+      "lng": -148.3695
+    },
+    "content": {
+      "display_name": "Tarnwick Terrace Grill",
+      "address": "17 Grill Row, Tarnwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 17:30 – 22:00",
+          "Tuesday: 17:30 – 22:00",
+          "Wednesday: 17:30 – 22:00",
+          "Thursday: 17:30 – 22:00",
+          "Friday: 17:30 – 22:00",
+          "Saturday: 17:30 – 22:00",
+          "Sunday: 17:30 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 107,
+      "website": "https://tarnwick-terrace-grill.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/tarnwick-terrace-grill",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdTarnwickEmberBowl",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.6455,
+      "lng": -148.3705
+    },
+    "content": {
+      "display_name": "Tarnwick Ember Bowl",
+      "address": "18 Bowl Row, Tarnwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 17:30 – 22:00",
+          "Tuesday: 17:30 – 22:00",
+          "Wednesday: 17:30 – 22:00",
+          "Thursday: 17:30 – 22:00",
+          "Friday: 17:30 – 22:00",
+          "Saturday: 17:30 – 22:00",
+          "Sunday: 17:30 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 108,
+      "website": "https://tarnwick-ember-bowl.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/tarnwick-ember-bowl",
+      "time_zone": "Etc/GMT+10"
+    }
+  },
+  {
+    "build_id": "fixture-build-rehearsal-day",
+    "place_id": "FixtureRdTarnwickCellarSoup",
+    "fetched_at": "2027-10-30T12:00:00.000Z",
+    "location": {
+      "lat": 18.6452,
+      "lng": -148.371
+    },
+    "content": {
+      "display_name": "Tarnwick Cellar Soup",
+      "address": "19 Soup Row, Tarnwick, Fictional Isles",
+      "business_status": "OPERATIONAL",
+      "hours": {
+        "weekday_descriptions": [
+          "Monday: 17:30 – 22:00",
+          "Tuesday: 17:30 – 22:00",
+          "Wednesday: 17:30 – 22:00",
+          "Thursday: 17:30 – 22:00",
+          "Friday: 17:30 – 22:00",
+          "Saturday: 17:30 – 22:00",
+          "Sunday: 17:30 – 22:00"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 17,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_hours": null,
+      "rating": 4.4,
+      "review_count": 109,
+      "website": "https://tarnwick-cellar-soup.example.com/",
+      "maps_uri": "https://maps.example.com/fixture/tarnwick-cellar-soup",
+      "time_zone": "Etc/GMT+10"
+    }
+  }
+]

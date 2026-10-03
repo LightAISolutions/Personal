@@ -16,6 +16,8 @@
     "lodging_end": { "$ref": "#/$defs/slug" },
     "theme": { "type": "string", "maxLength": 120 },
     "spare_minutes": { "type": "integer", "minimum": 0, "maximum": 1440, "description": "The day's unscheduled time after buffers: waits before the next item plus the time left before the day's end." },
+    "leave_by": { "$ref": "#/$defs/time", "description": "C12: the departure of the day's first leg (from the lodging, the day's start or, after a re-plan from a shared location, \"here\"); equal to legs[0].depart_at. Absent on a day without legs." },
+    "areas": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "type": "string", "minLength": 1, "maxLength": 60 }, "description": "C12: the morning lodging's area, then the night lodging's when it differs (a moving day). Absent when the lodging has no area." },
     "start": { "$ref": "#/$defs/anchor", "description": "Phase 11: only on a day whose override gives a real start (an arrival). Legs name it \"day-start\"." },
     "end": { "$ref": "#/$defs/anchor", "description": "Phase 11: only on a day whose override gives a real end (a departure); the day reaches it before its time. Legs name it \"day-end\"." },
     "bags": {
@@ -81,6 +83,7 @@
           "check_on_day": { "type": "string", "minLength": 1, "maxLength": 160, "description": "Opening days are irregular or unknown: a line telling the owner to check before going." },
           "last_entry": { "$ref": "#/$defs/time", "description": "Phase 11: the place's own last entry (facts); the visit starts by it." },
           "minutes_source": { "enum": ["official", "research", "estimate"], "description": "Phase 11: where the visit length came from — the place's own site or a booking (official), a sourced estimate (research), a default (estimate)." },
+          "visited": { "const": true, "description": "C12: kept from before a re-plan from the current time (replanDays with `from`); its times, legs and fields are as they were. Visited stops come first." },
           "crowd_slot": { "enum": ["opening", "late"], "description": "Phase 11: a crowd magnet visited within 60 minutes of opening or in the last 90 minutes before its close, because the profile asks to avoid crowds." }
         }
       }
@@ -203,7 +206,7 @@
     }
   },
   "$defs": {
-    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$", "description": "A local key, or \"lodging\", \"day-start\" or \"day-end\" in legs and meals." },
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$", "description": "A local key, or \"lodging\", \"day-start\" or \"day-end\" in legs and meals; \"here\" (C12) in a leg's from (or to) after a re-plan from a shared location." },
     "anchor": {
       "type": "object",
       "additionalProperties": false,

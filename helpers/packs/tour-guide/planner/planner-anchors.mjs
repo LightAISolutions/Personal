@@ -47,20 +47,22 @@ export function overrideFor(trip, date) {
  * dayAnchors(day) — S: where the day starts (the arrival, or the previous night's lodging); E: where it ends (the
  * departure, or the night's lodging); coreS / coreE: the ends of the sightseeing part the solver plans (hotel: the
  * night's lodging after the bag stop; locker: the start point at both ends); points: the distinct points of the day's
- * Route Matrix (coreS, coreE, and E when the locker day leaves from elsewhere).
+ * Route Matrix (coreS, coreE, and E when the locker day leaves from elsewhere). L: the locker's point — the start point,
+ * or (C12, a re-plan of the rest of a locker day: `day.lockerAt`) the old start, where the bags already are.
  */
 export function dayAnchors(day) {
   const S = day.start || { ...day.lodging_start, slug: LODGING_SLUG };
   const E = day.end || { ...day.lodging_end, slug: LODGING_SLUG };
   const hotel = day.bags === 'hotel' ? { ...day.lodging_end, slug: LODGING_SLUG } : null;
   const locker = day.bags === 'locker';
+  const L = locker && day.lockerAt ? day.lockerAt : S;   // C12: a re-plan after the bags went into the locker at the old start
   const coreS = hotel || S;
-  const coreE = locker ? S : E;
+  const coreE = locker ? L : E;
   const points = [];
   const add = (p) => { if (!points.some((q) => pointKey(q) === pointKey(p))) points.push(p); };
   add(coreS); add(coreE);
   if (locker) add(E);
-  return { S, E, coreS, coreE, hotel, locker, points };
+  return { S, E, L, coreS, coreE, hotel, locker, points };
 }
 
 /** The bag line for a day: ≤ 160 characters. */

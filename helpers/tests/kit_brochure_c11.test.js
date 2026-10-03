@@ -14,9 +14,19 @@ const FIXTURE = path.resolve(__dirname, '..', 'kits', 'brochure', 'fixtures', 's
 const fixture = () => JSON.parse(fs.readFileSync(FIXTURE, 'utf8'));
 const kit = () => import('../kits/brochure/index.mjs');
 const sha = (s) => crypto.createHash('sha256').update(s).digest('hex');
-// Taken before WP-11d changed the kit (decisions/WP-11d.md): the fixture's HTML must not move by a byte.
+// Taken before WP-11d changed the kit (decisions/WP-11d.md): the fixture's HTML did not move by a byte through C11.
 const OLD_FIXTURE_HTML = 'c26b61ad4f1a6eb78b1028d8d11be6d3fb9193ca8b7edd2db96ab63cbe26b481';
 const OLD_FIXTURE_HTML_FONTS = '81da1192cee9fe29cf4c2b3c56ac826866ebab3e5169b945baedc92c5d640c40';
+// The same fixture after WP-12d's phone-clock fix (decisions/WP-12d.md); C12 (visited, here) moves nothing more.
+const FIXTURE_HTML = '1d9ab32bd321a8e043b4066672aa798290ea3480af8075469d848a03a26474d7';
+const FIXTURE_HTML_FONTS = '1a39af57d70cca74f4d40b57206b8f7bfb022296b284d356e4828e2a5d2a060f';
+// WP-12d moved them on purpose: on a phone (≤ 760 px) the clock column beside a numbered badge was too narrow and cut
+// "10:00am" to "10:00a" (WP-11d's note). The fix is one rule in the phone media query (wider time column, no wrap);
+// the A4 and Letter print layout is unchanged. Undoing exactly that rule gives back the WP-11d hashes, which proves
+// nothing else moved.
+const PHONE_CLOCK_NEW = '  html:not(.paged) .rail{--tcol:3.6rem;--mcol:1.5rem}\n  html:not(.paged) .ti-time .t{white-space:nowrap}\n';
+const PHONE_CLOCK_OLD = '  html:not(.paged) .rail{--tcol:2.6rem;--mcol:1.5rem}\n';
+const beforeClock = (html) => { assert.equal(html.split(PHONE_CLOCK_NEW).length, 2, 'the phone clock rule is there once'); return html.replace(PHONE_CLOCK_NEW, PHONE_CLOCK_OLD); };
 
 /** The kit fixture with every C11 field (invented). */
 function c11Model() {
@@ -72,10 +82,13 @@ test('a model with every C11 field validates and passes the semantic checks; the
   }
 });
 
-test('an old model renders the same HTML byte for byte (hashes taken before WP-11d)', async () => {
+test('an old model renders the same HTML byte for byte (pinned after the WP-12d phone clock; only that rule moved since WP-11d)', async () => {
   const { renderHtml } = await kit();
-  assert.equal(sha(renderHtml(fixture(), { embedFonts: false }).html), OLD_FIXTURE_HTML);
-  assert.equal(sha(renderHtml(fixture()).html), OLD_FIXTURE_HTML_FONTS);
+  const html = renderHtml(fixture(), { embedFonts: false }).html, withFonts = renderHtml(fixture()).html;
+  assert.equal(sha(html), FIXTURE_HTML);
+  assert.equal(sha(withFonts), FIXTURE_HTML_FONTS);
+  assert.equal(sha(beforeClock(html)), OLD_FIXTURE_HTML, 'only the phone clock rule moved since WP-11d');
+  assert.equal(sha(beforeClock(withFonts)), OLD_FIXTURE_HTML_FONTS);
   const plain = renderHtml(fixture(), { embedFonts: false }).html;
   for (const cls of ['ti-point', 'ti-bags', 'ti-evening', 'ti-dine', 'card-facts', 'sec-season', 'tag-fav']) assert.ok(!plain.includes(cls), `${cls} only appears with C11 fields`);
 });

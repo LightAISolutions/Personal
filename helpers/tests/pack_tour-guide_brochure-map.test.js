@@ -98,7 +98,7 @@ test('Later lists keep names and reasons; an empty list is dropped; a missing re
   const { bm, sampleInput } = await loadAll();
   const m = bm.toBrochureModel(sampleInput());
   assert.deepEqual(m.later, [{ name: "Didn't fit", items: [
-    { place: 'ember-hall', reason: 'Closed on Fridays.', note: 'Taken off the plan for 2027-05-14.' },
+    { place: 'ember-hall', reason: 'Closed on Fridays.', note: 'Taken off the plan for Fri 14 May.' }, // WP-12d: the date in words
     { place: 'fennel-park', reason: 'The days were full' }] }]);
 });
 

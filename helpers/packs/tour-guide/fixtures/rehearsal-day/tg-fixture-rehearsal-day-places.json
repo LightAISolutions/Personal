@@ -1,0 +1,247 @@
+[
+  {
+    "v": 1,
+    "id": "quillmere-tide-museum",
+    "place_id": "FixtureRdQuillmereTideMuseum",
+    "name": "Quillmere Tide Museum",
+    "category": "museum",
+    "tags": [
+      "museum"
+    ],
+    "status": "candidate",
+    "activity": "tide clocks and charts",
+    "priority": 1,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-10-28",
+      "sources": [
+        {
+          "url": "https://quillmere-tide-museum.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-10-28"
+        }
+      ],
+      "local_name": "潮見記念館",
+      "address": "4 Tide Row, Quillmere, Fictional Isles",
+      "access": [
+        {
+          "station": "Quillmere Central",
+          "line": "Coastal Line",
+          "exit": "East 1",
+          "walk_minutes": 4
+        },
+        {
+          "station": "Quillmere Harbour",
+          "walk_minutes": 9
+        }
+      ],
+      "last_entry": "16:30",
+      "close": "17:00",
+      "payment": "Cash only at the door"
+    }
+  },
+  {
+    "v": 1,
+    "id": "quillmere-reed-gardens",
+    "place_id": "FixtureRdQuillmereReedGardens",
+    "name": "Quillmere Reed Gardens",
+    "category": "garden",
+    "tags": [
+      "garden"
+    ],
+    "status": "candidate",
+    "activity": "reed beds and boardwalks",
+    "priority": 1,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "quillmere-lighthouse-steps",
+    "place_id": "FixtureRdQuillmereLighthouseSteps",
+    "name": "Quillmere Lighthouse Steps",
+    "category": "viewpoint",
+    "tags": [
+      "viewpoint"
+    ],
+    "status": "candidate",
+    "activity": "harbour views",
+    "priority": 1,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "quillmere-weavers-hall",
+    "place_id": "FixtureRdQuillmereWeaversHall",
+    "name": "Quillmere Weavers Hall",
+    "category": "museum",
+    "tags": [
+      "museum"
+    ],
+    "status": "candidate",
+    "activity": "looms and cloth",
+    "priority": 2,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-10-28",
+      "sources": [
+        {
+          "url": "https://quillmere-weavers-hall.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-10-28"
+        }
+      ],
+      "local_name": "織物会館",
+      "access": [
+        {
+          "station": "Quillmere Central",
+          "line": "Coastal Line",
+          "exit": "North 2",
+          "walk_minutes": 7
+        }
+      ]
+    }
+  },
+  {
+    "v": 1,
+    "id": "quillmere-cliff-walk",
+    "place_id": "FixtureRdQuillmereCliffWalk",
+    "name": "Quillmere Cliff Walk",
+    "category": "trail",
+    "tags": [
+      "trail"
+    ],
+    "status": "candidate",
+    "activity": "cliff path",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "quillmere-glass-arcade",
+    "place_id": "FixtureRdQuillmereGlassArcade",
+    "name": "Quillmere Glass Arcade",
+    "category": "arcade",
+    "tags": [
+      "arcade"
+    ],
+    "status": "candidate",
+    "activity": "covered glass shops",
+    "priority": 3,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-10-28",
+      "sources": [
+        {
+          "url": "https://quillmere-glass-arcade.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-10-28"
+        }
+      ],
+      "address": "2 Arcade Lane, Quillmere, Fictional Isles"
+    }
+  },
+  {
+    "v": 1,
+    "id": "quillmere-noodle-counter",
+    "place_id": "FixtureRdQuillmereNoodleCounter",
+    "name": "Quillmere Noodle Counter",
+    "category": "restaurant",
+    "tags": [
+      "lunch"
+    ],
+    "status": "chosen",
+    "activity": "lunch",
+    "priority": 2,
+    "indoor": true
+  },
+  {
+    "v": 1,
+    "id": "quillmere-pier-stalls",
+    "place_id": "FixtureRdQuillmerePierStalls",
+    "name": "Quillmere Pier Stalls",
+    "category": "restaurant",
+    "tags": [
+      "lunch"
+    ],
+    "status": "chosen",
+    "activity": "lunch",
+    "priority": 1,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "tarnwick-clock-museum",
+    "place_id": "FixtureRdTarnwickClockMuseum",
+    "name": "Tarnwick Clock Museum",
+    "category": "museum",
+    "tags": [
+      "museum"
+    ],
+    "status": "candidate",
+    "activity": "clockwork collection",
+    "priority": 1,
+    "indoor": true,
+    "facts": {
+      "checked": "2027-10-28",
+      "sources": [
+        {
+          "url": "https://tarnwick-clock-museum.example.com/visit",
+          "title": "Visiting (invented)",
+          "accessed": "2027-10-28"
+        }
+      ],
+      "local_name": "Ρολόγια Τάρνγουικ",
+      "access": [
+        {
+          "station": "Tarnwick",
+          "line": "Coastal Line",
+          "exit": "West",
+          "walk_minutes": 6
+        }
+      ],
+      "last_entry": "16:15"
+    }
+  },
+  {
+    "v": 1,
+    "id": "tarnwick-heron-park",
+    "place_id": "FixtureRdTarnwickHeronPark",
+    "name": "Tarnwick Heron Park",
+    "category": "park",
+    "tags": [
+      "park"
+    ],
+    "status": "candidate",
+    "activity": "heron ponds",
+    "priority": 1,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "tarnwick-old-bridge",
+    "place_id": "FixtureRdTarnwickOldBridge",
+    "name": "Tarnwick Old Bridge",
+    "category": "viewpoint",
+    "tags": [
+      "viewpoint"
+    ],
+    "status": "candidate",
+    "activity": "stone bridge",
+    "priority": 2,
+    "indoor": false
+  },
+  {
+    "v": 1,
+    "id": "tarnwick-print-gallery",
+    "place_id": "FixtureRdTarnwickPrintGallery",
+    "name": "Tarnwick Print Gallery",
+    "category": "gallery",
+    "tags": [
+      "gallery"
+    ],
+    "status": "candidate",
+    "activity": "woodblock prints",
+    "priority": 2,
+    "indoor": true
+  }
+]

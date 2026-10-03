@@ -10,7 +10,7 @@
  * fitted in its quiet slots (planner-crowd.mjs), or kept where it fits with a warning. The result's `evening` feeds
  * the dinner and extras pass (planner-dinner.mjs, planner-evening.mjs).
  */
-import { hm, localToIso } from './planner-time.mjs';
+import { hm, localToIso, dayDate } from './planner-time.mjs';
 import { earliestFit } from './planner-hours.mjs';
 import { solveDay } from './planner-solve.mjs';
 import { fetchMatrix, fetchLeg, crossCheck, legUrl, dayLink, pointKey, transitFallback, legAllowance } from './planner-legs.mjs';
@@ -22,6 +22,7 @@ import { minVisit } from './planner-category.mjs';
 import { dayAnchors, BAGS, END_MARGIN, START_SLUG, LODGING_SLUG, bagsText } from './planner-anchors.mjs';
 import { crowdWindows, crowdSlotOf, CROWD_SLOT } from './planner-crowd.mjs';
 import { FREE_DAY_NOTE } from './planner-outline.mjs';
+import { rainWeight } from './planner-rain.mjs';
 
 export const SOLVER_METHOD = 'held-karp/time-windows';
 export const TIGHT_MINUTES = 10;
@@ -78,9 +79,10 @@ function lunchWindows(c, date) {
   const lo = LUNCH_SPOT_EARLIEST, hi = LUNCH_WINDOW.close + c.minutes;
   return (ws.length ? ws : [{ open: 0, close: 1440 }]).map((w) => ({ open: Math.max(w.open, lo), close: Math.min(w.close, hi) })).filter((w) => w.close - w.open >= c.minutes);
 }
-/** The pool's lunch spot on `date` (best priority first), or null when none can start inside lunchtime. */
+/** The pool's lunch spot on `date` (best priority first; C12 rain: an indoor one first), or null when none can start inside lunchtime. */
 function lunchSpotOf(pool, date) {
-  return pool.filter((c) => isLunchSpot(c) && lunchWindows(c, date).length).sort((a, b) => a.priority - b.priority)[0] || null;
+  const dry = (c) => (c.rain === false ? 1 : 0);
+  return pool.filter((c) => isLunchSpot(c) && lunchWindows(c, date).length).sort((a, b) => dry(a) - dry(b) || a.priority - b.priority)[0] || null;
 }
 
 /** planDay({ ctx, day, cands, maps, build_id, seed, verified_on }) → { dayPlan, dropped, usage } */
@@ -96,8 +98,8 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
   const allowance = legAllowance(extraCallsFor(mode, cands.length + 1 + bagLegs(day))); // the day's extra WALK / DRIVE requests, as budgeted (planner-budget.mjs)
   const same = (a, b) => pointKey(a) === pointKey(b);
   // Phase 11: the bag step. A locker is only worth it on a day with sights; without them the day goes straight on.
-  const lockerOn = A.locker && cands.length > 0;
-  const S = A.coreS, E = lockerOn ? A.S : A.E;
+  const lockerOn = A.locker && (cands.length > 0 || Number.isInteger(day.lockerFrom));   // C12: stored bags are always collected
+  const S = A.coreS, E = lockerOn ? A.L : A.E;
   const pt = (x) => (x === 'S' ? S : x === 'E' ? E : x.slug ? x : candPoint(x));
   const key = (a, b) => pointKey(pt(a)) + '|' + pointKey(pt(b));
   const getLeg = async (from, to, at) => {
@@ -119,12 +121,13 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
     bag = { kind: 'hotel', at: LODGING_SLUG, start: departAt, end: departAt + BAGS.HOTEL_MIN };
     departAt += BAGS.HOTEL_MIN;
   } else if (lockerOn) {
-    bag = { kind: 'locker', at: A.S.slug === START_SLUG ? 'day-start' : LODGING_SLUG, start: departAt };
-    departAt += BAGS.LOCKER_MIN;
+    const stored = Number.isInteger(day.lockerFrom);   // C12: a re-plan after the bags went in
+    bag = { kind: 'locker', at: A.L.slug === START_SLUG ? 'day-start' : LODGING_SLUG, start: stored ? day.lockerFrom : departAt };
+    if (!stored) departAt += BAGS.LOCKER_MIN;
   } else if (day.bags) bag = { kind: day.bags, at: day.bags === 'forward' || A.S.slug !== START_SLUG ? LODGING_SLUG : 'day-start' };
 
   const points = [S, ...cands.map(candPoint), E];
-  if (lockerOn && !same(A.E, A.S)) points.push(A.E);
+  if (lockerOn && !same(A.E, A.L)) points.push(A.E);
   const m = await fetchMatrix(maps, { points, mode, departureTime: iso(departAt), transitPreferences: tp, fallback });
   usage.matrix_elements += m.elements;
   const travel = new Map(m.travel); // 'from|to' → { minutes, distance_m, line? }
@@ -133,11 +136,11 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
   let tail = 0, postLeg = null;
   if (lockerOn) {
     tail = BAGS.COLLECT_MIN;
-    if (!same(A.E, A.S)) {
-      const est = travel.get(pointKey(A.S) + '|' + pointKey(A.E));
+    if (!same(A.E, A.L)) {
+      const est = travel.get(pointKey(A.L) + '|' + pointKey(A.E));
       const leaveBy = (hard !== null ? hard : day.dayEnd) - tail - (est && est.minutes < Infinity ? est.minutes : 0);
-      postLeg = await getLeg(A.S, A.E, Math.max(departAt, leaveBy));
-      if (!(postLeg.minutes < Infinity)) throw new Error(`planner: no route on ${date} from ${A.S.name} to ${A.E.name}`);
+      postLeg = await getLeg(A.L, A.E, Math.max(departAt, leaveBy));
+      if (!(postLeg.minutes < Infinity)) throw new Error(`planner: no route on ${date} from ${A.L.name} to ${A.E.name}`);
       tail += postLeg.minutes;
     }
   }
@@ -149,11 +152,11 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
   const dropped = [];
   let pool = cands.slice(), solution = null, timeline = null, resolved = false, finalSpot = null;
   for (let guard = 0; guard <= 2 * cands.length + 3; guard++) {
-    let spot = lunchSpotOf(pool, date);
+    let spot = day.noLunch ? null : lunchSpotOf(pool, date);   // C12: a re-plan after lunch plans no second one
     const at = (x) => (x === 'S' || x === 'E' ? x : pool[x]);
     const tr = (a, b) => { const r = travel.get(key(at(a), at(b))); return r ? r.minutes : Infinity; };
     const buf = (a, b) => { const r = travel.get(key(at(a), at(b))); return r ? bufferFor({ mode, ...r }) : 0; };
-    const solve = () => solveDay({ stops: pool.map((c) => ({ minutes: c.minutes, priority: c.priority, windows: c === spot ? lunchWindows(c, date) : winOf(c), booking: c.booking ? c.booking.time : null, ...(c.crowd && !relaxed.has(c.id) ? { waitAny: true } : {}), ...(c.anchor === date ? { must: true } : {}) })), travel: tr, buffer: buf, departAt, dayEnd: coreEnd, lunch: spot ? null : { len: pace.lunch, ...LUNCH_WINDOW }, ...(hard !== null ? { maxSpill: 0 } : {}) });
+    const solve = () => solveDay({ stops: pool.map((c) => ({ minutes: c.minutes, priority: c.priority, windows: c === spot ? lunchWindows(c, date) : winOf(c), booking: c.booking ? c.booking.time : null, ...(c.crowd && !relaxed.has(c.id) ? { waitAny: true } : {}), ...(c.anchor === date || c.booking ? { must: true } : {}), ...(c.rain !== undefined && !c.booking ? { weight: rainWeight(c, date) } : {}) })), travel: tr, buffer: buf, departAt, dayEnd: coreEnd, lunch: spot || day.noLunch ? null : { len: pace.lunch, ...LUNCH_WINDOW }, ...(hard !== null ? { maxSpill: 0 } : {}) });
     solution = solve();
     if (spot && !solution.order.includes(pool.indexOf(spot))) { spot = null; solution = solve(); } // the lunch spot did not make the day: plain lunch slot
     // Phase 11: a crowd magnet left out by its quiet slots is planned on its full hours instead (never dropped for this rule).
@@ -174,19 +177,19 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
     if (!resolved) { resolved = true; continue; } // solve once more on the real leg times
     const bad = timeline.failed;
     if (bad.crowd && !relaxed.has(bad.id)) { relaxed.add(bad.id); continue; }
-    dropped.push({ cand: bad, code: 'day_full', reason: `the real route times on ${date} left no room for ${bad.name}`, from_date: date });
+    dropped.push({ cand: bad, code: 'day_full', reason: `the real route times on ${dayDate(date)} left no room for ${bad.name}`, from_date: date });
     pool = pool.filter((c) => c !== bad);
   }
   if (!timeline || !timeline.ok) throw new Error(`planner: could not time ${date} even after dropping every stop`);
   const ordered = solution.order.map((i) => pool[i]);
-  for (const c of pool) if (!ordered.includes(c)) dropped.push({ cand: c, code: 'day_full', reason: `no room left on ${date} for ${c.name}`, from_date: date });
+  for (const c of pool) if (!ordered.includes(c)) dropped.push({ cand: c, code: 'day_full', reason: `no room left on ${dayDate(date)} for ${c.name}`, from_date: date });
   // Phase 11: the locker's collection and the leg on to the end, then the whole day's events in order.
   let finish = timeline.finish;
   if (lockerOn) {
     post.push({ kind: 'bag', start: finish, end: finish + BAGS.COLLECT_MIN });
     finish += BAGS.COLLECT_MIN;
     bag.end = finish;
-    if (postLeg) { post.push({ kind: 'leg', from: A.S, to: A.E, depart: finish, arrive: finish + postLeg.minutes, leg: postLeg, buffer: 0 }); finish += postLeg.minutes; }
+    if (postLeg) { post.push({ kind: 'leg', from: A.L, to: A.E, depart: finish, arrive: finish + postLeg.minutes, leg: postLeg, buffer: 0 }); finish += postLeg.minutes; }
   }
   const anchor = (x) => x === 'S' || x === 'E' || !!x.slug;
   timeline.events = [...pre, ...timeline.events.filter((ev) => !(ev.kind === 'leg' && ev.leg.stay && anchor(ev.from) && anchor(ev.to))), ...post];   // a sightless locker loop
@@ -378,7 +381,7 @@ function assemble({ ctx, day, ordered, timeline, cc, build_id, seed, verified_on
     dayPlan.bags = { kind: bag.kind, at: bag.at };
     if (Number.isInteger(bag.start)) dayPlan.bags.start = hm(bag.start);
     if (Number.isInteger(bag.end)) dayPlan.bags.end = hm(bag.end);
-    dayPlan.bags.text = bagsText(bag.kind, { start: A.S.name, lodging: day.lodging_end.name, note: day.bags_note });
+    dayPlan.bags.text = bagsText(bag.kind, { start: A.L.name, lodging: day.lodging_end.name, note: day.bags_note });
   }
   const theme = [...new Set(ordered.map((c) => c.category))].slice(0, 3);
   if (theme.length) dayPlan.theme = theme.map((t) => t.charAt(0).toUpperCase() + t.slice(1)).join(' · ');

@@ -185,10 +185,15 @@ export async function crossCheck(maps, { start, end, stops, mode }) {
 }
 
 const urlPoint = (p) => ({ ...(p.placeId ? { placeId: p.placeId } : {}), name: p.name, lat: p.lat, lng: p.lng });
-export function legUrl(from, to, mode) { return directionsUrl({ origin: urlPoint(from), destination: urlPoint(to), travelMode: mode }); }
-/** Whole-day link (null for TRANSIT, or when more than 9 intermediates would be silently ignored by Maps). */
+/**
+ * A leg's Maps link. C12: a leg from a shared location (`from.here`, the reserved point 'here') has no origin — Maps
+ * starts from the viewer's current location — so the shared coordinates never appear in a link.
+ */
+export function legUrl(from, to, mode) { return directionsUrl({ ...(from.here ? {} : { origin: urlPoint(from) }), destination: urlPoint(to), travelMode: mode }); }
+/** Whole-day link (null for TRANSIT, or when more than 9 intermediates would be silently ignored by Maps); from 'here' it has no origin. */
 export function dayLink(points, mode) {
   if (mode === 'TRANSIT' || points.length < 2 || points.length - 2 > URL_MAX_WAYPOINTS) return null;
+  if (points[0].here) return directionsUrl({ destination: urlPoint(points[points.length - 1]), waypoints: points.slice(1, -1).map(urlPoint), travelMode: mode });
   return dayUrl(points.map(urlPoint), mode);
 }
 

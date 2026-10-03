@@ -113,7 +113,7 @@ test('(d) a pick dropped as "no room left" says how many minutes it was short an
   const plan = await oneDay({ keep: ['lantern-museum', 'river-market', 'tile-workshop', 'green-park'] });
   const item = laterItem(plan, 'green-park');
   assert.equal(item.code, 'day_full');
-  assert.ok(item.reason.startsWith('no room left on 2027-06-07 for Green Park'), 'before: Phase 9 stopped at "no room left"');
+  assert.ok(item.reason.startsWith('no room left on Mon 7 Jun for Green Park'), 'before: Phase 9 stopped at "no room left"'); // WP-12d: date in words
   assert.match(item.reason, /: \d+ min short; a 50-minute visit would fit (after|before) [A-Z]/, 'after: minutes short and an offer');
   const short = Number(/: (\d+) min short/.exec(item.reason)[1]);
   assert.ok(short > 0 && short < 60 - 30, 'shorter than the visit, and a sensible-minimum visit (park: 20 min) fits');

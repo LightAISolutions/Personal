@@ -1,0 +1,254 @@
+[
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereTideMuseum",
+    "activity": "tide clocks and charts",
+    "category": "museum",
+    "range": {
+      "min": 75,
+      "max": 105
+    },
+    "typical": 90,
+    "chosen_minutes": 90,
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-tide-museum",
+        "accessed": "2027-10-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereReedGardens",
+    "activity": "reed beds and boardwalks",
+    "category": "garden",
+    "range": {
+      "min": 60,
+      "max": 90
+    },
+    "typical": 75,
+    "chosen_minutes": 75,
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-reed-gardens",
+        "accessed": "2027-10-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereLighthouseSteps",
+    "activity": "harbour views",
+    "category": "viewpoint",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-lighthouse-steps",
+        "accessed": "2027-10-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereWeaversHall",
+    "activity": "looms and cloth",
+    "category": "museum",
+    "range": {
+      "min": 60,
+      "max": 90
+    },
+    "typical": 75,
+    "chosen_minutes": 75,
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-weavers-hall",
+        "accessed": "2027-10-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereCliffWalk",
+    "activity": "cliff path",
+    "category": "trail",
+    "range": {
+      "min": 75,
+      "max": 105
+    },
+    "typical": 90,
+    "chosen_minutes": 90,
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-cliff-walk",
+        "accessed": "2027-10-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereGlassArcade",
+    "activity": "covered glass shops",
+    "category": "arcade",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-glass-arcade",
+        "accessed": "2027-10-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmereNoodleCounter",
+    "activity": "lunch",
+    "category": "restaurant",
+    "range": {
+      "min": 35,
+      "max": 65
+    },
+    "typical": 50,
+    "chosen_minutes": 50,
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-noodle-counter",
+        "accessed": "2027-10-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdQuillmerePierStalls",
+    "activity": "lunch",
+    "category": "restaurant",
+    "range": {
+      "min": 30,
+      "max": 60
+    },
+    "typical": 45,
+    "chosen_minutes": 45,
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/quillmere-pier-stalls",
+        "accessed": "2027-10-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdTarnwickClockMuseum",
+    "activity": "clockwork collection",
+    "category": "museum",
+    "range": {
+      "min": 65,
+      "max": 95
+    },
+    "typical": 80,
+    "chosen_minutes": 80,
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/tarnwick-clock-museum",
+        "accessed": "2027-10-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdTarnwickHeronPark",
+    "activity": "heron ponds",
+    "category": "park",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/tarnwick-heron-park",
+        "accessed": "2027-10-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdTarnwickOldBridge",
+    "activity": "stone bridge",
+    "category": "viewpoint",
+    "range": {
+      "min": 25,
+      "max": 55
+    },
+    "typical": 40,
+    "chosen_minutes": 40,
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/tarnwick-old-bridge",
+        "accessed": "2027-10-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-20"
+  },
+  {
+    "v": 1,
+    "place_id": "FixtureRdTarnwickPrintGallery",
+    "activity": "woodblock prints",
+    "category": "gallery",
+    "range": {
+      "min": 45,
+      "max": 75
+    },
+    "typical": 60,
+    "chosen_minutes": 60,
+    "sources": [
+      {
+        "url": "https://guide.example.org/islands/tarnwick-print-gallery",
+        "accessed": "2027-10-20",
+        "title": "Invented guide"
+      }
+    ],
+    "confidence": "single-source",
+    "estimated_on": "2027-10-20"
+  }
+]

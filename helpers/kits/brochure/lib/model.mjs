@@ -40,6 +40,7 @@ export function semanticErrors(m) {
     (d.legs || []).forEach((l, j) => ['from', 'to'].forEach((k) => {
       const v = l[k];
       if (!v || v === 'lodging') return;
+      if (v === HERE && !key(HERE)) { if (k === 'to') push(`${p}/legs/${j}/to`, `"${HERE}" (where you were) can only start a leg`); return; }
       if (POINT[v]) { if (!d[POINT[v]]) push(`${p}/legs/${j}/${k}`, `"${v}" needs the day's ${POINT[v]}`); return; }
       if (!key(v)) push(`${p}/legs/${j}/${k}`, `unknown place "${v}"`);
     }));
@@ -80,6 +81,20 @@ const sortKey = { start: -1, leg: 0, stop: 1, bags: 1.5, meal: 2, free: 3, end: 
 /** Reserved leg endpoints (Contract C11): the day's real start and end points, when the day has them. */
 export const POINT = Object.freeze({ 'day-start': 'start', 'day-end': 'end' });
 const isPoint = (v) => Object.prototype.hasOwnProperty.call(POINT, v);
+/**
+ * Contract C12 (Phase 12): the reserved leg start `here` is where the traveller was when a day was re-planned from a
+ * shared location. It has a name ("where you were") and never coordinates, so a link that starts there has no origin
+ * (Google then starts from the viewer's own location). It is reserved only while no place is keyed `here`.
+ */
+export const HERE = 'here';
+export const HERE_NAME = 'where you were';
+const herePoint = () => ({ name: HERE_NAME, here: true });
+
+/** The Contract C12 fields: a re-planned day's visited stops and its `here` leg start. Without them, no C12 CSS. */
+export function usesC12(m) {
+  const placeHere = Object.prototype.hasOwnProperty.call(m.places || {}, HERE);
+  return (m.days || []).some((d) => (d.stops || []).some((s) => s.visited === true) || (!placeHere && (d.legs || []).some((l) => l.from === HERE)));
+}
 
 /** The Contract C11 fields (Phase 11). A model without any of them renders byte for byte as before (usesC11 false). */
 export const C11_DAY = ['start', 'end', 'bags', 'sunset', 'extras'];
@@ -110,13 +125,15 @@ export function prepare(input) {
     const meals = (d.meals || []).map((x) => ({ ...x, kind: 'meal', meal: x.kind, place: x.place ? places[x.place] : null, start: parseTime(x.start), end: x.end ? parseTime(x.end) : null }));
     const free = (d.free || []).map((x) => ({ kind: 'free', ...x, start: parseTime(x.start), end: parseTime(x.end) }));
     const endOf = (ref) => { const s = stops.find((x) => x.place.id === ref); if (s) return s.end; const ml = meals.find((x) => x.place && x.place.id === ref); return ml ? (ml.end ?? ml.start) : null; };
-    const point = (v) => (isPoint(v) ? d[POINT[v]] || null : null);
+    const isHere = (v) => v === HERE && !places[HERE];
+    const point = (v) => (isPoint(v) ? d[POINT[v]] || null : isHere(v) ? herePoint() : null);
     const legs = (d.legs || []).map((l, j) => {
       let start = l.depart_at ? parseTime(l.depart_at) : null;
       if (start === null && isPoint(l.from)) start = parseTime(point(l.from) && point(l.from).time);
+      if (start === null && isHere(l.from) && l.arrive_at) start = Math.max(0, parseTime(l.arrive_at) - l.minutes);
       if (start === null) start = l.from && l.from !== 'lodging' ? endOf(l.from) : (stops[0] ? stops[0].start - l.minutes : null);
-      const end = (k) => (l[k] === 'lodging' ? lodging : isPoint(l[k]) ? point(l[k]) : l[k] ? places[l[k]] : null);
-      const placeAt = (k) => (l[k] && l[k] !== 'lodging' && !isPoint(l[k]) ? places[l[k]] : null);
+      const end = (k) => (l[k] === 'lodging' ? lodging : isPoint(l[k]) || isHere(l[k]) ? point(l[k]) : l[k] ? places[l[k]] : null);
+      const placeAt = (k) => (l[k] && l[k] !== 'lodging' && !isPoint(l[k]) && !isHere(l[k]) ? places[l[k]] : null);
       return { kind: 'leg', ...l, j, start: start ?? 0, end: l.arrive_at ? parseTime(l.arrive_at) : (start ?? 0) + l.minutes, fromPlace: placeAt('from'), toPlace: placeAt('to'), fromPoint: point(l.from), toPoint: point(l.to), transit: TRANSIT.has(l.mode), directions_url: l.maps_url || directionsUrl(end('from'), end('to'), l.mode) };
     });
     // C11 rows, only when the day has them: the real start (with an untimed bag step), a timed bag step, the real end.

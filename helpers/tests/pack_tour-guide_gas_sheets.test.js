@@ -39,7 +39,7 @@ test('ensureSheets creates the six pack tabs with the contract columns', () => {
   const { ctx } = fresh();
   const head = (n) => sheet(ctx, n).getRange(1, 1, 1, sheet(ctx, n).getLastColumn()).getValues()[0];
   assert.deepEqual(head('Trips'), ['slug', 'title', 'destination', 'start', 'end', 'status', 'build_id', 'verified_on', 'drive_plan',
-    'drive_brochure_html', 'drive_brochure_pdf', 'updated_at', 'lodging', 'review_offered_at', 'tz']);
+    'drive_brochure_html', 'drive_brochure_pdf', 'updated_at', 'lodging', 'review_offered_at', 'tz', 'country_code']);
   assert.deepEqual(head('DayPlans'), ['slug', 'date', 'theme', 'stops_json', 'legs_json', 'warnings_json', 'part', 'rain_json', 'meta_json']);
   assert.deepEqual(head('Later'), ['slug', 'place_slug', 'name', 'reason']);
   assert.deepEqual(head('Places'), ['slug', 'name', 'destination', 'area', 'category', 'tags', 'status', 'last_trip', 'last_researched',

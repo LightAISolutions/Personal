@@ -1,0 +1,89 @@
+{
+  "v": 1,
+  "id": "rehearsal-isles-2027",
+  "title": "Two towns on the Fictional Isles coast",
+  "destination": "Quillmere and Tarnwick",
+  "country": "Fictional Isles",
+  "country_code": "ZZ",
+  "timezone": "Etc/GMT+10",
+  "locale": "en-US",
+  "start_date": "2027-11-08",
+  "end_date": "2027-11-10",
+  "travelers": [
+    "Traveller One",
+    "Traveller Two"
+  ],
+  "pace": "normal",
+  "day_start": "09:00",
+  "day_end": "18:00",
+  "lodging": [
+    {
+      "id": "quillmere-reed-house",
+      "name": "Quillmere Reed House",
+      "place_id": "FixtureRdQuillmereReedHouse",
+      "lat": 18.6,
+      "lng": -148.4,
+      "address": "1 Reed Row, Quillmere, Fictional Isles",
+      "from": "2027-11-08",
+      "to": "2027-11-09",
+      "check_in": "15:00",
+      "check_out": "10:00",
+      "area": "Quillmere",
+      "access": [
+        {
+          "station": "Quillmere Central",
+          "line": "Coastal Line",
+          "exit": "South 3",
+          "walk_minutes": 5
+        }
+      ],
+      "note": "An invented guest house in Quillmere."
+    },
+    {
+      "id": "tarnwick-lamp-lodge",
+      "name": "Tarnwick Lamp Lodge",
+      "place_id": "FixtureRdTarnwickLampLodge",
+      "lat": 18.645,
+      "lng": -148.37,
+      "address": "2 Lodge Row, Tarnwick, Fictional Isles",
+      "from": "2027-11-09",
+      "to": "2027-11-11",
+      "check_in": "15:00",
+      "check_out": "10:00",
+      "area": "Tarnwick",
+      "access": [
+        {
+          "station": "Tarnwick",
+          "line": "Coastal Line",
+          "exit": "West",
+          "walk_minutes": 3
+        }
+      ],
+      "note": "An invented lodge in Tarnwick."
+    }
+  ],
+  "modes": {
+    "default": "WALK",
+    "allowed": [
+      "WALK",
+      "TRANSIT",
+      "DRIVE"
+    ]
+  },
+  "status": "intake",
+  "day_overrides": [
+    {
+      "date": "2027-11-09",
+      "start": {
+        "name": "Tarnwick Station",
+        "place_id": "FixtureRdTarnwickStation",
+        "lat": 18.644,
+        "lng": -148.3712,
+        "time": "12:30"
+      },
+      "bags": "hotel",
+      "note": "Morning train from Quillmere."
+    }
+  ],
+  "intro": "An invented two-town trip for testing the morning message and a re-plan from where you are."
+}

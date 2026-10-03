@@ -15,6 +15,9 @@
  * Phase 11 (WP-11e): `input.outline` ({ by_date: { <date>: { kind, area?, anchors? } } }, planner-outline.mjs) shapes
  * each outlined day — its area, its kind and its anchors; without `outline` the planner plans exactly as before. The
  * journey module (../journey/) builds on planDates, outlinePools and versionSetBudget below.
+ * Phase 12 (WP-12a, Contract C12): every built day carries `leave_by` (its first leg's departure) and, when its lodgings
+ * have an `area`, `areas` (planner-morning.mjs). replanDays(plan, [date], { ...input, from, visited, rain }) re-plans the
+ * rest of one day from where you are (planner-restart.mjs); without `from` it re-plans exactly as before.
  * `maps` is a Maps-kit client (createMapsClient); every unit it spends is counted by its ledger before sending.
  * Contract (entities, codes, warnings): helpers/packs/tour-guide/README.md. Design and limits: helpers/decisions/WP-3b.md.
  */
@@ -36,13 +39,16 @@ import { dayCapacity } from './planner-assign.mjs';
 import { haversineKm } from './planner-geo.mjs';
 import { DINNER_EARLIEST } from './planner-input.mjs';
 import { DINNER } from './planner-dinner.mjs';
+import { withMorning } from './planner-morning.mjs';
+import { prepareRestart, mergeRestart, lateAgain, restartReason } from './planner-restart.mjs';
+import { coveredFor, isIndoor } from './planner-rain.mjs';
 
 export { PlanBudgetError, SKU, extraCallsFor } from './planner-budget.mjs';
 export { solveDay, WEIGHT, MAX_STOPS } from './planner-solve.mjs';
 export { hoursOn, earliestFit, unfitCode, knownWindows, irregularText, IRREGULAR_LINE_RE } from './planner-hours.mjs';
 export { assign, FAR_KM, CAP, dayCapacity } from './planner-assign.mjs';
 export { prepare, buildDays, lodgingForNight, modeFor, isWithheldDinner, PACE } from './planner-input.mjs';
-export { localToIso, weekdayOf, dateRange, toMin, hm } from './planner-time.mjs';
+export { localToIso, weekdayOf, dateRange, toMin, hm, dayDate } from './planner-time.mjs';
 export { DIDNT_FIT, NEXT_TIME, SAVED_BY_YOU } from './planner-later.mjs';
 export { withBusFallback, transitPrefs, railOnly, RAIL_MODES } from './planner-transit.mjs';
 export { withRailEstimates, railEstimate, railLine, rideMinutes, walkMinutes, RAIL, STATION_TYPES } from './planner-rail.mjs';
@@ -57,13 +63,16 @@ export { overrideFor, dayAnchors, bagsText, BAGS, BAG_KINDS, END_MARGIN, START_S
 export { placeFacts, factsHours, factsMinutes, ownHoursConflict, CLOSE_TOLERANCE_MINUTES, MENU_FITS } from './planner-facts.mjs';
 export { avoidsCrowds, crowdWindows, crowdSlotOf, CROWD_SLOT, CROWD_RULE_RE } from './planner-crowd.mjs';
 export { sunsetLocal, sunsetUtcMinutes, SUNSET_ZENITH } from './planner-sun.mjs';
-export { prepareDinners, addDinners, dinnerBooking, DINNER } from './planner-dinner.mjs';
+export { prepareDinners, addDinners, dinnerBooking, bookingFor, bookingRecordLine, DINNER } from './planner-dinner.mjs';
 export { sunsetFor, eveningExtras, applyExtras, runsThatEvening, EXTRAS } from './planner-evening.mjs';
 export { schedWindows, legRecord, estimatedWarning, BACK_EARLY_NOTE, END_SPARE_NOTE } from './planner-day.mjs';
 export { checkDayChain } from './planner-chain.mjs';
 export { bagLegs, budgetFor } from './planner-budget.mjs';
 export { normalizeOutline, applyOutline, outlineCode, outlineCap, OUTLINE_KINDS, AREA_KM, OUTLINE, FREE_DAY_NOTE } from './planner-outline.mjs';
 export { mergeLater } from './planner-later.mjs';
+export { leaveBy, dayAreas, withMorning } from './planner-morning.mjs';
+export { restartErrors, prepareRestart, mergeRestart, lateAgain, restartReason, HERE_SLUG, HERE_NAME, RESTART, PASSED_OVER_NOTE } from './planner-restart.mjs';
+export { RAIN, coveredFor, rainWeight } from './planner-rain.mjs';
 
 const fail = (m) => { throw new Error('planner: ' + m); };
 
@@ -94,14 +103,15 @@ function resolveChoices(places, raw, explicit) {
 }
 
 /** Shared build: plan `dates` from `pool`, merge with `prior` (a previous Plan) when re-planning; `ch` = resolved choices. */
-async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [], sink = null }) {
-  const days = ctx.days.filter((d) => dates.includes(d.date));
+async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [], sink = null, restart = null }) {
+  const days = ctx.days.filter((d) => dates.includes(d.date)).map((d) => (restart && d.date === restart.date ? restart.day : d));   // C12: the rest of a re-planned day
   const { byDate, later: unassigned } = assign({ days, cands: pool, rng: ctx.rng });
   // Phase 11: the dinner pool (saved places that fit the diet), prepared before the budget so its legs are counted.
   const dinnerPool = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch });
   const budget = budgetFor({ days, byDate, ledger: input.maps.ledger || null, ...(dinnerPool.length ? { dinner: true } : {}) });
   if (!budget.within_ceiling && !input.allowOverBudget) throw new PlanBudgetError(budget);
-  const built = [], dropped = unassigned.slice(), evenings = [];
+  const built = [], evenings = [];
+  const dropped = restart ? unassigned.map((x) => ({ ...x, reason: restartReason(restart, x.reason) })) : unassigned.slice();   // C12: every drop is the re-plan's
   const usage = { matrix_elements: 0, route_calls: 0 };
   // TRANSIT asks rail first and re-asks with buses only for pairs rail could not serve (planner-transit.mjs); where Google
   // has no transit route at all (Japan), TRANSIT legs become station-based train estimates (planner-rail.mjs).
@@ -109,7 +119,12 @@ async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [],
   const railPoints = [...pool.map((c) => ({ placeId: c.place_id, ...(c.loc || {}) })), ...days.flatMap((d) => [d.lodging_start, d.lodging_end, ...(d.start ? [d.start] : []), ...(d.end ? [d.end] : [])]), ...dinnerPool.map((c) => c.point)];
   const maps = input.railEstimates === false ? railFirst : withRailEstimates(railFirst, { points: railPoints });
   for (const day of days) {
-    const r = await planDay({ ctx, day, cands: byDate[day.date], maps, build_id: String(input.build_id), seed: ctx.seed, verified_on: ctx.today });
+    let r;
+    if (restart && day.date === restart.date) {
+      try { r = await planDay({ ctx, day, cands: byDate[day.date], maps, build_id: String(input.build_id), seed: ctx.seed, verified_on: ctx.today }); }
+      catch (err) { throw new Error(`planner: could not re-plan ${day.date} from ${restart.note.replace(/^Re-planned /, '')}: ${String(err.message).replace(/^planner: /, '')}`); }
+      mergeRestart(r, restart, { categoryOf: (slug) => (ctx.cands.find((c) => c.id === slug) || {}).category || null });
+    } else r = await planDay({ ctx, day, cands: byDate[day.date], maps, build_id: String(input.build_id), seed: ctx.seed, verified_on: ctx.today });
     if (ctx.outlineNotes && ctx.outlineNotes[day.date]) for (const text of ctx.outlineNotes[day.date]) if (r.dayPlan.warnings.length < 40) r.dayPlan.warnings.push({ severity: 'info', code: 'other', text });
     built.push(r.dayPlan);
     evenings.push({ dayPlan: r.dayPlan, evening: r.evening, day });
@@ -124,13 +139,14 @@ async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [],
   const dinners = new Map();
   if (sink) for (const d of built) sink[d.date] = JSON.parse(JSON.stringify({ legs: d.legs, meals: d.meals, free: d.free, warnings: d.warnings }));   // WP-11e: the day before its dinner
   if (dinnerPool.length) {
-    const { chosen, route_calls } = await addDinners({ built: evenings, pool: dinnerPool, used: new Set(keptDinners), exclude: stopIds, maps, trip: ctx.trip, pace: ctx.pace, ...(ctx.preferDinner && ctx.preferDinner.size ? { prefer: ctx.preferDinner } : {}) });
+    const rain = restart && restart.rain ? { date: restart.date, outdoor: new Set([...(input.dinners || []), ...(input.places || [])].filter((p) => p && isIndoor(p) === false).map((p) => p.id)) } : null;
+    const { chosen, route_calls } = await addDinners({ built: evenings, pool: dinnerPool, used: new Set(keptDinners), exclude: stopIds, maps, trip: ctx.trip, pace: ctx.pace, ...(ctx.preferDinner && ctx.preferDinner.size ? { prefer: ctx.preferDinner } : {}), ...(rain ? { rain } : {}) });
     usage.route_calls += route_calls;
     for (const c of chosen) dinners.set(c.place.id, c.place);
   }
   for (const c of withheld) if (!dinners.has(c.id) && !keptDinners.has(c.id)) dropped.push({ cand: c, code: 'day_full', reason: `kept for dinner, but no evening had room for ${c.name}`.slice(0, 300), from_date: null });
   const scheduled = new Set([...stopIds, ...keptDinners, ...dinners.keys()]);
-  addRainSwaps(allDays, dates, { places: input.places, snapshots: ctx.snapshots, exclude: new Set([...scheduled, ...(ch ? ch.skip : [])]) });
+  addRainSwaps(allDays, dates, { places: input.places, snapshots: ctx.snapshots, exclude: new Set([...scheduled, ...(ch ? ch.skip : [])]), dry: restart && restart.rain ? restart.date : null });
   const extra = ch && ch.explicit ? {
     refresh: new Set([...ch.keep, ...ch.skip]),
     kept: input.places.filter((p) => ch.keep.has(p.id)).map((p) => ({ id: p.id, place_id: p.place_id, reason: OWNER_CHOICE_REASON }))
@@ -148,6 +164,7 @@ async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [],
   const known = new Set(places.map((p) => p.id));
   for (const d of dinners.values()) if (!known.has(d.id)) { const { scheduled_hint, ...rest } = d.record; places.push({ ...rest, status: 'scheduled' }); }   // dinner places go into plan.places
   if (ctx.evening) addEvening(allDays, dates, evenings, { ctx, places, later, scheduled });
+  for (const d of built) withMorning(ctx.trip, d);   // C12: leave_by and areas on every built day (kept days stay as they were)
   const skus = { ...budget.skus };
   if (prior && prior.budget && prior.budget.skus) for (const [k, v] of Object.entries(prior.budget.skus)) skus[k] = (skus[k] || 0) + v;
   const plan = {
@@ -179,7 +196,7 @@ function addEvening(allDays, dates, evenings, { ctx, places, later, scheduled })
  * Rainy-day swaps (planner-rain.mjs) on every re-built date; a kept day keeps its swaps except a place now scheduled or
  * skipped, and a place is offered on one day only (kept days claim theirs first).
  */
-function addRainSwaps(allDays, dates, { places, snapshots, exclude }) {
+function addRainSwaps(allDays, dates, { places, snapshots, exclude, dry = null }) {
   const used = new Set(), byDate = allDays.slice().sort((a, b) => a.date.localeCompare(b.date));
   for (const d of byDate) {
     if (dates.includes(d.date) || !d.rain_swaps) continue;
@@ -189,7 +206,8 @@ function addRainSwaps(allDays, dates, { places, snapshots, exclude }) {
   }
   for (const d of byDate) {
     if (!dates.includes(d.date)) continue;
-    const swaps = rainSwaps({ day: d, places, snapshots, exclude, used });
+    // C12: a rainy re-plan already chose covered places (no swaps); a visited stop is never swapped out.
+    const swaps = d.date === dry ? [] : rainSwaps({ day: d.stops.some((s) => s.visited) ? { ...d, stops: d.stops.filter((s) => !s.visited) } : d, places, snapshots, exclude, used });
     if (swaps.length) d.rain_swaps = swaps; else delete d.rain_swaps;
   }
 }
@@ -204,12 +222,17 @@ export async function planTrip(input) {
  * replanDays(plan, dates, input): the pool is every place scheduled on `dates` in `plan` plus every place whose status
  * is `candidate` (a promoted place carries `scheduled_hint`); places scheduled on other days are untouched.
  * Choices: `input.choices` when given (explicit; `null` = none), else the choices the plan recorded (a pool filter).
+ * C12: with `input.from` ({ time, place } or { time, point: { lat, lng } }) and exactly one date, the day's `visited`
+ * stops are kept and the rest of the day is planned from there (planner-restart.mjs); `visited` and `rain` without
+ * `from` are ignored, so a re-plan without `from` is exactly what it was.
  */
 export async function replanDays(plan, dates, input) {
   if (!plan || plan.v !== 1 || !Array.isArray(plan.days)) fail('replanDays needs a v1 Plan');
   if (!Array.isArray(dates) || !dates.length) fail('replanDays needs at least one date');
   for (const d of dates) if (!plan.days.some((x) => x.date === d)) fail(`date ${d} is not in the plan`);
-  const places = input.places || plan.places;
+  const restarting = input.from !== undefined && input.from !== null;
+  // C12: a re-plan from where you are takes back what that day dropped for lack of time.
+  const places = restarting ? lateAgain(plan, dates[0], input.places || plan.places) : input.places || plan.places;
   const explicit = input.choices !== undefined;
   const ch = resolveChoices(places, explicit ? input.choices : plan.choices || null, explicit);
   const ctx = await context({ ...input, places: ch ? ch.places : places, build_id: input.build_id || plan.build_id });
@@ -219,9 +242,18 @@ export async function replanDays(plan, dates, input) {
   if (ch && ch.explicit) {
     for (const slug of [...ch.keep, ...ch.skip]) if (elsewhereDay.has(slug)) fail(`choices keep or skip "${slug}", which is scheduled on ${elsewhereDay.get(slug)}, a day not being re-planned (re-plan that day too)`);
   }
-  const pool = ctx.cands.filter((c) => !elsewhere.has(c.id));
+  let pool = ctx.cands.filter((c) => !elsewhere.has(c.id));
   const withheld = ctx.withheld.filter((c) => !elsewhere.has(c.id));
-  return build(ctx, { ...input, places, build_id: input.build_id || plan.build_id }, { dates, pool, prior: plan, ch, withheld });
+  // C12: a re-plan from where you are (one date): the visited stops are kept, the rest of the day is planned from `from`.
+  let restart = null;
+  if (restarting) {
+    if (dates.length !== 1) fail('a re-plan from where you are takes exactly one date');
+    const working = ch ? ch.places : places;
+    restart = prepareRestart({ ctx, plan, date: dates[0], input, places: working });
+    pool = pool.filter((c) => !restart.visited.has(c.id));
+    if (restart.rain) { const byId = new Map(working.map((p) => [p.id, p])); pool = pool.map((c) => ({ ...c, rain: coveredFor(byId.get(c.id), c.category) })); }
+  }
+  return build(ctx, { ...input, places, build_id: input.build_id || plan.build_id }, { dates, pool, prior: plan, ch, withheld, restart });
 }
 
 /**

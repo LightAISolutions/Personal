@@ -8,9 +8,25 @@ const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 
 const sha = (s) => crypto.createHash('sha256').update(s).digest('hex');
-// The old sample's HTML before WP-11d (letter and A4, no fonts): it must not move by a byte.
+// The old sample's HTML before WP-11d (letter and A4, no fonts): it did not move by a byte through C11.
 const OLD_SAMPLE_HTML = '2a069b42594cc33a6a8ba170c0f7064da6f2b4055c090189e548be0cc8539bd2';
 const OLD_SAMPLE_HTML_A4 = 'b5982dfff56039266f3141b62adb2dc638b841aed1c776e6eb1eb80d3e740c85';
+// The same sample after WP-12d's phone-clock fix (decisions/WP-12d.md, item 11) ...
+const CLOCK_SAMPLE_HTML = '4d8a9c36dad78a73128b370d05a669b37519ab795511747884cda81b4d55a190';
+const CLOCK_SAMPLE_HTML_A4 = '79937a172606571d2ed4a71491f48ea5ee9c89d95c5777dfe96a6d87c71c663c';
+// ... and after WP-12d's dates in words (decisions/WP-12d.md, task 3): the sample's one Later item that came off a day
+// now says "Taken off the plan for Fri 14 May." instead of "… for 2027-05-14."; nothing else moved.
+const SAMPLE_HTML = '0077a7ac7ae3b4accf154cd34da7c01010887c78fcdfc0606160fbc0c104c179';
+const SAMPLE_HTML_A4 = '15e2529a02a69b8beefca32a9940c2abe4f548901257f772d830e5cf3a01d405';
+const NOTE_NEW = 'Taken off the plan for Fri 14 May.', NOTE_OLD = 'Taken off the plan for 2027-05-14.';
+const beforeDates = (html) => { assert.equal(html.split(NOTE_NEW).length, 2, 'the dated note is there once'); return html.replace(NOTE_NEW, NOTE_OLD); };
+// WP-12d moved them on purpose: on a phone (≤ 760 px) the clock column beside a numbered badge was too narrow and cut
+// "10:00am" to "10:00a" (WP-11d's note). The fix is one rule in the phone media query (wider time column, no wrap);
+// the A4 and Letter print layout is unchanged. Undoing exactly that rule gives back the WP-11d hashes, which proves
+// nothing else moved.
+const PHONE_CLOCK_NEW = '  html:not(.paged) .rail{--tcol:3.6rem;--mcol:1.5rem}\n  html:not(.paged) .ti-time .t{white-space:nowrap}\n';
+const PHONE_CLOCK_OLD = '  html:not(.paged) .rail{--tcol:2.6rem;--mcol:1.5rem}\n';
+const beforeClock = (html) => { assert.equal(html.split(PHONE_CLOCK_NEW).length, 2, 'the phone clock rule is there once'); return html.replace(PHONE_CLOCK_NEW, PHONE_CLOCK_OLD); };
 const load = async () => ({
   bm: await import('../packs/tour-guide/brochure-map/index.mjs'),
   facts: await import('../packs/tour-guide/brochure-map/brochure-map-facts.mjs'),
@@ -210,11 +226,16 @@ test('red team at the adapter: hostile fact and season text renders inert; long 
   assert.ok(html.includes('&lt;script&gt;'));
 });
 
-test('an old plan renders the same HTML byte for byte and carries no C11 field', async () => {
+test('an old plan renders the same HTML byte for byte (only the WP-12d phone clock rule and note date moved) and carries no C11 field', async () => {
   const { bm, sampleInput } = await load();
   const { usesC11 } = await import('../kits/brochure/lib/model.mjs');
-  assert.equal(sha(bm.renderPlan(sampleInput(), { embedFonts: false }).html), OLD_SAMPLE_HTML);
-  assert.equal(sha(bm.renderPlan(sampleInput(), { embedFonts: false, page: 'a4' }).html), OLD_SAMPLE_HTML_A4);
+  const html = bm.renderPlan(sampleInput(), { embedFonts: false }).html, a4 = bm.renderPlan(sampleInput(), { embedFonts: false, page: 'a4' }).html;
+  assert.equal(sha(html), SAMPLE_HTML);
+  assert.equal(sha(a4), SAMPLE_HTML_A4);
+  assert.equal(sha(beforeDates(html)), CLOCK_SAMPLE_HTML, 'only the note date moved since the phone clock fix');
+  assert.equal(sha(beforeDates(a4)), CLOCK_SAMPLE_HTML_A4);
+  assert.equal(sha(beforeClock(beforeDates(html))), OLD_SAMPLE_HTML, 'only the phone clock rule and the note date moved since WP-11d');
+  assert.equal(sha(beforeClock(beforeDates(a4))), OLD_SAMPLE_HTML_A4);
   const m = bm.toBrochureModel(sampleInput());
   assert.equal(usesC11(m), false);
   assert.equal(m.season, undefined);

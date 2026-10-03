@@ -16,6 +16,7 @@
  */
 import { outlinePools, mergeLater, normalizeChoices, applyChoices, OWNER_CHOICE_REASON, BACK_EARLY_NOTE, DIDNT_FIT } from '../planner/index.mjs';
 import { choiceStatus } from '../planner/planner-choices.mjs';
+import { dayDate } from '../planner/planner-time.mjs';
 import { clip } from './journey-text.mjs';
 
 const fail = (m) => { throw new Error('journey: ' + m); };
@@ -79,8 +80,8 @@ export async function assembleChosen({ input, outline, choices }) {
       if (scheduled.has(c.id)) continue;
       const it = own.get(c.id);
       if (it && !elsewhere.has(c.id)) drop(c.id, it.code, it.reason, it.from_date || date);
-      else if (elsewhere.has(c.id)) drop(c.id, 'day_full', `${names.get(c.id) || c.id} is in another version of ${date} that you did not choose`, date);
-      else drop(c.id, 'day_full', `no room left on ${date} for ${names.get(c.id) || c.id}`, date);
+      else if (elsewhere.has(c.id)) drop(c.id, 'day_full', `${names.get(c.id) || c.id} is in another version of ${dayDate(date)} that you did not choose`, date);
+      else drop(c.id, 'day_full', `no room left on ${dayDate(date)} for ${names.get(c.id) || c.id}`, date);
     }
   }
   for (const id of P.withheld) drop(id, 'day_full', `kept for dinner, but no evening had room for ${names.get(id) || id}`, null);

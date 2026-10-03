@@ -28,6 +28,7 @@ export function checkTrip(t) {
     if (!isDate(l.from)) e(`/lodging/${i}/from`, 'not a calendar date');
     if (!isDate(l.to)) e(`/lodging/${i}/to`, 'not a calendar date');
     else if (isDate(l.from) && l.to <= l.from) e(`/lodging/${i}/to`, 'check-out date must be after the first night');
+    if (l.access) checkAccess(l.access, `/lodging/${i}/access`, errs);   // C12
   });
   if (n >= 1 && n <= MAX_TRIP_DAYS) {
     for (const d of tripDates(t)) {
@@ -100,6 +101,23 @@ export function checkPlace(p) {
     else if (i && isDate(p.history[i - 1].on) && h.on < p.history[i - 1].on) e(`/history/${i}/on`, 'history runs oldest first');
   });
   if (p.facts) checkFacts(p.facts, '/facts', errs);
+  if (p.facts && p.facts.access) checkAccess(p.facts.access, '/facts/access', errs);   // C12
+  return errs;
+}
+
+/**
+ * checkAccess(access, path, errs) — C12 access notes (a place's `facts.access`, a lodging's `access`): the schema bounds
+ * each entry; two entries naming the same station on the same line (case and spacing ignored) are refused. Shared with
+ * facts/normalizeFacts.
+ */
+export function checkAccess(list, path, errs) {
+  const seen = new Map();
+  (Array.isArray(list) ? list : []).forEach((a, i) => {
+    if (!a || typeof a.station !== 'string') return;
+    const key = [a.station, a.line || ''].map((x) => String(x).trim().toLowerCase().replace(/\s+/g, ' ')).join('|');
+    if (seen.has(key)) errs.push({ path: `${path}/${i}`, message: `repeats entry ${seen.get(key)} (the same station and line)` });
+    else seen.set(key, i);
+  });
   return errs;
 }
 
@@ -151,6 +169,9 @@ export const DAY_START = 'day-start';
 export const DAY_END = 'day-end';
 export const LODGING = 'lodging';
 const DAY_ANCHORS = new Set([DAY_START, DAY_END, LODGING]);
+/** C12 — the reserved point name of a re-plan that started from a shared location (a leg's `from`; never a stop). */
+export const HERE = 'here';
+const isPoint = (x) => DAY_ANCHORS.has(x) || x === HERE;
 
 /** The day's dinner out (Phase 11): its dinner meal when it is at a place rather than at an anchor, else null. */
 export function dinnerOut(d) {
@@ -187,6 +208,12 @@ export function checkDayPlan(d) {
   const span = (arr, name) => arr.forEach((m, i) => { if (toMinutes(m.end) < toMinutes(m.start)) e(`/${name}/${i}`, 'ends before it starts'); });
   span(d.meals, 'meals');
   span(d.free, 'free');
+  // C12: leave_by is the first leg's departure; areas name two different towns.
+  if (d.leave_by !== undefined) {
+    if (!L.length) e('/leave_by', 'a day without legs has no leave_by');
+    else if (d.leave_by !== L[0].depart_at) e('/leave_by', `must be the first leg's departure (${L[0].depart_at})`);
+  }
+  if (Array.isArray(d.areas) && d.areas.length === 2 && d.areas[0] === d.areas[1]) e('/areas/1', 'repeats the morning area (list the night\'s area only when it differs)');
   return errs;
 }
 
@@ -202,18 +229,34 @@ export function checkDayPlan(d) {
  *     reaches it, inside its window and starting by its last entry; the first leg leaves at or after the start's time and
  *     the day reaches 'day-end' by the end's time; the hotel bag step sits between the first two legs; dinner sits
  *     between the legs to and from its place.
+ * C12 (a re-plan from the current time, planner replanDays with `from`):
+ *   · `visited` stops come first (no visited stop after one that is not);
+ *   · one leg may start at the reserved point 'here' (a shared location): the first leg, or the leg after the one that
+ *     reaches the last visited stop (the chain restarts there); 'here' is never a stop and never a leg's `to`;
+ *   · the rest of the day may leave the last visited stop (or 'here') any time after that stop's arrival: the re-plan
+ *     starts at the current time, which can be before the visit's planned end.
  */
 export function checkDayChain(d) {
   const errs = [];
   const e = (path, message) => errs.push({ path, message });
   const L = d.legs || [], S = d.stops || [];
   const dinner = dinnerOut(d);
+  S.forEach((s, k) => {
+    if (s.place === HERE) e(`/stops/${k}/place`, `"${HERE}" is a reserved point, not a place`);
+    if (s.visited && k && !S[k - 1].visited) e(`/stops/${k}/visited`, 'visited stops come first');
+  });
+  const lastVisited = S.reduce((n, s, k) => (s.visited ? k : n), -1);
   if (!L.length) { if (S.length) e('/legs', 'a day with stops needs legs'); return errs; }
   const first = d.start ? DAY_START : LODGING, last = d.end ? DAY_END : LODGING;
-  if (L[0].from !== first) e('/legs/0/from', `the first leg starts at "${first}"`);
+  if (L[0].from !== first && L[0].from !== HERE) e('/legs/0/from', `the first leg starts at "${first}"`);
   if (L[L.length - 1].to !== last) e(`/legs/${L.length - 1}/to`, `the last leg ends at "${last}"`);
-  for (let i = 1; i < L.length; i++) if (L[i].from !== L[i - 1].to) e(`/legs/${i}/from`, `must be "${L[i - 1].to}", where leg ${i} ended`);
-  const visits = L.map((l, i) => ({ place: l.to, i })).filter((x) => !DAY_ANCHORS.has(x.place));
+  const restart = lastVisited >= 0 ? L.findIndex((l) => l.to === S[lastVisited].place) + 1 : 0;   // where a re-plan may restart
+  for (let i = 0; i < L.length; i++) {
+    if (L[i].to === HERE) e(`/legs/${i}/to`, `"${HERE}" is only ever where a re-plan starts`);
+    if (L[i].from === HERE && i !== restart) e(`/legs/${i}/from`, `only the first leg${lastVisited >= 0 ? ' after the last visited stop' : ''} may start at "${HERE}"`);
+    if (i && L[i].from !== L[i - 1].to && L[i].from !== HERE) e(`/legs/${i}/from`, `must be "${L[i - 1].to}", where leg ${i} ended`);
+  }
+  const visits = L.map((l, i) => ({ place: l.to, i })).filter((x) => !isPoint(x.place));
   const want = [...S.map((s) => s.place), ...(dinner ? [dinner.at] : [])];
   if (visits.length !== want.length || visits.some((x, k) => x.place !== want[k])) {
     e('/legs', `the places the legs reach (${visits.map((x) => x.place).join(', ') || 'none'}) must be the stops in order${dinner ? ', then dinner' : ''} (${want.join(', ') || 'none'})`);
@@ -243,6 +286,7 @@ export function checkDayChain(d) {
     if (stopAt.has(l.to) && visits.some((x) => x.i === i)) {
       const k = stopAt.get(l.to), s = S[k];
       const { A: a, B: b } = item(`/stops/${k}`, s.arrive, s.depart);
+      if (k === lastVisited) prevEnd = a;   // C12: the re-plan may leave the last visited stop before its planned end
       if (s.minutes > b - a) e(`/stops/${k}/minutes`, `${s.minutes} min does not fit ${s.arrive}–${s.depart}`);
       if (s.window) {
         let open = toMinutes(s.window.open), close = toMinutes(s.window.close);
@@ -393,6 +437,10 @@ export function checkPlanDigest(d) {
   if (d.part !== undefined && d.part > 1 && d.later.length) errs.push({ path: '/later', message: 'only part 1 carries the Later list (send [] in later parts)' });
   d.days.forEach((day, i) => (day.stops || []).forEach((s, j) => {
     if (s.menu_checked !== undefined && !isDate(s.menu_checked)) errs.push({ path: `/days/${i}/stops/${j}/menu_checked`, message: 'not a calendar date' });
+  }));
+  // C12 (TG-PHASE-12, WP-12b): a leg's stations only on a train leg (the stations at both ends of a train ride).
+  d.days.forEach((day, i) => (day.legs || []).forEach((l, j) => {
+    if (l.stations !== undefined && l.mode !== 'TRANSIT') errs.push({ path: `/days/${i}/legs/${j}/stations`, message: 'stations only on a TRANSIT leg' });
   }));
   sizeCheck(d, errs);
   return errs;
