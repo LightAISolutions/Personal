@@ -35,6 +35,10 @@ const BANK = { v: 1, title: 'Travel preferences interview', sections: [
   { id: 'food', title: 'Food', questions: [{ qid: 'food-01', text: 'Which foods do you look forward to? Pick any.', kind: 'multi', dimension: 'food', options: [{ label: 'Local specialties', value: 'local', polarity: '+' }, { label: 'Street food', value: 'street', polarity: '+' }, { label: 'Fine dining', value: 'fine', polarity: '+' }, { label: 'Noodles', value: 'noodles', polarity: '+' }, { label: 'Bakeries', value: 'bakeries', polarity: '+' }, { label: 'Seafood', value: 'seafood', polarity: '+' }, { label: 'Desserts', value: 'desserts', polarity: '+' }, { label: 'Curries', value: 'curries', polarity: '+' }], skip_ok: true, other: true },
     { qid: 'food-03', text: 'Anything you cannot eat?', kind: 'text', dimension: 'food', options: [], skip_ok: true }] },
   { id: 'budget', title: 'Budget', questions: [{ qid: 'budget-01', text: 'What is your usual travel budget?', kind: 'scale', dimension: 'budget_band', options: [{ label: 'Thrifty', value: 'thrifty', polarity: '+' }, { label: 'Middle', value: 'middle', polarity: '+' }, { label: 'Splurge', value: 'splurge', polarity: '+' }], skip_ok: true }] }] };
+// Yes/no pairs: two options share one value and differ only in polarity (the travel bank's climate, crowds and budget pairs).
+const PAIRS = { id: 'crowds', title: 'Crowds & timing', questions: [
+  { qid: 'pairs-01', text: 'Should famous sights be kept away from their busiest hours?', kind: 'pick', dimension: 'must_avoid', options: [{ label: 'Yes, avoid peak hours', value: 'peak hours', polarity: '+' }, { label: 'Does not matter', value: 'peak hours', polarity: '-' }], skip_ok: true },
+  { qid: 'pairs-02', text: 'Is a fine-dining meal worth it?', kind: 'pick', dimension: 'meal_style', options: [{ label: 'Yes, worth it', value: 'fine dining', polarity: '+' }, { label: 'No, skip it', value: 'fine dining', polarity: '-' }], skip_ok: true }] };
 const FACTS = { ok: true, trip: TRIP.slug, found: [{ n: '1', kind: 'dates', text: 'May 12 – May 15, 2027', start: '2027-05-12', end: '2027-05-15', choice: '' }, { n: '2', kind: 'lodging', text: 'Quay Street inn, 3 nights', choice: '' }, { n: '3', kind: 'flight', text: 'Arrives 11:40 on May 12', choice: '' }], missing: ['companions'] };
 const HOME = { ok: true, display_name: 'Fixture Guide', trips: [TRIP, { slug: 'moor-weekend-2026', title: 'Moor weekend', destination: 'High Moor', start: '2026-11-07', end: '2026-11-08', status: 'done', build_id: 'b-fixture-00', has_brochure: false }], trips_total: 2, choice_round: { trip: TRIP.slug, run: 'run-fixture-1', round: 1, items: 7, want: 0, later: 0, skip: 0, stage: '' }, pending_facts: { trip: TRIP.slug }, profile_summary: { updated: '2026-10-01' }, places: { 'Harbor Town': 3, 'High Moor': 5 } };
 
@@ -48,6 +52,7 @@ function answer(op, args, mode) {
     if (op === 'shortlist.done' || op === 'facts.get') return { ok: false, status: 409, reason: 'no_flow', stage: 'planning' };
   }
   if (mode === 'nosend' && op === 'interview.submit') return { ok: false, status: 409, reason: 'busy' };
+  if (mode === 'pairs' && op === 'interview.bank') return { ok: true, bank: { ...BANK, sections: BANK.sections.concat([PAIRS]) }, answers: [{ qid: 'pairs-02', value: 'fine dining', polarity: '-', kind: 'pick' }], person: null };
   if (mode === 'rounds' && op === 'shortlist.get') {   // a /repick reopened two rounds: the newest on top, an earlier one below
     return { ...SHORTLIST, run: 'run-fixture-2', round: 2, earlier: [{ run: 'run-fixture-1', round: 1, groups: [{ id: 'activities', title: 'Activities', items: [ITEM('a1', 1, 'Cliff Chapel', 'Earlier pick you saved.', 30, 'Headland')] }] }] };
   }
@@ -211,6 +216,35 @@ try {
     check(!!food && JSON.stringify(food.values) === JSON.stringify(all.concat(['ramen', 'tofu'])), 'all 8 picks and both typed words are sent (' + (food ? food.values.length : 0) + ' values)');
     check(errors.length === 0, 'no page errors: ' + errors.join(' | '));
     await ctx.close();
+  }
+
+  console.log('interview: a yes/no pair lights only the option tapped');
+  {
+    const { page, ctx, calls, errors } = await open(browser, { mode: 'pairs' });
+    await nav(page, 'interview');
+    const lit = (q) => page.$$eval(`.choices[data-q="${q}"] button[aria-pressed="true"]`, (bs) => bs.map((b) => b.textContent).join());
+    check(await lit('pairs-02') === 'No, skip it', 'an answer given in the chat lights its own half of the pair (' + await lit('pairs-02') + ')');
+    await page.click('.choices[data-q="pairs-01"] button:has-text("Does not matter")');
+    check(await lit('pairs-01') === 'Does not matter', 'tapping "Does not matter" lights only it (' + await lit('pairs-01') + ')');
+    await page.click('.choices[data-q="pairs-01"] button:has-text("Yes, avoid peak hours")');
+    check(await lit('pairs-01') === 'Yes, avoid peak hours', 'tapping the other half moves the choice (' + await lit('pairs-01') + ')');
+    await page.click('.choices[data-q="pairs-01"] button:has-text("Does not matter")'); await page.waitForTimeout(450);
+    const key = await page.evaluate(() => Object.keys(localStorage).find((k) => /^iv_[a-z0-9]+_me$/.test(k)) || '');
+    await nav(page, 'home'); await nav(page, 'interview');
+    check(await lit('pairs-01') === 'Does not matter', 'the saved draft brings back the half that was tapped');
+    await page.evaluate(() => window.__tg.main.fn()); await page.waitForTimeout(400);
+    const iv = calls.filter((c) => c.op === 'interview.submit').slice(-1)[0];
+    const sent = iv ? iv.args.answers.filter((a) => /^pairs-/.test(a.qid)).map((a) => a.qid + '=' + a.values.join('+')).sort().join() : '';
+    check(sent === 'pairs-01=peak hours|-,pairs-02=fine dining|-', 'the send names the half of each pair (' + sent + ')');
+    await ctx.close();
+    const second = await open(browser, { mode: 'pairs' });   // a draft saved by v01.04w held only the shared value: that one answer is asked again, the rest come back
+    await second.page.evaluate((k) => localStorage.setItem(k, JSON.stringify({ v: 1, at: new Date().toISOString(), answers: { 'pairs-01': ['peak hours'], 'pace-01': ['normal'] }, typed: {} })), key);
+    await nav(second.page, 'interview');
+    const lit2 = (q) => second.page.$$eval(`.choices[data-q="${q}"] button[aria-pressed="true"]`, (bs) => bs.map((b) => b.textContent).join());
+    check(await lit2('pairs-01') === '' && await lit2('pace-01') === 'Normal', 'an old draft\'s bare pair value is dropped (both halves off), every other answer is kept');
+    check(errors.length === 0 && second.errors.length === 0, 'no page errors: ' + errors.concat(second.errors).join(' | '));
+    check(!!key, 'the draft key was found (' + key + ')');
+    await second.ctx.close();
   }
 
   console.log('companions: who comes, and an interview on the owner\'s phone');

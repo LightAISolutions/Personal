@@ -456,6 +456,24 @@ test('interview.bank and interview.submit: the bank as is, answers mapped like t
   assert.match(texts(state).pop(), /6 answers from the app noted/);
 });
 
+test('interview.submit: a yes/no pair sharing one value is told apart by its key, and the bare value is refused (app v01.05w)', () => {
+  const { ctx, state } = fresh();
+  const q = (id) => ctx.tgIvFind(id).q;
+  const keys = (id) => Array.from(q(id).options, (o, k) => String(ctx.tgIvOptionKey(q(id), k)));
+  assert.deepEqual(keys('crowds-02'), ['peak hours|+', 'peak hours|-'], 'a pair: value|polarity');
+  assert.deepEqual(keys('pace-01'), Array.from(q('pace-01').options, (o) => String(o.value)), 'unique values stay as they are');
+  for (const [qid, value] of [['crowds-02', 'peak hours'], ['climate-01', 'heat'], ['budget-02', 'fine dining']]) {
+    assert.equal(app(ctx, state, 'interview.submit', { version: 1, answers: [{ qid, values: [value] }] }).reason, 'ambiguous_value', qid + ': the bare value never guesses');
+  }
+  assert.equal(app(ctx, state, 'interview.submit', { version: 1, answers: [{ qid: 'crowds-02', values: ['peak hours|+', 'peak hours|-'] }] }).reason, 'bad_value', 'a pick takes one');
+  assert.equal(reqOf(state, 'prefs').length, 0);
+  const s = J(app(ctx, state, 'interview.submit', { version: 1, answers: [
+    { qid: 'crowds-02', values: ['peak hours|-'] }, { qid: 'climate-01', values: ['heat|+'] }, { qid: 'climate-02', values: ['cold|-'] }, { qid: 'budget-02', values: ['fine dining|+'] }] }));
+  assert.equal(s.answers, 4);
+  const got = Array.from(reqOf(state, 'prefs')[0].interview.answers, (a) => a.qid + ' ' + a.value + ' ' + a.polarity);
+  assert.deepEqual(got.sort(), ['budget-02 fine dining +', 'climate-01 heat +', 'climate-02 cold -', 'crowds-02 peak hours -'], '"Does not matter" stays "does not matter"; "Heat is fine" stays fine');
+});
+
 test('people.list · people.add · people.trip and a companion interview: their own prefs request, the chat interview untouched (Phase 8)', () => {
   const { ctx, state } = fresh();
   ctx.tgTripUpsert({ slug: TRIP, title: 'Port Sorrel', destination: 'Port Sorrel', start: '2027-05-12', end: '2027-05-14' });

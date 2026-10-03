@@ -573,12 +573,23 @@ function tgAppOpInterviewBank(args) {
   }
   return tgAppOk({ bank: tgIvBank(), answers: answers, in_progress: live, person: person ? { slug: person.slug, name: person.name } : null });
 }
+/**
+ * The key the app sends for option k of q: its value, or "value|polarity" when another option of q shares that value — a
+ * yes/no pair such as "Heat is fine" (heat, +) / "Avoid the heat" (heat, −), where the value alone cannot say which was
+ * tapped. The app builds the same keys (optKeys in live-site-pages/helper-app.html).
+ */
+function tgIvOptionKey(q, k) {
+  var o = q.options[k];
+  var shared = q.options.some(function (x, j) { return j !== k && x.value === o.value; });
+  return shared ? o.value + '|' + (o.polarity === '-' ? '-' : '+') : o.value;
+}
 /** One answered question → kit answers, mapped exactly as the chat's interview does (_tgIvAnswer). */
 function tgAppIvAnswers(q, values) {
-  var byValue = {}, picked = [], typed = [];
-  q.options.forEach(function (o, k) { byValue[o.value] = k; });
+  var byKey = {}, paired = {}, picked = [], typed = [];
+  q.options.forEach(function (o, k) { var key = tgIvOptionKey(q, k); byKey[key] = k; if (key !== o.value) paired[o.value] = true; });
   values.forEach(function (v) {
-    if (q.kind !== 'text' && Object.prototype.hasOwnProperty.call(byValue, v)) { if (picked.indexOf(byValue[v]) < 0) picked.push(byValue[v]); }
+    if (q.kind !== 'text' && Object.prototype.hasOwnProperty.call(byKey, v)) { if (picked.indexOf(byKey[v]) < 0) picked.push(byKey[v]); }
+    else if (q.kind !== 'text' && Object.prototype.hasOwnProperty.call(paired, v)) tgAppRefuse(400, 'ambiguous_value', { qid: q.qid });   // the bare value of a pair (an app before v01.05w): never guess which one
     else if (typed.indexOf(v) < 0) typed.push(v);
   });
   if (q.kind === 'text') {
@@ -596,7 +607,8 @@ function tgAppIvAnswers(q, values) {
     .concat(typed.map(function (t) { var a = _tgIvAnswer(q, t, pol); a.kind = 'text'; return a; }));
 }
 /**
- * interview.submit { version: 1, answers: [{ qid, values }], person? } — the whole form at once: values are option values or
+ * interview.submit { version: 1, answers: [{ qid, values }], person? } — the whole form at once: values are option keys
+ * (tgIvOptionKey: the value, or "value|polarity" for a yes/no pair; a pair's bare value is refused as ambiguous_value) or
  * typed words (≤ TG_IV_TEXT_VALUES_MAX typed per question, each ≤ TG_IV_VALUE_MAX after whitespace is folded). Answers go in
  * bank order into one prefs request exactly like the chat's last question (tgIvFinish); an interview open in the chat ends.
  * person (a slug of the people list) → the request carries person { slug, name } and the routine writes that person's
@@ -613,11 +625,12 @@ function tgAppOpInterviewSubmit(args) {
     var f = tgIvFind(qid);
     if (!f) tgAppRefuse(400, 'unknown_qid', { qid: qid });
     if (by[qid]) tgAppRefuse(400, 'duplicate_qid', { qid: qid });
+    var keys = f.q.options.map(function (x, k) { return tgIvOptionKey(f.q, k); });
     var values = tgAppArr(o, 'values', f.q.options.length + TG_IV_TEXT_VALUES_MAX, false).map(function (v) {
       if (typeof v !== 'string') tgAppRefuse(400, 'bad_value', { qid: qid });
       var s = v.replace(/\s+/g, ' ').trim();
       if (!s) tgAppRefuse(400, 'bad_value', { qid: qid });
-      if (s.length > TG_IV_VALUE_MAX) tgAppRefuse(400, 'too_long', { qid: qid, max: TG_IV_VALUE_MAX });
+      if (s.length > TG_IV_VALUE_MAX && keys.indexOf(s) < 0) tgAppRefuse(400, 'too_long', { qid: qid, max: TG_IV_VALUE_MAX });
       return s;
     });
     by[qid] = values.length ? tgAppIvAnswers(f.q, values) : [];
