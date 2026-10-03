@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-03 03:50:11 AM EST` · Repo version: `v01.50r`
+Last updated: `2026-10-03 04:50:16 AM EST` · Repo version: `v01.51r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -244,6 +244,7 @@ Last updated: `2026-10-03 03:50:11 AM EST` · Repo version: `v01.50r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-8.md">TG-PHASE-8.md</a> — Phase 8 part 1 decisions: owner questions, carried findings fixed before the trip, the Phase 9 follow-ups
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-9.md">TG-PHASE-9.md</a> — Phase 9 decisions: the finalized values, the Step 0 cross-origin verification, WP pointers, the live check
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-10.md">TG-PHASE-10.md</a> — Phase 10 decisions: the coordinator's merge choices, the private-repo side, the live check, what moves to Phase 11
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/TG-PHASE-11.md">TG-PHASE-11.md</a> — Phase 11 decisions: the coordinator's merge choices for both waves, the private-repo side, the live checks, what moves to Phase 12
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-1b.md">WP-1b.md</a> — WP-1b core flows + document delivery: defaults (step shape, claim order, expiry, size fallback)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2a.md">WP-2a.md</a>            — WP-2a Maps kit: defaults, Maps terms finding, credential header, live smoke results
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-2b.md">WP-2b.md</a>            — WP-2b Research kit: defaults (budgets, independence, labels, scanner)
@@ -572,7 +573,8 @@ Last updated: `2026-10-03 03:50:11 AM EST` · Repo version: `v01.50r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-7.md">TG-PHASE-7.md</a> — Phase 7 kickoff: owner switch-on — deploy, pair, the seven routines, the live interview, the first real `/plan` (Opus 5.5 · high)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-8.md">TG-PHASE-8.md</a> — Phase 8 kickoff (after the pilot trip): live review and tuning — owner questions, the carried Phase 7 findings, tuning from the pilot, the Phase 9 follow-ups (Opus 5.5 · high)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-9.md">TG-PHASE-9.md</a>       — Phase 9 kickoff (filled 2026-10-02 after Phase 7, pulled forward): the Tour Guide app as a Telegram Mini App — core route + signed launch data, app operations, generic data-free shell (Fable 5.1 · high; route Opus 5.5 · high)
-│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-10.md">TG-PHASE-10.md</a> — Phase 10 kickoff: usefulness pass step 1 — the right day abroad, honest travel legs, a planner tidy-up, booking deadlines (Opus 5.5 · high)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-10.md">TG-PHASE-10.md</a> — Phase 10 kickoff: usefulness pass step 1 — the right day abroad, honest travel legs, a planner tidy-up, booking deadlines (Opus 5.5 · high)
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-11.md">TG-PHASE-11.md</a> — Phase 11 kickoff: usefulness pass step 2 — real starts, dinners and evenings, researched place facts, season and local favourites, a brochure pass, then outlines and day versions to compare (Opus 5.5 · high)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/README.md">README.md</a>               — Framework overview, "how to add a helper", the public/private rules
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/SPEC.md">SPEC.md</a>                 — Framework contract v1 — envelope, mailbox, wake route, manifest, registries, properties, sheet, limits, ownership map
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/status">status/</a>                 — One status file per work package

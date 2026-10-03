@@ -3,11 +3,25 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 51/100`
+`Sections: 52/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.51r] — 2026-10-03 04:50:16 AM EST
+
+> **Prompt:** "decisions made." · "how does `/date hours <start> <end>` know which date I am setting hours for?" · "Fix it" *(the owner's choices on the usefulness review — this push writes the brief for step 2 of three; a question about `/dates` hours, answered by per-day hours in that brief; "Fix it" on a card asking whether a companion's interview answers should reach memory without a manual merge each time)*
+
+### Added
+- **Phase 11 brief** `helpers/prompts/TG-PHASE-11.md` (usefulness pass, step 2): Contract C11, every field optional — a day's own start, end, hours and bag step (`trip.day_overrides`, set with `/dates <date> start|end|hours|bags|clear`), dinner at a saved place that fits the travellers' diet, evening extras and sunset, researched place facts (`place.facts`: visit length, last entry, booking rule, price, menu check, each with sources), a season sheet (`trip.season`), local favourites, crowd timing, and plans sent in parts. Wave 1: WP-11a planner, WP-11b facts · season · gems, WP-11c core and commands, WP-11d the brochure pass. Wave 2, the owner's "Outlines + days": WP-11e two or three whole-trip outlines to pick or mix and two or three versions of each day, WP-11f the core and the Mini App's Compare screen. Each wave ends with the private repo's side as a PR for the owner
+- Decisions record `helpers/decisions/TG-PHASE-11.md`, filled as the phase runs
+
+### Fixed
+- **Private-repo template: a companion's notes merge on their own** (`helpers/templates/private-repo/scripts/merge-routine-memory.sh`): the memory-only merge accepted files at most one folder below a memory root, so a companion's held interview notes (`quarantine/prefs/people/<slug>/`, three folders down) left the routine's branch unmerged. Memory files may now sit up to three folders below the roots, still `.md` or `.json` only. Helpers scaffolded from the template get the rule the Tour Guide's private repo already runs
+
+### Changed
+- `helpers/BUILD-STATE.md`: row 10 (the private repo's side merged; a live check closes it), row 11 in progress, the Phase 10 and Phase 11 logs, Next; README tree and timestamp
 
 ## [v01.50r] — 2026-10-03 03:50:11 AM EST
 

@@ -3,12 +3,13 @@
 #   scripts/merge-routine-memory.sh [claude/<branch>]   # no argument = sweep every origin/claude/* branch
 # A branch is merged ONLY when everything it changes (vs. its merge-base with main) is a routine memory path:
 # log/, quarantine/ and the pack's memory directories ({{MEMORY_DIRS}}) — the paths CLAUDE.md ROUTINE MODE lets a
-# routine write. Memory paths are markdown or JSON files at most one directory below those roots (quarantine/<sub>/*.md
-# held notes, log/maps-usage-ledger.json); JSON merges three-way (the Maps ledger through scripts/merge-maps-ledger.mjs),
-# only log/*.md is union-merged. Development-session branches touch other paths and are skipped untouched. Merged branches are deleted; conflicts are aborted, left for
+# routine write. Memory paths are markdown or JSON files at most three directories below those roots (quarantine/<sub>/*.md
+# held notes, a companion's quarantine/prefs/people/<slug>/*.md held notes, log/maps-usage-ledger.json); JSON merges
+# three-way (the Maps ledger through scripts/merge-maps-ledger.mjs), only log/*.md is union-merged. Development-session
+# branches touch other paths and are skipped untouched. Merged branches are deleted; conflicts are aborted, left for
 # the owner and fail the run.
 set -euo pipefail
-ALLOW='^(log|quarantine|{{MEMORY_DIRS_REGEX}})(/[^/]+)?/[^/]+\.(md|json)$'
+ALLOW='^(log|quarantine|{{MEMORY_DIRS_REGEX}})(/[^/]+){0,3}/[^/]+\.(md|json)$'
 
 git fetch -q origin '+refs/heads/main:refs/remotes/origin/main' '+refs/heads/claude/*:refs/remotes/origin/claude/*'
 git checkout -q -B main origin/main
