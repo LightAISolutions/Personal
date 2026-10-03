@@ -34,6 +34,7 @@
     "transit_preferences": {
       "type": "object",
       "additionalProperties": false,
+      "description": "Google transit options for TRANSIT days. Without allowedTravelModes the planner asks rail first (TRAIN, SUBWAY, LIGHT_RAIL, RAIL) and allows buses only for pairs rail cannot serve.",
       "properties": {
         "allowedTravelModes": { "type": "array", "minItems": 1, "maxItems": 5, "items": { "enum": ["BUS", "SUBWAY", "TRAIN", "LIGHT_RAIL", "RAIL"] } },
         "routingPreference": { "enum": ["LESS_WALKING", "FEWER_TRANSFERS"] }

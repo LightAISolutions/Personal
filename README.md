@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-02 08:03:06 PM EST` · Repo version: `v01.45r`
+Last updated: `2026-10-02 08:45:01 PM EST` · Repo version: `v01.46r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -508,6 +508,7 @@ Last updated: `2026-10-02 08:03:06 PM EST` · Repo version: `v01.45r`
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-later.mjs">planner-later.mjs</a> — Collects dropped candidates into Later lists with codes
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-legs.mjs">planner-legs.mjs</a> — Maps kit calls: route matrix, one leg, cross-check, Maps URLs
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-rail.mjs">planner-rail.mjs</a> — Station-based train estimates where Google has no transit route (Japan)
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-transit.mjs">planner-transit.mjs</a> — Rail first on TRANSIT days; buses only where rail has no route
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-rng.mjs">planner-rng.mjs</a> — Seeded RNG for deterministic tie-breaks
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-solve.mjs">planner-solve.mjs</a> — Held-Karp with time windows, bookings and the lunch slot
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/planner/planner-time.mjs">planner-time.mjs</a> — Minutes-of-day helpers and local → ISO times
@@ -678,6 +679,7 @@ Last updated: `2026-10-02 08:03:06 PM EST` · Repo version: `v01.45r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_payloads.test.js">pack_tour-guide_payloads.test.js</a> — Tour Guide pack: the six payload schemas and validatePayload
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_planner.test.js">pack_tour-guide_planner.test.js</a> — Tour Guide pack: solver and planner properties on a generated world
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_rail.test.js">pack_tour-guide_rail.test.js</a> — Tour Guide pack: station-based train estimates where Google has no transit
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_rail-first.test.js">pack_tour-guide_rail-first.test.js</a> — Tour Guide pack: rail-first transit preferences and the bus fallback
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_planner_world.js">pack_tour-guide_planner_world.js</a> — Generated planner world (seeded cities, hours, bookings) used by the planner tests
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_planner_transit-fallback.test.js">pack_tour-guide_planner_transit-fallback.test.js</a> — Tour Guide pack: distance estimates when Google has no transit route
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_redteam_callbacks.test.js">pack_tour-guide_redteam_callbacks.test.js</a> — Pack red-team B: forged, stale and malformed callback data at the webhook

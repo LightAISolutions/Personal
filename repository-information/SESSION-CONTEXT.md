@@ -7,8 +7,8 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 
 ## Latest Session
 
-**Date:** 2026-10-02 08:03:06 PM EST
-**Repo version:** v01.45r
+**Date:** 2026-10-02 08:45:01 PM EST
+**Repo version:** v01.46r
 **Branch:** `claude/project-thread-rarais` (Tour Guide project, thread started by "i want to do as much as I can do now", Opus 5.5 · high)
 
 **What we worked on**
@@ -16,10 +16,11 @@ Claude writes to this file when the developer says **"Remember Session"** — ca
 - Round-prefixed typed picks, `/repick` with numbers, the app Shortlist with every round, `/dates` and `trip_update`
 - Other travellers: people list, who comes, in-app interviews on the owner's phone, the party excerpt
 - The profile excerpt moved into the pack (`packs/tour-guide/travellers/`) with `dietary` required; booking and activity visit lengths; `upload.mjs --key-from`; the `/smart on` wording; core route `lock` and formula escaping; masthead name
+- Owner asked for transit first and trains over buses (v01.46r): TRANSIT days ask Google for rail only and allow buses just where rail has no route; Japan train estimates look for stations within 1.3 km; the owner's three Google screenshots put the estimates −7 to +2 min off, so the ride constants stay
 
 **Where we left off**
-- Personal v01.45r pushed; the private repo re-pin and skill changes go on its `claude/project-thread-rarais` branch as a PR for the owner to merge
-- Two decision cards open with the owner: Japan train estimates (Keep · Tune · Pay) and how companions count (default: their limits, your lead)
+- Personal v01.46r pushed; the private repo's part 1 PR is merged; the v01.46r re-pin goes on a new private-repo PR for the owner to merge
+- Japan train estimates card (Keep · Tune · Pay) still open; the companion card was answered "Their limits, your lead" (as built)
 
 **Key decisions made**
 - Stored Google hours in the quick lane declined (Maps terms forbid storing hours)

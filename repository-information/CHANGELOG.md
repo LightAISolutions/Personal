@@ -3,11 +3,22 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 46/100`
+`Sections: 47/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.46r] — 2026-10-02 08:45:01 PM EST
+
+> **Prompt:** "See attached screenshots for what Google Maps says. I would prefer Tour Guide predominantly give me Transit options since I will likely not have a car and will want to travel across distances that are unrealistic for walking. Within the Transit options, I would prefer train/metro > bus, especially in Japan." *(with three Google Maps screenshots of transit times)*
+
+### Added
+- **Rail first on TRANSIT days** (pack `planner/planner-transit.mjs`): `transitPrefs(trip)` asks Google for train, metro and tram routes only unless the trip lists its own `allowedTravelModes`; `withBusFallback` re-asks with buses allowed for just the pairs rail could not serve, and stops after one probe element where Google has no transit at all (Japan). Tests `pack_tour-guide_rail-first.test.js`
+
+### Changed
+- The Japan train estimates look for stations up to 1.3 km away (was 1 km), so a lodging whose nearest station is a 15–20 minute walk still gets a train leg instead of the plain distance estimate. The other constants stay: three real Google times from the owner came out 7 min under, 2 min over and 3 min under
+- Docs: the pack README (rail first, 1.3 km), the trip schema's `transit_preferences` description, `helpers/decisions/TG-PHASE-8.md` §5, `helpers/status/PHASE-8-RESUME.md`, `helpers/BUILD-STATE.md` Phase 8 log
 
 ## [v01.45r] — 2026-10-02 08:03:06 PM EST
 

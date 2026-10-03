@@ -7,6 +7,7 @@ import { hm, localToIso } from './planner-time.mjs';
 import { earliestFit } from './planner-hours.mjs';
 import { solveDay } from './planner-solve.mjs';
 import { fetchMatrix, fetchLeg, crossCheck, legUrl, dayLink, pointKey, transitFallback } from './planner-legs.mjs';
+import { transitPrefs } from './planner-transit.mjs';
 import { LUNCH_WINDOW, DINNER_EARLIEST, breakfastLen } from './planner-input.mjs';
 
 export const SOLVER_METHOD = 'held-karp/time-windows';
@@ -36,7 +37,7 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
   const breakfast = breakfastLen(day, ctx.breakfastAtLodging);
   const departAt = day.dayStart + breakfast;
   const S = day.lodging_start, E = day.lodging_end;
-  const tp = mode === 'TRANSIT' ? trip.transit_preferences || null : null;
+  const tp = mode === 'TRANSIT' ? transitPrefs(trip) : null; // rail first; buses only where rail has no route
   const fallback = mode === 'TRANSIT' ? transitFallback(trip) : null;
   const usage = { matrix_elements: 0, route_calls: 0 };
   const pt = (x) => (x === 'S' ? S : x === 'E' ? E : candPoint(x));

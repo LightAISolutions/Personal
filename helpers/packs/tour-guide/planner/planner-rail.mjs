@@ -10,7 +10,7 @@
 import { haversineKm } from './planner-geo.mjs';
 
 export const RAIL = Object.freeze({
-  STATION_RADIUS_M: 1000, // farthest station we walk to
+  STATION_RADIUS_M: 1300, // farthest station we walk to (~20 min); hillside hotels often sit 1–1.3 km from one
   STATIONS_PER_POINT: 3,
   WALK_M_PER_MIN: 80, // 4.8 km/h
   WALK_DETOUR: 1.25, // street distance ÷ straight line

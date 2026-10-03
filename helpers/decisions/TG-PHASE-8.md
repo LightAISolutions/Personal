@@ -42,4 +42,13 @@ Phase 8 was split by the owner on 2026-10-02 ("do as much as I can do now"): eve
 - `/dates` takes one date for a one-day trip and refuses spans over the plan limit; nothing is saved on a refusal.
 - An empty "who comes" list is kept, so the next request clears the trip file's travellers.
 
+## 5 Transit first, trains over buses (owner request, 2026-10-03)
+
+The owner will not have a car and wants transit for anything too far to walk, with train and metro ahead of buses, especially in Japan.
+
+- **Transit is already the default.** New trips start with `modes.default` TRANSIT (allowed TRANSIT and WALK); the planner never switches a TRANSIT day to driving. No change.
+- **Rail first.** On a TRANSIT day the planner sends `allowedTravelModes` TRAIN, SUBWAY, LIGHT_RAIL, RAIL unless the trip lists its own. `withBusFallback` re-asks with buses allowed only for the pairs that got no rail route; it decides once per build whether Google has transit at all (a rail route in the answer, or one probe element) and never re-asks where it has none. A trip that wants buses on equal terms lists `BUS` in `transit_preferences.allowedTravelModes`. The budget estimate does not count the re-asks.
+- **Japan.** Google returns no transit there, so every TRANSIT leg is a station-based train estimate, which never uses buses. The Maps link still opens Google's own transit options, which may list a bus first; the Maps URL format has no way to ask for trains only.
+- **Train estimates checked against the owner's screenshots.** Three real Google transit times from the owner's lodging (32, 37 and 61 min) against the estimates: 2 min over, 3 min under, 7 min under (the long cross-city ride needs two changes). The 2026-10-01 Tokyo check ran 0–10 min over. With errors on both sides the ride constants stay. The station search radius goes from 1 km to 1.3 km: Google's own best routes from that lodging walk 14–19 minutes to the station, and a lodging with no station inside the old 1 km would have fallen back to the plain distance estimate. The decision card (Keep · Tune · Pay) is still the owner's to answer; this is evidence for it, not the answer.
+
 Developed by: LightAISolutions
