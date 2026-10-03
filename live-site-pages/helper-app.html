@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.02w">
+  <meta name="build-version" content="v01.03w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -80,6 +80,9 @@
     .choices { display: flex; flex-wrap: wrap; gap: 8px; }
     .choices button { min-height: 44px; padding: 8px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--section); }
     .choices button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+    .sec-count { margin-left: 8px; font: 12px/1 var(--mono); letter-spacing: 0; color: var(--hint); }
+    #who { margin-bottom: 14px; }
+    .note .btn { flex: 0 0 auto; white-space: nowrap; }
 
     /* ── shortlist (the checklist) ── */
     .item { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--line); }
@@ -127,7 +130,7 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.02w';
+    var APP_VERSION = 'v01.03w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'facts', label: 'Facts' },
@@ -135,7 +138,7 @@
     ];
     var TICKS = [{ v: 'w', text: '✅ Want' }, { v: 'l', text: '🔖 Later' }, { v: 's', text: '❌ Skip' }];
     var tg = (window.Telegram && window.Telegram.WebApp) || null;
-    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, facts: null, factChoices: {}, factEdits: {}, person: '', busy: false };
+    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', busy: false };
     var $ = function (id) { return document.getElementById(id); };
     var main = $('main');
 
@@ -252,6 +255,7 @@
     }
     function mainProgress(on) { try { if (tg && tg.MainButton) { if (on) tg.MainButton.showProgress(false); else tg.MainButton.hideProgress(); } } catch (e) { /* older clients */ } }
     function go(screen, trip) {
+      flushDraft();   // an unsent interview draft is written before the screen changes
       S.screen = screen; if (trip !== undefined) S.trip = trip;
       setMain('', null);
       Array.prototype.forEach.call($('nav').children, function (b) { if (b.getAttribute('data-screen') === screen) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
@@ -458,90 +462,195 @@
       });
     }
 
-    /* ---------- interview: one scrollable form from the bank ---------- */
+    /* ---------- interview: one scrollable form from the bank, saved as you go ---------- */
+    // Each person's unsent answers (the owner's, or a companion's on the owner's phone) stay as a draft in this browser and in
+    // Telegram's CloudStorage, so closing the app, losing the network or switching who answers loses nothing; a send clears it.
+    var ESSENTIALS = ['food', 'avoid', 'mobility', 'pace', 'activities', 'crowds'];   // what a companion's answers change in a shared plan
+    var draft = { key: '', data: null, timer: null }, ivRun = 0;
+    function hash(s) { var h = 5381, i; for (i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
+    function draftKey(person) { return ('iv_' + hash(S.core) + '_' + (person ? 'p_' + person : 'me')).replace(/[^A-Za-z0-9_-]/g, '_').slice(0, 120); }
+    function readDraft(key, done) {   // the newer of the local and the cloud copy; CloudStorage gets 1.5 s to answer
+      var local = null, sent = false;
+      var finish = function (cloud) { if (sent) return; sent = true; var a = obj(local), c = obj(cloud); done(c.at && str(c.at) > str(a.at) ? c : a.at ? a : null); };
+      try { local = JSON.parse(window.localStorage.getItem(key) || 'null'); } catch (e) { local = null; }
+      try {
+        if (tg && tg.CloudStorage) { setTimeout(function () { finish(null); }, 1500); return tg.CloudStorage.getItem(key, function (err, v) { var c = null; if (!err && v) { try { c = JSON.parse(v); } catch (e) { c = null; } } finish(c); }); }
+      } catch (e) { /* older clients */ }
+      finish(null);
+    }
+    function flushDraft() {
+      if (!draft.timer) return;
+      clearTimeout(draft.timer); draft.timer = null;
+      var s = JSON.stringify(draft.data);
+      try { window.localStorage.setItem(draft.key, s); } catch (e) { /* private window or storage full */ }
+      try { if (tg && tg.CloudStorage && s.length <= 4096) tg.CloudStorage.setItem(draft.key, s, function () {}); } catch (e) { /* older clients */ }
+      setStatus('Saved');
+    }
+    function saveDraft(key, data) { if (draft.timer && draft.key !== key) flushDraft(); draft.key = key; draft.data = data; clearTimeout(draft.timer); draft.timer = setTimeout(flushDraft, 300); }
+    function dropDraft(key) {
+      if (draft.key === key) { clearTimeout(draft.timer); draft.timer = null; }
+      try { window.localStorage.removeItem(key); } catch (e) { /* private window */ }
+      try { if (tg && tg.CloudStorage) tg.CloudStorage.removeItem(key, function () {}); } catch (e) { /* older clients */ }
+    }
+    function answered(qid) { return (S.answers[qid] || []).length > 0 || str(S.typed[qid]).trim() !== ''; }
+    function restoreDraft(d, qs) {   // only questions the bank still asks and options it still offers; returns how many came back
+      var answers = obj(d.answers), typed = obj(d.typed), back = {}, own = function (qid) { return Object.prototype.hasOwnProperty.call(qs, qid); };
+      Object.keys(answers).forEach(function (qid) {
+        if (!own(qid)) return;
+        var q = qs[qid], vals = list(answers[qid]).map(function (v) { return str(v, 60); }).filter(function (v, i, all) { return q.values.indexOf(v) >= 0 && all.indexOf(v) === i; }).slice(0, q.single ? 1 : 5);
+        if (vals.length) { S.answers[qid] = vals; back[qid] = 1; }
+      });
+      Object.keys(typed).forEach(function (qid) { var t = str(typed[qid], 300); if (own(qid) && (qs[qid].text || qs[qid].other) && t.trim()) { S.typed[qid] = t; back[qid] = 1; } });
+      return Object.keys(back).length;
+    }
+    function confirmThen(msg, fn) {
+      try { if (tg && tg.showConfirm) return tg.showConfirm(msg, function (yes) { if (yes) fn(); }); } catch (e) { /* older clients */ }
+      if (window.confirm(msg)) fn();
+    }
     function showInterview() {
-      render(stateView('', 'Loading…'));
+      var run = ++ivRun, live = function () { return run === ivRun && S.screen === 'interview'; };
+      flushDraft(); render(stateView('', 'Loading…'));
       call('people.list', {}, function (pl) {
+        if (!live()) return;
         var people = list(pl.people).map(obj), max = num(pl.max) || 8;
         if (S.person && !people.some(function (p) { return str(p.slug, 40) === S.person; })) S.person = '';
-        var who = S.person ? people.filter(function (p) { return str(p.slug, 40) === S.person; })[0] : null, whoName = who ? str(who.name, 40) : '';
-        call('interview.bank', S.person ? { person: S.person } : {}, function (b) {
-        var bank = obj(b.bank), sections = list(bank.sections); S.bank = bank; S.answers = {}; S.typed = {};
-        list(b.answers).forEach(function (a) { a = obj(a); var q = str(a.qid, 32); (S.answers[q] = S.answers[q] || []).push(str(a.value, 60)); });
-        if (!sections.length) return render(stateView('🗣', 'No interview available', 'The helper has no question bank yet.'));
-        var view = el('div', {}, [el('h2', { text: str(bank.title, 80) || 'Interview' })]);
-        // Who is answering: the owner, or a companion on the owner's phone (their answers build their own profile, never the owner's).
-        view.appendChild(el('label', { class: 'q', text: 'Who is answering?' }));
-        var whoRow = el('div', { class: 'choices', id: 'who' });
-        var pick = function (slug) { haptic(); S.person = slug; S.addPerson = false; showInterview(); };
-        whoRow.appendChild(el('button', { type: 'button', text: 'Me', 'data-v': '', 'aria-pressed': S.person ? 'false' : 'true', on: { click: function () { pick(''); } } }));
-        people.forEach(function (p) {
-          var slug = str(p.slug, 40);
-          whoRow.appendChild(el('button', { type: 'button', text: str(p.name, 40) + (p.interviewed ? ' ✓' : ''), 'data-v': slug, 'aria-pressed': S.person === slug ? 'true' : 'false', on: { click: function () { pick(slug); } } }));
-        });
-        if (people.length < max) whoRow.appendChild(el('button', { type: 'button', text: '＋ Someone else', 'data-v': '+', 'aria-pressed': S.addPerson ? 'true' : 'false', on: { click: function () { S.addPerson = !S.addPerson; showInterview(); } } }));
-        view.appendChild(whoRow);
-        if (S.addPerson) {
-          var nameIn = el('input', { type: 'text', id: 'person-name', maxlength: '40', placeholder: 'Their first name', autocomplete: 'off' });
-          var addIt = function () {
-            var nm = str(nameIn.value, 40).replace(/\s+/g, ' ').trim();
-            if (!nm) { setStatus('Type a name first'); return; }
-            call('people.add', { name: nm }, function (r) { pick(str(r.slug, 40)); },
-              function (err) { setStatus(str(err.reason, 20) === 'too_many' ? 'That is the most the helper keeps' : 'Use letters only for the name'); });
-          };
-          view.appendChild(el('div', { class: 'row', style: 'margin-top:8px' }, [el('div', { class: 'grow' }, [nameIn]), el('button', { class: 'btn', type: 'button', text: 'Add', on: { click: addIt } })]));
-        }
-        view.appendChild(el('p', { class: 'lede', text: who ? 'Hand the phone to ' + whoName + '. Their answers build ' + whoName + '’s own profile, never yours; plans then respect their limits too.'
-          : 'Answer what you like and skip the rest — send once at the end.' }));
-        var count = 0;
-        sections.forEach(function (sec) {
-          sec = obj(sec); view.appendChild(el('h3', { text: str(sec.title || sec.id, 60) }));
-          list(sec.questions).forEach(function (q) {
-            q = obj(q); var qid = str(q.qid, 32), kind = str(q.kind, 10), single = kind === 'scale' || kind === 'pick'; count++;
-            view.appendChild(el('label', { class: 'q', text: str(q.text, 300) }));
-            if (kind === 'text' || q.other) {
-              var inp = el('input', { type: 'text', maxlength: '300', placeholder: kind === 'text' ? 'Type your answer — commas separate several' : '✏️ Something else?', on: { input: function () { S.typed = S.typed || {}; S.typed[qid] = str(inp.value, 300); } } });
-              if (kind === 'text') { view.appendChild(inp); return; }
-              view.appendChild(choiceRow(q, qid, single)); view.appendChild(el('div', { style: 'margin-top:8px' }, [inp])); return;
-            }
-            view.appendChild(choiceRow(q, qid, single));
-          });
-        });
-        function choiceRow(q, qid, single) {
-          var row = el('div', { class: 'choices' });
-          list(q.options).slice(0, 12).forEach(function (o) {
-            o = obj(o); var v = str(o.value, 60);
-            row.appendChild(el('button', { type: 'button', text: str(o.label, 40), 'aria-pressed': (S.answers[qid] || []).indexOf(v) >= 0 ? 'true' : 'false', on: { click: function () {
-              var cur = S.answers[qid] || [], i = cur.indexOf(v); haptic();
-              if (single) cur = i >= 0 ? [] : [v]; else if (i >= 0) cur.splice(i, 1); else if (cur.length < 5) cur.push(v);
-              S.answers[qid] = cur;
-              Array.prototype.forEach.call(row.children, function (x) { x.setAttribute('aria-pressed', cur.indexOf(x.getAttribute('data-v')) >= 0 ? 'true' : 'false'); });
-            } }, 'data-v': v }));
-          });
-          return row;
-        }
-        var submit = function () {
-          var answers = [], k, typed = S.typed || {};
-          Object.keys(S.answers).forEach(function (q) { if (S.answers[q].length) answers.push({ qid: q, values: S.answers[q].slice(0, 5) }); });
-          for (k in typed) if (Object.prototype.hasOwnProperty.call(typed, k) && typed[k].trim()) {
-            var vals = typed[k].split(/[\n,;]+/).map(function (v) { return v.replace(/\s+/g, ' ').trim().slice(0, 60); }).filter(Boolean).slice(0, 5);
-            var ex = answers.filter(function (a) { return a.qid === k; })[0];
-            if (ex) ex.values = ex.values.concat(vals).slice(0, 5); else if (vals.length) answers.push({ qid: k, values: vals });
-          }
-          if (!answers.length) { setStatus('Nothing answered yet'); return; }
-          mainProgress(true);
-          var sendArgs = { version: num(bank.v) || 1, answers: answers };
-          if (S.person) sendArgs.person = S.person;
-          call('interview.submit', sendArgs, function (r) {
-            mainProgress(false); haptic('ok'); setMain('', null);
-            render(stateView('✅', 'Thanks', num(r.answers) + ' answer' + (num(r.answers) === 1 ? '' : 's') + ' noted — the helper ' + (whoName ? 'builds ' + whoName + '’s profile.' : 'updates your profile.'), el('button', { class: 'btn', type: 'button', text: 'Back home', on: { click: function () { go('home'); } } })));
-          }, function (err) { mainProgress(false); setStatus('Not sent: ' + str(err.reason, 40)); });
+        var who = S.person ? people.filter(function (p) { return str(p.slug, 40) === S.person; })[0] : null, key = draftKey(S.person), got = { b: null, d: undefined };
+        var both = function () {   // the bank and the draft arrive in either order
+          if (!got.b || got.d === undefined || !live()) return;
+          var b = got.b, d = got.d, bank = obj(b.bank), sections = list(bank.sections).map(obj), qs = {}, total = 0;
+          S.bank = bank; S.answers = {}; S.typed = {};
+          if (!sections.length) return render(stateView('🗣', 'No interview available', 'The helper has no question bank yet.'));
+          sections.forEach(function (sec) { list(sec.questions).forEach(function (q) { q = obj(q); var kind = str(q.kind, 10); total++;
+            qs[str(q.qid, 32)] = { text: kind === 'text', other: !!q.other, single: kind === 'scale' || kind === 'pick', values: list(q.options).map(function (o) { return str(obj(o).value, 60); }) }; }); });
+          list(b.answers).forEach(function (a) { a = obj(a); var q = str(a.qid, 32); (S.answers[q] = S.answers[q] || []).push(str(a.value, 60)); });
+          var kept = d ? restoreDraft(d, qs) : 0;
+          drawInterview({ people: people, max: max, who: who || null, whoName: who ? str(who.name, 40) : '', bank: bank, sections: sections, qs: qs, total: total, key: key, kept: kept, keptAt: kept ? str(d.at, 40) : '' });
         };
-        view.appendChild(el('p', { class: 'meta', text: count + ' questions' }));
-        view.appendChild(el('button', { class: 'btn wide', type: 'button', text: 'Send answers', on: { click: submit } }));
-        render(view); setMain('Send answers', submit);
-        });
+        readDraft(key, function (d) { got.d = d; both(); });
+        call('interview.bank', S.person ? { person: S.person } : {}, function (b) { got.b = b; both(); });
       });
+    }
+    function drawInterview(c) {
+      var view = el('div', {}, [el('h2', { text: c.who ? c.whoName + '’s interview' : str(c.bank.title, 80) || 'Interview' })]), counters = [];
+      var prog = el('p', { class: 'meta', id: 'iv-progress', 'aria-live': 'polite' }), bottom = el('p', { class: 'meta', id: 'iv-progress-end' });
+      var sendBtn = el('button', { class: 'btn wide', type: 'button', id: 'iv-send', text: 'Send answers', on: { click: function () { submit(); } } });
+      // Who is answering: the owner, or a companion on the owner's phone (their answers build their own profile, never the owner's).
+      view.appendChild(el('label', { class: 'q', text: 'Who is answering?' }));
+      var whoRow = el('div', { class: 'choices', id: 'who' });
+      var pick = function (slug) { haptic(); S.person = slug; S.addPerson = false; showInterview(); };
+      whoRow.appendChild(el('button', { type: 'button', text: 'Me', 'data-v': '', 'aria-pressed': S.person ? 'false' : 'true', on: { click: function () { pick(''); } } }));
+      c.people.forEach(function (p) {
+        var slug = str(p.slug, 40);
+        whoRow.appendChild(el('button', { type: 'button', text: str(p.name, 40) + (p.interviewed ? ' ✓' : ''), 'data-v': slug, 'aria-pressed': S.person === slug ? 'true' : 'false', on: { click: function () { pick(slug); } } }));
+      });
+      if (c.people.length < c.max) whoRow.appendChild(el('button', { type: 'button', text: '＋ Someone else', 'data-v': '+', 'aria-pressed': S.addPerson ? 'true' : 'false', on: { click: function () { S.addPerson = !S.addPerson; showInterview(); } } }));
+      view.appendChild(whoRow);
+      if (S.addPerson) {
+        var nameIn = el('input', { type: 'text', id: 'person-name', maxlength: '40', placeholder: 'Their first name', autocomplete: 'off' });
+        var addIt = function () {
+          var nm = str(nameIn.value, 40).replace(/\s+/g, ' ').trim();
+          if (!nm) { setStatus('Type a name first'); return; }
+          call('people.add', { name: nm }, function (r) { pick(str(r.slug, 40)); },
+            function (err) { setStatus(str(err.reason, 20) === 'too_many' ? 'That is the most the helper keeps' : 'Use letters only for the name'); });
+        };
+        view.appendChild(el('div', { class: 'row', style: 'margin-top:8px' }, [el('div', { class: 'grow' }, [nameIn]), el('button', { class: 'btn', type: 'button', text: 'Add', on: { click: addIt } })]));
+      }
+      var order = c.sections, optional = [];
+      if (c.who) {   // a companion: first what changes a shared plan (limits, pace, interests), the rest folded away
+        var ess = c.sections.filter(function (s) { return ESSENTIALS.indexOf(str(s.id, 32)) >= 0; });
+        if (ess.length) {
+          optional = c.sections.filter(function (s) { return ESSENTIALS.indexOf(str(s.id, 32)) < 0; });
+          order = ess.sort(function (a, b) { return ESSENTIALS.indexOf(str(a.id, 32)) - ESSENTIALS.indexOf(str(b.id, 32)); });
+        }
+      }
+      view.appendChild(el('p', { class: 'lede', text: c.who ? 'Hand the phone to ' + c.whoName + '. Their answers build ' + c.whoName + '’s own profile, kept for future trips; plans then respect their limits too.'
+        : 'Answer what you like and skip the rest. Answers save as you go; send once at the end.' }));
+      if (c.who) view.appendChild(el('div', { class: 'note', text: c.whoName + ': answer what you like and skip the rest. Your answers save as you go, so you can stop and finish later.' + (optional.length ? ' The first part matters most; the rest is optional.' : '') }));
+      if (c.kept) {
+        var at = new Date(c.keptAt), when = isFinite(at.getTime()) ? at.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : '';
+        view.appendChild(el('div', { class: 'note row between', id: 'iv-resumed' }, [el('div', { class: 'grow', text: 'Picked up where you left off: ' + c.kept + ' answer' + (c.kept === 1 ? '' : 's') + ' kept' + (when ? ' from ' + when : '') + '.' }),
+          el('button', { class: 'btn danger', type: 'button', text: 'Start over', on: { click: function () { confirmThen('Clear these answers and start over?', function () { dropDraft(c.key); showInterview(); }); } } })]));
+      }
+      view.appendChild(prog);
+      var changed = function () {   // every tap or keystroke: keep the draft, then recount
+        var answers = {}, typed = {};
+        Object.keys(S.answers).forEach(function (q) { if (S.answers[q].length) answers[q] = S.answers[q].slice(0, 5); });
+        Object.keys(S.typed).forEach(function (q) { if (S.typed[q].trim()) typed[q] = S.typed[q]; });
+        if (Object.keys(answers).length || Object.keys(typed).length) saveDraft(c.key, { v: num(c.bank.v) || 1, at: new Date().toISOString(), answers: answers, typed: typed });
+        else dropDraft(c.key);
+        refresh();
+      };
+      var refresh = function () {
+        var n = Object.keys(c.qs).filter(function (q) { return answered(q); }).length, line = n + ' of ' + c.total + ' answered';
+        prog.textContent = line; bottom.textContent = line;
+        counters.forEach(function (k) { var a = k.qids.filter(function (q) { return answered(q); }).length; k.node.textContent = a ? a + '/' + k.qids.length : ''; });
+        var label = n ? 'Send ' + n + ' answer' + (n === 1 ? '' : 's') : 'Send answers';
+        sendBtn.textContent = label; setMain(label, submit);
+      };
+      var choiceRow = function (q, qid, single) {
+        var row = el('div', { class: 'choices', 'data-q': qid });
+        list(q.options).slice(0, 12).forEach(function (o) {
+          o = obj(o); var v = str(o.value, 60);
+          row.appendChild(el('button', { type: 'button', text: str(o.label, 40), 'data-v': v, 'aria-pressed': (S.answers[qid] || []).indexOf(v) >= 0 ? 'true' : 'false', on: { click: function () {
+            var cur = (S.answers[qid] || []).slice(), i = cur.indexOf(v); haptic();
+            if (single) cur = i >= 0 ? [] : [v]; else if (i >= 0) cur.splice(i, 1); else if (cur.length < 5) cur.push(v);
+            S.answers[qid] = cur;
+            Array.prototype.forEach.call(row.children, function (x) { x.setAttribute('aria-pressed', cur.indexOf(x.getAttribute('data-v')) >= 0 ? 'true' : 'false'); });
+            changed();
+          } } }));
+        });
+        return row;
+      };
+      var drawSection = function (sec, into) {
+        var cnt = el('span', { class: 'sec-count' }), qids = [];
+        into.appendChild(el('h3', { 'data-sec': str(sec.id, 32) }, [str(sec.title || sec.id, 60), cnt]));
+        list(sec.questions).forEach(function (q) {
+          q = obj(q); var qid = str(q.qid, 32), kind = str(q.kind, 10), single = kind === 'scale' || kind === 'pick'; qids.push(qid);
+          into.appendChild(el('label', { class: 'q', text: str(q.text, 300) }));
+          if (kind === 'text' || q.other) {
+            var inp = el('input', { type: 'text', maxlength: '300', 'data-q': qid, placeholder: kind === 'text' ? 'Type your answer — commas separate several' : '✏️ Something else?', on: { input: function () { S.typed[qid] = str(inp.value, 300); changed(); } } });
+            inp.value = S.typed[qid] || '';
+            if (kind === 'text') { into.appendChild(inp); return; }
+            into.appendChild(choiceRow(q, qid, single)); into.appendChild(el('div', { style: 'margin-top:8px' }, [inp])); return;
+          }
+          into.appendChild(choiceRow(q, qid, single));
+        });
+        counters.push({ node: cnt, qids: qids });
+      };
+      var submit = function () {
+        var answers = [];
+        Object.keys(S.answers).forEach(function (q) { if (S.answers[q].length) answers.push({ qid: q, values: S.answers[q].slice(0, 5) }); });
+        Object.keys(S.typed).forEach(function (k) {
+          if (!S.typed[k].trim()) return;
+          var vals = S.typed[k].split(/[\n,;]+/).map(function (v) { return v.replace(/\s+/g, ' ').trim().slice(0, 60); }).filter(Boolean).slice(0, 5);
+          var ex = answers.filter(function (a) { return a.qid === k; })[0];
+          if (ex) ex.values = ex.values.concat(vals).slice(0, 5); else if (vals.length) answers.push({ qid: k, values: vals });
+        });
+        if (!answers.length) { setStatus('Nothing answered yet'); return; }
+        flushDraft(); mainProgress(true);
+        var sendArgs = { version: num(c.bank.v) || 1, answers: answers };
+        if (S.person) sendArgs.person = S.person;
+        call('interview.submit', sendArgs, function (r) {
+          dropDraft(c.key); S.answers = {}; S.typed = {};
+          mainProgress(false); haptic('ok'); setMain('', null);
+          render(stateView('✅', 'Thanks', num(r.answers) + ' answer' + (num(r.answers) === 1 ? '' : 's') + ' noted — the helper ' + (c.whoName ? 'builds ' + c.whoName + '’s profile.' : 'updates your profile.'), homeBtn()));
+        }, function (err) { mainProgress(false); setStatus('Not sent: ' + str(err.reason, 40) + ' — your answers are kept'); });
+      };
+      order.forEach(function (sec) { drawSection(sec, view); });
+      if (optional.length) {
+        var nOpt = 0, more = el('div', { id: 'iv-optional' });
+        optional.forEach(function (s) { nOpt += list(s.questions).length; drawSection(s, more); });
+        var open = optional.some(function (s) { return list(s.questions).some(function (q) { return answered(str(obj(q).qid, 32)); }); });
+        var foldText = function () { return open ? 'Hide the optional questions' : 'Show ' + nOpt + ' optional question' + (nOpt === 1 ? '' : 's'); };
+        var fold = el('button', { class: 'btn ghost wide', type: 'button', id: 'iv-fold', text: foldText(), 'aria-expanded': open ? 'true' : 'false', 'aria-controls': 'iv-optional', on: { click: function () {
+          open = !open; more.classList.toggle('hidden', !open); fold.textContent = foldText(); fold.setAttribute('aria-expanded', open ? 'true' : 'false');
+        } } });
+        if (!open) more.classList.add('hidden');
+        view.appendChild(el('p', { class: 'lede', style: 'margin-top:24px', text: 'That covers what changes a shared plan. Optional: ' + optional.map(function (s) { return str(s.title || s.id, 40); }).join(', ') + '.' }));
+        view.appendChild(fold); view.appendChild(more);
+      }
+      view.appendChild(bottom); view.appendChild(sendBtn);
+      render(view); refresh();
     }
 
     /* ---------- brochure: the trip digest, then the HTML in a sandboxed frame ---------- */
@@ -641,6 +750,7 @@
       try { tg.ready(); tg.expand(); } catch (e) { /* older clients */ }
       applyTheme(); applyViewport();
       try { tg.onEvent('themeChanged', applyTheme); tg.onEvent('viewportChanged', applyViewport); } catch (e) { /* older clients */ }
+      document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') flushDraft(); }); window.addEventListener('pagehide', flushDraft);
       try { if (tg.MainButton) tg.MainButton.onClick(function () { if (mainBtn.fn && !S.busy) mainBtn.fn(); }); if (tg.BackButton) tg.BackButton.onClick(function () { go('home'); }); } catch (e) { /* older clients */ }
       var fromUrl = readParams();
       resolveCore(fromUrl, function () {

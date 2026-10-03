@@ -3,11 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 47/100`
+`Sections: 48/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.47r] — 2026-10-03 12:51:29 AM EST
+
+> **Prompt:** "My companion is [redacted]. I will have her complete the interview soon. Make sure it is easy to fill in on the Tour Guide app. Allow me to name the profile "[name]", and save the preferences for future trips." *(personal details redacted; the same message also covered a hotel booking and a train-seat question, which change no code here)*
+
+### Added
+- **Interview answers save as you go** (shell `live-site-pages/helper-app.html`): each person's unsent answers are kept on the phone (browser storage, plus Telegram CloudStorage when they fit its 4 KB value limit; the newer copy wins), written after each change and whenever the screen changes, "Who is answering?" switches or the app closes. Reopening restores them with "Picked up where you left off" and a **Start over** button; a successful send clears them and a refused send keeps them
+- **Live progress** on the interview: "N of M answered" at the top and bottom, a count per section, and the send buttons say how many answers go out
+
+### Changed
+- A companion's interview is titled with their name and asks the questions that shape a shared plan first (Food, Must avoid, Mobility, Pace & rhythm, Activities, Crowds & timing); the other sections are folded under "Show N optional questions"
+- Tests: `helpers/tests/shell_helper-app.playwright.mjs` covers saving, restoring after a reload and from CloudStorage alone, switching people, Start over, clearing on send and keeping on a refused send
+- Docs: `helpers/docs/TG-SWITCH-ON.md` (Travelling with)
 
 ## [v01.46r] — 2026-10-02 08:45:01 PM EST
 

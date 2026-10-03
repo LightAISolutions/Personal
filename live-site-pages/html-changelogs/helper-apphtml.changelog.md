@@ -3,11 +3,20 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 2/50`
+`Sections: 3/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.03w] — 2026-10-03 12:51:29 AM EST — v01.47r
+
+### Added
+- Interview answers save as you go: closing the app, switching who is answering or losing the connection keeps them, and reopening picks up where you left off (with a Start over button)
+- A progress count on the interview, overall and per section
+
+### Changed
+- Someone travelling with you sees their name on the interview and gets the questions that shape shared plans first; the rest is folded away as optional
 
 ## [v01.02w] — 2026-10-02 08:03:06 PM EST — v01.45r
 
