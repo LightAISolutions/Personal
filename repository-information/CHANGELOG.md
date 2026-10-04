@@ -3,11 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 61/100`
+`Sections: 62/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.61r] — 2026-10-03 08:05:52 PM EST
+
+> **Prompt:** "The arrow button in the top right only makes the app go from a literal bar to the small window it started in. It does not go to full screen at all."
+
+### Fixed
+- **The Mini App shell's full-screen button never showed on Web K** (`live-site-pages/helper-app.html`, app v01.10w): the owner's screenshots at v01.09w show the masthead without ⤢ (the arrows he pressed are the client's own collapse/restore control in the window's title bar). Web K requests its Mini App URL with `platform: 'web'` (`src/lib/appManagers/appAttachMenuBotsManager.ts`), so `tgWebAppPlatform` is not `webk`/`weba` and `webFull()`'s exact match failed. The test is now `/^web/` on the platform string; the Bot API 8.0 and `requestFullscreen` checks stay
+- README timestamp and the app's version line
 
 ## [v01.60r] — 2026-10-03 07:48:06 PM EST
 

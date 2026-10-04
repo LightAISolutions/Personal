@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.09w">
+  <meta name="build-version" content="v01.10w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -165,7 +165,7 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.09w';
+    var APP_VERSION = 'v01.10w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'compare', label: 'Compare' }, { id: 'facts', label: 'Facts' },
@@ -1202,7 +1202,7 @@
       try { if (!tg.isExpanded) tg.expand(); } catch (e) { /* older clients */ }
     }
     function webFull() {
-      return !!tg && /^(webk|weba)$/.test(str(tg.platform, 20)) && typeof tg.requestFullscreen === 'function' && (!tg.isVersionAtLeast || tg.isVersionAtLeast('8.0'));
+      return !!tg && /^web/.test(str(tg.platform, 20)) && typeof tg.requestFullscreen === 'function' && (!tg.isVersionAtLeast || tg.isVersionAtLeast('8.0'));
     }
     function applyFull() {
       var on = !!(tg && tg.isFullscreen), b = $('full'), label = on ? 'Exit full screen' : 'Full screen';
