@@ -1,0 +1,20 @@
+{
+  "about": "Invented data for the {{NAME}} branch (helpers/tools/new-branch.mjs): an invented trip{{#ENVELOPE}}, and payloads every validator must accept or refuse alike{{/ENVELOPE}}.",
+{{#ENVELOPE}}  "valid": [
+    { "v": 1, "trip": "quillmere-2027", "note": "Two quiet mornings by the reed beds." },
+    { "trip": "quillmere-2027", "note": "x" }
+  ],
+  "invalid": [
+    "not an object",
+    null,
+    [],
+    { "v": 1, "trip": "quillmere-2027" },
+    { "v": 1, "trip": "quillmere-2027", "note": "" },
+    { "v": 2, "trip": "quillmere-2027", "note": "ok" },
+    { "v": 1, "trip": "Quillmere 2027", "note": "ok" },
+    { "v": 1, "trip": "quillmere-2027", "note": "ok", "rating": 4.6 },
+    { "v": 1, "trip": "quillmere-2027", "note": 7 },
+    { "v": 1, "trip": "quillmere-2027", "note": "{{LONG_NOTE}}" }
+  ],
+{{/ENVELOPE}}  "trip": { "slug": "quillmere-2027", "title": "Quillmere", "destination": "Quillmere", "start": "2027-05-12", "end": "2027-05-14", "status": "planned" }
+}

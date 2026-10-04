@@ -1,0 +1,131 @@
+'use strict';
+// {{DISPLAY}} — the {{NAME}} branch ({{TITLE}}), written by helpers/tools/new-branch.mjs: the command and the kind's routing
+// are registered{{#TAB}}, and the tab{{/TAB}}{{#ENVELOPE}}; the core validator, the pack validator and the schema agree on every fixture;
+// the handler {{#TAB}}stores and {{/TAB}}tells the owner{{/ENVELOPE}}{{#APP}}; the app ops answer{{/APP}}. Invented data only; no network.
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const H = require('./harness/gas-mocks');
+
+const PACK_DIR = path.join(H.HELPERS_ROOT, 'packs', '{{PACK}}');
+const FIX = JSON.parse(fs.readFileSync(path.join(PACK_DIR, '{{NAME}}', 'fixtures', '{{NAME}}-sample.json'), 'utf8'));
+const MANIFEST = JSON.parse(fs.readFileSync(path.join(PACK_DIR, 'helper.json'), 'utf8'));
+const NOW = '2027-05-01T12:00:00Z';
+const J = (v) => JSON.parse(JSON.stringify(v));
+
+function fresh(o = {}) {
+  const { ctx, state } = H.loadGas({ pack: '{{PACK}}', now: NOW, manifest: o.manifest || MANIFEST });
+  H.bootstrap(ctx, state);
+  H.configureRoutine(ctx, state, '{{ROUTINE}}');
+  if (o.trip !== false) ctx.tgTripUpsert(FIX.trip);
+  return { ctx, state };
+}
+const say = (ctx, state, text) => ctx.doPost(H.postEvent('tg', { k: state.props[ctx.PROP.WEBHOOK_SECRET] }, H.tgUpdate({ text })));
+const texts = (state) => state.fetch.telegram('sendMessage').map((r) => r.json.text);
+const requests = (state) => (state.drive.listFiles(MANIFEST.drive_root + '/mailbox/to-brain') || []).filter((n) => /^req_/.test(n))
+  .map((n) => JSON.parse(state.drive.readFile(MANIFEST.drive_root + '/mailbox/to-brain', n)));
+{{#ENVELOPE}}const deliver = (ctx, state, payload, over) => { H.putEnvelope(state, H.envelope('{{TYPE}}', payload, over)); return J(ctx.pollFromBrain()); };
+{{/ENVELOPE}}
+test('{{NAME}}: the command and the kind\'s routing are registered{{#TAB}}, and the tab{{/TAB}}{{#ENVELOPE}}, and the handler while helper.json lists {{TYPE}}{{/ENVELOPE}}', () => {
+  const { ctx } = fresh();
+  assert.equal(typeof ctx.getCommand('{{CMD}}'), 'function');
+  assert.ok(J(ctx.HB_REGISTRY.help).some((l) => l.indexOf('{{CMD}} — ') === 0), 'a help line');
+  assert.equal(ctx.TG_KIND_ROUTINE['{{KIND}}'], '{{ROUTINE}}');
+  assert.equal(ctx.tgKindRoutine('{{KIND}}'), '{{ROUTINE}}');
+{{#TAB}}  assert.ok(Object.keys(ctx.allSheetSchemas()).includes('{{TAB}}'));
+{{/TAB}}{{#ENVELOPE}}  assert.ok(MANIFEST.envelope_types.includes('{{TYPE}}'));
+  assert.ok(ctx.getEnvelopeHandler('{{TYPE}}'));
+{{/ENVELOPE}}{{#APP}}  assert.deepEqual(['{{NAME}}.get', '{{NAME}}.list'].filter((op) => !ctx.TG_APP_OPS[op]), []);
+{{/APP}}});
+
+test('{{CMD}}: a `{{KIND}}` request for the current trip; with no trip a hint and no request', () => {
+  let { ctx, state } = fresh();
+  say(ctx, state, '{{CMD}}');
+  const reqs = requests(state);
+  assert.equal(reqs.length, 1);
+  assert.equal(reqs[0].payload.kind, '{{KIND}}');
+  assert.equal(reqs[0].payload.trip, FIX.trip.slug);
+  assert.equal(J(ctx.storeAll('Requests'))[0].routine, '{{ROUTINE}}');
+  ({ ctx, state } = fresh({ trip: false }));
+  say(ctx, state, '{{CMD}}');
+  assert.equal(requests(state).length, 0);
+  assert.match(texts(state).join('\n'), /no current trip/);
+});
+{{#ENVELOPE}}
+test('{{TYPE}} parity: the core validator, the pack validator and the schema agree on every fixture', async () => {
+  const { ctx } = fresh();
+  const pack = await import('../packs/{{PACK}}/{{NAME}}/index.mjs');
+  const schemas = await import('../packs/{{PACK}}/schemas/index.mjs');
+  for (const p of FIX.valid) {
+    assert.deepEqual(J(ctx.tgEnvValidate{{TYPE_PASCAL}}(J(p))), [], JSON.stringify(p));
+    assert.deepEqual(pack.validate{{TYPE_PASCAL}}Payload(J(p)), [], JSON.stringify(p));
+    assert.deepEqual(schemas.validatePayload('{{TYPE}}', J(p)).errors, [], JSON.stringify(p));
+  }
+  for (const p of FIX.invalid) {
+    const core = J(ctx.tgEnvValidate{{TYPE_PASCAL}}(J(p)));
+    assert.ok(core.length > 0, 'core accepts ' + JSON.stringify(p));
+    assert.deepEqual(pack.validate{{TYPE_PASCAL}}Payload(J(p)), core, 'the same words for ' + JSON.stringify(p));
+    assert.equal(schemas.validatePayload('{{TYPE}}', J(p)).ok, false, 'schema accepts ' + JSON.stringify(p));
+  }
+  assert.deepEqual(pack.build{{TYPE_PASCAL}}Payload({ trip: FIX.trip.slug, note: '  spaced   out  ' }), { v: 1, trip: FIX.trip.slug, note: 'spaced out' });
+  assert.throws(() => pack.build{{TYPE_PASCAL}}Payload({ trip: 'Not A Slug', note: 'x' }), /trip has the wrong format/);
+});
+{{#TAB}}
+test('the {{TYPE}} envelope: stored in the {{TAB}} tab (one row per trip) and the owner told; without the type in helper.json it is rejected', () => {
+  let { ctx, state } = fresh();
+  assert.equal(deliver(ctx, state, FIX.valid[0]).processed, 1);
+  assert.equal(deliver(ctx, state, { ...FIX.valid[0], note: 'Changed: one quiet morning.' }).processed, 1);
+  const rows = J(ctx.storeAll('{{TAB}}'));
+  assert.equal(rows.length, 1, 'a re-delivery replaces the row');
+  assert.equal(rows[0].id, FIX.trip.slug);
+  assert.equal(JSON.parse(rows[0].payload_json).note, 'Changed: one quiet morning.');
+  const said = texts(state);
+  assert.equal(said.length, 2);
+  assert.match(said[1], /\(updated\): Changed: one quiet morning\./);
+  assert.equal(deliver(ctx, state, FIX.invalid[3]).rejected, 1, 'an invalid payload is rejected');
+
+  ({ ctx, state } = fresh({ manifest: { ...MANIFEST, envelope_types: MANIFEST.envelope_types.filter((t) => t !== '{{TYPE}}') } }));
+  assert.equal(ctx.getEnvelopeHandler('{{TYPE}}'), null);
+  assert.equal(deliver(ctx, state, FIX.valid[0]).rejected, 1);
+  assert.equal(J(ctx.storeAll('{{TAB}}')).length, 0);
+});
+{{/TAB}}{{^TAB}}
+test('the {{TYPE}} envelope: the owner told (no tab of its own yet); without the type in helper.json it is rejected', () => {
+  let { ctx, state } = fresh();
+  assert.equal(deliver(ctx, state, FIX.valid[0]).processed, 1);
+  const said = texts(state);
+  assert.equal(said.length, 1);
+  assert.ok(said[0].includes(FIX.valid[0].note), said[0]);
+  assert.equal(deliver(ctx, state, FIX.invalid[3]).rejected, 1, 'an invalid payload is rejected');
+
+  ({ ctx, state } = fresh({ manifest: { ...MANIFEST, envelope_types: MANIFEST.envelope_types.filter((t) => t !== '{{TYPE}}') } }));
+  assert.equal(ctx.getEnvelopeHandler('{{TYPE}}'), null);
+  assert.equal(deliver(ctx, state, FIX.valid[0]).rejected, 1);
+  assert.equal(texts(state).length, 0);
+});
+{{/TAB}}{{/ENVELOPE}}{{#APP}}{{#TAB}}
+test('app {{NAME}}.list and {{NAME}}.get: the stored fields only; an unknown id is 404', () => {
+  const { ctx, state } = fresh();
+  ctx.tg{{PASCAL}}Store({ v: 1, trip: FIX.trip.slug, note: 'From the fixture.' });
+  const app = (op, args) => J(H.appPost(ctx, state, 'app', args === undefined ? { op } : { op, args }));
+  const list = app('{{NAME}}.list');
+  assert.equal(list.ok, true);
+  assert.deepEqual(list.items.map((x) => x.id), [FIX.trip.slug]);
+  const got = app('{{NAME}}.get', { id: FIX.trip.slug });
+  assert.deepEqual(Object.keys(got.item).sort(), ['id', 'note', 'received_at', 'trip']);
+  assert.equal(got.item.note, 'From the fixture.');
+  assert.equal(app('{{NAME}}.get', { id: 'no-such-trip' }).reason, 'no_{{NAME}}');
+});
+{{/TAB}}{{^TAB}}
+test('app {{NAME}}.list and {{NAME}}.get answer (no tab of its own yet: an empty list, 404 for every id)', () => {
+  const { ctx, state } = fresh();
+  const app = (op, args) => J(H.appPost(ctx, state, 'app', args === undefined ? { op } : { op, args }));
+  const list = app('{{NAME}}.list');
+  assert.equal(list.ok, true);
+  assert.deepEqual(list.items, []);
+  assert.equal(app('{{NAME}}.get', { id: FIX.trip.slug }).reason, 'no_{{NAME}}');
+  assert.equal(app('{{NAME}}.get', { id: 'Not A Slug' }).ok, false);
+});
+{{/TAB}}{{/APP}}
+// Developed by: LightAISolutions

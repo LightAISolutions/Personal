@@ -1,0 +1,41 @@
+/**
+ * {{DISPLAY}} {{TITLE}} in the app: the app ops behind its screen, added to TG_APP_OPS (32_app_api.js) from this file —
+ * no hook needed, the table is read at request time (as 35_scout_app.js does). Written by helpers/tools/new-branch.mjs.
+ *   {{NAME}}.list            → the last TG_{{UPPER}}.LIST_MAX records, newest first: id, trip, received_at
+ *   {{NAME}}.get   { id }    → one record (id = the trip's slug): its stored fields only
+ * Each op answers only the branch's own stored fields; no Google call and no Google content.
+{{^TAB}} * --no-tab: the branch has no tab of its own, so these ops read nothing yet (an empty list, 404 for every id).
+ * TODO: point both ops at where this branch keeps its data (an existing tab or store) and map its fields in tgApp{{PASCAL}}Out.
+{{/TAB}} */
+function tgApp{{PASCAL}}Out(rec) {
+  return { id: rec.id, trip: rec.trip, received_at: rec.received_at, note: tgAppS(rec.payload.note) };
+}
+{{#TAB}}
+function tgAppOp{{PASCAL}}List() {
+  var all = tg{{PASCAL}}List(0);
+  return tgAppOk({ items: all.slice(0, TG_{{UPPER}}.LIST_MAX).map(function (r) { return { id: r.id, trip: r.trip, received_at: r.received_at }; }), total: all.length });
+}
+
+function tgAppOp{{PASCAL}}Get(args) {
+  var id = tgAppStr(args, 'id', { required: true, max: 64, re: TG_SLUG_RE });
+  var rec = tg{{PASCAL}}Get(id);
+  if (!rec) return tgAppNo(404, 'no_{{NAME}}');
+  return tgAppOk({ item: tgApp{{PASCAL}}Out(rec) });
+}
+{{/TAB}}{{^TAB}}
+function tgAppOp{{PASCAL}}List() {
+  var all = [];   // TODO (--no-tab): read the records from where this branch keeps its data
+  return tgAppOk({ items: all.slice(0, TG_{{UPPER}}.LIST_MAX), total: all.length });
+}
+
+function tgAppOp{{PASCAL}}Get(args) {
+  var id = tgAppStr(args, 'id', { required: true, max: 64, re: TG_SLUG_RE });
+  var rec = null;   // TODO (--no-tab): look the record up by id where this branch keeps its data
+  if (!rec || rec.id !== id) return tgAppNo(404, 'no_{{NAME}}');
+  return tgAppOk({ item: tgApp{{PASCAL}}Out(rec) });
+}
+{{/TAB}}
+TG_APP_OPS['{{NAME}}.list'] = { args: [], fn: tgAppOp{{PASCAL}}List };
+TG_APP_OPS['{{NAME}}.get'] = { args: ['id'], fn: tgAppOp{{PASCAL}}Get };
+
+// Developed by: LightAISolutions

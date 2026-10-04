@@ -1,0 +1,15 @@
+/**
+ * {{DISPLAY}} — {{TITLE}} (`{{NAME}}/`): the pack side of a branch written by helpers/tools/new-branch.mjs.
+ * Library only — plain Node ESM, no network, no clock; the private skill's drivers make the calls and pass the results in.
+ *
+{{#ENVELOPE}} *   import { validate{{TYPE_PASCAL}}Payload, build{{TYPE_PASCAL}}Payload, BRANCH } from '…/packs/{{PACK}}/{{NAME}}/index.mjs';
+ *   const payload = build{{TYPE_PASCAL}}Payload({ trip, note });   // throws when invalid; then tools/envelope.mjs {{TYPE}} …
+{{/ENVELOPE}}{{^ENVELOPE}} *   import { BRANCH, SLUG_RE } from '…/packs/{{PACK}}/{{NAME}}/index.mjs';
+{{/ENVELOPE}} */
+{{#ENVELOPE}}export { validate{{TYPE_PASCAL}}Payload, build{{TYPE_PASCAL}}Payload, SLUG_RE, NOTE_MAX, PAYLOAD_MAX } from './{{NAME}}-payload.mjs';
+{{/ENVELOPE}}{{^ENVELOPE}}export const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
+{{/ENVELOPE}}
+/** What the branch is wired as (the core module's @branch line says the same). */
+export const BRANCH = Object.freeze({ name: '{{NAME}}', command: '{{CMD}}', kind: '{{KIND}}', envelope: {{TYPE_JS}}, tab: {{TAB_JS}}, routine: '{{ROUTINE}}' });
+
+// Developed by: LightAISolutions

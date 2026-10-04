@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+/**
+ * skills/{{NAME}} — second driver: the judgment → a validated payload, and the exact envelope command to run.
+ *   node skills/{{NAME}}/{{NAME}}-finish.mjs --input <scratch>/{{NAME}}-input.json --judgment <scratch>/{{NAME}}-judgment.json --out <scratch>/{{NAME}}-payload.json
+ * The judgment file is { "note": "<one line>" }. Prints one JSON line: { ok: true, payload, command: [...] } (run the command,
+ * then create its printed file in from-brain/) or { ok: false, error } (exit 1). Never writes inside the repo.
+ * Scaffolded by helpers/tools/new-branch.mjs: map the judgment's real fields here once the schema has them.
+ */
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { resolve, dirname, relative, isAbsolute } from 'node:path';
+import { BRANCH{{#ENVELOPE}}, build{{TYPE_PASCAL}}Payload{{/ENVELOPE}} } from '../../vendor/helpers/packs/{{PACK}}/{{NAME}}/index.mjs';
+
+const arg = (k) => { const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : undefined; };
+const insideRepo = (p) => { const r = relative(process.cwd(), resolve(p)); return r === '' || (!r.startsWith('..') && !isAbsolute(r)); };
+const fail = (error) => { console.log(JSON.stringify({ ok: false, error })); process.exitCode = 1; };
+const read = (f) => JSON.parse(readFileSync(f, 'utf8'));
+
+function main() {
+  const inFile = arg('input'), jFile = arg('judgment'), out = arg('out');
+  if (!inFile || !jFile || !out) return fail('usage: --input <input.json> --judgment <judgment.json> --out <scratch file outside the repo>');
+  if (insideRepo(out)) return fail('--out must be outside the repo (scratch files are never committed)');
+  let input, judgment;
+  try { input = read(inFile); judgment = read(jFile); } catch (e) { return fail('cannot read the input or the judgment: ' + e.message); }
+  if (!input || input.branch !== BRANCH.name || !input.request_id) return fail('not a ' + BRANCH.name + ' input');
+  const note = judgment && typeof judgment.note === 'string' ? judgment.note : '';
+  let payload, type;
+  try {
+{{#ENVELOPE}}    payload = build{{TYPE_PASCAL}}Payload({ trip: input.trip, note });
+    type = BRANCH.envelope;
+{{/ENVELOPE}}{{^ENVELOPE}}    const text = note.replace(/\s+/g, ' ').trim();
+    if (!text) throw new Error('the judgment gave no note');
+    payload = { text: text.slice(0, 4000) };
+    type = 'reply';
+{{/ENVELOPE}}  } catch (e) { return fail(e.message); }
+  mkdirSync(dirname(resolve(out)), { recursive: true });
+  writeFileSync(resolve(out), JSON.stringify(payload, null, 2) + '\n');
+  const command = ['node', 'vendor/helpers/tools/envelope.mjs', type, BRANCH.name, resolve(out), '--pack', '{{PACK}}', '--in-reply-to', input.request_id];
+  if (type !== 'reply') command.push('--dedupe-key', BRANCH.name + ':' + input.request_id);   // one answer per request: a re-run never doubles it
+  console.log(JSON.stringify({ ok: true, payload: resolve(out), command }));
+}
+main();
+
+// Developed by: LightAISolutions
