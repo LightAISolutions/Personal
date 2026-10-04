@@ -3,11 +3,20 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 11/50`
+`Sections: 12/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.12w] — 2026-10-04 02:22:08 AM EST — v01.66r
+
+### Added
+- A Veg card screen: tap 🥗 on your trip to show staff, full screen, what your group does not eat, in the local language with English underneath; "Hide English" leaves only the local lines
+- A 📄 PDF button on the brochure screen: it sends the brochure to your chat as a file you can save or share, or starts one when there is none yet
+
+### Changed
+- Scout's cards show a fifth bar, for what locals say about the place, and say "not judged" when a place has not been checked against what you asked for
 
 ## [v01.11w] — 2026-10-03 11:09:33 PM EST — v01.64r
 

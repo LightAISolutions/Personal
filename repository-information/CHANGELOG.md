@@ -3,11 +3,27 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 66/100`
+`Sections: 67/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.66r] — 2026-10-04 02:22:08 AM EST
+
+> **Prompt:** "… 7. Scout ranking tune-up: Approve … 10. Veg card: Approve … 15. Branch scaffold: Approve … 22. Companion view: Not now · note: For now, just outputting a nice downloadable PDF of the brochure should suffice. …" *(excerpts of the owner's answers on the project's morning review; items 1–6 and 8 were Phase 13; this push is Phase 14's wave 1, its items 15, 7, 10 and 22's note)*
+
+### Added
+- **The branch scaffold** (`helpers/tools/new-branch.mjs`, `helpers/tools/branch-templates/`, `helpers/tools/README.md`): `node helpers/tools/new-branch.mjs <name>` writes a new pack branch from templates (the core module with its command, request kind and routing, the app ops, the payload schema and validator, an invented fixture, a test, and the private skill with its drivers), and `--check <name>` checks an existing branch part by part (exit 0 complete, 1 missing, 2 usage error or clash). `--no-envelope`, `--no-tab` and `--no-app` leave parts out, and the `@branch` line in the core module tells `--check` what was left out on purpose; `--dry-run` writes nothing; `--force` rewrites only a branch the generator wrote. A clash with an existing command, kind, type, tab, op or file number is refused with nothing written
+- **The veg card** (Contract C14; `helpers/packs/tour-guide/vegcard/`, `gas/27_vegcard.js`, `gas/37_vegcard_app.js`, `schemas/tour-guide-veg-card.schema.json`): the party's diet as short lines in the local language and English to show staff, built from the travellers' diets (the strictest member's), with the questions asked most and a fingerprint over its content; Japanese for now, an English-only card elsewhere. `/vegcard` shows the stored card or asks for one and `/vegcard rebuild` asks again; the core keeps one card per trip in a VegCards tab and sends it only when it answers a request or changed; the morning message links it on full and free days ("🥗 Veg card — /vegcard"); the app has a full-screen Veg card screen (🥗 on the trip row, "hide English") through `vegcard.get`; `vegCardHtml` is a printable page for the brochure's end. `veg_card` is the pack's eleventh envelope type
+- **A PDF button on the app's brochure screen** (`brochure.pdf`): sends the trip's stored PDF to the chat as a document, or starts a brochure build when there is none; a PDF outside the helper's folder is refused and audited; once a minute (`live-site-pages/helper-app.html`, app v01.12w)
+- Tests: `tools_new_branch`, `pack_tour-guide_p14b_scout`, `pack_tour-guide_vegcard{,_gas,_app}`. 1024 tests, 1023 pass, 1 skipped (the Maps live smoke); in a copy laid out like helpers-dist, 1014 pass, 10 skipped
+
+### Changed
+- **Scout's ranking** (`helpers/packs/tour-guide/scout/`; the contract change in `helpers/decisions/TG-SCOUT.md` §10): a fixed quality anchor per group (food 4.2, activities 4.3) instead of one taken from the pool; a chain (a name seen three times, or a known chain) loses 8 points and earns no local part, a crowd magnet loses 4; a new place with few ratings is rescued when its judgment vouches for it (relevance 0.7 or more, or a verified diet) and labelled new; drinks, cafés and markets are likely for a vegetarian party while meals stay strict; a place with no judgment gets a low fit and the label "not judged"; the local part travels in the payload and shows as a fifth bar on the board and on the app's Scout screen; reach uses the planner's own estimator (`estimateReach`: a walk up to 20 minutes, else a rail estimate), exported for the private driver. Old payloads still validate and display
+- The three tests that pin the pack's envelope types and payload kinds now include `veg_card`; they stay pinned on purpose, so a new type is a reviewed contract change (`helpers/tools/README.md`)
+- Docs: `helpers/SPEC.md` §16 (the Phase 14 paths), the pack README (the veg card, Scout's ranking, the new tests), `helpers/decisions/TG-SCOUT.md` §10; decisions and status for WP-14a–c, `helpers/decisions/TG-PHASE-14.md`, `helpers/prompts/TG-PHASE-14.md` (wave 2's briefs corrected against what wave 1 built); `helpers/BUILD-STATE.md` row 14, the Phase 14 log and Next; README tree, the app's version line and timestamp
+- `helpers/decisions/TG-PHASE-13.md` §5 and §6, `helpers/BUILD-STATE.md` row 13 and the Phase 13 log: the owner merged the private repo's side of Phase 13 (PR #24); the trip's rebuild with its real stays and the rehearsal are next
 
 ## [v01.65r] — 2026-10-03 11:20:26 PM EST
 
