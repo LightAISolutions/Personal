@@ -91,6 +91,46 @@ test('reply answers the request that opened it: Telegram reply to the original m
   assert.equal(state.fetch.lastTelegramText(), '<b>late</b>');
 });
 
+test('an answer whose handler throws: the request is marked failed and the owner hears once; the key is released; a late answer lands', () => {
+  const { ctx, state } = fresh({ manifest: { name: 'hello', display_name: 'Hello Helper', drive_root: 'Hello', version: '0.1.0', envelope_types: ['greeting', 'boom'] } });
+  H.configureRoutine(ctx, state);
+  let explode = true;
+  ctx.registerEnvelopeHandler('boom', () => { if (explode) throw new Error('Sheet tab missing: Cards'); ctx.tgSendOwner('card'); return { sent: true }; });
+  const open = ctx.openRequest({ kind: 'card', text: '/card <rebuild>', chat: { chat_id: 777, message_id: 9 } });
+  const env = H.envelope('boom', { any: 1 }, { in_reply_to: open.id, dedupe_key: 'card:' + open.id });
+  H.putEnvelope(state, env, 'boom.json');
+  assert.deepEqual(J(ctx.pollFromBrain()), { processed: 0, rejected: 0, failed: 1, duplicate: 0 });
+  assert.equal(ctx.getRequest(open.id).status, 'failed');
+  assert.equal(ctx.openRequestCount(), 0, 'no more follow-up sweeps for it');
+  const sent = state.fetch.telegram('sendMessage').map((r) => r.json.text);
+  assert.deepEqual(sent, ['⚠️ Something went wrong on my side with “/card &lt;rebuild&gt;”, so the answer did not come through. It is logged; please try again.']);
+  assert.equal(ctx.storeAll('AuditLog').filter((r) => r.event === 'request_failed').length, 1);
+  // The same answer again under the same key (fixed now) is handled, not dropped as a duplicate, and answers the request.
+  explode = false;
+  H.putEnvelope(state, { ...env, id: 'retry-' + env.id.slice(0, 20) }, 'boom-again.json');
+  assert.deepEqual(J(ctx.pollFromBrain()), { processed: 1, rejected: 0, failed: 0, duplicate: 0 });
+  assert.equal(ctx.getRequest(open.id).status, 'answered');
+  assert.equal(state.fetch.lastTelegramText(), 'card');
+  assert.equal(J(ctx.wakeSweep('trigger')).requests_expired, 0);
+  ctx.__TEST_NOW = new Date(state.now() + 25 * 3600000).toISOString();
+  assert.equal(J(ctx.wakeSweep('trigger')).requests_expired, 0, 'never reported again as unanswered');
+});
+
+test('a failed answer is not reported when another envelope of the same batch answered the request; a refused one stays silent', () => {
+  const { ctx, state } = fresh({ manifest: { name: 'hello', display_name: 'Hello Helper', drive_root: 'Hello', version: '0.1.0', envelope_types: ['greeting', 'boom'] } });
+  H.configureRoutine(ctx, state);
+  ctx.registerEnvelopeHandler('boom', () => { throw new Error('handler exploded'); });
+  const a = ctx.openRequest({ kind: 'ask', text: 'first', chat: { chat_id: 777, message_id: 1 } });
+  H.putEnvelope(state, H.envelope('boom', { any: 1 }, { in_reply_to: a.id }), 'a1.json');
+  H.putEnvelope(state, H.envelope('reply', { text: 'the answer' }, { in_reply_to: a.id }), 'a2.json');
+  const b = ctx.openRequest({ kind: 'ask', text: 'second', chat: { chat_id: 777, message_id: 2 } });
+  H.putEnvelope(state, H.envelope('reply', { text: '' }, { in_reply_to: b.id }), 'b1.json');   // refused: text required
+  assert.deepEqual(J(ctx.pollFromBrain()), { processed: 1, rejected: 1, failed: 1, duplicate: 0 });
+  assert.equal(ctx.getRequest(a.id).status, 'answered');
+  assert.equal(ctx.getRequest(b.id).status, 'open', 'a refused answer leaves the request waiting');
+  assert.deepEqual(state.fetch.telegram('sendMessage').map((r) => r.json.text), ['the answer']);
+});
+
 test('proposal envelopes become pending actions; a proposal guard can refuse; observers see every handled envelope', () => {
   const { ctx, state } = fresh();
   const seen = [];

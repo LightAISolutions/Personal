@@ -20,12 +20,37 @@ let _ids = 0;
 const nid = (p) => `${p}_${(++_ids).toString(36)}${crypto.randomBytes(3).toString('hex')}`;
 
 /* ---------------- Spreadsheet ---------------- */
+/** Midnight of the calendar day `ymd` (YYYY-MM-DD) in zone `tz`, as a Date. */
+function zonedMidnight(ymd, tz) {
+  const [y, m, d] = ymd.split('-').map(Number);
+  const want = Date.UTC(y, m - 1, d);
+  let t = want;
+  for (let i = 0; i < 3; i++) {
+    const p = {};
+    new Intl.DateTimeFormat('en-US', { timeZone: tz || 'UTC', hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
+      .formatToParts(new Date(t)).forEach((x) => { p[x.type] = x.value; });
+    t += want - Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second);
+  }
+  return new Date(t);
+}
+/**
+ * Opt-in (ss.autoType = true): Sheets types the text Apps Script writes, as if it was typed in — unescaped "YYYY-MM-DD"
+ * becomes a date cell at midnight in the Sheet's zone, a plain number a number, TRUE/FALSE a boolean. Off by default.
+ */
+function sheetsAutoType(sheet, v) {
+  if (!sheet.ss || !sheet.ss.autoType) return v;
+  const ymd = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v);
+  if (ymd && +ymd[2] >= 1 && +ymd[2] <= 12 && +ymd[3] >= 1 && +ymd[3] <= 31) return zonedMidnight(v, sheet.ss.tz);
+  if (/^-?\d+(\.\d+)?$/.test(v)) return Number(v);
+  if (/^(true|false)$/i.test(v)) return v.toLowerCase() === 'true';
+  return v;
+}
 /** A value as Sheets stores it: a leading apostrophe marks literal text and is dropped; unescaped text starting with = is a formula. */
 function sheetsStore(sheet, v) {
   if (typeof v !== 'string') return v;
   if (v.startsWith("'")) return v.slice(1);
   if (v.startsWith('=')) sheet.formulas.push(v);
-  return v;
+  return sheetsAutoType(sheet, v);
 }
 class Range {
   constructor(sheet, row, col, numRows, numCols) { Object.assign(this, { sheet, row, col, numRows, numCols }); }

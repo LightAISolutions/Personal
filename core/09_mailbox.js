@@ -105,14 +105,22 @@ function _envelopeSeen(key) {
   cache.put(k, '1', LIMITS.DEDUPE_TTL_SEC);
   return false;
 }
+/** A failed envelope gives its dedupe key back, so a corrected copy under the same key is not dropped as a duplicate. */
+function _envelopeRelease(key) { try { CacheService.getScriptCache().remove('env:' + key); } catch (e) { /* the mark expires on its own */ } }
 function _archive(file, folder) { try { file.moveTo(folder); } catch (e) { auditFail('mailbox_archive_error', file.getName(), describeError(e)); } }
 
-/** Read + validate + dispatch every envelope in from-brain. Returns counts. Time-boxed. */
+/**
+ * Read + validate + dispatch every envelope in from-brain. Returns counts. Time-boxed. An open request whose answer threw
+ * in its handler, and that no other envelope of the batch answered, is marked failed and the owner hears once
+ * (markRequestFailed) instead of waiting in silence until it expires. A refused envelope stays silent, as before: the
+ * request keeps waiting for a valid answer.
+ */
 function pollFromBrain(budgetMs) {
   var started = nowMs();
   budgetMs = budgetMs || LIMITS.SWEEP_BUDGET_MS / 2;
   var f = getMailboxFolders();
   var stats = { processed: 0, rejected: 0, failed: 0, duplicate: 0 };
+  var failedReplies = {};
   var it = f.fromBrain.getFiles();
   var n = 0;
   while (it.hasNext() && n < LIMITS.MAILBOX_BATCH && (nowMs() - started) < budgetMs) {
@@ -123,11 +131,14 @@ function pollFromBrain(budgetMs) {
     var raw = size <= LIMITS.ENVELOPE_MAX_FILE_BYTES ? file.getBlob().getDataAsString('UTF-8') : '';
     var v = validateEnvelope(raw, size);
     if (!v.ok) { auditFail('envelope_rejected', name, v.errors); _archive(file, f.rejected); stats.rejected++; continue; }
-    var env = v.envelope;
-    if (_envelopeSeen(env.dedupe_key || env.id)) { audit('envelope_duplicate', env.id, { file: name }); _archive(file, f.processed); stats.duplicate++; continue; }
+    var env = v.envelope, key = env.dedupe_key || env.id;
+    if (_envelopeSeen(key)) { audit('envelope_duplicate', env.id, { file: name }); _archive(file, f.processed); stats.duplicate++; continue; }
     var r = dispatchEnvelope(env, name);
-    if (r.ok) { _archive(file, f.processed); stats.processed++; } else { _archive(file, f.failed); stats.failed++; }
+    if (r.ok) { _archive(file, f.processed); stats.processed++; continue; }
+    _envelopeRelease(key); _archive(file, f.failed); stats.failed++;
+    if (env.in_reply_to) failedReplies[env.in_reply_to] = env.type;
   }
+  Object.keys(failedReplies).forEach(function (id) { _safe('request_failed', function () { return markRequestFailed(id, failedReplies[id]); }); });
   return stats;
 }
 function dispatchEnvelope(env, fileName) {

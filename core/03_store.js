@@ -3,15 +3,20 @@
  * Rows are plain objects keyed by header; `_row` is the 1-based sheet row number.
  * Non-primitive values are JSON-stringified on write; Date cells become ISO strings on read.
  */
-var _HB_SS_CACHE = null;
+var _HB_SS_CACHE = null, _HB_SCHEMA_SYNCED = false;
 
-function getSpreadsheet() {
+function _openSpreadsheet() {
   if (_HB_SS_CACHE) return _HB_SS_CACHE;
   var id = getProp(PROP.SHEET_ID);
   if (!id) throw new Error(PROP.SHEET_ID + ' not set — run setup first');
   _HB_SS_CACHE = SpreadsheetApp.openById(id);
   syncSheetTimeZone(_HB_SS_CACHE);
   return _HB_SS_CACHE;
+}
+function getSpreadsheet() {
+  var ss = _openSpreadsheet();
+  if (!_HB_SCHEMA_SYNCED) { _HB_SCHEMA_SYNCED = true; syncSheetSchemas(ss); }
+  return ss;
 }
 
 /**
@@ -39,32 +44,81 @@ function allSheetSchemas() {
   return out;
 }
 
-/** Create every tab + header row; append any missing headers (never reorders or deletes). */
+/** The registered headers of one tab (core SHEET_HEADERS plus registerSheet columns), or null for a tab nobody registered. */
+function sheetSchema(name) {
+  var own = Object.prototype.hasOwnProperty, base = own.call(SHEET_HEADERS, name) ? SHEET_HEADERS[name].slice() : null;
+  var reg = own.call(HB_REGISTRY.sheet, name) ? HB_REGISTRY.sheet[name] : null;
+  if (!base && !reg) return null;
+  base = base || [];
+  (reg || []).forEach(function (h) { if (base.indexOf(h) < 0) base.push(h); });
+  return base;
+}
+/** A short fingerprint of every registered tab and column; SHEET_SCHEMA records the one last ensured. */
+function sheetSchemaHash() {
+  var s = toJson(allSheetSchemas()), h = 5381;
+  for (var i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0;
+  return 'v1:' + h.toString(16) + ':' + s.length;
+}
+/**
+ * A deploy that registers a new tab or column never ran ensureSheets: setup ran it once, on the first install, so later tabs
+ * were missing and every read or write of them threw (a routine's answer then failed and nobody heard). The first run
+ * after each such deploy creates them: SHEET_SCHEMA holds the fingerprint last ensured. A failure is left for the next run
+ * (getSheet heals a missing tab on its own meanwhile).
+ */
+function syncSheetSchemas(ss) {
+  if (getProp(PROP.SHEET_SCHEMA) === sheetSchemaHash()) return false;
+  try { ensureSheets(ss); return true; } catch (e) { return false; }
+}
+
+/**
+ * Create every tab + header row; append any missing headers after the last one (never reorders, deletes or overwrites a
+ * header — a blank header cell is left alone). Records the schema fingerprint it ensured (SHEET_SCHEMA).
+ */
 function ensureSheets(ss) {
-  ss = ss || getSpreadsheet();
+  ss = ss || _openSpreadsheet();
   var schemas = allSheetSchemas();
   var created = [];
   Object.keys(schemas).forEach(function (name) {
     var headers = schemas[name];
     var sh = ss.getSheetByName(name);
-    if (!sh) { sh = ss.insertSheet(name); created.push(name); }
-    var existing = sh.getLastRow() >= 1 ? sh.getRange(1, 1, 1, Math.max(1, sh.getLastColumn())).getValues()[0] : [];
-    existing = existing.filter(function (h) { return h !== '' && h !== null && h !== undefined; }).map(String);
+    if (!sh) {
+      try { sh = ss.insertSheet(name); created.push(name); }
+      catch (e) { sh = ss.getSheetByName(name); if (!sh) throw e; }   // another run created it a moment ago
+    }
+    var row = sh.getLastRow() >= 1 ? sh.getRange(1, 1, 1, Math.max(1, sh.getLastColumn())).getValues()[0] : [];
+    var existing = [], lastHead = 0;
+    row.forEach(function (h, i) { if (h !== '' && h !== null && h !== undefined) { existing.push(String(h)); lastHead = i + 1; } });
     if (!existing.length) {
       sh.getRange(1, 1, 1, headers.length).setValues([headers]);
       if (sh.setFrozenRows) sh.setFrozenRows(1);
     } else {
       var missing = headers.filter(function (h) { return existing.indexOf(h) < 0; });
-      if (missing.length) sh.getRange(1, existing.length + 1, 1, missing.length).setValues([missing]);
+      if (missing.length) sh.getRange(1, lastHead + 1, 1, missing.length).setValues([missing]);
     }
   });
   var def = ss.getSheetByName('Sheet1');
   if (def && ss.getSheets().length > 1 && def.getLastRow() === 0 && ss.deleteSheet) { try { ss.deleteSheet(def); } catch (e) { /* ignore */ } }
+  setProp(PROP.SHEET_SCHEMA, sheetSchemaHash());
+  _HB_SCHEMA_SYNCED = true;
   return created;
 }
 
+/**
+ * The tab, created first when it is registered but missing (a deploy added it, or someone deleted it): every tab and column
+ * is ensured once per run and the repair audited as sheets_healed. A tab nobody registered still throws.
+ */
+var _HB_HEALED = false;
+function _healSheets(ss, ref, missing) {
+  if (_HB_HEALED) return false;
+  _HB_HEALED = true;
+  var created = null, error = '';
+  try { created = ensureSheets(ss); } catch (e) { error = describeError(e); }
+  try { audit('sheets_healed', ref, { missing: missing, created: created || [], error: error || undefined }, !error); } catch (e2) { /* audit never blocks */ }
+  return !error;
+}
 function getSheet(name) {
-  var sh = getSpreadsheet().getSheetByName(name);
+  var ss = getSpreadsheet(), sh = ss.getSheetByName(name);
+  if (!sh && sheetSchema(name)) { _healSheets(ss, name, 'tab'); sh = ss.getSheetByName(name); }
   if (!sh) throw new Error('Sheet tab missing: ' + name + ' (run ensureSheets)');
   return sh;
 }
@@ -87,12 +141,30 @@ function _cellOut(v) {
 var _CELL_ESCAPE_RE = /^[=+\-@\t\r']/;
 function _cellEsc(v) { return typeof v === 'string' && _CELL_ESCAPE_RE.test(v) ? "'" + v : v; }
 function _cellIn(v) { return isDate(v) ? v.toISOString() : v; }
+/**
+ * Settings values are text read back as text (settingGet), so every non-empty string goes in literal: Sheets would turn
+ * "2026-10-04" into a date cell (read back as an ISO timestamp, so last_daily_date never matched today and the daily jobs
+ * ran on every sweep), "09:00" into a time and "TRUE" into a boolean. Numbers stay numbers.
+ */
+function _cellText(v) { return typeof v === 'string' && v !== '' ? "'" + v : v; }
+function _cellWriter(name) { return name === SHEETS.SETTINGS ? _cellText : _cellEsc; }
+/**
+ * The tab's headers for a write of `obj`: when obj names a registered column the tab lacks (a deploy added it), the
+ * columns are ensured first, so a write never drops a registered field. Unregistered keys and `_row` are ignored.
+ */
+function _headersFor(sh, name, obj) {
+  var headers = sheetHeaders(sh), schema = obj ? sheetSchema(name) : null;
+  if (!schema) return headers;
+  var missing = Object.keys(obj).filter(function (k) { return k.charAt(0) !== '_' && headers.indexOf(k) < 0 && schema.indexOf(k) >= 0; });
+  if (!missing.length || !_healSheets(getSpreadsheet(), name, missing)) return headers;
+  return sheetHeaders(sh);
+}
 
 function storeAppend(name, obj) {
   var sh = getSheet(name);
-  var headers = sheetHeaders(sh);
+  var headers = _headersFor(sh, name, obj);
   var row = headers.map(function (h) { return _cellOut(obj[h]); });
-  sh.appendRow(row.map(_cellEsc));
+  sh.appendRow(row.map(_cellWriter(name)));
   var out = {}; headers.forEach(function (h, i) { out[h] = row[i]; });
   out._row = sh.getLastRow();
   return out;
@@ -120,11 +192,11 @@ function storeFind(name, pred, limit) {
 function storeGet(name, id) { return storeFind(name, function (r) { return String(r.id) === String(id); }, 1)[0] || null; }
 function storeUpdate(name, rowNumber, patch) {
   var sh = getSheet(name);
-  var headers = sheetHeaders(sh);
+  var headers = _headersFor(sh, name, patch);
   var range = sh.getRange(rowNumber, 1, 1, headers.length);
   var vals = range.getValues()[0];
   Object.keys(patch).forEach(function (k) { var i = headers.indexOf(k); if (i >= 0) vals[i] = _cellOut(patch[k]); });
-  range.setValues([vals.map(_cellEsc)]);   // every cell, not just the patched ones: reads come back unescaped
+  range.setValues([vals.map(_cellWriter(name))]);   // every cell, not just the patched ones: reads come back unescaped
   var o = { _row: rowNumber }; headers.forEach(function (h, i) { o[h] = _cellIn(vals[i]); });
   return o;
 }

@@ -106,4 +106,88 @@ test('free text never becomes a formula: = + - @ and a leading apostrophe go in 
   assert.equal(ctx.storeAppend('Settings', { key: 'n', value: -5 }).value, -5, 'numbers stay numbers');
 });
 
+test('a registered tab that is missing is created on first use (audited sheets_healed); a tab nobody registered still throws', () => {
+  const { ctx, state } = H.loadGas({ pack: 'hello' });
+  ctx.registerSheet('HelloLog', ['id', 'note']);
+  H.bootstrap(ctx, state);
+  const ss = ctx.getSpreadsheet();
+  ss.deleteSheet(ss.getSheetByName('HelloLog'));
+  ss.deleteSheet(ss.getSheetByName('Flows'));
+  const row = ctx.storeAppend('HelloLog', { id: 'h1', note: 'kept' });   // threw "Sheet tab missing" before the fix
+  assert.equal(row.note, 'kept');
+  assert.deepEqual([...ctx.storeAll('HelloLog')].map((r) => r.id), ['h1']);
+  assert.ok(ss.getSheetByName('Flows'), 'every registered tab is ensured in the same repair');
+  const heal = ctx.storeAll('AuditLog').filter((r) => r.event === 'sheets_healed');
+  assert.equal(heal.length, 1);
+  assert.equal(heal[0].ref, 'HelloLog');
+  assert.deepEqual(JSON.parse(heal[0].detail_json).created.sort(), ['Flows', 'HelloLog']);
+  assert.throws(() => ctx.getSheet('NobodyRegisteredThis'), /Sheet tab missing: NobodyRegisteredThis/);
+});
+
+test('a write naming a registered column the tab lacks adds the column first: append and update keep the field', () => {
+  const { ctx, state } = H.loadGas({ pack: 'hello' });
+  ctx.registerSheet('HelloLog', ['id', 'note', 'tz']);
+  H.bootstrap(ctx, state);
+  const sh = ctx.getSheet('HelloLog');
+  sh.getRange(1, 3, 1, 1).setValues([['']]);                              // a tab made before the tz column existed
+  const a = ctx.storeAppend('HelloLog', { id: 'h1', note: 'n', tz: 'Asia/Tokyo', stray: 'not registered' });
+  assert.equal(a.tz, 'Asia/Tokyo', 'appended, not dropped');
+  assert.equal(a.stray, undefined, 'unregistered keys are still ignored');
+  assert.equal(ctx.storeGet('HelloLog', 'h1').tz, 'Asia/Tokyo');
+  sh.getRange(1, 4, 1, 1).setValues([['']]);                              // lose it again, then update
+  const u = ctx.storeUpdateById('HelloLog', 'h1', { tz: 'Europe/Paris' });
+  assert.equal(u.tz, 'Europe/Paris');
+  assert.deepEqual([...ctx.sheetHeaders(sh)].filter(Boolean), ['id', 'note', 'tz']);
+});
+
+test('ensureSheets never overwrites a header after a blank header cell, and tolerates a tab another run created meanwhile', () => {
+  const { ctx, state } = H.loadGas({ pack: 'hello' });
+  H.bootstrap(ctx, state);
+  const ss = ctx.getSpreadsheet();
+  const req = ss.getSheetByName('Requests');
+  req.getRange(1, 3, 1, 1).setValues([['']]);                             // 'kind' blanked in the middle of the row
+  ctx.ensureSheets();
+  const head = [...ctx.sheetHeaders(req)];
+  assert.equal(head[head.length - 1], 'kind', 'the missing header goes after the last one');
+  assert.deepEqual(head.filter(Boolean).sort(), [...ctx.SHEET_HEADERS.Requests].sort(), 'no header was overwritten');
+  ss.deleteSheet(ss.getSheetByName('Flows'));
+  const insert = ss.insertSheet.bind(ss);
+  ss.insertSheet = (n) => { insert(n); throw new Error('A sheet with the name "' + n + '" already exists.'); };   // the other run won
+  assert.deepEqual([...ctx.ensureSheets()], []);
+  assert.deepEqual([...ctx.sheetHeaders(ss.getSheetByName('Flows'))], [...ctx.SHEET_HEADERS.Flows]);
+});
+
+test('a deploy that registers a new tab or column: the first run after it creates them, once (SHEET_SCHEMA)', () => {
+  const first = H.loadGas({ pack: 'hello' });
+  H.bootstrap(first.ctx, first.state);
+  const before = first.state.props[first.ctx.PROP.SHEET_SCHEMA];
+  assert.ok(before, 'ensureSheets records the schema it ensured');
+  // The next execution runs newer code: one more tab, one more column on a core tab. Setup is not re-run.
+  const { ctx, state } = H.loadGas({ pack: 'hello', state: first.state });
+  ctx.registerSheet('NewTab', ['id', 'value']);
+  ctx.registerSheet('Requests', ['answered_by']);
+  ctx.storeAll('Settings');                                               // any first read opens the Sheet
+  const ss = ctx.getSpreadsheet();
+  assert.deepEqual([...ctx.sheetHeaders(ss.getSheetByName('NewTab'))], ['id', 'value']);
+  assert.equal(ctx.sheetHeaders(ss.getSheetByName('Requests')).slice(-1)[0], 'answered_by');
+  assert.notEqual(state.props[ctx.PROP.SHEET_SCHEMA], before);
+  assert.equal(ctx.syncSheetSchemas(ss), false, 'nothing to do once recorded');
+  assert.equal(ctx.storeAll('AuditLog').filter((r) => r.event === 'sheets_healed').length, 0, 'the deploy sync is not a repair');
+});
+
+test('Settings keep text as text: a date, a time, TRUE and digits read back exactly even where Sheets types what it is given', () => {
+  const { ctx, state } = H.loadGas({ pack: 'hello', tz: 'America/Los_Angeles' });
+  H.bootstrap(ctx, state);
+  ctx.getSpreadsheet().autoType = true;                                   // the mock now types "2026-10-04" as a date cell, like Sheets
+  ctx.storeAppend('Queue', { id: 'q1', kind: 'x', status: 'new', claimed_at: '2026-10-04' });
+  assert.notEqual(ctx.storeGet('Queue', 'q1').claimed_at, '2026-10-04', 'the emulation is on: other tabs get typed cells');
+  const vals = { d: '2026-10-04', t: 'TRUE', n: '0042', s: 'plain' };
+  Object.keys(vals).forEach((k) => ctx.settingSet(k, vals[k]));
+  Object.keys(vals).forEach((k) => assert.equal(ctx.settingGet(k), vals[k], k));
+  ctx.settingSet('d', '2026-10-05');                                     // an update rewrites the whole row
+  assert.equal(ctx.settingGet('d'), '2026-10-05');
+  assert.equal(ctx.settingGet('t'), 'TRUE');
+  assert.equal(ctx.storeAppend('Settings', { key: 'num', value: 7 }).value, 7, 'numbers stay numbers');
+});
+
 // Developed by: LightAISolutions

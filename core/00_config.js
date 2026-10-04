@@ -33,7 +33,7 @@ var HELPER = _helperMerge(HELPER_DEFAULTS, typeof HELPER_MANIFEST !== 'undefined
 /** Script Property names. Resolved through the manifest's property_prefix (see propName()). */
 var PROP_KEYS = ['BOT_TOKEN', 'OWNER_CHAT_ID', 'WEBHOOK_SECRET', 'ADMIN_SECRET', 'PAIR_CODE', 'SHEET_ID', 'ROOT_FOLDER_ID',
   'MAILBOX_FOLDER_ID', 'TIMEZONE', 'WEBAPP_URL', 'MAX_ROUTINE_FIRES_PER_DAY', 'MAX_PROPOSALS_PER_DAY', 'MAX_WAKES_PER_DAY',
-  'WAKE_MIN_INTERVAL_SEC', 'APP_SHELL_URL', 'MAX_APP_CALLS_PER_DAY', 'SHEET_TZ'];
+  'WAKE_MIN_INTERVAL_SEC', 'APP_SHELL_URL', 'MAX_APP_CALLS_PER_DAY', 'SHEET_TZ', 'SHEET_SCHEMA'];
 function propName(key) { return (HELPER.property_prefix ? HELPER.property_prefix + '_' : '') + key; }
 var PROP = {};
 PROP_KEYS.forEach(function (k) { PROP[k] = propName(k); });

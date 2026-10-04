@@ -238,4 +238,47 @@ test('the old pin: without veg_card in helper.json the core loads, registers no 
   assert.equal(vegReqs(state).length, 1, 'the command still asks; the card waits for the new pin');
 });
 
+test('a Sheet made before the VegCards tab existed: the first run after the deploy creates it, so /vegcard rebuild gets its card', async () => {
+  // Before the fix a deploy never ran ensureSheets: the card's store threw "Sheet tab missing", the envelope went to
+  // archive/failed and the owner heard nothing after "Making the veg card…".
+  const first = fresh();
+  const ss = first.ctx.getSpreadsheet();
+  ss.deleteSheet(ss.getSheetByName('VegCards'));
+  delete first.state.props[first.ctx.PROP.SHEET_SCHEMA];                  // set up by code that kept no schema mark
+  const state = first.state;
+  const run = () => H.loadGas({ pack: 'tour-guide', now: NOW, manifest: MANIFEST, state }).ctx;   // a new execution, same data
+  let ctx = run();
+  say(ctx, state, '/vegcard rebuild');
+  const req = vegReqs(state).find((r) => r.payload.rebuild === true);
+  assert.ok(req, 'the request opened');
+  assert.ok(ss.getSheetByName('VegCards'), 'the first run after the deploy made the tab');
+  ctx = run();                                                            // the routine's wake: another execution
+  const c = await card();
+  const n0 = texts(state).length;
+  assert.equal(deliver(ctx, state, c, { in_reply_to: req.id, dedupe_key: `vegcard:${TRIP}:${c.fp}:${req.id}` }).processed, 1);
+  const { vegCardTelegram } = await V();
+  assert.deepEqual(texts(state).slice(n0), [vegCardTelegram(c)], 'the card reached the owner');
+  assert.equal(J(ctx.storeAll('VegCards'))[0].fp, c.fp);
+  assert.equal(J(ctx.storeAll(ctx.SHEETS.REQUESTS)).find((x) => x.id === req.id).status, 'answered');
+  assert.equal(audits(ctx, 'sheets_healed').length, 0, 'made up front, not repaired on use');
+});
+
+test('the backstop: a VegCards tab gone in the middle of a run is made again when the card arrives; the card is still sent', async () => {
+  const { ctx, state } = fresh();
+  say(ctx, state, '/vegcard rebuild');
+  const req = vegReqs(state)[0];
+  const ss = ctx.getSpreadsheet();
+  ss.deleteSheet(ss.getSheetByName('VegCards'));
+  const c = await card();
+  const n0 = texts(state).length;
+  assert.equal(deliver(ctx, state, c, { in_reply_to: req.id, dedupe_key: `vegcard:${TRIP}:${c.fp}:${req.id}` }).processed, 1);
+  const { vegCardTelegram } = await V();
+  assert.deepEqual(texts(state).slice(n0), [vegCardTelegram(c)]);
+  assert.equal(J(ctx.storeAll('VegCards')).length, 1);
+  assert.equal(J(ctx.storeAll(ctx.SHEETS.REQUESTS)).find((x) => x.id === req.id).status, 'answered');
+  const healed = audits(ctx, 'sheets_healed');
+  assert.equal(healed.length, 1);
+  assert.equal(healed[0].ref, 'VegCards');
+});
+
 // Developed by: LightAISolutions
