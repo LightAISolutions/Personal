@@ -3,11 +3,16 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 15/50`
+`Sections: 16/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.16w] — 2026-10-04 05:39:39 PM EST — v01.72r
+
+### Added
+- A Commands screen: every command you can send Tour Guide, grouped by what it is for, each with what it does and examples; search for a command, and tap an example to copy it, then paste it in the chat
 
 ## [v01.15w] — 2026-10-04 09:23:02 AM EST — v01.70r
 

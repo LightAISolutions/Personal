@@ -3,11 +3,25 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 72/100`
+`Sections: 73/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.72r] — 2026-10-04 05:39:39 PM EST
+
+> **Prompt:** "I would like my Tour Guide app to include a tab called "Commands" that goes over all the commands I can give Tour Guide and what each of them do."
+
+### Added
+- **The app's Commands tab** (`live-site-pages/helper-app.html` v01.16w, `helpers/packs/tour-guide/gas/45_commands_app.js`): every command the bot answers, grouped by purpose (Get started, Plan a trip, Your trip and its days, On the day, Discover, Places and lists, After the trip, Ask and settings, Housekeeping), each with what it does and examples with what each means; a search box (a command's name by its start, its description and examples by whole words); a tap on an example copies it to paste in the chat; and what works without a command. App op `commands.list`
+- **`listCommands()`** in the core (`helpers/core/02_registry.js`): every registered command, sorted, with the help line it was registered with. The tab is built from it at request time, so it lists exactly what the bot answers; a command with no description yet shows under "More" with its `/help` line
+- `helpers/decisions/TG-COMMANDS.md`: the contract and the defaults chosen
+- Tests: `pack_tour-guide_commands_app` (every registered command described once, the op follows the registry), `pack_tour-guide_commands_shell` (the screen: nav, render from the real op, search, copy on tap, refusals)
+
+### Changed
+- `helpers/tools/branch-templates/core.js.tmpl`: a new branch's header lists its line in the Commands tab among what is still written by hand (until then it shows under More)
+- Docs: `helpers/SPEC.md` (the `listCommands` row), the pack README (`45_commands_app.js`), `helpers/BUILD-STATE.md` (Commands tab log, Next); the README tree, the app's version in it and the timestamp
 
 ## [v01.71r] — 2026-10-04 05:18:49 PM EST
 

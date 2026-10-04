@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.15w">
+  <meta name="build-version" content="v01.16w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -160,6 +160,17 @@
     .ver .meta { overflow-wrap: anywhere; margin-top: 3px; }
     .ver .note { font-size: 14px; }
 
+    /* ── commands: every command the bot answers, grouped; a form copies on tap ── */
+    .cmd { padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .cmd .cname { font: 600 17px/1.2 var(--mono); }
+    .cmd .does { margin: 4px 0 6px; font-size: 15px; overflow-wrap: anywhere; }
+    .form { display: flex; flex-direction: column; align-items: flex-start; width: 100%; min-height: 44px; margin-top: 6px; padding: 8px 12px; text-align: left;
+      border: 1px solid var(--line); border-radius: 10px; background: var(--section); cursor: pointer; }
+    .form .ftext { font: 13px/1.35 var(--mono); overflow-wrap: anywhere; }
+    .form .fmeans { font-size: 13px; color: var(--hint); margin-top: 2px; }
+    .form.copied { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+    .group-about { margin: -4px 0 4px; font-size: 14px; color: var(--hint); }
+
     .reveal { animation: rise 0.35s ease both; }
     .reveal:nth-child(2) { animation-delay: 0.04s; } .reveal:nth-child(3) { animation-delay: 0.08s; }
     .reveal:nth-child(4) { animation-delay: 0.12s; } .reveal:nth-child(5) { animation-delay: 0.16s; }
@@ -180,13 +191,13 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.15w';
+    var APP_VERSION = 'v01.16w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'compare', label: 'Compare' }, { id: 'facts', label: 'Facts' },
       { id: 'interview', label: 'Interview' }, { id: 'brochure', label: 'Brochure' }, { id: 'places', label: 'Places' },
       { id: 'scout', label: 'Scout' }, { id: 'daytrip', label: 'Day trips' }, { id: 'whatson', label: 'What\'s on' },
-      { id: 'quiet', label: 'Quiet' }, { id: 'menu', label: 'Menu' }
+      { id: 'quiet', label: 'Quiet' }, { id: 'menu', label: 'Menu' }, { id: 'commands', label: 'Commands' }
     ];
     var SCOUT_ID_RE = /^sc-\d{8}-[a-z0-9-]{1,40}$/;
     var DAYTRIP_ID_RE = /^dt-\d{8}-[a-z0-9-]{1,40}$/;
@@ -195,7 +206,7 @@
     var MENU_ID_RE = /^mn-\d{8}-[a-z0-9-]{1,40}$/;
     var TICKS = [{ v: 'w', text: '✅ Want' }, { v: 'l', text: '🔖 Later' }, { v: 's', text: '❌ Skip' }];
     var tg = (window.Telegram && window.Telegram.WebApp) || null;
-    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', scout: '', daytrip: '', board: '', menu: '', jy: null, base: '', mix: {}, busy: false };
+    var S = { core: '', screen: 'home', commands: null, trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', scout: '', daytrip: '', board: '', menu: '', jy: null, base: '', mix: {}, busy: false };
     var $ = function (id) { return document.getElementById(id); };
     var main = $('main');
 
@@ -329,7 +340,7 @@
       setMain('', null);
       Array.prototype.forEach.call($('nav').children, function (b) { if (b.getAttribute('data-screen') === screen) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
       try { if (tg && tg.BackButton) { if (screen === 'home') tg.BackButton.hide(); else tg.BackButton.show(); } } catch (e) { /* older clients */ }
-      ({ home: showHome, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout, vegcard: showVegCard, daytrip: showDaytrip, whatson: showWhatson, quiet: showQuiet, menu: function () { showMenu(); } })[screen]();
+      ({ home: showHome, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout, vegcard: showVegCard, daytrip: showDaytrip, whatson: showWhatson, quiet: showQuiet, menu: function () { showMenu(); }, commands: function () { showCommands(); } })[screen]();
     }
     function buildNav() {
       var nav = clear($('nav'));
@@ -1851,6 +1862,74 @@
         } } }));
       });
       return slot;
+    }
+
+    /* ---------- commands: what the bot answers, from the helper's own registry (commands.list); a form copies on tap ---------- */
+    function copyText(t, done) {
+      var fallback = function () {
+        var ok = false;
+        try { var ta = el('textarea', { readonly: 'readonly', style: 'position:fixed;top:-1000px;opacity:0' }); ta.value = t; document.body.appendChild(ta); ta.select(); ok = document.execCommand('copy'); document.body.removeChild(ta); } catch (e) { ok = false; }
+        done(ok);
+      };
+      try { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(t).then(function () { done(true); }, fallback); return; } } catch (e) { /* no clipboard API */ }
+      fallback();
+    }
+    // Each query word must start the command's name or be a whole word of its description or examples ("date" finds "dates",
+    // "late" does not find "later").
+    function cmdMatches(c, q) {
+      if (!q) return true;
+      var name = str(c.cmd).toLowerCase().replace(/^\//, ''), words = {};
+      [c.does].concat(list(c.forms).map(function (f) { f = obj(f); return str(f.text) + ' ' + str(f.means); })).join(' ').toLowerCase()
+        .split(/[^a-z0-9\u00c0-\uffff]+/).forEach(function (w) { if (w) words[w] = true; });
+      return q.split(/\s+/).every(function (w) {
+        w = w.replace(/^\//, '');
+        return !w || name.indexOf(w) === 0 || words[w] || words[w + 's'] || words[w + 'es'] || (/s$/.test(w) && words[w.replace(/e?s$/, '')]);
+      });
+    }
+    function cmdForm(f) {
+      f = obj(f); var text = str(f.text, 200), means = str(f.means, 120);
+      return el('button', { class: 'form', type: 'button', 'data-form': text, on: { click: function (ev) {
+        var b = ev.currentTarget;
+        copyText(text, function (ok) {
+          if (ok) { haptic('ok'); b.classList.add('copied'); setTimeout(function () { b.classList.remove('copied'); }, 1200); setStatus('Copied ' + str(text, 60) + ' — paste it in the chat.'); }
+          else setStatus('Copy is not available here — type ' + str(text, 60) + ' in the chat.');
+        });
+      } } }, [el('span', { class: 'ftext', text: text }), means ? el('span', { class: 'fmeans', text: means }) : null]);
+    }
+    function cmdList(box, data, q) {
+      clear(box); var n = 0;
+      list(data.groups).map(obj).forEach(function (g) {
+        var rows = list(g.commands).map(obj).filter(function (c) { return /^\/[a-z0-9_]{1,31}$/.test(str(c.cmd, 40)) && cmdMatches(c, q); });
+        if (!rows.length) return;
+        box.appendChild(el('h3', { text: str(g.title, 60) }));
+        if (g.about) box.appendChild(el('p', { class: 'group-about', text: str(g.about, 200) }));
+        rows.forEach(function (c) {
+          n++;
+          box.appendChild(el('div', { class: 'cmd', 'data-cmd': str(c.cmd, 40) }, [el('div', { class: 'cname', text: str(c.cmd, 40) }),
+            c.does ? el('div', { class: 'does', text: str(c.does, 400) }) : null].concat(list(c.forms).slice(0, 6).map(cmdForm))));
+        });
+      });
+      if (!n) { box.appendChild(el('p', { class: 'meta', text: 'No command matches “' + str(q, 60) + '”.' })); return; }
+      var tips = list(data.tips).map(obj).filter(function (t) { return t.title && t.text; });
+      if (q || !tips.length) return;
+      box.appendChild(el('h3', { text: 'Without a command' }));
+      tips.slice(0, 8).forEach(function (t) { box.appendChild(el('div', { class: 'note' }, [el('b', { text: str(t.title, 60) + '. ' }), str(t.text, 300)])); });
+    }
+    function showCommands() {
+      var draw = function (data) {
+        var count = Math.max(0, Math.round(num(data.count)));
+        var find = el('input', { type: 'search', placeholder: 'Find a command: late, menu, dates…', maxlength: '60', 'aria-label': 'Find a command' });
+        var box = el('div', {});
+        var view = el('div', {}, [el('h2', { text: 'Commands' }),
+          el('p', { class: 'lede', text: 'Everything you can send in the chat' + (count ? ' — ' + count + ' commands' : '') + '. Tap an example to copy it, then paste it in the chat.' }), find, box]);
+        find.addEventListener('input', function () { cmdList(box, data, str(find.value, 60).trim().toLowerCase()); });
+        cmdList(box, data, '');
+        render(view);
+      };
+      if (S.commands) return draw(S.commands);
+      render(stateView('', 'Loading…'));
+      call('commands.list', {}, function (b) { S.commands = b; draw(b); },
+        function (err) { render(stateView('⌨️', 'Commands not available', why(err) + ' /help in the chat lists them.', homeBtn())); });
     }
 
     /* ---------- boot ---------- */
