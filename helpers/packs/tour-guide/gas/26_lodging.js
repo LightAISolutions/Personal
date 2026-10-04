@@ -6,12 +6,16 @@
  * not yet over, the reply carries two buttons:
  *   🔁 Re-plan N days from <day>   lg:<trip key>:<yyyymmdd>   → request kind `replan` { trip, dates: every stored day from
  *                                  that date (and from the trip's today) on, deliverables, reason: "The lodging changed…" }
- *   Keep the plan                  lg:<trip key>:k            → nothing is sent
+ *   Keep the plan                  lg:<trip key>:k            → nothing is sent; the stored plan counts as kept for the
+ *                                                                lodging as it is now, so the stale line stops until it changes
  * Either tap edits the message so it cannot be tapped twice. Undated /lodging words are trip-wide, so the days they touch
  * are every planned day from the trip's today on (all of them before the trip); a dated stay touches the planned days from
- * its first night (and the trip's today) on. The lodging itself
+ * its first night (and the trip's today) on, or from the first night of an earlier stay it replaces. The offer starts at the
+ * earliest night any change touched since the stored plan arrived, so a change the owner let pass is not dropped by the next
+ * one, and `/lodging` alone repeats the offer while the stale line shows (Phase 13 coordinator). The lodging itself
  * travels in the reason, and since WP-13c (C13) in trip_update.lodging once a dated stay is set. A trip without a
- * plan, or whose days are all over, gets the reply exactly as before. Decisions: helpers/decisions/WP-12r.md, WP-13c.md.
+ * plan, or whose days are all over, gets the reply exactly as before. Decisions: helpers/decisions/WP-12r.md, WP-13c.md,
+ * TG-PHASE-13.md.
  */
 var TG_LG = { MAX_DATES: 31, REASON_MAX: 300, TEXT_MAX: 200, STAYS_MAX: 12, STAY_TEXT_MAX: 200, UNDATED_MAX: 300 };
 
@@ -28,6 +32,9 @@ var TG_LG_DATE = '(\\d{4}-\\d{2}-\\d{2}|today|tomorrow|day\\s*\\d{1,2})';
 var TG_LG_ADD_RE = new RegExp('^(?:([\\s\\S]*?)\\s+)?' + TG_LG_DATE + '\\s+(?:to|→|–|-)\\s+' + TG_LG_DATE + '$', 'i');
 var TG_LG_REMOVE_RE = new RegExp('^remove(?:\\s+' + TG_LG_DATE + ')?$', 'i');
 var TG_LG_USAGE = '<code>/lodging &lt;name&gt; &lt;first night&gt; to &lt;check-out&gt;</code>';
+// C13 carries 1–12 stays, so a request never says "no stays": after a clear (or removing the last stay) the routine's
+// trip file keeps its stays until new ones arrive, and the reply says so (Phase 13 coordinator, WP-13c REQUEST 1).
+var TG_LG_KEEPS = 'The plan keeps using the old stays until you add new ones.';
 var TG_LG_HELP = 'Add a stay with ' + TG_LG_USAGE + ' (e.g. <code>/lodging Reed Inn 2027-06-10 to 2027-06-12</code>) · remove one with ' +
   '<code>/lodging remove &lt;first night&gt;</code> · <code>/lodging clear</code> removes them all.';
 
@@ -173,14 +180,19 @@ function tgLgList(trip) {
   return lines.join('\n');
 }
 function _tgLgSend(ctx, said, offer) { ctx.reply(said + (offer ? '\n' + offer.line : ''), offer ? { keyboard: offer.keyboard } : undefined); }
+/** /lodging alone: the list, and while the stored plan is stale the re-plan offer again — the stale line points here. */
+function _tgLgListReply(ctx, trip) { _tgLgSend(ctx, tgLgList(trip), tgLgPlanStale(trip) ? tgLgOffer(trip, tgLgChangedFrom(trip)) : null); }
+/** The earliest first night of some stays, else ''. */
+function _tgLgEarliest(list) { return list.map(function (x) { return x.from; }).sort()[0] || ''; }
 /** The /lodging command: every form (TG_LG_HELP); the undated form behaves as before while no stay is set. */
 function tgLgCmd(ctx, trip) {
   var a = String(ctx.args || '').trim(), stays = tgLgStays(trip), l = tgLgOf(trip), cur;
-  if (!a) { ctx.reply(tgLgList(trip)); return; }
+  if (!a) { _tgLgListReply(ctx, trip); return; }
   if (/^clear$/i.test(a)) {
     if (!stays.length && !(l && l.text)) { ctx.reply('🏨 No lodging is saved for ' + tgCmdTitle(trip) + '.'); return; }
     tgLgSave(trip, []);
-    ctx.reply('🏨 Cleared the lodging of ' + tgCmdTitle(trip) + '. Add a stay with ' + TG_LG_USAGE + '.');
+    tgLgNoteChange(trip, _tgLgEarliest(stays));   // the next stay's offer covers the nights cleared here
+    ctx.reply('🏨 Cleared the lodging of ' + tgCmdTitle(trip) + '. ' + TG_LG_KEEPS + ' Add a stay with ' + TG_LG_USAGE + '.');
     return;
   }
   var rm = TG_LG_REMOVE_RE.exec(a);
@@ -191,7 +203,8 @@ function tgLgCmd(ctx, trip) {
     var hit = stays.filter(function (x) { return x.from === day; })[0];
     if (!hit) { ctx.reply('🏨 No stay starts on ' + tgCmdDate(day) + ' — nothing was removed. /lodging lists them.'); return; }
     cur = tgLgSave(trip, stays.filter(function (x) { return x !== hit; }));
-    _tgLgSend(ctx, '🏨 Removed ' + tgLgStayLine(hit) + '.', tgLgOffer(cur, hit.from));
+    var left = tgLgStays(cur).length, offer = tgLgChanged(cur, hit.from);   // noted even with no stay left, for the next one
+    _tgLgSend(ctx, '🏨 Removed ' + tgLgStayLine(hit) + '.' + (left ? '' : ' ' + TG_LG_KEEPS), left ? offer : null);
     return;
   }
   var m = TG_LG_ADD_RE.exec(a);
@@ -212,7 +225,8 @@ function tgLgCmd(ctx, trip) {
     var said = '🏨 Saved for ' + tgCmdTitle(trip) + ': ' + tgLgStayLine(stay) + '.';
     if (gone.length) said += '\nIt replaces ' + gone.map(tgLgStayLine).join('; ') + '.';
     else if (undated) said += '\nIt replaces “' + tgEscape(truncate(undated, TG_LG.TEXT_MAX)) + '”.';
-    _tgLgSend(ctx, said + '\nIt goes with the next research round. /lodging lists your stays.', tgLgOffer(cur, from));
+    // A replaced stay that began earlier leaves its first nights without that stay: they are touched too.
+    _tgLgSend(ctx, said + '\nIt goes with the next research round. /lodging lists your stays.', tgLgChanged(cur, _tgLgEarliest(gone.concat([stay]))));
     return;
   }
   if (stays.length) {
@@ -222,11 +236,11 @@ function tgLgCmd(ctx, trip) {
   // The undated form, as before (WP-6a G: under 300 characters); it now strips hidden characters and records set_at.
   var words = stripHidden(a).replace(/\s+/g, ' ').trim(), lodging = { text: words, set_at: nowIso() };
   if (words.length > TG_LG.UNDATED_MAX) { ctx.reply('🏨 Please keep it under ' + TG_LG.UNDATED_MAX + ' characters (that was ' + words.length + ') — nothing was saved.'); return; }
-  if (!words) { ctx.reply(tgLgList(trip)); return; }
+  if (!words) { _tgLgListReply(ctx, trip); return; }
   var n = /(\d{1,2})\s*nights?\b/i.exec(words);
   if (n) lodging.nights = parseInt(n[1], 10);
   tgTripUpsert({ slug: trip.slug, lodging: lodging });
-  _tgLgSend(ctx, '🏨 Saved for ' + tgCmdTitle(trip) + ': ' + tgEscape(words) + '\nIt goes with the next research round.', tgLgOffer(tgTripGet(trip.slug)));   // WP-12r
+  _tgLgSend(ctx, '🏨 Saved for ' + tgCmdTitle(trip) + ': ' + tgEscape(words) + '\nIt goes with the next research round.', tgLgChanged(tgTripGet(trip.slug), ''));   // WP-12r; trip-wide
 }
 
 /** The stored plan days a lodging change touches: the dates from max(from, the trip's today) on, in order. */
@@ -248,11 +262,18 @@ function tgLgOffer(trip, from) {
       [{ text: 'Keep the plan', data: cbEncode('lg', tk, 'k') }]])
   };
 }
-/** The replan request for a lodging change, from `date` on → the request, or a word for the owner (a string). */
+/** A /lodging change touched the stored plan from `from` on ('' = trip-wide, from the trip's today): note it
+ *  (tgLgNoteChange), then the offer for every day any change touched since the plan arrived. */
+function tgLgChanged(trip, from) {
+  tgLgNoteChange(trip, from);
+  return tgLgOffer(trip, tgLgChangedFrom(trip) || from);
+}
+/** The replan request for a lodging change, from `date` on — or from an earlier night a later change touched (an old
+ *  offer tapped after another change) → the request, or a word for the owner (a string). */
 function tgLgAsk(trip, date) {
   var text = trip.lodging && trip.lodging.text ? String(trip.lodging.text) : '';
   if (!text) return 'No lodging is saved — /lodging <where>.';
-  var dates = tgLgDates(trip, date);
+  var lo = tgLgChangedFrom(trip), dates = tgLgDates(trip, lo && lo < date ? lo : date);
   if (!dates.length) return 'Those days are over.';
   var reason = truncate('The lodging changed: ' + truncate(typeof tgCmdLodgingText === 'function' ? tgCmdLodgingText(trip) : text, TG_LG.TEXT_MAX) +
     '. Re-plan these days to start and end there.', TG_LG.REASON_MAX);
@@ -267,6 +288,7 @@ registerCallback('lg', function (ctx) {
   if (!trip) { ctx.answer('That trip is gone.'); return; }
   var head = '🏨 ' + tgCmdTitle(trip) + (trip.lodging && trip.lodging.text ? ': ' + tgEscape(truncate(trip.lodging.text, TG_LG.TEXT_MAX)) : '');
   if (p[1] === 'k') {
+    tgLgKeep(trip);
     ctx.answer('Kept');
     ctx.edit(head + '\nThe plan stays as it is; /replan changes one day.');
     return;
@@ -287,11 +309,19 @@ registerCallback('lg', function (ctx) {
  * The stale rule: an fp that differs from the trip's current one → stale. Neither fp → stale only when the lodging's set_at
  * is later than the digest's arrival; a digest stored before this phase has no record and arrived before any set_at
  * (set_at is written from this phase on); a lodging without set_at → no line. The line shows only while a stored day is
- * still to come.
+ * still to come. No lodging at all (after a clear) → no line: C13 never sends "no stays", so a rebuild would use the stays
+ * the routine already has, and the clear's reply says the plan keeps them (Phase 13 coordinator, WP-13c REQUEST 1).
+ * The Phase 13 coordinator's probe added (decisions/TG-PHASE-13.md): /replan rebuilds one day, so the line points at
+ * /lodging, whose offer re-plans every day a change touched. The plan's record also keeps `changed` (the earliest night a
+ * change touched since the plan arrived; tgLgNoteChange) and `kept` (the fingerprint the owner kept the plan for: "Keep
+ * the plan" → no line until the lodging changes again). A replan that leaves out some of the touched days while the plan
+ * is stale carries the stored plan's own fingerprint (tgLgStampFp), so its digest does not clear the line; a digest still
+ * built for the same lodging as the record keeps `changed` and `kept`.
  */
 var TG_LG_FP_RE = /^lfp1:[0-9a-f]{8}$/;
 var TG_LG_KEYS = { REQ: 'tg_req_lodging', PLAN: 'tg_plan_lodging', REQ_KEEP: 60 };
 function _tgLgMap(key) { var v = tgShJson(settingGet(key, ''), null); return isPlainObject(v) ? v : {}; }
+function _tgLgPlanSave(m) { settingSet(TG_LG_KEYS.PLAN, toJson(m), 'the lodging fingerprint each stored plan was built for (WP-13c)'); }
 /** Keep the fp a plan or replan request was sent with (the newest 60). */
 function tgLgReqRemember(id, fp) {
   if (!id || !TG_LG_FP_RE.test(String(fp || ''))) return;
@@ -312,10 +342,43 @@ function tgLgOnDigest(p, inReplyTo) {
   var slug = String(p && p.trip || '');
   if (!slug) return null;
   var own = typeof p.lodging_fp === 'string' && TG_LG_FP_RE.test(p.lodging_fp) ? p.lodging_fp : '';
-  var rec = { fp: own || tgLgReqFp(inReplyTo), at: nowIso() }, m = _tgLgMap(TG_LG_KEYS.PLAN);
+  var rec = { fp: own || tgLgReqFp(inReplyTo), at: nowIso() }, m = _tgLgMap(TG_LG_KEYS.PLAN), prev = m[slug];
+  // Still built for the same lodging (a replan that left touched days out, a request sent before a change): the change
+  // waiting for the plan and the owner's keep still hold.
+  if (rec.fp && isPlainObject(prev) && prev.fp === rec.fp) {
+    if (tgEnvRealDate(prev.changed)) rec.changed = prev.changed;
+    if (typeof prev.kept === 'string' && TG_LG_FP_RE.test(prev.kept)) rec.kept = prev.kept;
+  }
   m[slug] = rec;
-  settingSet(TG_LG_KEYS.PLAN, toJson(m), 'the lodging fingerprint each stored plan was built for (WP-13c)');
+  _tgLgPlanSave(m);
   return rec;
+}
+/** A lodging change touched the stored plan from `from` on ('' → the trip's today): the plan's record keeps the earliest
+ *  such night until the next plan arrives or the owner keeps the plan. No record (no plan, or one stored before Phase 13)
+ *  → nothing to note: the offer then starts where the change does, as before. */
+function tgLgNoteChange(trip, from) {
+  if (!trip || !trip.slug) return;
+  var m = _tgLgMap(TG_LG_KEYS.PLAN), rec = m[trip.slug], d = tgEnvRealDate(from) ? from : tgTripToday(trip);
+  if (!isPlainObject(rec) || (tgEnvRealDate(rec.changed) && rec.changed <= d)) return;
+  rec.changed = d;
+  _tgLgPlanSave(m);
+}
+/** The earliest night a lodging change touched since the stored plan arrived (or was kept), else ''. */
+function tgLgChangedFrom(trip) {
+  var rec = trip ? _tgLgMap(TG_LG_KEYS.PLAN)[trip.slug] : null;
+  return isPlainObject(rec) && tgEnvRealDate(rec.changed) ? rec.changed : '';
+}
+/** "Keep the plan": the stored plan counts as kept for the lodging as it is now, so the line stops until the lodging
+ *  changes again; the change waiting for it is dropped. Nothing is sent. → whether a plan was kept. */
+function tgLgKeep(trip) {
+  var cur = trip ? tgLgFp(trip) : '';
+  if (!cur || !tgLgNextPlanned(trip)) return false;
+  var m = _tgLgMap(TG_LG_KEYS.PLAN), rec = isPlainObject(m[trip.slug]) ? m[trip.slug] : { fp: '', at: nowIso() };
+  rec.kept = cur;
+  delete rec.changed;
+  m[trip.slug] = rec;
+  _tgLgPlanSave(m);
+  return true;
 }
 /** The first stored plan date still to come (the trip's today or later), else ''. */
 function tgLgNextPlanned(trip) {
@@ -327,6 +390,7 @@ function tgLgPlanStale(trip) {
   if (!trip || !tgLgNextPlanned(trip)) return false;
   var rec = _tgLgMap(TG_LG_KEYS.PLAN)[trip.slug], l = tgLgOf(trip), cur = tgLgFp(trip);
   rec = isPlainObject(rec) ? rec : null;
+  if (!cur || (rec && rec.kept === cur)) return false;
   var fp = rec && typeof rec.fp === 'string' && TG_LG_FP_RE.test(rec.fp) ? rec.fp : '';
   if (fp) return fp !== cur;
   var setAt = l && typeof l.set_at === 'string' ? Date.parse(l.set_at) : NaN;
@@ -338,7 +402,20 @@ function tgLgPlanStale(trip) {
 /** The line /trip, each planned day's card and the morning message show while the plan is stale, else ''. */
 function tgLgStaleLine(trip) {
   if (!tgLgPlanStale(trip)) return '';
-  return '⚠️ This plan was built for different lodging. Rebuild it with <code>/replan ' + tgLgNextPlanned(trip) + ' &lt;why&gt;</code>.';
+  return '⚠️ This plan was built for different lodging. <code>/lodging</code> offers to re-plan the days that changed or to keep the plan.';
+}
+/** The fingerprint a plan or replan request carries (stamped in tgOpenKindRequest): the current one — except a replan
+ *  that leaves out some of the days a lodging change touched while the stored plan is stale, which carries the stored
+ *  plan's own, so the digest answering it does not clear the line while those days still start and end at the old
+ *  lodging. A plan without a fingerprint of its own (stored before Phase 13) has none to carry. */
+function tgLgStampFp(trip, kind, payload) {
+  var cur = trip ? tgLgFp(trip) : '';
+  if (!cur || kind !== 'replan' || !tgLgPlanStale(trip)) return cur;
+  var rec = _tgLgMap(TG_LG_KEYS.PLAN)[trip.slug];
+  var old = isPlainObject(rec) && typeof rec.fp === 'string' && TG_LG_FP_RE.test(rec.fp) ? rec.fp : '';
+  if (!old) return cur;
+  var got = payload && Array.isArray(payload.dates) ? payload.dates.map(String) : [];
+  return tgLgDates(trip, tgLgChangedFrom(trip)).every(function (d) { return got.indexOf(d) >= 0; }) ? cur : old;
 }
 
 // Developed by: LightAISolutions

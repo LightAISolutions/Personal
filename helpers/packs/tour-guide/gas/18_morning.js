@@ -5,10 +5,11 @@
  *   When     alarm `tg_morning`: the owner's morning time (default 07:00, /morning at HH:MM), or 30 min before leave_by
  *            when that is earlier, never before 05:00, in the trip's zone; a run after 12:00 local is too late and skips
  *            the date. Once per date (Settings tg_morning_sent), marked only when every message went out.
- *   What     date, "Day n of m", towns · Leave by · weather + credit · 💴 cash · bookings · stops (time, name, local name,
- *            address, last entry, check on the day, map) · 🚆 trains (stations, or "use the route link") · dinner · sunset;
- *            a free day: date, weather, bookings, "Free day". Keyboard ⏰ running late 15 · 30 · 60 and 📍 re-plan from
- *            here on the last chunk.
+ *   What     date, "Day n of m", towns · Leave by (or the day's own start, with its bag step) · weather + credit · 💴
+ *            cash · bookings · stops (time, name, local name, address, last entry, check on the day, map) · 🚆 trains
+ *            (stations, or "use the route link") · dinner (its note, its booking) · the day's end · sunset; a day without
+ *            stops: date, start or Leave by and bag step, weather, bookings, trains, the day's end, its warnings, "Free
+ *            day". Keyboard ⏰ running late 15 · 30 · 60 and 📍 re-plan from here on the last chunk.
  *   Pin      the first chunk, silently; the previous morning message is unpinned (Settings tg_morning_pin); a failed pin or
  *            unpin is audited and ignored.
  *   /morning [date | day N | tomorrow] sends now: today's is the real one (pinned, counts as sent); any other date is a
@@ -115,10 +116,27 @@ function tgMorningPaying(p) {
   var price = _tgMorningStr(p.price_line) ? String(p.price_line).split(' · ').filter(function (x) { return x.trim() && x.trim().toLowerCase() !== key; }) : [];
   return (pay ? [pay] : []).concat(price.length ? [price.join(' · ')] : []);
 }
+/** The 🚆 Trains lines of a day: a transit leg's stations, else its route link (no station is ever inferred). */
+function tgMorningTrainLines(day) {
+  var trains = (Array.isArray(day.legs) ? day.legs : []).filter(function (l) { return l && l.mode === 'TRANSIT'; }), out = [];
+  if (!trains.length) return out;
+  out.push('🚆 <b>Trains</b>');
+  trains.forEach(function (l) {
+    var st = tgCmdStationsText(l.stations), to = tgMorningDest(day, l.to);
+    out.push(st ? '• ' + st + ' — for ' + to : '• To ' + to + ': use the ' + tgCmdHref(l.maps_url, 'route link'));
+  });
+  return out;
+}
 /**
  * The whole day as [{ html, keyboard? }], split like the day card, the keyboard on the last chunk. wx: tgWxDay's answer.
  * Order (TG-PHASE-12 §3): date · Day n of m · towns; leave by; weather + credit; 💴; bookings; stops; 🚆 trains; dinner;
  * the day's end; sunset. A free day: date, weather, bookings, "Free day" and no buttons.
+ * Phase 13 (the coordinator's probe, decisions/TG-PHASE-13.md): a day with a start of its own (a moving day's station)
+ * shows the day card's start line with its bag step instead of "Leave by" — its first leg leaves from that start, so
+ * "Leave by" only repeated the start time as if it were the time to leave the lodging; a day without one keeps "Leave
+ * by", then its bag step. The dinner shows its note (the menu caveat) as the card does. A day without stops that still
+ * goes somewhere (a departure) keeps its trains, its end and its warnings — an overrun alert is only raised on such a
+ * day — before "Free day"; a rest day is as it was.
  */
 function tgMorningMessages(trip, day, total, wx, rehearsal) {
   var lines = [], stops = Array.isArray(day.stops) ? day.stops.filter(function (s) { return s && s.name; }) : [];
@@ -130,11 +148,20 @@ function tgMorningMessages(trip, day, total, wx, rehearsal) {
   var staleLg = typeof tgLgStaleLine === 'function' ? tgLgStaleLine(trip) : '';   // C13
   if (staleLg) lines.push(staleLg);
   if (day.late) lines.push('⏰ <i>Running ' + tgEscape(day.late.minutes) + ' min late since ' + tgEscape(day.late.from) + '</i>');
-  if (stops.length && tgCmdDayClock(day.leave_by)) lines.push('🚪 <b>Leave by ' + tgEscape(day.leave_by) + '</b>');
+  var startLine = tgCmdDayStartLine(day);
+  if (tgCmdDayAnchorOk(day.start)) lines.push(startLine);
+  else {
+    if (tgCmdDayClock(day.leave_by)) lines.push('🚪 <b>Leave by ' + tgEscape(day.leave_by) + '</b>');
+    if (startLine) lines.push(startLine);   // 🧳 the bag step
+  }
   (wx && wx.lines || []).forEach(function (l) { lines.push(l); });
   if (wx && wx.credit) lines.push(tgWxCredit());
   if (!stops.length) {
     (typeof tgBkDayLines === 'function' ? tgBkDayLines(trip, day) : []).forEach(function (b) { lines.push(b); });
+    tgMorningTrainLines(day).forEach(function (l) { lines.push(l); });
+    var freeEnd = tgCmdDayEndLine(day);
+    if (freeEnd) lines.push(freeEnd);
+    (Array.isArray(day.warnings) ? day.warnings : []).filter(_tgMorningStr).forEach(function (w) { lines.push('⚠️ ' + tgEscape(w)); });
     lines.push('<b>Free day.</b>');
     return tgCmdMessages(lines, null);
   }
@@ -157,23 +184,13 @@ function tgMorningMessages(trip, day, total, wx, rehearsal) {
     if (s.late_check) lines.push('   🕑 <i>moved — check the hours</i>');
   });
   (day.late ? day.late.dropped : []).forEach(function (x) { lines.push('✖️ <i>' + tgEscape(x.name) + ' dropped — ' + tgEscape(x.reason) + '</i>'); });
-  var trains = (Array.isArray(day.legs) ? day.legs : []).filter(function (l) { return l && l.mode === 'TRANSIT'; });
-  if (trains.length) {
-    lines.push('🚆 <b>Trains</b>');
-    trains.forEach(function (l) {
-      var st = tgCmdStationsText(l.stations), to = tgMorningDest(day, l.to);
-      if (st) lines.push('• ' + st + ' — for ' + to);
-      else {
-        var link = tgCmdHref(l.maps_url, 'route link');
-        lines.push('• To ' + to + ': use the ' + link);
-      }
-    });
-  }
+  tgMorningTrainLines(day).forEach(function (l) { lines.push(l); });
   if (dn) {
     lines.push('🍽 ' + (tgCmdDayClock(dn.start) ? tgEscape(dn.start) + ' ' : '') + 'Dinner at <b>' + tgEscape(dn.name) + '</b>' +
       (_tgMorningStr(dn.local_name) ? ' · ' + tgEscape(dn.local_name) : '') + (dn.late_fixed ? ' · booked, stays' : ''));
     var dw = tgMorningWhere(dn);
     if (dw) lines.push(dw);
+    if (_tgMorningStr(dn.note_line)) lines.push('   <i>' + tgEscape(dn.note_line) + '</i>');
     if (_tgMorningStr(dn.booking_line)) lines.push('   🎟 <i>' + tgEscape(dn.booking_line) + '</i>');
   }
   var endLine = tgCmdDayEndLine(day);

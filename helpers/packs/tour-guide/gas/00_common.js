@@ -44,9 +44,9 @@ function tgOpenKindRequest(kind, payload, opts) {
     if (tu) payload.trip_update = tu;
   }
   var fp = '';
-  if ((kind === 'plan' || kind === 'replan') && typeof tgLgFp === 'function') {   // C13: stamped here, in one place (WP-13c)
+  if ((kind === 'plan' || kind === 'replan') && typeof tgLgStampFp === 'function') {   // C13: stamped here, in one place (WP-13c)
     delete payload.lodging_fp;
-    fp = payload.trip ? _safe('tg_lodging_fp', function () { return tgLgFp(tgTripGet(payload.trip)); }) || '' : '';
+    fp = payload.trip ? _safe('tg_lodging_fp', function () { return tgLgStampFp(tgTripGet(payload.trip), kind, payload); }) || '' : '';
     if (fp) payload.lodging_fp = fp;
   }
   var r = openRequest({ kind: kind, text: String(opts.text || kind), chat: opts.chat || null, routine: routine, payload: payload });

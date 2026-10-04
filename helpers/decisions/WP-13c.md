@@ -124,8 +124,15 @@ Every default this work package picked, with its reason. Contract: C13 in `helpe
   It names the first such date in `/replan <date> <why>`. Placement: the day card and the morning message right under
   their header, `/trip` right before its list of days. The line is never in the app (the brief asks for Telegram's
   three places).
+  *Superseded by the Phase 13 coordinator (`TG-PHASE-13.md`):* `/replan` rebuilds one day, so following the line
+  cleared it for the whole plan while the other changed days kept the old stays, and Keep the plan never cleared it.
+  The line now points at `/lodging`, which repeats the re-plan offer (from the earliest night any change touched
+  since the plan arrived) and Keep the plan; Keep marks the plan as kept for the lodging as it is now.
 - **Clear** sends no `trip_update.lodging` (C13 needs 1–12) but does change the fingerprint to none, so a plan built
   for stays shows the line after `clear`: it was built for lodging the owner removed.
+  *Superseded by the Phase 13 coordinator:* no lodging at all shows no line. C13 never sends "no stays", so the routine
+  keeps the old stays and a rebuild would use them anyway; the clear's reply says the plan keeps the old stays until
+  new ones are added (WP-13c REQUEST 1, decided to keep C13 at 1–12).
 
 ## Scouted candidates (item 8)
 

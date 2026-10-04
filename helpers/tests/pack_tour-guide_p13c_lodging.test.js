@@ -86,7 +86,8 @@ test('/lodging remove and clear; refusals name what to do and save nothing', () 
   assert.equal(W.last(state), '🏨 Removed Reed Inn · Thu 10 Jun → Sat 12 Jun (2 nights).');
   assert.deepEqual(stays(ctx).map((s) => s.text), ['Gull House']);
   W.say(ctx, state, '/lodging clear');
-  assert.equal(W.last(state), '🏨 Cleared the lodging of Fernhollow. Add a stay with <code>/lodging &lt;name&gt; &lt;first night&gt; to &lt;check-out&gt;</code>.');
+  // Coordinator (WP-13c REQUEST 1): C13 never sends "no stays", so the reply says the old stays stay in use.
+  assert.equal(W.last(state), '🏨 Cleared the lodging of Fernhollow. The plan keeps using the old stays until you add new ones. Add a stay with <code>/lodging &lt;name&gt; &lt;first night&gt; to &lt;check-out&gt;</code>.');
   assert.deepEqual([stays(ctx), lodging(ctx).text], [[], '']);
   assert.equal(ctx.tgLgFp(ctx.tgTripGet(W.TRIP)), '', 'no lodging → no fingerprint');
   // With every stay gone, the undated form works again.
@@ -200,7 +201,17 @@ test('a stay change still offers to re-plan the planned days it touches, from it
   const tk = ctx.tgCmdTripKey(W.TRIP);
   assert.deepEqual(W.kbData(m), ['lg:' + tk + ':20270611', 'lg:' + tk + ':k']);
   W.say(ctx, state, '/lodging remove 2027-06-11');
-  assert.match(W.last(state), /re-plan 2 days from Fri 11 Jun\?$/);
+  // Coordinator (WP-13c REQUEST 1): removing the last stay sends no stays, so a re-plan would use the old ones: no offer,
+  // and the reply says the old stays stay in use. With a stay left, a removal still offers the re-plan.
+  const gone = W.sends(state).pop();
+  assert.equal(gone.text, '🏨 Removed Gull House · Fri 11 Jun → Sun 13 Jun (2 nights). The plan keeps using the old stays until you add new ones.');
+  assert.deepEqual(W.kbData(gone), []);
+  W.say(ctx, state, '/lodging Reed Inn 2027-06-10 to 2027-06-11');
+  W.say(ctx, state, '/lodging Gull House 2027-06-11 to 2027-06-13');
+  W.say(ctx, state, '/lodging remove 2027-06-11');
+  // Coordinator (probe P): Reed Inn, added for the 10th, was never re-planned or kept, so the offer starts there.
+  assert.match(W.last(state), /re-plan 3 days from Thu 10 Jun\?$/);
+  W.tap(ctx, state, 'lg:' + tk + ':k');   // keep the plan: nothing is waiting any more
   W.say(ctx, state, '/lodging Gull House 2027-06-14 to 2027-06-15');
   assert.doesNotMatch(W.last(state), /re-plan/, 'no planned day from 14 Jun on');
 });

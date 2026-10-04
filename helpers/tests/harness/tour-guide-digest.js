@@ -8,6 +8,7 @@
 // owner named — never from the planner's rail estimates. A place's own-facts lines (a stop's local_name / address /
 // payment / close, the dinner's local_name / address / payment / price_line) show whenever its facts have them: they
 // are not gated on C12. Everything else in a plan and trip without C12 fields digests exactly as before.
+// C10: a stop's check_on_day goes through as the private builder sends it (TG-PHASE-13 probe).
 const keep = (o) => Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined && v !== null));
 const TIME = /^([01]\d|2[0-3]):[0-5]\d$/;
 const clip = (t, max) => (String(t).length > max ? String(t).slice(0, max - 1) + '…' : String(t));
@@ -75,7 +76,8 @@ async function digestOf(plan, trip, { now, diet, drive } = {}) {
       extras: d.extras ? d.extras.map((x) => keep({ kind: x.kind, name: x.name, time: x.time, note_line: x.note,
         maps_url: x.kind === 'saved' && byId.has(x.ref) ? link(byId.get(x.ref).place_id) : undefined })) : undefined,
       stops: d.stops.map((s, i) => keep({ n: i + 1, slug: s.place, name: name(s.place), arrive: s.arrive, depart: s.depart, minutes: s.minutes,
-        maps_url: link(s.place_id), note_line: '', time_style: s.time_style, last_entry: s.last_entry, minutes_source: s.minutes_source,
+        maps_url: link(s.place_id), note_line: '', time_style: s.time_style, check_on_day: s.check_on_day ? clip(s.check_on_day, 160) : undefined,
+        last_entry: s.last_entry, minutes_source: s.minutes_source,
         crowd_slot: s.crowd_slot, ...factsLines((byId.get(s.place) || {}).facts, { now, diet }),
         visited: s.visited === true ? true : undefined, ...ownLines((byId.get(s.place) || {}).facts) })),
       legs: d.legs.slice(0, 30).map((l, i, legs) => keep({ from: l.from, to: l.to, mode: l.mode, minutes: l.minutes, maps_url: l.maps_url,

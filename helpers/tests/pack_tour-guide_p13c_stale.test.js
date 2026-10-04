@@ -13,7 +13,7 @@ function refFnv(str) {
   return h.toString(16).padStart(8, '0');
 }
 const TWO_STAYS = [{ text: 'Gull  Hōuse 漢 😀 ', from: '2027-06-12', to: '2027-06-15' }, { text: ' Reed\tINN', from: '2027-06-10', to: '2027-06-12' }];
-const STALE = /⚠️ This plan was built for different lodging\. Rebuild it with <code>\/replan 2027-06-10 &lt;why&gt;<\/code>\./;
+const STALE = /⚠️ This plan was built for different lodging\. <code>\/lodging<\/code> offers to re-plan the days that changed or to keep the plan\./;
 const html = (msgs) => W.J(msgs).map((m) => m.html).join('\n');
 /** Every place the line may show: /trip, /day 2 and the morning message of the second day. */
 function shows(ctx, state) {
@@ -119,6 +119,13 @@ test('stale, case 1: the digest\'s own lodging_fp — no line while it matches, 
   assert.deepEqual(shows(ctx, state), all);
   W.deliver(ctx, state, 'plan_digest', W.digest({ build_id: 'build-fh-2', lodging_fp: ctx.tgLgFp(ctx.tgTripGet(W.TRIP)) }));
   assert.deepEqual(shows(ctx, state), none);
+
+  // Coordinator (WP-13c REQUEST 1): after a clear no stays are sent and the routine keeps the ones it has, so no line asks
+  // for a rebuild that could change nothing; the next stay brings it back.
+  W.say(ctx, state, '/lodging clear');
+  assert.deepEqual(shows(ctx, state), none);
+  W.say(ctx, state, '/lodging Gull House 2027-06-10 to 2027-06-12');
+  assert.deepEqual(shows(ctx, state), all);
 });
 
 test('stale, case 2: a digest without lodging_fp uses the fingerprint of the request it answers', () => {
@@ -174,9 +181,11 @@ test('no line once no stored day is still to come, with no plan, or with no lodg
   W.say(ctx, state, '/lodging Reed Inn 2027-06-10 to 2027-06-12');
   W.deliver(ctx, state, 'plan_digest', W.digest({ lodging_fp: 'lfp1:00000000' }));
   assert.match(ctx.tgLgStaleLine(ctx.tgTripGet(W.TRIP)), STALE);
-  // On the second day the rebuild offer names that day (the first stored day still to come).
+  // On the second day the line still shows, and /lodging offers the days still to come, from that day on.
   ctx.__TEST_NOW = '2027-06-11T06:00:00Z';
-  assert.match(ctx.tgLgStaleLine(ctx.tgTripGet(W.TRIP)), /<code>\/replan 2027-06-11 &lt;why&gt;<\/code>/);
+  assert.match(ctx.tgLgStaleLine(ctx.tgTripGet(W.TRIP)), STALE);
+  W.say(ctx, state, '/lodging');
+  assert.match(W.last(state), /re-plan 2 days from Fri 11 Jun\?$/);
   ctx.__TEST_NOW = '2027-06-13T06:00:00Z';
   assert.equal(ctx.tgLgStaleLine(ctx.tgTripGet(W.TRIP)), '', 'every planned day is past');
   W.say(ctx, state, '/trip');
@@ -220,6 +229,80 @@ test('the pack schema mirrors the core: lodging_fp on the plan digest top, scout
   assert.ok(!(plan.required || []).includes('lodging_fp'));
   const places = require('../packs/tour-guide/schemas/tour-guide-places-digest.schema.json');
   assert.equal(places.properties.places.items.properties.scouted.const, true);
+});
+
+// The Phase 13 coordinator's probe (decisions/TG-PHASE-13.md): /replan rebuilds one day, so the line points at /lodging,
+// whose offer re-plans every day a change touched since the plan arrived; "Keep the plan" settles the line.
+const THREE = ['Reed Inn 2027-06-10 to 2027-06-11', 'Gull House 2027-06-11 to 2027-06-12', 'Pine Cabin 2027-06-12 to 2027-06-13'];
+/** The trip with three one-night stays and a plan built for them; → its fingerprint and trip key. */
+function builtForThree(ctx, state) {
+  W.trip(ctx);
+  THREE.forEach((s) => W.say(ctx, state, '/lodging ' + s));
+  const fp = ctx.tgLgFp(ctx.tgTripGet(W.TRIP));
+  W.deliver(ctx, state, 'plan_digest', W.digest({ lodging_fp: fp }));
+  return { fp, tk: ctx.tgCmdTripKey(W.TRIP) };
+}
+
+test('coordinator: /lodging repeats the offer while the line shows; Keep the plan stops the line until the lodging changes again', () => {
+  const { ctx, state } = W.fresh();
+  const { tk } = builtForThree(ctx, state);
+  assert.deepEqual(shows(ctx, state), none);
+  W.say(ctx, state, '/lodging');
+  assert.deepEqual(W.kbData(W.sends(state).pop()), [], 'no offer while the plan matches');
+  W.say(ctx, state, '/lodging Moss House 2027-06-11 to 2027-06-12');   // replaces Gull House: the 11th and 12th
+  assert.deepEqual(W.kbData(W.sends(state).pop()), ['lg:' + tk + ':20270611', 'lg:' + tk + ':k']);
+  assert.deepEqual(shows(ctx, state), all);
+  W.say(ctx, state, '/lodging');
+  const again = W.sends(state).pop();
+  assert.match(again.text, /^🏨 <b>Stays for Fernhollow<\/b>\n[\s\S]*\n🔁 The plan still starts and ends those days at the old lodging: re-plan 2 days from Fri 11 Jun\?$/);
+  assert.deepEqual(W.kbData(again), ['lg:' + tk + ':20270611', 'lg:' + tk + ':k']);
+  const sent = W.reqEnvs(state).length;
+  W.tap(ctx, state, 'lg:' + tk + ':k');
+  assert.equal(W.reqEnvs(state).length, sent, 'keeping sends nothing');
+  assert.match(W.edits(state).pop(), /\nThe plan stays as it is; \/replan changes one day\.$/);
+  assert.deepEqual(shows(ctx, state), none);
+  W.say(ctx, state, '/lodging');
+  assert.deepEqual(W.kbData(W.sends(state).pop()), []);
+  // The next change brings the line back; its offer starts at that change, since the kept one is settled.
+  W.say(ctx, state, '/lodging Fir Lodge 2027-06-12 to 2027-06-13');
+  assert.match(W.last(state), /re-plan 1 day from Sat 12 Jun\?$/);
+  assert.deepEqual(shows(ctx, state), all);
+  // Changing back to the stays the plan was built for clears it without a rebuild.
+  W.say(ctx, state, '/lodging Gull House 2027-06-11 to 2027-06-12');
+  W.say(ctx, state, '/lodging Pine Cabin 2027-06-12 to 2027-06-13');
+  assert.deepEqual(shows(ctx, state), none);
+});
+
+test('coordinator: the offer covers every change since the plan arrived; a one-day replan keeps the line, the offer\'s re-plan clears it', () => {
+  const { ctx, state } = W.fresh();
+  const { fp: fp1, tk } = builtForThree(ctx, state);
+  W.say(ctx, state, '/lodging Moss House 2027-06-11 to 2027-06-12');   // the 11th and 12th, let pass
+  assert.match(W.last(state), /re-plan 2 days from Fri 11 Jun\?$/);
+  W.say(ctx, state, '/lodging Fir Lodge 2027-06-12 to 2027-06-13');    // the 12th only, but the 11th still waits
+  const second = W.sends(state).pop();
+  assert.match(second.text, /re-plan 2 days from Fri 11 Jun\?$/);
+  assert.deepEqual(W.kbData(second), ['lg:' + tk + ':20270611', 'lg:' + tk + ':k']);
+  const fp2 = ctx.tgLgFp(ctx.tgTripGet(W.TRIP));
+  // A one-day /replan carries the stored plan's fingerprint, so the digest answering it leaves the line: the 12th is old.
+  W.say(ctx, state, '/replan 2027-06-11 rain');
+  const one = W.reqEnvOf(state, 'replan').pop();
+  assert.deepEqual(one.payload.dates, ['2027-06-11']);
+  assert.equal(one.payload.lodging_fp, fp1);
+  assert.equal(W.deliver(ctx, state, 'plan_digest', W.digest({ build_id: 'build-fh-2', lodging_fp: fp1 }), { in_reply_to: one.id }).processed, 1);
+  assert.deepEqual(shows(ctx, state), all);
+  // An older offer tapped now re-plans from the earliest night still waiting, with the current fingerprint.
+  W.tap(ctx, state, 'lg:' + tk + ':20270612');
+  const both = W.reqEnvOf(state, 'replan').pop();
+  assert.deepEqual(both.payload.dates, ['2027-06-11', '2027-06-12']);
+  assert.equal(both.payload.lodging_fp, fp2);
+  assert.match(W.edits(state).pop(), /\n🔁 Re-planning 2 days from Fri 11 Jun for the new lodging\./);
+  assert.equal(W.deliver(ctx, state, 'plan_digest', W.digest({ build_id: 'build-fh-3', lodging_fp: fp2 }), { in_reply_to: both.id }).processed, 1);
+  assert.deepEqual(shows(ctx, state), none);
+  W.say(ctx, state, '/lodging');
+  assert.deepEqual(W.kbData(W.sends(state).pop()), [], 'nothing waits after the rebuild');
+  // With nothing stale, a one-day replan carries the current fingerprint as before.
+  W.say(ctx, state, '/replan 2027-06-12 museums');
+  assert.equal(W.reqEnvOf(state, 'replan').pop().payload.lodging_fp, fp2);
 });
 
 // Developed by: LightAISolutions
