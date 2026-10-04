@@ -1136,16 +1136,19 @@
       var view = el('div', {}, [el('h2', { text: 'Places' }), el('p', { class: 'lede', text: 'Everything the helper has researched, searchable.' })]);
       var q = el('input', { type: 'search', placeholder: 'Search by name, area, note…', maxlength: '200', 'aria-label': 'Search' });
       var selDest = el('select', { 'aria-label': 'Trip' }), selStatus = el('select', { 'aria-label': 'Status' }), selTag = el('select', { 'aria-label': 'Tag' });
+      // The owner's saved lists (C14, WP-14d): shown only when the core sends a lists facet with names in it; a value is a whole name (≤ 80 chars).
+      var selList = el('select', { 'aria-label': 'List' });
+      var fillLists = function (values) { clear(selList).appendChild(el('option', { value: '', text: 'Any list' })); list(values).slice(0, 100).forEach(function (v) { selList.appendChild(el('option', { value: str(v, 80), text: str(v, 40) })); }); selList.hidden = !list(values).length; };
       var results = el('div', { id: 'results' }), picked = {};
       var fill = function (sel, label, values) { clear(sel).appendChild(el('option', { value: '', text: label })); list(values).slice(0, 60).forEach(function (v) { sel.appendChild(el('option', { value: str(v, 60), text: str(v, 40) })); }); };
-      fill(selDest, 'Any trip', []); fill(selStatus, 'Any status', []); fill(selTag, 'Any tag', []);
+      fill(selDest, 'Any trip', []); fill(selStatus, 'Any status', []); fill(selTag, 'Any tag', []); fillLists([]);
       var timer = null, first = true;
       var search = function () {
         var args = { query: str(q.value, 200).trim() };
-        if (selDest.value) args.destination = selDest.value; if (selStatus.value) args.status = selStatus.value; if (selTag.value) args.tag = selTag.value;
+        if (selDest.value) args.destination = selDest.value; if (selStatus.value) args.status = selStatus.value; if (selTag.value) args.tag = selTag.value; if (selList.value) args.list = selList.value;
         clear(results).appendChild(el('p', { class: 'meta', text: 'Searching…' }));
         call('places.search', args, function (b) {
-          if (first) { first = false; var f = obj(b.filters); fill(selDest, 'Any trip', f.destinations); fill(selStatus, 'Any status', f.statuses); fill(selTag, 'Any tag', f.tags); }
+          if (first) { first = false; var f = obj(b.filters); fill(selDest, 'Any trip', f.destinations); fill(selStatus, 'Any status', f.statuses); fill(selTag, 'Any tag', f.tags); fillLists(f.lists); }
           clear(results);
           var rows = list(b.rows);
           results.appendChild(el('p', { class: 'meta', text: rows.length ? rows.length + ' of ' + num(b.total) + ' places' : 'Nothing matches.' }));
@@ -1179,8 +1182,8 @@
         render(box); setMain('', null);
       };
       q.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(search, 350); });
-      [selDest, selStatus, selTag].forEach(function (s) { s.addEventListener('change', search); });
-      view.appendChild(q); view.appendChild(el('div', { class: 'filters' }, [selDest, selStatus, selTag])); view.appendChild(results);
+      [selDest, selStatus, selTag, selList].forEach(function (s) { s.addEventListener('change', search); });
+      view.appendChild(q); view.appendChild(el('div', { class: 'filters' }, [selDest, selStatus, selTag, selList])); view.appendChild(results);
       render(view); search();
     }
 

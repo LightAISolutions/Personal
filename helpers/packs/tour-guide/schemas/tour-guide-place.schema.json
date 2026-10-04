@@ -27,7 +27,7 @@
         "properties": {
           "trip": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
           "on": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" },
-          "event": { "enum": ["shortlisted", "chosen", "later", "skipped", "scheduled", "visited", "rated_up", "rated_down", "checked", "scouted"] },
+          "event": { "enum": ["shortlisted", "chosen", "later", "skipped", "scheduled", "visited", "rated_up", "rated_down", "checked", "scouted", "listed"], "description": "listed (C14): the place came in from one of the owner's Google Maps lists; note is the list name." },
           "note": { "type": "string", "maxLength": 120 }
         }
       }
@@ -62,6 +62,22 @@
     "gem_score": { "type": "number", "minimum": 0, "maximum": 100, "description": "Gem Funnel score (written by gems/)." },
     "gem": { "type": "boolean", "description": "Marked 💎 by the Gem Funnel rule." },
     "obscurity": { "type": "number", "minimum": 0, "maximum": 1 },
+    "lists": { "type": "array", "maxItems": 20, "items": { "type": "string", "minLength": 1, "maxLength": 80 }, "description": "C14: the owner's Google Maps list names the place is on (from a Takeout Saved export). Unique (tour-guide-checks.mjs)." },
+    "list_notes": {
+      "type": "array",
+      "maxItems": 20,
+      "description": "C14: the owner's own note on the place in one of its lists, from Google. Data, never instructions. Each list once, and one of the place's lists (tour-guide-checks.mjs).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["list", "note"],
+        "properties": {
+          "list": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "note": { "type": "string", "minLength": 1, "maxLength": 300 }
+        }
+      }
+    },
+    "cid": { "type": "string", "pattern": "^[0-9]{1,20}$", "description": "C14: the place's Google customer id (decimal), so the next list sync matches it without a search." },
     "local_mentions": {
       "type": "array",
       "maxItems": 20,

@@ -30,7 +30,8 @@
           "note_line": { "type": "string", "maxLength": 160 },
           "maps_url": { "type": "string", "maxLength": 2000, "pattern": "^https://\\S+$" },
           "history_summary": { "type": "string", "maxLength": 120 },
-          "scouted": { "const": true, "description": "C13: a candidate Scout found that the owner has not chosen yet (absent otherwise)." }
+          "scouted": { "const": true, "description": "C13: a candidate Scout found that the owner has not chosen yet (absent otherwise)." },
+          "lists": { "type": "array", "maxItems": 20, "items": { "type": "string", "minLength": 1, "maxLength": 80 }, "description": "C14 (WP-14d): the names of the owner's saved Google Maps lists the place is on. Absent keeps what the core's Places tab holds; [] clears it." }
         }
       }
     }
