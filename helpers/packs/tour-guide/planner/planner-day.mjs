@@ -20,7 +20,7 @@ import { transitPrefs } from './planner-transit.mjs';
 import { LUNCH_WINDOW, DINNER_EARLIEST, LATE_START, breakfastLen, factsOldText, factsOldCheck } from './planner-input.mjs';
 import { minVisit } from './planner-category.mjs';
 import { dayAnchors, BAGS, END_MARGIN, START_SLUG, LODGING_SLUG, bagsText } from './planner-anchors.mjs';
-import { crowdWindows, crowdSlotOf, CROWD_SLOT } from './planner-crowd.mjs';
+import { crowdWindows, crowdSlotOf, noQuietSlotText } from './planner-crowd.mjs';
 import { FREE_DAY_NOTE } from './planner-outline.mjs';
 import { rainWeight } from './planner-rain.mjs';
 
@@ -460,7 +460,7 @@ function assemble({ ctx, day, ordered, timeline, cc, build_id, seed, verified_on
       if (c.crowd && !c.booking) {
         const slot = crowdSlotOf(ev.start, real);
         if (slot) stop.crowd_slot = slot;
-        else warnings.push({ severity: 'info', code: 'other', text: `${c.name}: no quieter slot fitted (the first ${CROWD_SLOT.OPENING_MIN} min after opening or the last ${CROWD_SLOT.LATE_MIN} before closing); planned at ${hm(ev.start)}`.slice(0, 200), place: c.id });
+        else warnings.push({ severity: 'info', code: 'other', text: noQuietSlotText(c.name, hm(ev.start)), place: c.id });
       }
       stops.push(stop);
       if (c.hours[date].status === 'unknown') warnings.push({ severity: 'info', code: 'hours_unknown', text: `${c.name}: opening hours unknown, check before you go`, place: c.id });

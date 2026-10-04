@@ -3,11 +3,18 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 14/50`
+`Sections: 15/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.15w] — 2026-10-04 09:23:02 AM EST — v01.70r
+
+### Added
+- A Quiet screen: for a busy sight you want to see anyway, up to three quieter places of the same kind nearby, each with how far it is and why it is quieter, and the busy sight's own quietest hours; add the ones you like to your Later list, or ask about another place
+- A Menu screen: check a restaurant's own menu against your party's diet, with what fits, what to ask about, the price of each dish and where it was read; for a planned dinner, re-plan that day when the dinner does not fit, or see from which day a new check would count
+- The day view offers 🕊 for a stop timed around the crowds, and 🍽 for a dinner whose menu has not been checked recently
 
 ## [v01.14w] — 2026-10-04 06:53:49 AM EST — v01.69r
 

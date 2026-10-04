@@ -46,7 +46,8 @@ test('every kind has a schema file in the validator subset (only #/$defs refs) a
   assert.deepEqual(s.listKinds(), ['trip', 'place', 'google-snapshot', 'visit-estimate', 'place-note', 'calibration', 'day-plan', 'later-list', 'plan', 'profile-excerpt',
     'booking', 'shortlist', 'trip-facts', 'plan-digest', 'profile-summary', 'prefs-review', 'places-digest', 'bookings', 'scout', 'outline', 'day-versions',
     'veg-card',   // C14 (TG-PHASE-14 WP-14c): the veg card's payload kind
-    'daytrip', 'whatson']);   // C15 (TG-PHASE-15 skeleton): the day-trip and what's-on boards' payload kinds
+    'daytrip', 'whatson',   // C15 (TG-PHASE-15 skeleton): the day-trip and what's-on boards' payload kinds
+    'quiet', 'menu']);   // C16 (TG-PHASE-16 skeleton): the quiet board's and the menu check's payload kinds
   for (const kind of s.listKinds()) {
     const schema = s.loadSchema(kind);
     assert.equal(schema.$schema, 'https://json-schema.org/draft/2020-12/schema', kind);

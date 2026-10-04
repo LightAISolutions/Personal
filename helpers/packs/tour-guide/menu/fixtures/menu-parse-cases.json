@@ -1,0 +1,27 @@
+{
+  "about": "The shared case list for /menu's words: the engine's parseMenuText(text, { today }) and the core's tgMenuParse(text, today) must give each case's `want` (tests/pack_tour-guide_menu_engine.test.js and tests/pack_tour-guide_menu.test.js, parse parity). Invented restaurants only.",
+  "today": "2027-05-10",
+  "cases": [
+    { "text": "", "want": { "ok": false, "why": "no_place" } },
+    { "text": "/menu", "want": { "ok": false, "why": "no_place" } },
+    { "text": "/menu Brindle Lantern", "want": { "ok": true, "place": "Brindle Lantern", "date": null } },
+    { "text": "/menu@TourGuideFixtureBot Brindle Lantern", "want": { "ok": true, "place": "Brindle Lantern", "date": null } },
+    { "text": "Brindle Lantern", "want": { "ok": true, "place": "Brindle Lantern", "date": null } },
+    { "text": "  Brindle   Lantern  ?", "want": { "ok": true, "place": "Brindle Lantern", "date": null } },
+    { "text": "/menu Brindle Lantern on 2027-05-13", "want": { "ok": true, "place": "Brindle Lantern", "date": "2027-05-13" } },
+    { "text": "/menu Brindle Lantern ON 5/13", "want": { "ok": true, "place": "Brindle Lantern", "date": "2027-05-13" } },
+    { "text": "/menu Brindle Lantern on 5/9", "want": { "ok": true, "place": "Brindle Lantern", "date": "2028-05-09" } },
+    { "text": "/menu Brindle Lantern on 5/10", "want": { "ok": true, "place": "Brindle Lantern", "date": "2027-05-10" } },
+    { "text": "/menu Brindle Lantern on today", "want": { "ok": true, "place": "Brindle Lantern", "date": "2027-05-10" } },
+    { "text": "/menu Brindle Lantern on Tomorrow.", "want": { "ok": true, "place": "Brindle Lantern", "date": "2027-05-11" } },
+    { "text": "/menu Kettle on the Quay", "want": { "ok": true, "place": "Kettle on the Quay", "date": null } },
+    { "text": "/menu Kettle on the Quay on 5/12", "want": { "ok": true, "place": "Kettle on the Quay", "date": "2027-05-12" } },
+    { "text": "/menu Brindle Lantern on 2027-02-30", "want": { "ok": false, "why": "bad_date" } },
+    { "text": "/menu Brindle Lantern on 13/40", "want": { "ok": false, "why": "bad_date" } },
+    { "text": "/menu Brindle Lantern on 2027-05-01", "want": { "ok": false, "why": "past_date" } },
+    { "text": "/menu on tomorrow", "want": { "ok": false, "why": "no_place" } },
+    { "text": "/menu Lantern\u0007House", "want": { "ok": true, "place": "Lantern House", "date": null } },
+    { "text": "/menu xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "want": { "ok": true, "place": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "date": null } },
+    { "text": "/menu xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "want": { "ok": false, "why": "too_long" } }
+  ]
+}

@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.14w">
+  <meta name="build-version" content="v01.15w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -180,19 +180,22 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.14w';
+    var APP_VERSION = 'v01.15w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'compare', label: 'Compare' }, { id: 'facts', label: 'Facts' },
       { id: 'interview', label: 'Interview' }, { id: 'brochure', label: 'Brochure' }, { id: 'places', label: 'Places' },
-      { id: 'scout', label: 'Scout' }, { id: 'daytrip', label: 'Day trips' }, { id: 'whatson', label: 'What\'s on' }
+      { id: 'scout', label: 'Scout' }, { id: 'daytrip', label: 'Day trips' }, { id: 'whatson', label: 'What\'s on' },
+      { id: 'quiet', label: 'Quiet' }, { id: 'menu', label: 'Menu' }
     ];
     var SCOUT_ID_RE = /^sc-\d{8}-[a-z0-9-]{1,40}$/;
     var DAYTRIP_ID_RE = /^dt-\d{8}-[a-z0-9-]{1,40}$/;
     var WHATSON_ID_RE = /^wo-\d{8}-[a-z0-9-]{1,40}$/;
+    var QUIET_ID_RE = /^qt-\d{8}-[a-z0-9-]{1,40}$/;
+    var MENU_ID_RE = /^mn-\d{8}-[a-z0-9-]{1,40}$/;
     var TICKS = [{ v: 'w', text: '✅ Want' }, { v: 'l', text: '🔖 Later' }, { v: 's', text: '❌ Skip' }];
     var tg = (window.Telegram && window.Telegram.WebApp) || null;
-    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', scout: '', daytrip: '', board: '', jy: null, base: '', mix: {}, busy: false };
+    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', scout: '', daytrip: '', board: '', menu: '', jy: null, base: '', mix: {}, busy: false };
     var $ = function (id) { return document.getElementById(id); };
     var main = $('main');
 
@@ -276,6 +279,8 @@
       var scout = str(q.scout || extra.scout, 64); S.scout = SCOUT_ID_RE.test(scout) ? scout : '';
       var daytrip = str(q.daytrip || extra.daytrip, 64); S.daytrip = DAYTRIP_ID_RE.test(daytrip) ? daytrip : '';
       var board = str(q.board || extra.board, 64); S.board = WHATSON_ID_RE.test(board) ? board : '';
+      var quiet = str(q.quiet || extra.quiet, 64); S.quiet = QUIET_ID_RE.test(quiet) ? quiet : '';
+      var menu = str(q.menu || extra.menu, 64); S.menu = MENU_ID_RE.test(menu) ? menu : '';
       return str(q.core, 400);
     }
     function resolveCore(fromUrl, done) {
@@ -324,11 +329,11 @@
       setMain('', null);
       Array.prototype.forEach.call($('nav').children, function (b) { if (b.getAttribute('data-screen') === screen) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
       try { if (tg && tg.BackButton) { if (screen === 'home') tg.BackButton.hide(); else tg.BackButton.show(); } } catch (e) { /* older clients */ }
-      ({ home: showHome, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout, vegcard: showVegCard, daytrip: showDaytrip, whatson: showWhatson })[screen]();
+      ({ home: showHome, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout, vegcard: showVegCard, daytrip: showDaytrip, whatson: showWhatson, quiet: showQuiet, menu: function () { showMenu(); } })[screen]();
     }
     function buildNav() {
       var nav = clear($('nav'));
-      SCREENS.forEach(function (s) { nav.appendChild(el('button', { type: 'button', text: s.label, 'data-screen': s.id, on: { click: function () { if (s.id === 'interview') { S.person = ''; S.addPerson = false; } if (s.id === 'scout') S.scout = ''; if (s.id === 'daytrip') S.daytrip = ''; if (s.id === 'whatson') S.board = ''; go(s.id); } } })); });
+      SCREENS.forEach(function (s) { nav.appendChild(el('button', { type: 'button', text: s.label, 'data-screen': s.id, on: { click: function () { if (s.id === 'interview') { S.person = ''; S.addPerson = false; } if (s.id === 'scout') S.scout = ''; if (s.id === 'daytrip') S.daytrip = ''; if (s.id === 'whatson') S.board = ''; if (s.id === 'quiet') S.quiet = ''; if (s.id === 'menu') S.menu = ''; go(s.id); } } })); });
     }
     function tripLabel(t) { t = obj(t); return str(t.title || t.destination || t.slug, 60); }
     function tripName(slug) { var hit = (S.home ? list(S.home.trips) : []).filter(function (t) { return str(obj(t).slug) === str(slug); })[0]; return hit ? tripLabel(hit) : str(slug, 60); }
@@ -969,7 +974,7 @@
     }
     function anchorOk(a) { a = obj(a); return typeof a.name === 'string' && !!a.name; }
     /** The day as the chat words it; a day without any Phase 10/11 field keeps the earlier card. */
-    function dayCard(d, i, total) {
+    function dayCard(d, i, total, trip) {
       d = obj(d);
       var stops = list(d.stops).map(obj), legs = list(d.legs).map(obj);
       var card = el('div', { class: 'card reveal', 'data-day': str(i + 1) }, [el('div', { class: 'meta', text: 'DAY ' + (i + 1) + ' · ' + str(d.date, 10) }), el('div', { class: 'name', text: str(d.theme, 100) })]);
@@ -978,6 +983,7 @@
         stops.forEach(function (s) { card.appendChild(el('div', { class: 'row between', style: 'margin-top:6px' }, [el('div', { class: 'grow' }, [el('div', { text: str(s.n, 4) + '. ' + str(s.name, 80) }), el('div', { class: 'meta', text: [str(s.arrive, 5) && str(s.arrive, 5) + '–' + str(s.depart, 5), s.minutes ? num(s.minutes) + ' min' : '', str(s.note_line, 120)].filter(Boolean).join(' · ') })]), linkBtn('Map ↗', s.maps_url, 'pill')])); });
         list(d.warnings).forEach(function (w) { card.appendChild(el('div', { class: 'note', text: '⚠️ ' + str(w, 200) })); });
         list(d.rain).forEach(function (r) { r = obj(r); card.appendChild(el('div', { class: 'meta', text: '☔ If it rains: ' + str(r.name, 60) + ' instead of ' + str(r.instead_of, 60) })); });
+        if (typeof quietDayRow === 'function') quietDayRow(card, d);   // C16 (WP-16a): the day's 🕊 buttons, filled in the background
         return card;
       }
       // Each leg shows once, before what it leads to (a day can reach the lodging more than once).
@@ -1011,6 +1017,7 @@
         add(line(['🍽 ' + (clock(dinner.start) ? dinner.start + ' ' : '') + 'Dinner at ', linkText(str(dinner.name, 120), dinner.maps_url)]));
         if (dinner.note_line) add(el('div', { class: 'sub', text: str(dinner.note_line, 240) }));
         if (dinner.booking_line) add(el('div', { class: 'sub', text: '🎟 ' + str(dinner.booking_line, 200) }));
+        if (trip && dinnerSlug) add(menuDaySlot(trip, d, dinner));   // C16 (WP-16b): 🍽 under the dinner, asked in the background
         var fromDinner = dinnerSlug ? legWhere(function (l) { return l.from === dinnerSlug && l.to === 'lodging'; }) : null;
         if (fromDinner) add(legLine(fromDinner, 'back to your lodging'));
       }
@@ -1038,6 +1045,7 @@
         if (!k) add(el('h4', { text: 'If it rains' }));
         add(line(['☔ ', linkText(str(r.name, 80), r.maps_url), ' instead of ' + str(r.instead_of, 80) + (typeof r.km === 'number' ? ', ' + r.km + ' km away' : '')]));
       });
+      if (typeof quietDayRow === 'function') quietDayRow(card, d);   // C16 (WP-16a): the day's 🕊 buttons, filled in the background
       return card;
     }
 
@@ -1066,7 +1074,7 @@
             } else frameBox.appendChild(el('p', { class: 'meta', text: 'No brochure file.' }));
           }, function (err) { clear(frameBox).appendChild(el('p', { class: 'meta', text: 'Brochure not available (' + str(err.reason, 40) + ').' })); });
         } else if (days.length) view.appendChild(el('div', { class: 'note', text: 'No brochure yet — ask the bot with /brochure.' }));
-        days.forEach(function (d, i) { view.appendChild(dayCard(d, i, days.length)); });
+        days.forEach(function (d, i) { view.appendChild(dayCard(d, i, days.length, trip)); });
         if (later.length) { view.appendChild(el('h3', { text: 'Later' })); later.forEach(function (l) { l = obj(l); view.appendChild(el('div', { class: 'row between', style: 'padding:6px 0' }, [el('div', { class: 'grow', text: str(l.name, 80) + (l.reason_text || l.reason ? ' — ' + str(l.reason_text || l.reason, 120) : '') })])); }); }
         if (!days.length && !t.has_brochure) {
           var hr = S.home && S.home.choice_round ? obj(S.home.choice_round) : null, hs = hr && str(hr.trip, 64) === trip ? str(hr.stage, 20) : '';
@@ -1597,6 +1605,252 @@
         on ? el('div', { class: 'meta', text: 'Chosen for ' + woDay(on) }) : null,
         el('div', { class: 'row', style: WO_WRAP }, [toggle, replan, linkBtn('Source ↗', it.url, 'pill')]),
         picker])]);
+    }
+
+    /* ---------- quiet: places of the same kind near a busy one, quieter; add one to the Later list (C16) ---------- */
+    var QUIET_LABELS = { local_favourite: '🏠 local favourite', veg_verified: '🌱 vegetarian', veg_likely: '🌱 likely vegetarian', booking: 'book ahead', rain_ok: '☔ fine in rain', seen_before: 'seen before' };
+    var QUIET_WORDS = { much: 'much quieter', clearly: 'clearly quieter', somewhat: 'somewhat quieter' };
+    // The score's five parts as bars, in Scout's style.
+    var QUIET_PARTS = [['quiet', 'quiet'], ['quality', 'quality'], ['fit', 'fit'], ['local', 'local'], ['reach', 'reach']];
+    var QUIET_WHY = { no_quiet: 'That board is not on file any more.', no_item: 'That place is not on the board any more.',
+      no_trip: 'No current trip — plan one in the chat first.', no_place: 'Name a busy place first.',
+      bad_date: 'I could not read that date — try 2027-05-14, 5/14, today or tomorrow.', past_date: 'That date has already passed.',
+      too_long: 'Please keep the place under 80 characters.' };
+    function quietWhy(err) { return QUIET_WHY[str(obj(err).reason, 40)] || why(err); }
+    function quietDate(iso) { return dayDate(iso); }
+    function quietTrip() { return S.trip || (S.home && list(S.home.trips).length ? str(obj(S.home.trips[0]).slug, 64) : ''); }
+    /** "🚶 12 min" on foot, "🚆 about 18 min" by transit when estimated (the chat's words). */
+    function quietReach(r) { r = obj(r); return (r.mode === 'WALK' ? '🚶 ' : '🚆 ') + (r.estimated === true ? 'about ' : '') + num(r.minutes) + ' min'; }
+    function quietCount(n) { n = num(n); return n ? n + ' place' + (n === 1 ? '' : 's') : 'nothing clearly quieter'; }
+    function quietBars(parts) {
+      parts = obj(parts);
+      var bars = QUIET_PARTS.filter(function (p) { return parts[p[0]] !== undefined && parts[p[0]] !== null; }).map(function (p) {
+        var v = Math.min(100, Math.max(0, Math.round(num(parts[p[0]]))));
+        return el('div', { class: 'meta', style: 'flex:1 1 0;min-width:0', 'data-part': p[0], 'data-value': String(v) }, [p[1],
+          el('div', { style: 'height:5px;margin-top:2px;border-radius:3px;overflow:hidden;background:var(--line)' }, [el('div', { style: 'height:100%;width:' + v + '%;background:var(--accent)' })])]);
+      });
+      return bars.length ? el('div', { class: 'row', style: 'gap:6px;margin-top:6px;flex-wrap:nowrap' }, bars) : null;
+    }
+    function quietBoardsBtn() { return el('button', { class: 'btn ghost', type: 'button', text: 'All boards', on: { click: function () { S.quiet = ''; showQuiet(); } } }); }
+    function quietOpen(id) { S.quiet = id; showQuietOne(id); }
+    /** Ask for a board (quiet.new): the place as typed, an optional slug (a planned stop) and date in the chat's words. */
+    function quietAsk(place, slug, date, done) {
+      var args = { place: place };
+      if (slug) args.slug = slug;
+      if (date) args.date = date;
+      call('quiet.new', args, function (r) { haptic('ok'); done(null, r); }, function (err) { done(err, null); });
+    }
+    function quietAsked(r) { return '🕊 Looking for places quieter than ' + str(r.place, 80) + (r.date ? ' · ' + quietDate(r.date) : '') + ' — the board arrives in the chat, then here.'; }
+    /**
+     * The day view's 🕊 buttons (C16): quiet.day in the background, then at most two "🕊 Quieter than <name>" buttons — its
+     * recent board when there is one, else the ask. A failed or empty answer leaves the card as it was.
+     */
+    function quietDayRow(card, d) {
+      var trip = quietTrip(), date = str(obj(d).date, 10);
+      if (!trip || !/^\d{4}-\d{2}-\d{2}$/.test(date) || !S.core) return;
+      var box = el('div', { class: 'row', 'data-quiet-day': date, style: 'margin-top:8px;flex-wrap:wrap;gap:6px' });
+      card.appendChild(box);
+      api('quiet.day', { trip: trip, date: date }, function (err, b) {
+        if (err || !b || !b.ok) return;
+        list(b.stops).map(obj).filter(function (s) { return str(s.slug, 64) && str(s.name, 120); }).slice(0, 2).forEach(function (s) {
+          var name = str(s.name, 120), board = QUIET_ID_RE.test(str(s.board, 64)) ? str(s.board, 64) : '';
+          var label = '🕊 Quieter than ' + (name.length > 30 ? name.slice(0, 29) + '…' : name);
+          box.appendChild(el('button', { class: 'pill', type: 'button', text: label, 'data-stop': str(s.slug, 64), on: { click: function (ev) {
+            if (board) { S.quiet = board; go('quiet'); return; }
+            var btn = ev.currentTarget; btn.disabled = true;
+            quietAsk(name, str(s.slug, 64), date, function (e2, r) {
+              if (e2) { btn.disabled = false; setStatus('Not asked: ' + quietWhy(e2)); return; }
+              setStatus(quietAsked(r));
+            });
+          } } }));
+        });
+      });
+    }
+    function showQuiet() {
+      if (S.quiet) return showQuietOne(S.quiet);
+      var view = el('div', {}, [el('h2', { text: 'Quiet' }), el('p', { class: 'lede', text: 'Name a busy place: up to three quieter places of the same kind nearby, and its quietest hours.' })]);
+      var place = el('input', { type: 'text', placeholder: 'Which busy place?', maxlength: '80', 'aria-label': 'Which busy place' });
+      var date = el('input', { type: 'text', placeholder: 'On a day? 2027-05-14, 5/14, tomorrow (optional)', maxlength: '10', 'aria-label': 'Which day' });
+      var msg = el('div', {}), past = el('div', {}, [el('p', { class: 'meta', text: 'Loading your boards…' })]);
+      var ask = function () {
+        var p = str(place.value, 200).trim(), d = str(date.value, 10).trim();
+        if (!p) { clear(msg).appendChild(el('div', { class: 'note', text: 'Not asked: ' + QUIET_WHY.no_place })); return; }
+        mainProgress(true);
+        quietAsk(p, '', d, function (err, r) {
+          mainProgress(false);
+          clear(msg).appendChild(el('div', { class: 'note', text: err ? 'Not asked: ' + quietWhy(err) : quietAsked(r) }));
+        });
+      };
+      [place, date].forEach(function (i) { i.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); ask(); } }); });
+      view.appendChild(el('div', { class: 'stack' }, [place, date, el('button', { class: 'btn wide', type: 'button', text: '🕊 Find quieter places', on: { click: ask } }), msg]));
+      view.appendChild(past);
+      render(view); setMain('Find quieter places', ask);
+      call('quiet.list', {}, function (b) {
+        clear(past);
+        var rows = list(b.boards).map(obj).filter(function (s) { return QUIET_ID_RE.test(str(s.id, 64)); });
+        if (!rows.length) { past.appendChild(el('p', { class: 'meta', text: 'No boards yet.' })); return; }
+        past.appendChild(el('h3', { text: 'Boards' }));
+        rows.forEach(function (s) {
+          var id = str(s.id, 64), added = num(s.added);
+          past.appendChild(el('div', { class: 'card reveal' }, [el('div', { class: 'row between' }, [
+            el('div', { class: 'grow' }, [el('div', { class: 'name', text: 'Quieter than ' + str(s.magnet, 120) }),
+              el('div', { class: 'meta', text: [str(s.created_on, 10), s.date ? quietDate(s.date) : '', quietCount(s.count), added ? added + ' added' : ''].filter(Boolean).join(' · ') })]),
+            el('button', { class: 'btn ghost', type: 'button', text: 'Open', on: { click: function () { quietOpen(id); } } })])]));
+        });
+      }, function (err) { clear(past).appendChild(el('p', { class: 'meta', text: 'Boards not available (' + quietWhy(err) + ').' })); });
+    }
+    function showQuietOne(id) {
+      render(stateView('', 'Loading…')); setMain('', null);
+      call('quiet.get', { id: id }, function (b) {
+        var q = obj(b.board), items = list(q.items).map(obj).slice(0, 3), left = list(q.left_out).map(obj).slice(0, 12);
+        var addedOf = function (slug) { return list(q.added_entries).map(obj).some(function (a) { return str(a.slug, 64) === slug; }); };
+        var add = function (it, btn) {
+          btn.disabled = true;
+          call('quiet.add', { id: id, n: num(it.n) }, function (r) {
+            haptic('ok'); q.added_entries = list(r.added_entries); draw();
+            setStatus(str(it.name, 60) + ' added to the Later list');
+          }, function (err) { btn.disabled = false; setStatus('Not added: ' + quietWhy(err)); });
+        };
+        var card = function (it) {
+          var n = num(it.n), on = addedOf(str(it.slug, 64));
+          var addBtn = el('button', { class: 'pill' + (on ? ' on' : ''), type: 'button', text: on ? '✅ Added' : '➕ Add to Later', 'data-add': String(n), 'aria-pressed': on ? 'true' : 'false',
+            on: { click: function (ev) { if (!on) add(it, ev.currentTarget); } } });
+          return el('div', { class: 'item reveal' }, [el('div', { class: 'n', text: String(n) }), el('div', {}, [
+            el('div', { class: 'row between' }, [el('div', { class: 'grow' }, [el('div', { class: 'name', text: str(it.name, 120) }),
+              el('div', { class: 'meta', text: [quietReach(it.reach), QUIET_WORDS[str(it.quieter, 10)] || ''].filter(Boolean).join(' · ') })]),
+              el('div', { class: 'row' }, [addBtn, linkBtn('Map ↗', it.maps_url, 'pill')])]),
+            el('div', { class: 'why', text: str(it.why, 200) }),
+            it.best ? el('div', { class: 'meta', text: '🕐 ' + str(it.best, 120) }) : null,
+            quietBars(it.parts),
+            list(it.labels).length ? el('div', {}, list(it.labels).slice(0, 6).map(function (l) { l = str(l, 20); return el('span', { class: 'pill label', text: QUIET_LABELS[l] || l }); })) : null])]);
+        };
+        var draw = function () {
+          var view = el('div', {}, [el('h2', { text: 'Quieter than ' + str(q.magnet, 120) }),
+            el('p', { class: 'lede', text: [str(q.created_on, 10), q.date ? quietDate(q.date) : '', str(q.kind, 40), quietCount(items.length)].filter(Boolean).join(' · ') })]);
+          if (q.busy === false) view.appendChild(el('div', { class: 'note', text: str(q.magnet, 120) + ' is not one of the busiest places nearby, so these are a choice rather than an escape.' }));
+          var src = obj(q.source);
+          view.appendChild(el('div', { class: 'card' }, [el('div', { class: 'name', text: '🕐 If you go anyway' }), el('div', { class: 'sub', text: str(q.quiet, 160) || 'early is usually quieter' }),
+            httpsUrl(src.url) ? linkBtn(str(src.title, 120) || 'Source', src.url, 'pill') : null]));
+          view.appendChild(el('h3', { text: 'Quieter places' }));
+          if (items.length) view.appendChild(el('p', { class: 'meta', text: '➕ adds a place to the Later list.' }));
+          else view.appendChild(el('p', { class: 'meta', text: 'Nothing of the same kind within 30 minutes is clearly quieter.' }));
+          items.forEach(function (it) { view.appendChild(card(it)); });
+          if (num(q.more) > 0) view.appendChild(el('p', { class: 'meta', text: '…and ' + num(q.more) + ' more that were also quieter.' }));
+          if (left.length) {
+            view.appendChild(el('h3', { text: 'Left out' }));
+            left.forEach(function (l) { view.appendChild(el('div', { class: 'meta', style: 'padding:4px 0', text: str(l.name, 120) + ' — ' + (str(l.words, 40) || str(l.reason, 20)) })); });
+          }
+          view.appendChild(el('div', { class: 'row', style: 'margin-top:16px' }, [quietBoardsBtn()]));
+          render(view);
+        };
+        draw();
+      }, function (err) { S.quiet = ''; render(stateView('🕊', 'Board not available', quietWhy(err), quietBoardsBtn())); });
+    }
+
+    /* ---------- menu check: is a restaurant's menu right for the party; what to order, what to ask, re-plan the day (C16) ---------- */
+    var MENU_FITS_WORD = { yes: 'fits', partly: 'partly fits', no: 'does not fit', unknown: 'no menu found' };
+    var MENU_FITS_LINE = { yes: '✅ Fits your party', partly: '🟡 Partly fits — ask first', no: '⛔ Nothing on the menu fits', unknown: '❔ No menu found to check' };
+    // The planner's two menu caveats (menu/menu-check.mjs CAVEAT_RE): only a dinner whose note carries one asks menu.day.
+    var MENU_CAVEAT_RE = /(?:^|\s·\s)menu\s+(not checked for|last checked)\s+\S/i;
+    var MENU_WHY = { no_menu: 'That menu check is not on file any more.', no_trip: 'This check\'s trip is not on file — plan the day in the chat.',
+      changed: 'That day\'s dinner has changed — open the day again.', not_offered: 'That day is no longer offered — check the menu again.',
+      no_place: 'Say which restaurant.', too_long: 'Please keep the restaurant under 80 characters.',
+      bad_date: 'I could not read that date — try 2027-05-14, 5/14, today or tomorrow.', past_date: 'That date has already passed.' };
+    function menuWhy(err) { return MENU_WHY[str(obj(err).reason, 40)] || why(err); }
+    function menuAsked(r) { return '🍽 Reading the menu of ' + str(r.place, 80) + (r.date ? ' for ' + dayDate(r.date) : '') + ' — the check arrives in the chat, then here.'; }
+    function menuDayLabel(n, date) { return 'day ' + num(n) + ' (' + dayDate(date) + ')'; }
+    function menusBtn() { return el('button', { class: 'btn ghost', type: 'button', text: 'All menu checks', on: { click: function () { S.menu = ''; showMenu(); } } }); }
+    /** The card's dish line: "✅ <name> (<local>) · <price>", "❓ … — ask: <what to ask>". */
+    function menuDishLine(d) {
+      d = obj(d); var ask = d.fits === 'ask';
+      var t = (ask ? '❓ ' : '✅ ') + str(d.name, 80) + (d.local ? ' (' + str(d.local, 80) + ')' : '') + (d.price ? ' · ' + str(d.price, 40) : '');
+      return el('div', { class: 'line', 'data-dish': ask ? 'ask' : 'yes', text: ask && d.ask ? t + ' — ask: ' + str(d.ask, 160) : t });
+    }
+    function showMenu() {
+      if (S.menu) return showMenuOne(S.menu);
+      var view = el('div', {}, [el('h2', { text: 'Menu checks' }), el('p', { class: 'lede', text: 'Is a restaurant right for your party? The helper reads its menu: what to order, what to ask, and what does not fit.' })]);
+      var place = el('input', { type: 'text', placeholder: 'Which restaurant?', maxlength: '80', 'aria-label': 'Which restaurant' });
+      var date = el('input', { type: 'text', placeholder: 'For a day? 2027-05-14, 5/14, tomorrow (optional)', maxlength: '10', 'aria-label': 'Which day' });
+      var msg = el('div', {}), past = el('div', {}, [el('p', { class: 'meta', text: 'Loading your menu checks…' })]);
+      var ask = function () {
+        var p = str(place.value, 200).trim(), d = str(date.value, 10).trim(), args = { place: p };
+        if (!p) { clear(msg).appendChild(el('div', { class: 'note', text: 'Not asked: ' + MENU_WHY.no_place })); return; }
+        if (d) args.date = d;
+        mainProgress(true);
+        call('menu.new', args, function (r) { mainProgress(false); haptic('ok'); clear(msg).appendChild(el('div', { class: 'note', text: menuAsked(r) })); },
+          function (err) { mainProgress(false); clear(msg).appendChild(el('div', { class: 'note', text: 'Not asked: ' + menuWhy(err) })); });
+      };
+      [place, date].forEach(function (i) { i.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); ask(); } }); });
+      view.appendChild(el('div', { class: 'stack' }, [place, date, el('button', { class: 'btn wide', type: 'button', text: '🍽 Check the menu', on: { click: ask } }), msg]));
+      view.appendChild(past);
+      render(view); setMain('Check the menu', ask);
+      call('menu.list', {}, function (b) {
+        clear(past);
+        var rows = list(b.items).map(obj).filter(function (m) { return MENU_ID_RE.test(str(m.id, 64)); });
+        if (!rows.length) { past.appendChild(el('p', { class: 'meta', text: 'No menu checks yet.' })); return; }
+        past.appendChild(el('h3', { text: 'Your checks' }));
+        rows.forEach(function (m) {
+          var id = str(m.id, 64);
+          past.appendChild(el('div', { class: 'card reveal' }, [el('div', { class: 'row between' }, [
+            el('div', { class: 'grow' }, [el('div', { class: 'name', text: '🍽 ' + str(m.place_name || m.place_slug, 80) }),
+              el('div', { class: 'meta', text: [MENU_FITS_WORD[str(m.fits, 10)] || '', m.checked ? 'checked ' + dayDate(m.checked) : '', m.date ? 'for ' + dayDate(m.date) : ''].filter(Boolean).join(' · ') })]),
+            el('button', { class: 'btn ghost', type: 'button', text: 'Open', on: { click: function () { S.menu = id; showMenuOne(id); } } })])]));
+        });
+      }, function (err) { clear(past).appendChild(el('p', { class: 'meta', text: 'Menu checks not available (' + menuWhy(err) + ').' })); });
+    }
+    function showMenuOne(id) {
+      render(stateView('', 'Loading…')); setMain('', null);
+      call('menu.get', { id: id }, function (b) {
+        var m = obj(b.item), fits = str(m.fits, 10), dishes = list(m.dishes).map(obj).slice(0, 12), others = Math.max(0, Math.round(num(m.others)));
+        var view = el('div', {}, [el('h2', { text: '🍽 ' + str(m.place_name || m.place_slug, 80) + (m.local_name ? ' (' + str(m.local_name, 80) + ')' : '') }),
+          el('p', { class: 'lede', text: [m.checked ? 'checked ' + dayDate(m.checked) : '', m.date ? 'for ' + dayDate(m.date) : '', str(m.trip_title, 60)].filter(Boolean).join(' · ') })]);
+        view.appendChild(el('div', { class: 'name', 'data-fits': fits, text: str(m.fits_line, 80) || MENU_FITS_LINE[fits] || '' }));
+        if (m.diet) view.appendChild(el('div', { class: 'meta', text: 'For: ' + str(m.diet, 80) }));
+        dishes.forEach(function (d) { view.appendChild(menuDishLine(d)); });
+        if (others) view.appendChild(el('div', { class: 'meta', text: '+ ' + others + ' other dish' + (others === 1 ? ' that does' : 'es that do') + ' not fit' }));
+        var src = list(m.sources).map(obj).filter(function (s) { return httpsUrl(s.url); }).slice(0, 3);
+        if (src.length) {
+          var parts = ['Source: '];
+          src.forEach(function (s, k) { if (k) parts.push(' · '); parts.push(linkText(str(s.title, 120) || 'menu', s.url)); });
+          view.appendChild(el('div', { class: 'meta' }, parts));
+        }
+        var row = el('div', { class: 'row', style: 'margin-top:12px;flex-wrap:wrap;gap:6px' });
+        list(m.offer).map(obj).filter(function (o) { return /^\d{4}-\d{2}-\d{2}$/.test(str(o.date, 10)); }).slice(0, 3).forEach(function (o) {
+          var date = str(o.date, 10), label = menuDayLabel(o.n, date);
+          if (o.replan !== true) { view.appendChild(el('div', { class: 'note', text: o.again === true ? 'For ' + label + ' this check is too old to count; send 🍽 to check again.' : 'For ' + label + ' a menu check counts from ' + dayDate(o.from) + '; send 🍽 again then.' })); return; }
+          if (fits === 'no') view.appendChild(el('div', { class: 'note', text: 'This dinner does not fit; re-plan ' + label + ' to replace it.' }));
+          row.appendChild(el('button', { class: 'pill', type: 'button', text: '🔁 Re-plan day ' + num(o.n), 'data-replan': date, on: { click: function (ev) {
+            var btn = ev.currentTarget; btn.disabled = true;
+            call('menu.replan', { id: id, date: date }, function () { haptic('ok'); setStatus('🔁 Re-planning ' + label + ' with the checked menu — the new day arrives in the chat, then here.'); },
+              function (err) { btn.disabled = false; setStatus('Not re-planned: ' + menuWhy(err)); });
+          } } }));
+        });
+        if (m.has_vegcard === true && /^[a-z0-9][a-z0-9-]{0,63}$/.test(str(m.trip, 64))) row.appendChild(el('button', { class: 'pill', type: 'button', text: '🥗 Veg card', on: { click: function () { go('vegcard', str(m.trip, 64)); } } }));
+        if (row.children.length) view.appendChild(row);
+        view.appendChild(el('div', { class: 'row', style: 'margin-top:16px' }, [menusBtn()]));
+        render(view);
+      }, function (err) { S.menu = ''; render(stateView('🍽', 'Menu check not available', menuWhy(err), menusBtn())); });
+    }
+    /**
+     * The day view's 🍽 under the dinner (C16): a dinner whose note carries a menu caveat asks menu.day in the background;
+     * "🍽 Menu: <fits>" opens the check, "🍽 Check the menu" asks for one. Nothing shows when the helper offers no button
+     * or does not answer: the day itself never waits for it.
+     */
+    function menuDaySlot(trip, d, dinner) {
+      var date = str(obj(d).date, 10), slug = str(dinner.slug, 64), slot = el('div', { class: 'row', 'data-menu': date });
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !MENU_CAVEAT_RE.test(str(dinner.note_line))) return null;
+      api('menu.day', { trip: trip, date: date }, function (err, body) {
+        var b = !err && body && body.ok && body.button ? obj(body.button) : null;
+        if (!b) return;
+        var check = MENU_ID_RE.test(str(b.check, 64)) ? str(b.check, 64) : '';
+        slot.appendChild(el('button', { class: 'pill', type: 'button', text: check ? '🍽 Menu: ' + (MENU_FITS_WORD[str(b.fits, 10)] || 'open the check') : '🍽 Check the menu', on: { click: function (ev) {
+          if (check) { S.menu = check; go('menu'); return; }
+          var btn = ev.currentTarget; btn.disabled = true;
+          call('menu.new', { place: str(dinner.name, 80), slug: slug, date: date }, function (r) { haptic('ok'); btn.textContent = '🍽 Reading the menu…'; setStatus(menuAsked(r)); },
+            function (e2) { btn.disabled = false; setStatus('Not asked: ' + menuWhy(e2)); });
+        } } }));
+      });
+      return slot;
     }
 
     /* ---------- boot ---------- */

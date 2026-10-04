@@ -16,7 +16,8 @@ test('output passes core validateEnvelope and uses the canonical file name; the 
   assert.deepEqual(typesFor('hello'), [...TYPES, 'greeting']);
   assert.deepEqual(typesFor('tour-guide'), [...TYPES, 'prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest', 'bookings', 'scout', 'outline', 'day_versions',
     'veg_card',   // C14 (TG-PHASE-14 WP-14c): veg_card joins the pack's types
-    'daytrip', 'whatson']);   // C15 (TG-PHASE-15 skeleton): the day-trip and what's-on boards join them
+    'daytrip', 'whatson',   // C15 (TG-PHASE-15 skeleton): the day-trip and what's-on boards join them
+    'quiet', 'menu']);   // C16 (TG-PHASE-16 skeleton): the quiet board and the menu check join them
   assert.throws(() => typesFor('nope'), /unknown pack/);
   const now = new Date('2026-09-29T17:03:07.123Z');
   ctx.__TEST_NOW = now.getTime();

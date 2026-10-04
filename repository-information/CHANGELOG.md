@@ -3,11 +3,28 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 70/100`
+`Sections: 71/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.70r] — 2026-10-04 09:23:02 AM EST
+
+> **Prompt:** "… 13. Quiet: Approve 14. Menu check: Approve …" *(excerpts of the owner's answers on the project's morning review; Quiet and Menu check follow Phase 15 and come before the rehearsal; this push is Phase 16's framework side)*
+
+### Added
+- **Quiet** (item 13, Contract C16, WP-16a; `helpers/packs/tour-guide/quiet/`, `gas/43_quiet.js`, `gas/38_quiet_app.js`, `schemas/tour-guide-quiet.schema.json`): `/quiet <place> [on <date>]` opens a `quiet` request (the date words are `/daytrip`'s; `/quiet` alone lists the coming days' stops a 🕊 would be offered for, then the last boards). The engine screens the places found near a crowd magnet in order (the magnet itself, a duplicate, not the same kind, closed, closed on the day, a low rating, unproven, the party's diet, also busy, not quieter, too far), scores the rest on how much quieter they are (the ratio of the Aggregate counts, on a log scale), quality, fit, local word and reach, and keeps 3 with `more` and what was left out; `isBusy` is Phase 11's crowd-magnet rule, `pickRadius` the smallest radius with enough places, `quietLine` the magnet's quiet hours and a locals' tip. The core stores the board in a Quiet tab and sends one card (each place's reach and why it is quieter, the magnet's quiet line, ➕ to the trip's Later list with reason `owner_choice`, which a rebuild keeps, and 📱); the app's Quiet screen (`quiet.list`, `get`, `add`, `new`, `day`)
+- **Menu check** (item 14, Contract C16, WP-16b; `helpers/packs/tour-guide/menu/`, `gas/44_menu.js`, `gas/39_menu_app.js`, `schemas/tour-guide-menu.schema.json`): `/menu <restaurant> [on <date>]` opens a `menu` request; the check, read from the restaurant's own site only, lists the dishes that fit or to ask about with their prices, how many others do not fit, its sources and a fits word (`yes`, `partly`, `no`, `unknown`). The core stores it in a Menus tab and sends one card; for each planned dinner at that place it offers 🔁 Re-plan when the dinner does not fit or when the check counts for that day (made at most 30 days before the dinner, as the planner ages a menu), and otherwise names the day from which a new check would count. `state.json` → `menu_checks` (the last 30 days), so a plan can apply a check before it reaches memory; `menuFact` gives the place's `facts.menu`; the app's Menu screen (`menu.list`, `get`, `new`, `replan`, `day`)
+- **🕊 and 🍽 under a day** (C16's hooks, the coordinator's skeleton; `tgCmdDayRows` in `gas/10_commands.js`, `gas/18_morning.js`): the day card and the morning message show up to two 🕊 rows for stops the planner timed around the crowds or warned about, then a 🍽 row for a dinner whose note carries the planner's menu caveat; a tap asks, or resends the board or check that already counts; a failing row function is audited and left out, and a day without such stops keeps the keyboard it had. `noQuietSlotText` (`planner/planner-crowd.mjs`) holds the planner's no-quieter-slot warning, word for word, so the core can read the stop's name back
+- App v01.15w (`live-site-pages/helper-app.html`): the Quiet and Menu screens, and the day view's 🕊 and 🍽 buttons
+- Tests: `pack_tour-guide_c16_hooks`, `pack_tour-guide_quiet{,_app,_engine,_gas}`, `pack_tour-guide_menu{,_app,_engine}`. 1273 tests, 1272 pass, 1 skipped (the Maps live smoke); in a copy laid out like helpers-dist, 1235 pass, 38 skipped
+
+### Changed
+- **C16 in the validators and the schemas**: `quiet` and `menu` join the pack's envelope types and request kinds (the three pinned type lists, marked C16), both discovery kinds (the Discover routine when one is configured, else trip research); `KINDS.quiet` runs `checkQuiet` and `KINDS.menu` runs `checkMenu`, so the envelope tool refuses what the core refuses
+- **An old menu check** (the coordinator, found by the probe): a check resent after the day from which a new check would count now says that it is too old to count and to check again, on the card, in `menu.get` and on the app's Menu screen
+- Docs: `helpers/SPEC.md` §16 (the C16 skeleton, WP-16a and WP-16b paths), the pack README (Quiet, Menu check, the new tests); decisions and status for WP-16a and WP-16b, `helpers/decisions/TG-PHASE-16.md`; `helpers/prompts/TG-PHASE-16.md`; `helpers/BUILD-STATE.md` rows 15 and 16, the Phase 15 and Phase 16 logs and Next; the README tree, the app's version in it and the timestamp
+- `helpers/decisions/TG-PHASE-15.md` §6 and §7 and `helpers/BUILD-STATE.md`: the private repo's side of Phase 15 (WP-15p) is open for the owner as PR #27, with its three framework requests
 
 ## [v01.69r] — 2026-10-04 06:53:49 AM EST
 
