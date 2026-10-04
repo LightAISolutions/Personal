@@ -157,6 +157,7 @@ test('/lists: the lists with counts, when they were last read, and what to send 
   assert.match(out, /\/list &lt;name&gt; to see one · \/lists sync to read a newer export/);
 
   // Answer a lists request: /lists then names the day it was answered.
+  H.putTakeout(state, 'takeout-20270420T101500Z-001.zip', Buffer.from('invented export'));   // C14f: /lists sync needs an export in Drive
   say(ctx, state, '/lists sync');
   const id = requests(state)[0].id;
   assert.equal(deliver(ctx, state, 'reply', { text: 'Read 4 lists.' }, { in_reply_to: id }).processed, 1);
@@ -171,6 +172,7 @@ test('/lists: the lists with counts, when they were last read, and what to send 
 
 test('/lists sync: a lists request with the current trip, or without one; anything else is the usage line', () => {
   let { ctx, state } = fresh();
+  H.putTakeout(state, 'takeout-20270420T101500Z-001.zip', Buffer.from('invented export'));   // C14f: /lists sync needs an export in Drive
   say(ctx, state, '/lists sync');
   let reqs = requests(state);
   assert.equal(reqs.length, 1);
@@ -179,6 +181,7 @@ test('/lists sync: a lists request with the current trip, or without one; anythi
   assert.equal(J(ctx.storeAll('Requests'))[0].routine, 'RESEARCH');
   assert.match(texts(state).join('\n'), /Reading your newest saved-lists export/);
   ({ ctx, state } = fresh({ trip: false }));
+  H.putTakeout(state, 'takeout-20270420T101500Z-001.zip', Buffer.from('invented export'));   // C14f: /lists sync needs an export in Drive
   say(ctx, state, '/lists SYNC');
   reqs = requests(state);
   assert.equal(reqs.length, 1);

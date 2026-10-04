@@ -291,8 +291,10 @@ function compareSource(src) {
 /**
  * The compare cut (WP-14e): the unique records cut to W.COMPARE_MAX — those in `where` first, then the most recently
  * listed (ISO dates, descending; undated last), then pool order. → { kept (in pool order), more }.
+ * Exported (WP-14f) so a routine can cut a long list before it looks places up: compareCut on the bare records
+ * ({ place_id }) keeps the same places rankScout would keep, and rankScout's `already_cut` carries the count on.
  */
-function compareCut(unique, { in_where, listed_on }) {
+export function compareCut(unique, { in_where, listed_on } = {}) {
   if (unique.length <= W.COMPARE_MAX) return { kept: unique, more: 0 };
   const where = in_where instanceof Set ? in_where : new Set(Array.isArray(in_where) ? in_where : []);
   const dates = listed_on && typeof listed_on === 'object' ? listed_on : {};
@@ -323,7 +325,9 @@ function compareCut(unique, { in_where, listed_on }) {
  * every other screen but `duplicate` adds its code to the item's `flags` (screenFlags) instead of leaving it out; the
  * diet screens and veg labels apply to food places only (gems groupOf); a hard flag (W.HARD_FLAGS) sorts after every
  * place without one. The pool is cut to W.COMPARE_MAX before ranking (compareCut), `more` counts the cut places and
- * `limit` is ignored; not_found names lead left_out. `what` is optional (the list name or the names stand in) and
+ * `limit` is ignored; not_found names lead left_out. `already_cut` (WP-14f: places the caller already cut with the
+ * exported compareCut before the lookups; a non-negative integer, else 0) is added to `more`; normal mode ignores it.
+ * `what` is optional (the list name or the names stand in) and
  * `group` defaults to the pool's: food when most places are food places. The result adds `mode` and `source`.
  */
 export function rankScout(pool, opts = {}) {
@@ -354,6 +358,7 @@ export function rankScout(pool, opts = {}) {
   }
   let cut = 0;
   if (compare) ({ kept: unique, more: cut } = compareCut(unique, opts));
+  const alreadyCut = compare && Number.isInteger(opts.already_cut) && opts.already_cut > 0 ? opts.already_cut : 0;   // WP-14f
   const mu = muFor(group);   // change 1: a fixed anchor per group, never the pool's mean
   const counts = nameCounts(unique);
 
@@ -408,7 +413,7 @@ export function rankScout(pool, opts = {}) {
   if (compare) {
     const hard = (x) => (x.flags.some((f) => W.HARD_FLAGS.includes(f)) ? 1 : 0);
     ranked.sort((a, b) => hard(a) - hard(b) || byRank(a, b));
-    return { items: ranked, left_out, more: cut, group, diet, mode: 'compare', source };
+    return { items: ranked, left_out, more: cut + alreadyCut, group, diet, mode: 'compare', source };
   }
   ranked.sort(byRank);
   const items = ranked.slice(0, limit);
