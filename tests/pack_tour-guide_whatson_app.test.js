@@ -95,7 +95,7 @@ test('the app page: What\'s on is a screen, &board= opens one board, go() shows 
   assert.equal(read('', 'screen=whatson&board=' + ID).board, ID, 'from start_param too');
   const box = { S: { screen: 'home', trip: '', board: ID }, tg: null, flushDraft() {}, setMain() {}, $: () => ({ children: [] }) };
   const shown = [];
-  ['showHome', 'showShortlist', 'showCompare', 'showFacts', 'showInterview', 'showBrochure', 'showPlaces', 'showScout', 'showVegCard', 'showWhatson', 'showDaytrip']
+  ['showHome', 'showShortlist', 'showCompare', 'showFacts', 'showInterview', 'showBrochure', 'showPlaces', 'showScout', 'showVegCard', 'showWhatson', 'showDaytrip', 'showQuiet'] // C16: go() also dispatches the Quiet screen (WP-16a)
     .forEach((f) => { box[f] = () => shown.push(f); });
   vm.runInNewContext(slice('    function go(screen, trip) {', '    function buildNav() {'), box);
   box.go('whatson', TRIP);

@@ -14,7 +14,8 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
 const TOOL = path.join(H.HELPERS_ROOT, 'tools', 'envelope.mjs');
 const TYPES = ['prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest', 'bookings', 'scout', 'outline', 'day_versions',
   'veg_card',   // C14 (TG-PHASE-14 WP-14c): the veg card is the eleventh type
-  'daytrip', 'whatson'];   // C15 (TG-PHASE-15 skeleton): the day-trip and what's-on boards
+  'daytrip', 'whatson',   // C15 (TG-PHASE-15 skeleton): the day-trip and what's-on boards
+  'quiet', 'menu'];   // C16 (TG-PHASE-16 skeleton): the quiet board and the menu check
 const made = [];
 after(() => { for (const d of made) fs.rmSync(d, { recursive: true, force: true }); });
 const tmp = () => { const d = fs.mkdtempSync(path.join(os.tmpdir(), 'tg-payload-')); made.push(d); return d; };
@@ -84,7 +85,10 @@ const EXAMPLES = {
       { id: 'thanks', lines: [{ local: null, en: 'Sorry for the trouble, and thank you.' }] }], english_only: ['lupin beans'] }),
   // C15 (TG-PHASE-15 skeleton): the day-trip and what's-on boards, each its own fixture's first valid payload (fixtureValid).
   daytrip: () => clone(fixtureValid('daytrip')),
-  whatson: () => clone(fixtureValid('whatson'))
+  whatson: () => clone(fixtureValid('whatson')),
+  // C16 (TG-PHASE-16 skeleton): the quiet board and the menu check, each its own fixture's first valid payload (fixtureValid).
+  quiet: () => clone(fixtureValid('quiet')),
+  menu: () => clone(fixtureValid('menu'))
 };
 
 async function realReview() {
@@ -280,6 +284,7 @@ test('core mocks: the manifest\'s eight types are accepted by registerEnvelopeHa
   const now = new Date();
   H.bootstrap(ctx, state); ctx.tgTripUpsert({ slug: payloads.veg_card.trip });   // C14 (WP-14c): the core refuses a veg card for a trip it does not know
   for (const t of ['daytrip', 'whatson']) ctx.tgTripUpsert({ slug: payloads[t].trip });   // C15 (skeleton): each board's trip is known to the core
+  for (const t of ['quiet', 'menu']) if (payloads[t].trip) ctx.tgTripUpsert({ slug: payloads[t].trip });   // C16 (skeleton): a payload's trip, when it names one, is known to the core
   for (const t of TYPES) {
     if (!ctx.getEnvelopeHandler(t)) ctx.registerEnvelopeHandler(t, { validate: () => [], handle: () => 'ok' });
     const env = E.makeEnvelope({ type: t, producer: 'tg-skill', payload: payloads[t], now, types: E.typesFor('tour-guide') });

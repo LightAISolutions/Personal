@@ -224,11 +224,41 @@ function tgCmdDayMessages(trip, day, total) {
     return [{ text: '☔ Swap in ' + truncate(String(r.name || r.slug), 40), data: cbEncode('rs', tk, day.n + '.' + day.rain.indexOf(r) + '.' + tgCmdTag(r.slug)) }];
   });
   if (day.late) rows.push([{ text: '↩️ Undo running late', data: cbEncode('rl', tk, String(day.date).replace(/-/g, ''), 'u') }]);
+  tgCmdDayRows(trip, day).forEach(function (r) { rows.push(r); });   // C16: 🕊 Quiet and 🍽 Menu check, when loaded
   var nav = [];
   if (day.n > 1) nav.push({ text: '◀ Day ' + (day.n - 1), data: cbEncode('dy', tk, day.n - 1, 'e') });
   if (total && day.n < total) nav.push({ text: 'Day ' + (day.n + 1) + ' ▶', data: cbEncode('dy', tk, day.n + 1, 'e') });
   if (nav.length) rows.push(nav);
   return tgCmdMessages(lines, rows.length ? tgKeyboard(rows) : null);
+}
+/**
+ * C16 (TG-PHASE-16 skeleton): the rows other modules put under a day, on the day card (tgCmdDayMessages) and in the
+ * morning message (tgMorningKeyboard): 🕊 Quiet's (tgQuietDayRows, 43_quiet.js), then 🍽 Menu check's (tgMenuDayRows,
+ * 44_menu.js), each only when its module is loaded. A missing day adds nothing; so do a row function that fails and a
+ * row the keyboard cannot carry (both audited), so the day still goes out with the keyboard it had before.
+ */
+function tgCmdDayRows(trip, day) {
+  var out = [];
+  if (!trip || !isPlainObject(day)) return out;
+  var fns = [typeof tgQuietDayRows === 'function' ? tgQuietDayRows : null, typeof tgMenuDayRows === 'function' ? tgMenuDayRows : null];
+  fns.forEach(function (fn) {
+    if (!fn) return;
+    var rows = null;
+    try { rows = fn(trip, day); } catch (e) { auditFail('tg_day_rows_error', trip.slug, describeError(e)); }
+    (Array.isArray(rows) ? rows : []).forEach(function (r) {
+      if (!Array.isArray(r) || !r.length) return;
+      try {
+        if (!r.every(tgCmdDayButtonOk)) throw new Error('a day row button needs text and data');
+        tgKeyboard([r]);
+        out.push(r);
+      } catch (e2) { auditFail('tg_day_rows_error', trip.slug, describeError(e2)); }
+    });
+  });
+  return out;
+}
+/** A button tgKeyboard can send as meant: its text, and its callback data (or a link). */
+function tgCmdDayButtonOk(b) {
+  return isPlainObject(b) && typeof b.text === 'string' && !!b.text && (typeof b.data === 'string' || typeof b.url === 'string' || isPlainObject(b.web_app));
 }
 /* ---- the Phase 11 day lines (Contract C11); each gives '' / [] when the day does not carry the field ---- */
 /** The crowd note for a stop's crowd_slot. */

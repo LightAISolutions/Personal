@@ -72,7 +72,7 @@ test('the app page: the inline scripts compile; go(), the nav and the launch lin
   const shown = [];
   const box = { S: { screen: 'home', trip: '', daytrip: BOARD }, tg: null, flushDraft() {}, setMain() {}, $: () => ({ children: [] }) };
   // C15: go() also maps the What's on screen (WP-15b), so its show function must exist here too.
-  ['showHome', 'showShortlist', 'showCompare', 'showFacts', 'showInterview', 'showBrochure', 'showPlaces', 'showScout', 'showVegCard', 'showDaytrip', 'showWhatson']
+  ['showHome', 'showShortlist', 'showCompare', 'showFacts', 'showInterview', 'showBrochure', 'showPlaces', 'showScout', 'showVegCard', 'showDaytrip', 'showWhatson', 'showQuiet'] // C16: go() also dispatches the Quiet screen (WP-16a)
     .forEach((f) => { box[f] = () => shown.push(f); });
   vm.runInNewContext(slice('    var SCREENS = [', '    var TICKS') + slice('    function go(screen, trip) {', '    function tripLabel('), box);
   assert.ok(box.SCREENS.some((s) => s.id === 'daytrip' && s.label === 'Day trips'), 'a Day trips tab');

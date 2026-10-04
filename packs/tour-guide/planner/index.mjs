@@ -68,7 +68,7 @@ export { refineCategory, withRefinedCategory, minVisit, MIN_VISIT, COVERED_SIGHT
 export { rainSwaps, isIndoor, isCoveredSight, MAX_SWAPS, SWAP_KM, INDOOR_CATEGORIES, OUTDOOR_CATEGORIES } from './planner-rain.mjs';
 export { overrideFor, dayAnchors, bagsText, BAGS, BAG_KINDS, END_MARGIN, START_SLUG, END_SLUG, LODGING_SLUG } from './planner-anchors.mjs';
 export { placeFacts, factsHours, factsMinutes, ownHoursConflict, CLOSE_TOLERANCE_MINUTES, MENU_FITS, placeCheckNote, closedWeekdaysOf } from './planner-facts.mjs';
-export { avoidsCrowds, crowdWindows, crowdSlotOf, CROWD_SLOT, CROWD_RULE_RE } from './planner-crowd.mjs';
+export { avoidsCrowds, crowdWindows, crowdSlotOf, noQuietSlotText, CROWD_SLOT, CROWD_RULE_RE } from './planner-crowd.mjs';
 export { sunsetLocal, sunsetUtcMinutes, SUNSET_ZENITH } from './planner-sun.mjs';
 export { prepareDinners, addDinners, dinnerBooking, bookingFor, bookingRecordLine, DINNER, dinnerMenu, MENU_RANK } from './planner-dinner.mjs';
 export { sunsetFor, eveningExtras, applyExtras, runsThatEvening, isEveningChoice, EXTRAS } from './planner-evening.mjs';

@@ -7,6 +7,7 @@
  *   avoidsCrowds(profile) → boolean
  *   crowdWindows(windows) → the opening and late slots of each window ([] when none can hold a visit)
  *   crowdSlotOf(start, windows) → 'opening' | 'late' | null
+ *   noQuietSlotText(name, at) → the warning for a magnet no quiet slot fits (C16: Phase 16's 🕊 buttons read its name back)
  */
 export const CROWD_SLOT = Object.freeze({ OPENING_MIN: 60, LATE_MIN: 90 });
 /** Profile `avoid` lines that mean "keep us away from the crowds": crowds, crowded places, peak hours or times, rush hour, queues, tour groups, mass tourism, busy times. */
@@ -37,6 +38,15 @@ export function crowdSlotOf(start, windows) {
     if (start >= w.close - CROWD_SLOT.LATE_MIN) return 'late';
   }
   return null;
+}
+
+/**
+ * The warning for a magnet that no quiet slot fits, planned at `at` ("HH:MM"), cut to 200 characters with the name first.
+ * C16 (TG-PHASE-16 skeleton): moved here from planner-day.mjs without changing a character, so that the 🕊 buttons'
+ * mirror (TG_QUIET.WARN_RE in gas/43_quiet.js) has one text to follow, held by a parity test.
+ */
+export function noQuietSlotText(name, at) {
+  return `${name}: no quieter slot fitted (the first ${CROWD_SLOT.OPENING_MIN} min after opening or the last ${CROWD_SLOT.LATE_MIN} before closing); planned at ${at}`.slice(0, 200);
 }
 
 // Developed by: LightAISolutions

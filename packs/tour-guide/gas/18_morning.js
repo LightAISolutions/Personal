@@ -99,13 +99,16 @@ function tgMorningWhere(p) {
   if (map.indexOf('<a ') === 0) bits.push(map);
   return bits.length ? '   ' + bits.join(' · ') : '';
 }
-/** ⏰ running late 15 · 30 · 60 and 📍 re-plan from here (rl / rp, as the running-late reply uses them). */
-function tgMorningKeyboard(trip, date) {
+/**
+ * ⏰ running late 15 · 30 · 60 and 📍 re-plan from here (rl / rp, as the running-late reply uses them), then the day's
+ * C16 rows (tgCmdDayRows: 🕊 Quiet, 🍽 Menu check) when `day` is given; without it the keyboard is as before.
+ */
+function tgMorningKeyboard(trip, date, day) {
   var tk = tgCmdTripKey(trip.slug), d8 = tgLateD8(date);
   return tgKeyboard([
     TG_LATE.BUTTONS.map(function (m, i) { return { text: (i ? '' : '⏰ Late ') + m + ' min', data: cbEncode('rl', tk, d8, m) }; }),
     [{ text: '📍 Re-plan from here', data: cbEncode('rp', tk, d8) }]
-  ]);
+  ].concat(day ? tgCmdDayRows(trip, day) : []));
 }
 /**
  * A place's 💴 parts: its payment, then its price line without the parts that only repeat the payment (WP-12r, found by
@@ -198,7 +201,7 @@ function tgMorningMessages(trip, day, total, wx, rehearsal) {
   if (endLine) lines.push(endLine);
   if (tgCmdDayClock(day.sunset)) lines.push('🌅 Sunset ' + tgEscape(day.sunset));
   if (typeof tgVegCardMorningLine === 'function' && tgVegCardMorningLine(trip)) lines.push(tgVegCardMorningLine(trip));   // C14 (27_vegcard.js)
-  return tgCmdMessages(lines, tgMorningKeyboard(trip, day.date));
+  return tgCmdMessages(lines, tgMorningKeyboard(trip, day.date, day));
 }
 
 /* ---------------- sending, pinning ---------------- */

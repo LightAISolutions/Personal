@@ -73,7 +73,7 @@ test('the app page: the inline scripts compile, and go() opens the Veg card scre
   scripts.forEach((s) => assert.doesNotThrow(() => new vm.Script(s)));
   const shown = [];
   // C15: go() also dispatches the Day trips screen (WP-15a) and the What's on screen (WP-15b), so their show functions must exist here too.
-  const shows = ['showHome', 'showShortlist', 'showCompare', 'showFacts', 'showInterview', 'showBrochure', 'showPlaces', 'showScout', 'showVegCard', 'showDaytrip', 'showWhatson'];
+  const shows = ['showHome', 'showShortlist', 'showCompare', 'showFacts', 'showInterview', 'showBrochure', 'showPlaces', 'showScout', 'showVegCard', 'showDaytrip', 'showWhatson', 'showQuiet']; // C16: and the Quiet screen (WP-16a)
   const box = { S: { screen: 'home', trip: '' }, tg: null, flushDraft() {}, setMain() {}, $: () => ({ children: [] }) };
   shows.forEach((f) => { box[f] = () => shown.push(f); });
   vm.runInNewContext(slice('    function go(screen, trip) {', '    function buildNav() {'), box);
