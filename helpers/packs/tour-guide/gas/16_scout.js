@@ -17,7 +17,7 @@ var TG_SCOUT = {
   ID_RE: /^sc-\d{8}-[a-z0-9-]{1,40}$/, KEY_RE: /^k[0-9a-f]{12}$/
 };
 var TG_SCOUT_GROUPS = ['food', 'activities'];
-var TG_SCOUT_LABELS = ['gem', 'veg_verified', 'veg_likely', 'booking', 'queue', 'cash_only', 'chain', 'new', 'seen_before', 'far'];
+var TG_SCOUT_LABELS = ['gem', 'veg_verified', 'veg_likely', 'booking', 'queue', 'cash_only', 'chain', 'new', 'seen_before', 'far', 'not_judged'];   // not_judged: TG-PHASE-14 C14
 var TG_SCOUT_LEFT = ['off_topic', 'diet', 'diet_unproven', 'low_rating', 'unproven', 'closed', 'closed_on_trip', 'too_far', 'duplicate', 'other'];
 var TG_SCOUT_LEFT_WORDS = { off_topic: 'off topic', diet: 'nothing you can eat', diet_unproven: 'vegetarian not confirmed', low_rating: 'poorly rated',
   unproven: 'too little evidence', closed: 'closed', closed_on_trip: 'closed on your days', too_far: 'too far', duplicate: 'duplicate', other: 'other' };
@@ -173,7 +173,8 @@ function tgScoutMessages(rec) {
   var lines = ['🔎 <b>' + tgEscape(tgScoutTitle(rec)) + '</b> — ' + (n ? n + ' pick' + (n === 1 ? '' : 's') + ', ranked for you' : 'nothing worth the trip this time')];
   items.forEach(function (it) {
     var labels = it.labels || [], marks = (labels.indexOf('gem') >= 0 ? ' 💎' : '') + (labels.indexOf('veg_verified') >= 0 || labels.indexOf('veg_likely') >= 0 ? ' 🌱' : '') +
-      (labels.indexOf('seen_before') >= 0 ? ' 🔁' : '');   // 🔁 already in your places
+      (labels.indexOf('seen_before') >= 0 ? ' 🔁' : '') +   // 🔁 already in your places
+      (labels.indexOf('new') >= 0 ? ' 🆕' : '') + (labels.indexOf('not_judged') >= 0 ? ' · not judged' : '');   // 🆕 new, vouched for by the judgment (WP-14b)
     var bits = [it.area ? tgEscape(it.area) : '', tgScoutReach(it.reach)].filter(Boolean);
     lines.push('<b>' + it.n + '.</b> ' + tgCmdHref(it.maps_url, it.name) + marks + (bits.length ? ' · ' + bits.join(' · ') : '') + (it.why_you ? ' — <i>' + tgEscape(it.why_you) + '</i>' : ''));
   });
@@ -267,8 +268,8 @@ function tgEnvScoutItem(errs, at, it) {
   if (it.area !== undefined) tgEnvStr(errs, at + '.area', it.area, 0, 80);
   if (it.category !== undefined) tgEnvStr(errs, at + '.category', it.category, 1, 32, TG_ENV_RE.category);
   if (it.score !== undefined) tgEnvInt(errs, at + '.score', it.score, 0, 100);
-  if (it.parts !== undefined && tgEnvObj(errs, at + '.parts', it.parts, ['topic', 'quality', 'fit', 'reach'])) {
-    ['topic', 'quality', 'fit', 'reach'].forEach(function (k) { if (it.parts[k] !== undefined) tgEnvInt(errs, at + '.parts.' + k, it.parts[k], 0, 100); });
+  if (it.parts !== undefined && tgEnvObj(errs, at + '.parts', it.parts, ['topic', 'quality', 'fit', 'reach'], ['local'])) {   // local: optional (C14)
+    ['topic', 'quality', 'fit', 'local', 'reach'].forEach(function (k) { if (it.parts[k] !== undefined) tgEnvInt(errs, at + '.parts.' + k, it.parts[k], 0, 100); });
   }
   if (it.why_you !== undefined) tgEnvStr(errs, at + '.why_you', it.why_you, 1, 200);
   if (it['try'] !== undefined) tgEnvStr(errs, at + '.try', it['try'], 0, 120);

@@ -58,9 +58,9 @@ Scouts tab or memory; they live only in the build-scoped board files, like the b
   diet?: string ≤ 80,                       // the hard diet applied ("vegetarian") — absent for activities
   items: [ ≤ 20, n = 1..N in rank order, slugs unique {
     n: int ≥ 1, slug, name ≤ 120, area ≤ 80, category (^[a-z][a-z0-9-]{0,31}$),
-    score: int 0–100, parts: { topic, quality, fit, reach } each int 0–100,
+    score: int 0–100, parts: { topic, quality, fit, local?, reach } each int 0–100,   // local: TG-PHASE-14 C14
     why_you: string 1–200, try?: string ≤ 120,  // what to order / do there (a vegetarian dish for food)
-    labels: [enum: gem | veg_verified | veg_likely | booking | queue | cash_only | chain | new | seen_before | far] ≤ 8,
+    labels: [enum: gem | veg_verified | veg_likely | booking | queue | cash_only | chain | new | seen_before | far | not_judged] ≤ 8,
     rated?: string ≤ 40,                       // a band word, never the number ("very highly rated")
     reach?: { minutes: int 0–600, mode: WALK | TRANSIT | DRIVE, estimated: bool },
     maps_url: https url, place_id?: string } ],
@@ -73,19 +73,24 @@ Payload ≤ 60 000 chars. `validatePayload('scout', p)` in the pack and `tgEnvVa
 
 ## 4. Ranking (pure, `packs/tour-guide/scout/`)
 
-`score = round(100 × (0.35 T + 0.25 Q + 0.15 F + 0.10 L + 0.15 R))`, every part 0–1 (weights in `scout-weights.mjs`):
+`score = max(0, round(100 × (0.35 T + 0.25 Q + 0.15 F + 0.10 L + 0.15 R)) − penalties)`, every part 0–1 (weights in
+`scout-weights.mjs`; Phase 14's tuning is §10). Penalties: a chain −8; a crowd magnet (≥ 2 000 ratings, the planner's
+crowd-magnet count) −4. Penalties never drop a place.
 - **T on-topic** — how much the place is *about* the query: the skill's judgment `relevance` when given, else name /
   type / editorial-summary match (name contains the query → 0.9, a type that matches the query's usual type → 0.6,
   editorial summary mentions it → 0.5, else 0.2).
-- **Q quality** — Bayesian rating `(v·r + m·μ)/(v+m)`, m = 30, μ = pool mean (else 4.2), mapped 3.8 → 0 … 4.8 → 1.
-- **F fit** — the skill's `fit` (profile and party), default 0.5.
+- **Q quality** — Bayesian rating `(v·r + m·μ)/(v+m)`, m = 30, μ fixed per group (food 4.2, activities 4.3, else 4.2), mapped 3.8 → 0 … 4.8 → 1.
+- **F fit** — the skill's `fit` (profile and party), default 0.3 with the label `not_judged`.
 - **L local** — 0.25 per distinct local mention (local-language, editorial, community), capped at 1; chain → 0.
 - **R reach** — minutes from the nearest anchor: ≤ 10 → 1, linear to 0.3 at 40, 0.1 past 60; unknown → 0.5;
-  −0.3 when closed on some (not all) trip dates.
+  −0.3 when closed on some (not all) trip dates. Minutes come from the route row, else `estimateReach` (the planner's
+  walking minutes up to 20, else its rail estimate).
 Screening before scoring (each drop → `left_out` with a reason): not operational → `closed`; closed on every trip date →
-`closed_on_trip`; rating < 4.0 with ≥ 20 ratings → `low_rating`; < 5 ratings and no local mention → `unproven`;
-T < 0.3 → `off_topic`; for **food** with a diet: veg `no` → `diet`, veg `unknown` and Google `servesVegetarianFood`
-not true → `diet_unproven` (the owner's hard rule: every food pick names something the party can eat); beyond 90 min → `too_far`;
+`closed_on_trip`; rating < 4.0 with ≥ 20 ratings → `low_rating`; < 5 ratings and no local mention → `unproven`, unless
+the judgment gives relevance ≥ 0.7 or veg `verified` (then kept, labelled `new`); T < 0.3 → `off_topic`; for **food**
+with a diet: veg `no` (or `none`) → `diet`, veg `unknown` with neither Google's `servesVegetarianFood` nor the place's
+kind (§10 change 4) making it likely → `diet_unproven` (the owner's hard rule: every food pick names something the
+party can eat; meals stay strict); beyond 90 min → `too_far`;
 same place id twice → `duplicate`. Ties: score, then rating count, then name.
 
 ## 5. Places, memory and the Places tab
@@ -146,9 +151,9 @@ image, a drawn sketch of the same points. Images are `data:` URIs only (the app'
 - **Photos.** Google bills `places.photos` as a Text Search Pro field (developers.google.com/maps/documentation/places/web-service/text-search), so the Maps kit's Pro and higher search masks (Text and Nearby; Nearby's floor is Pro) carry it at no extra SKU (owner allowed the change 2026-10-03, v01.53r). Each pick's photo name comes with the search; the skill keeps its one-Place-Details-call fallback (Essentials, photos are IDs-only there) only for a record that arrives without one, then one Place Photo at 360 px per shown pick.
 - **Google fields on the board.** The board shows Google's rating, count, price level, opening hours on the trip's days and the website, fetched for that build only and never stored (as the brochure does). The `scout` payload, the Scouts tab and `places/` carry none of them; `rated` is a band word. The owner said yes (2026-10-03).
 - **Diet.** The party's hard diet is a screen, not a weight: a food pick stays only with `veg` `verified` or `likely`. Google's `servesVegetarianFood` alone can make a pick `likely` only for a vegetarian diet; vegan and gluten-free have no Google fallback and need the routine's judgment.
-- **Gem.** `gem` = two or more distinct local mentions, quality ≥ 0.6, 400 ratings or fewer, not a chain. The pool's mean rating (all unique rated records) anchors quality.
-- **Parts.** The payload's `parts` omit `local` (the schema has four parts: topic, quality, fit, reach); local word of mouth shows as the gem label and in the why line.
-- **Reach.** One WALK route matrix from the trip's lodging for the 25 strongest candidates; a walk over 20 minutes becomes a train estimate (station walks + the ride, the planner's rail figures). A TRANSIT matrix is asked only outside Japan, where Google routes transit. Without lodging, no reach part (neutral).
+- **Gem.** `gem` = two or more distinct local mentions, quality ≥ 0.6, 400 ratings or fewer, not a chain. Quality is anchored at a fixed μ per group (Phase 14; before, the pool's mean rating).
+- **Parts.** Since Phase 14 the payload's `parts` carry `local` too, so the card shows all five bars (topic, quality, fit, local, reach); older payloads have four and still show four. Before Phase 14 local word of mouth showed only as the gem label and in the why line.
+- **Reach.** One WALK route matrix from the trip's lodging for the 25 strongest candidates; a walk over 20 minutes becomes a train estimate (station walks + the ride, the planner's rail figures). Since Phase 14 the engine's own fallback uses the same estimator (`estimateReach`, exported for the driver). A TRANSIT matrix is asked only outside Japan, where Google routes transit. Without lodging, no reach part (neutral).
 - **Images.** The static map is a JPEG at 640 × 420 (scale 2) with the brochure's map styles; without a key or an image the board draws a sketch of the same points.
 - **Core.** `drive.board_html` / `board_pdf` may be null (an upload that failed); the core's validator accepts that, as the schema does.
 - **§7 as built.** `fromScoutResult` also keeps the first photo's name and credits (in-run only); `scoutPlaceFields` also takes `destination` and returns `{ place, entry, changed }`; judgments carry `area` and `mentions` (`[{ ref, language, kind, publisher? }]`), which the skill joins to the records as `local_mentions`.
@@ -201,5 +206,33 @@ from `own_name` only and returns `{ place: null, reason: 'no_own_name' }` withou
 reaches `places/`; the driver counts those picks in its log. A place already in `places/` keeps its own name and is
 updated (tags, the `scouted` entry) with or without an own name, so a "been before" place keeps its history. The slug
 of a new place follows the own name.
+
+## 10. Phase 14 (2026-10-04, WP-14b): the ranking, tuned
+
+The review's seven recommendations; every number is in `scout-weights.mjs` and every default's reason in
+`helpers/decisions/WP-14b.md`.
+
+1. **A fixed quality anchor.** μ is 4.2 for food and 4.3 for activities (`QUALITY_MU`), never the pool's mean: a 4.5
+   means the same on every board, and a few low-rated results no longer lift everyone else.
+2. **Chains and crowd magnets pay.** −8 points for a chain, −4 for a place with ≥ 2 000 ratings (gems
+   `CROWD_MAGNET_MIN_COUNT`, the count behind the planner's crowd-magnet flag). The bars stay the place's own parts; the
+   score is their weighted sum minus the penalties. Never a drop.
+3. **A judgment rescues a new place.** Relevance ≥ 0.7 or veg `verified` lifts the `unproven` screen; the place is kept
+   and labelled `new` (the label's meaning: kept on the judgment's word, too few ratings and no local mention).
+4. **Drinks, cafés and markets are likely.** Without a judgment (veg absent or `unknown`): a drink place is
+   `veg_likely` for a vegetarian or vegan party, a café / sweets / market place for a vegetarian party; a meal place
+   keeps the strict screen and the hidden-stock rule. The kind (`foodKind`) comes from the place's name and primary
+   type, the stricter winning (a meal word anywhere is strict), else from the query, else meal. Google's explicit
+   "no vegetarian food" keeps the strict screen. A judgment's veg always wins; `none` reads as `no`.
+5. **An unjudged place gets fit 0.3** and the label `not_judged` ("not judged" on the card, the board and the chat).
+6. **Five bars.** `parts.local` is in the payload; the board card and the app's Scout card show five
+   bars; an older payload shows its four.
+7. **One estimator.** `estimateReach(from, to, { fromStations?, toStations? })`: the planner's `walkMinutes` up to 20
+   minutes, else the planner's `railEstimate` (each end its own station when no station list is given). `reachFor`
+   uses it; the private driver can drop its copy.
+
+Compatibility: old payloads (no `local`, no `not_judged`) validate in both validators and display; stored boards keep
+their scores (nothing is recomputed).
+
 
 Developed by: LightAISolutions

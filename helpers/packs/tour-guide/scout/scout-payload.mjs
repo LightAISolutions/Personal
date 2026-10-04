@@ -34,6 +34,15 @@ export function assertNoGoogleKeys(obj, where = 'scout payload') {
   return obj;
 }
 
+/** The five parts as 0–100 integers, in the card's order; `local` only when the ranking gave it (TG-PHASE-14 WP-14b change 6). */
+function partsOf(parts) {
+  const x = parts || {};
+  const out = { topic: pct(x.topic), quality: pct(x.quality), fit: pct(x.fit) };
+  if (Number.isFinite(x.local)) out.local = pct(x.local);
+  out.reach = pct(x.reach);
+  return out;
+}
+
 /** An item's labels: its own, plus `seen_before` when its place id is known; schema order, each once, ≤ 8. */
 function labelsOf(it, known) {
   const set = new Set(Array.isArray(it.labels) ? it.labels : []);
@@ -72,7 +81,7 @@ export function scoutPayload(a = {}) {
     const out = {
       n: i + 1, slug: uniqueSlug(wanted, used), name: clip(it.name, 120) || 'Unnamed place', area: clip(own(areas, it.place_id) ? areas[it.place_id] : '', 80), category: cat,
       score: Math.min(100, Math.max(0, Math.round(Number(it.score) || 0))),
-      parts: { topic: pct(it.parts && it.parts.topic), quality: pct(it.parts && it.parts.quality), fit: pct(it.parts && it.parts.fit), reach: pct(it.parts && it.parts.reach) },
+      parts: partsOf(it.parts),
       why_you: clip(it.why, 200) || `A match for ${clip(a.query, 60)}.`,
       labels: labelsOf(it, known)
     };

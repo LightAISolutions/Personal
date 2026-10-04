@@ -36,7 +36,7 @@ export const dataImage = (u) => (typeof u === 'string' && DATA_IMG_RE.test(u) ? 
 
 export const LABEL_TEXT = Object.freeze({
   gem: '💎 hidden gem', veg_verified: '🌱 vegetarian verified', veg_likely: '🌱 vegetarian likely', booking: 'book ahead',
-  queue: 'expect a queue', cash_only: 'cash only', chain: 'chain', new: 'new', seen_before: 'been before', far: 'far'
+  queue: 'expect a queue', cash_only: 'cash only', chain: 'chain', new: 'new', seen_before: 'been before', far: 'far', not_judged: 'not judged'
 });
 export const REASON_TEXT = Object.freeze({
   off_topic: 'not really about it', diet: 'nothing vegetarian-safe', diet_unproven: 'vegetarian not confirmed',
@@ -153,7 +153,7 @@ h2{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--mute
 .hours .closed{color:var(--alert);font-weight:700}
 .try{margin-top:6px;font-size:13px}
 .why{margin-top:4px;font-size:13px;font-style:italic;color:var(--ink2)}
-.bars{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+.bars{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;margin-top:8px}
 .bar{font-size:10px;color:var(--muted)}
 .bar i{display:block;height:5px;background:var(--hair);border-radius:3px;margin-top:2px;overflow:hidden}
 .bar b{display:block;height:100%;background:var(--sea)}
@@ -217,7 +217,8 @@ function cardHtml(it, { g, payload, trip_dates, app }) {
   const hrs = hoursRows(g.hours, trip_dates);
   const hoursHtml = hrs ? `<div class="hours">${hrs.map((h) => `${esc(h.label)} <span${h.closed ? ' class="closed"' : ''}>${esc(h.text)}</span>`).join(' · ')}</div>`
     : (g.hours && Array.isArray(g.hours.weekdayDescriptions) && g.hours.weekdayDescriptions.length ? `<div class="hours">${esc(clip(g.hours.weekdayDescriptions.join('; '), 320))}</div>` : '');
-  const bars = [['on topic', it.parts.topic], ['quality', it.parts.quality], ['fit', it.parts.fit], ['reach', it.parts.reach]]
+  // Five bars (WP-14b change 6); a payload from before `local` shows its four.
+  const bars = [['on topic', it.parts.topic], ['quality', it.parts.quality], ['fit', it.parts.fit], ...(Number.isFinite(it.parts.local) ? [['local', it.parts.local]] : []), ['reach', it.parts.reach]]
     .map(([k, v]) => `<div class="bar">${esc(k)}<i><b style="width:${Math.min(100, Math.max(0, Math.round(v)))}%"></b></i></div>`).join('');
   const chips = it.labels.map((l) => `<span class="chip">${esc(LABEL_TEXT[l] || l)}</span>`).join('');
   const site = httpsUrl(g.website);

@@ -62,11 +62,12 @@
           "type": "object",
           "additionalProperties": false,
           "required": ["topic", "quality", "fit", "reach"],
-          "properties": { "topic": { "$ref": "#/$defs/part" }, "quality": { "$ref": "#/$defs/part" }, "fit": { "$ref": "#/$defs/part" }, "reach": { "$ref": "#/$defs/part" } }
+          "description": "The score's parts, 0–100. `local` (local word of mouth, TG-PHASE-14 C14) is optional so payloads from before it still validate.",
+          "properties": { "topic": { "$ref": "#/$defs/part" }, "quality": { "$ref": "#/$defs/part" }, "fit": { "$ref": "#/$defs/part" }, "local": { "$ref": "#/$defs/part" }, "reach": { "$ref": "#/$defs/part" } }
         },
         "why_you": { "type": "string", "minLength": 1, "maxLength": 200, "description": "Our own words; never review or page text." },
         "try": { "type": "string", "minLength": 1, "maxLength": 120 },
-        "labels": { "type": "array", "maxItems": 8, "items": { "enum": ["gem", "veg_verified", "veg_likely", "booking", "queue", "cash_only", "chain", "new", "seen_before", "far"] } },
+        "labels": { "type": "array", "maxItems": 8, "items": { "enum": ["gem", "veg_verified", "veg_likely", "booking", "queue", "cash_only", "chain", "new", "seen_before", "far", "not_judged"] } },
         "rated": { "type": "string", "minLength": 1, "maxLength": 40, "pattern": "^[^0-9]*$", "description": "A rating band word; never the number." },
         "reach": {
           "type": "object",

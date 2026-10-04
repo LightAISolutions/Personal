@@ -54,7 +54,7 @@ test('red team: an instruction in an editorial summary buys at most the editoria
   const loud = sc.fromScoutResult(place('Loud', 'Quay Café', { extra: { types: ['restaurant'], editorialSummary: { text: INSTRUCTION } } }));
   const r = sc.rankScout([loud], { what: 'matcha', group: 'food' });
   assert.equal(r.items[0].parts.topic, 0.5);
-  assert.deepEqual(r.items[0].labels, [], 'no gem from the text');
+  assert.deepEqual(r.items[0].labels, ['not_judged'], 'no gem from the text');   // WP-14b change 5: unjudged → not_judged, nothing more
   assert.doesNotMatch(r.items[0].why, /Ignore|hidden gem/);
 });
 
@@ -65,7 +65,7 @@ test('red team: hostile names, judgment lines and areas are clipped to the schem
   for (const it of payload.items) {
     assert.ok(it.name.length <= 120 && it.why_you.length <= 200 && it.area.length <= 80 && (!it.try || it.try.length <= 120), it.slug);
     assert.match(it.slug, /^[a-z0-9][a-z0-9-]{0,63}$/);
-    assert.ok(it.labels.every((l) => ['gem', 'veg_verified', 'veg_likely', 'booking', 'queue', 'cash_only', 'chain', 'new', 'seen_before', 'far'].includes(l)));
+    assert.ok(it.labels.every((l) => ['gem', 'veg_verified', 'veg_likely', 'booking', 'queue', 'cash_only', 'chain', 'new', 'seen_before', 'far', 'not_judged'].includes(l)));   // WP-14b change 5: the new label
   }
   const json = JSON.stringify(payload);
   for (const k of ['rating', 'userRatingCount', 'editorial', 'editorialSummary', 'photo', 'location', 'hours']) assert.ok(!json.includes(`"${k}"`), k);

@@ -12,11 +12,14 @@
  *                                  created_on: today, from: 'your hotel', diet, ranked, slugs, areas, categories, known });
  *   const r = scoutPlaceFields(payload.items[0], { query: what, trip, scout_id, on: today, existing, own_name: ranked.items[0].own_name });
  *   //   r.place === null && r.reason === 'no_own_name' → a new pick without its own name: not written, counted in the log
+ *   const leg = estimateReach(from, to, { fromStations, toStations });   // the one leg estimate (TG-PHASE-14 WP-14b change 7)
  *   const { html } = renderScoutBoard({ payload, google, map, anchor, locations, trip_dates, city_dates, options: { built_on: today } });
  */
 export * as WEIGHTS from './scout-weights.mjs';
-export { parseScoutText, scoutId, guessGroup, scoutQueries, slugOf, isCafeTopic, ACTIVITY_WORDS, FOOD_WORDS, CAFE_WORDS, TEXT_MAX } from './scout-text.mjs';
-export { fromScoutResult, rankScout, normalizeScoutRecord, screenReason, topicPart, qualityPart, reachValue, reachFor, usualTypes, tokens, whyLine, isVegetarianDiet, yourDates, dietRule, googleVegCounts, ownName, ACTIVITY_TYPES } from './scout-rank.mjs';
+export { parseScoutText, scoutId, guessGroup, scoutQueries, slugOf, isCafeTopic, ACTIVITY_WORDS, FOOD_WORDS, CAFE_WORDS, TEXT_MAX,
+  foodKind, DRINK_WORDS, CAFE_SWEET_WORDS, MARKET_WORDS, MEAL_WORDS } from './scout-text.mjs';
+export { fromScoutResult, rankScout, normalizeScoutRecord, screenReason, topicPart, qualityPart, muFor, reachValue, reachFor, estimateReach, usualTypes, tokens, whyLine, isVegetarianDiet, yourDates, dietRule, googleVegCounts, ownName, ACTIVITY_TYPES,
+  vegOf, isVeganDiet, kindLikely, rescued } from './scout-rank.mjs';
 export { scoutPayload, scoutPlaceFields, assertNoGoogleKeys, queryTag, SCOUT_GOOGLE_KEYS } from './scout-payload.mjs';
 export { renderScoutBoard, renderScoutBoardPdf, pdfAvailable, httpsUrl, dataImage, tripHours, hoursRows, openSummary, ratingText, priceText, reachText, LABEL_TEXT, REASON_TEXT, BOARD_CSP, APP_PHOTO_MAX_PX, APP_PHOTO_MAX_CHARS, APP_MAP_MAX_CHARS } from './scout-board.mjs';
 
