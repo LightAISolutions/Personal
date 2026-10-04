@@ -3,19 +3,30 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 62/100`
+`Sections: 63/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
 
-## [v01.61r] — 2026-10-03 08:07:47 PM EST
+## [v01.62r] — 2026-10-03 08:12:40 PM EST
 
 > **Prompt:** "decisions made." *(the owner's choices on the usefulness review; this push records that step 3's private side is merged and that a follow-up, WP-12e, is up as a pull request so one re-plan also fills the morning message's inputs)*
 
 ### Changed
 - `helpers/decisions/TG-PHASE-12.md` §4 and §7: the private side merged (PR #22); WP-12e, a facts stage in the private plan run that fills the built days' place facts, the lodging's area and access and the trip's country code (a re-plan from where you are skips it), is up as PR #23 and should merge before the re-plan that rebuilds the owner's trip
 - `helpers/BUILD-STATE.md` row 12, the Phase 12 log and Next; README timestamp
+
+### Fixed
+- This push's first attempt was also labelled v01.61r and crossed the Mini App push of the same number; the auto-merge kept the first attempt's side of the overlapping lines, so v01.61r's CHANGELOG section and its BUILD-STATE Next line were replaced. Both are restored verbatim here, and this push's entry is v01.62r
+
+## [v01.61r] — 2026-10-03 08:05:52 PM EST
+
+> **Prompt:** "The arrow button in the top right only makes the app go from a literal bar to the small window it started in. It does not go to full screen at all."
+
+### Fixed
+- **The Mini App shell's full-screen button never showed on Web K** (`live-site-pages/helper-app.html`, app v01.10w): the owner's screenshots at v01.09w show the masthead without ⤢ (the arrows he pressed are the client's own collapse/restore control in the window's title bar). Web K requests its Mini App URL with `platform: 'web'` (`src/lib/appManagers/appAttachMenuBotsManager.ts`), so `tgWebAppPlatform` is not `webk`/`weba` and `webFull()`'s exact match failed. The test is now `/^web/` on the platform string; the Bot API 8.0 and `requestFullscreen` checks stay
+- README timestamp and the app's version line
 
 ## [v01.60r] — 2026-10-03 07:48:06 PM EST
 
