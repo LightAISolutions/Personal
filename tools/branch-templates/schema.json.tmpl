@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "{{SCHEMA_FILE}}",
+  "title": "{{DISPLAY}} {{TYPE}} (payload of the `{{TYPE}}` envelope)",
+  "description": "{{TITLE_JSON}} for one trip, written by helpers/tools/new-branch.mjs. `note` is a placeholder field: replace it with the branch's real fields, here and in both validators (gas/{{CORE_FILE}} tgEnvValidate{{TYPE_PASCAL}}, packs/{{PACK}}/{{NAME}}/{{NAME}}-payload.mjs validate{{TYPE_PASCAL}}Payload). Own words only: every object refuses unknown keys. The validators also check the whole payload is at most 40 000 characters (one Sheet cell).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["trip", "note"],
+  "properties": {
+    "v": { "const": 1 },
+    "trip": { "$ref": "#/$defs/slug" },
+    "note": { "type": "string", "minLength": 1, "maxLength": 200 }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" }
+  }
+}

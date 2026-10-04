@@ -34,7 +34,7 @@ const RAW = [
   place('Cart', 'Tiny Matcha Cart', { rating: 5, count: 3 }),
   place('Burger', 'Wrenmouth Burger Bar', { types: ['restaurant'], veg: true }),
   place('Kelp', 'Kelp Matcha Kitchen', { veg: true }),
-  place('Driftwood', 'Driftwood Matcha', {}),
+  place('Driftwood', 'Driftwood Matcha', { types: ['restaurant'] }),   // WP-14b change 4: a meal place keeps the strict screen (a café would now be likely)
   place('FarPoint', 'Far Point Matcha', { km: 3 }),
   place('MatchaHouse', 'Wren Matcha House', { rating: 4.7, count: 320, veg: true, km: 0.4 })
 ];
@@ -42,8 +42,8 @@ const JUDGE = {
   FixtureWrenMatchaHouse: { veg: 'verified', try: 'Matcha parfait with red bean', fit: 0.8 },
   FixtureWrenTeaRoom: { veg: 'likely', try: 'Usucha and a seasonal sweet', labels: ['booking'] },
   FixtureWrenSaltmarsh: { relevance: 0.7 },
-  FixtureWrenKelp: { veg: 'no' }, FixtureWrenFarPoint: { veg: 'verified' }, FixtureWrenGull: { veg: 'verified' }, FixtureWrenCart: { veg: 'verified' }
-};
+  FixtureWrenKelp: { veg: 'no' }, FixtureWrenFarPoint: { veg: 'verified' }, FixtureWrenGull: { veg: 'verified' }
+};   // WP-14b change 3: the Cart's veg-verified judgment would now rescue it, so it has none
 const REACH = { FixtureWrenMatchaHouse: { minutes: 6, mode: 'WALK', estimated: false }, FixtureWrenFarPoint: { minutes: 95, mode: 'WALK', estimated: false } };
 
 async function world(over = {}) {
@@ -127,14 +127,14 @@ test('ranking math: score = round(100 × (0.35T + 0.25Q + 0.15F + 0.10L + 0.15R)
   ];
   const r = sc.rankScout(pool, { what: 'matcha', group: 'food', reach: { FixtureWrenLantern: { minutes: 25, mode: 'WALK', estimated: false } }, judgments: { FixtureWrenLantern: { fit: 0.8 } } });
   const it = r.items.find((x) => x.place_id === 'FixtureWrenLantern');
-  const mu = (4.6 + 4.2) / 2, b = (100 * 4.6 + 30 * mu) / 130, Q = (b - 3.8) / 1.0, R = 1 - (0.7 * 15) / 30;
+  const mu = 4.2, b = (100 * 4.6 + 30 * mu) / 130, Q = (b - 3.8) / 1.0, R = 1 - (0.7 * 15) / 30;   // WP-14b change 1: food's fixed anchor, not the pool mean
   assert.ok(Math.abs(it.parts.quality - Q) < 1e-9);
   assert.equal(it.parts.topic, 0.9);
   assert.equal(it.parts.fit, 0.8);
   assert.equal(it.parts.local, 0.25);
   assert.ok(Math.abs(it.parts.reach - R) < 1e-9);
   assert.equal(it.score, Math.round(100 * (0.35 * 0.9 + 0.25 * Q + 0.15 * 0.8 + 0.10 * 0.25 + 0.15 * R)));
-  assert.equal(it.score, 75);
+  assert.equal(it.score, 73);   // WP-14b change 1 (μ 4.2 instead of the pool's 4.4; was 75)
   assert.deepEqual(it.reach, { minutes: 25, mode: 'WALK', estimated: false });
   const W = sc.WEIGHTS.WEIGHTS;
   assert.equal(Object.values(W).reduce((s, x) => s + x, 0).toFixed(10), '1.0000000000');
@@ -187,9 +187,10 @@ test('screens: every drop reason, in pool order, each place once; the kept three
 
 test('ties: score, then rating count (more first), then name; limit cuts and `more` counts the rest', async () => {
   const sc = await SC();
-  const pool = [['Beta', 200], ['Alpha', 200], ['Gamma', 300], ['Delta', 50]].map(([n, c]) => sc.fromScoutResult(place(n, `${n} Matcha`, { rating: 4.5, count: c })));
+  // WP-14b change 1: μ is food's fixed 4.2, so a 4.2 rating gives the same quality at any count and every score ties.
+  const pool = [['Beta', 200], ['Alpha', 200], ['Gamma', 300], ['Delta', 50]].map(([n, c]) => sc.fromScoutResult(place(n, `${n} Matcha`, { rating: 4.2, count: c })));
   const r = sc.rankScout(pool, { what: 'matcha', group: 'food' });
-  assert.equal(new Set(r.items.map((i) => i.score)).size, 1, 'every μ = 4.5, so every score ties');
+  assert.equal(new Set(r.items.map((i) => i.score)).size, 1, 'every rating = μ = 4.2, so every score ties');
   assert.deepEqual(r.items.map((i) => i.name), ['Gamma Matcha', 'Alpha Matcha', 'Beta Matcha', 'Delta Matcha']);
   const cut = sc.rankScout(pool, { what: 'matcha', group: 'food', limit: 2 });
   assert.deepEqual(cut.items.map((i) => i.name), ['Gamma Matcha', 'Alpha Matcha']);
@@ -200,20 +201,20 @@ test('ties: score, then rating count (more first), then name; limit cuts and `mo
   assert.throws(() => sc.rankScout('nope', { what: 'x' }), /pool array/);
 });
 
-test('reach: a route row wins, else a straight-line estimate (walk ≤ 30 min, else transit); closed on some trip days costs 0.3', async () => {
+test('reach: a route row wins, else the planner\'s estimate (walk ≤ 20 min, else its rail estimate); closed on some trip days costs 0.3', async () => {
   const { ranked } = await world();
   const by = Object.fromEntries(ranked.items.map((i) => [i.place_id, i]));
   assert.deepEqual(by.FixtureWrenMatchaHouse.reach, { minutes: 6, mode: 'WALK', estimated: false });
   const tea = by.FixtureWrenTeaRoom.reach;
   assert.equal(tea.mode, 'WALK');
   assert.equal(tea.estimated, true);
-  assert.ok(Math.abs(tea.minutes - (1.2 / 4.5) * 60) < 0.2, `~16 min on foot, got ${tea.minutes}`);
+  assert.equal(tea.minutes, 19, 'WP-14b change 7: the planner\'s walking minutes for 1.2 km (was ~16 at a straight 4.5 km/h)');
   const sc = await SC();
   const salt = by.FixtureWrenSaltmarsh;
   assert.ok(Math.abs(salt.parts.reach - (sc.reachValue(salt.reach.minutes) - 0.3)) < 1e-9, 'closed on the Tuesday → −0.3');
   const far = sc.reachFor({ place_id: 'X', location: { lat: HOTEL.lat + 9 / 111, lng: HOTEL.lng } }, { anchors: [HOTEL] });
   assert.equal(far.mode, 'TRANSIT');
-  assert.ok(Math.abs(far.minutes - 36) < 0.5);
+  assert.equal(far.minutes, 36, 'WP-14b change 7: the planner\'s rail estimate for 9 km');
   assert.equal(sc.reachFor({ place_id: 'X', location: null }, { anchors: [HOTEL] }), null);
   const unknown = sc.rankScout([sc.fromScoutResult(place('Nowhere', 'Nowhere Matcha'))], { what: 'matcha' });
   assert.equal(unknown.items[0].reach, null);
@@ -233,7 +234,7 @@ test('diet: vegetarian is a hard rule for food — veg no → diet; unknown need
   const veg = sc.rankScout(pool, { what: 'matcha', group: 'food', diet: 'vegetarian', judgments });
   assert.deepEqual(Object.fromEntries(veg.left_out.map((l) => [l.place_id, l.reason])), { FixtureWrenVegNo: 'diet', FixtureWrenVegNothing: 'diet_unproven' });
   const labels = Object.fromEntries(veg.items.map((i) => [i.place_id, i.labels]));
-  assert.deepEqual(labels, { FixtureWrenVegGoogle: ['veg_likely'], FixtureWrenVegVerified: ['veg_verified'], FixtureWrenVegLikely: ['veg_likely'] });
+  assert.deepEqual(labels, { FixtureWrenVegGoogle: ['veg_likely', 'not_judged'], FixtureWrenVegVerified: ['veg_verified', 'not_judged'], FixtureWrenVegLikely: ['veg_likely', 'not_judged'] });   // WP-14b change 5
   const vegan = sc.rankScout(pool, { what: 'matcha', group: 'food', diet: 'vegan', judgments });
   assert.equal(vegan.left_out.find((l) => l.place_id === 'FixtureWrenVegGoogle').reason, 'diet_unproven', 'Google vegetarian evidence does not prove vegan');
   const none = sc.rankScout(pool, { what: 'matcha', group: 'food', judgments });
@@ -251,7 +252,7 @@ test('labels and why: gem, chain, far, judgment labels; our own why line; the ju
   assert.equal(house.try, 'Matcha parfait with red bean');
   assert.equal(house.why, 'Named for matcha; exceptionally well rated; named by two local sources; about 6 min walk.');
   const tea = ranked.items[1];
-  assert.deepEqual(tea.labels, ['veg_likely', 'booking']);
+  assert.deepEqual(tea.labels, ['veg_likely', 'booking', 'not_judged']);   // WP-14b change 5: no fit → not_judged
   assert.match(tea.why, /^The kind of place for matcha; very well rated; about \d+ min walk \(estimated\)\.$/);
   const chainPool = ['Tidewater', 'Tidewater', 'Tidewater', 'Starbucks Harbour'].map((n, i) => sc.fromScoutResult(place('Chain' + i, n + ' Matcha', { km: 12 }), { local_mentions: MENTIONS }));
   const chained = sc.rankScout(chainPool, { what: 'matcha', anchors: [HOTEL], judgments: { FixtureWrenChain0: { why: '  Our own   words.  ', labels: ['queue', 'not-a-label', 'queue'] } } });
@@ -263,7 +264,7 @@ test('labels and why: gem, chain, far, judgment labels; our own why line; the ju
   }
   const c0 = chained.items.find((i) => i.place_id === 'FixtureWrenChain0');
   assert.equal(c0.why, 'Our own words.');
-  assert.deepEqual(c0.labels, ['queue', 'chain', 'far']);
+  assert.deepEqual(c0.labels, ['queue', 'chain', 'far', 'not_judged']);   // WP-14b change 5
 });
 
 async function payloadOf(over = {}) {
@@ -281,7 +282,7 @@ test('scoutPayload: own data only, validated, slugs de-duplicated, band words, r
   assert.equal(payload.kind, 'scout');
   assert.deepEqual(payload.items.map((i) => [i.n, i.slug]), [[1, 'wren-matcha-house'], [2, 'wren-matcha-house-2'], [3, 'saltmarsh-cafe']]);
   const [house, tea, salt] = payload.items;
-  assert.deepEqual(house.parts, { topic: 90, quality: house.parts.quality, fit: 80, reach: 100 });
+  assert.deepEqual(house.parts, { topic: 90, quality: house.parts.quality, fit: 80, local: 50, reach: 100 });   // WP-14b change 6: parts.local
   assert.equal(house.rated, 'exceptionally well rated');
   assert.deepEqual(house.reach, { minutes: 6, mode: 'WALK', estimated: false });
   assert.equal(house.area, 'Old harbour');
@@ -331,7 +332,7 @@ test('scoutPayload refuses a Google field anywhere and an invalid result; the sc
   refuse((x) => { x.items[1].place_id = x.items[0].place_id; }, '/items', /duplicate place id/);
   refuse((x) => { x.items[0].parts.topic = 101; }, '/items/0/parts/topic');
   refuse((x) => { delete x.items[0].parts.reach; }, '/items/0/parts');
-  refuse((x) => { x.items[0].parts.local = 50; }, '/items/0/parts/local');
+  refuse((x) => { x.items[0].parts.local = 101; }, '/items/0/parts/local');   // WP-14b change 6: local is a part now (0–100), so only its bounds refuse
   refuse((x) => { x.items[0].why_you = ''; }, '/items/0/why_you');
   refuse((x) => { x.items[0].reach.mode = 'BICYCLE'; }, '/items/0/reach/mode');
   refuse((x) => { x.left_out[0].reason = 'sponsored'; }, '/left_out/0/reason');

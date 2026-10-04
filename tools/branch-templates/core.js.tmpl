@@ -1,0 +1,98 @@
+/**
+ * {{DISPLAY}} pack — {{TITLE}}: a branch written by helpers/tools/new-branch.mjs (helpers/tools/README.md "Branches").
+ *   {{CMD}} → request kind `{{KIND}}` { trip } for the current trip, routed to {{ROUTINE}} (TG_KIND_ROUTINE, below)
+{{#ENVELOPE}} *   envelope `{{TYPE}}` → validated (tgEnvValidate{{TYPE_PASCAL}}, mirror of schemas/{{SCHEMA_FILE}} and of
+ *     packs/{{PACK}}/{{NAME}}/{{NAME}}-payload.mjs), {{#TAB}}stored in the {{TAB}} tab (one row per trip; a re-delivery replaces
+ *     it), {{/TAB}}then one short line to the owner
+{{/ENVELOPE}}{{^ENVELOPE}} *   no envelope of its own (--no-envelope): the branch answers with envelopes that exist (`reply`, …)
+{{/ENVELOPE}}{{^TAB}} *   no tab of its own (--no-tab): TODO say here which existing tab or store keeps this branch's data
+{{/TAB}} * {{#APP}}App operations: gas/{{APP_FILE}}.{{/APP}}{{^APP}}No app operations (--no-app).{{/APP}} Pack side: packs/{{PACK}}/{{NAME}}/. Tests: tests/pack_{{PACK}}_{{NAME}}.test.js.
+ * Still written by hand: the behaviour, the judgment step (the private skill) and the real fields{{#ENVELOPE}} (the schema, both
+ * validators, the fixture){{/ENVELOPE}}. Other pack files' names are touched only inside functions, at run time.
+ * The @branch line below tells `new-branch.mjs --check {{NAME}}` what this branch declares ("-" = not needed); keep it in step.
+ */
+// @branch {{NAME}} command={{CMD}} kind={{KIND}} envelope={{TYPE_OR_DASH}} tab={{TAB_OR_DASH}} routine={{ROUTINE}} app={{APP_OR_DASH}}
+var TG_{{UPPER}} = { {{#TAB}}SHEET: '{{TAB}}', {{/TAB}}NOTE_MAX: 200, PAYLOAD_MAX: 40000, LIST_MAX: 20 };
+
+// The kind's routing, added from this file: tgKindRoutine (00_common.js) reads the table at call time.
+TG_KIND_ROUTINE['{{KIND}}'] = '{{ROUTINE}}';
+{{#TAB}}
+registerSheet(TG_{{UPPER}}.SHEET, ['id', 'trip', 'received_at', 'payload_json']);
+{{/TAB}}
+/* ==================== asking ==================== */
+
+/** Open a `{{KIND}}` request for the current trip. opts = { chat?, text? } → { ok: true, id, routine, fired, trip } | { ok: false, why: 'no_trip' } */
+function tg{{PASCAL}}Open(opts) {
+  opts = opts || {};
+  var trip = tgTripCurrent();
+  if (!trip) return { ok: false, why: 'no_trip' };
+  var r = tgOpenKindRequest('{{KIND}}', { trip: trip.slug }, { chat: opts.chat || null, text: opts.text || '{{CMD}}',
+    ack: '{{ICON}} Working on {{TITLE_HTML}} for <b>' + tgCmdTitle(trip) + '</b>…' });
+  return { ok: true, id: r.id, routine: r.routine, fired: !!(r.fired && r.fired.ok), trip: trip.slug };
+}
+
+registerCommand('{{CMD}}', function (ctx) {
+  var r = tg{{PASCAL}}Open({ chat: ctx.chat, text: String(ctx.text || '') });
+  if (!r.ok) ctx.reply('{{ICON}} There is no current trip yet — /plan one first, then send {{CMD}} again.');
+}, '{{HELP}}');
+{{#TAB}}
+/* ==================== the {{TAB}} tab ==================== */
+
+function tg{{PASCAL}}Rec(r) {
+  if (!r) return null;
+  var p = safeJsonParse(String(r.payload_json || ''));
+  return { id: tgShStr(r.id), trip: tgShStr(r.trip), received_at: tgShStr(r.received_at), payload: p.ok && isPlainObject(p.value) ? p.value : {} };
+}
+/** The stored record of one trip, or null. */
+function tg{{PASCAL}}Get(id) {
+  id = String(id || '');
+  if (!TG_SLUG_RE.test(id)) return null;
+  return tg{{PASCAL}}Rec(storeFind(TG_{{UPPER}}.SHEET, function (r) { return tgShStr(r.id) === id; }, 1)[0] || null);
+}
+/** Newest first (received_at, then row order); limit optional. */
+function tg{{PASCAL}}List(limit) {
+  var rows = storeAll(TG_{{UPPER}}.SHEET).map(function (r) { var x = tg{{PASCAL}}Rec(r); x._row = r._row; return x; });
+  rows.sort(function (a, b) { return a.received_at !== b.received_at ? (a.received_at < b.received_at ? 1 : -1) : b._row - a._row; });
+  rows.forEach(function (x) { delete x._row; });
+  return limit ? rows.slice(0, limit) : rows;
+}
+/** Store a validated payload, keyed by its trip; a re-delivery replaces the row. → { rec, replaced } */
+function tg{{PASCAL}}Store(p) {
+  var replaced = !!tg{{PASCAL}}Get(p.trip);
+  storeUpsertById(TG_{{UPPER}}.SHEET, { id: p.trip, trip: p.trip, received_at: nowIso(), payload_json: toJson(p) });
+  return { rec: tg{{PASCAL}}Get(p.trip), replaced: replaced };
+}
+{{/TAB}}{{#ENVELOPE}}
+/* ==================== the `{{TYPE}}` envelope ==================== */
+
+/** Mirror of schemas/{{SCHEMA_FILE}} and of validate{{TYPE_PASCAL}}Payload (packs/{{PACK}}/{{NAME}}/{{NAME}}-payload.mjs). */
+function tgEnvValidate{{TYPE_PASCAL}}(p) {
+  var errs = [];
+  if (!isPlainObject(p)) return ['payload must be an object'];
+  if (!tgEnvObj(errs, 'payload', p, ['trip', 'note'], ['v'])) return tgEnvDone(errs);
+  tgEnvHead(errs, p, '{{TYPE}}');
+  if (p.trip !== undefined) tgEnvSlug(errs, 'trip', p.trip);
+  if (p.note !== undefined) tgEnvStr(errs, 'note', p.note, 1, TG_{{UPPER}}.NOTE_MAX);
+  tgEnvSize(errs, p);
+  var n = toJson(p).length;
+  if (n > TG_{{UPPER}}.PAYLOAD_MAX) errs.push('payload is ' + n + ' chars (max ' + TG_{{UPPER}}.PAYLOAD_MAX + ' for one cell)');
+  return tgEnvDone(errs);
+}
+
+/** The handler registers only while helper.json lists the type: an unlisted type cannot be registered and the core rejects it, audited. */
+if (ENVELOPE_TYPES.indexOf('{{TYPE}}') >= 0) {
+  registerEnvelopeHandler('{{TYPE}}', {
+    validate: function (p, env) { return tgEnvCleaned(tgEnvValidate{{TYPE_PASCAL}})(p, env); },
+    handle: function (env) {
+{{#TAB}}      var st = tg{{PASCAL}}Store(env.payload), chat = tgOwnerChat(), r = null, trip = tgTripGet(st.rec.trip);
+      if (chat) r = tgSend(chat, '{{ICON}} {{TITLE_HTML}} for <b>' + (trip ? tgCmdTitle(trip) : tgEscape(st.rec.trip)) + '</b>' + (st.replaced ? ' (updated)' : '') + ': ' + tgEscape(truncate(String(st.rec.payload.note || ''), 200)));
+      return { {{NAME}}: st.rec.id, replaced: st.replaced, sent: !!(r && r.ok) };
+{{/TAB}}{{^TAB}}      // TODO (--no-tab): keep what this envelope carries where the branch keeps its data (an existing tab or store).
+      var p = env.payload, chat = tgOwnerChat(), r = null, trip = tgTripGet(p.trip);
+      if (chat) r = tgSend(chat, '{{ICON}} {{TITLE_HTML}} for <b>' + (trip ? tgCmdTitle(trip) : tgEscape(p.trip)) + '</b>: ' + tgEscape(truncate(String(p.note || ''), 200)));
+      return { {{NAME}}: p.trip, sent: !!(r && r.ok) };
+{{/TAB}}    }
+  });
+}
+{{/ENVELOPE}}
+// Developed by: LightAISolutions

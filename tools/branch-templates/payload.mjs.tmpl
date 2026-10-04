@@ -1,0 +1,50 @@
+/**
+ * {{DISPLAY}} — {{TITLE}}: the `{{TYPE}}` envelope payload (written by helpers/tools/new-branch.mjs).
+ * validate{{TYPE_PASCAL}}Payload mirrors the core's tgEnvValidate{{TYPE_PASCAL}} (gas/{{CORE_FILE}}) rule for rule and message for
+ * message, and schemas/{{SCHEMA_FILE}} says the same; tests/pack_{{PACK}}_{{NAME}}.test.js holds the three to one answer.
+ * `note` is the placeholder field: replace it with the branch's real fields in all three places together.
+ */
+export const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
+export const NOTE_MAX = 200;
+export const PAYLOAD_MAX = 40000;   // one Sheet cell ({{#TAB}}the core stores the payload as JSON in the {{TAB}} tab{{/TAB}}{{^TAB}}so it fits one cell wherever the branch keeps it{{/TAB}})
+const ENV_MAX = 60000;              // the core's TG_ENV_DIGEST_MAX_CHARS
+const MAX_ERRORS = 20;              // the core's TG_ENV_MAX_ERRORS
+const REQUIRED = ['trip', 'note'];
+const OPTIONAL = ['v'];
+
+const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
+const cut = (s, n) => (String(s).length > n ? String(s).slice(0, n - 1) + '…' : String(s));
+function str(errs, path, v, min, max, re) {
+  if (typeof v !== 'string') { errs.push(path + ' must be a string'); return; }
+  if (v.length < min) errs.push(path + (min === 1 ? ' must not be empty' : ' too short'));
+  if (v.length > max) errs.push(path + ' longer than ' + max + ' chars');
+  if (re && !re.test(v)) errs.push(path + ' has the wrong format');
+}
+const done = (errs) => (errs.length > MAX_ERRORS ? errs.slice(0, MAX_ERRORS).concat(['… ' + (errs.length - MAX_ERRORS) + ' more']) : errs);
+
+/** validate{{TYPE_PASCAL}}Payload(p) → string[] (empty = valid); the same rules and words as the core's validator. */
+export function validate{{TYPE_PASCAL}}Payload(p) {
+  const errs = [];
+  if (!isObj(p)) return ['payload must be an object'];
+  const allowed = REQUIRED.concat(OPTIONAL);
+  Object.keys(p).forEach((k) => { if (!allowed.includes(k)) errs.push('payload: unknown key "' + cut(k, 40) + '"'); });
+  REQUIRED.forEach((k) => { if (p[k] === undefined) errs.push('payload: ' + k + ' required'); });
+  if (p.v !== undefined && p.v !== 1) errs.push('v must be 1');
+  if (p.trip !== undefined) str(errs, 'trip', p.trip, 1, 64, SLUG_RE);
+  if (p.note !== undefined) str(errs, 'note', p.note, 1, NOTE_MAX);
+  const n = JSON.stringify(p).length;
+  if (n > ENV_MAX) errs.push('payload is ' + n + ' chars (max ' + ENV_MAX + ')');
+  if (n > PAYLOAD_MAX) errs.push('payload is ' + n + ' chars (max ' + PAYLOAD_MAX + ' for one cell)');
+  return done(errs);
+}
+
+/** build{{TYPE_PASCAL}}Payload({ trip, note }) → a valid `{{TYPE}}` payload; throws listing every problem. */
+export function build{{TYPE_PASCAL}}Payload({ trip, note } = {}) {
+  const p = { v: 1, trip: String(trip ?? ''), note: String(note ?? '').replace(/\s+/g, ' ').trim() };
+  if (p.note.length > NOTE_MAX) p.note = p.note.slice(0, NOTE_MAX - 1).trimEnd() + '…';
+  const errs = validate{{TYPE_PASCAL}}Payload(p);
+  if (errs.length) throw new Error('{{TYPE}} payload is invalid: ' + errs.join('; '));
+  return p;
+}
+
+// Developed by: LightAISolutions

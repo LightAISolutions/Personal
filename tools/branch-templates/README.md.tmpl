@@ -1,0 +1,26 @@
+# {{NAME}} — {{TITLE}}
+
+A branch of the {{DISPLAY}} pack, written by `node helpers/tools/new-branch.mjs {{NAME}}` (see `helpers/tools/README.md`, "Branches"). The skeleton is wired end to end; the behaviour is still to write.
+
+| Part | Where |
+|---|---|
+| Command `{{CMD}}` → request kind `{{KIND}}` `{ trip }`, routed to `{{ROUTINE}}` | `gas/{{CORE_FILE}}` |
+{{#TAB}}| Tab `{{TAB}}` (one row per trip: `id`, `trip`, `received_at`, `payload_json`) | `gas/{{CORE_FILE}}` |
+{{/TAB}}{{^TAB}}| No tab of its own (`--no-tab`): say in the core module's header where the branch keeps its data | `gas/{{CORE_FILE}}` |
+{{/TAB}}
+{{#ENVELOPE}}| Envelope `{{TYPE}}`: core validator `tgEnvValidate{{TYPE_PASCAL}}` and its handler (registered only while `helper.json` lists the type) | `gas/{{CORE_FILE}}` |
+| Schema | `schemas/{{SCHEMA_FILE}}` (and its entry in `schemas/index.mjs`, so `tools/envelope.mjs --pack {{PACK}}` checks it) |
+| Pack validator `validate{{TYPE_PASCAL}}Payload` and `build{{TYPE_PASCAL}}Payload` | `{{NAME}}/{{NAME}}-payload.mjs` |
+| Invented fixture: valid and invalid payloads, a trip | `{{NAME}}/fixtures/{{NAME}}-sample.json` |
+{{/ENVELOPE}}{{#APP}}| App ops `{{NAME}}.get { id }`, `{{NAME}}.list {}` | `gas/{{APP_FILE}}` |
+{{/APP}}| Tests: registration, the command{{#ENVELOPE}}, parity of the three validators, the handler{{/ENVELOPE}}{{#APP}}, the app ops{{/APP}} | `helpers/tests/pack_{{PACK}}_{{NAME}}.test.js` |
+
+## Still to write
+
+- **The behaviour**: what `{{CMD}}` asks for (arguments, the request's fields) and what the owner sees when the answer arrives.
+- **The judgment step**: the private skill (`skills/{{NAME}}/`, scaffolded with `--private-out`) — its two drivers do the plumbing around one judgment.
+{{#ENVELOPE}}- **The real fields**: replace the placeholder `note` in the schema, both validators and the fixture together; the parity test keeps them in step.
+{{/ENVELOPE}}
+Check the branch is complete at any time: `node helpers/tools/new-branch.mjs --check {{NAME}}`.
+
+Developed by: LightAISolutions

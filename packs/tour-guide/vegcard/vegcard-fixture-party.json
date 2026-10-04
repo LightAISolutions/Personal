@@ -1,0 +1,12 @@
+{
+  "about": "Invented parties for the veg card tests (TG-PHASE-14 WP-14c). No real person; each member is what dietOf() returns.",
+  "vegetarian_pair_nuts": { "trip": "fernhollow-2027", "country": "JP", "members": [
+    { "dietary": ["meat and fish"], "diet": "vegetarian" },
+    { "dietary": ["nuts"], "diet": null } ] },
+  "vegan_solo": { "trip": "quillmoor-2027", "country": "JP", "members": [
+    { "dietary": ["animal products", "eggs"], "diet": "vegan" } ] },
+  "shellfish_trio": { "trip": "brackenford-2027", "country": "JP", "members": [
+    { "dietary": ["shellfish"], "diet": null }, { "dietary": [], "diet": null }, { "dietary": [], "diet": null } ] },
+  "no_table": { "trip": "larkspur-vale-2027", "country": "FR", "members": [
+    { "dietary": ["meat and fish", "lupin beans"], "diet": "vegetarian" } ] }
+}

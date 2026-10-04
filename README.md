@@ -9,7 +9,7 @@ helpers/
   SPEC.md                    the framework contract (envelope v1, mailbox, wake route, manifest, registries, properties, limits)
   BUILD-STATE.md             phase tracker for the Tour Guide build (generic progress only)
   core/                      Apps Script core: config, registries, store, Telegram, queue, executor, mailbox, router, wake, setup page
-  tools/                     bundle.mjs · envelope.mjs · upload.mjs · new-helper.mjs · boundary-check.mjs (+ boundary-allowlist.txt)
+  tools/                     bundle.mjs · envelope.mjs · upload.mjs · new-helper.mjs · new-branch.mjs · boundary-check.mjs (+ boundary-allowlist.txt)
   kits/                      shared Node libraries (maps, research, brochure, prefs — Phase 2)
   packs/<name>/              one directory per helper: helper.json, gas/ (pack-side Apps Script), schemas, engines, fixtures
   packs/hello/               the smallest pack; proves the registries and the test harness

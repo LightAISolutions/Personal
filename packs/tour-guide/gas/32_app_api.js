@@ -239,7 +239,8 @@ function tgAppRound(run) {
 }
 function tgAppTripOut(t) {
   return { slug: tgAppS(t.slug), title: tgAppS(t.title), destination: tgAppS(t.destination), start: tgAppS(t.start), end: tgAppS(t.end),
-    status: tgAppS(t.status), build_id: tgAppS(t.build_id), has_brochure: !!(t.drive_brochure_html || t.drive_brochure_pdf) };
+    status: tgAppS(t.status), build_id: tgAppS(t.build_id), has_brochure: !!(t.drive_brochure_html || t.drive_brochure_pdf),
+    has_vegcard: typeof tgVegCardHas === 'function' && tgVegCardHas(t.slug) };   // C14: the trip has a veg card (27_vegcard.js)
 }
 function tgAppTrip(args) {
   var slug = tgAppStr(args, 'slug', { required: true, max: 64, re: TG_SLUG_RE });
@@ -510,6 +511,26 @@ function tgAppOpBrochure(args) {
   if (html.length > TG_APP_BROCHURE_MAX_CHARS) return link();
   head.html = html;
   return tgAppOk(head);
+}
+/**
+ * brochure.pdf { slug } (write; TG-PHASE-14 WP-14c, item 22's note) — the brochure PDF to the owner's chat, reusing the
+ * /brochure path (10_commands.js tgCmdBrochure): the stored PDF inside the helper's Drive folder is sent as a document
+ * → { sent: true }; no PDF → a brochure request opens → { building: true }. An id outside the folder is refused and
+ * audited (404 no_brochure); at most one send per trip per minute (409 too_soon); no owner chat → 409 no_chat.
+ */
+var TG_APP_BROCHURE_PDF_SEC = 60;
+function tgAppOpBrochurePdf(args) {
+  var t = tgAppTrip(args), id = t.drive_brochure_pdf;
+  if (id && tgCmdDriveWhere(id) === 'outside') { auditFail('tg_app_brochure_outside_root', String(id), { trip: t.slug, file: 'pdf' }); return tgAppNo(404, 'no_brochure'); }
+  var chat = tgOwnerChat();
+  if (!chat) return tgAppNo(409, 'no_chat');
+  var cache = CacheService.getScriptCache(), key = 'tg_app_bpdf:' + t.slug;
+  if (cache.get(key)) return tgAppNo(409, 'too_soon', { retry_after: TG_APP_BROCHURE_PDF_SEC });
+  cache.put(key, '1', TG_APP_BROCHURE_PDF_SEC);
+  var r = tgCmdBrochure(chat, t, null);
+  if (r && r.routine !== undefined) return tgAppOk({ building: true });
+  if (r && r.ok) return tgAppOk({ sent: true });
+  return tgAppNo(503, 'not_sent');
 }
 
 /* ==================== operations: places ==================== */
@@ -826,6 +847,7 @@ var TG_APP_OPS = {
   'shortlist.done': { args: ['run'], write: true, fn: tgAppOpDone },
   'trip.digest': { args: ['slug'], fn: tgAppOpDigest },
   'brochure.get': { args: ['slug'], fn: tgAppOpBrochure },
+  'brochure.pdf': { args: ['slug'], write: true, fn: tgAppOpBrochurePdf },   // WP-14c
   'places.search': { args: ['query', 'destination', 'status', 'tag'], fn: tgAppOpPlacesSearch },
   'places.get': { args: ['slug', 'note'], fn: tgAppOpPlacesGet },
   'places.note': { args: ['slug'], write: true, fn: tgAppOpPlacesNote },

@@ -88,7 +88,42 @@ const hasWord = hasWordIn;
 /** isCafeTopic(what) → true when the query names a drink or a sweet (a CAFE_WORDS word, "ice cream" included). */
 export const isCafeTopic = (what) => hasWord(what, CAFE_WORDS);
 
-/** guessGroup(what) → 'food' | 'activities' from a small word list (activity words win; default 'activities'). */
+/**
+ * The vegetarian screen's three kinds of food place (TG-PHASE-14 WP-14b change 4). Without a judgment a drink place
+ * is "likely" for a vegetarian or vegan party, a café / sweets / market place for a vegetarian party only; a meal place
+ * keeps the strict screen. Matched as whole words (a plural "s" allowed), diacritics and case ignored.
+ */
+export const DRINK_WORDS = Object.freeze(['bar', 'sake', 'wine', 'beer', 'cocktail', 'coffee', 'tea', 'tea house', 'matcha', 'kissaten', 'juice']);
+export const CAFE_SWEET_WORDS = Object.freeze(['cafe', 'sweets', 'dessert', 'wagashi', 'bakery', 'ice cream', 'parfait']);
+export const MARKET_WORDS = Object.freeze(['market', 'food hall']);
+export const MEAL_WORDS = Object.freeze(['ramen', 'udon', 'soba', 'kaiseki', 'izakaya', 'lunch', 'dinner', 'sushi', 'tempura', 'okonomiyaki', 'curry', 'teishoku', 'restaurant']);
+
+const kindText = (s) => ' ' + String(s ?? '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim() + ' ';
+const kindHas = (text, list) => list.some((w) => text.includes(' ' + w + ' ') || text.includes(' ' + w + 's ') || text.includes(' ' + w + 'es '));
+/** The strictest kind a text names: 'meal' > 'cafe' / 'market' > 'drink', or null. */
+function kindOf(s) {
+  const t = kindText(s);
+  if (kindHas(t, MEAL_WORDS)) return 'meal';
+  if (kindHas(t, CAFE_SWEET_WORDS)) return 'cafe';
+  if (kindHas(t, MARKET_WORDS)) return 'market';
+  if (kindHas(t, DRINK_WORDS)) return 'drink';
+  return null;
+}
+const STRICT = { meal: 3, cafe: 2, market: 2, drink: 1 };
+
+/**
+ * foodKind(record, what) → 'meal' | 'cafe' | 'market' | 'drink'. The place's own name and its primary type (underscores
+ * read as spaces: tea_house → "tea house") decide, the stricter of the two winning (a meal word anywhere keeps the
+ * strict screen); when neither names a kind, the query does; with nothing at all, 'meal' (strict).
+ */
+export function foodKind(record, what) {
+  const r = record || {};
+  const own = [kindOf(r.name), kindOf(String(r.primary_type ?? '').replace(/_/g, ' '))].filter(Boolean);
+  if (own.length) return own.sort((a, b) => STRICT[b] - STRICT[a])[0];
+  return kindOf(what) || 'meal';
+}
+
+/** guessGroup(what) →'food' | 'activities' from a small word list (activity words win; default 'activities'). */
 export function guessGroup(what) {
   if (hasWord(what, ACTIVITY_WORDS)) return 'activities';
   if (hasWord(what, FOOD_WORDS)) return 'food';

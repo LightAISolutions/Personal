@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-veg-card.schema.json",
+  "title": "Tour Guide veg card (payload of the `veg_card` envelope)",
+  "description": "The party's veg card for one trip (TG-PHASE-14 Contract C14): what the party cannot eat, in the destination's language and English, every line from the pack's phrase table (vegcard/vegcard-phrases.json). english_only holds a profile's own cannot-eat words that have no phrase yet. vegcard/vegcard-payload.mjs also checks: section ids each at most once and in the order intro, avoid, ok, ask, thanks; `local` is null exactly when `lang` is null; the whole payload under 8 000 characters.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["v", "trip", "country", "lang", "diet", "party", "fp", "sections", "english_only"],
+  "properties": {
+    "v": { "const": 1 },
+    "trip": { "$ref": "#/$defs/slug" },
+    "country": { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
+    "lang": { "enum": ["ja", null] },
+    "diet": { "enum": ["vegetarian", "vegan", null] },
+    "party": { "type": "integer", "minimum": 1, "maximum": 12 },
+    "fp": { "type": "string", "pattern": "^vcf1:[0-9a-f]{8}$" },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "lines"],
+        "properties": {
+          "id": { "enum": ["intro", "avoid", "ok", "ask", "thanks"] },
+          "lines": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["local", "en"],
+              "properties": {
+                "local": { "type": ["string", "null"], "minLength": 1, "maxLength": 200 },
+                "en": { "type": "string", "minLength": 1, "maxLength": 200 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "english_only": { "type": "array", "maxItems": 12, "items": { "type": "string", "minLength": 1, "maxLength": 60 } }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" }
+  }
+}

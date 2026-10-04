@@ -7,10 +7,11 @@
 import { fromSearchResult, normalizeRecord, mentionCount } from '../gems/gems-record.mjs';
 import { nameCounts, chainReason } from '../gems/gems-chains.mjs';
 import { closedOnAll, closedDates } from '../gems/gems-hours.mjs';
-import { haversineKm, straightLineMinutes, isLatLng } from '../gems/gems-geo.mjs';
+import { haversineKm, isLatLng } from '../gems/gems-geo.mjs';
+import { walkMinutes, railEstimate } from '../planner/planner-rail.mjs';
 import { CATEGORY_TYPES } from '../gems/gems-record.mjs';
 import { ratingBand, numberWord } from '../gems/gems-line.mjs';
-import { guessGroup, CAFE_WORDS, isCafeTopic } from './scout-text.mjs';
+import { guessGroup, CAFE_WORDS, isCafeTopic, foodKind } from './scout-text.mjs';
 import { isDate } from '../schemas/tour-guide-dates.mjs';
 import * as W from './scout-weights.mjs';
 
@@ -88,6 +89,9 @@ export function topicPart(record, { what, group, judgment = {} } = {}) {
   return { value: W.TOPIC.none, source: 'none' };
 }
 
+/** muFor(group) → Q's fixed prior mean for the group (W.QUALITY_MU), else W.QUALITY.mu_default (change 1). */
+export const muFor = (group) => (Object.prototype.hasOwnProperty.call(W.QUALITY_MU, group) ? W.QUALITY_MU[group] : W.QUALITY.mu_default);
+
 /** qualityPart(record, mu) → Bayesian rating (v·r + m·μ)/(v+m) mapped 3.8 → 0 … 4.8 → 1. No rating → the prior. */
 export function qualityPart(record, mu = W.QUALITY.mu_default) {
   const v = Number.isFinite(record.rating) && Number.isFinite(record.rating_count) ? record.rating_count : 0;
@@ -107,7 +111,33 @@ export function reachValue(minutes) {
 }
 
 const MODES = ['WALK', 'TRANSIT', 'DRIVE'];
-/** reachFor(record, { reach, anchors }) → { minutes, mode, estimated } | null (route row first, else a straight-line estimate). */
+const pointOf = (p) => ({ lat: p.lat, lng: p.lng, ...(typeof p.name === 'string' ? { name: p.name } : {}) });
+
+/**
+ * estimateReach(from, to, { fromStations?, toStations? }) → { minutes, mode: 'WALK' | 'TRANSIT', estimated: true } | null —
+ * the one estimate for a leg nobody measured (TG-PHASE-14 WP-14b change 7), from the planner's figures: the planner's
+ * walking minutes (planner-rail `walkMinutes`) up to W.ESTIMATE_WALK_MAX_MINUTES, else the planner's rail estimate
+ * (`railEstimate`: station walks + the ride + the wait). Without station lists, each end stands for its own station
+ * (a one-minute walk at each end). railEstimate may still answer "walk" when walking is quicker; with real station
+ * lists and no station in reach it may answer nothing, and then the end points stand in. null without two points.
+ * The private driver uses this export instead of its own copy.
+ */
+export function estimateReach(from, to, { fromStations, toStations } = {}) {
+  if (!isLatLng(from) || !isLatLng(to)) return null;
+  const a = pointOf(from), b = pointOf(to);
+  const walk = walkMinutes(haversineKm(a, b));
+  if (walk <= W.ESTIMATE_WALK_MAX_MINUTES) return { minutes: walk, mode: 'WALK', estimated: true };
+  const st = (x) => (Array.isArray(x) ? x.filter(isLatLng) : null);
+  const fs = st(fromStations), ts = st(toStations);
+  const e = (fs && ts ? railEstimate(a, b, fs, ts) : null) || railEstimate(a, b, [{ ...a, name: 'start' }], [{ ...b, name: 'end' }]);
+  if (!e) return { minutes: walk, mode: 'WALK', estimated: true };   // unreachable in practice: two distinct points always give a ride
+  return { minutes: e.minutes, mode: e.kind === 'walk' ? 'WALK' : 'TRANSIT', estimated: true };
+}
+
+/**
+ * reachFor(record, { reach, anchors }) → { minutes, mode, estimated } | null — the route row first, else the quickest
+ * estimateReach from any anchor (change 7: the same minutes the planner and the private driver give for that leg).
+ */
 export function reachFor(record, { reach = {}, anchors = [] } = {}) {
   const row = reach && Object.prototype.hasOwnProperty.call(reach, record.place_id) ? reach[record.place_id] : null;
   if (row && Number.isFinite(row.minutes) && row.minutes >= 0) {
@@ -115,10 +145,12 @@ export function reachFor(record, { reach = {}, anchors = [] } = {}) {
   }
   const pts = (anchors || []).filter(isLatLng);
   if (!isLatLng(record.location) || !pts.length) return null;
-  const km = Math.min(...pts.map((a) => haversineKm(record.location, a)));
-  const walk = straightLineMinutes(km, ['WALK']);
-  if (walk <= W.ESTIMATE_WALK_MAX_MINUTES) return { minutes: walk, mode: 'WALK', estimated: true };
-  return { minutes: straightLineMinutes(km, ['TRANSIT']), mode: 'TRANSIT', estimated: true };
+  let best = null;
+  for (const a of pts) {
+    const e = estimateReach(a, record.location);
+    if (e && (!best || e.minutes < best.minutes)) best = e;
+  }
+  return best;
 }
 
 export const isVegetarianDiet = (diet) => /\bvegetarian\b/i.test(String(diet ?? ''));
@@ -173,6 +205,31 @@ export function googleVegCounts({ diet, diet_rule, what } = {}) {
   return !dietRule(diet_rule) || isCafeTopic(what);
 }
 
+/** vegOf(judgment) → the judgment's veg word: 'verified' | 'likely' | 'no' | 'unknown' ("none" reads as "no"). */
+export const vegOf = (judgment) => {
+  const v = judgment && typeof judgment === 'object' ? judgment.veg : undefined;
+  return v === 'none' ? 'no' : W.VEG.includes(v) ? v : 'unknown';
+};
+export const isVeganDiet = (diet) => /\bvegan\b/i.test(String(diet ?? ''));
+
+/**
+ * kindLikely({ diet, record, what }) → true when, without a judgment, the place's kind alone makes it "likely" for the
+ * party's diet (change 4): a drink place for a vegetarian or vegan party; a café, sweets or market place for a
+ * vegetarian party only; never a meal place (meals keep the strict screen and Phase 13's hidden-stock rule), and never a
+ * place Google marks as serving no vegetarian food (`serves_vegetarian === false`).
+ */
+export function kindLikely({ diet, record, what } = {}) {
+  if (record && record.serves_vegetarian === false) return false;   // Google says no vegetarian food: the lists only fill silence
+  const kind = foodKind(record, what);
+  if (kind === 'drink') return isVegetarianDiet(diet) || isVeganDiet(diet);
+  if (kind === 'cafe' || kind === 'market') return isVegetarianDiet(diet);
+  return false;
+}
+
+/** rescued(judgment) → a judgment vouches for a new place: relevance ≥ W.RESCUE.relevance or veg verified (change 3). */
+export const rescued = (judgment) => !!judgment && ((Number.isFinite(judgment.relevance) && judgment.relevance >= W.RESCUE.relevance) || vegOf(judgment) === 'verified');
+const isNew = (record) => (Number.isFinite(record.rating_count) ? record.rating_count : 0) < W.SCREEN.unproven_below_count && mentionCount(record) === 0;
+
 /**
  * screenReason(record, ctx) → the first drop reason (W.SCREEN_ORDER after `duplicate`) or null. ctx carries the
  * computed topic, reach, the judgment and the run's group / diet / diet_rule / what and dates (`city_dates` when
@@ -185,12 +242,12 @@ export function screenReason(record, { topic, reach, judgment = {}, group, diet,
   if (record.business_status === 'CLOSED_PERMANENTLY' || record.business_status === 'CLOSED_TEMPORARILY') return 'closed';
   if (days.length && closedOnAll(record.hours, days)) return 'closed_on_trip';
   if (Number.isFinite(record.rating) && record.rating < S.low_rating_below && count >= S.low_rating_min_count) return 'low_rating';
-  if (count < S.unproven_below_count && mentionCount(record) === 0) return 'unproven';
+  if (count < S.unproven_below_count && mentionCount(record) === 0 && !rescued(judgment)) return 'unproven';   // change 3
   if (topic < S.off_topic_below) return 'off_topic';
   if (group === 'food' && diet) {
-    const veg = W.VEG.includes(judgment.veg) ? judgment.veg : 'unknown';
+    const veg = vegOf(judgment);
     if (veg === 'no') return 'diet';
-    if (veg === 'unknown' && !(googleVegCounts({ diet, diet_rule, what }) && record.serves_vegetarian === true)) return 'diet_unproven';
+    if (veg === 'unknown' && !(googleVegCounts({ diet, diet_rule, what }) && record.serves_vegetarian === true) && !kindLikely({ diet, record, what })) return 'diet_unproven';
   }
   if (reach && reach.minutes > S.too_far_minutes) return 'too_far';
   return null;
@@ -229,8 +286,7 @@ export function rankScout(pool, opts = {}) {
     seen.add(rec.place_id);
     unique.push(rec);
   }
-  const rated = unique.filter((r) => Number.isFinite(r.rating));
-  const mu = rated.length ? rated.reduce((s, r) => s + r.rating, 0) / rated.length : W.QUALITY.mu_default;
+  const mu = muFor(group);   // change 1: a fixed anchor per group, never the pool's mean
   const counts = nameCounts(unique);
 
   const ranked = [];
@@ -246,21 +302,27 @@ export function rankScout(pool, opts = {}) {
     const chain = !!chainReason(record, counts) || jLabels.includes('chain');
     const local_count = mentionCount(record);
     const quality = qualityPart(record, mu);
-    const fit = Number.isFinite(judgment.fit) ? clamp01(judgment.fit) : W.FIT_DEFAULT;
+    const judged = Number.isFinite(judgment.fit);
+    const fit = judged ? clamp01(judgment.fit) : W.FIT_DEFAULT;   // change 5
     const local = chain ? 0 : Math.min(1, W.LOCAL_PER_MENTION * local_count);
     const closedSome = trip_dates.length ? closedDates(record.hours, trip_dates).length > 0 : false;
     const reachPart = clamp01(reachValue(reach ? reach.minutes : NaN) - (closedSome ? W.REACH.closed_some_penalty : 0));
     const parts = { topic: t.value, quality, fit, local, reach: reachPart };
-    const score = Math.round(100 * Object.entries(W.WEIGHTS).reduce((s, [k, w]) => s + w * parts[k], 0));
+    const crowd = Number.isFinite(record.rating_count) && record.rating_count >= W.CROWD_MIN_COUNT;
+    const penalty = (chain ? W.PENALTY.chain : 0) + (crowd ? W.PENALTY.crowd : 0);   // change 2
+    const score = Math.max(0, Math.round(100 * Object.entries(W.WEIGHTS).reduce((s, [k, w]) => s + w * parts[k], 0)) - penalty);
 
     const labels = new Set(jLabels);
     if (chain) labels.add('chain');
     if (reach && reach.minutes > W.LABEL.far_minutes) labels.add('far');
     if (!chain && local_count >= W.LABEL.gem_mentions && quality >= W.LABEL.gem_quality && (record.rating_count ?? 0) <= W.LABEL.gem_max_count) labels.add('gem');
     if (known.has(record.place_id)) labels.add('seen_before');
+    if (isNew(record)) labels.add('new');   // change 3: kept only because a judgment vouched for it
+    if (!judged) labels.add('not_judged');   // change 5
     if (group === 'food') {
-      if (judgment.veg === 'verified') labels.add('veg_verified');
-      else if (judgment.veg === 'likely' || ((judgment.veg === undefined || judgment.veg === 'unknown') && googleVegCounts({ diet, diet_rule, what }) && record.serves_vegetarian === true)) labels.add('veg_likely');
+      const veg = vegOf(judgment);
+      if (veg === 'verified') labels.add('veg_verified');
+      else if (veg === 'likely' || (veg === 'unknown' && ((googleVegCounts({ diet, diet_rule, what }) && record.serves_vegetarian === true) || (diet && kindLikely({ diet, record, what }))))) labels.add('veg_likely');
       if (labels.has('veg_verified')) labels.delete('veg_likely');
     }
     const why = typeof judgment.why === 'string' && judgment.why.trim() ? clipText(judgment.why, 200) : whyLine({ record, topic_source: t.source, reach, local_count }, what);

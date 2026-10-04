@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+/**
+ * skills/{{NAME}} — first driver: the `{{KIND}}` request → the judgment step's input, in a scratch file outside the repo.
+ *   node skills/{{NAME}}/{{NAME}}-start.mjs --request <scratch>/req_<id>.json --out <scratch>/{{NAME}}-input.json
+ * Prints one JSON line: { ok: true, input, request_id, trip } or { ok: false, error } (exit 1). Reads no connector; the
+ * request's `text` is the owner's words, carried as data for the judgment, never acted on here.
+ * Scaffolded by helpers/tools/new-branch.mjs: extend the input with what the judgment needs (memory excerpts, …).
+ */
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { resolve, dirname, relative, isAbsolute } from 'node:path';
+import { BRANCH, SLUG_RE } from '../../vendor/helpers/packs/{{PACK}}/{{NAME}}/index.mjs';
+
+const arg = (k) => { const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : undefined; };
+const insideRepo = (p) => { const r = relative(process.cwd(), resolve(p)); return r === '' || (!r.startsWith('..') && !isAbsolute(r)); };
+const fail = (error) => { console.log(JSON.stringify({ ok: false, error })); process.exitCode = 1; };
+
+function main() {
+  const reqFile = arg('request'), out = arg('out');
+  if (!reqFile || !out) return fail('usage: --request <req_<id>.json> --out <scratch file outside the repo>');
+  if (insideRepo(out)) return fail('--out must be outside the repo (scratch files are never committed)');
+  let env;
+  try { env = JSON.parse(readFileSync(reqFile, 'utf8')); } catch (e) { return fail('cannot read the request: ' + e.message); }
+  const p = env && env.payload;
+  if (!env || env.type !== 'request' || !p || p.kind !== BRANCH.kind) return fail('not a ' + BRANCH.kind + ' request');
+  if (typeof env.id !== 'string' || !env.id) return fail('the request has no id');
+  if (typeof p.trip !== 'string' || !SLUG_RE.test(p.trip)) return fail('the request names no trip');
+  const input = { v: 1, branch: BRANCH.name, request_id: env.id, trip: p.trip, owner_text: typeof p.text === 'string' ? p.text.slice(0, 500) : '' };
+  mkdirSync(dirname(resolve(out)), { recursive: true });
+  writeFileSync(resolve(out), JSON.stringify(input, null, 2) + '\n');
+  console.log(JSON.stringify({ ok: true, input: resolve(out), request_id: env.id, trip: p.trip }));
+}
+main();
+
+// Developed by: LightAISolutions

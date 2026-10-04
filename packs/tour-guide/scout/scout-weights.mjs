@@ -9,8 +9,21 @@ export const WEIGHTS = Object.freeze({ topic: 0.35, quality: 0.25, fit: 0.15, lo
 export const TOPIC = Object.freeze({ name: 0.9, type: 0.6, editorial: 0.5, none: 0.2 });
 /** Q: Bayesian prior strength (m), default prior mean (μ when the pool has no rating), and the 0..1 mapping band. */
 export const QUALITY = Object.freeze({ m: 30, mu_default: 4.2, floor: 3.8, ceil: 4.8 });
-/** F default when the skill gave no `fit`. */
-export const FIT_DEFAULT = 0.5;
+/**
+ * Q's prior mean μ per group — fixed, so a 4.5 means the same on every board (TG-PHASE-14 WP-14b change 1; before,
+ * μ was the pool's mean rating). Any other group uses QUALITY.mu_default.
+ */
+export const QUALITY_MU = Object.freeze({ food: 4.2, activities: 4.3 });
+/**
+ * Points (of 100) taken off the score (change 2): a chain, and a crowd magnet — a place with at least CROWD_MIN_COUNT
+ * ratings, the planner's crowd-magnet count (gems CROWD_MAGNET_MIN_COUNT, Phase 11). Never below 0; never a drop.
+ */
+export const PENALTY = Object.freeze({ chain: 8, crowd: 4 });
+export { CROWD_MAGNET_MIN_COUNT as CROWD_MIN_COUNT } from '../gems/gems-weights.mjs';
+/** A judgment rescues a new place from the `unproven` screen at this relevance or with veg `verified` (change 3). */
+export const RESCUE = Object.freeze({ relevance: 0.7 });
+/** F default when the skill gave no `fit` (change 5: 0.3, was 0.5); such a pick carries the `not_judged` label. */
+export const FIT_DEFAULT = 0.3;
 /** L: per distinct local mention, capped at 1; a chain scores 0. */
 export const LOCAL_PER_MENTION = 0.25;
 /** R: minutes → reach. ≤ full → 1; linear to mid_value at mid; linear to far_value at far; far_value beyond. */
@@ -22,7 +35,7 @@ export const SCREEN_ORDER = Object.freeze(['duplicate', 'closed', 'closed_on_tri
 
 /** Labels: `far` past this many minutes; `gem` needs ≥ gem_mentions distinct local mentions, Q ≥ gem_quality, ≤ gem_max_count ratings, not a chain. */
 export const LABEL = Object.freeze({ far_minutes: 40, gem_mentions: 2, gem_quality: 0.6, gem_max_count: 400 });
-export const LABELS = Object.freeze(['gem', 'veg_verified', 'veg_likely', 'booking', 'queue', 'cash_only', 'chain', 'new', 'seen_before', 'far']);
+export const LABELS = Object.freeze(['gem', 'veg_verified', 'veg_likely', 'booking', 'queue', 'cash_only', 'chain', 'new', 'seen_before', 'far', 'not_judged']);
 export const LABELS_MAX = 8;
 export const VEG = Object.freeze(['verified', 'likely', 'no', 'unknown']);
 
@@ -30,7 +43,10 @@ export const VEG = Object.freeze(['verified', 'likely', 'no', 'unknown']);
 export const LIMIT_DEFAULT = 10;
 export const LIMIT_MAX = 20;
 export const LEFT_OUT_MAX = 20;
-/** Estimated reach (no route matrix row): walking when the straight line is within this many walking minutes, else transit. */
-export const ESTIMATE_WALK_MAX_MINUTES = 30;
+/**
+ * Estimated reach (no route matrix row, change 7): the planner's walking minutes (planner-rail walkMinutes) up to this
+ * many, else the planner's rail estimate (railEstimate). 20 is the private driver's walking limit (TG-SCOUT §8 Reach).
+ */
+export const ESTIMATE_WALK_MAX_MINUTES = 20;
 
 // Developed by: LightAISolutions

@@ -24,8 +24,8 @@ test('been before: a pick whose place id is already in the owner\'s Places carri
   for (const known of [['FixtureP13dKnown'], new Set(['FixtureP13dKnown'])]) {
     const r = sc.rankScout(pool, { ...opts, known });
     const by = Object.fromEntries(r.items.map((i) => [i.place_id, i.labels]));
-    assert.deepEqual(by.FixtureP13dKnown, ['veg_likely', 'seen_before']);
-    assert.deepEqual(by.FixtureP13dFresh, ['veg_likely']);
+    assert.deepEqual(by.FixtureP13dKnown, ['veg_likely', 'seen_before', 'not_judged']);   // WP-14b change 5: no fit → not_judged
+    assert.deepEqual(by.FixtureP13dFresh, ['veg_likely', 'not_judged']);   // WP-14b change 5
     assert.deepEqual(r.items.map((i) => i.score), before.items.map((i) => i.score), 'the label does not move the score');
   }
   const viaRank = sc.scoutPayload(payloadArgs(sc.rankScout(pool, { ...opts, known: ['FixtureP13dKnown'] })));
@@ -33,7 +33,7 @@ test('been before: a pick whose place id is already in the owner\'s Places carri
   for (const p of [viaRank, viaPayload]) {
     assert.deepEqual(s.validatePayload('scout', p).errors, []);
     const it = p.items.find((i) => i.place_id === 'FixtureP13dKnown');
-    assert.deepEqual(it.labels, ['veg_likely', 'seen_before']);
+    assert.deepEqual(it.labels, ['veg_likely', 'seen_before', 'not_judged']);   // WP-14b change 5
     assert.ok(!p.items.find((i) => i.place_id === 'FixtureP13dFresh').labels.includes('seen_before'));
   }
   const { renderScoutBoard } = sc;
@@ -124,14 +124,14 @@ test('vegetarian flag: with a hidden-stock rule Google\'s flag alone is "vegetar
 
   const ruled = run('ramen', RULE);
   assert.deepEqual(ruled.left_out, [{ place_id: 'FixtureP13dFlag', name: 'Harbour ramen', reason: 'diet_unproven' }], 'the flag alone no longer passes');
-  assert.deepEqual(labels(ruled), { FixtureP13dJudged: ['veg_likely'], FixtureP13dVerified: ['veg_verified'] }, 'a judgment still counts');
+  assert.deepEqual(labels(ruled), { FixtureP13dJudged: ['veg_likely', 'not_judged'], FixtureP13dVerified: ['veg_verified', 'not_judged'] }, 'a judgment still counts');   // WP-14b change 5
   const free = run('ramen');
   assert.equal(free.left_out.length, 0, 'without a rule nothing changes');
-  assert.deepEqual(labels(free).FixtureP13dFlag, ['veg_likely']);
+  assert.deepEqual(labels(free).FixtureP13dFlag, ['veg_likely', 'not_judged']);   // WP-14b change 5
   for (const blank of ['', '   ', 42, null]) assert.equal(run('ramen', blank).left_out.length, 0, `a ${JSON.stringify(blank)} rule is no rule`);
   const cafe = run('matcha', RULE);
   assert.equal(cafe.left_out.length, 0, 'a café-word topic keeps today\'s behaviour');
-  assert.deepEqual(labels(cafe).FixtureP13dFlag, ['veg_likely']);
+  assert.deepEqual(labels(cafe).FixtureP13dFlag, ['veg_likely', 'not_judged']);   // WP-14b change 5
   assert.equal(run('ice cream', RULE).left_out.length, 0, 'a two-word café topic too');
   assert.equal(sc.googleVegCounts({ diet: 'vegan', what: 'matcha' }), false, 'vegan never takes the flag');
   assert.equal(sc.screenReason({ rating: 4.5, rating_count: 100, local_mentions: [], serves_vegetarian: true }, { topic: 1, group: 'food', diet: 'vegetarian', diet_rule: RULE, what: 'udon' }), 'diet_unproven');
