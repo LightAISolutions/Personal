@@ -168,7 +168,9 @@ export function branchIdentifiers(b) {
 /** Every clash with what the pack already has → string[] (empty = none). `own` = this branch's files, ignored under --force. */
 export function findClashes(b, p, ctx, own = []) {
   const out = [], files = branchFiles(p, b.name);
-  const generated = !!(files.core && parseMarker(files.core.raw) && parseMarker(files.core.raw).name === b.name);
+  // A hand-built branch may carry an @branch line for --check; only the template's own header marks a branch this tool wrote.
+  const generated = !!(files.core && parseMarker(files.core.raw) && parseMarker(files.core.raw).name === b.name &&
+    files.core.raw.includes('a branch written by helpers/tools/new-branch.mjs'));
   const may = b.force && generated;   // --force rewrites only a branch this tool wrote
   if (Array.from(ctx.registryKeys('command')).includes(b.command)) out.push(`command ${b.command} is already registered (${whereIs(p, `'${b.command}'`, own)})`);
   const kinds = kindsInUse(p, ctx, own);
@@ -192,7 +194,7 @@ export function findClashes(b, p, ctx, own = []) {
   if (existsSync(join(p.root, 'tests', `pack_${p.pack}_${b.name}.test.js`))) taken.push(`tests/pack_${p.pack}_${b.name}.test.js`);
   if (b.privateOut && existsSync(join(b.privateOut, b.name)) && readdirSync(join(b.privateOut, b.name)).length) taken.push(join(b.privateOut, b.name) + '/');
   if (taken.length && !may) {
-    out.push(`the name "${b.name}" is taken: ${taken.join(', ')}` + (b.force ? ' (--force rewrites only a branch new-branch wrote: no @branch line found)' : ' (--force rewrites a branch new-branch wrote)'));
+    out.push(`the name "${b.name}" is taken: ${taken.join(', ')}` + (b.force ? ' (--force rewrites only a branch new-branch wrote: its core module carries the template\'s header and an @branch line)' : ' (--force rewrites a branch new-branch wrote)'));
   }
   return out;
 }

@@ -212,6 +212,7 @@ test('every clash is refused (exit 2, naming it) and nothing is written', () => 
     [['other', '--tab', 'Trips'], /tab "Trips" already exists/],
     [['scout'], /command \/scout is already registered[\s\S]*the name "scout" is taken/],
     [['scout', '--force'], /--force rewrites only a branch new-branch wrote/],
+    [['vegcard', '--force'], /--force rewrites only a branch new-branch wrote/],   // coordinator: a hand-built branch with an @branch line
     [['trip', '--command', '/tripx', '--kind', 'tripx', '--tab', 'Tripxs'], /identifier tgTripGet is already defined/],
     [['Bad'], /the name must match/],
     [['x'], /the name must match/],

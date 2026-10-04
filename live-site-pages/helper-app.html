@@ -105,6 +105,21 @@
     .frame { width: 100%; height: calc(var(--vh) - 180px); min-height: 360px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
     .days { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
     .days button { flex: 0 0 auto; min-width: 44px; min-height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); }
+    .pdf-row { margin: 0 0 14px; flex-wrap: wrap; }
+
+    /* ── veg card: full screen, the local text large enough to hand the phone to the staff (C14) ── */
+    .vc-full { position: fixed; inset: 0; z-index: 10; overflow-y: auto; background: var(--bg); color: var(--fg);
+      padding: calc(14px + var(--safe-top, 0px)) 18px calc(28px + env(safe-area-inset-bottom)); }
+    .vc-full .vc-in { max-width: 640px; margin: 0 auto; }
+    .vc-bar { gap: 8px; margin-bottom: 12px; }
+    .vc-head { font: 600 20px/1.2 var(--serif); margin: 4px 0 2px; }
+    .vc-sec { border-top: 1px solid var(--line); padding: 10px 0 4px; }
+    .vc-line { margin: 0 0 12px; overflow-wrap: anywhere; }
+    .vc-local { display: block; font: 600 26px/1.35 var(--serif); }
+    .vc-en { display: block; font-size: 15px; color: var(--hint); margin-top: 2px; }
+    .vc-line.only .vc-en { font: 600 22px/1.35 var(--serif); color: var(--fg); }
+    .vc-full.hide-en .vc-line:not(.only) .vc-en { display: none; }
+    .vc-eo li { font: 600 20px/1.4 var(--serif); overflow-wrap: anywhere; }
 
     /* ── places ── */
     .filters { display: flex; gap: 6px; margin: 8px 0 12px; }
@@ -305,7 +320,7 @@
       setMain('', null);
       Array.prototype.forEach.call($('nav').children, function (b) { if (b.getAttribute('data-screen') === screen) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
       try { if (tg && tg.BackButton) { if (screen === 'home') tg.BackButton.hide(); else tg.BackButton.show(); } } catch (e) { /* older clients */ }
-      ({ home: showHome, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout })[screen]();
+      ({ home: showHome, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout, vegcard: showVegCard })[screen]();
     }
     function buildNav() {
       var nav = clear($('nav'));
@@ -350,6 +365,7 @@
             el('div', { class: 'row between' }, [el('div', { class: 'grow' }, [el('div', { class: 'name', text: tripLabel(t) }), el('div', { class: 'meta', text: [dates(t), str(t.status, 20)].filter(Boolean).join(' · ') })]),
               el('div', { class: 'row' }, [
                 t.has_brochure ? el('button', { class: 'btn ghost', type: 'button', text: '📄', 'aria-label': 'Brochure', on: { click: function () { go('brochure', str(t.slug, 64)); } } }) : null,
+                t.has_vegcard === true ? el('button', { class: 'btn ghost', type: 'button', text: '🥗', 'aria-label': 'Veg card', title: 'Veg card', on: { click: function () { go('vegcard', str(t.slug, 64)); } } }) : null,
                 el('button', { class: 'btn ghost', type: 'button', text: 'Plan', on: { click: function () { go('brochure', str(t.slug, 64)); } } })])])
           ]));
         });
@@ -1028,6 +1044,7 @@
       call('trip.digest', { slug: trip }, function (b) {
         var t = obj(b.trip), days = list(b.days), later = list(b.later);
         var view = el('div', {}, [el('h2', { text: tripLabel(t) }), el('p', { class: 'lede', text: [dates(t), days.length ? days.length + ' day' + (days.length === 1 ? '' : 's') : '', t.verified_on ? 'checked ' + str(t.verified_on, 10) : ''].filter(Boolean).join(' · ') })]);
+        view.appendChild(pdfRow(trip));
         var frameBox = el('div', { id: 'frameBox' });
         if (t.has_brochure) {
           view.appendChild(frameBox);
@@ -1051,6 +1068,66 @@
           view.appendChild(el('div', { class: 'state' }, [el('p', { text: hs === 'planning' ? 'The helper is building the days — the plan arrives in the chat.' : str(t.status, 20) === 'choosing' ? 'Still choosing — the days come after Done choosing.' : 'No days planned yet for this trip.' })]));
         }
         render(view);
+      });
+    }
+    /* The brochure PDF, sent to the chat (C14): the stored PDF goes as a document; with none the helper builds it and the
+       chat gets it when it is ready. Once a minute per trip; every refusal is said here, beside the button. */
+    var PDF_WHY = { too_soon: 'Just asked — try again in a minute.', no_brochure: 'The brochure file is not available.', not_sent: 'The chat did not take the file — send /brochure there.' };
+    function pdfRow(trip) {
+      var note = el('span', { class: 'meta grow', role: 'status' });
+      var btn = el('button', { class: 'btn ghost', type: 'button', text: '📄 PDF', 'aria-label': 'Send the brochure PDF to the chat' });
+      btn.addEventListener('click', function () {
+        if (btn.disabled) return;
+        btn.disabled = true; note.textContent = 'Asking…';
+        call('brochure.pdf', { slug: trip }, function (r) {
+          btn.disabled = false; haptic('ok');
+          note.textContent = r.sent === true ? 'Sent to the chat' : r.building === true ? 'Building — it arrives in the chat' : 'Asked — watch the chat';
+        }, function (body) {
+          btn.disabled = false; body = obj(body);
+          note.textContent = PDF_WHY[str(body.reason, 40)] || why(body);
+        });
+      });
+      return el('div', { class: 'row pdf-row' }, [btn, note]);
+    }
+
+    /* ---------- veg card: the party's card, full screen, to hand to the staff (C14) ----------
+       The stored card from vegcard.get: each line's local text large, its English beneath; one button hides the English.
+       Built from text nodes only, like every other screen. No card yet → say how to get one in the chat. */
+    var vcHideEn = false;
+    function showVegCard() {
+      var trip = S.trip;
+      render(stateView('', 'Loading…'));
+      if (!/^[a-z0-9][a-z0-9-]{0,63}$/.test(trip)) return render(stateView('🥗', 'No trip chosen', 'Open the veg card from a trip on the home screen.', homeBtn()));
+      call('vegcard.get', { slug: trip }, function (b) {
+        var c = obj(b.card), noLang = c.lang === null || c.lang === undefined;
+        var box = el('div', { class: 'vc-full' + (vcHideEn && !noLang ? ' hide-en' : ''), role: 'dialog', 'aria-label': 'Veg card' });
+        var inner = el('div', { class: 'vc-in' });
+        var toggle = noLang ? null : el('button', { class: 'btn ghost', type: 'button', text: vcHideEn ? 'Show English' : 'Hide English', 'aria-pressed': vcHideEn ? 'true' : 'false' });
+        if (toggle) toggle.addEventListener('click', function () {
+          vcHideEn = !vcHideEn; box.classList.toggle('hide-en', vcHideEn);
+          toggle.textContent = vcHideEn ? 'Show English' : 'Hide English'; toggle.setAttribute('aria-pressed', vcHideEn ? 'true' : 'false'); haptic();
+        });
+        inner.appendChild(el('div', { class: 'row between vc-bar' }, [el('button', { class: 'btn ghost', type: 'button', text: '← Close', on: { click: function () { go('home'); } } }), toggle]));
+        inner.appendChild(el('div', { class: 'vc-head', text: '🥗 Veg card — show this to the staff' }));
+        inner.appendChild(el('div', { class: 'meta', text: [tripName(trip), num(c.party) > 1 ? 'party of ' + num(c.party) : ''].filter(Boolean).join(' · ') }));
+        if (noLang) inner.appendChild(el('div', { class: 'note', text: 'No local-language phrases for this country yet — English only.' }));
+        list(c.sections).slice(0, 6).forEach(function (s) {
+          var sec = el('div', { class: 'vc-sec' });
+          list(obj(s).lines).slice(0, 12).forEach(function (l) {
+            l = obj(l); var local = str(l.local, 200), en = str(l.en, 200);
+            sec.appendChild(el('div', { class: 'vc-line' + (local ? '' : ' only') }, [local ? el('span', { class: 'vc-local', lang: str(c.lang, 8), text: local }) : null, el('span', { class: 'vc-en', lang: 'en', text: en })]));
+          });
+          inner.appendChild(sec);
+        });
+        var eo = list(c.english_only).slice(0, 12);
+        if (eo.length) inner.appendChild(el('div', { class: 'vc-sec' }, [el('p', { text: 'Also cannot eat — show this in a translation app:' }),
+          el('ul', { class: 'vc-eo' }, eo.map(function (v) { return el('li', { lang: 'en', text: str(v, 60) }); }))]));
+        box.appendChild(inner);
+        render(box);
+      }, function (body) {
+        body = obj(body);
+        if (str(body.reason, 40) === 'no_vegcard') return render(stateView('🥗', 'No veg card yet', 'Send /vegcard in the chat — the helper makes one from the party\'s diets.', homeBtn()));
+        render(stateView('⚠️', 'That did not work', why(body), homeBtn()));
       });
     }
 

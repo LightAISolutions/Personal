@@ -1,0 +1,64 @@
+{
+  "v": 1,
+  "about": "Tour Guide veg card phrase table (TG-PHASE-14 WP-14c). Every line on a card comes from here; Japanese in the polite desu/masu form, with the explicit list of what is not eaten. {items} is filled by joining item phrases with ja.join or en.join. A {one, many} value picks by party size.",
+  "countries": { "JP": "ja" },
+  "join": { "ja": "・", "en": ", " },
+  "lines": {
+    "intro.vegetarian": {
+      "ja": { "one": "私はベジタリアンです。肉・魚・魚介類は食べられません。", "many": "私たちはベジタリアンです。肉・魚・魚介類は食べられません。" },
+      "en": { "one": "I am vegetarian. I do not eat meat, fish or seafood.", "many": "We are vegetarian. We do not eat meat, fish or seafood." }
+    },
+    "intro.vegan": {
+      "ja": { "one": "私はヴィーガン（完全菜食）です。肉・魚・魚介類・卵・乳製品は食べられません。", "many": "私たちはヴィーガン（完全菜食）です。肉・魚・魚介類・卵・乳製品は食べられません。" },
+      "en": { "one": "I am vegan. I do not eat meat, fish, seafood, eggs or dairy.", "many": "We are vegan. We do not eat meat, fish, seafood, eggs or dairy." }
+    },
+    "intro.limits": {
+      "ja": { "one": "私は次のものが食べられません。", "many": "私たちは次のものが食べられません。" },
+      "en": { "one": "I cannot eat the following.", "many": "We cannot eat the following." }
+    },
+    "avoid.stock": { "ja": "かつおだしや煮干しなど、魚のだしも食べられません。", "en": "That includes fish stock (dashi made from bonito or dried sardines)." },
+    "avoid.flakes": { "ja": "かつお節も使わないでください。", "en": "Please no bonito flakes (katsuobushi) either." },
+    "avoid.sauces": { "ja": "魚醤、オイスターソース、肉のスープ（ガラスープ・ブイヨン）、ラード、ゼラチンもだめです。", "en": "No fish sauce, oyster sauce, meat broth, lard or gelatin." },
+    "avoid.also": { "ja": "{items}も食べられません。", "en": { "one": "I also cannot eat {items}.", "many": "We also cannot eat {items}." } },
+    "ok.base": { "ja": "{items}は大丈夫です。", "en": "{items} are fine." },
+    "ok.stock": { "ja": "昆布や椎茸のだしなら大丈夫です。", "en": "Kelp (kombu) or shiitake stock is fine." },
+    "ask.dashi": { "ja": "この料理に、だしや魚は入っていますか？", "en": "Does this dish contain dashi or fish?" },
+    "ask.without": { "ja": "魚のだしを使わずに作っていただけますか？", "en": "Could you make it without fish stock?" },
+    "ask.which.vegetarian": { "ja": "肉も魚も使っていない料理はありますか？", "en": "Which dishes have no meat and no fish?" },
+    "ask.which.vegan": { "ja": "肉・魚・卵・乳製品を使っていない料理はありますか？", "en": "Which dishes have no meat, fish, eggs or dairy?" },
+    "ask.contains": { "ja": "この料理に{items}は入っていますか？", "en": "Does this dish contain {items}?" },
+    "thanks": { "ja": "お手数をおかけしますが、よろしくお願いします。", "en": "Sorry for the trouble, and thank you." }
+  },
+  "items": {
+    "meat": { "aliases": ["meat"], "ja": "肉", "en": "meat" },
+    "pork": { "aliases": ["pork"], "ja": "豚肉", "en": "pork" },
+    "beef": { "aliases": ["beef"], "ja": "牛肉", "en": "beef" },
+    "poultry": { "aliases": ["poultry", "chicken"], "ja": "鶏肉", "en": "chicken" },
+    "fish": { "aliases": ["fish"], "ja": "魚", "en": "fish" },
+    "seafood": { "aliases": ["seafood"], "ja": "魚介類", "en": "seafood" },
+    "shellfish": { "aliases": ["shellfish"], "ja": "エビ・カニ・貝類", "en": "shellfish (shrimp, crab, clams)" },
+    "eggs": { "aliases": ["eggs"], "ja": "卵", "en": "eggs" },
+    "dairy": { "aliases": ["dairy"], "ja": "乳製品（牛乳・バター・チーズ）", "en": "dairy (milk, butter, cheese)" },
+    "nuts": { "aliases": ["nuts"], "ja": "ナッツ類", "en": "nuts" },
+    "gluten": { "aliases": ["gluten", "wheat"], "ja": "小麦（グルテン）", "en": "wheat (gluten)" },
+    "alcohol": { "aliases": ["alcohol"], "ja": "アルコール（料理酒・みりんを含む）", "en": "alcohol, including cooking sake and mirin" }
+  },
+  "ok_items": {
+    "vegetables": { "ja": "野菜", "en": "vegetables" },
+    "tofu": { "ja": "豆腐", "en": "tofu" },
+    "rice": { "ja": "ご飯", "en": "rice" },
+    "noodles": { "ja": "麺", "en": "noodles" },
+    "eggs": { "ja": "卵", "en": "eggs" },
+    "dairy": { "ja": "乳製品", "en": "dairy" }
+  },
+  "diet_values": {
+    "vegetarian": ["meat and fish", "vegetarian"],
+    "vegan": ["animal products", "vegan"]
+  },
+  "covers": {
+    "vegetarian": ["meat", "pork", "beef", "poultry", "fish", "seafood", "shellfish"],
+    "vegan": ["meat", "pork", "beef", "poultry", "fish", "seafood", "shellfish", "eggs", "dairy"],
+    "seafood": ["shellfish"],
+    "meat": ["pork", "beef", "poultry"]
+  }
+}

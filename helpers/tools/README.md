@@ -96,7 +96,9 @@ exit code is 0 when the branch is complete and 1 when anything is missing.
 - A hand-built branch without the line, Scout for example, is expected to have every part. Its names are read from its
   code: the first `registerCommand`, `tgOpenKindRequest` and `registerEnvelopeHandler` in `gas/<NN>_<name>.js`, the
   tab from that file's `registerSheet`, and the ops `TG_APP_OPS['<name>.…']`.
-- A hand-built branch that legitimately lacks a part should add the `@branch` line with `-` for it.
+- A hand-built branch that legitimately lacks a part, or whose names differ from its branch name (the veg card's
+  envelope type is `veg_card`), should add the `@branch` line. On a hand-built branch the line only informs `--check`:
+  `--force` still refuses it, because it rewrites only a core module that carries the template's own header.
 - If you delete the line, every part is expected again.
 
 ### What you still write by hand

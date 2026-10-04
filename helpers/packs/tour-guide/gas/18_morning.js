@@ -163,6 +163,7 @@ function tgMorningMessages(trip, day, total, wx, rehearsal) {
     if (freeEnd) lines.push(freeEnd);
     (Array.isArray(day.warnings) ? day.warnings : []).filter(_tgMorningStr).forEach(function (w) { lines.push('⚠️ ' + tgEscape(w)); });
     lines.push('<b>Free day.</b>');
+    if (typeof tgVegCardMorningLine === 'function' && tgVegCardMorningLine(trip)) lines.push(tgVegCardMorningLine(trip));   // C14 (27_vegcard.js)
     return tgCmdMessages(lines, null);
   }
   var money = stops.concat(dn ? [dn] : []).filter(function (p) { return _tgMorningStr(p.payment) || _tgMorningStr(p.price_line); });
@@ -196,6 +197,7 @@ function tgMorningMessages(trip, day, total, wx, rehearsal) {
   var endLine = tgCmdDayEndLine(day);
   if (endLine) lines.push(endLine);
   if (tgCmdDayClock(day.sunset)) lines.push('🌅 Sunset ' + tgEscape(day.sunset));
+  if (typeof tgVegCardMorningLine === 'function' && tgVegCardMorningLine(trip)) lines.push(tgVegCardMorningLine(trip));   // C14 (27_vegcard.js)
   return tgCmdMessages(lines, tgMorningKeyboard(trip, day.date));
 }
 

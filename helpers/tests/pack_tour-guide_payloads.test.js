@@ -12,7 +12,8 @@ const H = require('./harness/gas-mocks');
 const S = () => import('../packs/tour-guide/schemas/index.mjs');
 const clone = (x) => JSON.parse(JSON.stringify(x));
 const TOOL = path.join(H.HELPERS_ROOT, 'tools', 'envelope.mjs');
-const TYPES = ['prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest', 'bookings', 'scout', 'outline', 'day_versions'];
+const TYPES = ['prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest', 'bookings', 'scout', 'outline', 'day_versions',
+  'veg_card'];   // C14 (TG-PHASE-14 WP-14c): the veg card is the eleventh type
 const made = [];
 after(() => { for (const d of made) fs.rmSync(d, { recursive: true, force: true }); });
 const tmp = () => { const d = fs.mkdtempSync(path.join(os.tmpdir(), 'tg-payload-')); made.push(d); return d; };
@@ -71,7 +72,11 @@ const EXAMPLES = {
       stops: [{ slug: key === 'A' ? 'lantern-museum' : 'saffron-row-market', name: key === 'A' ? 'Lantern Museum' : 'Saffron Row Market', time: '10:00' },
         { slug: 'clock-tower', name: 'Clock Tower' }],
       walk_minutes: 35, transit_minutes: 20, spare_minutes: 50, bookings: ['Clock Tower 14:00'], leaves_out: [{ slug: 'tide-gallery', name: 'Tide Gallery' }],
-      warnings: ['Steep lane to the tower.'] })) })
+      warnings: ['Steep lane to the tower.'] })) }),
+  // C14 (TG-PHASE-14 WP-14c): an invented English-only card (no phrase table for the country).
+  veg_card: () => ({ v: 1, trip: 'port-sorrel-spring-2027', country: 'FR', lang: null, diet: 'vegetarian', party: 2, fp: 'vcf1:0a1b2c3d',
+    sections: [{ id: 'intro', lines: [{ local: null, en: 'We are vegetarian. We do not eat meat, fish or seafood.' }] },
+      { id: 'thanks', lines: [{ local: null, en: 'Sorry for the trouble, and thank you.' }] }], english_only: ['lupin beans'] })
 };
 
 async function realReview() {
@@ -257,7 +262,7 @@ test('tools/envelope.mjs --pack tour-guide validates a pack payload against its 
 
 test('core mocks: the manifest\'s eight types are accepted by registerEnvelopeHandler and validateEnvelope', async () => {
   const E = await import('../tools/envelope.mjs');
-  const { ctx } = H.loadGas({ pack: 'tour-guide' });
+  const { ctx, state } = H.loadGas({ pack: 'tour-guide' });
   for (const t of TYPES) assert.ok(ctx.ENVELOPE_TYPES.includes(t), t);
   assert.deepEqual(E.typesFor('tour-guide'), [...ctx.ENVELOPE_TYPES]);
   const { normal } = await realReview();
@@ -265,6 +270,7 @@ test('core mocks: the manifest\'s eight types are accepted by registerEnvelopeHa
   // Real clock on both sides: every test file shares one process (tests/index.js), and the harness's envelope()
   // reads the most recent loadGas() clock, so a pinned future clock here would leak into later files.
   const now = new Date();
+  H.bootstrap(ctx, state); ctx.tgTripUpsert({ slug: payloads.veg_card.trip });   // C14 (WP-14c): the core refuses a veg card for a trip it does not know
   for (const t of TYPES) {
     if (!ctx.getEnvelopeHandler(t)) ctx.registerEnvelopeHandler(t, { validate: () => [], handle: () => 'ok' });
     const env = E.makeEnvelope({ type: t, producer: 'tg-skill', payload: payloads[t], now, types: E.typesFor('tour-guide') });
