@@ -4,7 +4,7 @@
  * Google fields (rating, count, hours, editorial summary, photo reference) are in-run inputs; the payload built from
  * this ranking (scout-payload.mjs) carries none of them.
  */
-import { fromSearchResult, normalizeRecord, mentionCount } from '../gems/gems-record.mjs';
+import { fromSearchResult, normalizeRecord, mentionCount, groupOf } from '../gems/gems-record.mjs';
 import { nameCounts, chainReason } from '../gems/gems-chains.mjs';
 import { closedOnAll, closedDates } from '../gems/gems-hours.mjs';
 import { haversineKm, isLatLng } from '../gems/gems-geo.mjs';
@@ -155,7 +155,8 @@ export function reachFor(record, { reach = {}, anchors = [] } = {}) {
 
 export const isVegetarianDiet = (diet) => /\bvegetarian\b/i.test(String(diet ?? ''));
 const MODE_WORDS = { WALK: 'walk', TRANSIT: 'by transit', DRIVE: 'drive' };
-const TOPIC_WORDS = { judgment: (w) => `On topic for ${w}`, name: (w) => `Named for ${w}`, type: (w) => `The kind of place for ${w}`, editorial: (w) => `Known for ${w}`, none: (w) => `Loosely tied to ${w}` };
+const TOPIC_WORDS = { judgment: (w) => `On topic for ${w}`, name: (w) => `Named for ${w}`, type: (w) => `The kind of place for ${w}`, editorial: (w) => `Known for ${w}`, none: (w) => `Loosely tied to ${w}`,
+  list: (w) => `On your list ${w}`, named: () => 'One of the places you named' };   // list / named: compare boards (WP-14e)
 
 /** whyLine(entry, what) → our own words: topic reason, rating band, local sources, reach. ≤ 200 chars. */
 export function whyLine({ record, topic_source, reach, local_count }, what) {
@@ -254,6 +255,55 @@ export function screenReason(record, { topic, reach, judgment = {}, group, diet,
 }
 
 /**
+ * screenFlags(record, ctx) → every screen this record fails, in W.SCREEN_ORDER, without `duplicate` and `off_topic` —
+ * compare mode's flags (TG-PHASE-14 WP-14e). The same tests as screenReason, which stops at the first; ctx is the same.
+ */
+export function screenFlags(record, { reach, judgment = {}, group, diet, diet_rule, what, trip_dates = [], city_dates }) {
+  const S = W.SCREEN, out = [];
+  const count = Number.isFinite(record.rating_count) ? record.rating_count : 0;
+  const days = yourDates({ trip_dates, city_dates });
+  if (record.business_status === 'CLOSED_PERMANENTLY' || record.business_status === 'CLOSED_TEMPORARILY') out.push('closed');
+  if (days.length && closedOnAll(record.hours, days)) out.push('closed_on_trip');
+  if (Number.isFinite(record.rating) && record.rating < S.low_rating_below && count >= S.low_rating_min_count) out.push('low_rating');
+  if (count < S.unproven_below_count && mentionCount(record) === 0 && !rescued(judgment)) out.push('unproven');
+  if (group === 'food' && diet) {
+    const veg = vegOf(judgment);
+    if (veg === 'no') out.push('diet');
+    else if (veg === 'unknown' && !(googleVegCounts({ diet, diet_rule, what }) && record.serves_vegetarian === true) && !kindLikely({ diet, record, what })) out.push('diet_unproven');
+  }
+  if (reach && reach.minutes > S.too_far_minutes) out.push('too_far');
+  return out;
+}
+
+/** compareQuery(source) → the board's query: "compare: <list name>" or "compare: <a>, <b>…", ≤ 80 characters. */
+export function compareQuery(source) {
+  const text = source && typeof source.list === 'string' ? source.list : source && Array.isArray(source.names) ? source.names.join(', ') : '';
+  return clipText('compare: ' + text, 80);
+}
+/** The compare source as given, cleaned: { list } or { names: [2–4] }; throws on anything else. */
+function compareSource(src) {
+  const clean = (x, max) => (typeof x === 'string' ? clipText(x, max) : '');
+  if (src && typeof src === 'object' && src.names === undefined && clean(src.list, 80)) return { list: clean(src.list, 80) };
+  const names = src && typeof src === 'object' && src.list === undefined && Array.isArray(src.names) ? src.names.map((n) => clean(n, 120)).filter(Boolean) : [];
+  if (names.length >= 2 && names.length <= 4) return { names };
+  throw new Error('scout: rankScout in compare mode needs `source` — { list } or { names: two to four }');
+}
+/**
+ * The compare cut (WP-14e): the unique records cut to W.COMPARE_MAX — those in `where` first, then the most recently
+ * listed (ISO dates, descending; undated last), then pool order. → { kept (in pool order), more }.
+ */
+function compareCut(unique, { in_where, listed_on }) {
+  if (unique.length <= W.COMPARE_MAX) return { kept: unique, more: 0 };
+  const where = in_where instanceof Set ? in_where : new Set(Array.isArray(in_where) ? in_where : []);
+  const dates = listed_on && typeof listed_on === 'object' ? listed_on : {};
+  const dateOf = (id) => (Object.prototype.hasOwnProperty.call(dates, id) && typeof dates[id] === 'string' ? dates[id] : '');
+  const order = unique.map((rec, i) => ({ i, w: where.has(rec.place_id) ? 0 : 1, d: dateOf(rec.place_id) }))
+    .sort((a, b) => a.w - b.w || (a.d > b.d ? -1 : a.d < b.d ? 1 : 0) || a.i - b.i);
+  const keep = new Set(order.slice(0, W.COMPARE_MAX).map((x) => x.i));
+  return { kept: unique.filter((_, i) => keep.has(i)), more: unique.length - W.COMPARE_MAX };
+}
+
+/**
  * rankScout(pool, { what, group, diet, diet_rule?, anchors, reach, judgments, trip_dates = [], city_dates?, known?, limit = 10 })
  *   → { items: [{ place_id, name, own_name, record, score, parts:{topic,quality,fit,local,reach} (0–1), labels, why, try, reach }],
  *       left_out: [{ place_id, name, reason }], more }
@@ -266,12 +316,24 @@ export function screenReason(record, { topic, reach, judgment = {}, group, diet,
  * pool order; the rest are scored, sorted (score, then rating count, then name) and cut at `limit` (1–20); `more` is
  * how many ranked picks were cut. Ratings, counts and hours are read but never copied into an item's own fields — they
  * stay inside `record`, which the payload builder does not emit.
+ *
+ * Compare mode (TG-PHASE-14 WP-14e): `mode: "compare"` with `source` ({ list } or { names }), and optionally
+ * `in_where` (place ids in the asked place, else the trip's destination), `listed_on` ({ place_id: ISO date }) and
+ * `not_found` (names the lookup could not find). The pool is given: there is no topic screen and the topic part is 1;
+ * every other screen but `duplicate` adds its code to the item's `flags` (screenFlags) instead of leaving it out; the
+ * diet screens and veg labels apply to food places only (gems groupOf); a hard flag (W.HARD_FLAGS) sorts after every
+ * place without one. The pool is cut to W.COMPARE_MAX before ranking (compareCut), `more` counts the cut places and
+ * `limit` is ignored; not_found names lead left_out. `what` is optional (the list name or the names stand in) and
+ * `group` defaults to the pool's: food when most places are food places. The result adds `mode` and `source`.
  */
 export function rankScout(pool, opts = {}) {
   if (!Array.isArray(pool)) throw new Error('scout: rankScout needs a pool array');
-  const what = String(opts.what ?? '').trim();
+  const compare = opts.mode === 'compare';
+  const source = compare ? compareSource(opts.source) : null;
+  const what = String(opts.what ?? '').trim() || (source ? source.list || source.names.join(', ') : '');
   if (!what) throw new Error('scout: rankScout needs `what`');
-  const group = opts.group === 'food' || opts.group === 'activities' ? opts.group : guessGroup(what);
+  const poolGroup = () => { const recs = pool.map(normalizeScoutRecord); return recs.filter((r) => groupOf(r) === 'food').length * 2 > recs.length ? 'food' : 'activities'; };
+  const group = opts.group === 'food' || opts.group === 'activities' ? opts.group : compare ? poolGroup() : guessGroup(what);
   const diet = group === 'food' && typeof opts.diet === 'string' && opts.diet.trim() ? opts.diet.trim() : null;
   const trip_dates = yourDates({ trip_dates: opts.trip_dates, city_dates: opts.city_dates });
   const diet_rule = dietRule(opts.diet_rule);
@@ -279,23 +341,32 @@ export function rankScout(pool, opts = {}) {
   const judgments = opts.judgments && typeof opts.judgments === 'object' ? opts.judgments : {};
   const limit = Math.min(W.LIMIT_MAX, Math.max(1, Number.isInteger(opts.limit) ? opts.limit : W.LIMIT_DEFAULT));
 
-  const left_out = [], unique = [], seen = new Set();
+  const left_out = [], seen = new Set();
+  let unique = [];
+  if (compare && Array.isArray(opts.not_found)) {
+    for (const n of opts.not_found) { const name = typeof n === 'string' ? clipText(n, 120) : ''; if (name) left_out.push({ place_id: null, name, reason: 'not_found' }); }
+  }
   for (const raw of pool) {
     const rec = normalizeScoutRecord(raw);
     if (seen.has(rec.place_id)) { left_out.push({ place_id: rec.place_id, name: rec.name, reason: 'duplicate' }); continue; }
     seen.add(rec.place_id);
     unique.push(rec);
   }
+  let cut = 0;
+  if (compare) ({ kept: unique, more: cut } = compareCut(unique, opts));
   const mu = muFor(group);   // change 1: a fixed anchor per group, never the pool's mean
   const counts = nameCounts(unique);
 
   const ranked = [];
   for (const record of unique) {
     const judgment = judgments[record.place_id] && typeof judgments[record.place_id] === 'object' ? judgments[record.place_id] : {};
-    const t = topicPart(record, { what, group, judgment });
+    const t = compare ? { value: 1, source: source.list ? 'list' : 'named' } : topicPart(record, { what, group, judgment });
     const reach = reachFor(record, { reach: opts.reach, anchors: opts.anchors });
     const own_name = ownName(judgment.name);
-    const reason = screenReason(record, { topic: t.value, reach, judgment, group, diet, diet_rule, what, trip_dates });
+    const recGroup = compare ? groupOf(record) : group;   // compare: the diet screens and veg labels are for food places only
+    const recDiet = !compare ? diet : recGroup === 'food' && typeof opts.diet === 'string' && opts.diet.trim() ? opts.diet.trim() : null;
+    const flags = compare ? screenFlags(record, { reach, judgment, group: recGroup, diet: recDiet, diet_rule, what, trip_dates }) : null;
+    const reason = compare ? null : screenReason(record, { topic: t.value, reach, judgment, group, diet, diet_rule, what, trip_dates });
     if (reason) { left_out.push({ place_id: record.place_id, name: own_name || record.name, reason }); continue; }
 
     const jLabels = Array.isArray(judgment.labels) ? judgment.labels.filter((l) => W.LABELS.includes(l)) : [];
@@ -319,19 +390,25 @@ export function rankScout(pool, opts = {}) {
     if (known.has(record.place_id)) labels.add('seen_before');
     if (isNew(record)) labels.add('new');   // change 3: kept only because a judgment vouched for it
     if (!judged) labels.add('not_judged');   // change 5
-    if (group === 'food') {
+    if (recGroup === 'food') {
       const veg = vegOf(judgment);
       if (veg === 'verified') labels.add('veg_verified');
-      else if (veg === 'likely' || (veg === 'unknown' && ((googleVegCounts({ diet, diet_rule, what }) && record.serves_vegetarian === true) || (diet && kindLikely({ diet, record, what }))))) labels.add('veg_likely');
+      else if (veg === 'likely' || (veg === 'unknown' && ((googleVegCounts({ diet: recDiet, diet_rule, what }) && record.serves_vegetarian === true) || (recDiet && kindLikely({ diet: recDiet, record, what }))))) labels.add('veg_likely');
       if (labels.has('veg_verified')) labels.delete('veg_likely');
     }
-    const why = typeof judgment.why === 'string' && judgment.why.trim() ? clipText(judgment.why, 200) : whyLine({ record, topic_source: t.source, reach, local_count }, what);
+    const why = typeof judgment.why === 'string' && judgment.why.trim() ? clipText(judgment.why, 200) : whyLine({ record, topic_source: t.source, reach, local_count }, compare ? source.list || '' : what);
     const tryLine = typeof judgment.try === 'string' && judgment.try.trim() ? clipText(judgment.try, 120) : null;
     ranked.push({
       place_id: record.place_id, name: own_name || record.name, own_name, record, score, parts,
       labels: W.LABELS.filter((l) => labels.has(l)).slice(0, W.LABELS_MAX), why, try: tryLine,
-      reach: reach ? { minutes: reach.minutes, mode: reach.mode, estimated: reach.estimated } : null
+      reach: reach ? { minutes: reach.minutes, mode: reach.mode, estimated: reach.estimated } : null,
+      ...(compare ? { flags } : {})
     });
+  }
+  if (compare) {
+    const hard = (x) => (x.flags.some((f) => W.HARD_FLAGS.includes(f)) ? 1 : 0);
+    ranked.sort((a, b) => hard(a) - hard(b) || byRank(a, b));
+    return { items: ranked, left_out, more: cut, group, diet, mode: 'compare', source };
   }
   ranked.sort(byRank);
   const items = ranked.slice(0, limit);

@@ -103,6 +103,15 @@ export function checkPlace(p) {
   if (p.facts) checkFacts(p.facts, '/facts', errs);
   if (p.facts && p.facts.access) checkAccess(p.facts.access, '/facts/access', errs);   // C12
   if (p.facts && typeof p.facts.irregular_note === 'string' && !p.facts.irregular_note.trim()) e('/facts/irregular_note', 'must have visible text');   // C13
+  // C14 (WP-14d): the owner's list names are unique, and each list note names one of them, once.
+  const lists = Array.isArray(p.lists) ? p.lists : [];
+  lists.forEach((l, i) => { if (lists.indexOf(l) < i) e(`/lists/${i}`, `"${l}" is already in lists`); });
+  const noted = [];
+  (Array.isArray(p.list_notes) ? p.list_notes : []).forEach((n, i) => {
+    if (!lists.includes(n.list)) e(`/list_notes/${i}/list`, `"${n.list}" is not one of the place's lists`);
+    else if (noted.includes(n.list)) e(`/list_notes/${i}/list`, `"${n.list}" already has a note`);
+    noted.push(n.list);
+  });
   return errs;
 }
 

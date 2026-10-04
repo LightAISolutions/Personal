@@ -536,22 +536,26 @@ function tgAppOpBrochurePdf(args) {
 /* ==================== operations: places ==================== */
 
 /**
- * places.search { query?, destination?, status?, tag? } — the Places tab, own fields only. Every word of the query must
+ * places.search { query?, destination?, status?, tag?, list? } — the Places tab, own fields only. Every word of the query must
  * match the name, area, tags or slug (case- and accent-insensitive, as /places); the current trip's destination first,
  * then names starting with the query, containing it, the rest. No query: newest first (last verified or researched).
  * total counts the matches before the TG_APP_ROWS_MAX cut; filters lists the values the tab holds.
+ * C14 (WP-14d): `list` keeps the places on that saved list (folded, like `tag`); filters.lists is the list names the tab
+ * holds; a row carries `lists` only when its place is on one (rows of a tab without the column read exactly as before).
  */
 function tgAppOpPlacesSearch(args) {
   var q = tgShFold(tgAppStr(args, 'query', { max: TG_APP_QUERY_MAX })).trim().replace(/\s+/g, ' ');
   var dest = tgAppStr(args, 'destination', { max: TG_APP_FILTER_MAX });
   var status = tgAppStr(args, 'status', { max: TG_APP_FILTER_MAX });
   var tag = tgShFold(tgAppStr(args, 'tag', { max: TG_APP_FILTER_MAX })).trim();
+  var list = tgShFold(tgAppStr(args, 'list', { max: 80 })).replace(/\s+/g, ' ').trim();   // a list name is at most 80 chars (C14)
   var all = storeAll(TG_SHEETS.PLACES).map(tgShPlaceOut);
-  var fd = {}, fs = {}, ft = {};
+  var fd = {}, fs = {}, ft = {}, fl = {};
   all.forEach(function (p) {
     if (p.destination) fd[p.destination] = true;
     if (p.status) fs[p.status] = true;
     p.tags.forEach(function (x) { if (x) ft[x] = true; });
+    (p.lists || []).forEach(function (x) { if (x) fl[x] = true; });
   });
   var cur = tgTripCurrent(), here = cur && cur.destination ? tgSlug(cur.destination) : '';
   var words = q ? q.split(' ') : [], hits = [];
@@ -559,6 +563,7 @@ function tgAppOpPlacesSearch(args) {
     if (dest && p.destination !== dest) return;
     if (status && p.status !== status) return;
     if (tag && !p.tags.some(function (x) { return tgShFold(x).trim() === tag; })) return;
+    if (list && !(p.lists || []).some(function (x) { return tgShFold(x).replace(/\s+/g, ' ').trim() === list; })) return;
     var name = tgShFold(p.name);
     if (words.length) {
       var hay = name + ' ' + tgShFold(p.area) + ' ' + tgShFold(p.tags.join(' ')) + ' ' + tgShFold(p.slug.replace(/-/g, ' '));
@@ -571,8 +576,9 @@ function tgAppOpPlacesSearch(args) {
   if (words.length) hits.sort(function (a, b) { return a.d - b.d || a.rank - b.rank || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0); });
   else hits.sort(function (a, b) { return a.when !== b.when ? (a.when < b.when ? 1 : -1) : b.i - a.i; });
   var cap = function (o) { return Object.keys(o).sort().slice(0, 200); };
-  return tgAppOk({ rows: hits.slice(0, TG_APP_ROWS_MAX).map(function (h) { return tgAppPlaceOut(h.p); }), total: hits.length,
-    filters: { destinations: cap(fd), statuses: cap(fs), tags: cap(ft) } });
+  var row = function (h) { var o = tgAppPlaceOut(h.p); if (h.p.lists && h.p.lists.length) o.lists = h.p.lists.slice(); return o; };
+  return tgAppOk({ rows: hits.slice(0, TG_APP_ROWS_MAX).map(row), total: hits.length,
+    filters: { destinations: cap(fd), statuses: cap(fs), tags: cap(ft), lists: cap(fl) } });
 }
 function tgAppPlace(args) {
   var slug = tgAppStr(args, 'slug', { required: true, max: 64, re: TG_SLUG_RE });
@@ -848,7 +854,7 @@ var TG_APP_OPS = {
   'trip.digest': { args: ['slug'], fn: tgAppOpDigest },
   'brochure.get': { args: ['slug'], fn: tgAppOpBrochure },
   'brochure.pdf': { args: ['slug'], write: true, fn: tgAppOpBrochurePdf },   // WP-14c
-  'places.search': { args: ['query', 'destination', 'status', 'tag'], fn: tgAppOpPlacesSearch },
+  'places.search': { args: ['query', 'destination', 'status', 'tag', 'list'], fn: tgAppOpPlacesSearch },
   'places.get': { args: ['slug', 'note'], fn: tgAppOpPlacesGet },
   'places.note': { args: ['slug'], write: true, fn: tgAppOpPlacesNote },
   'places.check': { args: ['slugs'], write: true, fn: tgAppOpPlacesCheck },

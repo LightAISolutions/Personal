@@ -1,0 +1,4 @@
+{
+  "about": "Invented data for the compare branch (helpers/tools/new-branch.mjs): an invented trip.",
+  "trip": { "slug": "quillmere-2027", "title": "Quillmere", "destination": "Quillmere", "start": "2027-05-12", "end": "2027-05-14", "status": "planned" }
+}

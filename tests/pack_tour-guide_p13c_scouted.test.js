@@ -41,7 +41,7 @@ test('a scouted place is stored in the new last column; it leaves the group when
   assert.equal(W.J(ctx.tgPlacesGet('reed-mill')).scouted, true);
   assert.equal('scouted' in W.J(ctx.tgPlacesGet('pear-walk')), false, 'an unmarked place has no scouted key at all');
   const head = ctx.sheetHeaders(ctx.getSheet('Places'));
-  assert.equal(head[head.length - 1], 'scouted');
+  assert.deepEqual(head.slice(-2), ['scouted', 'lists'], 'C14: scouted stays after the old columns; lists (WP-14d) is the last');
   assert.deepEqual(W.J(ctx.tgPlacesScouted()).map((p) => p.slug), ['reed-mill']);
 
   // A check digest that names only another place keeps the mark (it says nothing about reed-mill).
@@ -85,7 +85,7 @@ test('old data: a Places tab from before C13 reads and shows exactly as before, 
   // The next digest adds the column at the end; the old rows still read the same.
   W.deliver(ctx, state, 'places_digest', placesDigest([place('weir-steps', { scouted: true })]));
   const head = ctx.sheetHeaders(sh);
-  assert.equal(head[head.length - 1], 'scouted');
+  assert.deepEqual(head.slice(-2), ['scouted', 'lists'], 'C14: both columns come back at the end, lists (WP-14d) last');
   assert.deepEqual(W.J(ctx.tgPlacesGet('reed-mill')), before);
   assert.equal(W.J(ctx.tgPlacesGet('weir-steps')).scouted, true);
 });

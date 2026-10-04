@@ -27,15 +27,15 @@ var TG_GOOGLE_FIELDS = ['hours', 'opening_hours', 'regular_opening_hours', 'curr
   'national_phone_number', 'types', 'primary_type', 'editorial_summary', 'photos'];
 var TG_PLACE_OWN = ['slug', 'name', 'area', 'category', 'tags', 'status', 'last_trip', 'last_researched', 'last_verified',
   'note_line', 'maps_url', 'history_summary'];
-/** Optional place fields (C13): accepted only in their one allowed form (scouted: true), else refused like any other key. */
-var TG_PLACE_OPT = ['scouted'];
+/** Optional place fields: accepted only in their allowed form (C13 scouted: true; C14 lists: an array of list names), else refused like any other key. */
+var TG_PLACE_OPT = ['scouted', 'lists'];
 
 registerSheet(TG_SHEETS.TRIPS, ['slug', 'title', 'destination', 'start', 'end', 'status', 'build_id', 'verified_on', 'drive_plan',
   'drive_brochure_html', 'drive_brochure_pdf', 'updated_at', 'lodging', 'review_offered_at', 'tz', 'country_code']);
 registerSheet(TG_SHEETS.DAYS, ['slug', 'date', 'theme', 'stops_json', 'legs_json', 'warnings_json', 'part', 'rain_json', 'meta_json']);
 registerSheet(TG_SHEETS.LATER, ['slug', 'place_slug', 'name', 'reason']);
 registerSheet(TG_SHEETS.PLACES, ['slug', 'name', 'destination', 'area', 'category', 'tags', 'status', 'last_trip', 'last_researched',
-  'last_verified', 'note_line', 'maps_url', 'history_json', 'scouted']);   // scouted: C13 (WP-13c), last so old tabs only grow
+  'last_verified', 'note_line', 'maps_url', 'history_json', 'scouted', 'lists']);   // scouted: C13 (WP-13c), lists: C14 (WP-14d); last so old tabs only grow
 registerSheet(TG_SHEETS.CHOICES, ['trip', 'run', 'kind', 'key', 'value', 'text', 'updated_at']);
 registerSheet(TG_SHEETS.SHORTLIST, ['trip', 'run', 'round', 'group', 'n', 'slug', 'name', 'gem', 'payload_json']);
 
@@ -346,6 +346,23 @@ function tgShPlaceOut(r) {
     history_summary: isPlainObject(hist) && hist.summary !== undefined ? String(hist.summary) : ''
   };
   if (tgShScouted(r.scouted)) out.scouted = true;   // C13: only when marked, so an old row reads exactly as before
+  var lists = tgShPlaceLists(r.lists);
+  if (lists.length) out.lists = lists;   // C14: only when the place is on a list, so an old row reads exactly as before
+  return out;
+}
+/** A Places `lists` cell (C14): a JSON array of list names; anything else (blank, damaged, not strings) reads as none. */
+function tgShPlaceLists(v) {
+  var a = tgShJson(v, []);
+  if (!Array.isArray(a)) return [];
+  return a.filter(function (x) { return typeof x === 'string' && x !== ''; });
+}
+/** A digest's lists, as stored: trimmed, blanks dropped, each name once (first wins), at most 20 of at most 80 chars. */
+function tgPlaceListsIn(v) {
+  var out = [];
+  (Array.isArray(v) ? v : []).forEach(function (x) {
+    var n = truncate(tgShStr(x).trim(), 80);
+    if (n && out.indexOf(n) < 0 && out.length < 20) out.push(n);
+  });
   return out;
 }
 /** A Places cell marked scouted: true, 'true' or 'TRUE' (Sheets may turn the text into a boolean); anything else is not. */
@@ -360,20 +377,20 @@ function tgGoogleFieldsIn(o) {
  * any Google field (TG_GOOGLE_FIELDS) or other unknown key is stripped and reported, never stored.
  * Returns { destination, added, changed, verified, same, refused: [{ slug, field }], places: [{ slug, name, kind:
  * new | changed | verified | same, status, note_line, last_verified, changed_fields[] }] } — `verified` = only dates or
- * history moved, `changed` = name, area, category, tags, status, last trip, note line or link moved.
+ * history moved, `changed` = name, area, category, tags, status, last trip, note line, link or (C14) lists moved.
  */
 function tgPlacesUpsert(digest) {
   if (!isPlainObject(digest) || !Array.isArray(digest.places)) throw new Error('tgPlacesUpsert: { destination, places[] } required');
   var dest = tgShSlug(digest.destination, 'destination');
   var res = { destination: dest, added: 0, changed: 0, verified: 0, same: 0, refused: [], places: [] };
-  _tgEnsureCols(TG_SHEETS.PLACES, ['scouted']);   // a tab made before C13 gains the column (old rows read as not scouted)
+  _tgEnsureCols(TG_SHEETS.PLACES, ['scouted', 'lists']);   // a tab made before C13/C14 gains the columns (old rows read as not scouted, on no list)
   var existing = {};
   storeAll(TG_SHEETS.PLACES).forEach(function (r) { existing[tgShStr(r.slug)] = r; });
   digest.places.forEach(function (pl) {
     if (!isPlainObject(pl)) return;
     var slug = tgShSlug(pl.slug, 'place slug');
     Object.keys(pl).forEach(function (k) {
-      if (TG_PLACE_OWN.indexOf(k) < 0 && !(k === 'scouted' && pl.scouted === true)) res.refused.push({ slug: slug, field: k });
+      if (TG_PLACE_OWN.indexOf(k) < 0 && !(k === 'scouted' && pl.scouted === true) && !(k === 'lists' && Array.isArray(pl.lists))) res.refused.push({ slug: slug, field: k });
     });
     var tags = Array.isArray(pl.tags) ? pl.tags.map(function (t) { return truncate(tgShStr(t), 40); }).slice(0, 20) : [];
     var row = {
@@ -384,12 +401,16 @@ function tgPlacesUpsert(digest) {
       history_json: toJson({ summary: truncate(tgShStr(pl.history_summary), 120) }),
       scouted: pl.scouted === true ? 'true' : ''   // a place the digest no longer marks leaves the scouted group
     };
+    // C14: lists only when the digest names them (absent: storeUpdate keeps the cell; [] clears it).
+    var hasLists = Array.isArray(pl.lists), lists = hasLists ? tgPlaceListsIn(pl.lists) : null;
+    if (hasLists) row.lists = lists.length ? toJson(lists) : '';
     var old = existing[slug], kind, changedFields = [];
     var stored;
     if (!old) { stored = storeAppend(TG_SHEETS.PLACES, row); kind = 'new'; res.added++; }
     else {
       var before = tgShPlaceOut(old), after = tgShPlaceOut(row);
       TG_PLACE_CONTENT.forEach(function (f) { if (toJson(before[f]) !== toJson(after[f])) changedFields.push(f); });
+      if (hasLists && toJson(before.lists || []) !== toJson(lists)) changedFields.push('lists');   // C14: a list change is a change
       var datesMoved = ['last_researched', 'last_verified', 'history_summary', 'scouted'].some(function (f) { return before[f] !== after[f]; });
       kind = changedFields.length ? 'changed' : datesMoved ? 'verified' : 'same';
       res[kind]++;

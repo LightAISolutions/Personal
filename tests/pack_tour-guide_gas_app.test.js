@@ -376,7 +376,7 @@ test('places.search · places.get · places.note · places.check: own fields onl
   const all = J(app(ctx, state, 'places.search', {}));
   assert.deepEqual([all.total, all.rows.length], [29, 24]);
   assert.equal(all.rows[0].slug, 'tide-gallery', 'newest first');
-  assert.deepEqual(all.filters, { destinations: ['gull-point', TRIP], statuses: ['closed', 'open'], tags: ['art', 'breakfast', 'rainy day'] });
+  assert.deepEqual(all.filters, { destinations: ['gull-point', TRIP], statuses: ['closed', 'open'], tags: ['art', 'breakfast', 'rainy day'], lists: [] });   // C14: the lists facet (WP-14d)
   assert.deepEqual(Object.keys(all.rows[0]).sort(), ['area', 'category', 'destination', 'history_summary', 'last_researched', 'last_trip', 'last_verified', 'maps_url', 'name', 'note_line', 'slug', 'status', 'tags']);
 
   assert.deepEqual(J(app(ctx, state, 'places.search', { query: 'Gallery' })).rows.map((r) => r.slug), ['tide-gallery']);

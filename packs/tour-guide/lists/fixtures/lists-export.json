@@ -1,0 +1,11 @@
+{
+  "about": "Invented data for the lists engine: the files of an invented Takeout 'Saved' export (an invented town, invented places, invented links and ids). Tests pack them into a .tgz and a .zip.",
+  "files": {
+    "Takeout/Saved/Dinner spots.csv": "Title,Note,URL,Tags,Comment\n,,,,\nLantern Noodle House,Ask for the mild broth,\"https://www.google.com/maps/place/Lantern+Noodle+House/@47.1210,8.5650,17z/data=!3m1!4b1!4m6!3m5!1s0x1a2b3c4d5e6f7a8b:0x9c8d7e6f5a4b3c2d!8m2!3d47.1211!4d8.5651\",,\n\"Moss & Pine, Quillmere\",\"Book ahead\nCounter seats only\",https://www.google.com/maps/search/?api=1&query=Moss%20%26%20Pine&query_place_id=ChIJinventedMossPine01,,\nHarbour Pin,,\"https://www.google.com/maps/search/47.1234,8.5678\",,\n\"The \"\"Blue\"\" Kettle\",Cosy,http://maps.google.com/?cid=3120272755807637618,,Great tea\n",
+    "Takeout/Saved/Rainy day.csv": "\ufeffTitle,URL,Comment,Extra\r\nQuillmere Clock Museum,\"https://www.google.com/maps/place/Quillmere+Clock+Museum/@47.1301,8.5702,17z\",Free on the first Sunday,x\r\nShort link cafe,https://maps.app.goo.gl/inventedShortLink1,,y\r\n",
+    "Takeout/Saved/Want to go.csv": "Title,Note,URL,Tags,Comment\n",
+    "Takeout/Maps/Settings.csv": "Key,Value\nunits,metric\n",
+    "Takeout/Other/Picnic list.csv": "title,url,address\nWillow Green,https://www.google.com/maps/place/Willow+Green/,3 Reedway Lane\n",
+    "Takeout/archive_browser.html": "<!doctype html><title>Invented archive index</title>"
+  }
+}

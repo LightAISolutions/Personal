@@ -18,16 +18,19 @@ var TG_SCOUT = {
 };
 var TG_SCOUT_GROUPS = ['food', 'activities'];
 var TG_SCOUT_LABELS = ['gem', 'veg_verified', 'veg_likely', 'booking', 'queue', 'cash_only', 'chain', 'new', 'seen_before', 'far', 'not_judged'];   // not_judged: TG-PHASE-14 C14
-var TG_SCOUT_LEFT = ['off_topic', 'diet', 'diet_unproven', 'low_rating', 'unproven', 'closed', 'closed_on_trip', 'too_far', 'duplicate', 'other'];
+var TG_SCOUT_LEFT = ['off_topic', 'diet', 'diet_unproven', 'low_rating', 'unproven', 'closed', 'closed_on_trip', 'too_far', 'duplicate', 'not_found', 'other'];   // not_found: compare boards only (C14 wave 2)
+/** A compare board's item flags (TG-PHASE-14 C14 wave 2): every screen but duplicate and off_topic; the first three are hard. */
+var TG_SCOUT_FLAGS = ['closed', 'closed_on_trip', 'low_rating', 'unproven', 'diet', 'diet_unproven', 'too_far'];
 var TG_SCOUT_LEFT_WORDS = { off_topic: 'off topic', diet: 'nothing you can eat', diet_unproven: 'vegetarian not confirmed', low_rating: 'poorly rated',
-  unproven: 'too little evidence', closed: 'closed', closed_on_trip: 'closed on your days', too_far: 'too far', duplicate: 'duplicate', other: 'other' };
+  unproven: 'too little evidence', closed: 'closed', closed_on_trip: 'closed on your days', too_far: 'too far', duplicate: 'duplicate', not_found: 'not found', other: 'other' };
 var TG_SCOUT_MODES = { WALK: '🚶', TRANSIT: '🚇', DRIVE: '🚗' };
 /** Google Places field names in any spelling (snake_case or the API's camelCase) plus a few the Places API adds. */
 var TG_SCOUT_GOOGLE_EXTRA = ['photo', 'location', 'lat', 'lng', 'latitude', 'longitude', 'googlemapsuri', 'servesvegetarianfood', 'displayname',
   'reviewcount', 'reviews', 'pricerange', 'userratingcount', 'userratingstotal', 'regularopeninghours', 'pricelevel', 'geometry', 'vicinity'];
 
 registerSheet(TG_SCOUT.SHEET, ['id', 'created_on', 'query', 'destination', 'place_label', 'trip', 'group', 'count', 'items_json', 'left_json',
-  'drive_html', 'drive_pdf', 'received_at']);
+  'drive_html', 'drive_pdf', 'received_at', 'mode', 'source_json']);   // mode, source_json: compare boards (C14 wave 2); blank = a scout board
+var TG_SCOUT_COLS_C14 = ['mode', 'source_json'];
 
 /* ==================== asking ==================== */
 
@@ -92,10 +95,13 @@ function tgScoutParseJson(v, def) {
 function tgScoutRec(r) {
   if (!r) return null;
   var items = tgScoutParseJson(r.items_json, []), left = tgScoutParseJson(r.left_json, []);
-  return { id: tgShStr(r.id), created_on: tgShDate(r.created_on), query: tgShStr(r.query), destination: tgShStr(r.destination),
+  var out = { id: tgShStr(r.id), created_on: tgShDate(r.created_on), query: tgShStr(r.query), destination: tgShStr(r.destination),
     place_label: tgShStr(r.place_label), trip: tgShStr(r.trip), group: tgShStr(r.group), count: tgShInt(r.count, 0),
     items: Array.isArray(items) ? items.filter(isPlainObject) : [], left_out: Array.isArray(left) ? left.filter(isPlainObject) : [],
-    drive_html: tgShStr(r.drive_html), drive_pdf: tgShStr(r.drive_pdf), received_at: tgShStr(r.received_at) };
+    drive_html: tgShStr(r.drive_html), drive_pdf: tgShStr(r.drive_pdf), received_at: tgShStr(r.received_at),
+    mode: tgShStr(r.mode) === 'compare' ? 'compare' : 'scout' };
+  if (out.mode === 'compare') { var src = tgScoutParseJson(r.source_json, null); out.source = isPlainObject(src) ? src : {}; }
+  return out;
 }
 function tgScoutGet(id) {
   id = String(id || '');
@@ -113,7 +119,7 @@ function tgScoutList(limit) {
 function tgScoutItemOut(it) {
   var out = { n: it.n, slug: it.slug, name: it.name, area: it.area, category: it.category, score: it.score, parts: it.parts,
     why_you: it.why_you, labels: (it.labels || []).slice() };
-  ['try', 'rated', 'reach', 'place_id'].forEach(function (k) { if (it[k] !== undefined) out[k] = it[k]; });
+  ['try', 'rated', 'reach', 'place_id', 'flags'].forEach(function (k) { if (it[k] !== undefined) out[k] = it[k]; });   // flags: compare boards
   var u = String(it.maps_url || '');
   out.maps_url = TG_CMD_MAPS_URL.test(u) && u.length <= TG_CMD_URL_MAX ? u : '';
   return out;
@@ -126,7 +132,9 @@ function tgScoutStore(p) {
   var row = { id: p.scout_id, created_on: p.created_on, query: p.query, destination: p.destination, place_label: p.place_label,
     trip: p.trip || '', group: p.group, count: items.length, items_json: itemsJson,
     left_json: toJson((p.left_out || []).map(function (l) { return { name: l.name, reason: l.reason }; })),
-    drive_html: drive.board_html || '', drive_pdf: drive.board_pdf || '', received_at: nowIso() };
+    drive_html: drive.board_html || '', drive_pdf: drive.board_pdf || '', received_at: nowIso(),
+    mode: p.mode === 'compare' ? 'compare' : '', source_json: p.mode === 'compare' && isPlainObject(p.source) ? toJson(p.source) : '' };
+  _tgEnsureCols(TG_SCOUT.SHEET, TG_SCOUT_COLS_C14);   // a tab made before compare gains the columns (old rows read as scout boards)
   var replaced = !!storeFind(TG_SCOUT.SHEET, function (r) { return tgShStr(r.id) === p.scout_id; }, 1)[0];
   storeUpsertById(TG_SCOUT.SHEET, row);
   var rec = tgScoutGet(p.scout_id);
@@ -148,8 +156,14 @@ function tgScoutByKey(key) {
   for (var i = 0; i < all.length; i++) if ('k' + sha1Hex(String(all[i].id)).slice(0, 12) === key) return all[i];
   return null;
 }
-/** "Matcha in Kyoto" — the query with a capital, the place label's first part (Kyoto, Japan → Kyoto). */
+/** A compare board's source as one line: the list's name, or the names joined. */
+function tgScoutSourceText(rec) {
+  var s = isPlainObject(rec.source) ? rec.source : {};
+  return typeof s.list === 'string' ? s.list : Array.isArray(s.names) ? s.names.join(', ') : String(rec.query || '').replace(/^compare:\s*/, '');
+}
+/** "Matcha in Kyoto" — the query with a capital, the place label's first part (Kyoto, Japan → Kyoto); "Compare — <source>" for a compare board. */
 function tgScoutTitle(rec) {
+  if (rec.mode === 'compare') return 'Compare — ' + tgScoutSourceText(rec);
   var q = String(rec.query || ''), place = String(rec.place_label || '').split(',')[0].trim() || rec.destination;
   return (q.charAt(0).toUpperCase() + q.slice(1)) + ' in ' + place;
 }
@@ -169,16 +183,21 @@ function tgScoutAppRows(rec, label) {
 }
 /** [{ html, keyboard? }] — header, one line per pick (name · area · reach · why), what was left out, ➕ buttons and the app button. */
 function tgScoutMessages(rec) {
-  var items = rec.items || [], left = rec.left_out || [], n = items.length, trip = tgScoutTargetTrip(rec);
-  var lines = ['🔎 <b>' + tgEscape(tgScoutTitle(rec)) + '</b> — ' + (n ? n + ' pick' + (n === 1 ? '' : 's') + ', ranked for you' : 'nothing worth the trip this time')];
+  var items = rec.items || [], left = rec.left_out || [], n = items.length, trip = tgScoutTargetTrip(rec), compare = rec.mode === 'compare';
+  var lines = [compare ? '⚖️ <b>' + tgEscape(tgScoutTitle(rec)) + '</b> — ' + (n ? n + ' place' + (n === 1 ? '' : 's') + ', side by side' : 'none of them could be found')
+    : '🔎 <b>' + tgEscape(tgScoutTitle(rec)) + '</b> — ' + (n ? n + ' pick' + (n === 1 ? '' : 's') + ', ranked for you' : 'nothing worth the trip this time')];
   items.forEach(function (it) {
     var labels = it.labels || [], marks = (labels.indexOf('gem') >= 0 ? ' 💎' : '') + (labels.indexOf('veg_verified') >= 0 || labels.indexOf('veg_likely') >= 0 ? ' 🌱' : '') +
       (labels.indexOf('seen_before') >= 0 ? ' 🔁' : '') +   // 🔁 already in your places
       (labels.indexOf('new') >= 0 ? ' 🆕' : '') + (labels.indexOf('not_judged') >= 0 ? ' · not judged' : '');   // 🆕 new, vouched for by the judgment (WP-14b)
     var bits = [it.area ? tgEscape(it.area) : '', tgScoutReach(it.reach)].filter(Boolean);
     lines.push('<b>' + it.n + '.</b> ' + tgCmdHref(it.maps_url, it.name) + marks + (bits.length ? ' · ' + bits.join(' · ') : '') + (it.why_you ? ' — <i>' + tgEscape(it.why_you) + '</i>' : ''));
+    // A compare board's warnings (WP-14e): one line per flag, in the left-out list's own words.
+    if (compare && Array.isArray(it.flags)) it.flags.forEach(function (f) { lines.push('⚠️ ' + tgEscape(TG_SCOUT_LEFT_WORDS[f] || f)); });
   });
-  if (left.length) {
+  if (left.length && compare) {   // a compare board names what it left out: the owner typed those names
+    lines.push('<i>Left out: ' + left.map(function (l) { return tgEscape(l.name) + ' — ' + tgEscape(TG_SCOUT_LEFT_WORDS[l.reason] || 'other'); }).join(' · ') + '</i>');
+  } else if (left.length) {
     var by = {}, order = [];
     left.forEach(function (l) { var w = TG_SCOUT_LEFT_WORDS[l.reason] || 'other'; if (!by[w]) { by[w] = 0; order.push(w); } by[w]++; });
     lines.push('<i>Left out: ' + order.map(function (w) { return by[w] + ' ' + w; }).join(' · ') + '</i>');
@@ -199,8 +218,9 @@ registerCommand('/scouts', function (ctx) {
   if (!list.length) { ctx.reply('🔎 No scouts yet — try <code>/scout matcha in Kyoto</code>.'); return; }
   var lines = ['🔎 <b>Your last scouts</b>'], btns = [];
   list.forEach(function (s, i) {
-    lines.push('<b>' + (i + 1) + '.</b> ' + tgEscape(tgScoutTitle(s)) + ' · ' + s.count + ' pick' + (s.count === 1 ? '' : 's') + (s.created_on ? ' · ' + tgCmdDate(s.created_on) : ''));
-    btns.push({ text: '🔎 ' + (i + 1), data: cbEncode('sc', tgScoutKey(s.id), 's') });
+    var cmp = s.mode === 'compare';   // ⚖️ marks a compare board (WP-14e)
+    lines.push('<b>' + (i + 1) + '.</b> ' + (cmp ? '⚖️ ' : '') + tgEscape(tgScoutTitle(s)) + ' · ' + s.count + (cmp ? ' place' : ' pick') + (s.count === 1 ? '' : 's') + (s.created_on ? ' · ' + tgCmdDate(s.created_on) : ''));
+    btns.push({ text: (cmp ? '⚖️ ' : '🔎 ') + (i + 1), data: cbEncode('sc', tgScoutKey(s.id), 's') });
   });
   lines.push('', 'Tap a number to see its list again.');
   var app = tgAppRows('scout', '', '📱 Scout in the app');
@@ -260,8 +280,8 @@ function tgScoutGoogleKeys(v, path, out) {
   })(v, path || '', 0);
   return out;
 }
-function tgEnvScoutItem(errs, at, it) {
-  if (!tgEnvObj(errs, at, it, ['n', 'slug', 'name', 'area', 'category', 'score', 'parts', 'why_you', 'labels', 'maps_url'], ['try', 'rated', 'reach', 'place_id'])) return;
+function tgEnvScoutItem(errs, at, it, compare) {
+  if (!tgEnvObj(errs, at, it, ['n', 'slug', 'name', 'area', 'category', 'score', 'parts', 'why_you', 'labels', 'maps_url'], ['try', 'rated', 'reach', 'place_id', 'flags'])) return;
   if (it.n !== undefined) tgEnvInt(errs, at + '.n', it.n, 1, TG_SCOUT.ITEMS_MAX);
   if (it.slug !== undefined) tgEnvSlug(errs, at + '.slug', it.slug);
   if (it.name !== undefined) tgEnvStr(errs, at + '.name', it.name, 1, 120);
@@ -276,6 +296,10 @@ function tgEnvScoutItem(errs, at, it) {
   if (it.labels !== undefined && tgEnvArr(errs, at + '.labels', it.labels, 8)) {
     it.labels.forEach(function (l, j) { tgEnvEnum(errs, at + '.labels[' + j + ']', l, TG_SCOUT_LABELS); });
     it.labels.forEach(function (l, j) { if (it.labels.indexOf(l) !== j) errs.push(at + '.labels[' + j + ']: duplicate label'); });
+  }
+  if (it.flags !== undefined) {   // C14 wave 2: compare boards only
+    if (!compare) errs.push(at + '.flags: only a compare board (mode "compare") carries flags');
+    if (tgEnvArr(errs, at + '.flags', it.flags, 8)) it.flags.forEach(function (f, j) { tgEnvEnum(errs, at + '.flags[' + j + ']', f, TG_SCOUT_FLAGS); });
   }
   if (it.rated !== undefined) {
     tgEnvStr(errs, at + '.rated', it.rated, 1, 40);
@@ -295,8 +319,21 @@ function tgEnvValidateScout(p) {
   if (!isPlainObject(p)) return ['payload must be an object'];
   tgScoutGoogleKeys(p, '').forEach(function (k) { errs.push(k + ': Google field refused (own data only)'); });
   if (!tgEnvObj(errs, 'payload', p, ['scout_id', 'query', 'destination', 'place_label', 'group', 'created_on', 'items', 'left_out'],
-    ['v', 'kind', 'trip', 'from', 'diet', 'more', 'drive'])) return tgEnvDone(errs);
+    ['v', 'kind', 'mode', 'source', 'trip', 'from', 'diet', 'more', 'drive'])) return tgEnvDone(errs);
   tgEnvHead(errs, p, 'scout');
+  var compare = p.mode === 'compare';   // C14 wave 2; no mode = a scout board (old pins)
+  if (p.mode !== undefined) tgEnvEnum(errs, 'mode', p.mode, ['scout', 'compare']);
+  if (compare && p.source === undefined) errs.push('payload: source required on a compare board');
+  if (p.source !== undefined) {
+    if (!compare) errs.push('source: only a compare board (mode "compare") carries a source');
+    if (isPlainObject(p.source) && p.source.names !== undefined) {
+      if (tgEnvObj(errs, 'source', p.source, ['names']) && tgEnvArr(errs, 'source.names', p.source.names, 4, 2)) {
+        p.source.names.forEach(function (n, j) { tgEnvStr(errs, 'source.names[' + j + ']', n, 1, 120); });
+      }
+    } else if (tgEnvObj(errs, 'source', p.source, ['list'])) {
+      if (p.source.list !== undefined) tgEnvStr(errs, 'source.list', p.source.list, 1, 80);
+    }
+  }
   if (p.scout_id !== undefined) tgEnvStr(errs, 'scout_id', p.scout_id, 1, 52, TG_SCOUT.ID_RE);
   if (p.query !== undefined) tgEnvStr(errs, 'query', p.query, 1, TG_SCOUT.QUERY_MAX);
   if (p.destination !== undefined) tgEnvSlug(errs, 'destination', p.destination);
@@ -312,7 +349,7 @@ function tgEnvValidateScout(p) {
   }
   if (p.items !== undefined && tgEnvArr(errs, 'items', p.items, TG_SCOUT.ITEMS_MAX)) {
     p.items.forEach(function (it, i) {
-      tgEnvScoutItem(errs, 'items[' + i + ']', it);
+      tgEnvScoutItem(errs, 'items[' + i + ']', it, compare);
       if (isPlainObject(it) && typeof it.n === 'number' && it.n !== i + 1) errs.push('items[' + i + '].n must be ' + (i + 1) + ' (rank order)');
     });
     tgEnvDupes(errs, 'items', p.items, 'slug', 'slug');
@@ -323,6 +360,7 @@ function tgEnvValidateScout(p) {
       if (!tgEnvObj(errs, at, l, ['name', 'reason'])) return;
       if (l.name !== undefined) tgEnvStr(errs, at + '.name', l.name, 1, 120);
       if (l.reason !== undefined) tgEnvEnum(errs, at + '.reason', l.reason, TG_SCOUT_LEFT);
+      if (l.reason === 'not_found' && !compare) errs.push(at + '.reason: not_found is for a compare board (mode "compare") only');
     });
   }
   tgEnvSize(errs, p);

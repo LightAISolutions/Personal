@@ -553,6 +553,7 @@ function tgCmdPlaceLine(p, i) {
   if (p.status) bits.push(tgEscape(p.status));
   if (p.last_trip) bits.push('last trip ' + tgEscape(p.last_trip));
   if (p.area) bits.push(tgEscape(truncate(p.area, 60)));
+  if (Array.isArray(p.lists) && p.lists.length) bits.push('📋 ' + tgEscape(truncate(p.lists.join(', '), 80)));   // C14 (WP-14d): the owner's lists
   var line = '<b>' + (i + 1) + '.</b> ' + tgCmdHref(p.maps_url, p.name) + (bits.length ? ' · ' + bits.join(' · ') : '');
   return p.note_line ? line + '\n   <i>' + tgEscape(p.note_line) + '</i>' : line;
 }

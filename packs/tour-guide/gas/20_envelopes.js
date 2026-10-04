@@ -463,6 +463,8 @@ function tgEnvValidatePlacesDigest(p) {
       if (pl.note_line !== undefined) tgEnvStr(errs, at + '.note_line', pl.note_line, 0, 160);
       if (pl.maps_url !== undefined) tgEnvUrl(errs, at + '.maps_url', pl.maps_url);
       if (pl.history_summary !== undefined) tgEnvStr(errs, at + '.history_summary', pl.history_summary, 0, 120);
+      // C14 (WP-14d): the owner's saved lists the place is on; absent keeps what the Places tab holds, [] clears it.
+      if (pl.lists !== undefined && tgEnvArr(errs, at + '.lists', pl.lists, 20)) pl.lists.forEach(function (l, j) { tgEnvStr(errs, at + '.lists[' + j + ']', l, 1, 80); });
     });
     tgEnvDupes(errs, 'places', p.places, 'slug', 'place');
   }
