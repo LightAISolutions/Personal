@@ -8,13 +8,14 @@
  * `crowd_magnet` is marked when the profile asks to avoid crowds (planner-crowd.mjs); the trip's `country` reaches the
  * estimator; a meal place offered in `input.dinners` (and not a lunch spot) is kept out of the day's stops for dinner.
  */
-import { toMin, isDate, dateRange, assertTimeZone } from './planner-time.mjs';
+import { toMin, hm, dayDate, isDate, dateRange, assertTimeZone, dateIn } from './planner-time.mjs';
 import { hoursOn } from './planner-hours.mjs';
 import { isLoc } from './planner-geo.mjs';
 import { refineCategory, MEAL_CATEGORIES } from './planner-category.mjs';
 import { overrideFor } from './planner-anchors.mjs';
 import { placeFacts, factsHours, factsMinutes } from './planner-facts.mjs';
 import { avoidsCrowds } from './planner-crowd.mjs';
+import { factsStale } from '../facts/index.mjs';
 
 export const PACE = Object.freeze({ relaxed: { breakfast: 45, lunch: 75, dinner: 75 }, normal: { breakfast: 35, lunch: 60, dinner: 60 }, packed: { breakfast: 25, lunch: 45, dinner: 45 } });
 export const LUNCH_WINDOW = Object.freeze({ open: 12 * 60, close: 14 * 60 });
@@ -62,18 +63,42 @@ export function buildDays(trip) {
  * Phase 11: a day override. `day_start`/`day_end` replace the day's hours; `start.time` replaces the start (and wins
  * over day_start); `end.time` is a hard end (the day reaches the end point END_MARGIN minutes before it; planner-day.mjs).
  * A day the override leaves under two hours long is still planned (its stops are dropped as they fail to fit).
+ * Phase 13 (A2): an override whose end is not after its start never throws; it is clamped (clampOverride).
  */
-function withOverride(day, o) {
+export function withOverride(day, o) {
   const d = { ...day, override: true };
   if (Number.isInteger(o.day_start)) d.dayStart = o.day_start;
   if (Number.isInteger(o.day_end)) d.dayEnd = o.day_end;
   if (o.start) { d.start = o.start; d.dayStart = o.start.time; }
   if (o.end) { d.end = o.end; d.dayEnd = Number.isInteger(o.day_end) ? Math.min(o.day_end, o.end.time) : o.end.time; }
-  if (d.dayEnd <= d.dayStart) fail(`the override for ${day.date} ends (${d.dayEnd}) before it starts (${d.dayStart})`);
+  if (d.dayEnd <= d.dayStart) clampOverride(d, day);
   if (o.bags) d.bags = o.bags;
   if (o.bags_note) d.bags_note = o.bags_note;
   if (o.note) d.note = o.note;
   return d;
+}
+
+/** Phase 13 (A2): the length a clamped override gives its day (the two-hour rule of `/dates hours`). */
+export const CLAMP_MINUTES = 120;
+/**
+ * Phase 13 (A2): an override whose end is not after its start (the brain, an outline or the app wrote it without the
+ * core's `/dates` check). What is fixed is kept and the rest moves:
+ *   · the end is a real departure (`end.time`), or neither side is fixed: the end stays and the start moves to
+ *     CLAMP_MINUTES before it (never before 00:00);
+ *   · only the start is fixed (`start.time`): the start stays and the end moves to CLAMP_MINUTES after it (by 23:59);
+ *   · both are fixed: the day is planned without stops (`noStops`) and an over_long_day alert says so.
+ * A `warn` (or that alert) on the day names the date, the values given and the fix (`day.notes`, planner-day.mjs).
+ */
+function clampOverride(d, day) {
+  const date = day.date, gs = hm(d.dayStart), ge = hm(d.dayEnd), on = dayDate(date);
+  if (d.start && d.end) {
+    d.noStops = true;
+    d.notes = [{ severity: 'alert', code: 'over_long_day', text: `${on}: the day must end at ${ge}, before it starts at ${gs}, so it is planned without stops. Fix the times with /dates ${date}`.slice(0, 200) }];
+    return;
+  }
+  if (d.start) d.dayEnd = Math.min(1439, d.dayStart + CLAMP_MINUTES);
+  else d.dayStart = Math.max(0, d.dayEnd - CLAMP_MINUTES);
+  d.notes = [{ severity: 'warn', code: 'other', text: `${on}: the hours given end at ${ge}, before they start at ${gs}; planned ${hm(d.dayStart)}–${hm(d.dayEnd)}. To change it: /dates ${date} hours ${hm(d.dayStart)} ${hm(d.dayEnd)}`.slice(0, 200) }];
 }
 
 function validateTrip(trip) {
@@ -85,6 +110,28 @@ function validateTrip(trip) {
   if (!Array.isArray(trip.lodging) || !trip.lodging.length) fail('trip.lodging must list at least one lodging');
   for (const l of trip.lodging) if (!SLUG_RE.test(l.id || '') || !isLoc(l) || !isDate(l.from) || !isDate(l.to)) fail(`lodging ${l && l.id} needs id, lat, lng, from, to`);
   if (!trip.modes || !trip.modes.default) fail('trip.modes.default is required');
+}
+
+/**
+ * Phase 13 (A5): when a place's own facts set its hours (closed weekdays, closing time, last entry) or its visit length
+ * and were checked longer than FACTS_MAX_AGE_DAYS before `today` (facts/facts-check.mjs factsStale, called as it is),
+ * the date they were checked ('an unknown date' when none is given); otherwise null. The facts still apply.
+ *   oldFactsDate(rawFacts, today, { visit = true }) → 'YYYY-MM-DD' | 'an unknown date' | null
+ */
+export function oldFactsDate(rawFacts, today, { visit = true } = {}) {
+  if (!rawFacts || typeof rawFacts !== 'object' || !isDate(today)) return null;
+  const f = placeFacts({ facts: rawFacts });
+  const uses = f && (f.closed_weekdays || f.close !== null || f.last_entry !== null || (visit && f.visit));
+  if (!uses || !factsStale(rawFacts, today).facts) return null;
+  return isDate(rawFacts.checked) ? rawFacts.checked : 'an unknown date';
+}
+export const factsOldText = (name, checked) => `facts are old: ${name}, checked ${checked}`.slice(0, 200);
+export const factsOldCheck = (checked) => `Hours last checked ${checked} — check before you go`.slice(0, 160);
+
+/** The plan's day: the trip-zone date of `now` (null when `now` is not a date). */
+export function planToday(now, tz) {
+  const t = now === undefined || now === null ? new Date() : new Date(now);
+  return Number.isNaN(t.getTime()) ? null : dateIn(t, tz);
 }
 
 /**
@@ -103,6 +150,7 @@ export async function prepare(input) {
   const cands = [], saved = [], withheld = [];
   const seen = new Set();
   const crowdRule = avoidsCrowds(profile);
+  const today = planToday(input.now, trip.timezone);   // Phase 13 (A5): facts are judged on the plan's day
   const dinnerIds = new Set((Array.isArray(input.dinners) ? input.dinners : []).filter((p) => p && p.id).map((p) => p.id));
   for (const p of places) {
     if (!p || !SLUG_RE.test(p.id || '')) fail(`place ${p && p.id} needs a slug id`);
@@ -143,6 +191,8 @@ export async function prepare(input) {
       cand.minutes_source = booked || official ? 'official' : est && (est.range || est.typical) ? 'research' : 'estimate';
       if (facts.last_entry_text) cand.last_entry = facts.last_entry_text;
       if (Object.keys(own).length) cand.own_hours = own;
+      const old = oldFactsDate(p.facts, today, { visit: !!official });
+      if (old) cand.facts_old = old;   // Phase 13 (A5): still applied, flagged on the stop
     }
     // The gem screen's mark, read as set (never recomputed): `crowd_magnet: true` on the place, or the C11 flag.
     if (crowdRule && (p.crowd_magnet === true || (Array.isArray(p.flags) && p.flags.includes('crowd_magnet')))) cand.crowd = true;

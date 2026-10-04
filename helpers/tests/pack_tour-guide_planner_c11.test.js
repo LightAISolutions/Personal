@@ -99,8 +99,12 @@ test('a day that ends at a departure reaches the end point in time: no dinner, n
   assert.ok(!d.meals.some((m) => m.kind === 'dinner'), 'no dinner on a departure day');
   assert.equal(d.extras, undefined);
   assert.ok(!d.free.some((f) => f.note === L.planner.BACK_EARLY_NOTE));
-  const spare = d.free.find((f) => f.note.startsWith(L.planner.END_SPARE_NOTE));
-  assert.deepEqual(spare, { start: last.arrive_at, end: '16:50', note: 'time to spare near Ashvale Station before 17:00' });
+  // A8 (Phase 13): the last leg leaves as late as the end allows (arriving 16:50), and the time to spare is free time
+  // near the last stop before that leg, not a note at the station.
+  assert.equal(last.arrive_at, '16:50', 'A8: the leg to the end arrives END_MARGIN before the departure');
+  assert.ok(!d.free.some((f) => f.note.startsWith(L.planner.END_SPARE_NOTE)), 'A8: no time-to-spare note at the end point');
+  const spare = d.free[d.free.length - 1];
+  assert.deepEqual(spare, { start: spare.start, end: last.depart_at, note: 'free time near Lantern Quay Gallery before you leave for Ashvale Station' }, 'A8: free time before the last leg');
   assert.deepEqual(d.bags, { kind: 'carry', at: 'lodging', text: 'Carry your bags today · Check out by 10:00' });
   // A departure too early for any sight: the stops go, the day still reaches the train.
   const early = await plan(L, (fx) => { override(fx, D3).end.time = '10:00'; });

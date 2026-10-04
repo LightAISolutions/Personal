@@ -17,7 +17,7 @@ import { fetchMatrix, fetchLeg, crossCheck, legUrl, dayLink, pointKey, transitFa
 import { extraCallsFor, bagLegs } from './planner-budget.mjs';
 import { bufferFor } from './planner-buffer.mjs';
 import { transitPrefs } from './planner-transit.mjs';
-import { LUNCH_WINDOW, DINNER_EARLIEST, breakfastLen } from './planner-input.mjs';
+import { LUNCH_WINDOW, DINNER_EARLIEST, LATE_START, breakfastLen, factsOldText, factsOldCheck } from './planner-input.mjs';
 import { minVisit } from './planner-category.mjs';
 import { dayAnchors, BAGS, END_MARGIN, START_SLUG, LODGING_SLUG, bagsText } from './planner-anchors.mjs';
 import { crowdWindows, crowdSlotOf, CROWD_SLOT } from './planner-crowd.mjs';
@@ -144,14 +144,35 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
       tail += postLeg.minutes;
     }
   }
-  const coreEnd = (hard !== null ? hard : day.dayEnd) - tail;
+  let coreEnd = (hard !== null ? hard : day.dayEnd) - tail;
   const latest = hard !== null ? coreEnd : null;
+  // Phase 13 (A3): a booked stop is never dropped for its time. Its day widens to hold it — the start no later than the
+  // booking minus the leg to it (and the start step), the end no earlier than the booking's end plus the leg back. A
+  // real start or end (an arrival, a departure) never moves. Read on the Route Matrix first, then on the real legs.
+  const widened = new Set();
+  let earlier = 0;   // minutes the start moved earlier (the bag step's legs move with it)
+  const widen = (list) => {
+    for (const c of list) {
+      if (!c.booking || c.booking.date !== date || !c.loc) continue;
+      const cp = pointKey(candPoint(c));
+      const to = travel.get(pointKey(S) + '|' + cp), back = travel.get(cp + '|' + pointKey(E));
+      if (!day.start && to && to.minutes < Infinity) {
+        const by = Math.min(departAt - (c.booking.time - to.minutes), day.dayStart);   // never before 00:00
+        if (by > 0) { departAt -= by; earlier += by; day = { ...day, dayStart: day.dayStart - by }; widened.add(c.id); }
+      }
+      if (hard === null && back && back.minutes < Infinity) {
+        const by = c.booking.time + c.minutes + back.minutes - coreEnd;
+        if (by > 0) { coreEnd += by; day = { ...day, dayEnd: day.dayEnd + by }; widened.add(c.id); }
+      }
+    }
+  };
   const relaxed = new Set();   // crowd magnets no quiet slot could hold: planned on their full hours
   const winOf = (c) => schedWindows(c, date, relaxed);
   const legs = new Map(); // real legs, same keys
   const dropped = [];
   let pool = cands.slice(), solution = null, timeline = null, resolved = false, finalSpot = null;
   for (let guard = 0; guard <= 2 * cands.length + 3; guard++) {
+    widen(pool);   // Phase 13 (A3): on the matrix first, then on the real legs of the previous pass
     let spot = day.noLunch ? null : lunchSpotOf(pool, date);   // C12: a re-plan after lunch plans no second one
     const at = (x) => (x === 'S' || x === 'E' ? x : pool[x]);
     const tr = (a, b) => { const r = travel.get(key(at(a), at(b))); return r ? r.minutes : Infinity; };
@@ -173,16 +194,30 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
     }
     finalSpot = spot;
     timeline = retime({ chain, items: solution.items, pool, legs, key, departAt, dayEnd: coreEnd, date, lunchLen: pace.lunch, spot, winOf, latest });
+    if (timeline.ok && solution.overrun && !resolved && pool.length) { resolved = true; continue; }   // Phase 13 (A1): the real start → end leg may leave room after all
     if (timeline.ok) break;
     if (!resolved) { resolved = true; continue; } // solve once more on the real leg times
     const bad = timeline.failed;
     if (bad.crowd && !relaxed.has(bad.id)) { relaxed.add(bad.id); continue; }
-    dropped.push({ cand: bad, code: 'day_full', reason: `the real route times on ${dayDate(date)} left no room for ${bad.name}`, from_date: date });
+    dropped.push(bad.booking && bad.booking.date === date ? { cand: bad, code: 'outside_day', reason: bookingMissText(bad, { day, date, A, hard }), from_date: date, booked: true } : { cand: bad, code: 'day_full', reason: `the real route times on ${dayDate(date)} left no room for ${bad.name}`, from_date: date });
     pool = pool.filter((c) => c !== bad);
   }
   if (!timeline || !timeline.ok) throw new Error(`planner: could not time ${date} even after dropping every stop`);
   const ordered = solution.order.map((i) => pool[i]);
-  for (const c of pool) if (!ordered.includes(c)) dropped.push({ cand: c, code: 'day_full', reason: `no room left on ${dayDate(date)} for ${c.name}`, from_date: date });
+  for (const c of pool) {
+    if (ordered.includes(c)) continue;
+    // Phase 13 (A1): a day that misses its end even without stops says so; (A3) a booking that cannot be met names the
+    // day's real start or end, the only reasons a booking is ever left out.
+    if (solution.overrun) dropped.push({ cand: c, code: 'day_full', reason: `even with no stops ${dayDate(date)} reaches ${A.E.name} late, so there is no room for ${c.name}`.slice(0, 300), from_date: date, overrun: true });
+    else if (c.booking && c.booking.date === date) dropped.push({ cand: c, code: 'outside_day', reason: bookingMissText(c, { day, date, A, hard }), from_date: date, booked: true });
+    else dropped.push({ cand: c, code: 'day_full', reason: `no room left on ${dayDate(date)} for ${c.name}`, from_date: date });
+  }
+  // Phase 13 (A3): a start moved earlier for a booking moves the bag step's leg and times with it.
+  if (earlier) {
+    for (const ev of pre) { ev.depart -= earlier; ev.arrive -= earlier; }
+    if (bag && Number.isInteger(bag.start)) bag.start -= earlier;
+    if (bag && Number.isInteger(bag.end)) bag.end -= earlier;
+  }
   // Phase 11: the locker's collection and the leg on to the end, then the whole day's events in order.
   let finish = timeline.finish;
   if (lockerOn) {
@@ -199,20 +234,45 @@ export async function planDay({ ctx, day, cands, maps, build_id, seed, verified_
   const fit = { pool, items: solution.items, legs, travel, key, mode, departAt, dayEnd: coreEnd, date, lunchLen: pace.lunch, spot: finalSpot, winOf, latest };
   const shortWarnings = [];
   for (const d of dropped) {
-    if (d.from_date !== date || d.code !== 'day_full') continue;
+    if (d.from_date !== date || d.code !== 'day_full' || d.overrun) continue;
     const sf = shortfall(d.cand, fit);
     if (!sf) continue;
     d.reason = `${d.reason}: ${sf.text}`.slice(0, 300);
     shortWarnings.push({ severity: 'info', code: 'other', text: `${d.cand.name} did not fit: ${sf.text}`.slice(0, 200), place: d.cand.id });
   }
+  // Phase 13 (A8): on a day with a real end, the leg to it leaves as late as the end allows (its margin kept); the time
+  // to spare becomes free time near the last stop, before that leg (with lunch in it when the day had none and the
+  // spare time spans lunchtime). A TRANSIT leg is re-timed with one request at its new departure (counted in the day's
+  // budget, planner-budget.mjs); other legs keep their minutes, and so does a locker day's way back through the locker.
+  if (hard !== null && !solution.overrun && hard - finish >= FREE_MIN) {
+    const ev = timeline.events;
+    let from = pre.length;
+    for (let i = ev.length - 1; i >= pre.length; i--) if (ev[i].kind !== 'leg' && ev[i].kind !== 'bag') { from = i + 1; break; }
+    const tail = ev.slice(from), last = tail[tail.length - 1];
+    let delta = tail.length ? hard - finish : 0;
+    if (delta && mode === 'TRANSIT' && !lockerOn && tail.length === 1 && last.kind === 'leg' && !last.leg.stay) {
+      const leg = await getLeg(last.from, last.to, last.depart + delta);
+      const by = leg.minutes < Infinity ? hard - leg.minutes - last.depart : -1;
+      if (by >= FREE_MIN) { last.leg = leg; last.arrive = last.depart + leg.minutes; delta = by; } else delta = 0;   // a slower leg at the later hour: keep the first timing
+    }
+    if (delta > 0) {
+      const t0 = Number.isFinite(tail[0].depart) ? tail[0].depart : tail[0].start;
+      for (const x of tail) for (const k of ['depart', 'arrive', 'start', 'end']) if (Number.isFinite(x[k])) x[k] += delta;
+      if (lockerOn && bag && Number.isInteger(bag.end)) bag.end += delta;
+      ev.splice(from, 0, ...spareEvents({ ev, from, t0, delta, day, pace, S, E: A.E }));
+      timeline.idle += delta - (ev.some((x, i) => i >= from && x.kind === 'lunch' && x.added) ? pace.lunch : 0);
+      finish += delta;
+      timeline.finish = finish;
+    }
+  }
   const cc = await crossCheck(maps, { start: S, end: E, stops: ordered.map((c) => ({ id: c.id, point: candPoint(c) })), mode });
   if (cc.asked) usage.route_calls += 1;
-  const dayPlan = assemble({ ctx, day, ordered, timeline, cc, build_id, seed, verified_on, usage, breakfast, departAt, A, S, E, bag, relaxed, hard });
+  const dayPlan = assemble({ ctx, day, ordered, timeline, cc, build_id, seed, verified_on, usage, breakfast, departAt, A, S, E, bag, relaxed, hard, widened: ordered.filter((c) => widened.has(c.id)) });
   dayPlan.warnings.push(...shortWarnings.slice(0, Math.max(0, 40 - dayPlan.warnings.length)));
   // Phase 11: what the dinner and extras pass needs. `direct`: the day's last leg runs from its last stop to the night's lodging.
   const lastStop = ordered.length ? timeline.events.filter((ev) => ev.kind === 'stop').pop() : null;
   const evening = {
-    finish, dayEnd: day.dayEnd, ends: !!day.end, lodging: day.lodging_end,
+    finish, dayEnd: day.dayEnd, ends: !!day.end, lodging: day.lodging_end, ready: departAt,   // Phase 13 (A12): the day's start plus its start step
     last: lastStop ? { cand: lastStop.c, depart: lastStop.depart } : null,
     direct: !!lastStop && !lockerOn && !day.end && E.slug !== START_SLUG && same(E, day.lodging_end)
   };
@@ -250,6 +310,54 @@ export function shortfall(c, { pool, items, legs, travel, key, mode, departAt, d
   const where = offer ? (after ? ` after ${after}` : (items.find((x) => x.kind === 'stop') ? ` before ${pool[items.find((x) => x.kind === 'stop').i].name}` : '')) : '';
   const text = `${short} min short` + (offer ? `; a ${offer}-minute visit would fit${where}` : '');
   return { short, fits: offer, after, text };
+}
+
+/**
+ * Phase 13 (A8): the events that fill a departure day's spare time, from t0 for `delta` minutes, before the leg to the
+ * end: free time near the last stop (or where the day stands), with lunch in it when the day has no lunch yet and the
+ * spare time holds one inside the lunch window. A free piece shorter than FREE_MIN is left unnamed.
+ */
+function spareEvents({ ev, from, t0, delta, day, pace, S, E }) {
+  let at = 'S';
+  for (let i = from - 1; i >= 0; i--) { if (ev[i].kind === 'stop') { at = ev[i].c; break; } if (ev[i].kind === 'lunch') { at = ev[i].at; break; } }
+  const name = at === 'S' ? S.name : at.name;
+  const leave = `free time near ${name} before you leave for ${E.name}`.slice(0, 300);
+  const t1 = t0 + delta, out = [];
+  const ls = Math.max(t0, LUNCH_WINDOW.open);
+  if (!day.noLunch && !ev.some((x) => x.kind === 'lunch') && ls <= LUNCH_WINDOW.close && ls + pace.lunch <= t1) {
+    if (ls - t0 >= FREE_MIN) out.push({ kind: 'free', start: t0, end: ls, note: `free time near ${name} before lunch`.slice(0, 300) });
+    out.push({ kind: 'lunch', start: ls, end: ls + pace.lunch, at, added: true });
+    if (t1 - (ls + pace.lunch) >= FREE_MIN) out.push({ kind: 'free', start: ls + pace.lunch, end: t1, note: leave });
+    return out;
+  }
+  return [{ kind: 'free', start: t0, end: t1, note: leave }];
+}
+
+/**
+ * Phase 13 (A1): the alert of a day that misses its real end even without stops — by how much, and the fix (an earlier
+ * start with `/dates <date> hours <start> <end>`, the core's per-day form). ≤ 200 characters.
+ */
+export function overrunText({ day, date, finish, hard, A, pace, breakfastAtLodging = true }) {
+  const over = Math.ceil(finish - hard);
+  const name = String(A.E.name).slice(0, 40);
+  const head = `Reaches ${name} at ${hm(finish)}, ${over} min after the ${hm(hard)} needed for ${hm(day.end.time)}`;
+  let fix;
+  if (day.start) fix = `Its start (${hm(day.start.time)} at ${String(A.S.name).slice(0, 30)}) is fixed too: check both times with /dates ${date}`;
+  else {
+    let start = day.dayStart - over;
+    if (breakfastAtLodging && day.dayStart >= LATE_START && start < LATE_START) start -= pace.breakfast;   // an earlier start brings breakfast back
+    start = Math.floor(start / 5) * 5;
+    fix = start >= 0 ? `Start earlier: /dates ${date} hours ${hm(start)} ${hm(day.end.time)}` : `Too far to reach by ${hm(day.end.time)}: check the end with /dates ${date}`;
+  }
+  return `${head}. ${fix}`.slice(0, 200);
+}
+
+/** Phase 13 (A3): why a booked stop could not be kept — only a real start or end can make it miss. */
+function bookingMissText(c, { day, date, A, hard }) {
+  const at = `${c.name}'s ${hm(c.booking.time)} booking on ${dayDate(date)}`;
+  if (hard !== null && day.end) return `${at} cannot finish in time to reach ${A.E.name} by ${hm(day.end.time)}, when the day must end`.slice(0, 300);
+  if (day.start) return `${at} cannot be reached from ${A.S.name}, where the day starts at ${hm(day.start.time)}`.slice(0, 300);
+  return `${at} did not fit the day (${hm(day.dayStart)}–${hm(day.dayEnd)})`.slice(0, 300);
 }
 
 /** A DayPlan leg from a real leg (fetchLeg's result) between two named points. */
@@ -320,12 +428,14 @@ function retime({ chain, items, pool, legs, key, departAt, dayEnd, date, lunchLe
   return { ok: true, events, finish: t + back.minutes, idle };
 }
 
-function assemble({ ctx, day, ordered, timeline, cc, build_id, seed, verified_on, usage, breakfast, departAt, A, S, E, bag, relaxed, hard }) {
+function assemble({ ctx, day, ordered, timeline, cc, build_id, seed, verified_on, usage, breakfast, departAt, A, S, E, bag, relaxed, hard, widened = [] }) {
   const { trip, pace } = ctx;
   const { date, mode } = day;
   const pt = (x) => (x === 'S' ? S : x === 'E' ? E : x.slug ? x : candPoint(x));
   const slug = (x) => (x === 'S' ? S.slug : x === 'E' ? E.slug : x.slug ? x.slug : x.id);
   const stops = [], legs = [], meals = [], free = [], warnings = [];
+  if (Array.isArray(day.notes)) warnings.push(...day.notes);   // Phase 13 (A2): a clamped override says what it did
+  if (widened.length) warnings.push({ severity: 'info', code: 'other', text: `Day hours widened to ${hm(day.dayStart)}–${hm(day.dayEnd)} to hold your booking${widened.length > 1 ? 's' : ''} at ${widened.map((c) => c.name).join(', ')}`.slice(0, 200) });
   if (breakfast) meals.push({ kind: 'breakfast', start: hm(day.dayStart), end: hm(departAt), at: 'lodging', note: `at ${day.lodging_start.name}` });
   for (const ev of timeline.events) {
     if (ev.kind === 'leg') {
@@ -340,6 +450,10 @@ function assemble({ ctx, day, ordered, timeline, cc, build_id, seed, verified_on
       stop.time_style = timeStyle(c, ev.start, ev.window);
       const check = checkOnDay(c, date);
       if (check) stop.check_on_day = check;
+      if (c.facts_old) {   // Phase 13 (A5): the place's own facts still set the times, but they are old
+        warnings.push({ severity: 'info', code: 'other', text: factsOldText(c.name, c.facts_old), place: c.id });
+        if (!stop.check_on_day) stop.check_on_day = factsOldCheck(c.facts_old);
+      }
       // Phase 11: the facts behind the stop's time (only a place with facts, or a crowd magnet, carries them).
       if (c.last_entry) stop.last_entry = c.last_entry;
       if (c.minutes_source) stop.minutes_source = c.minutes_source;
@@ -363,7 +477,7 @@ function assemble({ ctx, day, ordered, timeline, cc, build_id, seed, verified_on
   if (estWarning) warnings.push(estWarning);
   const finish = timeline.finish;
   if (hard !== null) {   // Phase 11: a departure — no early-return line and no dinner; late only when even an empty day is
-    if (finish > hard) warnings.push({ severity: 'alert', code: 'over_long_day', text: `reaches ${A.E.name} at ${hm(finish)}, after the ${hm(hard)} needed for ${hm(day.end.time)}` });
+    if (finish > hard && !warnings.some((w) => w.severity === 'alert' && w.code === 'over_long_day')) warnings.push({ severity: 'alert', code: 'over_long_day', text: overrunText({ day, date, finish, hard, A, pace, breakfastAtLodging: ctx.breakfastAtLodging }) });
     else if (hard - finish >= FREE_MIN) free.push({ start: hm(finish), end: hm(hard), note: `${END_SPARE_NOTE} ${A.E.name} before ${hm(day.end.time)}`.slice(0, 300) });
   } else {
     if (finish > day.dayEnd) warnings.push({ severity: 'warn', code: 'over_long_day', text: `back at ${A.E.name} at ${hm(finish)}, ${finish - day.dayEnd} min after your ${hm(day.dayEnd)} day end` });
@@ -374,7 +488,7 @@ function assemble({ ctx, day, ordered, timeline, cc, build_id, seed, verified_on
   if (cc.agrees === false) warnings.push({ severity: 'info', code: 'order_disagreement', text: `Google's shortest order (${cc.google_order.join(' → ')}) differs from this plan, which honours opening hours and bookings` });
   const dayPlan = { v: 1, trip_id: trip.id, date, build_id, mode, lodging_start: day.lodging_start.id, lodging_end: day.lodging_end.id, stops, legs, meals, free, warnings: warnings.slice(0, 40), day_url: dayLink([S, ...ordered.map(candPoint), E], mode), verified_on, solver: { method: SOLVER_METHOD, matrix_elements: usage.matrix_elements, route_calls: usage.route_calls, cross_check: cc, seed } };
   // Unscheduled minutes in the day's window after buffers (waits + the early return); 0 when the day overflows.
-  dayPlan.spare_minutes = finish > day.dayEnd ? 0 : Math.max(0, Math.min(1440, timeline.idle + (day.dayEnd - finish)));
+  dayPlan.spare_minutes = finish > (hard !== null ? hard : day.dayEnd) ? 0 : Math.max(0, Math.min(1440, timeline.idle + (day.dayEnd - finish)));   // Phase 13 (A1): a day past its real end has none
   if (day.start) dayPlan.start = { name: day.start.name, time: hm(day.start.time) };
   if (day.end) dayPlan.end = { name: day.end.name, time: hm(day.end.time) };
   if (bag) {

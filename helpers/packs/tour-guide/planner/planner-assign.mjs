@@ -20,7 +20,7 @@ import { haversineKm, centroid } from './planner-geo.mjs';
 import { dayDate } from './planner-time.mjs';
 import { unfitCode } from './planner-hours.mjs';
 import { breakfastLen } from './planner-input.mjs';
-import { dayAnchors } from './planner-anchors.mjs';
+import { dayAnchors, END_MARGIN } from './planner-anchors.mjs';
 import { outlineCode, outlineCap, AREA_KM } from './planner-outline.mjs';
 
 export const FAR_KM = Object.freeze({ TRANSIT: 30, WALK: 12, DRIVE: 120 });
@@ -36,6 +36,9 @@ const reasonText = {
   closed_business: (c) => `${c.name} is listed as closed (not operational)`,
   closed_day: (c, d) => (d ? `${c.name} is closed on ${dayDate(d)}, the day you are near it` : `${c.name} is closed on every day of the trip`),
   outside_day: (c, d) => `${c.name} only opens outside your planning day (${d})`,
+  booked_outside_trip: (c, d) => `${c.name} is booked for ${d}, outside the trip's dates`,
+  booking_late: (c, day) => `${c.name}'s ${hhmm(c.booking.time)} booking on ${dayDate(day.date)} cannot finish before ${hhmm(day.end.time)}, when the day ends at ${day.end.name}`,
+  booking_early: (c, day) => `${c.name}'s ${hhmm(c.booking.time)} booking on ${dayDate(day.date)} is before the day starts at ${hhmm(day.start.time)} at ${day.start.name}`,
   outside_hours: (c) => `${c.name}'s opening hours are too short for a ${c.minutes}-minute visit inside the day`,
   too_far: (c, km) => `${c.name} is about ${Math.round(km)} km from the nearest lodging`,
   day_full: (c, d) => `no room left on ${dayDate(d)}, the closest day for ${c.name}`,
@@ -45,36 +48,58 @@ const reasonText = {
 };
 
 /** Later codes for the outline's own reasons (the Later code enum has no outline code). */
-const LATER_CODE = Object.freeze({ outside_area: 'too_far', outline_kind: 'day_full' });
+const LATER_CODE = Object.freeze({ outside_area: 'too_far', outline_kind: 'day_full', booked_outside_trip: 'other', booking_late: 'outside_day', booking_early: 'outside_day' });
 
-/** assign({ days, cands, rng, uncapped? }) → { byDate: { date: [cand] }, later: [{ cand, code, reason, from_date }] } */
-export function assign({ days, cands, rng, uncapped = false }) {
+/**
+ * Phase 13 (A3): a booking on its own day is never refused for the day's hours (planner-day.mjs widens the day to hold
+ * it); only a real end it cannot finish before (`end.time` less END_MARGIN) or a real start after it does. The place's
+ * hours are judged on the day's window stretched to the booking.
+ */
+function bookedCode(c, day) {
+  if (day.end && c.booking.time + c.minutes > day.end.time - END_MARGIN) return 'booking_late';
+  if (day.start && c.booking.time < day.start.time) return 'booking_early';
+  const lo = Math.min(day.dayStart + breakfastLen(day), c.booking.time);
+  const hi = day.end ? day.dayEnd : Math.max(day.dayEnd, c.booking.time + c.minutes);
+  return unfitCode(c.hours[day.date], c.minutes, lo, hi);
+}
+
+/**
+ * assign({ days, cands, rng, uncapped?, tripDates? }) → { byDate: { date: [cand] }, later: [{ cand, code, reason, from_date }] }
+ * `tripDates` (Phase 13, A13): every date of the trip, when `days` are only some of them (a re-plan); default the days'.
+ */
+export function assign({ days, cands, rng, uncapped = false, tripDates = null }) {
   const byDate = Object.fromEntries(days.map((d) => [d.date, []]));
   const later = [];
-  const cap = Object.fromEntries(days.map((d) => [d.date, uncapped ? (outlineCap(d, 1) ? Infinity : 0) : outlineCap(d, dayCapacity(d))]));
+  const cap = Object.fromEntries(days.map((d) => [d.date, d.noStops ? 0 : uncapped ? (outlineCap(d, 1) ? Infinity : 0) : outlineCap(d, dayCapacity(d))]));
   const drop = (cand, code, extra, from_date = null) => later.push({ cand, code: LATER_CODE[code] || code, reason: reasonText[code](cand, extra).slice(0, 300), from_date });
+  const inTrip = new Set(Array.isArray(tripDates) ? tripDates : days.map((d) => d.date));
 
   const feasible = new Map(); // cand.id → [{ date, day, km }]
   const pending = [];
   for (const c of cands) {
     if (!c.loc) { drop(c, 'other'); continue; }
+    // Phase 13 (A13): a booking dated outside the trip (a typo, say) says so, not "closed on every day".
+    if (c.booking && !inTrip.has(c.booking.date)) { drop(c, 'booked_outside_trip', bookedDate(c.booking.date, days), null); continue; }
     const codes = {};
     const ok = [], shut = [];
+    let edge = null;   // Phase 13 (A3): the booked day's real start or end it cannot meet
     for (const day of days) {
-      let code = unfitCode(c.hours[day.date], c.minutes, day.dayStart + breakfastLen(day), day.dayEnd);
-      if (!code && c.booking) {
-        if (c.booking.date !== day.date) code = 'booked_elsewhere';
-        else if (c.booking.time < day.dayStart || c.booking.time + c.minutes > day.dayEnd) code = 'outside_day';
-      }
+      let code = day.noStops ? 'day_full'   // Phase 13 (A2): a day whose fixed end comes before its fixed start
+        : c.booking && c.booking.date === day.date ? bookedCode(c, day)
+        : unfitCode(c.hours[day.date], c.minutes, day.dayStart + breakfastLen(day), day.dayEnd);
+      if (code === 'booking_late' || code === 'booking_early') edge = { code, day };
+      if (!code && c.booking && c.booking.date !== day.date) code = 'booked_elsewhere';
       if (!code && c.anchor && c.anchor !== day.date) code = 'anchored_elsewhere';
       if (!code && day.outline) code = outlineCode(c, day);
       if (code) { codes[code] = (codes[code] || 0) + 1; if (code === 'closed_day') shut.push({ date: day.date, day, km: haversineKm(c.loc, anchorOf(day)) }); continue; }
       ok.push({ date: day.date, day, km: haversineKm(c.loc, anchorOf(day)) });
     }
     if (!ok.length) {
+      if (edge) { drop(c, edge.code, edge.day, edge.day.date); continue; }
       const order = ['closed_business', 'outside_hours', 'outside_day', 'outside_area', 'outline_kind', 'closed_day', 'day_full'];
       const code = order.find((k) => codes[k]) || 'closed_day';
-      drop(c, code, code === 'outside_day' ? dayWindowText(days[0]) : undefined, c.booking ? c.booking.date : c.anchor || null);
+      const named = c.booking ? c.booking.date : c.anchor || null;
+      drop(c, code, code === 'outside_day' ? windowText(days, named) : undefined, named);
       continue;
     }
     const nearest = ok.reduce((a, b) => (b.km < a.km ? b : a));
@@ -125,6 +150,22 @@ export function assign({ days, cands, rng, uncapped = false }) {
   return { byDate, later };
 }
 
-function dayWindowText(day) { const h = (m) => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); return `${h(day.dayStart)}–${h(day.dayEnd)}`; }
+const hhmm = (m) => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+function dayWindowText(day) { return `${hhmm(day.dayStart)}–${hhmm(day.dayEnd)}`; }
+/**
+ * Phase 13 (A3): the window an outside_day reason quotes — the named day's (a booking's or an anchor's date: "on <day>"),
+ * else the days' common window, else the earliest start to the latest end across the days.
+ */
+function windowText(days, named) {
+  const day = named ? days.find((d) => d.date === named) : null;
+  if (day) return `${dayWindowText(day)} on ${dayDate(day.date)}`;
+  if (days.every((d) => d.dayStart === days[0].dayStart && d.dayEnd === days[0].dayEnd)) return dayWindowText(days[0]);
+  return `${hhmm(Math.min(...days.map((d) => d.dayStart)))}–${hhmm(Math.max(...days.map((d) => d.dayEnd)))} across the trip`;
+}
+/** A booking date for the owner: "Wed 12 May", with the year when it is not the trip's. */
+function bookedDate(date, days) {
+  const same = days.length && String(date).slice(0, 4) === days[0].date.slice(0, 4);
+  return same ? dayDate(date) : `${dayDate(date)} ${String(date).slice(0, 4)}`;
+}
 
 // Developed by: LightAISolutions

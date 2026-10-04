@@ -11,6 +11,8 @@
  * is not offered (its distance is unknown). A saved place is offered on one day only and must be open (its own facts
  * win) for at least EXTRAS.MIN_OPEN minutes between EXTRAS.AFTER_MIN after the day's finish and the day's end;
  * restaurants and cafes are left to dinner.
+ * Phase 13 (A12): no extra starts before the day's start plus its start step (`evening.ready`, the bag step on a moving
+ * day): an event under way by then is offered from that time while at least EXTRAS.MIN_OPEN minutes of it are left.
  *   sunsetFor(day, timeZone) → 'HH:MM' | null
  *   eveningExtras({ evening, date, season, places, snapshots, exclude, used }) → extras
  *   applyExtras(dayPlan, extras)
@@ -61,19 +63,29 @@ export function eveningExtras({ evening: ev, date, season, places = [], snapshot
   const origins = [ev.last && ev.last.cand.loc ? ev.last.cand.loc : null, ev.lodging].filter(isLoc);
   const dist = (loc) => Math.min(...origins.map((o) => haversineKm(o, loc)));
   const byId = new Map(places.map((p) => [p.id, p]));
+  // Phase 13 (A12): nothing starts before the day's start plus its start step (`ready`; the bag step on a moving day).
+  const ready = Number.isFinite(ev.ready) ? ev.ready : -Infinity;
   const events = (season && Array.isArray(season.events) ? season.events : []).filter((e) => runsThatEvening(e, date)).map((e) => {
     const loc = eventLoc(e, byId, snapshots);
     if (!loc) return null;
     const km = dist(loc);
     if (km > EXTRAS.RADIUS_KM) return null;
     const x = { kind: 'event', ref: e.id, name: String(e.name).slice(0, 120), km: km1(km) };
-    if (TIME_RE.test(e.start || '')) x.time = e.start;
+    if (TIME_RE.test(e.start || '')) {
+      const s = toMin(e.start);
+      if (s < ready) {   // under way before you arrive: offered from your arrival while enough of it is left, else not at all
+        const t = TIME_RE.test(e.end || '') ? toMin(e.end) : null;
+        const end = t === null ? null : t < s ? t + 1440 : t;
+        if (end === null || end - ready < EXTRAS.MIN_OPEN) return null;
+        x.time = hm(ready);
+      } else x.time = e.start;
+    }
     if (typeof e.note === 'string' && e.note.trim()) x.note = e.note.trim().slice(0, 160);
     return x;
   }).filter(Boolean).sort((a, b) => a.km - b.km || a.ref.localeCompare(b.ref));
   const out = events.slice(0, EXTRAS.MAX);
   if (out.length < EXTRAS.MAX && ev.dayEnd - ev.finish >= EXTRAS.EARLY_MIN) {
-    const from = ev.finish + EXTRAS.AFTER_MIN;
+    const from = Math.max(ev.finish + EXTRAS.AFTER_MIN, ready);
     const saved = [];
     for (const p of places) {
       if (!(p.status === 'saved-for-later' || later.has(p.id)) || exclude.has(p.id) || used.has(p.id) || FOOD.has(refineCategory(p))) continue;

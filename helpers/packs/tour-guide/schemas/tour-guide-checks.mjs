@@ -230,6 +230,8 @@ export function checkDayPlan(d) {
  *     reaches it, inside its window and starting by its last entry; the first leg leaves at or after the start's time and
  *     the day reaches 'day-end' by the end's time; the hotel bag step sits between the first two legs; dinner sits
  *     between the legs to and from its place.
+ *   · Phase 13 (A1, A2): a day without stops that carries an `over_long_day` alert may reach 'day-end' after the end's
+ *     time (a departure too early to fit, or an override whose end comes before its fixed start): the alert says so.
  * C12 (a re-plan from the current time, planner replanDays with `from`):
  *   · `visited` stops come first (no visited stop after one that is not);
  *   · one leg may start at the reserved point 'here' (a shared location): the first leg, or the leg after the one that
@@ -280,6 +282,9 @@ export function checkDayChain(d) {
   };
   if (d.start && toMinutes(L[0].depart_at) < toMinutes(d.start.time)) e('/legs/0/depart_at', `leaves before the day starts at ${d.start.time}`);
   const stopAt = new Map(S.map((s, k) => [s.place, k]));
+  // Phase 13 (A1, A2): a day without stops that misses its real end says so with an over_long_day alert; its start → end
+  // leg is shown as it runs, late.
+  const overrun = !S.length && (d.warnings || []).some((w) => w.severity === 'alert' && w.code === 'over_long_day');
   L.forEach((l, i) => {
     const { A, B } = item(`/legs/${i}`, l.depart_at, l.arrive_at);
     if (Math.abs(B - A - l.minutes) > 1) e(`/legs/${i}/minutes`, `${l.minutes} min does not match ${l.depart_at}–${l.arrive_at}`);
@@ -298,7 +303,7 @@ export function checkDayChain(d) {
       }
       if (s.last_entry && a - Math.floor(a / 1440) * 1440 > toMinutes(s.last_entry)) e(`/stops/${k}/arrive`, `arrives ${s.arrive}, after the last entry (${s.last_entry})`);
     } else if (dinner && l.to === dinner.at) item('/meals/dinner', dinner.start, dinner.end);
-    if (d.end && l.to === DAY_END && toMinutes(l.arrive_at) > toMinutes(d.end.time)) e(`/legs/${i}/arrive_at`, `reaches ${DAY_END} after ${d.end.time}`);
+    if (d.end && l.to === DAY_END && toMinutes(l.arrive_at) > toMinutes(d.end.time) && !overrun) e(`/legs/${i}/arrive_at`, `reaches ${DAY_END} after ${d.end.time}`);
   });
   return errs;
 }
