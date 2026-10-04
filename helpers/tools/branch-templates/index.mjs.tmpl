@@ -10,6 +10,6 @@
 {{/ENVELOPE}}{{^ENVELOPE}}export const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
 {{/ENVELOPE}}
 /** What the branch is wired as (the core module's @branch line says the same). */
-export const BRANCH = Object.freeze({ name: '{{NAME}}', command: '{{CMD}}', kind: '{{KIND}}', envelope: {{TYPE_JS}}, tab: {{TAB_JS}}, routine: '{{ROUTINE}}' });
+export const BRANCH = Object.freeze({ name: '{{NAME}}', command: '{{CMD}}', kind: '{{KIND}}', envelope: {{TYPE_JS}}, tab: {{TAB_JS}}, routine: '{{ROUTINE}}'{{#DISCOVER}}, discover: true{{/DISCOVER}} });
 
 // Developed by: LightAISolutions

@@ -1,8 +1,9 @@
 'use strict';
 // tools/new-branch.mjs (WP-14a) — the branch scaffold and its --check. Branches are generated in a temporary copy laid
-// out like the repo (<tmp>/helpers, plus <tmp>/live-site-pages when the repo has one): four shapes (everything; --no-tab;
-// --no-envelope; --no-envelope --no-tab --no-app) each pass their own check, their own test, the bundle, the boundary check
-// and the whole suite on that copy; a removed piece is named; every clash is refused; --dry-run writes nothing; --check
+// out like the repo (<tmp>/helpers, plus <tmp>/live-site-pages when the repo has one): five shapes (everything; --no-tab;
+// --no-envelope; --no-envelope --no-tab --no-app; and that bare shape with --discover, WP-14e) each pass their own check,
+// their own test, the bundle, the boundary check and the whole suite on that copy; without --discover the templates render
+// byte for byte as they did before the flag; a removed piece is named; every clash is refused; --dry-run writes nothing; --check
 // scout passes on the real tree. Invented data only; no network.
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
@@ -43,8 +44,9 @@ function snapshot(dir) {
   walk(dir);
   return out;
 }
-/** The four branch shapes, all generated into one copy (one suite run covers them together). */
-const SHAPES = { demo: [], notab: ['--no-tab'], noenv: ['--no-envelope'], bare: ['--no-envelope', '--no-tab', '--no-app'] };
+/** The branch shapes, all generated into one copy (one suite run covers them together). disc: WP-14e's --discover (C14). */
+const SHAPES = { demo: [], notab: ['--no-tab'], noenv: ['--no-envelope'], bare: ['--no-envelope', '--no-tab', '--no-app'],
+  disc: ['--no-envelope', '--no-tab', '--no-app', '--discover'] };
 const ENV_PARTS = ['envelope type', 'envelope handler', 'core validator', 'schema', 'pack validator', 'envelope tool', 'parity test'];
 let W = null;
 /** The shared copy: { root, pack, gas, before (helper.json before), written: { name: out } }. Tests in a file run in order. */
@@ -61,7 +63,7 @@ function world() {
 }
 const gasFile = (w, re) => fs.readdirSync(w.gas).find((f) => re.test(f));
 
-test('four shapes are written and each passes its own --check on the copy; "not needed" for what a shape leaves out', () => {
+test('every shape is written and passes its own --check on the copy; "not needed" for what a shape leaves out', () => {
   const w = world();
   for (const name of Object.keys(SHAPES)) {
     const r = tool(w.root, ['--check', name]);
@@ -80,11 +82,17 @@ test('four shapes are written and each passes its own --check on the copy; "not 
   assert.equal(rowOf(noenv, 'tab'), 'ok');
   const bare = check('bare');
   for (const part of [...ENV_PARTS, 'tab', 'app ops']) assert.equal(rowOf(bare, part), 'not needed', 'bare ' + part);
+  // --discover (C14): its own row; every shape without the flag says "not needed"
+  const disc = check('disc');
+  for (const part of [...ENV_PARTS, 'tab', 'app ops']) assert.equal(rowOf(disc, part), 'not needed', 'disc ' + part);
+  assert.equal(rowOf(disc, 'discover routing'), 'ok');
+  assert.match(disc, /"disc" in TG_DISCOVER_KINDS \(added in gas\/\d\d_disc\.js\)/);
+  for (const name of ['demo', 'notab', 'noenv', 'bare']) assert.equal(rowOf(check(name), 'discover routing'), 'not needed', name);
   // --no-envelope: no schema, no pack validator, no parity test, no helper.json or PAYLOAD_KINDS entry
   const m = JSON.parse(fs.readFileSync(path.join(w.pack, 'helper.json'), 'utf8'));
   assert.deepEqual(m.envelope_types, [...w.before.envelope_types, 'demo', 'notab']);
   const idx = fs.readFileSync(path.join(w.pack, 'schemas', 'index.mjs'), 'utf8');
-  for (const name of ['noenv', 'bare']) {
+  for (const name of ['noenv', 'bare', 'disc']) {
     assert.equal(fs.existsSync(path.join(w.pack, 'schemas', `tour-guide-${name}.schema.json`)), false, name);
     assert.equal(fs.existsSync(path.join(w.pack, name, `${name}-payload.mjs`)), false, name);
     assert.doesNotMatch(fs.readFileSync(path.join(w.root, 'tests', `pack_tour-guide_${name}.test.js`), 'utf8'), /parity/);
@@ -92,7 +100,7 @@ test('four shapes are written and each passes its own --check on the copy; "not 
     assert.doesNotMatch(fs.readFileSync(path.join(w.gas, gasFile(w, new RegExp(`^\\d\\d_${name}\\.js$`))), 'utf8'), /registerEnvelopeHandler/);
   }
   // --no-tab: no registerSheet; the app ops read no tab of their own and say so
-  for (const name of ['notab', 'bare']) assert.doesNotMatch(fs.readFileSync(path.join(w.gas, gasFile(w, new RegExp(`^\\d\\d_${name}\\.js$`))), 'utf8'), /registerSheet\(/);
+  for (const name of ['notab', 'bare', 'disc']) assert.doesNotMatch(fs.readFileSync(path.join(w.gas, gasFile(w, new RegExp(`^\\d\\d_${name}\\.js$`))), 'utf8'), /registerSheet\(/);
   assert.match(fs.readFileSync(path.join(w.gas, gasFile(w, /^\d\d_notab_app\.js$/)), 'utf8'), /TODO \(--no-tab\)/);
   assert.equal(gasFile(w, /^\d\d_bare_app\.js$/), undefined, '--no-app writes no app file');
   // numbering: core modules in the 1x–2x band, then after 40; app files after 32_app_api.js; helper.json keeps its one-line layout
@@ -121,7 +129,7 @@ const PINNED = [
   ['pack_tour-guide_schemas.test.js', 'every kind has a schema file in the validator subset'],
   ['tools_envelope.test.js', 'output passes core validateEnvelope and uses the canonical file name']
 ];
-test('the whole suite passes on the copy with all four branches (only the type-list pins of PINNED may fail)', () => {
+test('the whole suite passes on the copy with every branch shape (only the type-list pins of PINNED may fail)', () => {
   const w = world();
   const r = node(['--test', '--test-reporter=tap', path.join('helpers', 'tests') + path.sep], path.dirname(w.root));
   const out = r.stdout || '';
@@ -147,10 +155,13 @@ test('the generated core and app modules load in the GAS harness of the copy', (
   }
   assert.ok(ctx.getEnvelopeHandler('demo') && ctx.getEnvelopeHandler('notab'));
   assert.equal(ctx.getEnvelopeHandler('noenv'), null);
+  assert.equal(ctx.TG_DISCOVER_KINDS.filter((k) => k === 'disc').length, 1, '--discover lists the kind once');
+  assert.deepEqual(['demo', 'notab', 'noenv', 'bare'].filter((n) => ctx.TG_DISCOVER_KINDS.includes(n)), []);
   assert.ok(Object.keys(ctx.allSheetSchemas()).includes('Demos') && Object.keys(ctx.allSheetSchemas()).includes('Noenvs'));
-  assert.ok(!Object.keys(ctx.allSheetSchemas()).some((t) => /^(Notabs|Bares)$/.test(t)));
+  assert.ok(!Object.keys(ctx.allSheetSchemas()).some((t) => /^(Notabs|Bares|Discs)$/.test(t)));
   assert.deepEqual(['demo', 'notab', 'noenv'].map((n) => typeof ctx.TG_APP_OPS[n + '.get']), ['object', 'object', 'object']);
   assert.equal(ctx.TG_APP_OPS['bare.get'], undefined);
+  assert.equal(ctx.TG_APP_OPS['disc.get'], undefined);
 });
 /** Change one file, run --check, put the file back. → the check's { code, out } */
 function without(w, file, change, name) {
@@ -182,6 +193,20 @@ test('removing one piece makes --check fail (exit 1) naming it', () => {
     assert.match(r.out, new RegExp(`incomplete — missing: .*${part}`), part);
   }
   assert.equal(tool(w.root, ['--check', 'demo']).code, 0, 'every piece is back');
+  // --discover (C14): the module's own push is the piece; without it the kind is not a discovery kind
+  const disc = path.join(w.gas, gasFile(w, /^\d\d_disc\.js$/));
+  const d = without(w, disc, edit("if (TG_DISCOVER_KINDS.indexOf('disc') < 0) TG_DISCOVER_KINDS.push('disc');", ''), 'disc');
+  assert.equal(d.code, 1, d.out);
+  assert.equal(rowOf(d.out, 'discover routing'), 'missing');
+  assert.match(d.out, /the @branch line says discover=yes but "disc" is not in TG_DISCOVER_KINDS/);
+  assert.match(d.out, /incomplete — missing: discover routing/);
+  // a line without the key means no: the row is "not needed" and the check passes
+  const k = without(w, disc, edit(' discover=yes', ''), 'disc');
+  assert.equal(k.code, 0, k.out);
+  assert.equal(rowOf(k.out, 'discover routing'), 'ok', 'still listed by its own push');
+  const both = without(w, disc, (f, s) => fs.writeFileSync(f, s.replace(' discover=yes', '').replace(/^if \(TG_DISCOVER_KINDS.*\n/m, '')), 'disc');
+  assert.equal(both.code, 0, both.out);
+  assert.equal(rowOf(both.out, 'discover routing'), 'not needed');
 });
 
 test('--no-tab and --no-envelope are read from the @branch line: removing the line makes --check name the missing tab', () => {
@@ -304,8 +329,48 @@ test('library: render nests sections and refuses unknown keys; helper.json and s
   assert.equal(B.addPayloadKind(once.text, 'new_type', 'new-type').changed, false);
   assert.deepEqual(B.parseMarker('x\n// @branch demo command=/demo kind=demo envelope=- tab=- routine=RESEARCH app=-\n'),
     { name: 'demo', command: '/demo', kind: 'demo', envelope: '-', tab: '-', routine: 'RESEARCH', app: '-' });
+  assert.deepEqual(B.parseMarker('// @branch disc command=/disc kind=disc envelope=- tab=- routine=RESEARCH app=- discover=yes\n').discover, 'yes');
+  assert.equal(B.resolveOptions({ name: 'demo' }).discover, false);
+  assert.equal(B.resolveOptions({ name: 'demo', discover: true }).discover, true);
+  assert.equal(B.parseArgs(['demo', '--discover']).discover, true);
   assert.equal(B.resolveOptions({ name: 'lists' }).tab, 'Lists', 'no double s');
   assert.equal(B.resolveOptions({ name: 'demo' }).tab, 'Demos');
+});
+
+test('--discover (WP-14e, C14): without the flag every template renders byte for byte as with its DISCOVER sections cut out', async () => {
+  const B = await import('../tools/new-branch.mjs');
+  const files = [];
+  const walk = (d) => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const f = path.join(d, e.name); if (e.isDirectory()) walk(f); else if (f.endsWith('.tmpl')) files.push(f); } };
+  walk(B.TEMPLATE_DIR);
+  let sections = 0;
+  for (const f of files) {
+    const t = fs.readFileSync(f, 'utf8'), vars = {};
+    for (const m of t.matchAll(/\{\{([A-Z_]+)\}\}/g)) vars[m[1]] = `<${m[1]}>`;
+    const cut = t.replace(/\{\{#DISCOVER\}\}[\s\S]*?\{\{\/DISCOVER\}\}/g, () => { sections++; return ''; });
+    assert.doesNotMatch(cut, /DISCOVER\}\}/, path.basename(f) + ': only {{#DISCOVER}} sections');
+    for (const flags of [{ ENVELOPE: true, TAB: true, APP: true }, { ENVELOPE: false, TAB: false, APP: false }]) {
+      assert.equal(B.render(t, vars, { ...flags, DISCOVER: false }), B.render(cut, vars, flags), path.basename(f));
+    }
+  }
+  assert.ok(sections >= 4, 'the core module, its test, the README and index.mjs carry DISCOVER sections');
+});
+
+test('--discover writes the same routing lines /compare carries by hand, and --check compare shows the row on the real tree', () => {
+  const w = world();
+  const core = fs.readFileSync(path.join(w.gas, gasFile(w, /^\d\d_disc\.js$/)), 'utf8');
+  const marker = /^\/\/ @branch disc .*$/m.exec(core)[0];
+  assert.ok(marker.endsWith(' app=- discover=yes'), marker);
+  const real = fs.readFileSync(path.join(REAL, 'packs', 'tour-guide', 'gas', '29_compare.js'), 'utf8');
+  const lines = (src, kind) => src.split('\n').filter((l) => l.includes(`'${kind}'`) && /TG_KIND_ROUTINE|TG_DISCOVER_KINDS/.test(l)).map((l) => l.split(`'${kind}'`).join("'K'"));
+  assert.deepEqual(lines(core, 'disc'), lines(real, 'compare'));
+  assert.equal(lines(core, 'disc').length, 2);
+  assert.match(fs.readFileSync(path.join(w.pack, 'disc', 'index.mjs'), 'utf8'), /routine: 'RESEARCH', discover: true \}\);/);
+  assert.match(fs.readFileSync(path.join(w.pack, 'disc', 'README.md'), 'utf8'), /--discover/);
+  assert.doesNotMatch(fs.readFileSync(path.join(w.pack, 'bare', 'index.mjs'), 'utf8'), /discover/);
+  const r = node([path.join(REAL, 'tools', 'new-branch.mjs'), '--check', 'compare'], path.dirname(REAL));
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.equal(rowOf(r.stdout, 'discover routing'), 'ok');
+  assert.match(r.stdout, /\ncomplete\s*$/);
 });
 
 // Developed by: LightAISolutions

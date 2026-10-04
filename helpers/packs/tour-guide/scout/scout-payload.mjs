@@ -8,8 +8,8 @@ import { GOOGLE_FIELDS } from '../gems/gems-project.mjs';
 import { ratingBand } from '../gems/gems-line.mjs';
 import { placeUrl } from '../../../kits/maps/lib/maps-urls.mjs';
 import { validatePayload, assertValid, formatErrors, isDate } from '../schemas/index.mjs';
-import { LEFT_OUT_MAX, LABELS, LABELS_MAX } from './scout-weights.mjs';
-import { ownName } from './scout-rank.mjs';
+import { LEFT_OUT_MAX, LABELS, LABELS_MAX, COMPARE_FLAGS } from './scout-weights.mjs';
+import { ownName, compareQuery } from './scout-rank.mjs';
 
 const CATEGORY_RE = /^[a-z][a-z0-9-]{0,31}$/;
 const clip = (s, max) => { const t = String(s ?? '').replace(/\s+/g, ' ').trim(); return t.length > max ? t.slice(0, max - 1).trimEnd() + '…' : t; };
@@ -66,6 +66,8 @@ function uniqueSlug(base, used) {
  * `rated` is our band word for the rating; `diet` is kept for food only. An item's `name` is the place's own name when
  * the judgment gave one (rankScout's `own_name`), else Google's, shown for this board only. `known` (place ids already
  * in the owner's Places, an array or a Set) labels those items `seen_before`, as rankScout does (TG-PHASE-13 WP-13d).
+ * A compare ranking (rankScout mode "compare", TG-PHASE-14 WP-14e) gives a compare board: `mode: "compare"`, the
+ * ranking's `source`, `query` = compareQuery(source) (`a.query` is not used) and each item's non-empty `flags`.
  */
 export function scoutPayload(a = {}) {
   const ranked = a.ranked;
@@ -73,6 +75,7 @@ export function scoutPayload(a = {}) {
   const slugs = a.slugs || {}, areas = a.areas || {}, categories = a.categories || {};
   const group = a.group || ranked.group;
   const known = a.known instanceof Set ? a.known : new Set(Array.isArray(a.known) ? a.known : []);
+  const compare = ranked.mode === 'compare';   // TG-PHASE-14 WP-14e: mode, source, query "compare: …", item flags
   const used = new Set();
   const items = ranked.items.map((it, i) => {
     const rec = it.record || {};
@@ -90,9 +93,12 @@ export function scoutPayload(a = {}) {
     if (it.reach && Number.isFinite(it.reach.minutes)) out.reach = { minutes: Math.min(600, Math.max(0, Math.round(it.reach.minutes))), mode: it.reach.mode, estimated: it.reach.estimated === true };
     out.maps_url = placeUrl({ name: it.name, placeId: it.place_id });
     out.place_id = it.place_id;
+    if (compare && Array.isArray(it.flags) && it.flags.length) out.flags = COMPARE_FLAGS.filter((f) => it.flags.includes(f)).slice(0, 8);
     return out;
   });
-  const p = { v: 1, kind: 'scout', scout_id: a.scout_id, query: clip(a.query, 80), destination: a.destination, place_label: clip(a.place_label, 80) };
+  const p = { v: 1, kind: 'scout' };
+  if (compare) { p.mode = 'compare'; p.source = JSON.parse(JSON.stringify(ranked.source)); }
+  Object.assign(p, { scout_id: a.scout_id, query: compare ? compareQuery(ranked.source) : clip(a.query, 80), destination: a.destination, place_label: clip(a.place_label, 80) });
   if (a.trip) p.trip = a.trip;
   p.group = group;
   p.created_on = a.created_on;

@@ -23,8 +23,14 @@ var TG_SETTINGS = {
   SMART: 'tg_smart'                        // 'on' | 'off' — the owner's /smart toggle for Lane B (30_chat_api.js); unset = CHAT_API_ENABLED, default off
 };
 
+/**
+ * The discovery kinds (TG-PHASE-14 WP-14e, item 16): one DISCOVER routine answers them all when it is configured, so they
+ * never queue behind trip research. A branch made with `new-branch.mjs --discover` adds its kind from its own file.
+ */
+var TG_DISCOVER_KINDS = ['scout', 'compare', 'lists', 'vegcard'];
 function tgKindRoutine(kind) {
   var k = String(kind || '');
+  if (TG_DISCOVER_KINDS.indexOf(k) >= 0 && routineConfigured('DISCOVER')) return 'DISCOVER';   // else today's rule, below
   if (k === 'scout') return routineConfigured('SCOUT') ? 'SCOUT' : 'RESEARCH';   // TG-SCOUT §2: own routine when set
   return Object.prototype.hasOwnProperty.call(TG_KIND_ROUTINE, k) ? TG_KIND_ROUTINE[k] : HELPER.inbound_routine;
 }

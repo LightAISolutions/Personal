@@ -26,6 +26,7 @@ still has all its parts. It extends Tour-Guide-style packs, which provide `tgOpe
 | Pack validator `validate<Type>Payload` and `build<Type>Payload` | `packs/<pack>/<name>/<name>-payload.mjs` | `--no-envelope` |
 | The type in `helper.json` `envelope_types` | `packs/<pack>/helper.json` (appended, layout kept) | `--no-envelope` |
 | App ops `<name>.get { id }` and `<name>.list {}` | `packs/<pack>/gas/<NN>_<name>_app.js` | `--no-app` |
+| The kind in `TG_DISCOVER_KINDS` (a discovery kind), plus a test that a configured `DISCOVER` routine gets the request | the core module | added only with `--discover` |
 | Pack folder: `index.mjs` (`BRANCH`), `README.md`, an invented fixture | `packs/<pack>/<name>/` | — |
 | Tests: registration, the command, and (when there is an envelope) parity of the three validators and the handler, plus the app ops | `tests/pack_<pack>_<name>.test.js` | — |
 | Private skill: `SKILL.md`, `<name>-start.mjs`, `<name>-finish.mjs` (they import from `vendor/helpers/…`) | `<private-out>/<name>/` | written only with `--private-out` |
@@ -37,6 +38,18 @@ any unused number from 01 to 99. The app file adds to `TG_APP_OPS`, so it must l
 
 **Routing.** The core module sets `TG_KIND_ROUTINE['<kind>'] = '<ROUTINE>'` when it loads. `tgKindRoutine` reads the
 table when it is called, so `00_common.js` is never edited.
+
+**With `--discover`.** The kind is a discovery kind. The core module also adds it to `TG_DISCOVER_KINDS` from its own
+file, and only when it is not there yet:
+
+```
+if (TG_DISCOVER_KINDS.indexOf('<kind>') < 0) TG_DISCOVER_KINDS.push('<kind>');
+```
+
+When a `DISCOVER` routine is configured, `tgKindRoutine` sends the kind there. When none is, the kind keeps its own
+routing above. The `@branch` line ends in `discover=yes`, `BRANCH` in `index.mjs` gains `discover: true`, and the
+branch's test checks the `DISCOVER` route. Without the flag, every file is byte for byte what it was before the flag
+existed.
 
 **With `--no-tab`.** There is no `registerSheet` and no store functions. The handler only tells the owner. The app ops
 read nothing yet, and a `TODO (--no-tab)` says where to read from. The header asks you to say where the branch keeps its
@@ -50,7 +63,7 @@ or `schemas/index.mjs`. The private skill answers with a `reply` envelope.
 ```
 node helpers/tools/new-branch.mjs <name> [--pack tour-guide] [--title "<Title>"] [--command /<cmd>] [--kind <kind>]
   [--envelope <type>] [--routine RESEARCH] [--tab <Tab>] [--no-app] [--no-envelope] [--no-tab] [--prefix NN]
-  [--private-out <dir>] [--dry-run] [--force]
+  [--discover] [--private-out <dir>] [--dry-run] [--force]
 ```
 
 - `<name>` matches `[a-z][a-z0-9]{1,23}`. The defaults are: command `/<name>`, kind `<name>`, envelope type `<name>`,
@@ -80,7 +93,7 @@ node helpers/tools/new-branch.mjs --check <name> [--pack tour-guide]
 ```
 
 It reads code, never a registry file. It loads the pack in the GAS harness, reads the sources, and prints one row per
-part: `pack loads`, `core module`, `command`, `kind request`, `kind routing`, `envelope type`, `envelope handler`,
+part: `pack loads`, `core module`, `command`, `kind request`, `kind routing`, `discover routing`, `envelope type`, `envelope handler`,
 `core validator`, `schema`, `pack validator`, `envelope tool` (whether `PAYLOAD_KINDS` has the type, so that
 `envelope.mjs --pack` accepts it), `parity test`, `tab` and `app ops`. Each row is `ok`, `missing` or `not needed`. The
 exit code is 0 when the branch is complete and 1 when anything is missing.
@@ -88,11 +101,19 @@ exit code is 0 when the branch is complete and 1 when anything is missing.
 **How the check knows a part is not needed.** A generated core module carries one line:
 
 ```
-// @branch <name> command=/<cmd> kind=<kind> envelope=<type|-> tab=<Tab|-> routine=<ROUTINE> app=<yes|->
+// @branch <name> command=/<cmd> kind=<kind> envelope=<type|-> tab=<Tab|-> routine=<ROUTINE> app=<yes|-> [discover=yes]
 ```
 
 - `-` means "not needed", from `--no-envelope`, `--no-tab` or `--no-app`. The check reports those parts as
   `not needed`, and checks the others against the names on the line.
+- `discover=yes` comes from `--discover`. A line without the key means no, and it still parses. The `discover routing`
+  row reads:
+  - `ok` when the kind is in `TG_DISCOVER_KINDS` (the detail names the file that adds it);
+  - `missing` when the line says `discover=yes` but the kind is not in the list;
+  - `not needed` when the kind is not a discovery kind and the line does not declare it.
+
+  A branch without the line is never `missing` this row. Discovery is optional, so the row is `ok` when the kind is
+  listed and `not needed` otherwise.
 - A hand-built branch without the line, Scout for example, is expected to have every part. Its names are read from its
   code: the first `registerCommand`, `tgOpenKindRequest` and `registerEnvelopeHandler` in `gas/<NN>_<name>.js`, the
   tab from that file's `registerSheet`, and the ops `TG_APP_OPS['<name>.…']`.

@@ -5,7 +5,7 @@
  * → (app ops). Usage:
  *   node helpers/tools/new-branch.mjs <name> [--pack tour-guide] [--title "<Title>"] [--command /<cmd>] [--kind <kind>]
  *     [--envelope <type>] [--routine RESEARCH] [--tab <Tab>] [--no-app] [--no-envelope] [--no-tab] [--prefix NN]
- *     [--private-out <dir>] [--dry-run] [--force]
+ *     [--discover] [--private-out <dir>] [--dry-run] [--force]
  *   node helpers/tools/new-branch.mjs --check <name> [--pack tour-guide]
  * Exit: 0 written / complete · 1 the check found a missing part · 2 a usage error, a clash or a pack it cannot extend.
  * Reads code, never a registry file: the check loads the pack in the GAS harness and reads its source.
@@ -101,7 +101,10 @@ export const PLUMBING = Object.freeze(['TG_KIND_ROUTINE', 'tgKindRoutine', 'tgOp
   'tgEnvObj', 'tgEnvHead', 'tgEnvStr', 'tgEnvSlug', 'tgEnvSize', 'tgEnvDone', 'tgEnvCleaned', 'tgTripCurrent', 'tgTripGet', 'tgCmdTitle',
   'tgOwnerChat', 'tgSend', 'tgEscape', 'tgShStr', 'TG_SLUG_RE']);
 
-/** The @branch line of a core module → { name, command, kind, envelope, tab, routine, app } ("-" = not needed), or null. */
+/**
+ * The @branch line of a core module → { name, command, kind, envelope, tab, routine, app[, discover] } ("-" = not needed), or
+ * null. `discover=yes` (--discover, WP-14e) marks a discovery kind; a line without the key means no and parses as before.
+ */
 export function parseMarker(raw) {
   const m = /^\/\/ @branch ([a-z][a-z0-9_-]*)((?: [a-z]+=\S+)*)[ \t]*$/m.exec(raw || '');
   if (!m) return null;
@@ -146,7 +149,7 @@ export function resolveOptions(o = {}) {
     name, pack: o.pack || 'tour-guide', title: o.title || cap(name), command: o.command || '/' + name, kind: o.kind || name,
     envelope: o.noEnvelope ? null : (o.envelope || name), tab: o.noTab ? null : (o.tab || cap(name) + (name.endsWith('s') ? '' : 's')),
     routine: String(o.routine || 'RESEARCH').toUpperCase(), app: !o.noApp, prefix: o.prefix == null ? null : String(o.prefix),
-    privateOut: o.privateOut || null, force: !!o.force
+    privateOut: o.privateOut || null, force: !!o.force, discover: !!o.discover
   };
   const want = (k, re, v) => { if (v !== null && !re.test(v)) errs.push(`${k} must match ${re} (got "${v}")`); };
   want('--pack', RE.pack, b.pack); want('--title', RE.title, b.title); want('--command', RE.command, b.command);
@@ -281,12 +284,13 @@ export function planBranch(o, root = HELPERS_ROOT) {
   try { ctx = loadContext(p, own); } catch (e) { throw fail2(`pack ${p.pack} does not load in the GAS harness: ${e.message}`); }
   const lacking = PLUMBING.filter((k) => !(k in ctx));
   if (lacking.length) throw fail2(`pack ${p.pack} lacks what a branch calls: ${lacking.join(', ')} (new-branch extends Tour-Guide-style packs)`);
+  if (b.discover && !Array.isArray(ctx.TG_DISCOVER_KINDS)) throw fail2(`--discover needs TG_DISCOVER_KINDS (gas/00_common.js), which pack ${p.pack} lacks`);
   const idx = schemasIndexPath(p);
   if (b.envelope && !(existsSync(idx) && payloadKindsBlock(read(idx)))) throw fail2(`an envelope needs packs/${p.pack}/schemas/index.mjs with PAYLOAD_KINDS (or pass --no-envelope)`);
   const clashes = findClashes(b, p, ctx, own);
   const plan = { branch: b, pack: p, clashes, writes: [], removes: [], notes: [] };
   if (clashes.length) return plan;
-  const nums = pickNumbers(b, p, own), v = branchVars(b, p, nums), flags = { ENVELOPE: !!b.envelope, TAB: !!b.tab, APP: b.app };
+  const nums = pickNumbers(b, p, own), v = branchVars(b, p, nums), flags = { ENVELOPE: !!b.envelope, TAB: !!b.tab, APP: b.app, DISCOVER: b.discover };
   const tmpl = (f) => read(join(TEMPLATE_DIR, f));
   const put = (path, content, change = false) => plan.writes.push({ path, rel: relative(root, path), content, change });
   const pkg = join(p.dir, b.name);
@@ -387,6 +391,15 @@ export async function checkBranch(name, { pack = 'tour-guide', root = HELPERS_RO
   if (!routed) row('kind routing', 'missing', `"${d.kind}" is not in TG_KIND_ROUTINE (it would fall to the default routine)`);
   else if (d.routine && routine !== d.routine) row('kind routing', 'missing', `"${d.kind}" routes to ${routine}; the @branch line says ${d.routine}`);
   else row('kind routing', 'ok', `"${d.kind}" → ${routine}`);
+  // discover routing (--discover, WP-14e): declared by `discover=yes`; a line without the key, or no line, means not declared
+  const listed = live((c) => (Array.isArray(c.TG_DISCOVER_KINDS) ? c.TG_DISCOVER_KINDS.indexOf(d.kind) >= 0 : null));
+  const adder = p.files.find((f) => f.code.includes(`TG_DISCOVER_KINDS.push('${d.kind}')`));
+  const listedAt = adder ? `added in gas/${adder.file}` : `listed by ${whereIs(p, 'TG_DISCOVER_KINDS')}`;
+  if (listed) row('discover routing', 'ok', `"${d.kind}" in TG_DISCOVER_KINDS (${listedAt}) → DISCOVER when that routine is configured` +
+    (decl && decl.discover !== 'yes' ? '; the @branch line does not say discover=yes' : ''));
+  else if (decl && decl.discover === 'yes') row('discover routing', 'missing', `the @branch line says discover=yes but "${d.kind}" is not in TG_DISCOVER_KINDS` +
+    (listed === null ? ' (the pack has no TG_DISCOVER_KINDS)' : ''));
+  else row('discover routing', 'not needed', decl ? 'not a discovery kind (no discover=yes on the @branch line)' : 'not a discovery kind (not in TG_DISCOVER_KINDS)');
   const ENV_PARTS = ['envelope type', 'envelope handler', 'core validator', 'schema', 'pack validator', 'envelope tool', 'parity test'];
   if (d.envelope === '-') for (const part of ENV_PARTS) row(part, 'not needed', '--no-envelope (@branch envelope=-)');
   else {
@@ -439,10 +452,10 @@ export async function checkBranch(name, { pack = 'tour-guide', root = HELPERS_RO
 
 const VALUE_FLAGS = { pack: 'pack', title: 'title', command: 'command', kind: 'kind', envelope: 'envelope', routine: 'routine', tab: 'tab',
   prefix: 'prefix', 'private-out': 'privateOut', check: 'check' };
-const BOOL_FLAGS = { 'no-app': 'noApp', 'no-envelope': 'noEnvelope', 'no-tab': 'noTab', 'dry-run': 'dryRun', force: 'force' };
+const BOOL_FLAGS = { 'no-app': 'noApp', 'no-envelope': 'noEnvelope', 'no-tab': 'noTab', 'dry-run': 'dryRun', force: 'force', discover: 'discover' };
 const USAGE = 'usage: node helpers/tools/new-branch.mjs <name> [--pack tour-guide] [--title "<Title>"] [--command /<cmd>] [--kind <kind>]\n' +
   '         [--envelope <type>] [--routine RESEARCH] [--tab <Tab>] [--no-app] [--no-envelope] [--no-tab] [--prefix NN]\n' +
-  '         [--private-out <dir>] [--dry-run] [--force]\n' +
+  '         [--discover] [--private-out <dir>] [--dry-run] [--force]\n' +
   '       node helpers/tools/new-branch.mjs --check <name> [--pack tour-guide]';
 
 /** argv → options; throws BranchError on an unknown flag, a missing value or a stray argument. */

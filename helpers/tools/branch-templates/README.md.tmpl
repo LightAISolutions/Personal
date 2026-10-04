@@ -5,7 +5,8 @@ A branch of the {{DISPLAY}} pack, written by `node helpers/tools/new-branch.mjs 
 | Part | Where |
 |---|---|
 | Command `{{CMD}}` → request kind `{{KIND}}` `{ trip }`, routed to `{{ROUTINE}}` | `gas/{{CORE_FILE}}` |
-{{#TAB}}| Tab `{{TAB}}` (one row per trip: `id`, `trip`, `received_at`, `payload_json`) | `gas/{{CORE_FILE}}` |
+{{#DISCOVER}}| A discovery kind (`--discover`): `{{KIND}}` is added to `TG_DISCOVER_KINDS`, so a configured `DISCOVER` routine gets it instead | `gas/{{CORE_FILE}}` |
+{{/DISCOVER}}{{#TAB}}| Tab `{{TAB}}` (one row per trip: `id`, `trip`, `received_at`, `payload_json`) | `gas/{{CORE_FILE}}` |
 {{/TAB}}{{^TAB}}| No tab of its own (`--no-tab`): say in the core module's header where the branch keeps its data | `gas/{{CORE_FILE}}` |
 {{/TAB}}
 {{#ENVELOPE}}| Envelope `{{TYPE}}`: core validator `tgEnvValidate{{TYPE_PASCAL}}` and its handler (registered only while `helper.json` lists the type) | `gas/{{CORE_FILE}}` |

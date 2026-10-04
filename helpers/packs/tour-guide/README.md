@@ -355,6 +355,18 @@ Engine inputs and outputs added in phase 13 (WP-13d):
 - **`parseScoutText`** returns `{ what, where, city, area }` and splits on the same separators in the same order as the core's `tgScoutParse` (the last " in ", then " near ", "@", ","), so the engine and the core read a request the same way. The core sends the request's `text` exactly as typed (`/scout …`); the old fields are only a convenience.
 - **The board** groups back-to-back dates with the same hours (`hoursRows`) and no longer stops at seven dates.
 
+**Compare** (Phase 14, WP-14e; `helpers/decisions/TG-SCOUT.md` §11). `/compare` (`gas/29_compare.js`, pack side `compare/`) puts two to four named places, or one of the owner's lists, side by side. `rankScout(pool, { …, mode: 'compare', source })` ranks a given pool: there is no topic screen, and every other screen except `duplicate` becomes an item flag instead of a drop. Hard flags (`closed`, `closed_on_trip`, `diet`) sort last, and a list is cut to 10 places. The answer is a `scout` payload with `mode: "compare"` and `source`. The core stores it in the Scouts tab and titles it "⚖️ Compare — …" on the card, on the board and on the Scout screen, with one "⚠️" line per warning.
+
+## Discover routing
+
+The discovery kinds are listed in `TG_DISCOVER_KINDS` (`gas/00_common.js`): `scout`, `compare`, `lists` and `vegcard`. They are separate from trip research, so they can run in one Discover routine instead of queueing behind it (Phase 14, WP-14e).
+- **With a `DISCOVER` routine configured** (`ROUTINE_FIRE_URL_DISCOVER` / `ROUTINE_FIRE_TOKEN_DISCOVER`), `tgKindRoutine` sends every discovery kind there.
+- **Without one**, every kind routes exactly as before:
+  - `scout` goes to `SCOUT` when that routine is set, else to `RESEARCH`;
+  - `compare`, `lists` and `vegcard` follow `TG_KIND_ROUTINE` (`RESEARCH`).
+- Other kinds never move.
+- **New branches.** `node helpers/tools/new-branch.mjs <name> --discover` writes a branch whose core module adds its kind to the list from its own file, so `00_common.js` is not edited. `--check` shows a `discover routing` row (`helpers/tools/README.md`, "Branches").
+
 ## Veg card — `vegcard/`
 The party's "what we cannot eat" card for one trip, in the destination's language and English (Phase 14, C14; contract and defaults: `vegcard/README.md`, `helpers/decisions/WP-14c.md`). Library only, no network: `vegCard({ party, country, trip })` builds the payload from the phrase table (`vegcard-phrases.json`; Japanese only for now, English alone elsewhere), `vegCardFp` fingerprints it, `vegCardTelegram` renders the chat card and `vegCardHtml` a printable brochure page.
 

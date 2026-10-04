@@ -52,7 +52,17 @@ test('{{CMD}}: a `{{KIND}}` request for the current trip; with no trip a hint an
   assert.equal(requests(state).length, 0);
   assert.match(texts(state).join('\n'), /no current trip/);
 });
-{{#ENVELOPE}}
+{{#DISCOVER}}
+test('{{CMD}}: `{{KIND}}` is a discovery kind (--discover): listed once, and a configured DISCOVER routine gets the request', () => {
+  const { ctx, state } = fresh();
+  assert.equal(ctx.TG_DISCOVER_KINDS.filter((k) => k === '{{KIND}}').length, 1);
+  H.configureRoutine(ctx, state, 'DISCOVER');
+  assert.equal(ctx.tgKindRoutine('{{KIND}}'), 'DISCOVER');
+  say(ctx, state, '{{CMD}}');
+  assert.equal(requests(state).length, 1);
+  assert.equal(J(ctx.storeAll('Requests'))[0].routine, 'DISCOVER');
+});
+{{/DISCOVER}}{{#ENVELOPE}}
 test('{{TYPE}} parity: the core validator, the pack validator and the schema agree on every fixture', async () => {
   const { ctx } = fresh();
   const pack = await import('../packs/{{PACK}}/{{NAME}}/index.mjs');

@@ -41,8 +41,10 @@ export const LABEL_TEXT = Object.freeze({
 export const REASON_TEXT = Object.freeze({
   off_topic: 'not really about it', diet: 'nothing vegetarian-safe', diet_unproven: 'vegetarian not confirmed',
   low_rating: 'poorly rated', unproven: 'too few ratings and no local word', closed: 'closed', closed_on_trip: 'closed on every trip day',
-  too_far: 'too far', duplicate: 'listed twice', other: 'other'
+  too_far: 'too far', duplicate: 'listed twice', not_found: 'not found', other: 'other'
 });
+/** A compare board (TG-PHASE-14 WP-14e): what was compared, as one line — the list's name or the names. */
+const sourceText = (payload) => (payload.source && payload.source.list ? payload.source.list : payload.source && Array.isArray(payload.source.names) ? payload.source.names.join(', ') : '');
 const PRICE_TEXT = { PRICE_LEVEL_FREE: 'free', PRICE_LEVEL_INEXPENSIVE: 'inexpensive', PRICE_LEVEL_MODERATE: 'moderate', PRICE_LEVEL_EXPENSIVE: 'expensive', PRICE_LEVEL_VERY_EXPENSIVE: 'very expensive' };
 const MODE_TEXT = { WALK: 'walk', TRANSIT: 'by transit', DRIVE: 'drive' };
 const DAY3 = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -153,6 +155,7 @@ h2{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--mute
 .hours .closed{color:var(--alert);font-weight:700}
 .try{margin-top:6px;font-size:13px}
 .why{margin-top:4px;font-size:13px;font-style:italic;color:var(--ink2)}
+.warn{margin-top:4px;font-size:13px;color:var(--alert);font-weight:600}
 .bars{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;margin-top:8px}
 .bar{font-size:10px;color:var(--muted)}
 .bar i{display:block;height:5px;background:var(--hair);border-radius:3px;margin-top:2px;overflow:hidden}
@@ -208,7 +211,8 @@ function mapSection({ payload, map, anchor, locations, app }) {
   return `<section class="map"><h2>Map</h2>${routeSketch({ points, legs: [], w: 640, h: 420, hue: COLORS.accent, title: 'Sketch of the picks' })}<div class="mapnote">A drawn sketch (not to scale with streets); numbers match the ranks below.</div></section>`;
 }
 
-function cardHtml(it, { g, payload, trip_dates, app }) {
+function cardHtml(it, { g, payload, trip_dates, app, reasonText }) {
+  const compare = payload.mode === 'compare';
   const url = httpsUrl(it.maps_url);
   const name = esc(it.name);
   const photo = photoOk(g.photo, app);
@@ -217,8 +221,10 @@ function cardHtml(it, { g, payload, trip_dates, app }) {
   const hrs = hoursRows(g.hours, trip_dates);
   const hoursHtml = hrs ? `<div class="hours">${hrs.map((h) => `${esc(h.label)} <span${h.closed ? ' class="closed"' : ''}>${esc(h.text)}</span>`).join(' · ')}</div>`
     : (g.hours && Array.isArray(g.hours.weekdayDescriptions) && g.hours.weekdayDescriptions.length ? `<div class="hours">${esc(clip(g.hours.weekdayDescriptions.join('; '), 320))}</div>` : '');
-  // Five bars (WP-14b change 6); a payload from before `local` shows its four.
-  const bars = [['on topic', it.parts.topic], ['quality', it.parts.quality], ['fit', it.parts.fit], ...(Number.isFinite(it.parts.local) ? [['local', it.parts.local]] : []), ['reach', it.parts.reach]]
+  // Five bars (WP-14b change 6); a payload from before `local` shows its four. A compare board has no topic bar
+  // (the topic part is 1 for every place, WP-14e) and shows each flag as one warning line.
+  const warns = compare && Array.isArray(it.flags) ? it.flags.map((f) => `<div class="warn">⚠️ ${esc(reasonText(f))}</div>`).join('') : '';
+  const bars = [...(compare ? [] : [['on topic', it.parts.topic]]), ['quality', it.parts.quality], ['fit', it.parts.fit], ...(Number.isFinite(it.parts.local) ? [['local', it.parts.local]] : []), ['reach', it.parts.reach]]
     .map(([k, v]) => `<div class="bar">${esc(k)}<i><b style="width:${Math.min(100, Math.max(0, Math.round(v)))}%"></b></i></div>`).join('');
   const chips = it.labels.map((l) => `<span class="chip">${esc(LABEL_TEXT[l] || l)}</span>`).join('');
   const site = httpsUrl(g.website);
@@ -226,7 +232,7 @@ function cardHtml(it, { g, payload, trip_dates, app }) {
   return `<li class="card" id="pick-${esc(it.n)}">
 <div class="card-head"><div class="rank">${esc(it.n)}</div><div><div class="name">${url ? `<a href="${attr(url)}">${name}</a>` : name}</div><div class="area">${esc([it.area, it.category].filter(Boolean).join(' · '))}</div></div><div class="score">${esc(it.score)}/100</div></div>
 ${photo ? `<figure class="ph"><img src="${attr(photo)}" alt="${attr('Photo of ' + it.name)}" loading="lazy"><figcaption>Photo: ${cr.join(', ') || 'Google user'} · via Google</figcaption></figure>` : ''}
-${facts ? `<div class="facts">${facts}</div>` : ''}${hoursHtml}
+${facts ? `<div class="facts">${facts}</div>` : ''}${hoursHtml}${warns}
 ${it.try ? `<div class="try"><b>Try:</b> ${esc(it.try)}</div>` : ''}
 <div class="why">${esc(it.why_you)}</div>
 <div class="bars">${bars}</div>
@@ -235,13 +241,15 @@ ${links ? `<div class="links">${links}</div>` : ''}
 </li>`;
 }
 
-function compareHtml(payload, google, trip_dates) {
+function compareHtml(payload, google, trip_dates, reasonText) {
   const veg = (it) => (it.labels.includes('veg_verified') ? 'verified' : it.labels.includes('veg_likely') ? 'likely' : '—');
+  const compare = payload.mode === 'compare';   // WP-14e: a Warnings column
   const rows = payload.items.map((it) => {
     const g = google[it.place_id] || {};
-    return `<tr><td>${esc(it.n)}</td><td>${esc(it.name)}</td><td>${esc(ratingText(g).replace(/^★ /, '') || '—')}</td><td>${esc(priceText(g.price_level) || '—')}</td><td>${esc(it.reach ? `${it.reach.minutes} min` : '—')}</td><td>${esc(openSummary(g.hours, trip_dates))}</td><td>${esc(veg(it))}</td></tr>`;
+    const warn = compare ? `<td>${esc((it.flags || []).map(reasonText).join('; ') || '—')}</td>` : '';
+    return `<tr><td>${esc(it.n)}</td><td>${esc(it.name)}</td><td>${esc(ratingText(g).replace(/^★ /, '') || '—')}</td><td>${esc(priceText(g.price_level) || '—')}</td><td>${esc(it.reach ? `${it.reach.minutes} min` : '—')}</td><td>${esc(openSummary(g.hours, trip_dates))}</td><td>${esc(veg(it))}</td>${warn}</tr>`;
   }).join('');
-  return `<section class="compare-sec"><h2>Compare</h2><div class="tablewrap"><table class="compare"><thead><tr><th>#</th><th>Name</th><th>Rating</th><th>Price</th><th>Reach</th><th>Open on your days</th><th>Veg</th></tr></thead><tbody>${rows}</tbody></table></div></section>`;
+  return `<section class="compare-sec"><h2>Compare</h2><div class="tablewrap"><table class="compare"><thead><tr><th>#</th><th>Name</th><th>Rating</th><th>Price</th><th>Reach</th><th>Open on your days</th><th>Veg</th>${compare ? '<th>Warnings</th>' : ''}</tr></thead><tbody>${rows}</tbody></table></div></section>`;
 }
 
 /**
@@ -267,27 +275,30 @@ export function renderScoutBoard({ payload, google = {}, map = null, anchor = nu
   const cityDays = Array.isArray(city_dates);
   const dates = [...new Set((cityDays ? city_dates : Array.isArray(trip_dates) ? trip_dates : []).filter(isDate))].sort();
   const n = payload.items.length;
-  const title = `${payload.query.charAt(0).toUpperCase()}${payload.query.slice(1)} in ${payload.place_label}`;
-  const sub = [`${n} pick${n === 1 ? '' : 's'}, ranked for you`, payload.from ? `reach from ${payload.from}` : '', options.built_on && isDate(options.built_on) ? `built ${options.built_on}` : ''].filter(Boolean).map(esc).join(' · ');
-  const cards = payload.items.map((it) => cardHtml(it, { g: G[it.place_id] || {}, payload, trip_dates: dates, app })).join('\n');
+  const compare = payload.mode === 'compare';   // TG-PHASE-14 WP-14e: a compare board
+  const title = compare ? `Compare — ${sourceText(payload)}` : `${payload.query.charAt(0).toUpperCase()}${payload.query.slice(1)} in ${payload.place_label}`;
+  const sub = [compare ? `${n} place${n === 1 ? '' : 's'}, side by side` : `${n} pick${n === 1 ? '' : 's'}, ranked for you`, payload.from ? `reach from ${payload.from}` : '', options.built_on && isDate(options.built_on) ? `built ${options.built_on}` : ''].filter(Boolean).map(esc).join(' · ');
   const reasonText = (r) => (r === 'closed_on_trip' && cityDays ? 'closed on every day you are there' : REASON_TEXT[r] || r);
+  const cards = payload.items.map((it) => cardHtml(it, { g: G[it.place_id] || {}, payload, trip_dates: dates, app, reasonText })).join('\n');
   const left = payload.left_out.length ? `<section><h2>Left out</h2><ul class="left">${payload.left_out.map((l) => `<li>${esc(l.name)} — ${esc(reasonText(l.reason))}</li>`).join('')}</ul></section>` : '';
-  const more = payload.more ? `<div class="more">${esc(payload.more)} more ranked pick${payload.more === 1 ? '' : 's'} not shown.</div>` : '';
+  const more = !payload.more ? '' : compare ? `<div class="more">${esc(payload.more)} more place${payload.more === 1 ? '' : 's'} on the list not shown.</div>`
+    : `<div class="more">${esc(payload.more)} more ranked pick${payload.more === 1 ? '' : 's'} not shown.</div>`;
+  const dietLine = !payload.diet ? '' : compare ? `<div class="diet">${esc('Checked for ' + payload.diet)}</div>` : `<div class="diet">${esc('Every pick has something ' + payload.diet)}</div>`;
   const logo = existsSync(LOGO_PATH) ? readFileSync(LOGO_PATH, 'utf8').replace(/<\?xml[^>]*>|<!--[\s\S]*?-->/g, '').replace(/<script[\s\S]*?<\/script>/gi, '').trim() : '';
   const photoCredits = payload.items.filter((it) => photoOk((G[it.place_id] || {}).photo, app)).map((it) => `<li value="${esc(it.n)}">${esc(it.name)}: ${credits(G[it.place_id].photo).join(', ') || 'Google user'}</li>`).join('');
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="${attr(BOARD_CSP)}">
 <meta name="referrer" content="no-referrer"><meta name="brochure-page" content="${esc(page.key)}"><meta name="scout-id" content="${attr(payload.scout_id)}">
-<title>${esc('Scout — ' + title)}</title>
+<title>${esc(compare ? title : 'Scout — ' + title)}</title>
 <style>${css({ page, fontCss })}</style></head>
 <body><main class="board">
-<header class="mast"><div class="kicker">Scout</div><h1>${esc(title)}</h1><div class="sub">${sub}</div>${payload.diet ? `<div class="diet">${esc('Every pick has something ' + payload.diet)}</div>` : ''}</header>
+<header class="mast"><div class="kicker">${compare ? 'Compare' : 'Scout'}</div><h1>${esc(title)}</h1><div class="sub">${sub}</div>${dietLine}</header>
 ${mapSection({ payload, map, anchor, locations: L, app })}
-<section><h2>The picks</h2><ol class="cards">
+<section><h2>${compare ? 'The places' : 'The picks'}</h2><ol class="cards">
 ${cards}
 </ol>${more}</section>
-${n ? compareHtml(payload, G, dates) : ''}
+${n ? compareHtml(payload, G, dates, reasonText) : ''}
 ${left}
 <section class="attrib"><div class="logo">${logo ? `<span role="img" aria-label="Google Maps">${logo}</span> ` : ''}Places data, ratings, hours, photos and map © Google. Ranks, scores and notes are ours.</div>${photoCredits ? `<div>Photo credits:</div><ol>${photoCredits}</ol>` : ''}</section>
 <footer>Scout board ${esc(payload.scout_id)} · a comparison sheet, not an itinerary.</footer>

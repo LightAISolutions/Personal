@@ -13,9 +13,11 @@ var TG_APP_SCOUT_MAX_CHARS = 900000;   // scout.board answers the HTML inline up
 var TG_APP_SCOUT_LIST = 20;
 
 function tgAppScoutHead(rec) {
-  return { id: rec.id, created_on: rec.created_on, query: rec.query, destination: rec.destination, place_label: rec.place_label,
+  var head = { id: rec.id, created_on: rec.created_on, query: rec.query, destination: rec.destination, place_label: rec.place_label,
     trip: rec.trip, group: rec.group, count: rec.count, has_board: !!rec.drive_html, has_pdf: !!rec.drive_pdf,
     received_at: rec.received_at };
+  if (rec.mode === 'compare') { head.mode = 'compare'; head.source = rec.source; }   // WP-14e: a scout board's head is unchanged
+  return head;
 }
 function tgAppScoutArg(args) {
   var id = tgAppStr(args, 'id', { required: true, max: 64, re: TG_SCOUT.ID_RE });

@@ -44,6 +44,14 @@ export const LIMIT_DEFAULT = 10;
 export const LIMIT_MAX = 20;
 export const LEFT_OUT_MAX = 20;
 /**
+ * Compare mode (TG-PHASE-14 WP-14e, item 12): at most COMPARE_MAX places on a board; each screen but `duplicate` and
+ * `off_topic` becomes a flag (COMPARE_FLAGS, in SCREEN_ORDER); a place with a HARD_FLAGS flag sorts after every place
+ * without one, the other flags only show.
+ */
+export const COMPARE_MAX = 10;
+export const COMPARE_FLAGS = Object.freeze(SCREEN_ORDER.filter((r) => r !== 'duplicate' && r !== 'off_topic'));
+export const HARD_FLAGS = Object.freeze(['closed', 'closed_on_trip', 'diet']);
+/**
  * Estimated reach (no route matrix row, change 7): the planner's walking minutes (planner-rail walkMinutes) up to this
  * many, else the planner's rail estimate (railEstimate). 20 is the private driver's walking limit (TG-SCOUT §8 Reach).
  */

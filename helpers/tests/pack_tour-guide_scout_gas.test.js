@@ -137,7 +137,8 @@ test('the scout envelope: stored in the Scouts tab (own fields only), the ranked
   assert.equal(rows.length, 1);
   const r = rows[0];
   assert.deepEqual(Object.keys(r).filter((k) => k !== '_row').sort(), ['count', 'created_on', 'destination', 'drive_html', 'drive_pdf', 'group', 'id', 'items_json',
-    'left_json', 'place_label', 'query', 'received_at', 'trip'].sort());
+    'left_json', 'place_label', 'query', 'received_at', 'trip', 'mode', 'source_json'].sort());   // C14: mode, source_json (compare boards, WP-14e)
+  assert.deepEqual([r.mode, r.source_json], ['', ''], 'C14: a scout board leaves both blank');
   assert.deepEqual([r.id, r.query, r.destination, r.place_label, r.trip, r.group, Number(r.count), r.drive_html, r.drive_pdf],
     [SID, 'matcha', TRIP, 'Port Sorrel, Fictland', TRIP, 'food', 3, 'fixtureBoardHtml01', 'fixtureBoardPdf01']);
   const items = JSON.parse(r.items_json);

@@ -1,6 +1,7 @@
 /**
  * {{DISPLAY}} pack — {{TITLE}}: a branch written by helpers/tools/new-branch.mjs (helpers/tools/README.md "Branches").
- *   {{CMD}} → request kind `{{KIND}}` { trip } for the current trip, routed to {{ROUTINE}} (TG_KIND_ROUTINE, below)
+ *   {{CMD}} → request kind `{{KIND}}` { trip } for the current trip, routed to {{ROUTINE}} (TG_KIND_ROUTINE, below){{#DISCOVER}}, or to DISCOVER when that
+ *     routine is configured (a discovery kind: --discover, TG_DISCOVER_KINDS below){{/DISCOVER}}
 {{#ENVELOPE}} *   envelope `{{TYPE}}` → validated (tgEnvValidate{{TYPE_PASCAL}}, mirror of schemas/{{SCHEMA_FILE}} and of
  *     packs/{{PACK}}/{{NAME}}/{{NAME}}-payload.mjs), {{#TAB}}stored in the {{TAB}} tab (one row per trip; a re-delivery replaces
  *     it), {{/TAB}}then one short line to the owner
@@ -11,12 +12,14 @@
  * validators, the fixture){{/ENVELOPE}}. Other pack files' names are touched only inside functions, at run time.
  * The @branch line below tells `new-branch.mjs --check {{NAME}}` what this branch declares ("-" = not needed); keep it in step.
  */
-// @branch {{NAME}} command={{CMD}} kind={{KIND}} envelope={{TYPE_OR_DASH}} tab={{TAB_OR_DASH}} routine={{ROUTINE}} app={{APP_OR_DASH}}
+// @branch {{NAME}} command={{CMD}} kind={{KIND}} envelope={{TYPE_OR_DASH}} tab={{TAB_OR_DASH}} routine={{ROUTINE}} app={{APP_OR_DASH}}{{#DISCOVER}} discover=yes{{/DISCOVER}}
 var TG_{{UPPER}} = { {{#TAB}}SHEET: '{{TAB}}', {{/TAB}}NOTE_MAX: 200, PAYLOAD_MAX: 40000, LIST_MAX: 20 };
 
 // The kind's routing, added from this file: tgKindRoutine (00_common.js) reads the table at call time.
 TG_KIND_ROUTINE['{{KIND}}'] = '{{ROUTINE}}';
-{{#TAB}}
+{{#DISCOVER}}// A discovery kind (--discover): with a DISCOVER routine configured, tgKindRoutine sends it there instead.
+if (TG_DISCOVER_KINDS.indexOf('{{KIND}}') < 0) TG_DISCOVER_KINDS.push('{{KIND}}');
+{{/DISCOVER}}{{#TAB}}
 registerSheet(TG_{{UPPER}}.SHEET, ['id', 'trip', 'received_at', 'payload_json']);
 {{/TAB}}
 /* ==================== asking ==================== */

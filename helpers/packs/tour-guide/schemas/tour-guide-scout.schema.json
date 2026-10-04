@@ -2,13 +2,21 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "tour-guide-scout.schema.json",
   "title": "Tour Guide scout (payload of the `scout` envelope)",
-  "description": "One Scout run (helpers/decisions/TG-SCOUT.md §3): a ranked list of places for one food or activity in one place, with the items left out and why. Own data only: our scores, our words, a rating band word, our reach estimate, a Maps link. No Google field (rating, count, hours, price, address, website, photos) is allowed: every object refuses unknown keys. schemas/index.mjs also checks: the whole payload ≤ 60 000 characters, items numbered 1..N in order, slugs and place ids unique, labels unique, created_on and the scout_id's date are calendar dates.",
+  "description": "One Scout run (helpers/decisions/TG-SCOUT.md §3): a ranked list of places for one food or activity in one place, with the items left out and why. Own data only: our scores, our words, a rating band word, our reach estimate, a Maps link. No Google field (rating, count, hours, price, address, website, photos) is allowed: every object refuses unknown keys. schemas/index.mjs also checks: the whole payload ≤ 60 000 characters, items numbered 1..N in order, slugs and place ids unique, labels unique, created_on and the scout_id's date are calendar dates. A compare board (TG-PHASE-14 C14 wave 2) is the same payload with mode \"compare\", its source and item flags; source, flags and the not_found reason appear only on a compare board, and a compare board must carry source (the root anyOf).",
   "type": "object",
   "additionalProperties": false,
   "required": ["scout_id", "query", "destination", "place_label", "group", "created_on", "items", "left_out"],
   "properties": {
     "v": { "const": 1 },
     "kind": { "const": "scout" },
+    "mode": { "enum": ["scout", "compare"], "description": "Absent = scout (payloads from before TG-PHASE-14 C14 wave 2)." },
+    "source": {
+      "description": "What a compare board compared: the names the owner typed (two to four), or one of the owner's lists.",
+      "anyOf": [
+        { "type": "object", "additionalProperties": false, "required": ["names"], "properties": { "names": { "type": "array", "minItems": 2, "maxItems": 4, "items": { "type": "string", "minLength": 1, "maxLength": 120 } } } },
+        { "type": "object", "additionalProperties": false, "required": ["list"], "properties": { "list": { "type": "string", "minLength": 1, "maxLength": 80 } } }
+      ]
+    },
     "scout_id": { "type": "string", "pattern": "^sc-\\d{8}-[a-z0-9-]{1,40}$" },
     "query": { "type": "string", "minLength": 1, "maxLength": 80 },
     "destination": { "$ref": "#/$defs/slug" },
@@ -28,7 +36,7 @@
         "required": ["name", "reason"],
         "properties": {
           "name": { "type": "string", "minLength": 1, "maxLength": 120 },
-          "reason": { "enum": ["off_topic", "diet", "diet_unproven", "low_rating", "unproven", "closed", "closed_on_trip", "too_far", "duplicate", "other"] }
+          "reason": { "enum": ["off_topic", "diet", "diet_unproven", "low_rating", "unproven", "closed", "closed_on_trip", "too_far", "duplicate", "not_found", "other"] }
         }
       }
     },
@@ -42,6 +50,18 @@
       }
     }
   },
+  "anyOf": [
+    {
+      "description": "A scout board (mode absent or \"scout\"): no source, no item flags, no not_found.",
+      "propertyNames": { "pattern": "^(?!source$)" },
+      "properties": {
+        "mode": { "const": "scout" },
+        "items": { "items": { "propertyNames": { "pattern": "^(?!flags$)" } } },
+        "left_out": { "items": { "properties": { "reason": { "enum": ["off_topic", "diet", "diet_unproven", "low_rating", "unproven", "closed", "closed_on_trip", "too_far", "duplicate", "other"] } } } }
+      }
+    },
+    { "description": "A compare board: mode \"compare\" and its source.", "required": ["mode", "source"], "properties": { "mode": { "const": "compare" } } }
+  ],
   "$defs": {
     "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
     "date": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" },
@@ -68,6 +88,7 @@
         "why_you": { "type": "string", "minLength": 1, "maxLength": 200, "description": "Our own words; never review or page text." },
         "try": { "type": "string", "minLength": 1, "maxLength": 120 },
         "labels": { "type": "array", "maxItems": 8, "items": { "enum": ["gem", "veg_verified", "veg_likely", "booking", "queue", "cash_only", "chain", "new", "seen_before", "far", "not_judged"] } },
+        "flags": { "type": "array", "maxItems": 8, "items": { "enum": ["closed", "closed_on_trip", "low_rating", "unproven", "diet", "diet_unproven", "too_far"] }, "description": "Compare boards only: the screens this place failed, shown instead of dropping it (hard: closed, closed_on_trip, diet; the rest only show)." },
         "rated": { "type": "string", "minLength": 1, "maxLength": 40, "pattern": "^[^0-9]*$", "description": "A rating band word; never the number." },
         "reach": {
           "type": "object",
