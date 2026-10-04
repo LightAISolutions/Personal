@@ -13,7 +13,7 @@ import { hoursOn } from './planner-hours.mjs';
 import { isLoc } from './planner-geo.mjs';
 import { refineCategory, MEAL_CATEGORIES } from './planner-category.mjs';
 import { overrideFor } from './planner-anchors.mjs';
-import { placeFacts, factsHours, factsMinutes } from './planner-facts.mjs';
+import { placeFacts, factsHours, factsMinutes, placeCheckNote } from './planner-facts.mjs';
 import { avoidsCrowds } from './planner-crowd.mjs';
 import { factsStale } from '../facts/index.mjs';
 
@@ -186,7 +186,8 @@ export async function prepare(input) {
       booking, hint, hours
     };
     if (cm.fixed && !official) cand.fixed = true;   // a set session (booking length or a ceremony/class): never shortened, exact time
-    if (typeof p.opening_note === 'string' && p.opening_note.trim()) cand.opening_note = p.opening_note.trim().slice(0, 160);
+    const checkNote = placeCheckNote(p);   // Phase 13 (B7): the place's opening_note, then its facts' irregular_note
+    if (checkNote) cand.opening_note = checkNote;
     if (facts) {   // only a place with facts carries the new stop fields, so an old plan's stops are unchanged
       cand.minutes_source = booked || official ? 'official' : est && (est.range || est.typical) ? 'research' : 'estimate';
       if (facts.last_entry_text) cand.last_entry = facts.last_entry_text;

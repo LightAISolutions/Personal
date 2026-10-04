@@ -52,7 +52,7 @@ import { coveredFor, isIndoor } from './planner-rain.mjs';
 
 export { PlanBudgetError, SKU, extraCallsFor } from './planner-budget.mjs';
 export { solveDay, WEIGHT, MAX_STOPS } from './planner-solve.mjs';
-export { hoursOn, earliestFit, unfitCode, knownWindows, irregularText, IRREGULAR_LINE_RE } from './planner-hours.mjs';
+export { hoursOn, earliestFit, unfitCode, knownWindows, irregularText, IRREGULAR_LINE_RE, HOLIDAY_CAVEAT_RE, lineWeekday, lineForWeekday, isIrregularLine, irregularWeekdays } from './planner-hours.mjs';
 export { assign, FAR_KM, CAP, dayCapacity } from './planner-assign.mjs';
 export { prepare, buildDays, lodgingForNight, modeFor, isWithheldDinner, PACE, withOverride, CLAMP_MINUTES, oldFactsDate, planToday } from './planner-input.mjs';
 export { localToIso, weekdayOf, dateRange, toMin, hm, dayDate } from './planner-time.mjs';
@@ -67,10 +67,10 @@ export { guardNote, guardNoteFields, noteConflict, clockOf, NOTE_RULES } from '.
 export { refineCategory, withRefinedCategory, minVisit, MIN_VISIT, COVERED_SIGHTS, MEAL_CATEGORIES, NEW_CATEGORIES } from './planner-category.mjs';
 export { rainSwaps, isIndoor, isCoveredSight, MAX_SWAPS, SWAP_KM, INDOOR_CATEGORIES, OUTDOOR_CATEGORIES } from './planner-rain.mjs';
 export { overrideFor, dayAnchors, bagsText, BAGS, BAG_KINDS, END_MARGIN, START_SLUG, END_SLUG, LODGING_SLUG } from './planner-anchors.mjs';
-export { placeFacts, factsHours, factsMinutes, ownHoursConflict, CLOSE_TOLERANCE_MINUTES, MENU_FITS } from './planner-facts.mjs';
+export { placeFacts, factsHours, factsMinutes, ownHoursConflict, CLOSE_TOLERANCE_MINUTES, MENU_FITS, placeCheckNote, closedWeekdaysOf } from './planner-facts.mjs';
 export { avoidsCrowds, crowdWindows, crowdSlotOf, CROWD_SLOT, CROWD_RULE_RE } from './planner-crowd.mjs';
 export { sunsetLocal, sunsetUtcMinutes, SUNSET_ZENITH } from './planner-sun.mjs';
-export { prepareDinners, addDinners, dinnerBooking, bookingFor, bookingRecordLine, DINNER } from './planner-dinner.mjs';
+export { prepareDinners, addDinners, dinnerBooking, bookingFor, bookingRecordLine, DINNER, dinnerMenu, MENU_RANK } from './planner-dinner.mjs';
 export { sunsetFor, eveningExtras, applyExtras, runsThatEvening, EXTRAS } from './planner-evening.mjs';
 export { schedWindows, legRecord, estimatedWarning, BACK_EARLY_NOTE, END_SPARE_NOTE } from './planner-day.mjs';
 export { checkDayChain } from './planner-chain.mjs';
@@ -114,7 +114,7 @@ async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [],
   const days = ctx.days.filter((d) => dates.includes(d.date)).map((d) => (restart && d.date === restart.date ? restart.day : d));   // C12: the rest of a re-planned day
   const { byDate, later: unassigned } = assign({ days, cands: pool, rng: ctx.rng, tripDates: ctx.days.map((d) => d.date) });   // Phase 13 (A13): a re-plan still knows the whole trip
   // Phase 11: the dinner pool (saved places that fit the diet), prepared before the budget so its legs are counted.
-  const dinnerPool = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch });
+  const dinnerPool = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch, today: ctx.today, diet: input.profile && input.profile.diet ? input.profile.diet : null });
   const budget = budgetFor({ days, byDate, ledger: input.maps.ledger || null, ...(dinnerPool.length ? { dinner: true } : {}) });
   if (!budget.within_ceiling && !input.allowOverBudget) throw new PlanBudgetError(budget);
   const built = [], evenings = [];
@@ -303,7 +303,7 @@ export async function outlinePools(input) {
     capacity[day.date] = outlineCap(day, dayCapacity(day));
     days[day.date] = day;
   }
-  const dinnerPool = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch });
+  const dinnerPool = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch, today: ctx.today, diet: input.profile && input.profile.diet ? input.profile.diet : null });
   return { trip: ctx.trip, dates: ctx.days.map((d) => d.date), days, pools, anchors, capacity, unplaced: later, dinners: dinnerHomes(ctx, dinnerPool), dinner: dinnerPool.length > 0, withheld: ctx.withheld.map((c) => c.id), saved: ctx.saved.map((p) => p.id), today: ctx.today };
 }
 
@@ -340,7 +340,7 @@ export async function estimateBudget(input) {
   const ch = resolveChoices(input && input.places, input && input.choices, true);
   const ctx = await context(ch ? { ...input, places: ch.places } : input);
   const { byDate } = assign({ days: ctx.days, cands: ctx.cands, rng: ctx.rng });
-  const dinner = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch }).length > 0;
+  const dinner = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch, today: ctx.today, diet: input.profile && input.profile.diet ? input.profile.diet : null }).length > 0;
   return budgetFor({ days: ctx.days, byDate, ledger: input.maps.ledger || null, ...(dinner ? { dinner } : {}) });
 }
 
