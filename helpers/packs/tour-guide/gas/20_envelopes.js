@@ -241,12 +241,13 @@ function tgEnvDayC11(errs, at, d) {
   if (d.extras !== undefined && tgEnvArr(errs, at + '.extras', d.extras, 3)) {
     d.extras.forEach(function (x, j) {
       var ax = at + '.extras[' + j + ']';
-      if (!tgEnvObj(errs, ax, x, ['kind', 'name'], ['time', 'maps_url', 'note_line'])) return;
+      if (!tgEnvObj(errs, ax, x, ['kind', 'name'], ['time', 'maps_url', 'note_line', 'chosen'])) return;   // C15: chosen
       if (x.kind !== undefined) tgEnvEnum(errs, ax + '.kind', x.kind, TG_ENV_EXTRA_KINDS);
       if (x.name !== undefined) tgEnvStr(errs, ax + '.name', x.name, 1, 120);
       if (x.time !== undefined) tgEnvTime(errs, ax + '.time', x.time);
       if (x.maps_url !== undefined) tgEnvUrl(errs, ax + '.maps_url', x.maps_url);
       if (x.note_line !== undefined) tgEnvStr(errs, ax + '.note_line', x.note_line, 1, 160);
+      if (x.chosen !== undefined && x.chosen !== true) errs.push(ax + '.chosen must be true when present');   // C15 (WP-15b)
     });
   }
 }

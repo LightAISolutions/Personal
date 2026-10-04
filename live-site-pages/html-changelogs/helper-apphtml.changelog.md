@@ -3,11 +3,18 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 13/50`
+`Sections: 14/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.14w] — 2026-10-04 06:53:49 AM EST — v01.69r
+
+### Added
+- A Day trips screen: your boards of day trips worth taking from a base, each with the ride time, why it is worth it and what to know about the season; keep the ones you like, put a kept trip on one of your planned days, or ask for a new board from another base and ride limit
+- A What's on screen: what is on in a place over your dates, grouped by day, with the source of each item; choose things for a day (it asks which day when an item runs over several), re-plan that day to fit it in, or look up another place and dates
+- The day view marks what you chose for an evening with ⭐ under "This evening"
 
 ## [v01.13w] — 2026-10-04 03:32:45 AM EST — v01.67r
 

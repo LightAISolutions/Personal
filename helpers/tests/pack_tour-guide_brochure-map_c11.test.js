@@ -134,6 +134,17 @@ test('the season keeps only events on the trip dates, https links, card places, 
   assert.equal(bm.toBrochureModel(input).season, undefined, 'a season sheet without a checked date is skipped');
 });
 
+// C15 (WP-15b): the season sheet's exhibitions and performances reach the brochure's season page like the older kinds.
+test('the season keeps an exhibition and a performance on the trip dates', async () => {
+  const { bm, sampleInputC11 } = await load();
+  const input = sampleInputC11();
+  const on = input.trip.season.events.find((e) => e.name === 'Founders Day');
+  input.trip.season.events.push({ id: 'kiln-prints', name: 'Kiln prints', kind: 'exhibition', from: on.from, to: on.to || on.from },
+    { id: 'shanty-night', name: 'Shanty night', kind: 'performance', from: on.from, to: on.from, start: '19:30', end: '21:00' });
+  const ev = bm.toBrochureModel(input).season.events;
+  assert.deepEqual(['Kiln prints', 'Shanty night'].map((n) => (ev.find((e) => e.name === n) || {}).kind), ['exhibition', 'performance']);
+});
+
 test('the formatter: visit length, closed days, booking rule, price, diet and last entry', async () => {
   const { facts: f } = await load();
   assert.equal(f.visitText({ min: 60, max: 90 }), 'about 60–90 min');

@@ -4,7 +4,7 @@
  *   validate(trip, 'trip') → { ok: true, errors: [] } | { ok: false, errors: [{ path: '/lodging/0/to', message }] }
  * Each kind has one JSON Schema file (tour-guide-<kind>.schema.json) in the draft 2020-12 subset the brochure kit's
  * validator understands (helpers/kits/brochure/lib/validate.mjs — reused, not copied), plus semantic checks
- * (tour-guide-checks.mjs) that run once the schema passes. Eleven kinds are envelope payloads (PAYLOAD_KINDS, validatePayload). A Plan's days[], later[] and places[] are validated
+ * (tour-guide-checks.mjs) that run once the schema passes. Thirteen kinds are envelope payloads (PAYLOAD_KINDS, validatePayload). A Plan's days[], later[] and places[] are validated
  * against their own schemas (the subset has no cross-file $ref) with paths prefixed by their position.
  */
 import { readFileSync } from 'node:fs';
@@ -15,6 +15,8 @@ import { checkTrip, checkPlace, checkSnapshot, checkEstimate, checkCalibration, 
   checkShortlist, checkTripFacts, checkPlanDigest, checkProfileSummary, checkPrefsReview, checkPlacesDigest,
   checkBooking, checkBookings, checkScout, checkOutline, checkDayVersions } from './tour-guide-checks.mjs';
 import { checkVegCard } from '../vegcard/vegcard-payload.mjs';   // C14 (TG-PHASE-14 WP-14c): the veg card's own checks
+import { checkDaytrip } from '../daytrip/daytrip-payload.mjs';   // C15 (TG-PHASE-15 WP-15a): the day-trip board's own checks
+import { checkWhatson } from '../whatson/whatson-check.mjs';   // C15 (TG-PHASE-15 WP-15b): the What's on board's own checks
 
 export const SCHEMA_DIR = dirname(fileURLToPath(import.meta.url));
 const KINDS = Object.freeze({
@@ -40,7 +42,9 @@ const KINDS = Object.freeze({
   'scout': checkScout,
   'outline': checkOutline,
   'day-versions': checkDayVersions,
-  'veg-card': checkVegCard
+  'veg-card': checkVegCard,
+  'daytrip': checkDaytrip,
+  'whatson': checkWhatson
 });
 /** Envelope type (helper.json envelope_types) → schema kind of its payload. */
 export const PAYLOAD_KINDS = Object.freeze({
@@ -54,7 +58,9 @@ export const PAYLOAD_KINDS = Object.freeze({
   scout: 'scout',
   outline: 'outline',
   day_versions: 'day-versions',
-  veg_card: 'veg-card'
+  veg_card: 'veg-card',
+  daytrip: 'daytrip',
+  whatson: 'whatson'
 });
 /** Parts of a Plan validated against their own kind. */
 const PLAN_PARTS = Object.freeze({ days: 'day-plan', later: 'later-list', places: 'place' });

@@ -134,4 +134,26 @@ test('outOfSeason: single-bloom gardens by hemisphere, the trip\'s forecast wins
   assert.throws(() => s.outOfSeason(rose(north), {}), /season: outOfSeason needs/);
 });
 
+test('C15 (TG-PHASE-15 WP-15b): chosen_on inside the event\'s run is kept, outside or not a date is refused; exhibition and performance are kinds', async () => {
+  const s = await S();
+  const x = copy(SEASON);
+  x.events[0].chosen_on = '2031-11-21';
+  x.events.push({ id: 'harbour-prints', name: 'Harbour Prints', kind: 'Exhibition', from: '2031-11-01', to: '2031-12-14', url: 'https://museum.example.org/prints' },
+    { id: 'quay-quartet', name: 'Quay Quartet', kind: 'performance', from: '2031-11-21', to: '2031-11-21', start: '19:30', end: '21:00', chosen_on: '2031-11-21' });
+  const r = s.normalizeSeason(x);
+  assert.equal(r.ok, true, JSON.stringify(r.errors));
+  assert.equal(r.season.events[0].chosen_on, '2031-11-21', 'normalizeSeason keeps chosen_on');
+  assert.equal(r.season.events[4].kind, 'exhibition');
+  assert.equal(r.season.events[5].kind, 'performance');
+  for (const [day, why] of [['2031-11-09', 'before from'], ['2031-12-01', 'after to'], ['2031-11-31', 'not a calendar date'], ['21 Nov', 'not a date']]) {
+    const y = copy(SEASON);
+    y.events[0].chosen_on = day;
+    const n = s.normalizeSeason(y);
+    assert.equal(n.ok, false, why);
+    assert.ok(n.errors.some((e) => e.path === '/events/0/chosen_on'), why + ': ' + JSON.stringify(n.errors));
+  }
+  // an old sheet (no chosen_on, the six old kinds) passes exactly as before
+  assert.deepEqual(s.normalizeSeason(SEASON).season, SEASON);
+});
+
 // Developed by: LightAISolutions

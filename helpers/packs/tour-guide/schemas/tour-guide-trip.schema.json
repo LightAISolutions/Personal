@@ -179,11 +179,11 @@
       "type": "object",
       "additionalProperties": false,
       "required": ["id", "name", "kind", "from", "to"],
-      "description": "An evening light-up, special opening, festival, market, holiday or seasonal closure. Ids unique, from ≤ to (tour-guide-checks.mjs).",
+      "description": "An evening light-up, special opening, festival, market, exhibition, performance, holiday or seasonal closure. Ids unique, from ≤ to, from ≤ chosen_on ≤ to (tour-guide-checks.mjs).",
       "properties": {
         "id": { "$ref": "#/$defs/slug" },
         "name": { "type": "string", "minLength": 1, "maxLength": 120 },
-        "kind": { "enum": ["light_up", "special_opening", "festival", "market", "holiday", "closure"] },
+        "kind": { "enum": ["light_up", "special_opening", "festival", "market", "exhibition", "performance", "holiday", "closure"], "description": "C15 (TG-PHASE-15) added exhibition and performance." },
         "from": { "$ref": "#/$defs/date" },
         "to": { "$ref": "#/$defs/date" },
         "start": { "$ref": "#/$defs/time" },
@@ -194,7 +194,8 @@
         "lng": { "type": "number", "minimum": -180, "maximum": 180 },
         "area": { "type": "string", "minLength": 1, "maxLength": 80 },
         "note": { "type": "string", "minLength": 1, "maxLength": 160 },
-        "url": { "$ref": "#/$defs/https_url" }
+        "url": { "$ref": "#/$defs/https_url" },
+        "chosen_on": { "$ref": "#/$defs/date", "description": "C15: the owner chose this event for that day in What's on; from ≤ chosen_on ≤ to (tour-guide-checks.mjs)." }
       }
     },
     "booking": {

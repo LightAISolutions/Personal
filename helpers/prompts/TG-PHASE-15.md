@@ -172,7 +172,7 @@ A `whatson` item:
    - `dayTripOutlineEntry({ name, center: { lat, lng }, anchors })` returns `{ kind: 'full', area: { name, lat, lng, radius_km: 3 }, anchors }`, with at most 3 anchors. The private side plans a kept trip's day with it. A test passes the result through the planner's `normalizeOutline`.
 4. **The schema and the two validators** are C15's `daytrip`, with the parity test the skeleton wrote, on the real fields.
    - The core validator refuses every Google field by calling `tgScoutGoogleKeys`, and refuses a payload over 20,000 characters.
-   - The fixture is invented: an invented base and invented towns.
+   - The fixture is invented: an invented base and invented towns. Its first `valid` payload is the pinned payloads test's `daytrip` example (`fixtureValid` in `pack_tour-guide_payloads.test.js`), so keep it a complete payload that the schema, both validators and the core accept; that test makes its `trip` known to the core first.
 5. **The store and the card.**
    - **The DayTrips tab** holds one row per board id, with columns `id`, `trip`, `base_label`, `created_on`, `max_minutes`, `date`, `count`, `payload_json`, `kept_json` and `received_at`. `kept_json` is `[{ n, slug, date?, at }]`. A re-delivered id replaces its row and keeps each kept entry whose slug is still on the board, renumbered.
    - **The card** reads "🚆 <b>Day trips from <base></b> · under N min", plus "· <date>" when one was asked.
@@ -272,7 +272,7 @@ A `whatson` item:
    - `newItems(previous, next)`.
 6. **The schema and the two validators** are C15's `whatson`, with the parity test the skeleton wrote, on the real fields.
    - The core validator refuses every Google field (`tgScoutGoogleKeys`) and a payload over 40,000 characters.
-   - The fixture is invented.
+   - The fixture is invented. Its first `valid` payload is the pinned payloads test's `whatson` example (`fixtureValid`), so keep it a complete payload that the schema, both validators and the core accept; that test makes its `trip` known to the core first.
 7. **The store and the card.**
    - **The WhatsOn tab** holds one row per board id, with columns `id`, `trip`, `place_label`, `from`, `to`, `created_on`, `auto`, `count`, `payload_json`, `chosen_json` and `received_at`. `chosen_json` is `[{ item, chosen_on, at }]`. A re-delivered id replaces its row and keeps each choice whose item id is still on the board.
    - **The card** reads "🗓 <b>What's on in <place></b> · 8–10 Jun".
@@ -367,7 +367,7 @@ Built by the coordinator or one `hb-builder-opus` in a private worktree, as one 
      ```
      `<scratch>` is outside the repo; the private skills wait there for WP-15p.
    - The title pattern takes no apostrophe, so write "What's on" into the generated text by hand. Never use `--force`.
-   - Add both types to the three pinned type lists ("What you still write by hand" in `helpers/tools/README.md`), with the generated fixtures as their `EXAMPLES`. Mark each line `C15`.
+   - Add both types to the three pinned type lists ("What you still write by hand" in `helpers/tools/README.md`), with the generated fixtures as their `EXAMPLES`. Mark each line `C15`. Each example reads its fixture's first `valid` payload when called, so a builder who puts the real fields in the fixture keeps the list valid without editing it; the core-mocks case makes each board's `trip` known to the core.
    - Run `--check daytrip`, `--check whatson`, the three checks and the vendored-layout tests, then commit to `p15-skeleton`.
 2. **Spawn** WP-15a and WP-15b in parallel (`hb-builder-opus`), each in its own worktree from `origin/main`. Change into the Personal checkout before spawning: worktree isolation follows the shell's directory. Each builder merges `p15-skeleton` first (Step 0).
 3. **Merge** into this session's `claude/*` branch, rebased on `origin/main`: the skeleton, then squash-merge `wp-15a`, then `wp-15b`.
@@ -398,7 +398,7 @@ Built by the coordinator or one `hb-builder-opus` in a private worktree, as one 
 
 - **Public repo.** Never commit names, places, dates, hotels, ids, e-mail addresses, phone numbers, or anything from the private repo or the review. Fixtures are invented: invented bases, towns, events, venues, dates and parties.
 - **Own paths only.** Edit only the paths you own. Anything else is a REQUEST line in your status file (file, change, why).
-  - The skeleton's changes to `helper.json`, `schemas/index.mjs` and the three pinned type lists are done; nobody edits them again this phase.
+  - The skeleton's changes to `helper.json`, `schemas/index.mjs` and the three pinned type lists are done; nobody edits them again this phase. Your `EXAMPLES` entry follows your fixture's first `valid` payload, so change the fixture, not the list.
   - `fixtures/index.mjs`, the shared fixture loaders and `helpers/tests/harness/` are nobody's: load your fixtures, and stub what you need, inside your own tests.
   - In `helpers/packs/tour-guide/README.md`, edit only your own rows.
   - An export you need from a module you do not own is a REQUEST; meanwhile, import from the file directly.

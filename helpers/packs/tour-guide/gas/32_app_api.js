@@ -431,7 +431,8 @@ function tgAppDayC11(out, d) {
   if (isPlainObject(d.end)) out.end = tgAppAnchor(d.end, ['time', 'maps_url']);
   if (d.bags !== undefined) out.bags = tgAppS(d.bags);
   if (isPlainObject(d.dinner)) out.dinner = tgAppAnchor(d.dinner, ['slug', 'start', 'end', 'maps_url', 'note_line', 'booking_line']);
-  if (Array.isArray(d.extras)) out.extras = d.extras.filter(isPlainObject).slice(0, 3).map(function (x) { return tgAppAnchor(x, ['kind', 'time', 'maps_url', 'note_line']); });
+  // C15 (WP-15b): a chosen evening event keeps `chosen: true`, so the app shows ⭐; a boolean, so it is checked, not listed (tgAppS would give "true").
+  if (Array.isArray(d.extras)) out.extras = d.extras.filter(isPlainObject).slice(0, 3).map(function (x) { var o = tgAppAnchor(x, ['kind', 'time', 'maps_url', 'note_line']); if (x.chosen === true) o.chosen = true; return o; });
   return out;
 }
 var TG_APP_STOP_C11 = ['last_entry', 'minutes_source', 'crowd_slot', 'facts_line', 'booking_line', 'price_line', 'menu_checked'];

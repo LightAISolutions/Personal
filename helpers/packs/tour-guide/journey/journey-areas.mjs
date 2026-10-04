@@ -20,7 +20,7 @@ export const DAY_TRIP_FACTOR = 1.5;
 export const SCORE = Object.freeze({ PICK: 50, EVENT: 30, BLOOM: 20 });
 const POOL = new Set(['candidate', 'scheduled', 'chosen']);
 const BLOOM_CATEGORIES = new Set(['garden', 'park', 'viewpoint', 'hike', 'temple', 'shrine']);
-const EVENING_KINDS = new Set(['light_up', 'special_opening', 'festival', 'market']);
+const EVENING_KINDS = new Set(['light_up', 'special_opening', 'festival', 'market', 'exhibition', 'performance']);   // C15: every kind the planner may offer in the evening (planner-evening.mjs NOT_EVENING)
 
 const snapMap = (s) => (s instanceof Map ? s : new Map((Array.isArray(s) ? s : []).filter((x) => x && x.place_id).map((x) => [x.place_id, x])));
 const inRange = (e, date) => (!e.from || e.from <= date) && (!e.to || date <= e.to);

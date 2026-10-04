@@ -276,7 +276,7 @@
             "type": "object", "additionalProperties": false, "required": ["name", "kind", "from", "to"],
             "properties": {
               "name": { "$ref": "#/$defs/short" },
-              "kind": { "type": "string", "enum": ["light_up", "special_opening", "festival", "market", "holiday", "closure"] },
+              "kind": { "type": "string", "enum": ["light_up", "special_opening", "festival", "market", "exhibition", "performance", "holiday", "closure"] },
               "from": { "$ref": "#/$defs/date" }, "to": { "$ref": "#/$defs/date" },
               "start": { "$ref": "#/$defs/time" }, "end": { "$ref": "#/$defs/time" },
               "area": { "$ref": "#/$defs/short" },

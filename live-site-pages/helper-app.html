@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.13w">
+  <meta name="build-version" content="v01.14w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -180,17 +180,19 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.13w';
+    var APP_VERSION = 'v01.14w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'compare', label: 'Compare' }, { id: 'facts', label: 'Facts' },
       { id: 'interview', label: 'Interview' }, { id: 'brochure', label: 'Brochure' }, { id: 'places', label: 'Places' },
-      { id: 'scout', label: 'Scout' }
+      { id: 'scout', label: 'Scout' }, { id: 'daytrip', label: 'Day trips' }, { id: 'whatson', label: 'What\'s on' }
     ];
     var SCOUT_ID_RE = /^sc-\d{8}-[a-z0-9-]{1,40}$/;
+    var DAYTRIP_ID_RE = /^dt-\d{8}-[a-z0-9-]{1,40}$/;
+    var WHATSON_ID_RE = /^wo-\d{8}-[a-z0-9-]{1,40}$/;
     var TICKS = [{ v: 'w', text: '✅ Want' }, { v: 'l', text: '🔖 Later' }, { v: 's', text: '❌ Skip' }];
     var tg = (window.Telegram && window.Telegram.WebApp) || null;
-    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', scout: '', jy: null, base: '', mix: {}, busy: false };
+    var S = { core: '', screen: 'home', trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', scout: '', daytrip: '', board: '', jy: null, base: '', mix: {}, busy: false };
     var $ = function (id) { return document.getElementById(id); };
     var main = $('main');
 
@@ -272,6 +274,8 @@
       S.screen = SCREENS.some(function (s) { return s.id === screen; }) ? screen : 'home';
       S.trip = /^[a-z0-9][a-z0-9-]{0,63}$/.test(trip) ? trip : '';
       var scout = str(q.scout || extra.scout, 64); S.scout = SCOUT_ID_RE.test(scout) ? scout : '';
+      var daytrip = str(q.daytrip || extra.daytrip, 64); S.daytrip = DAYTRIP_ID_RE.test(daytrip) ? daytrip : '';
+      var board = str(q.board || extra.board, 64); S.board = WHATSON_ID_RE.test(board) ? board : '';
       return str(q.core, 400);
     }
     function resolveCore(fromUrl, done) {
@@ -320,11 +324,11 @@
       setMain('', null);
       Array.prototype.forEach.call($('nav').children, function (b) { if (b.getAttribute('data-screen') === screen) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
       try { if (tg && tg.BackButton) { if (screen === 'home') tg.BackButton.hide(); else tg.BackButton.show(); } } catch (e) { /* older clients */ }
-      ({ home: showHome, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout, vegcard: showVegCard })[screen]();
+      ({ home: showHome, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout, vegcard: showVegCard, daytrip: showDaytrip, whatson: showWhatson })[screen]();
     }
     function buildNav() {
       var nav = clear($('nav'));
-      SCREENS.forEach(function (s) { nav.appendChild(el('button', { type: 'button', text: s.label, 'data-screen': s.id, on: { click: function () { if (s.id === 'interview') { S.person = ''; S.addPerson = false; } if (s.id === 'scout') S.scout = ''; go(s.id); } } })); });
+      SCREENS.forEach(function (s) { nav.appendChild(el('button', { type: 'button', text: s.label, 'data-screen': s.id, on: { click: function () { if (s.id === 'interview') { S.person = ''; S.addPerson = false; } if (s.id === 'scout') S.scout = ''; if (s.id === 'daytrip') S.daytrip = ''; if (s.id === 'whatson') S.board = ''; go(s.id); } } })); });
     }
     function tripLabel(t) { t = obj(t); return str(t.title || t.destination || t.slug, 60); }
     function tripName(slug) { var hit = (S.home ? list(S.home.trips) : []).filter(function (t) { return str(obj(t).slug) === str(slug); })[0]; return hit ? tripLabel(hit) : str(slug, 60); }
@@ -1019,9 +1023,10 @@
       if (typeof d.spare_minutes === 'number' && d.spare_minutes >= 0 && stops.length) add(line(['Spare time: ' + (d.spare_minutes ? span(d.spare_minutes) : 'none')]));
       var extras = list(d.extras).filter(anchorOk).map(obj);
       if (extras.length) {
-        add(el('h4', { text: 'If you have energy' }));
+        // C15 (WP-15b): an event chosen in What's on shows ⭐; the list is "This evening" when the first extra is one
+        add(el('h4', { text: extras[0].chosen === true ? 'This evening' : 'If you have energy' }));
         extras.forEach(function (x) {
-          add(line([(x.kind === 'saved' ? '🔖 ' : '✨ ') + (clock(x.time) ? x.time + ' ' : ''), linkText(str(x.name, 120), x.maps_url)]));
+          add(line([(x.kind === 'saved' ? '🔖 ' : x.chosen === true ? '⭐ ' : '✨ ') + (clock(x.time) ? x.time + ' ' : ''), linkText(str(x.name, 120), x.maps_url)]));
           if (x.note_line) add(el('div', { class: 'sub', text: str(x.note_line, 240) }));
         });
       }
@@ -1295,6 +1300,303 @@
         view.appendChild(el('div', { class: 'row', style: 'margin-top:16px' }, [scoutsBtn()]));
         render(view);
       }, function (err) { S.scout = ''; render(stateView('🔎', 'Scout not available', why(err), scoutsBtn())); });
+    }
+
+    /* ---------- day trips: from any base, the trips worth a day within a ride limit; keep one, put it on a day (C15) ---------- */
+    var DAYTRIP_LABELS = { gem: '💎 gem', veg_easy: '🌱 easy vegetarian', booking: 'book ahead', crowded: 'crowded', rain_ok: '☔ fine in rain', seen_before: 'seen before' };
+    var DAYTRIP_LEFT = { too_far: 'too far', no_rail: 'no train or bus', closed_on_dates: 'closed on your dates', out_of_season: 'out of season', duplicate: 'duplicate', other: 'other' };
+    var DAYTRIP_LENGTH = { half: 'half day', full: 'full day' };
+    var DAYTRIP_UNDER = [30, 45, 60, 90, 120, 180];
+    // The score's four parts as bars, in Scout's style (scoutBars).
+    var DAYTRIP_PARTS = [['fit', 'fit'], ['reach', 'reach'], ['season', 'season'], ['food', 'food']];
+    var DAYTRIP_WHY = { no_daytrip: 'That day trip board is not on file any more.', no_item: 'That day trip is not on the board any more.',
+      no_trip: 'This board\'s trip is not on file — keep it, then plan the day in the chat.', no_day: 'That day is not planned on this trip any more.',
+      bad_date: 'I could not read that date — try 2027-05-14, 5/14, today or tomorrow.', past_date: 'That date has already passed.',
+      too_long: 'Please keep the place under 80 characters.' };
+    function daytripWhy(err) { return DAYTRIP_WHY[str(obj(err).reason, 40)] || why(err); }
+    var DAYTRIP_WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], DAYTRIP_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    /** "Thu 13 May" for a real YYYY-MM-DD; anything else as text. */
+    function daytripDate(iso) {
+      iso = str(iso, 10); var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+      if (!m) return iso;
+      var d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+      return isNaN(d.getTime()) || d.getUTCDate() !== +m[3] ? iso : DAYTRIP_WEEKDAYS[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + DAYTRIP_MONTHS[d.getUTCMonth()];
+    }
+    function daytripBars(parts) {
+      parts = obj(parts);
+      var bars = DAYTRIP_PARTS.filter(function (p) { return parts[p[0]] !== undefined && parts[p[0]] !== null; }).map(function (p) {
+        var v = Math.min(100, Math.max(0, Math.round(num(parts[p[0]]))));
+        return el('div', { class: 'meta', style: 'flex:1 1 0;min-width:0', 'data-part': p[0], 'data-value': String(v) }, [p[1],
+          el('div', { style: 'height:5px;margin-top:2px;border-radius:3px;overflow:hidden;background:var(--line)' }, [el('div', { style: 'height:100%;width:' + v + '%;background:var(--accent)' })])]);
+      });
+      return bars.length ? el('div', { class: 'row', style: 'gap:6px;margin-top:6px;flex-wrap:nowrap' }, bars) : null;
+    }
+    /** "🚆 ~42 min · full day": `~` marks the estimator's figure (Scout's mark). */
+    function daytripRide(minutes, length, estimated) {
+      return ['🚆 ' + (estimated ? '~' : '') + num(minutes) + ' min', DAYTRIP_LENGTH[str(length, 8)] || ''].filter(Boolean).join(' · ');
+    }
+    function daytripCount(n) { n = num(n); return n ? n + ' trip' + (n === 1 ? '' : 's') : 'nothing worth the ride'; }
+    function daytripsBtn() { return el('button', { class: 'btn ghost', type: 'button', text: 'All day trips', on: { click: function () { S.daytrip = ''; showDaytrip(); } } }); }
+    function daytripOpen(id) { S.daytrip = id; showDaytripOne(id); }
+    function daytripRow(name, meta, id) {
+      return el('div', { class: 'card reveal' }, [el('div', { class: 'row between' }, [
+        el('div', { class: 'grow' }, [el('div', { class: 'name', text: name }), el('div', { class: 'meta', text: meta })]),
+        el('button', { class: 'btn ghost', type: 'button', text: 'Open', on: { click: function () { daytripOpen(id); } } })])]);
+    }
+    function showDaytrip() {
+      if (S.daytrip) return showDaytripOne(S.daytrip);
+      var view = el('div', {}, [el('h2', { text: 'Day trips' }), el('p', { class: 'lede', text: 'From where you stay or anywhere else: the trips worth a day, within the ride you name.' })]);
+      var from = el('input', { type: 'text', placeholder: 'From where? Blank = where your trip stays', maxlength: '80', 'aria-label': 'From where' });
+      var under = el('select', { 'aria-label': 'Longest ride, one way' }, DAYTRIP_UNDER.map(function (m) {
+        var o = el('option', { value: String(m), text: 'under ' + (m < 60 ? m + ' min' : m % 60 ? Math.floor(m / 60) + ' h ' + (m % 60) + ' min' : (m / 60) + ' h') });
+        if (m === 90) o.setAttribute('selected', 'selected');
+        return o;
+      }));
+      under.value = '90';
+      var date = el('input', { type: 'text', placeholder: 'On a day? 2027-05-14, 5/14, tomorrow (optional)', maxlength: '10', 'aria-label': 'Which day' });
+      var msg = el('div', {}), past = el('div', {}, [el('p', { class: 'meta', text: 'Loading your day trips…' })]);
+      var ask = function () {
+        var f = str(from.value, 80).trim(), d = str(date.value, 10).trim(), args = {};
+        if (f) args.from = f;
+        args.under = num(under.value) || 90;
+        if (d) args.date = d;
+        mainProgress(true);
+        call('daytrip.new', args, function (r) {
+          mainProgress(false); haptic('ok');
+          clear(msg).appendChild(el('div', { class: 'note', text: '🚆 Looking for day trips from ' + (r.from ? str(r.from, 80) : 'where you stay') + ' · under ' + num(r.max_minutes) + ' min' +
+            (r.date ? ' · on ' + daytripDate(r.date) : '') + ' — the board arrives in the chat, then here.' }));
+        }, function (err) { mainProgress(false); clear(msg).appendChild(el('div', { class: 'note', text: 'Not asked: ' + daytripWhy(err) })); });
+      };
+      [from, date].forEach(function (i) { i.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); ask(); } }); });
+      view.appendChild(el('div', { class: 'stack' }, [from, under, date, el('button', { class: 'btn wide', type: 'button', text: '🚆 Find day trips', on: { click: ask } }), msg]));
+      view.appendChild(past);
+      render(view); setMain('Find day trips', ask);
+      call('daytrip.list', {}, function (b) {
+        clear(past);
+        var kept = list(b.kept_trips).map(obj).filter(function (k) { return DAYTRIP_ID_RE.test(str(k.board, 64)); });
+        var rows = list(b.boards).map(obj).filter(function (s) { return DAYTRIP_ID_RE.test(str(s.id, 64)); });
+        if (!rows.length && !kept.length) { past.appendChild(el('p', { class: 'meta', text: 'No day trips yet.' })); return; }
+        // The kept trips first (state.json's daytrips_kept, newest first), then the boards.
+        if (kept.length) past.appendChild(el('h3', { text: 'Kept day trips' }));
+        kept.forEach(function (k) {
+          past.appendChild(daytripRow('✅ ' + str(k.name, 120), ['from ' + str(k.base, 80), daytripRide(k.ride_minutes, k.length, false), k.date ? daytripDate(k.date) : 'no day yet'].join(' · '), str(k.board, 64)));
+        });
+        if (rows.length) past.appendChild(el('h3', { text: 'Boards' }));
+        rows.forEach(function (s) {
+          var k = num(s.kept);
+          past.appendChild(daytripRow('From ' + str(s.base, 80),
+            [str(s.created_on, 10), 'under ' + num(s.max_minutes) + ' min', s.date ? daytripDate(s.date) : '', daytripCount(s.count), k ? k + ' kept' : ''].filter(Boolean).join(' · '), str(s.id, 64)));
+        });
+      }, function (err) { clear(past).appendChild(el('p', { class: 'meta', text: 'Day trips not available (' + daytripWhy(err) + ').' })); });
+    }
+    function showDaytripOne(id) {
+      render(stateView('', 'Loading…')); setMain('', null);
+      call('daytrip.get', { id: id }, function (b) {
+        var d = obj(b.board), items = list(d.items).map(obj).slice(0, 8), left = list(d.left_out).map(obj).slice(0, 20);
+        var days = list(d.days).map(obj).filter(function (x) { return /^\d{4}-\d{2}-\d{2}$/.test(str(x.date, 10)); });
+        var keptOf = function (n) { return list(d.kept_entries).map(obj).filter(function (k) { return num(k.n) === n; })[0] || null; };
+        var keep = function (it, on, date, btn) {
+          var n = num(it.n), args = { id: id, n: n, keep: on }, name = str(it.name, 60);
+          if (date) args.date = date;
+          btn.disabled = true;
+          call('daytrip.keep', args, function (r) {
+            haptic('ok'); d.kept_entries = list(r.kept_entries); draw();
+            setStatus(r.replan ? 'Replanning day ' + num(obj(r.replan).day) + ' with ' + name + '…' : name + (r.kept ? ' kept' : ' removed'));
+          }, function (err) { btn.disabled = false; setStatus('Not kept: ' + daytripWhy(err)); });
+        };
+        var card = function (it) {
+          var n = num(it.n), ride = obj(it.ride), k = keptOf(n), on = !!k;
+          var keepBtn = el('button', { class: 'pill' + (on ? ' on' : ''), type: 'button', text: on ? '✅ Kept' : '➕ Keep', 'data-keep': String(n), 'aria-pressed': on ? 'true' : 'false',
+            on: { click: function (ev) { keep(it, !on, '', ev.currentTarget); } } });
+          var stations = str(ride.from_station, 80) && str(ride.to_station, 80) ? str(ride.from_station, 80) + ' → ' + str(ride.to_station, 80) : '';
+          var closed = list(it.closed).slice(0, 7).map(daytripDate);
+          // The day picker: the planned days of the board's trip; a tap keeps the trip on that day and replans it.
+          var picker = days.length ? el('div', { style: 'margin-top:6px' }, [el('div', { class: 'meta', text: 'Put it on a day:' })].concat(days.map(function (x) {
+            var date = str(x.date, 10), here = !!(k && str(k.date, 10) === date);
+            return el('button', { class: 'pill' + (here ? ' on' : ''), type: 'button', text: 'Day ' + num(x.n) + ' · ' + daytripDate(date), 'data-day': date, 'aria-pressed': here ? 'true' : 'false',
+              on: { click: function (ev) { if (!here) keep(it, true, date, ev.currentTarget); } } });
+          }))) : null;
+          return el('div', { class: 'item reveal' }, [el('div', { class: 'n', text: String(n) }), el('div', {}, [
+            el('div', { class: 'row between' }, [el('div', { class: 'grow' }, [el('div', { class: 'name', text: str(it.name, 120) }),
+              el('div', { class: 'meta', text: [daytripRide(ride.minutes, it.length, ride.estimated === true), str(it.area, 80)].filter(Boolean).join(' · ') }),
+              stations ? el('div', { class: 'meta', text: stations }) : null]),
+              el('div', { class: 'row' }, [keepBtn, linkBtn('Map ↗', it.maps_url, 'pill')])]),
+            el('div', { class: 'why', text: str(it.why, 300) }),
+            list(it.see).length ? el('div', { class: 'meta', text: 'See: ' + list(it.see).slice(0, 5).map(function (x) { return str(x, 80); }).join(' · ') }) : null,
+            it.eat ? el('div', { class: 'meta', text: '🌱 ' + str(it.eat, 200) }) : null,
+            it.season ? el('div', { class: 'meta', text: '🍂 ' + str(it.season, 200) }) : null,
+            closed.length ? el('div', { class: 'warn', style: 'color:var(--danger);font-size:13px;margin-top:2px', text: '⛔ Closed ' + closed.join(', ') }) : null,
+            daytripBars(it.parts),
+            list(it.labels).length ? el('div', {}, list(it.labels).slice(0, 6).map(function (l) { l = str(l, 20); return el('span', { class: 'pill label', text: DAYTRIP_LABELS[l] || l }); })) : null,
+            picker])]);
+        };
+        var draw = function () {
+          var view = el('div', {}, [el('h2', { text: 'Day trips from ' + str(d.base, 80) }),
+            el('p', { class: 'lede', text: [str(d.created_on, 10), 'under ' + num(d.max_minutes) + ' min', d.date ? daytripDate(d.date) : '', daytripCount(items.length), str(d.trip_title, 60)].filter(Boolean).join(' · ') })]);
+          view.appendChild(el('h3', { text: 'Day trips' }));
+          if (items.length) view.appendChild(el('p', { class: 'meta', text: '➕ keeps a day trip' + (days.length ? '; a day puts it on that day and replans it.' : '.') }));
+          else view.appendChild(el('p', { class: 'meta', text: 'Nothing worth the ride this time.' }));
+          items.forEach(function (it) { view.appendChild(card(it)); });
+          if (num(d.more) > 0) view.appendChild(el('p', { class: 'meta', text: '…and ' + num(d.more) + ' more within reach.' }));
+          if (left.length) {
+            view.appendChild(el('h3', { text: 'Left out' }));
+            left.forEach(function (l) { var r = str(l.reason, 20); view.appendChild(el('div', { class: 'meta', style: 'padding:4px 0', text: str(l.name, 120) + ' — ' + (str(l.words, 40) || DAYTRIP_LEFT[r] || r) })); });
+          }
+          view.appendChild(el('div', { class: 'row', style: 'margin-top:16px' }, [daytripsBtn()]));
+          render(view);
+        };
+        draw();
+      }, function (err) { S.daytrip = ''; render(stateView('🚆', 'Day trip not available', daytripWhy(err), daytripsBtn())); });
+    }
+
+    /* ---------- what's on: what is on in a place on given dates, grouped by date; choose things for their day (C15) ---------- */
+    var WO_KINDS = { light_up: ['🏮', 'light-up'], special_opening: ['🏛', 'special opening'], festival: ['🎉', 'festival'], market: ['🧺', 'market'],
+      exhibition: ['🖼', 'exhibition'], performance: ['🎭', 'performance'], holiday: ['📅', 'holiday'], closure: ['🚫', 'closure'] };
+    var WO_LEFT = { outside_dates: 'not on these dates', duplicate: 'listed twice', unconfirmed: 'not confirmed', sold_out: 'sold out', other: 'could not be checked' };
+    var WO_LABELS = { evening: 'evening', free: 'free', crowded: 'crowded', rain_ok: 'fine in rain', veg_food: 'vegetarian food', booking: 'book ahead' };
+    // The core's reasons in this screen's words; the shared WHY map answers the rest (its too_long is about a typed text).
+    var WO_WHY = { past: 'Those dates are already past.', reversed: 'That range ends before it starts.', too_long: 'Please keep it to 31 days or fewer.',
+      long_place: 'Please keep the place under 80 characters.', no_place: 'Say which place — there is no current trip to check.', no_whatson: 'That board is not on file any more.',
+      no_item: 'That item is not on the board any more.', not_choosable: 'Holidays and closures cannot be chosen.', no_day: 'It runs on none of the trip\'s days.',
+      bad_day: 'That day is not one the item runs on.', which_day: 'Pick a day first.' };
+    var WO_WRAP = 'flex-wrap:wrap;gap:8px;margin-top:6px';   // button rows wrap on a phone instead of widening the page
+    function woWhy(b) { var r = str(obj(b).reason, 40); return WO_WHY[r] || why(b); }
+    var WO_WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], WO_MO = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    function woUtc(iso) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(str(iso, 10)); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3], 12) : NaN; }
+    /** "2027-05-13" → "Thu 13 May" (the chat's date). */
+    function woDay(iso) { var t = woUtc(iso); if (!isFinite(t)) return str(iso, 10); var d = new Date(t); return WO_WD[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + WO_MO[d.getUTCMonth()]; }
+    function woWindow(from, to) { return woDay(from) + (str(to, 10) && str(to, 10) !== str(from, 10) ? ' – ' + woDay(to) : ''); }
+    function woTitle(b) { b = obj(b); var p = str(obj(b.place).label, 80); return 'What\'s on' + (p ? ' in ' + p : ''); }
+    function woCount(n) { n = num(n); return n + (n === 1 ? ' thing' : ' things'); }
+    /** Like the chat's card: items on every day of a window of 2+ days go first ("all"), the rest under their first day, the board's order within. */
+    function woGroups(b) {
+      var span = Math.round((woUtc(b.to) - woUtc(b.from)) / 86400000) + 1, every = [], rest = [];
+      list(b.items).map(obj).forEach(function (it, i) {
+        var days = list(it.days_in).map(function (d) { return str(d, 10); });
+        if (!days.length) return;
+        if (span > 1 && days.length === span) every.push({ it: it, i: i, group: 'all' }); else rest.push({ it: it, i: i, group: days[0] });
+      });
+      rest.sort(function (x, y) { return x.group !== y.group ? (x.group < y.group ? -1 : 1) : x.i - y.i; });
+      return every.concat(rest);
+    }
+    function boardsBtn() { return el('button', { class: 'btn ghost', type: 'button', text: 'All boards', on: { click: function () { S.board = ''; showWhatson(); } } }); }
+    function showWhatson() {
+      if (S.board) return showWhatsonOne(S.board);
+      var view = el('div', {}, [el('h2', { text: 'What\'s on' }), el('p', { class: 'lede', text: 'Exhibitions, markets, festivals and light-ups in a place on your dates — choose one and the plan carries it.' })]);
+      var place = el('input', { type: 'text', placeholder: 'Where? Blank = your current trip', maxlength: '80', 'aria-label': 'Where' });
+      // Date fields styled like the text field, side by side (the page's input rule covers text and search only).
+      var dateStyle = 'flex:1 1 0;min-width:0;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--section)';
+      var from = el('input', { type: 'date', 'aria-label': 'First day', style: dateStyle }), to = el('input', { type: 'date', 'aria-label': 'Last day', style: dateStyle });
+      var msg = el('div', {}), past = el('div', {}, [el('p', { class: 'meta', text: 'Loading your boards…' })]);
+      var ask = function () {
+        var p = str(place.value, 80).trim(), f = str(from.value, 10), t = str(to.value, 10), args = {};
+        if (t && !f) { setStatus('Say the first day too.'); return; }
+        if (p) args.place = p; if (f) args.from = f; if (t) args.to = t;
+        mainProgress(true);
+        call('whatson.new', args, function (r) {
+          mainProgress(false); haptic('ok'); place.value = '';
+          var q = obj(r.request), where = str(q.place, 80) || (q.trip ? 'the trip\'s cities' : '');
+          clear(msg).appendChild(el('div', { class: 'note', text: '🗓 Looking up what is on in ' + where + ', ' + woWindow(q.from, q.to) + ' — the list arrives in the chat, then here.' }));
+        }, function (err) { mainProgress(false); clear(msg).appendChild(el('div', { class: 'note', text: 'Not asked: ' + woWhy(err) })); });
+      };
+      place.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); ask(); } });
+      view.appendChild(el('div', { class: 'stack' }, [place, el('div', { class: 'row' }, [from, to]), el('button', { class: 'btn wide', type: 'button', text: '🗓 Look it up', on: { click: ask } }), msg]));
+      view.appendChild(past);
+      render(view); setMain('Look it up', ask);
+      call('whatson.list', {}, function (b) {
+        clear(past);
+        var rows = list(b.boards).map(obj).filter(function (x) { return WHATSON_ID_RE.test(str(x.id, 64)); });
+        if (!rows.length) { past.appendChild(el('p', { class: 'meta', text: 'Nothing looked up yet.' })); return; }
+        past.appendChild(el('h3', { text: 'Boards' }));
+        rows.forEach(function (x) {
+          var id = str(x.id, 64), n = num(x.chosen);
+          past.appendChild(el('div', { class: 'card reveal' }, [el('div', { class: 'row between' }, [
+            el('div', { class: 'grow' }, [el('div', { class: 'name', text: woTitle(x) }),
+              el('div', { class: 'meta', text: [woWindow(x.from, x.to), woCount(x.count), n ? n + ' chosen' : '', x.auto === true ? 'weekly check' : ''].filter(Boolean).join(' · ') })]),
+            el('button', { class: 'btn ghost', type: 'button', text: 'Open', on: { click: function () { S.board = id; showWhatsonOne(id); } } })])]));
+        });
+      }, function (err) { clear(past).appendChild(el('p', { class: 'meta', text: 'Boards not available (' + woWhy(err) + ').' })); });
+    }
+    function showWhatsonOne(id) {
+      render(stateView('', 'Loading…')); setMain('', null);
+      call('whatson.get', { id: id }, function (b) {
+        var view = el('div', {});
+        woFill(view, id, obj(b.board));
+        render(view);
+      }, function (err) { S.board = ''; render(stateView('🗓', 'Board not available', woWhy(err), boardsBtn())); });
+    }
+    /** (Re)draws the board into `view` — after a choice the same node is refilled, so the page keeps its place. */
+    function woFill(view, id, b) {
+      clear(view);
+      var redraw = function (nb) { woFill(view, id, obj(nb)); };
+      var planned = list(b.planned).map(function (d) { return str(d, 10); }), items = list(b.items).map(obj);
+      view.appendChild(el('h2', { text: woTitle(b) }));
+      view.appendChild(el('p', { class: 'lede', text: [woWindow(b.from, b.to), woCount(items.length), b.trip_title ? 'trip ' + str(b.trip_title, 60) : ''].filter(Boolean).join(' · ') }));
+      if (items.some(function (it) { return it.choosable === true; })) view.appendChild(el('p', { class: 'meta', text: '➕ chooses a thing for its day; the plan then carries it.' }));
+      if (!items.length) view.appendChild(el('p', { class: 'meta', text: 'Nothing on in that place on those dates.' }));
+      var last = null, n = 0;
+      woGroups(b).forEach(function (g) {
+        if (g.group !== last) { last = g.group; view.appendChild(el('h3', { text: g.group === 'all' ? 'All these days' : woDay(g.group) })); }
+        view.appendChild(woItem(id, b, g.it, ++n, planned, redraw));
+      });
+      if (num(b.more) > 0) view.appendChild(el('p', { class: 'meta', text: '… and ' + num(b.more) + ' more that did not fit.' }));
+      var src = list(b.sources).map(obj).filter(function (s) { return httpsUrl(s.url); });
+      if (src.length) {
+        view.appendChild(el('h3', { text: 'Sources' }));
+        view.appendChild(el('div', { class: 'row', style: WO_WRAP }, src.slice(0, 10).map(function (s) { return linkBtn(str(s.title, 60) || 'Source', s.url, 'pill'); })));
+      }
+      var left = list(b.left_out).map(obj);
+      if (left.length) {
+        view.appendChild(el('h3', { text: 'Left out' }));
+        left.forEach(function (l) { view.appendChild(el('div', { class: 'meta', style: 'padding:4px 0', text: str(l.name, 120) + ' — ' + (WO_LEFT[str(l.reason, 20)] || str(l.reason, 20)) })); });
+      }
+      view.appendChild(el('div', { class: 'row', style: 'margin-top:16px' }, [boardsBtn()]));
+    }
+    /** One item: kind, times and venue; name; when; why; food, price, booking; confidence and labels; the source; Choose and Re-plan. */
+    function woItem(id, b, it, n, planned, redraw) {
+      var k = WO_KINDS[str(it.kind, 20)] || ['•', str(it.kind, 20)], v = obj(it.venue), days = list(it.days_in), span = Math.round((woUtc(b.to) - woUtc(b.from)) / 86400000) + 1;
+      var vn = str(v.name, 120), va = str(v.area, 80), times = it.start ? str(it.start, 5) + (it.end ? '–' + str(it.end, 5) : '') : '';
+      var meta = [k[0] + ' ' + k[1], times, [vn, va && va !== vn ? va : ''].filter(Boolean).join(' · ')].filter(Boolean).join(' · ');
+      var when = [str(it.to, 10) > str(b.to, 10) ? 'until ' + woDay(it.to) : '', days.length > 1 && days.length < span ? days.length + ' days' : ''].filter(Boolean).join(' · ');
+      var on = str(it.chosen_on, 10), choose = list(it.choose_days).map(function (d) { return str(d, 10); }), picker = el('div', {});
+      var pick = function (day) {
+        var args = { id: id, item: str(it.id, 64), choose: true }; if (day) args.chosen_on = day;
+        call('whatson.choose', args, function (r) {
+          haptic('ok'); redraw(r.board);
+          setStatus('✅ ' + str(it.name, 60) + ' is chosen for ' + woDay(r.chosen_on) + (r.planned ? ' — that day is planned; 🔁 Re-plan fits it in.' : '.'));
+        }, function (err) {
+          if (str(err.reason, 20) === 'which_day' && list(err.days).length) return ask(list(err.days));
+          setStatus('Not chosen: ' + woWhy(err));
+        });
+      };
+      var ask = function (ds) {
+        clear(picker).appendChild(el('div', { class: 'meta', text: 'Which day?' }));
+        picker.appendChild(el('div', { class: 'row', style: WO_WRAP }, ds.slice(0, 8).map(function (d) { d = str(d, 10); return el('button', { class: 'pill', type: 'button', text: woDay(d), on: { click: function () { pick(d); } } }); })));
+      };
+      var toggle = it.choosable === true && (on || choose.length) ? el('button', { class: 'pill' + (on ? ' on' : ''), type: 'button', text: on ? '✅ Chosen' : '➕ Choose', 'aria-pressed': on ? 'true' : 'false', on: { click: function () {
+        if (on) return call('whatson.choose', { id: id, item: str(it.id, 64), choose: false }, function (r) { haptic('ok'); redraw(r.board); setStatus(str(r.message, 200)); },
+          function (err) { setStatus('Not removed: ' + woWhy(err)); });
+        if (choose.length > 1) return ask(choose);
+        pick(null);
+      } } }) : null;
+      var replan = on && planned.indexOf(on) >= 0 ? el('button', { class: 'pill', type: 'button', text: '🔁 Re-plan ' + woDay(on), on: { click: function () {
+        call('whatson.choose', { id: id, item: str(it.id, 64), choose: true, chosen_on: on, replan: true }, function (r) {
+          haptic('ok'); redraw(r.board);
+          var rp = r.replan ? obj(r.replan) : null;
+          setStatus(rp ? '🔁 Re-planning day ' + num(rp.day) + ' (' + woDay(rp.date) + ') — the new day arrives in the chat, then here.' : 'Not re-planned: that day is not planned any more.');
+        }, function (err) { setStatus('Not re-planned: ' + woWhy(err)); });
+      } } }) : null;
+      var extra = [it.food ? '🌱 ' + str(it.food, 200) : '', it.price ? '💴 ' + str(it.price, 80) : '', it.booking ? '🎟 ' + str(it.booking, 200) : ''].filter(Boolean);
+      return el('div', { class: 'item reveal' }, [el('div', { class: 'n', text: String(n) }), el('div', { style: 'min-width:0' }, [
+        el('div', { class: 'name', text: str(it.name, 120) }),
+        el('div', { class: 'meta', text: meta }),
+        when ? el('div', { class: 'meta', text: when }) : null,
+        it.why ? el('div', { class: 'why', text: str(it.why, 300) }) : null,
+        el('div', {}, extra.map(function (x) { return el('div', { class: 'meta', text: x }); })),
+        el('div', {}, [el('span', { class: 'pill', text: it.confidence === 'likely' ? 'dates not yet confirmed' : 'confirmed' })].concat(list(it.labels).slice(0, 4).map(function (l) { l = str(l, 20); return el('span', { class: 'pill', text: WO_LABELS[l] || l }); }))),
+        on ? el('div', { class: 'meta', text: 'Chosen for ' + woDay(on) }) : null,
+        el('div', { class: 'row', style: WO_WRAP }, [toggle, replan, linkBtn('Source ↗', it.url, 'pill')]),
+        picker])]);
     }
 
     /* ---------- boot ---------- */

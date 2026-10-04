@@ -71,7 +71,7 @@ export { placeFacts, factsHours, factsMinutes, ownHoursConflict, CLOSE_TOLERANCE
 export { avoidsCrowds, crowdWindows, crowdSlotOf, CROWD_SLOT, CROWD_RULE_RE } from './planner-crowd.mjs';
 export { sunsetLocal, sunsetUtcMinutes, SUNSET_ZENITH } from './planner-sun.mjs';
 export { prepareDinners, addDinners, dinnerBooking, bookingFor, bookingRecordLine, DINNER, dinnerMenu, MENU_RANK } from './planner-dinner.mjs';
-export { sunsetFor, eveningExtras, applyExtras, runsThatEvening, EXTRAS } from './planner-evening.mjs';
+export { sunsetFor, eveningExtras, applyExtras, runsThatEvening, isEveningChoice, EXTRAS } from './planner-evening.mjs';
 export { schedWindows, legRecord, estimatedWarning, BACK_EARLY_NOTE, END_SPARE_NOTE } from './planner-day.mjs';
 export { checkDayChain } from './planner-chain.mjs';
 export { bagLegs, budgetFor } from './planner-budget.mjs';
@@ -203,7 +203,7 @@ function addEvening(allDays, dates, evenings, { ctx, places, later, scheduled })
   for (const { dayPlan, evening, day } of evenings) {
     const sunset = sunsetFor(day, ctx.trip.timezone);
     if (sunset) dayPlan.sunset = sunset;
-    applyExtras(dayPlan, eveningExtras({ evening, date: day.date, season: ctx.trip.season, places, snapshots: ctx.snapshots, exclude, used, later: inLater }));
+    applyExtras(dayPlan, eveningExtras({ evening, date: day.date, season: ctx.trip.season, places, snapshots: ctx.snapshots, exclude, used, later: inLater, warnings: dayPlan.warnings }));
   }
 }
 

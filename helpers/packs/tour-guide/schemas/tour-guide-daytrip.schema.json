@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-daytrip.schema.json",
+  "title": "Tour Guide daytrip (payload of the `daytrip` envelope)",
+  "description": "A board of up to 8 day trips from one base within a one-way ride limit (Contract C15, helpers/prompts/TG-PHASE-15.md WP-15a). Own data only: our words, our scores, place ids, names and links; every object refuses unknown keys, so no Google field (coordinates, rating, review count, photos, hours, price) fits. Both validators (gas/41_daytrip.js tgEnvValidateDaytrip, packs/tour-guide/daytrip/daytrip-payload.mjs validateDaytripPayload) also refuse a Google field by name anywhere, and check what this subset cannot say: items numbered 1..N in order, slugs unique, labels unique, dates real calendar dates, the whole payload at most 20 000 characters.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "trip", "base", "created_on", "max_minutes", "items", "left_out"],
+  "properties": {
+    "v": { "const": 1 },
+    "id": { "type": "string", "pattern": "^dt-\\d{8}-[a-z0-9-]{1,40}$", "description": "dt-, the run's local date, -, the base's slug. A re-delivered id replaces its board and keeps what was kept." },
+    "trip": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/slug" }], "description": "The trip the base belongs to (one of its lodgings or cities), else null." },
+    "base": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "slug"],
+      "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 80 }, "slug": { "$ref": "#/$defs/slug" } }
+    },
+    "created_on": { "$ref": "#/$defs/date" },
+    "max_minutes": { "type": "integer", "minimum": 30, "maximum": 180, "description": "The one-way limit asked for." },
+    "date": { "$ref": "#/$defs/date", "description": "The day asked for." },
+    "items": { "type": "array", "maxItems": 8, "items": { "$ref": "#/$defs/item" }, "description": "Best first." },
+    "more": { "type": "integer", "minimum": 0, "maximum": 50, "description": "Day trips that passed every screen but did not make the top 8." },
+    "left_out": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "reason"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+          "reason": { "enum": ["too_far", "no_rail", "closed_on_dates", "out_of_season", "duplicate", "other"] }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+    "date": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" },
+    "place_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{6,300}$" },
+    "part": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "slug", "name", "ride", "length", "why", "see", "score", "parts", "labels", "stops", "maps_url"],
+      "properties": {
+        "n": { "type": "integer", "minimum": 1, "maximum": 8, "description": "Its place on the board, 1-based, in order." },
+        "slug": { "$ref": "#/$defs/slug" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120, "description": "The destination: a town, an area or one big sight." },
+        "area": { "type": "string", "maxLength": 80, "description": "The region, in plain words." },
+        "ride": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["minutes", "estimated"],
+          "description": "One way, waits included; estimated is true when the minutes come from the estimator.",
+          "properties": {
+            "minutes": { "type": "integer", "minimum": 1, "maximum": 600 },
+            "estimated": { "type": "boolean" },
+            "from_station": { "type": "string", "minLength": 1, "maxLength": 80 },
+            "to_station": { "type": "string", "minLength": 1, "maxLength": 80 }
+          }
+        },
+        "length": { "enum": ["half", "full"] },
+        "why": { "type": "string", "minLength": 1, "maxLength": 200, "description": "Why it suits the party, in our words." },
+        "see": { "type": "array", "minItems": 1, "maxItems": 4, "items": { "type": "string", "minLength": 1, "maxLength": 80 } },
+        "eat": { "type": "string", "minLength": 1, "maxLength": 160, "description": "A vegetarian-checked food note." },
+        "season": { "type": "string", "minLength": 1, "maxLength": 120, "description": "What is in season there on the date or the trip's days." },
+        "closed": { "type": "array", "maxItems": 7, "items": { "$ref": "#/$defs/date" }, "description": "The asked date or trip days on which its main sights are closed." },
+        "score": { "$ref": "#/$defs/part" },
+        "parts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fit", "reach", "season", "food"],
+          "properties": { "fit": { "$ref": "#/$defs/part" }, "reach": { "$ref": "#/$defs/part" }, "season": { "$ref": "#/$defs/part" }, "food": { "$ref": "#/$defs/part" } }
+        },
+        "labels": { "type": "array", "maxItems": 4, "items": { "enum": ["gem", "veg_easy", "booking", "crowded", "rain_ok", "seen_before"] } },
+        "stops": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "description": "The sights in a sensible order: the anchors a plan uses.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name"],
+            "properties": { "name": { "type": "string", "minLength": 1, "maxLength": 120 }, "place_id": { "$ref": "#/$defs/place_id" } }
+          }
+        },
+        "place_id": { "$ref": "#/$defs/place_id" },
+        "maps_url": { "type": "string", "pattern": "^https://\\S+$" }
+      }
+    }
+  }
+}

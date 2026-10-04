@@ -3,11 +3,30 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 69/100`
+`Sections: 70/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.69r] — 2026-10-04 06:53:49 AM EST
+
+> **Prompt:** "… 19. Day trip: Approve · note: I have not finalized my entire trip yet, so I may use this function for a different city. 20. What's on: Approve · note: I have not finalized my entire trip yet, so I may use this function for a different city. …" *(excerpts of the owner's answers on the project's morning review; the owner then chose on a decision card to build both before the trip; this push is Phase 15's framework side)*
+
+### Added
+- **Day trip** (item 19, Contract C15, WP-15a; `helpers/packs/tour-guide/daytrip/`, `gas/41_daytrip.js`, `gas/33_daytrip_app.js`, `schemas/tour-guide-daytrip.schema.json`): `/daytrip [from] <place> [under <N> min|h] [on <date>]` opens a `daytrip` request (no place: from where the current trip stays; the one-way limit 90 minutes by default, 30–180). The engine screens candidates in order (a duplicate, no train or bus, too far, closed on the day, out of season), scores the rest and keeps 8 with `more` and what was left out; the ride comes from the one rail estimator. The core stores the board in a DayTrips tab and sends one card (each trip's ride and length, its reason and season line, ➕ to keep, 📱); on a trip with planned days a kept trip can be put on a day, which opens one re-plan with `daytrip: { board, n }`. `/daytrips` lists the last boards, kept trips first; `state.json` → `daytrips_kept`; `dayTripOutlineEntry` turns a kept trip into the planner's full-day outline entry; the app's Day trips screen (`daytrip.list`, `get`, `keep`, `new`)
+- **What's on** (item 20, Contract C15, WP-15b; `helpers/packs/tour-guide/whatson/`, `gas/42_whatson.js`, `gas/34_whatson_app.js`, `schemas/tour-guide-whatson.schema.json`): `/whatson [in] [<place>] [<when>]` opens a `whatson` request for a window of at most 31 days (the trip's place and window by default). The board (light-ups, special openings, festivals, markets, exhibitions, performances, holidays and closures, each with its own page) is stored in a WhatsOn tab and sent as one card grouped by first day: ➕ chooses an item for a day (asking which day when it runs over several), and 🔁 opens one re-plan of a planned day with `whatson: { board, item }`. `/whatson last`; `state.json` → `whatson_chosen`; `toSeasonEvent` and `mergeChosen` carry a chosen event into the season sheet; the app's What's on screen (`whatson.list`, `get`, `choose`, `new`)
+- **The weekly What's on check** (alarm `tg_whatson`, on by default): from 21 days before a trip starts, at 09:00 in the trip's zone and then weekly, a quiet `whatson` request with `auto: true` for the trip's window; a board with nothing new stays silent, one with new items sends "New on in <place>" with only those; it waits an hour while a request is open; `/whatson auto on|off`
+- **One choice per trip and place** (the coordinator; `gas/42_whatson.js`, `gas/34_whatson_app.js`): an item is chosen on one board at most, and every board of the same trip and place shows that choice (the card's ✅, the app's `chosen_on` and `choices`, the counts in `/whatson last` and `whatson.list`). Choosing it on another board moves the choice there, ✅ on any of them removes it everywhere, the re-plan names the board that holds it, and `whatson_chosen` lists an item of a trip and place once
+- **The evening** (change E; `planner/planner-evening.mjs`): events chosen for an evening are offered first on their day with `chosen: true`; an event under way when the day's stops finish is offered from then, not from its start; a 10 km radius with its warning; `isEveningChoice`; the day card and the app show ⭐ under "This evening" for a chosen event
+- App v01.14w (`live-site-pages/helper-app.html`): the Day trips and What's on screens, and ⭐ "This evening" in the day view
+- Tests: `pack_tour-guide_daytrip{,_app,_engine,_gas}`, `pack_tour-guide_whatson{,_app,_engine,_evening}`; the rail band's assertions in the existing tests. 1202 tests, 1201 pass, 1 skipped (the Maps live smoke); in a copy laid out like helpers-dist, 1177 pass, 25 skipped
+
+### Changed
+- **The rail estimate for 15–40 km rides** (`planner/planner-rail.mjs` `rideMinutes`): a ride in that band no longer costs more than a 41 km one (8 km → 31 min, 15 → 49, 25 → 50, 35 → 62, 40 → 68, 41 → 70); Scout's `estimateReach` and Day trip use the same estimate
+- **C15 in the validators, the schemas and the season sheet**: `daytrip` and `whatson` join the pack's envelope types and request kinds (the three pinned type lists, marked C15); `KINDS.daytrip` runs `checkDaytrip` and `KINDS.whatson` runs `checkWhatson`, so the envelope tool refuses what the core refuses; a season event may carry `chosen_on` (from ≤ chosen_on ≤ to) and the season sheet takes `exhibition` and `performance` (also on the brochure's season page and in its schema, and in the journey's evening kinds); the day plan's and the plan digest's evening extras may carry `chosen: true`; the app's day view keeps it
+- Docs: `helpers/SPEC.md` §16 (the WP-15a and WP-15b paths), the pack README (Day trip, What's on, the new tests), `season/README.md`; decisions and status for WP-15a and WP-15b, `helpers/decisions/TG-PHASE-15.md`; `helpers/prompts/TG-PHASE-15.md`; `helpers/BUILD-STATE.md` rows 14 and 15, the Phase 14 and Phase 15 logs and Next; the README tree, the app's version in it and the timestamp
+- `helpers/decisions/TG-PHASE-14.md` §11 and `helpers/BUILD-STATE.md`: the owner merged the private repo's wave 2 (PR #26)
 
 ## [v01.68r] — 2026-10-04 04:30:06 AM EST
 

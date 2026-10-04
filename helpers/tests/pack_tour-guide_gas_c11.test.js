@@ -399,6 +399,16 @@ test('trip.digest returns the C11 day and stop fields, Maps links only; an older
   assert.deepEqual(Object.keys(r.days[1].stops[0]).sort(), ['arrive', 'depart', 'maps_url', 'minutes', 'n', 'name', 'note_line', 'slug']);
 });
 
+// C15 (WP-15b): a chosen evening event reaches the app with `chosen: true` (⭐ there); an extra that was not chosen gains no key.
+test('trip.digest keeps chosen: true on a chosen evening extra and adds nothing to the others', () => {
+  const t = fresh();
+  const p = whole(); p.days[0].extras[0].chosen = true;
+  deliver(t.ctx, t.state, 'plan_digest', p);
+  const d = J(app(t.ctx, t.state, 'trip.digest', { slug: TRIP })).days[0];
+  assert.deepEqual(d.extras.map((x) => x.chosen), [true, undefined]);
+  assert.equal(Object.prototype.hasOwnProperty.call(d.extras[1], 'chosen'), false);
+});
+
 /* ---------------- /dates per day ---------------- */
 const NEXT = ' The next plan or <code>/replan</code> uses it.';
 test('/dates <date> start|end|hours|bags save one day, list it, and every research, plan and replan request carries day_overrides', () => {

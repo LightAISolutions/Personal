@@ -639,4 +639,17 @@ test('planVersions: the budget guard counts the whole version set and refuses it
   assert.ok(s.transport.calls.length > 0);
 });
 
+// C15 (WP-15b): an exhibition or a performance near an area counts as its evening event, like a light-up; a holiday does not.
+test('areaScore and eventOn: an exhibition or a performance near an area is its evening event; a holiday is not', async () => {
+  const A = await import('../packs/tour-guide/journey/journey-areas.mjs');
+  const cl = { members: [], centre: { lat: 35, lng: 135 }, radius_km: 1 };
+  const sheet = (kind) => ({ events: [{ name: 'Harbour ' + kind, kind, from: '2027-05-12', to: '2027-05-12', lat: 35.001, lng: 135.001 }] });
+  for (const k of ['exhibition', 'performance', 'light_up']) {
+    assert.equal(A.areaScore(cl, '2027-05-12', sheet(k)), A.SCORE.EVENT, k);
+    assert.equal(A.eventOn(cl, '2027-05-12', sheet(k)).kind, k);
+  }
+  assert.equal(A.areaScore(cl, '2027-05-12', sheet('holiday')), 0);
+  assert.equal(A.eventOn(cl, '2027-05-12', sheet('holiday')), null);
+});
+
 // Developed by: LightAISolutions
