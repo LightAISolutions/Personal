@@ -3,11 +3,17 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 12/50`
+`Sections: 13/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.13w] — 2026-10-04 03:32:45 AM EST — v01.67r
+
+### Added
+- The Places screen has a list filter beside the tag filter when your places are on your saved lists: pick a list to see only its places
+- The Scout screen shows the comparisons you ask for: titled "Compare", with a ⚠️ line for each warning a place has (such as closed on your days or too far) and no topic bar
 
 ## [v01.12w] — 2026-10-04 02:22:08 AM EST — v01.66r
 

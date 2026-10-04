@@ -3,11 +3,25 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 67/100`
+`Sections: 68/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.67r] — 2026-10-04 03:32:45 AM EST
+
+> **Prompt:** "… 11. Save this place: Approve · note: Instead of forwarding a Google Maps share link to the bot, I'd like to give Tour Guides access to my existing Google lists to organize, maintain, and integrate with Tour Guide's Places. 12. Compare saved places: Approve · note: Having Tour Guide integrated with my existing Google Maps lists would also allow decision #12's compare saved places function to do more. … 16. One Discover routine: Approve …" *(excerpts of the owner's answers on the project's morning review; the owner then chose the Takeout route for the lists on a decision card; this push is Phase 14's wave 2, its items 11, 12 and 16)*
+
+### Added
+- **The owner's saved Google Maps lists** (Contract C14, wave 2; `helpers/packs/tour-guide/lists/`, `gas/28_lists.js`): a reader for a Google Takeout "Saved" export (a `.tgz`, a `.zip` or one `.csv`, one list per CSV file; a damaged archive reads as partial and never throws; at most 100 lists, 2,000 places a list and 10,000 in all), a link parser that tells a place's Google id, a place id, a name, a dropped pin and a short link apart and refuses lookalike hosts, and a merge that matches the owner's places by Google id, place id or name, adds and drops list names, deletes nothing, holds a link it could not resolve for 30 days and quarantines a note that reads like instructions. A looked-up place is accepted only on the same Google id or place id, or the same name within 300 m of the saved pin, never from a short link; a new place files under the known destination whose 20 km circle holds it, else under its locality. `/lists` shows the owner's lists, `/list <name>` the places on one grouped by destination, and `/lists sync` asks for a fresh read; the Places tab gains a `lists` column (absent keeps it, an empty list clears it) and a place file its `lists`, `list_notes` and `cid`; the app's Places screen has a list filter beside the tag filter (`places.search` `list` and its `lists` facet; `live-site-pages/helper-app.html`, app v01.13w)
+- **Compare** (`gas/29_compare.js`, `helpers/packs/tour-guide/compare/`, `helpers/decisions/TG-SCOUT.md` §11): `/compare <a>, <b>[, <c>, <d>] [in <place>]` or `/compare <list> [in <place>]` opens a `compare` request, answered by a `scout` envelope in compare mode (no new envelope type): up to ten places side by side with Scout's scores and parts (`more` counts the rest), each place's warnings as flags (closed, closed on the trip's days, too far, the diet not confirmed and the rest of Scout's screens), a place with a hard flag sorted last, and the names not found first among those left out. The core sends a ⚖️ card with a ⚠️ line per warning and the ➕ buttons, keeps the mode and source in the Scouts tab (`mode`, `source_json`), and `/scouts` marks a compare board ⚖️; the board and the app's Scout screen are titled "Compare — <source>" with no topic bar
+- **One Discover routine** (`TG_DISCOVER_KINDS` in `gas/00_common.js`): when a `DISCOVER` routine is configured, the discovery kinds (`scout`, `compare`, `lists`, `vegcard`) go to it, so they never wait behind trip research; without it, routing is unchanged. `new-branch.mjs --discover` makes a new branch's kind a discovery kind, and `--check` reports it
+- Tests: `pack_tour-guide_lists{,_engine}`, `pack_tour-guide_compare`, `pack_tour-guide_p14e_{compare,routing}`; `tools_new_branch` covers `--discover`. 1082 tests, 1081 pass, 1 skipped (the Maps live smoke); in a copy laid out like helpers-dist, 1069 pass, 13 skipped
+
+### Changed
+- Docs: `helpers/SPEC.md` §16 (the wave 2 paths), the pack README (the lists and compare modules, the discovery kinds, the Places tab's `lists` column), `helpers/tools/README.md` (`--discover`), `helpers/decisions/TG-SCOUT.md` §11; decisions and status for WP-14d and WP-14e, `helpers/decisions/TG-PHASE-14.md` §§8–11; `helpers/BUILD-STATE.md` row 14, the Phase 14 log and Next; the README tree, the app's version in it (it had stayed at v01.11w since v01.66r) and the timestamp
+- `helpers/decisions/TG-PHASE-14.md` §5 and `helpers/BUILD-STATE.md`: the private repo's side of wave 1 is open for the owner (PR #25)
 
 ## [v01.66r] — 2026-10-04 02:22:08 AM EST
 

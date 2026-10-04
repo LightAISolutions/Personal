@@ -27,6 +27,7 @@ Brief: `helpers/prompts/TG-PHASE-14.md`. The owner's review items 15, 7, 10 and 
 
 ## 5 Private repo (WP-14p, wave 1)
 One pull request for the owner after this push: the re-pin; a `vegcard` skill with no judgment step (the travellers' diets through `partyDiet`, then `vegCard`), sent unasked with `--dedupe-key vegcard:<trip>:<fp>` and, answering a `vegcard` request or `rebuild`, with `--in-reply-to <id>` and `--dedupe-key vegcard:<trip>:<fp>:<id>` (the core drops a repeated key for six hours, so an unchanged card answering `/vegcard rebuild` would otherwise never arrive); plan-days sends the card after a plan or re-plan; the brochure appends `vegCardHtml(card)` as its last page; Scout's driver calls the engine's `estimateReach` instead of its own estimator; the `vegcard` row in the routines table (trip research until Discover).
+- **Built and open for the owner** as PR #25 (2026-10-04): the re-pin to v01.66r and the parts above, plus a fix the coordinator caught in review (the routines table's `veg_card` row lacked its closing pipe). The vendored tests (1014 pass, 10 skipped), the journey dry run and the integration dry run were clean on the branch.
 
 ## 6 Wave 2, corrected against wave 1
 Before spawning WP-14d and WP-14e the coordinator checked their briefs against what wave 1 built (the brief's "Checked against what wave 1 built" block):
@@ -40,8 +41,23 @@ Before spawning WP-14d and WP-14e the coordinator checked their briefs against w
 ## 7 The owner's order after this phase
 The owner chose (card, 2026-10-04) to build Day trip (item 19) and What's on (item 20) before the trip: right after wave 2, ahead of Quiet (13) and Menu check (14). Then the rehearsal; after the trip, items 9, 18 and 21.
 
-## 8 Carried on
-- Wave 2's live results (the Discover routine, a Takeout export read, `/lists`, `/compare`) go in §6 and BUILD-STATE row 14 as they come.
-- WP-14p wave 1 either stacks on the open Phase 13 pull request or waits for its merge.
+## 8 Wave 2 merge (coordinator)
+- **Order.** WP-14d (lists, `hb-builder-opus`, decisions `helpers/decisions/WP-14d.md`, status `helpers/status/WP-14d.md`), then WP-14e (compare and the Discover routing, `hb-builder-opus`, `helpers/decisions/WP-14e.md`, `helpers/status/WP-14e.md`), squash-merged onto v01.66r without a conflict.
+- **One test written against a tree without the lists.** WP-14e built in parallel with WP-14d, so its usage test asserted that `tgListNames` does not exist; in the merged build `gas/28_lists.js` defines it, and that case (and `tools_new_branch`, which runs the whole suite in a copy) failed. The case now removes the function itself, and a new case runs `/compare` against the real lists module: a list stored on Places opens a request, an empty tab gives the usage line.
+- **Docs at the merge.** The pack README gained the `28_lists.js` and `29_compare.js` rows, the discovery kinds in the `00_common.js` row and the Places tab's `lists` column in the `21_sheets.js` row. The app's version goes to v01.13w (the list filter on Places, compare boards on the Scout screen); the README tree's app version had stayed at v01.11w since v01.66r and is corrected.
+
+## 9 Wave 2 probes (coordinator, invented data)
+- **The lists engine.** A bare CSV with a byte-order mark, a quoted comma, a doubled quote and a line break inside a field, and both Note and Comment (joined); a `.tgz` and a `.zip` of the same two lists (one name with an accent) with an HTML file skipped; a damaged `.zip` reads as partial without throwing. Links: a feature id gives the CID; a place id, a pin and a short link are told apart; a lookalike host is refused. The merge matches by CID and by place id, drops a list a place left on a full read and keeps it on a partial one, deletes nothing, and quarantines a note that asks to ignore instructions; an unresolved link is held for 30 days, then looked up again. The resolution rule accepts the same CID and refuses another, accepts a pin 100 m away and refuses one 1 km away or under another name, and never accepts a short link. A place inside a known destination's circle files under it, else under its locality.
+- **The core.** `/lists` before any export says so and opens nothing; `/lists sync` opens one `lists` request for the trip, fired at trip research; `tgListNames()` counts each list once; `/list` matches a folded name and groups by destination; a digest place without `lists` keeps them and `[]` clears them; the app's list filter and facet answer. With Discover configured (and Scout too), `/lists sync`, `/compare`, `/scout` and `/vegcard` each opened one request fired at Discover; research and plan did not move.
+- **Compare.** Twelve places from a list for a vegetarian party: ten kept, `more` 2, the two names not found lead `left_out`; the closed and the far places flagged, a food place with no diet judgment "vegetarian not confirmed", a museum not; the closed place last; the payload valid; the board titled "Compare — <list>" with its warning lines and no topic bar. The core accepted the envelope, sent the ⚖️ card with its ⚠️ lines and ➕ buttons, stored the mode and source in the Scouts tab, and `/scouts` marks it ⚖️.
+- Two probe failures on the way were the probe's own invented data (an unquoted comma inside a link, one CID used for two places), not the engine.
+
+## 10 Wave 2 checks
+- `node --test helpers/tests/`: 1082 tests, 1081 pass, 1 skipped (the Maps live smoke). `bundle.mjs --all --check` ok (tour-guide 46 files); `boundary-check.mjs` clean (678 files); `new-branch.mjs --check` complete for `lists`, `compare`, `scout` and `vegcard`.
+- A copy laid out like helpers-dist (`<tmp>/vendor/helpers`, `node --test vendor/helpers/tests/`): 1082 tests, 1069 pass, 13 skipped (the twelve tests that read the app page in `live-site-pages/`, which helpers-dist does not carry, and the live smoke).
+
+## 11 Carried on
+- Wave 2's private side (WP-14p wave 2): the re-pin, a `lists-sync` skill (the newest Takeout export in Drive, at most 40 lookups a run, destinations first, flagged notes to quarantine, a reply and a places digest per destination; trip research also runs it when a newer export exists), a `compare` skill, the Discover routine's prompt and skill, and the routines table; one pull request for the owner, then the owner's steps (create the Discover routine, its fire URL and token in Script Properties, a Takeout export, a first try of the commands).
+- Wave 2's live results (the Discover routine, a Takeout export read, `/lists`, `/compare`) go here and in BUILD-STATE row 14 as they come.
 
 Developed by: LightAISolutions

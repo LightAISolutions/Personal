@@ -97,7 +97,9 @@ test('/compare usage: nothing, one name that is no list, more than four names, a
     assert.match(t, /\/compare Reed Mill, Pear Press/, c);
   }
   // Without WP-14d's lists (tgListNames not defined), one argument is still the usage line, and nothing throws.
+  // 28_lists.js defines tgListNames in the merged build, so the case removes it (coordinator, at the wave 2 merge).
   const { ctx, state } = fresh({ lists: false });
+  ctx.tgListNames = undefined;
   assert.equal(typeof ctx.tgListNames, 'undefined');
   say(ctx, state, '/compare Dinner list');
   assert.equal(requests(state).length, 0);
@@ -107,6 +109,23 @@ test('/compare usage: nothing, one name that is no list, more than four names, a
   b.ctx.tgListNames = () => { throw new Error('boom'); };
   say(b.ctx, b.state, '/compare Dinner list');
   assert.equal(requests(b.state).length, 0);
+});
+
+test('/compare with the lists module itself (merged build): a list stored on Places opens a request, an empty tab gives the usage line', () => {
+  // Coordinator, at the wave 2 merge: the real tgListNames (28_lists.js) instead of the stub.
+  const place = (slug, lists) => ({ slug, name: slug.split('-').map((w) => w[0].toUpperCase() + w.slice(1)).join(' '), area: 'Old Town',
+    category: 'restaurant', tags: [], status: 'candidate', last_trip: null, last_researched: '2027-04-01', last_verified: '2027-04-01',
+    note_line: 'An invented note.', maps_url: 'https://www.google.com/maps/search/?api=1&query=Fixture&query_place_id=Fx' + slug.replace(/-/g, ''),
+    history_summary: '', lists });
+  let { ctx, state } = fresh({ lists: false });
+  say(ctx, state, '/compare Dinner list');
+  assert.equal(requests(state).length, 0, 'no list stored yet');
+  assert.match(texts(state).join('\n'), /\/lists shows your lists/);
+  ({ ctx, state } = fresh({ lists: false }));
+  ctx.tgPlacesUpsert({ v: 1, kind: 'places_digest', destination: 'quillmere', places: [place('reed-mill', ['Dinner list']), place('pear-press', ['Dinner list', 'Café Crawl'])] });
+  assert.deepEqual(J(ctx.tgListNames()), [{ name: 'Café Crawl', count: 1 }, { name: 'Dinner list', count: 2 }]);
+  say(ctx, state, '/compare my dinner list in Quillmere');
+  assert.deepEqual(clean(fields(state)), { trip: FIX.trip.slug, where: 'Quillmere', list: 'Dinner list' });
 });
 
 // Developed by: LightAISolutions
