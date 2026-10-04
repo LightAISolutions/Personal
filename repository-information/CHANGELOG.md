@@ -3,11 +3,20 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 63/100`
+`Sections: 64/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.63r] — 2026-10-03 08:24:00 PM EST
+
+> **Prompt:** "i merged PR#23 and typed /journey on, but I think it might have been before the push. What should I do now?" *(this push records that the owner merged WP-12e and switched on outlines and day versions)*
+
+### Changed
+- `helpers/decisions/TG-PHASE-12.md` §4 and §7: WP-12e merged by the owner as the private repo's PR #23, so the re-plan that rebuilds the owner's trip (the morning review's fix package) also fills the morning message's inputs
+- `helpers/decisions/TG-PHASE-11.md` §5: the owner sent `/journey on`; the live check on the real trip still closes the phase (outlines need a dated trip of 3 days or more, a shorter one goes straight to day versions)
+- `helpers/BUILD-STATE.md` rows 11 and 12, the Phase 12 log and Next; README timestamp
 
 ## [v01.62r] — 2026-10-03 08:12:40 PM EST
 
