@@ -20,8 +20,9 @@ what a preference can be comes from the caller, and the travel vocabulary ships 
 node helpers/kits/prefs/index.mjs check  --vocab V <evidence.json>
 node helpers/kits/prefs/index.mjs ingest --vocab V --held DIR [--profile F | --ledger F] <evidence.json>
 node helpers/kits/prefs/index.mjs review --vocab V --held DIR (--profile F | --ledger F) [--max N] [--include-suspect]
-node helpers/kits/prefs/index.mjs apply  --vocab V --held DIR --profile F [--ledger F] <decisions.json>
-node helpers/kits/prefs/index.mjs interview --vocab V --bank B --held DIR --profile F [--ledger F] [--now ISO] [--max N] <answers.json>
+node helpers/kits/prefs/index.mjs apply  --vocab V --held DIR --profile F [--ledger F] [--subject S] <decisions.json>
+node helpers/kits/prefs/index.mjs interview --vocab V --bank B --held DIR --profile F [--ledger F] [--now ISO] [--max N] [--subject S] <answers.json>
+node helpers/kits/prefs/index.mjs refresh --vocab V --profile F [--ledger F] [--subject S]
 ```
 
 From a private repo the path is `vendor/helpers/kits/prefs/index.mjs`. Always name `index.mjs`: Node does not run a
@@ -35,6 +36,7 @@ directory's `index.mjs`, so `node helpers/kits/prefs/ …` fails.
 | `--held DIR` | where held notes live — in a private repo, a directory under `quarantine/` |
 | `--profile F` | the confirmed profile (Markdown) the kit owns; e.g. `profile/travel-prefs.md` |
 | `--ledger F` | the owner-decision ledger; default `<profile without .md>.decisions.json`, beside the profile |
+| `--subject S` | `apply`, `interview`, `refresh`: the one person the profile is about (a companion's), named in its heading, its opening line and the `/profile` count line; without it they read exactly as before |
 | `--max N` | review items per batch, 1..20, default 8 (`review` and `interview`) |
 | `--include-suspect` | also show held-back candidates (suspect-only, tied, low support), clearly labelled |
 | `--min-support N` | clean pieces of evidence a candidate needs before it is proposed, default 1 |
@@ -171,7 +173,13 @@ the triple is what the owner tapped; the bank only cross-checks it.
   candidate is never proposed again, whatever new evidence arrives.
 - **Profile** — Markdown rendered from the ledger alone, one `## <Label>` section per dimension, each line with its
   provenance (`— confirmed 2026-09-20 · evidence e_…` or `— edited 2026-09-20 from "museums" · …`), and a trailer
-  `<!-- prefs-kit profile v1 · vocab <name> · body sha256 <16 hex> -->`.
+  `<!-- prefs-kit profile v1 · vocab <name> · body sha256 <16 hex> -->`. The heading is the vocabulary's title, or
+  `<subject> — <title>` with `--subject` (one plain line of at most 60 characters; Markdown that could open a block is
+  dropped). The trailer covers the heading, so a profile written before a subject was given is still the kit's own and
+  the next `apply` or `refresh` renames it.
+- **Refresh** (`refresh`) — `{ok, errors, changed, profile_entries}`: the existing profile re-rendered from the ledger
+  with no new decision (after a kit change to the rendering, or to name the person it is about). Refuses a missing,
+  hand-edited or oversize profile; writes only when the text changes.
 - **Reading a profile back** — a pack that plans from the profile reads the Markdown above, never the ledger. The
   tour-guide pack's `packs/tour-guide/travellers/` (`profileExcerpt`) is the reference reader: the `dietary`
   dimension's `-` lines become the excerpt's `dietary` list (always present, possibly empty) and a vegetarian or vegan
@@ -245,10 +253,11 @@ subset validator (`../brochure/lib/validate.mjs`, imported, not copied) for the 
 
 ## Library
 
-`import * as prefs from './index.mjs'` exposes `check`, `ingest`, `dropEvidence` (rule 10), `review`, `apply`,
+`import * as prefs from './index.mjs'` exposes `check`, `ingest`, `dropEvidence` (rule 10), `review`, `apply`, `refresh`,
 `interview` (alias `runInterview`; same options as the CLI, as an object: `{vocab, bank, held, profile, ledger?, answers,
-now?, salt?, minSupport?, max?, includeSuspect?}`) and the building blocks (`loadVocab`, `validateVocab`,
-`normalizeEvidence`, `buildCandidates`, `buildReview`, `readDecisions`, `applyDecisions`, `renderProfile`, `loadBank`,
+now?, salt?, minSupport?, max?, includeSuspect?, subject?}`) and the building blocks (`loadVocab`, `validateVocab`,
+`normalizeEvidence`, `buildCandidates`, `buildReview`, `readDecisions`, `applyDecisions`, `renderProfile`, `profileTitle`,
+`profileSubject`, `loadBank`,
 `validateBank`, `loadBankSchema`, `readAnswers`, `profileSummary`, …). Fixtures: `fixtures/evidence-sample.json`
 (invented trip evidence with one planted injection), `fixtures/decisions-sample.json` and
 `fixtures/interview-answers-sample.json` (invented answers: picks, a superseded pick, text answers, one planted injection,

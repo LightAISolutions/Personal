@@ -13,7 +13,7 @@ import { buildCandidates, candidateId } from './lib/candidates.mjs';
 import { readHeld, writeHeld, renderNote, parseNote, MAX_EVIDENCE_PER_NOTE } from './lib/held-notes.mjs';
 import { buildReview } from './lib/review.mjs';
 import { readDecisions } from './lib/decisions.mjs';
-import { readLedger, ledgerText, applyDecisions, renderProfile, checkProfileFile, sizeProblem, activeEntries } from './lib/confirmed-prefs.mjs';
+import { readLedger, ledgerText, applyDecisions, renderProfile, checkProfileFile, sizeProblem, activeEntries, profileSubject, profileTitle } from './lib/confirmed-prefs.mjs';
 import { MAX_DECISIONS } from './lib/decisions.mjs';
 import { isoDay } from './lib/util.mjs';
 import { loadBank, validateBank, loadBankSchema, bankQuestionCount } from './lib/interview-bank.mjs';
@@ -21,8 +21,8 @@ import { readAnswers, supersede, bankWarnings, answerEvidence, profileSummary, i
 
 export { loadVocab, validateVocab, checkValue, normalizeEvidence, parseEvidenceText, injectionReasons, opaqueRef, SOURCE_KINDS,
   buildCandidates, candidateId, readHeld, writeHeld, renderNote, parseNote, buildReview, readDecisions, readLedger,
-  applyDecisions, renderProfile, checkProfileFile, sizeProblem, activeEntries, loadBank, validateBank, loadBankSchema, bankQuestionCount,
-  readAnswers, supersede, bankWarnings, answerEvidence, profileSummary };
+  applyDecisions, renderProfile, checkProfileFile, sizeProblem, activeEntries, profileSubject, profileTitle, loadBank, validateBank, loadBankSchema,
+  bankQuestionCount, readAnswers, supersede, bankWarnings, answerEvidence, profileSummary };
 export { BANK_SCHEMA_PATH } from './lib/interview-bank.mjs';
 export { MAX_ANSWERS, SUMMARY_MAX, ANSWER_KINDS, PICK_KINDS } from './lib/interview.mjs';
 export { EXCERPT_MAX } from './lib/evidence.mjs';
@@ -117,11 +117,12 @@ export function review({ vocab, held, ledger, max, includeSuspect = false, minSu
 }
 
 /**
- * apply({vocab, held, profile, ledger?, decisions: raw object, minSupport?}) -> summary.
+ * apply({vocab, held, profile, ledger?, decisions: raw object, minSupport?, subject?}) -> summary.
  * The only path into the profile. Validates the owner's decisions, refuses a hand-edited or oversize profile before
- * writing anything, then writes the ledger, the profile and the held notes (status lines).
+ * writing anything, then writes the ledger, the profile and the held notes (status lines). `subject` names the person
+ * the profile is about (a companion's) in its heading.
  */
-export function apply({ vocab, held, profile, ledger, decisions, minSupport, ref = null }) {
+export function apply({ vocab, held, profile, ledger, decisions, minSupport, ref = null, subject = null }) {
   const v = asVocab(vocab);
   const ledgerFile = ledger || defaultLedgerPath(profile);
   const d = readDecisions(decisions);
@@ -130,7 +131,7 @@ export function apply({ vocab, held, profile, ledger, decisions, minSupport, ref
   const candidates = buildCandidates(existing.records, v, { minSupport });
   const res = applyDecisions({ ledger: readLedger(ledgerFile, v), decisions: d.decisions, via: d.via, ref: d.ref || ref,
     candidates: new Map(candidates.map((c) => [c.id, c])), vocab: v });
-  const text = renderProfile(res.ledger, v);
+  const text = renderProfile(res.ledger, v, { subject });
   const refuse = checkProfileFile(existsSync(profile) ? readFileSync(profile, 'utf8') : null, v) || sizeProblem(text, v);
   if (refuse) return { ok: false, errors: [refuse], applied: [], skipped: res.skipped };
   const lt = ledgerText(res.ledger);
@@ -142,6 +143,24 @@ export function apply({ vocab, held, profile, ledger, decisions, minSupport, ref
     ledger_changed: changed, notes_written: notes.written };
 }
 
+/**
+ * refresh({vocab, profile, ledger?, subject?}) -> {ok, errors, changed, profile_entries}.
+ * Re-renders an existing profile from the ledger alone, with no new decision — after a kit change to the rendering or to
+ * name the person a profile is about. Refuses a missing, hand-edited or oversize profile; writes only on change.
+ */
+export function refresh({ vocab, profile, ledger, subject = null }) {
+  const v = asVocab(vocab);
+  if (!existsSync(profile)) return { ok: false, errors: ['no profile to refresh; a profile is first written by apply'], changed: false, profile_entries: null };
+  const led = readLedger(ledger || defaultLedgerPath(profile), v);
+  const text = renderProfile(led, v, { subject });
+  const current = readFileSync(profile, 'utf8');
+  const refuse = checkProfileFile(current, v) || sizeProblem(text, v);
+  if (refuse) return { ok: false, errors: [refuse], changed: false, profile_entries: null };
+  const changed = current !== text;
+  if (changed) writeAtomic(profile, text);
+  return { ok: true, errors: [], changed, profile_entries: activeEntries(led, v).length };
+}
+
 const NOT_SAVED = {
   suspect: 'looked like an instruction; held for review',
   negative_single_value: 'a single-value dimension seen only negatively; held for review',
@@ -150,7 +169,7 @@ const NOT_SAVED = {
 };
 
 /**
- * interview({vocab, bank, held, profile, ledger?, answers: raw object, now?, salt?, minSupport?, max?, includeSuspect?})
+ * interview({vocab, bank, held, profile, ledger?, answers: raw object, now?, salt?, minSupport?, max?, includeSuspect?, subject?})
  *   -> {ok, errors, decided_at, ref, applied, already, held, rejected, superseded, warnings, review, profile_summary, profile_entries}
  *
  * One call for the owner's interview answers (the core-written answers object, a payload carrying `interview`, or the
@@ -161,7 +180,7 @@ const NOT_SAVED = {
  * they and the unsaved picks come back in a prefs_review payload. decided_at = the request's created_at (else `now`)
  * plus the answer's index in milliseconds, so a later answer wins and a re-run changes no file.
  */
-export function interview({ vocab, bank, held, profile, ledger, answers, now = null, salt = '', minSupport, max, includeSuspect = false }) {
+export function interview({ vocab, bank, held, profile, ledger, answers, now = null, salt = '', minSupport, max, includeSuspect = false, subject = null }) {
   const v = asVocab(vocab);
   const ledgerFile = ledger || defaultLedgerPath(profile);
   const empty = { applied: [], already: [], held: [], rejected: [], superseded: [], warnings: [], review: null, profile_summary: null, profile_entries: null };
@@ -210,7 +229,7 @@ export function interview({ vocab, bank, held, profile, ledger, answers, now = n
     const chunk = list.slice(k, k + MAX_DECISIONS);
     const doc = { v: 1, kind: 'prefs_decisions', source: 'owner', via: 'telegram',
       decisions: chunk.map((d) => ({ cid: d.cid, decision: 'confirm', decided_at: d.decided_at })) };
-    const res = apply({ vocab: v, held, profile, ledger: ledgerFile, decisions: doc, minSupport, ref });
+    const res = apply({ vocab: v, held, profile, ledger: ledgerFile, decisions: doc, minSupport, ref, subject });
     if (!res.ok) { errors.push(...res.errors); break; }
     const pick = new Map(chunk.map((d) => [d.cid, d]));
     for (const a of res.applied) applied.push({ ...pick.get(a.cid), effective: a.effective });
@@ -228,7 +247,7 @@ export function interview({ vocab, bank, held, profile, ledger, answers, now = n
   for (const h of heldOut) if (led.entries[h.cid]) h.reason = 'already decided by the owner (' + led.entries[h.cid].decision + ')';
   const review = buildReview({ candidates: candidates.filter((c) => mine.has(c.id)), ledger: led, vocab: v, max, includeSuspect });
   return { ok: !errors.length, errors, decided_at: r.decided_at, ref, applied, already, held: heldOut, rejected, superseded, warnings,
-    review, profile_summary: profileSummary(led, v), profile_entries: activeEntries(led, v).length };
+    review, profile_summary: profileSummary(led, v, undefined, { subject }), profile_entries: activeEntries(led, v).length };
 }
 export { interview as runInterview };
 
@@ -237,10 +256,12 @@ const USAGE = `usage: node helpers/kits/prefs/index.mjs <command> [options]
   check   --vocab V <evidence.json>                                  validate + normalise evidence, write nothing
   ingest  --vocab V --held DIR [--profile F | --ledger F] <evidence.json>   hold evidence as notes in DIR
   review  --vocab V --held DIR (--profile F | --ledger F) [--max N] [--include-suspect]   print the review payload
-  apply   --vocab V --held DIR --profile F [--ledger F] <decisions.json>   promote the owner's decisions into F
-  interview --vocab V --bank B --held DIR --profile F [--ledger F] [--now ISO] [--max N] <answers.json>
+  apply   --vocab V --held DIR --profile F [--ledger F] [--subject S] <decisions.json>   promote the owner's decisions into F
+  interview --vocab V --bank B --held DIR --profile F [--ledger F] [--now ISO] [--max N] [--subject S] <answers.json>
           the owner's interview answers: picks confirmed into F, text answers held and returned for review
+  refresh --vocab V --profile F [--ledger F] [--subject S]           re-render F from the ledger alone (no new decision)
 options: --min-support N (default 1) · --salt-env NAME (env var whose value salts source refs; default PREFS_REF_SALT)
+         --subject S: the person the profile is about (a companion's), named in its heading
 V is a preset name (travel) or a vocabulary JSON file; B a preset name (travel) or a question-bank JSON file.
 Output is JSON on stdout. Exit 0 ok · 1 finding · 2 usage.`;
 
@@ -282,16 +303,22 @@ export function main(argv, out = (s) => process.stdout.write(s + '\n'), err = (s
     }
     if (cmd === 'apply') {
       if (need('vocab', 'held', 'profile').length || !file) { err('missing: --vocab --held --profile <decisions.json>\n' + USAGE); return 2; }
-      const r = apply({ vocab: o.vocab, held: resolve(o.held), profile: resolve(o.profile), ledger: ledger && resolve(ledger), decisions: readJson(file), minSupport });
+      const r = apply({ vocab: o.vocab, held: resolve(o.held), profile: resolve(o.profile), ledger: ledger && resolve(ledger), decisions: readJson(file), minSupport, subject: o.subject || null });
       out(JSON.stringify(r, null, 2));
       return r.ok && !r.skipped.some((s) => s.reason !== 'already applied') ? 0 : 1;
     }
     if (cmd === 'interview') {
       if (need('vocab', 'bank', 'held', 'profile').length || !file) { err('missing: --vocab --bank --held --profile <answers.json>\n' + USAGE); return 2; }
       const r = interview({ vocab: o.vocab, bank: o.bank, held: resolve(o.held), profile: resolve(o.profile), ledger: ledger && resolve(ledger),
-        answers: readJson(file), now: o.now || null, salt, minSupport, max: o.max, includeSuspect: !!o.includeSuspect });
+        answers: readJson(file), now: o.now || null, salt, minSupport, max: o.max, includeSuspect: !!o.includeSuspect, subject: o.subject || null });
       out(JSON.stringify(r, null, 2));
       return r.ok && !r.rejected.length ? 0 : 1;
+    }
+    if (cmd === 'refresh') {
+      if (need('vocab', 'profile').length) { err('missing: --vocab --profile\n' + USAGE); return 2; }
+      const r = refresh({ vocab: o.vocab, profile: resolve(o.profile), ledger: ledger && resolve(ledger), subject: o.subject || null });
+      out(JSON.stringify(r, null, 2));
+      return r.ok ? 0 : 1;
     }
   } catch (e) { err('prefs: ' + e.message); return 1; }
   err(USAGE);
