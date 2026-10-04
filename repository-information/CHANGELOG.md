@@ -3,11 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 65/100`
+`Sections: 66/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.65r] — 2026-10-03 11:20:26 PM EST
+
+> **Prompt:** "Why is this thread idle? What about the [trip] fixes?" *(the destination is redacted; this push follows v01.64r: the private repo's run of the vendored tests crashed on one file)*
+
+### Fixed
+- **The vendored copy of the tests runs clean** (`helpers/tests/pack_tour-guide_p13c_scouted.test.js`): the scouted-group test read the app page from `live-site-pages/`, which is outside `helpers/` and so not in helpers-dist, and the whole file failed to load in the private repo. The page test now skips when the page is absent. This repo: 978 tests, 977 pass, 1 skipped; a copy laid out like helpers-dist: 978 tests, 976 pass, 2 skipped
+
+### Changed
+- `helpers/decisions/TG-PHASE-13.md` §4 (the vendored run) and §8; `helpers/BUILD-STATE.md` Phase 13 log
 
 ## [v01.64r] — 2026-10-03 11:09:33 PM EST
 

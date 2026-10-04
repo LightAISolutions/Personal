@@ -138,7 +138,9 @@ test('the app: places.search and places.get carry scouted: true on a scouted pla
 });
 
 /* ---- the app page's Places screen, run in a vm with a tiny DOM ---- */
-const PAGE = fs.readFileSync(path.join(__dirname, '..', '..', 'live-site-pages', 'helper-app.html'), 'utf8');
+// The page lives outside helpers/, so a vendored copy of these tests (helpers-dist) has no page to read: that one test skips there.
+const PAGE_FILE = path.join(__dirname, '..', '..', 'live-site-pages', 'helper-app.html');
+const PAGE = fs.existsSync(PAGE_FILE) ? fs.readFileSync(PAGE_FILE, 'utf8') : null;
 function node(tag, attrs = {}, children) {
   const n = { tag, attrs, children: [], text: attrs.text === undefined ? '' : String(attrs.text),
     appendChild(c) { if (c) this.children.push(c); return c; }, removeChild(c) { this.children.splice(this.children.indexOf(c), 1); },
@@ -159,7 +161,8 @@ function runPlaces(rows) {
   return results.children.map((c) => (c.tag === 'h3' ? 'H3:' + c.text : c.tag === 'p' ? 'P:' + c.text : c.children[0].children[0].children[0].text));
 }
 
-test('the app\'s Places screen: the inline scripts compile; scouted rows form their own group after the others', () => {
+test('the app\'s Places screen: the inline scripts compile; scouted rows form their own group after the others',
+  { skip: PAGE === null ? 'the app page is not part of this copy of the helpers' : false }, () => {
   const scripts = [...PAGE.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
   assert.ok(scripts.length >= 1);
   scripts.forEach((s) => assert.doesNotThrow(() => new vm.Script(s)));

@@ -54,6 +54,8 @@ The brief's probe: "A four-day trip with two stays, and a departure on its last 
 
 `node helpers/tools/bundle.mjs --all --check` is clean (hello 19 files, tour-guide 42 files) and `node helpers/tools/boundary-check.mjs` finds nothing.
 
+**The vendored run (v01.65r).** The private repo's re-pin runs the same tests from `vendor/helpers/`, which holds `helpers/` without `BUILD-STATE.md`, `decisions/`, `prompts/`, `status/` and `dist/`. There `pack_tour-guide_p13c_scouted` failed to load: its app-page test read `live-site-pages/helper-app.html`, outside `helpers/`. Every check above ran only in this repo's layout. The page test now skips when the page is absent; a copy laid out like helpers-dist counts 978 tests, 976 pass, 2 skipped (the live smoke and that page test), and this repo's count is unchanged. The coordinator now runs that copy before each push.
+
 ## 5 Private repo (WP-13p)
 Built by `hb-builder-opus` (Opus 5.5 · high) in the private repo, on its pin, then reviewed by the coordinator; its decisions are in the private repo (`repository-information/decisions/WP-13p.md`). The owner merges its pull request.
 - **Part 1, on the old pin** (nothing under `vendor/helpers/` changed): day anchors named in a CJK script are searched as words in that script (B12; the search's language code is an inference, not checked live); the routine docs name the keys and the Maps ledger the Scout answer needs (B14); owner notes keep their own labels and the owner's zone is recorded on the first run that reads the core's state (B17); the log refuses to write without a valid zone, through one log tool, so no line lands under the wrong day (B18); a lodging keeps the owner's own name and no Google address, with its coordinates refetched after 30 days (B9); one category table serves picks, skips and the post-trip review, and a single held skip stays held (B10). The plan run's trip update already leaves an override shorter than two hours out with a reason instead of stopping (item 7, WP-13a REQUEST 1). The trip's own data was corrected from its sources in the same branch (the brief's item 8). Checks: the vendored suite (879, 878 pass, 1 skipped), the journey, integration and part-1 dry runs, the boundary check; `log/` untouched.
@@ -79,5 +81,6 @@ Built by `hb-builder-opus` (Opus 5.5 · high) in the private repo, on its pin, t
 - **Seen in probe P, not changed** (§3): a place left out as `day_full` is not tried on another day, and places near one stay can be planned on days spent at another. Both go to the tuning after the trip.
 - **C13 and an empty stay list** (WP-13c REQUEST 1): kept at 1–12. Revisit only if the owner wants `/lodging clear` to empty the trip file's stays.
 - **The rest of the approved review items** follow in the review's order.
+- **A vendored-layout run in CI** (proposed, not added): Helpers CI could run the tests in a copy laid out like helpers-dist, so a test that reads outside `helpers/` fails here before the private repo sees it. It changes a workflow, so it waits for the owner's word.
 
 Developed by: LightAISolutions
