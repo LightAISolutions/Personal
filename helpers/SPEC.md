@@ -71,7 +71,7 @@ A pack adds its own types by listing them in `helper.json` `envelope_types` and 
 
 ### Outcome of a file in `from-brain/`
 
-`processed` (handled, moved to `archive/processed/`), `rejected` (not a `.json` file or invalid; `archive/rejected/`, audited with the reasons), `failed` (the handler threw; `archive/failed/`, audited), `duplicate` (dedupe hit; audited, `archive/processed/`). A sweep reads at most 25 files within its time budget and comes back for the rest. Nothing is deleted by hand; the daily prune trashes archive files older than 30 days.
+`processed` (handled, moved to `archive/processed/`), `rejected` (not a `.json` file or invalid; `archive/rejected/`, audited with the reasons), `failed` (the handler threw; `archive/failed/`, audited; its dedupe key is released, so a corrected copy under the same key is not dropped), `duplicate` (dedupe hit; audited, `archive/processed/`). A sweep reads at most 25 files within its time budget and comes back for the rest. Nothing is deleted by hand; the daily prune trashes archive files older than 30 days.
 
 ## 3. Mailbox, requests and the snapshot
 
@@ -94,7 +94,7 @@ The brain never modifies or deletes a mailbox file and never writes outside `fro
 3. fires the routine (§10) with **only `req_<id>` as the fire text**, and schedules fallback sweeps at +3 and +10 minutes; while any request is open an hourly sweep is scheduled too;
 4. tells the owner "🧠 Working on it…" (or that the routine could not be fired and will see the request on its next run).
 
-The brain's side: the fire text is untrusted. It must look like `req_<id>` and name an existing `to-brain/req_<id>.json`; the owner's words are that file's `payload.text`. The answer is a `reply` envelope with `in_reply_to: "<id>"`; the core sends it as a Telegram reply to the originating message, marks the row `answered` and archives the request file. A request with no answer after **24 h** becomes `expired` and the owner hears about it once; request files are trashed from `to-brain/` after 3 days.
+The brain's side: the fire text is untrusted. It must look like `req_<id>` and name an existing `to-brain/req_<id>.json`; the owner's words are that file's `payload.text`. The answer is a `reply` envelope with `in_reply_to: "<id>"`; the core sends it as a Telegram reply to the originating message, marks the row `answered` and archives the request file. A request with no answer after **24 h** becomes `expired` and the owner hears about it once; request files are trashed from `to-brain/` after 3 days. A request whose answer threw in its handler, when no other envelope of the same sweep answered it, becomes `failed` at once and the owner hears once ("⚠️ Something went wrong on my side with “…”, so the answer did not come through. It is logged; please try again."); it gets no follow-up sweeps and no expiry notice, and a later valid answer still marks it `answered`. A refused envelope (`rejected`) stays silent: the request keeps waiting for a valid answer.
 
 ### Snapshot `to-brain/state.json`
 
@@ -220,6 +220,7 @@ Every property name is `<property_prefix>_<KEY>` (`propName()`); with `property_
 | `WEBAPP_URL` | setup page step 0 | The `/exec` URL. Stored because `ScriptApp.getService().getUrl()` can return the `/dev` URL, which needs a Google login |
 | `TIMEZONE` | owner, optional | Overrides the manifest's zone |
 | `SHEET_TZ` | core | The zone last given to the state Sheet: `getSpreadsheet()` keeps the Sheet on `getTz()` so date cells read back as the day written |
+| `SHEET_SCHEMA` | core | The fingerprint of every registered tab and column that `ensureSheets()` last ensured: the first run after a deploy that changes it creates the new tabs and columns (§8) |
 | `ROUTINE_FIRE_URL_<NAME>`, `ROUTINE_FIRE_TOKEN_<NAME>` 🔒 | owner, one pair per routine | Fire URL and bearer token of a Claude Code Routine (`<NAME>` upper-case, e.g. `CHAT`); `routineNames()` lists the configured ones |
 | `MAX_ROUTINE_FIRES_PER_DAY` | owner, optional (default 12) | Daily cap on routine fires |
 | `MAX_PROPOSALS_PER_DAY` | owner, optional (default 30) | Daily cap on new proposals |
@@ -231,13 +232,13 @@ Pack-specific properties use the same prefix and are read with `getProp(propName
 
 ## 8. State Sheet
 
-One spreadsheet, `<display_name> — state`, created by the setup page inside `<drive_root>/`. The header row is the schema; `core/03_store.js` maps rows to objects keyed by header (`_row` is the 1-based sheet row). `ensureSheets()` creates missing tabs and appends missing columns; it never reorders or deletes. Packs add tabs or columns with `registerSheet()`.
+One spreadsheet, `<display_name> — state`, created by the setup page inside `<drive_root>/`. The header row is the schema; `core/03_store.js` maps rows to objects keyed by header (`_row` is the 1-based sheet row). `ensureSheets()` creates missing tabs and appends missing columns after the last header; it never reorders, deletes or overwrites a header. Packs add tabs or columns with `registerSheet()`. Setup runs `ensureSheets()` once, and a deploy never runs setup, so the core keeps the Sheet in step itself: the first run after a deploy that registers a new tab or column ensures them (`getSpreadsheet()` compares `SHEET_SCHEMA` with the current fingerprint); `getSheet()` creates a registered tab that is still missing (audited `sheets_healed`, at most once per run; a tab nobody registered still throws); and a write naming a registered column the tab lacks adds the column first, so no registered field is dropped. Settings values are written as literal text (a leading apostrophe; numbers stay numbers), so a date, a time, `TRUE` or digits read back exactly as written.
 
 | Tab | Columns | Rows |
 |---|---|---|
 | `Queue` | `id created_at kind source status attempts payload_json last_error claimed_at processed_at result_json` | `new → processing → done \| failed (retried, back to new) \| dead`; pruned after 7 days |
 | `PendingActions` | `id created_at type status preview payload_json idempotency_key expires_at decided_at executed_at result_json error tg_chat_id tg_message_id origin` | `pending → approved → executed \| failed`; `pending → rejected \| expired` |
-| `Requests` | `id created_at kind status routine fired answered_at tg_chat_id tg_message_id text_preview` | `open → answered \| expired` |
+| `Requests` | `id created_at kind status routine fired answered_at tg_chat_id tg_message_id text_preview` | `open → answered \| expired \| failed`; `failed → answered` (a late answer) |
 | `Flows` | `chat_id flow step expect state_json updated_at expires_at` | One row per chat with an active flow (`expect` = `button \| text \| any \| paused`; `state_json` ≤ `FLOW_STATE_MAX_CHARS`); the row is deleted when the flow finishes, is cancelled or expires (`expireFlows()` in the sweep tells the owner once) |
 | `AuditLog` | `id ts actor event ref detail_json ok` | Every side effect, rejection and auth failure (secrets redacted) |
 | `Settings` | `key value updated_at note` | `last_sweep`, `last_daily_date`, `webhook_set_at`, per-day counters (`wakes`, `routine_fires`, `action_proposals`), pack settings via `settingGet/settingSet` |

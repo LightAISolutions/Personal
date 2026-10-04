@@ -3,11 +3,27 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 73/100`
+`Sections: 74/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.73r] — 2026-10-04 06:13:44 PM EST
+
+> **Prompt:** "I have created a new tour-guide discover routine and confirmed it shows up in my setup page. I tested it with /vegcard rebuild. This is the result. Telegram never posted any result, but the Routine seems to have completed. What's wrong? Fix it." *(with two screenshots: the bot's "Making the veg card…" with nothing after it, and the routine's finished run, its card written to the mailbox)*
+
+### Fixed
+- **An answer that needed a tab added after setup was lost in silence** (`helpers/core/03_store.js`, `00_config.js`): setup runs `ensureSheets()` once and a deploy never runs setup, so every tab and column a later phase registered (the veg card's `VegCards` among them) was missing from a Sheet set up earlier. Storing the card threw "Sheet tab missing", the envelope went to `archive/failed/` and the owner heard nothing after "🥗 Making the veg card…". Now the first run after a deploy that registers a new tab or column ensures them (`syncSheetSchemas`; the new property `SHEET_SCHEMA` keeps the fingerprint last ensured); `getSheet()` creates a registered tab that is still missing (audited `sheets_healed`, at most once a run; a tab nobody registered still throws); a write naming a registered column the tab lacks adds the column first instead of dropping the field; a tab another run created a moment earlier is taken as it is
+- **`ensureSheets()` could overwrite a header** that came after a blank header cell (`helpers/core/03_store.js`): missing headers now go after the last header, never over one
+- **The daily jobs ran on every sweep** (`helpers/core/03_store.js`): Sheets turned the stored `last_daily_date` text into a date cell, which read back as a timestamp that never matched today, so each sweep ran the daily jobs again and a routine's wake call could wait past its 30-second limit. Settings values are now written as literal text (numbers stay numbers), so a date, a time, `TRUE` or digits read back exactly as written
+- **A failed answer now tells the owner** (`helpers/core/09_mailbox.js`, `12_wake.js`): when the answer to an open request throws in its handler and no other envelope of the same sweep answered that request, the request becomes `failed` and the owner hears once: "⚠️ Something went wrong on my side with “…”, so the answer did not come through. It is logged; please try again." A failed request gets no follow-up sweeps and no expiry notice, and a later valid answer still marks it `answered`. A failed envelope gives its dedupe key back, so a corrected copy under the same key is not dropped as a duplicate. A refused envelope stays silent, as before
+
+### Added
+- Tests: `core_store` (a missing registered tab is created on first use; a missing registered column on append and on update; no header overwritten after a gap, and the insert race; the deploy sync, once; Settings text read back exactly where Sheets types what it is given), `core_wake` (the daily jobs run once a day where Sheets types the stored date), `core_mailbox` (a throwing answer marks its request failed and tells the owner once, and a corrected copy under the same key is then answered; an answer later in the same sweep, or a refused envelope, stays silent), `pack_tour-guide_vegcard_gas` (a Sheet made before the VegCards tab: the first run after the deploy creates it and `/vegcard rebuild` gets its card; the backstop when the tab goes missing mid-run). The test harness can type cells the way Sheets does (`ss.autoType`). 1294 tests, 1293 pass, 1 skipped (the Maps live smoke)
+
+### Changed
+- Docs: `helpers/SPEC.md` §2 (a failed envelope releases its dedupe key), §3 (a failed request), §7 (`SHEET_SCHEMA`), §8 (how the core keeps the Sheet in step after a deploy; Settings as text; the `failed` request state); `helpers/decisions/TG-PHASE-14.md` §11 (the Discover routine is live and its first answer); `helpers/BUILD-STATE.md` row 14, a live fixes log and Next; README timestamp
 
 ## [v01.72r] — 2026-10-04 05:39:39 PM EST
 

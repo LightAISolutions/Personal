@@ -99,6 +99,17 @@ test('daily jobs run once per LOCAL day inside the first sweep of that day (Asia
   assert.equal(state.triggers.length, 0, 'daily jobs need no trigger of their own');
 });
 
+test('daily jobs run once a day even where Sheets types the stored date (they ran on every sweep before)', () => {
+  const { ctx, state } = fresh({ tz: 'America/Los_Angeles', now: '2026-10-04T21:00:00Z' });
+  ctx.getSpreadsheet().autoType = true;                                   // "2026-10-04" written plainly would come back as a date cell
+  assert.ok(J(ctx.wakeSweep('owner')).daily, 'first sweep of the day runs them');
+  assert.equal(ctx.settingGet('last_daily_date'), '2026-10-04');
+  assert.equal(J(ctx.wakeSweep('wake')).daily, null, 'not again the same day');
+  ctx.__TEST_NOW = '2026-10-05T08:00:00Z';                                // 01:00 the next day in Los Angeles
+  assert.ok(J(ctx.wakeSweep('wake')).daily, 'the next day runs them');
+  assert.equal(state.triggers.filter((t) => t.fn === 'wakeTrigger').length, 0);
+});
+
 test('open requests keep an hourly follow-up alive (one at a time) and expire after 24 h with one notice', () => {
   const { ctx, state } = fresh({ now: '2026-05-05T12:00:00Z' });
   H.configureRoutine(ctx, state);

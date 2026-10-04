@@ -112,11 +112,23 @@ function openRequest(spec) {
 function getRequest(id) { return id ? storeGet(SHEETS.REQUESTS, id) : null; }
 function listOpenRequests() { return storeFind(SHEETS.REQUESTS, function (r) { return r.status === 'open'; }); }
 function openRequestCount() { return storeCount(SHEETS.REQUESTS, function (r) { return r.status === 'open'; }); }
-/** Called by dispatchEnvelope() for any envelope with in_reply_to. Returns the row or null. */
+/** Called by dispatchEnvelope() for any envelope with in_reply_to (a failed request still takes a late answer). Returns the row or null. */
 function markRequestAnswered(id, env) {
   var row = getRequest(id);
   if (!row) return null;
-  if (row.status === 'open') { row = storeUpdate(SHEETS.REQUESTS, row._row, { status: 'answered', answered_at: nowIso() }); audit('request_answered', id, { by: env ? env.type : '' }); }
+  if (row.status === 'open' || row.status === 'failed') { row = storeUpdate(SHEETS.REQUESTS, row._row, { status: 'answered', answered_at: nowIso() }); audit('request_answered', id, { by: env ? env.type : '' }); }
+  return row;
+}
+/**
+ * Called by pollFromBrain() when the answer to an open request threw in its handler and nothing else in the batch answered
+ * it: status failed (no more follow-up sweeps, no expiry notice later) and one short notice to the owner. → row or null.
+ */
+function markRequestFailed(id, by) {
+  var row = getRequest(id);
+  if (!row || row.status !== 'open') return null;
+  row = storeUpdate(SHEETS.REQUESTS, row._row, { status: 'failed' });
+  auditFail('request_failed', id, { kind: row.kind, by: by || '' });
+  tgSendOwner('⚠️ Something went wrong on my side with “' + tgEscape(truncate(row.text_preview || row.kind, 120)) + '”, so the answer did not come through. It is logged; please try again.');
   return row;
 }
 /** Requests older than REQUEST_MAX_AGE_HOURS get status expired; the owner hears about it once per sweep. */
