@@ -3,11 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 61/100`
+`Sections: 62/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.61r] — 2026-10-03 08:07:47 PM EST
+
+> **Prompt:** "decisions made." *(the owner's choices on the usefulness review; this push records that step 3's private side is merged and that a follow-up, WP-12e, is up as a pull request so one re-plan also fills the morning message's inputs)*
+
+### Changed
+- `helpers/decisions/TG-PHASE-12.md` §4 and §7: the private side merged (PR #22); WP-12e, a facts stage in the private plan run that fills the built days' place facts, the lodging's area and access and the trip's country code (a re-plan from where you are skips it), is up as PR #23 and should merge before the re-plan that rebuilds the owner's trip
+- `helpers/BUILD-STATE.md` row 12, the Phase 12 log and Next; README timestamp
 
 ## [v01.60r] — 2026-10-03 07:48:06 PM EST
 
