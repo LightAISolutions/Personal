@@ -8,7 +8,8 @@ import { GOOGLE_FIELDS } from '../gems/gems-project.mjs';
 import { ratingBand } from '../gems/gems-line.mjs';
 import { placeUrl } from '../../../kits/maps/lib/maps-urls.mjs';
 import { validatePayload, assertValid, formatErrors, isDate } from '../schemas/index.mjs';
-import { LEFT_OUT_MAX } from './scout-weights.mjs';
+import { LEFT_OUT_MAX, LABELS, LABELS_MAX } from './scout-weights.mjs';
+import { ownName } from './scout-rank.mjs';
 
 const CATEGORY_RE = /^[a-z][a-z0-9-]{0,31}$/;
 const clip = (s, max) => { const t = String(s ?? '').replace(/\s+/g, ' ').trim(); return t.length > max ? t.slice(0, max - 1).trimEnd() + '…' : t; };
@@ -33,6 +34,13 @@ export function assertNoGoogleKeys(obj, where = 'scout payload') {
   return obj;
 }
 
+/** An item's labels: its own, plus `seen_before` when its place id is known; schema order, each once, ≤ 8. */
+function labelsOf(it, known) {
+  const set = new Set(Array.isArray(it.labels) ? it.labels : []);
+  if (it.place_id && known.has(it.place_id)) set.add('seen_before');
+  return [...LABELS.filter((l) => set.has(l)), ...[...set].filter((l) => !LABELS.includes(l))].slice(0, LABELS_MAX);
+}
+
 function uniqueSlug(base, used) {
   const root = SLUG_RE.test(base) ? base : 'place';
   let s = root;
@@ -43,16 +51,19 @@ function uniqueSlug(base, used) {
 
 /**
  * scoutPayload({ scout_id, query, destination, place_label, trip?, group, created_on, from?, diet?, ranked,
- *                slugs?, areas?, categories?, drive? }) → the `scout` payload, validated (throws on any schema error or
+ *                slugs?, areas?, categories?, drive?, known? }) → the `scout` payload, validated (throws on any schema error or
  * any Google field). `ranked` is rankScout's result. Slugs come from `slugs[place_id]` (else the record's slug or
- * name), de-duplicated with -2, -3…; the category from `categories`, else the record's, else 'other'; `rated` is our
- * band word for the rating; `diet` is kept for food only.
+ * the item's name), de-duplicated with -2, -3…; the category from `categories`, else the record's, else 'other';
+ * `rated` is our band word for the rating; `diet` is kept for food only. An item's `name` is the place's own name when
+ * the judgment gave one (rankScout's `own_name`), else Google's, shown for this board only. `known` (place ids already
+ * in the owner's Places, an array or a Set) labels those items `seen_before`, as rankScout does (TG-PHASE-13 WP-13d).
  */
 export function scoutPayload(a = {}) {
   const ranked = a.ranked;
   if (!ranked || !Array.isArray(ranked.items) || !Array.isArray(ranked.left_out)) throw new Error('scout: scoutPayload needs `ranked` (the rankScout result)');
   const slugs = a.slugs || {}, areas = a.areas || {}, categories = a.categories || {};
   const group = a.group || ranked.group;
+  const known = a.known instanceof Set ? a.known : new Set(Array.isArray(a.known) ? a.known : []);
   const used = new Set();
   const items = ranked.items.map((it, i) => {
     const rec = it.record || {};
@@ -63,7 +74,7 @@ export function scoutPayload(a = {}) {
       score: Math.min(100, Math.max(0, Math.round(Number(it.score) || 0))),
       parts: { topic: pct(it.parts && it.parts.topic), quality: pct(it.parts && it.parts.quality), fit: pct(it.parts && it.parts.fit), reach: pct(it.parts && it.parts.reach) },
       why_you: clip(it.why, 200) || `A match for ${clip(a.query, 60)}.`,
-      labels: [...new Set(it.labels || [])].slice(0, 8)
+      labels: labelsOf(it, known)
     };
     if (it.try) out.try = clip(it.try, 120);
     if (Number.isFinite(rec.rating) && rec.rating_count > 0) out.rated = ratingBand(rec.rating);
@@ -98,10 +109,14 @@ const HISTORY_MAX = 200, TAGS_MAX = 20;
 export const queryTag = (query) => clip(String(query ?? '').toLowerCase(), 40).replace(/…$/, '').trim();
 
 /**
- * scoutPlaceFields(item, { query, trip?, scout_id, on, existing?, destination? }) → { place, entry, changed }.
- * `item` is one payload item. A new place: status candidate, tags [scout, <query>], why_fit = why_you, activity = the
- * try line or the query, priority 2, source_trip = trip, destination, gem when labelled. An existing place keeps every
- * field it has (status, priority, notes…), gains the two tags and only the fields it lacks. Both get one history entry
+ * scoutPlaceFields(item, { query, trip?, scout_id, on, existing?, destination?, own_name? }) → { place, entry, changed },
+ * or { place: null, reason: 'no_own_name' } for a new place without an own name.
+ * `item` is one payload item. A new place takes its name from `own_name` — the judgment's `name`: the place's own name
+ * from its own site or a local source, ≤ 120 — and never from Google (the repo keeps only Google's place id; review
+ * B9); without one it is not written to places/ and the caller counts it. A new place: status candidate, tags
+ * [scout, <query>], why_fit = why_you, activity = the try line or the query, priority 2, source_trip = trip,
+ * destination, gem when labelled. An existing place keeps every field it has (its name, status, priority, notes…),
+ * gains the two tags and only the fields it lacks, with or without an own name. Both get one history entry
  * { trip: trip || scout_id, on, event: 'scouted', note: '<query> #<n>' }, added once (re-running is a no-op).
  * The result is validated as a Place (throws when invalid).
  */
@@ -120,7 +135,9 @@ export function scoutPlaceFields(item, o = {}) {
     if (o.existing.place_id && item.place_id && o.existing.place_id !== item.place_id) throw new Error(`scout: ${item.slug} already names another place id`);
   } else {
     if (!item.place_id) throw new Error(`scout: a new place needs the item's place_id (${item.slug})`);
-    place = { v: 1, id: item.slug, place_id: item.place_id, name: clip(item.name, 120), category: item.category, tags: [], status: 'candidate', activity: clip(item.try || query, 120), priority: 2 };
+    const name = ownName(o.own_name);
+    if (!name) return { place: null, reason: 'no_own_name' };
+    place = { v: 1, id: item.slug, place_id: item.place_id, name, category: item.category, tags: [], status: 'candidate', activity: clip(item.try || query, 120), priority: 2 };
   }
   place.tags = [...new Set([...(place.tags || []), 'scout', queryTag(query)].filter(Boolean))].slice(0, TAGS_MAX);
   if (!place.why_fit && item.why_you) place.why_fit = clip(item.why_you, 1000);

@@ -101,7 +101,10 @@ test('red team: owner text stays text — parseScoutText and the Place fields tr
   assert.equal(where, SCRIPT);
   assert.ok(what.length <= 80);
   const { payload } = await hostile();
-  const { place } = sc.scoutPlaceFields(payload.items[0], { query: 'matcha ' + SCRIPT, scout_id: payload.scout_id, on: '2027-06-01' });
+  // TG-PHASE-13 B9: a new place needs the judgment's own name; a hostile one is cleaned and clipped like any text.
+  const { place } = sc.scoutPlaceFields(payload.items[0], { query: 'matcha ' + SCRIPT, scout_id: payload.scout_id, on: '2027-06-01', own_name: BIDI + ' ' + SCRIPT + 'n'.repeat(300) });
+  assert.ok(place.name.length <= 120);
+  assert.doesNotMatch(place.name, /\u202e/, 'bidi controls are stripped from the own name');
   assert.ok(place.tags.every((t) => t.length <= 40));
   assert.equal(place.status, 'candidate', 'a hostile name cannot choose its own status');
   assert.equal(place.priority, 2);

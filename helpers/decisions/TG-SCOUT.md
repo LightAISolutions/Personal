@@ -153,4 +153,53 @@ image, a drawn sketch of the same points. Images are `data:` URIs only (the app'
 - **Core.** `drive.board_html` / `board_pdf` may be null (an upload that failed); the core's validator accepts that, as the schema does.
 - **§7 as built.** `fromScoutResult` also keeps the first photo's name and credits (in-run only); `scoutPlaceFields` also takes `destination` and returns `{ place, entry, changed }`; judgments carry `area` and `mentions` (`[{ ref, language, kind, publisher? }]`), which the skill joins to the records as `local_mentions`.
 
+## 9. Phase 13 (2026-10-04, WP-13d): been before, city days, one grammar, the hidden-stock rule, own names
+
+From the owner's morning review (§4 faults 8, 9 and 11; B9 and B11). The envelope schema is unchanged; every new
+input is optional, so a caller that passes none of them gets the earlier ranking (minus the seven-date cap on the
+board and with the wording below). Defaults and reasons: `helpers/decisions/WP-13d.md`.
+
+**Been before.** `rankScout(pool, { known })` and `scoutPayload({ known })` take the place ids already in the owner's
+Places (an array or a Set) and label those picks `seen_before` ("been before" on the board and in the chat). The label
+does not move the score.
+
+**City dates.** `rankScout(pool, { city_dates })` and `renderScoutBoard({ city_dates })` take the dates the owner is in
+the searched city. When given (an array, even empty), they replace the trip's dates for the closed-on-your-days screen
+(`closed_on_trip`, shown as "closed on every day you are there"), the closed-on-some-days reach penalty, the cards'
+hours and the compare table's "open on your days". Without it the trip's dates are used. The board shows every date
+(no seven-date cap); consecutive calendar dates with the same hours share a row ("Wed 5 – Sat 8 Mar 09:00–18:00").
+
+**The grammar.** `parseScoutText(text)` → `{ what, where, city, area }` is the one grammar for the owner's words; the
+core's `tgScoutParse` only words its acknowledgement. A leading `/scout` (or `/scout@bot`) and trailing `?`/`.`/`!` are
+dropped, control characters removed, whitespace collapsed. The separator is chosen in the core's order:
+
+| Form | what | city | area | where |
+|---|---|---|---|---|
+| `<what> in <city>` (the LAST " in ") | before it | after it | '' | the city |
+| `<what> near <area> in <city>` | before "near" | after "in" | between | `<area>, <city>` |
+| `<what> near <area>, <city>` (the first " near ") | before it | the last comma part | the rest | as written |
+| `<what> near <area>` (no comma) | before it | '' (the caller uses the trip) | the place | as written |
+| `<what> @ <city>` (the first "@") | before it | after it | '' | the city |
+| `<what>, <city>` (the first ",") | before it | after it | '' | the city |
+| `<what>` | the text | '' | '' | '' |
+
+" in " and " near " match in any case; every field is clipped to 80 characters (the area and the city each on their
+own). `<what> in <a>, <b>` names the city alone (`city` = "<a>, <b>"), as the brief's rule says; only "near" splits an
+area from a city. `where` stays for older callers. The cases, with the ones where the core's acknowledgement gives the
+same what and where, are the table `GRAMMAR` in `packs/tour-guide/fixtures/p13d-scout/tg-fixture-p13d-scout.mjs`.
+
+**The hidden-stock rule.** `rankScout(pool, { diet_rule })` takes the party's hidden-stock rule (the profile's, a
+string; blank or not a string = none). With a rule, Google's `servesVegetarianFood` alone no longer passes the food
+screen (the pick is left out as `diet_unproven`, "vegetarian not confirmed") and no longer earns `veg_likely`; only
+the judgment's `veg` (`verified` or `likely`) does. A topic that is a café word (`CAFE_WORDS`: drinks and sweets) keeps
+the earlier behaviour; the drinks-and-sweets rework is a later approved item. Without a rule nothing changes.
+
+**Own names.** A judgment may carry `name`: the place's own name, from its own site or a local source, ≤ 120. The
+ranked item's `name` (and the payload item's) is that own name when given, else Google's display name, shown for that
+board only; the item also carries `own_name` (or null). `scoutPlaceFields(item, { …, own_name })` names a new place
+from `own_name` only and returns `{ place: null, reason: 'no_own_name' }` without one, so Google's display name never
+reaches `places/`; the driver counts those picks in its log. A place already in `places/` keeps its own name and is
+updated (tags, the `scouted` entry) with or without an own name, so a "been before" place keeps its history. The slug
+of a new place follows the own name.
+
 Developed by: LightAISolutions

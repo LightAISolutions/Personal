@@ -10,7 +10,8 @@ import { closedOnAll, closedDates } from '../gems/gems-hours.mjs';
 import { haversineKm, straightLineMinutes, isLatLng } from '../gems/gems-geo.mjs';
 import { CATEGORY_TYPES } from '../gems/gems-record.mjs';
 import { ratingBand, numberWord } from '../gems/gems-line.mjs';
-import { guessGroup, CAFE_WORDS } from './scout-text.mjs';
+import { guessGroup, CAFE_WORDS, isCafeTopic } from './scout-text.mjs';
+import { isDate } from '../schemas/tour-guide-dates.mjs';
 import * as W from './scout-weights.mjs';
 
 const EXTRA_KEYS = ['serves_vegetarian', 'editorial', 'photo'];
@@ -133,6 +134,10 @@ export function whyLine({ record, topic_source, reach, local_count }, what) {
   return clipText(parts.join('; ') + '.', 200);
 }
 
+/** ownName(x) → the place's own name from a judgment (its own site or a local source): cleaned, ≤ 120, or null. */
+export const ownName = (x) => (typeof x === 'string' && x.replace(/[\u0000-\u001f\u007f\u200b-\u200f\u202a-\u202e\u2066-\u2069\ufeff]/g, '').trim()
+  ? clipText(x.replace(/[\u0000-\u001f\u007f\u200b-\u200f\u202a-\u202e\u2066-\u2069\ufeff]/g, ' '), 120) || null : null);
+
 const byRank = (a, b) => b.score - a.score || (b.record.rating_count ?? 0) - (a.record.rating_count ?? 0)
   || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0) || (a.place_id < b.place_id ? -1 : a.place_id > b.place_id ? 1 : 0);
 
@@ -146,30 +151,60 @@ export function normalizeScoutRecord(raw) {
 }
 
 /**
- * screenReason(record, ctx) → the first drop reason (W.SCREEN_ORDER after `duplicate`) or null. ctx carries the
- * computed topic, reach, the judgment and the run's group / diet / trip dates.
+ * yourDates({ trip_dates, city_dates }) → the dates that count for "closed on your days": `city_dates` (the dates the
+ * owner is in the searched city) when it is an array — valid dates only, sorted, each once, possibly none — else the
+ * trip's dates as given (TG-PHASE-13 WP-13d, review fault 9).
  */
-export function screenReason(record, { topic, reach, judgment = {}, group, diet, trip_dates = [] }) {
+export function yourDates({ trip_dates, city_dates } = {}) {
+  if (Array.isArray(city_dates)) return [...new Set(city_dates.filter(isDate))].sort();
+  return Array.isArray(trip_dates) ? trip_dates : [];
+}
+
+/** dietRule(x) → the party's hidden-stock rule as a trimmed string ≤ 200, or null when absent / blank / not a string. */
+export const dietRule = (x) => (typeof x === 'string' && x.trim() ? x.replace(/\s+/g, ' ').trim().slice(0, 200) : null);
+
+/**
+ * googleVegCounts({ diet, diet_rule, what }) → whether Google's `servesVegetarianFood` alone may stand for vegetarian
+ * evidence: only for a vegetarian diet, and — when the party has a hidden-stock rule (fish stock in a broth, say) —
+ * only for a drink or sweet topic (a café word), as before (review B11).
+ */
+export function googleVegCounts({ diet, diet_rule, what } = {}) {
+  if (!isVegetarianDiet(diet)) return false;
+  return !dietRule(diet_rule) || isCafeTopic(what);
+}
+
+/**
+ * screenReason(record, ctx) → the first drop reason (W.SCREEN_ORDER after `duplicate`) or null. ctx carries the
+ * computed topic, reach, the judgment and the run's group / diet / diet_rule / what and dates (`city_dates` when
+ * given, else `trip_dates`; see yourDates).
+ */
+export function screenReason(record, { topic, reach, judgment = {}, group, diet, diet_rule, what, trip_dates = [], city_dates }) {
   const S = W.SCREEN;
   const count = Number.isFinite(record.rating_count) ? record.rating_count : 0;
+  const days = yourDates({ trip_dates, city_dates });
   if (record.business_status === 'CLOSED_PERMANENTLY' || record.business_status === 'CLOSED_TEMPORARILY') return 'closed';
-  if (trip_dates.length && closedOnAll(record.hours, trip_dates)) return 'closed_on_trip';
+  if (days.length && closedOnAll(record.hours, days)) return 'closed_on_trip';
   if (Number.isFinite(record.rating) && record.rating < S.low_rating_below && count >= S.low_rating_min_count) return 'low_rating';
   if (count < S.unproven_below_count && mentionCount(record) === 0) return 'unproven';
   if (topic < S.off_topic_below) return 'off_topic';
   if (group === 'food' && diet) {
     const veg = W.VEG.includes(judgment.veg) ? judgment.veg : 'unknown';
     if (veg === 'no') return 'diet';
-    if (veg === 'unknown' && !(isVegetarianDiet(diet) && record.serves_vegetarian === true)) return 'diet_unproven';
+    if (veg === 'unknown' && !(googleVegCounts({ diet, diet_rule, what }) && record.serves_vegetarian === true)) return 'diet_unproven';
   }
   if (reach && reach.minutes > S.too_far_minutes) return 'too_far';
   return null;
 }
 
 /**
- * rankScout(pool, { what, group, diet, anchors, reach, judgments, trip_dates = [], limit = 10 })
- *   → { items: [{ place_id, name, record, score, parts:{topic,quality,fit,local,reach} (0–1), labels, why, try, reach }],
+ * rankScout(pool, { what, group, diet, diet_rule?, anchors, reach, judgments, trip_dates = [], city_dates?, known?, limit = 10 })
+ *   → { items: [{ place_id, name, own_name, record, score, parts:{topic,quality,fit,local,reach} (0–1), labels, why, try, reach }],
  *       left_out: [{ place_id, name, reason }], more }
+ * TG-PHASE-13 (WP-13d): `known` (place ids already in the owner's Places, an array or a Set) labels those picks
+ * `seen_before`; `city_dates` (the dates the owner is in the searched city) replaces the trip's dates for the
+ * closed-on-your-days screen and penalty; `diet_rule` (the party's hidden-stock rule) stops Google's vegetarian flag
+ * alone from passing the food screen or earning `veg_likely`, except for a café-word topic; a judgment's `name` (the
+ * place's own name, ≤ 120) becomes the item's `name` and `own_name` — else `name` is Google's and `own_name` null.
  * `pool` holds fromScoutResult records (or raw pool records; they are normalized here). Screens drop to left_out in
  * pool order; the rest are scored, sorted (score, then rating count, then name) and cut at `limit` (1–20); `more` is
  * how many ranked picks were cut. Ratings, counts and hours are read but never copied into an item's own fields — they
@@ -181,7 +216,9 @@ export function rankScout(pool, opts = {}) {
   if (!what) throw new Error('scout: rankScout needs `what`');
   const group = opts.group === 'food' || opts.group === 'activities' ? opts.group : guessGroup(what);
   const diet = group === 'food' && typeof opts.diet === 'string' && opts.diet.trim() ? opts.diet.trim() : null;
-  const trip_dates = Array.isArray(opts.trip_dates) ? opts.trip_dates : [];
+  const trip_dates = yourDates({ trip_dates: opts.trip_dates, city_dates: opts.city_dates });
+  const diet_rule = dietRule(opts.diet_rule);
+  const known = opts.known instanceof Set ? opts.known : new Set(Array.isArray(opts.known) ? opts.known.filter((x) => typeof x === 'string') : []);
   const judgments = opts.judgments && typeof opts.judgments === 'object' ? opts.judgments : {};
   const limit = Math.min(W.LIMIT_MAX, Math.max(1, Number.isInteger(opts.limit) ? opts.limit : W.LIMIT_DEFAULT));
 
@@ -201,8 +238,9 @@ export function rankScout(pool, opts = {}) {
     const judgment = judgments[record.place_id] && typeof judgments[record.place_id] === 'object' ? judgments[record.place_id] : {};
     const t = topicPart(record, { what, group, judgment });
     const reach = reachFor(record, { reach: opts.reach, anchors: opts.anchors });
-    const reason = screenReason(record, { topic: t.value, reach, judgment, group, diet, trip_dates });
-    if (reason) { left_out.push({ place_id: record.place_id, name: record.name, reason }); continue; }
+    const own_name = ownName(judgment.name);
+    const reason = screenReason(record, { topic: t.value, reach, judgment, group, diet, diet_rule, what, trip_dates });
+    if (reason) { left_out.push({ place_id: record.place_id, name: own_name || record.name, reason }); continue; }
 
     const jLabels = Array.isArray(judgment.labels) ? judgment.labels.filter((l) => W.LABELS.includes(l)) : [];
     const chain = !!chainReason(record, counts) || jLabels.includes('chain');
@@ -219,15 +257,16 @@ export function rankScout(pool, opts = {}) {
     if (chain) labels.add('chain');
     if (reach && reach.minutes > W.LABEL.far_minutes) labels.add('far');
     if (!chain && local_count >= W.LABEL.gem_mentions && quality >= W.LABEL.gem_quality && (record.rating_count ?? 0) <= W.LABEL.gem_max_count) labels.add('gem');
+    if (known.has(record.place_id)) labels.add('seen_before');
     if (group === 'food') {
       if (judgment.veg === 'verified') labels.add('veg_verified');
-      else if (judgment.veg === 'likely' || ((judgment.veg === undefined || judgment.veg === 'unknown') && isVegetarianDiet(diet) && record.serves_vegetarian === true)) labels.add('veg_likely');
+      else if (judgment.veg === 'likely' || ((judgment.veg === undefined || judgment.veg === 'unknown') && googleVegCounts({ diet, diet_rule, what }) && record.serves_vegetarian === true)) labels.add('veg_likely');
       if (labels.has('veg_verified')) labels.delete('veg_likely');
     }
     const why = typeof judgment.why === 'string' && judgment.why.trim() ? clipText(judgment.why, 200) : whyLine({ record, topic_source: t.source, reach, local_count }, what);
     const tryLine = typeof judgment.try === 'string' && judgment.try.trim() ? clipText(judgment.try, 120) : null;
     ranked.push({
-      place_id: record.place_id, name: record.name, record, score, parts,
+      place_id: record.place_id, name: own_name || record.name, own_name, record, score, parts,
       labels: W.LABELS.filter((l) => labels.has(l)).slice(0, W.LABELS_MAX), why, try: tryLine,
       reach: reach ? { minutes: reach.minutes, mode: reach.mode, estimated: reach.estimated } : null
     });
