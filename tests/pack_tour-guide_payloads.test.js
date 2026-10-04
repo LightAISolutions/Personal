@@ -13,11 +13,16 @@ const S = () => import('../packs/tour-guide/schemas/index.mjs');
 const clone = (x) => JSON.parse(JSON.stringify(x));
 const TOOL = path.join(H.HELPERS_ROOT, 'tools', 'envelope.mjs');
 const TYPES = ['prefs_review', 'shortlist', 'trip_facts', 'plan_digest', 'profile_summary', 'places_digest', 'bookings', 'scout', 'outline', 'day_versions',
-  'veg_card'];   // C14 (TG-PHASE-14 WP-14c): the veg card is the eleventh type
+  'veg_card',   // C14 (TG-PHASE-14 WP-14c): the veg card is the eleventh type
+  'daytrip', 'whatson'];   // C15 (TG-PHASE-15 skeleton): the day-trip and what's-on boards
 const made = [];
 after(() => { for (const d of made) fs.rmSync(d, { recursive: true, force: true }); });
 const tmp = () => { const d = fs.mkdtempSync(path.join(os.tmpdir(), 'tg-payload-')); made.push(d); return d; };
 const MAPS = 'https://www.google.com/maps/search/?api=1&query=Lantern%20Museum&query_place_id=FixtureTcLanternMuseum';
+
+// C15 (TG-PHASE-15 skeleton): a branch's example is the first valid payload of its own fixture, read when called, so
+// the branch's builder changes its fixture, never this list.
+const fixtureValid = (branch) => JSON.parse(fs.readFileSync(path.join(H.HELPERS_ROOT, 'packs', 'tour-guide', branch, 'fixtures', branch + '-sample.json'), 'utf8')).valid[0];
 
 const item = (n, slug, over = {}) => ({ n, slug, name: slug.replace(/-/g, ' '), why_you: 'You rated small museums highly; this one is quiet in the morning.', fit: 0.82,
   est_minutes: 90, area: 'Old harbour', maps_url: MAPS, labels: ['verified'], ...over });
@@ -76,7 +81,10 @@ const EXAMPLES = {
   // C14 (TG-PHASE-14 WP-14c): an invented English-only card (no phrase table for the country).
   veg_card: () => ({ v: 1, trip: 'port-sorrel-spring-2027', country: 'FR', lang: null, diet: 'vegetarian', party: 2, fp: 'vcf1:0a1b2c3d',
     sections: [{ id: 'intro', lines: [{ local: null, en: 'We are vegetarian. We do not eat meat, fish or seafood.' }] },
-      { id: 'thanks', lines: [{ local: null, en: 'Sorry for the trouble, and thank you.' }] }], english_only: ['lupin beans'] })
+      { id: 'thanks', lines: [{ local: null, en: 'Sorry for the trouble, and thank you.' }] }], english_only: ['lupin beans'] }),
+  // C15 (TG-PHASE-15 skeleton): the day-trip and what's-on boards, each its own fixture's first valid payload (fixtureValid).
+  daytrip: () => clone(fixtureValid('daytrip')),
+  whatson: () => clone(fixtureValid('whatson'))
 };
 
 async function realReview() {
@@ -271,6 +279,7 @@ test('core mocks: the manifest\'s eight types are accepted by registerEnvelopeHa
   // reads the most recent loadGas() clock, so a pinned future clock here would leak into later files.
   const now = new Date();
   H.bootstrap(ctx, state); ctx.tgTripUpsert({ slug: payloads.veg_card.trip });   // C14 (WP-14c): the core refuses a veg card for a trip it does not know
+  for (const t of ['daytrip', 'whatson']) ctx.tgTripUpsert({ slug: payloads[t].trip });   // C15 (skeleton): each board's trip is known to the core
   for (const t of TYPES) {
     if (!ctx.getEnvelopeHandler(t)) ctx.registerEnvelopeHandler(t, { validate: () => [], handle: () => 'ok' });
     const env = E.makeEnvelope({ type: t, producer: 'tg-skill', payload: payloads[t], now, types: E.typesFor('tour-guide') });

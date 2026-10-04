@@ -66,7 +66,8 @@
                 "name": { "type": "string", "minLength": 1, "maxLength": 120 },
                 "time": { "$ref": "#/$defs/time" },
                 "maps_url": { "$ref": "#/$defs/url" },
-                "note_line": { "type": "string", "minLength": 1, "maxLength": 160 }
+                "note_line": { "type": "string", "minLength": 1, "maxLength": 160 },
+                "chosen": { "const": true, "description": "C15: an event the owner chose for this evening in What's on — shown first with ⭐ under \"This evening\". Absent otherwise." }
               }
             }
           },

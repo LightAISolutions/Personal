@@ -1,0 +1,2766 @@
+{
+ "about": "Invented data for the daytrip branch (TG-PHASE-15 WP-15a): an invented base (Bramblecombe) and invented towns, payloads every validator must accept or refuse alike, and the trip they belong to. valid[0] is also the pinned payloads test's daytrip example (fixtureValid in tests/pack_tour-guide_payloads.test.js).",
+ "valid": [
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "trip": null,
+   "id": "dt-20270510-wyvern-cross",
+   "base": {
+    "label": "Wyvern Cross",
+    "slug": "wyvern-cross"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 30,
+   "items": [],
+   "left_out": []
+  }
+ ],
+ "invalid": [
+  "not an object",
+  null,
+  [],
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 2,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "daytrip-1",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "Quillmere 2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 200,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 29,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01",
+     "rating": 4.6
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01",
+       "location": {
+        "latitude": 51.2,
+        "longitude": -1.4
+       }
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "long",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 0,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "gem",
+      "sparkly"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 101
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "http://maps.example.invalid/x",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "boring"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 51,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  },
+  {
+   "v": 1,
+   "id": "dt-20270510-bramblecombe",
+   "trip": "quillmere-2027",
+   "base": {
+    "label": "Bramblecombe",
+    "slug": "bramblecombe"
+   },
+   "created_on": "2027-05-10",
+   "max_minutes": 90,
+   "items": [
+    {
+     "n": 1,
+     "slug": "lockford",
+     "name": "Lockford",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 42,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Lockford Halt"
+     },
+     "length": "full",
+     "why": "Canal locks, a reed-bed walk and a slow lunch: an easy, unhurried day for the party.",
+     "see": [
+      "The flight of nine locks",
+      "Reed-bed boardwalk",
+      "Lock-keeper's museum"
+     ],
+     "score": 81,
+     "parts": {
+      "fit": 78,
+      "reach": 88,
+      "season": 100,
+      "food": 100
+     },
+     "labels": [
+      "veg_easy",
+      "rain_ok"
+     ],
+     "stops": [
+      {
+       "name": "Flight of nine locks",
+       "place_id": "FixtureDtLockFlight01"
+      },
+      {
+       "name": "Reed-bed boardwalk"
+      },
+      {
+       "name": "Lock-keeper's museum",
+       "place_id": "FixtureDtLockMuseum01"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=lockford",
+     "eat": "The lockside bakery marks vegetarian pies; checked against its own menu.",
+     "season": "Water lilies on the canal in May.",
+     "place_id": "FixtureDtLockford01"
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    },
+    {
+     "n": 2,
+     "slug": "saltmere-head",
+     "name": "Saltmere Head",
+     "area": "Wyvern Vale",
+     "ride": {
+      "minutes": 64,
+      "estimated": true,
+      "from_station": "Bramblecombe Central",
+      "to_station": "Saltmere Head Halt"
+     },
+     "length": "half",
+     "why": "Sea cliffs and a short headland loop, good for a morning with time back for dinner.",
+     "see": [
+      "The lighthouse path",
+      "Seal cove"
+     ],
+     "score": 66,
+     "parts": {
+      "fit": 70,
+      "reach": 66,
+      "season": 60,
+      "food": 70
+     },
+     "labels": [
+      "crowded"
+     ],
+     "stops": [
+      {
+       "name": "Lighthouse path"
+      },
+      {
+       "name": "Seal cove"
+      }
+     ],
+     "maps_url": "https://www.google.com/maps/search/?api=1&query=saltmere-head",
+     "closed": [
+      "2027-05-13"
+     ]
+    }
+   ],
+   "more": 2,
+   "left_out": [
+    {
+     "name": "Farhaven",
+     "reason": "too_far"
+    },
+    {
+     "name": "Cherryfield",
+     "reason": "out_of_season"
+    }
+   ]
+  }
+ ],
+ "trip": {
+  "slug": "quillmere-2027",
+  "title": "Quillmere",
+  "destination": "Quillmere",
+  "start": "2027-05-12",
+  "end": "2027-05-14",
+  "status": "planned"
+ }
+}

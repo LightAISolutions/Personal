@@ -15,6 +15,7 @@ const J = (v) => JSON.parse(JSON.stringify(v));
 function fresh(o = {}) {
   const { ctx, state } = H.loadGas({ pack: 'tour-guide', now: o.now || NOW, tz: HOME });
   H.bootstrap(ctx, state);
+  ctx.settingSet('whatson_auto', 'off', 'test');   // C15 (WP-15b): the weekly What's on check is one more alarm on the one trigger; these tests watch the bookings alarm alone
   ctx.tgTripUpsert({ slug: TRIP, title: 'Port Sorrel', destination: 'Port Sorrel', status: 'planned', start: o.start || '2027-03-15', end: o.end || '2027-03-18' });
   return { ctx, state };
 }

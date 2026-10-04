@@ -71,7 +71,7 @@ function checkDayOverrides(t, errs) {
   });
 }
 
-/** checkSeason(season, path, errs) — C11 season sheet: real dates, bloom and event from ≤ to, event ids unique. Shared with season/normalizeSeason. */
+/** checkSeason(season, path, errs) — C11 season sheet: real dates, bloom and event from ≤ to, event ids unique; C15 chosen_on within from..to. Shared with season/normalizeSeason. */
 export function checkSeason(s, path, errs) {
   const e = (q, message) => errs.push({ path: path + q, message });
   if (!isDate(s.checked)) e('/checked', 'not a calendar date');
@@ -87,6 +87,11 @@ export function checkSeason(s, path, errs) {
     for (const k of ['from', 'to']) if (!isDate(ev[k])) e(`/events/${i}/${k}`, 'not a calendar date');
     if (isDate(ev.from) && isDate(ev.to) && ev.from > ev.to) e(`/events/${i}/to`, 'before from');
     if ((ev.lat === undefined) !== (ev.lng === undefined)) e(`/events/${i}/${ev.lat === undefined ? 'lat' : 'lng'}`, 'lat and lng go together');
+    // C15 (TG-PHASE-15 WP-15b): the day the owner chose the event for in What's on lies within its run.
+    if (ev.chosen_on !== undefined) {
+      if (!isDate(ev.chosen_on)) e(`/events/${i}/chosen_on`, 'not a calendar date');
+      else if (isDate(ev.from) && isDate(ev.to) && (ev.chosen_on < ev.from || ev.chosen_on > ev.to)) e(`/events/${i}/chosen_on`, 'outside the event\'s from..to');
+    }
   });
   return errs;
 }

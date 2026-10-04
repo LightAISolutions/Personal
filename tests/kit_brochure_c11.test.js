@@ -155,6 +155,21 @@ test('the season page follows the overview and comes before day 1, with weather,
   assert.ok(page.indexOf('Harbour lights') < page.indexOf('Foundry open night'), 'events by date');
 });
 
+// C15 (WP-15b): the season sheet's two new kinds validate and print with their own labels; an unknown kind is still refused.
+test('season events of kind exhibition and performance validate and show as Exhibition and Performance', async () => {
+  const { validate, renderHtml } = await kit();
+  const m = c11Model();
+  m.season.events.push({ name: 'Kiln prints', kind: 'exhibition', from: '2026-11-01', to: '2026-11-30', area: 'Old customs house' },
+    { name: 'Shanty night', kind: 'performance', from: '2026-11-14', to: '2026-11-14', start: '19:30', end: '21:00', area: 'Net loft' });
+  assert.deepEqual(validate(m), []);
+  const { html } = renderHtml(m, { embedFonts: false });
+  const page = html.slice(html.search(/<section class="sec sec-season"/), html.search(/<section class="sec sec-day"/));
+  assert.ok(page.includes('ev-exhibition">Exhibition<') && page.includes('Kiln prints'), 'the exhibition with its label');
+  assert.ok(page.includes('ev-performance">Performance<') && page.includes('Shanty night'), 'the performance with its label');
+  const bad = c11Model(); bad.season.events[0].kind = 'parade';
+  assert.ok(errsAt(validate(bad), /season\/events\/0\/kind/).length > 0, 'an unknown kind is refused');
+});
+
 test('the schema rejects unknown keys in every new object and bad values in the new fields', async () => {
   const { validate } = await kit();
   const bogus = [

@@ -31,7 +31,12 @@ export const RAIL = Object.freeze({
   // and a likely change. ~85 km straight → ~122 min. Figures and their source: helpers/decisions/WP-13b.md.
   CONVENTIONAL_KMH: 60,
   CONVENTIONAL_DETOUR: 1.2,
-  CONVENTIONAL_EXTRA_MIN: 20
+  CONVENTIONAL_EXTRA_MIN: 20,
+  // Phase 15 (change R): where the city formula stops growing on its own. A ride longer than this is not a crosstown hop
+  // with stops every kilometre but a run out of the city, so from here to INTERCITY_KM it may cost no more than the
+  // larger of a 15 km city ride and a conventional-line ride. Without it a 40 km ride cost 114 minutes and a 41 km one 70.
+  // Rides up to 15 km keep their numbers (the owner kept the city estimates). Figures: helpers/decisions/WP-15a.md.
+  CITY_FULL_KM: 15
 });
 export const STATION_TYPES = Object.freeze(['train_station', 'subway_station', 'light_rail_station']);
 
@@ -39,11 +44,17 @@ const ll = (w) => (w && w.location && w.location.latLng ? { lat: w.location.latL
 
 /** Walking minutes for a straight-line distance. */
 export const walkMinutes = (km) => Math.max(1, Math.ceil((km * 1000 * RAIL.WALK_DETOUR) / RAIL.WALK_M_PER_MIN));
+/** The city formula: a ride with stops, one change past TRANSFER_KM. */
+const city = (km) => Math.ceil(RAIL.WAIT_MIN + km * RAIL.RIDE_DETOUR * RAIL.CITY_MIN_PER_KM + (km > RAIL.TRANSFER_KM ? RAIL.TRANSFER_MIN : 0));
+/** The conventional-line formula (A9): a limited express or a local train between towns. */
+const conventional = (km) => Math.ceil(RAIL.CONVENTIONAL_EXTRA_MIN + ((km * RAIL.CONVENTIONAL_DETOUR) / RAIL.CONVENTIONAL_KMH) * 60);
 /** Ride minutes (wait included) between two stations a straight-line `km` apart. */
 export function rideMinutes(km) {
-  if (km <= RAIL.INTERCITY_KM) return Math.ceil(RAIL.WAIT_MIN + km * RAIL.RIDE_DETOUR * RAIL.CITY_MIN_PER_KM + (km > RAIL.TRANSFER_KM ? RAIL.TRANSFER_MIN : 0));
+  if (km <= RAIL.CITY_FULL_KM) return city(km);
+  // R (Phase 15): from CITY_FULL_KM to INTERCITY_KM the estimate rises steadily from the city formula to the conventional line
+  if (km <= RAIL.INTERCITY_KM) return Math.min(city(km), Math.max(city(RAIL.CITY_FULL_KM), conventional(km)));
   if (km > RAIL.SHINKANSEN_KM) return Math.ceil(RAIL.INTERCITY_EXTRA_MIN + ((km * RAIL.INTERCITY_DETOUR) / RAIL.SHINKANSEN_KMH) * 60);
-  return Math.ceil(RAIL.CONVENTIONAL_EXTRA_MIN + ((km * RAIL.CONVENTIONAL_DETOUR) / RAIL.CONVENTIONAL_KMH) * 60);   // A9: a conventional line
+  return conventional(km);   // A9: a conventional line
 }
 
 /**

@@ -257,13 +257,17 @@ function tgCmdDayDinnerLines(d) {
   if (typeof d.booking_line === 'string' && d.booking_line) out.push('   🎟 <i>' + tgEscape(d.booking_line) + '</i>');
   return out;
 }
-/** "<b>If you have energy</b>" and one line per extra: ✨ an event, 🔖 a saved place. */
+/**
+ * "<b>If you have energy</b>" and one line per extra: ✨ an event, 🔖 a saved place. C15 (WP-15b): an event the owner
+ * chose in What's on (`chosen: true`) shows ⭐, and the list is headed "<b>This evening</b>" when the first extra is one.
+ */
 function tgCmdDayExtraLines(extras) {
   var list = (Array.isArray(extras) ? extras : []).filter(tgCmdDayAnchorOk);
   if (!list.length) return [];
-  var out = ['<b>If you have energy</b>'];
+  var out = [list[0].chosen === true ? '<b>This evening</b>' : '<b>If you have energy</b>'];
   list.forEach(function (x) {
-    out.push((x.kind === 'saved' ? '🔖 ' : '✨ ') + (tgCmdDayClock(x.time) ? tgEscape(x.time) + ' ' : '') + tgCmdHref(x.maps_url, x.name));
+    var mark = x.kind === 'saved' ? '🔖 ' : x.chosen === true ? '⭐ ' : '✨ ';
+    out.push(mark + (tgCmdDayClock(x.time) ? tgEscape(x.time) + ' ' : '') + tgCmdHref(x.maps_url, x.name));
     if (typeof x.note_line === 'string' && x.note_line) out.push('   <i>' + tgEscape(x.note_line) + '</i>');
   });
   return out;

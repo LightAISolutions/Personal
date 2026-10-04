@@ -7,7 +7,7 @@ import { esc, clip, join } from '../escape.mjs';
 import { shortDate, longDate, dateRange } from '../format.mjs';
 import { secHead, link, clockPlain } from './common.mjs';
 
-export const EVENT_KIND = { light_up: 'Evening light-up', special_opening: 'Special opening', festival: 'Festival', market: 'Market', holiday: 'Public holiday', closure: 'Closed' };
+export const EVENT_KIND = { light_up: 'Evening light-up', special_opening: 'Special opening', festival: 'Festival', market: 'Market', exhibition: 'Exhibition', performance: 'Performance', holiday: 'Public holiday', closure: 'Closed' };   // C15: + exhibition, performance
 export const BLOOM_STATUS = { before: 'not yet', starting: 'starting', peak: 'at its peak', past: 'past its best' };
 export const EVENTS_PER_BLOCK = 10;
 

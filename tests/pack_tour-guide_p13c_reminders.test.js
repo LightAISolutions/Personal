@@ -14,6 +14,7 @@ const J = (v) => JSON.parse(JSON.stringify(v));
 function fresh(now, o = {}) {
   const { ctx, state } = H.loadGas({ pack: 'tour-guide', now, tz: HOME });
   H.bootstrap(ctx, state);
+  ctx.settingSet('whatson_auto', 'off', 'test');   // C15 (WP-15b): the weekly What's on check is one more alarm on the one trigger; these tests watch the reminders alone
   ctx.tgTripUpsert({ slug: TRIP, title: 'Fernhollow', destination: 'Fernhollow', status: 'planned', start: '2027-06-10', end: '2027-06-14', tz: o.tz || AWAY });
   H.putEnvelope(state, H.envelope('bookings', { v: 1, kind: 'bookings', trip: TRIP, tz: o.tz || AWAY, bookings: [
     { id: 'weir-boat', title: 'Weir boat', kind: 'experience', rule: 'Seats go fast', status: 'todo', for_date: '2027-06-13',

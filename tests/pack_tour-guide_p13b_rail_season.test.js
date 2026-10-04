@@ -29,11 +29,44 @@ test('A9: city rides and rides past SHINKANSEN_KM keep their numbers', async () 
   // the formulas as they stood before this phase, for the bands this finding leaves alone
   const city = (km) => Math.ceil(RAIL.WAIT_MIN + km * RAIL.RIDE_DETOUR * RAIL.CITY_MIN_PER_KM + (km > RAIL.TRANSFER_KM ? RAIL.TRANSFER_MIN : 0));
   const fast = (km) => Math.ceil(RAIL.INTERCITY_EXTRA_MIN + ((km * RAIL.INTERCITY_DETOUR) / RAIL.SHINKANSEN_KMH) * 60);
-  for (const km of [0.5, 3, 8, 25, 40]) assert.equal(rideMinutes(km), city(km), `city ${km} km`);
+  for (const km of [0.5, 3, 8, 15]) assert.equal(rideMinutes(km), city(km), `city ${km} km`);   // C15 (WP-15a, change R): city rides up to CITY_FULL_KM keep their numbers; 15–40 km is the new band below
   for (const km of [151, 200, 370, 600]) assert.equal(rideMinutes(km), fast(km), `high-speed ${km} km`);
   assert.ok(rideMinutes(370) > 140 && rideMinutes(370) < 190, 'the long-distance high-speed range holds');
   assert.deepEqual([RAIL.WAIT_MIN, RAIL.RIDE_DETOUR, RAIL.CITY_MIN_PER_KM, RAIL.TRANSFER_KM, RAIL.TRANSFER_MIN, RAIL.INTERCITY_KM, RAIL.INTERCITY_DETOUR, RAIL.REGIONAL_KMH, RAIL.SHINKANSEN_KM, RAIL.SHINKANSEN_KMH, RAIL.INTERCITY_EXTRA_MIN],
     [5, 1.3, 2, 6, 5, 40, 1.15, 75, 150, 170, 15], 'the existing calibration numbers stay');
+});
+
+// ---- R (Phase 15, WP-15a): a 15–40 km ride rises steadily from the city formula to the conventional line ----------------
+
+// The two formulas as rideMinutes computed them before change R (city: up to INTERCITY_KM; conventional: above it).
+const cityOld = (R, km) => Math.ceil(R.WAIT_MIN + km * R.RIDE_DETOUR * R.CITY_MIN_PER_KM + (km > R.TRANSFER_KM ? R.TRANSFER_MIN : 0));
+
+test('R: the fault was a cliff at INTERCITY_KM (40 km cost 114 minutes, 41 km cost 70); now 40 km costs 68', async () => {
+  const { rideMinutes, RAIL } = await rail();
+  assert.equal(cityOld(RAIL, 40), 114, 'the city formula alone gave 114 minutes for 40 km (the fault)');
+  assert.equal(rideMinutes(41), 70, '41 km is a conventional-line ride, unchanged');
+  assert.equal(rideMinutes(40), 68, '40 km no longer costs more than 41 km');
+  assert.ok(rideMinutes(35) <= 65, `a 35 km day trip reads about an hour (${rideMinutes(35)} min), not 101`);
+});
+
+test('R: CITY_FULL_KM is 15, and the band\'s pinned figures', async () => {
+  const { rideMinutes, RAIL } = await rail();
+  assert.equal(RAIL.CITY_FULL_KM, 15);
+  const want = { 0.5: cityOld(RAIL, 0.5), 3: cityOld(RAIL, 3), 8: 31, 15: 49, 17: 49, 25: 50, 30: 56, 35: 62, 40: 68, 41: 70 };
+  for (const [km, m] of Object.entries(want)) assert.equal(rideMinutes(Number(km)), m, `${km} km`);
+});
+
+test('R: across 0.5–150 km the minutes never fall, the 40 → 41 km step is at most 3, and no ride costs more than the city formula did', async () => {
+  const { rideMinutes, RAIL } = await rail();
+  let prev = 0;
+  for (let i = 1; i <= 300; i++) {
+    const km = i * 0.5, m = rideMinutes(km);
+    assert.ok(m >= prev, `${km} km → ${m} min, below ${prev} at ${km - 0.5} km`);
+    if (km <= RAIL.INTERCITY_KM) assert.ok(m <= cityOld(RAIL, km), `${km} km → ${m} min, more than the city formula's ${cityOld(RAIL, km)}`);
+    prev = m;
+  }
+  assert.ok(rideMinutes(41) - rideMinutes(40) <= 3, `40 → 41 km: ${rideMinutes(40)} → ${rideMinutes(41)}`);
+  assert.ok(rideMinutes(41) - rideMinutes(40) >= 0);
 });
 
 // ---- A6: roses through November; autumn-flowering cherries in October–December -----------------------------------------

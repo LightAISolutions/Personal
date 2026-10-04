@@ -80,7 +80,13 @@ test('A12: on a day that starts late no evening extra starts before the arrival 
   const ready = toMin(d.bags.end);   // the arrival at 18:40, then the bags at the hotel
   for (const x of d.extras) if (x.time) assert.ok(toMin(x.time) >= ready, `${x.name} at ${x.time} is not before ${d.bags.end}`);
   const fair = d.extras.find((x) => x.ref === 'ashvale-harvest-fair');
-  assert.equal(fair.time, d.bags.end, 'an event under way at arrival is offered from the arrival (it runs 17:30–21:00)');
+  // E (TG-PHASE-15 WP-15b, change E): an event under way when the stops finish is offered from the later of the finish
+  // plus AFTER_MIN and the arrival with its bag step — after the day's last stop, no longer from the arrival during the
+  // stops — while at least MIN_OPEN minutes of it are left (it runs 17:30–21:00).
+  const lastStop = toMin(d.stops[d.stops.length - 1].depart);
+  assert.ok(toMin(fair.time) > lastStop + L.planner.EXTRAS.AFTER_MIN, `the fair at ${fair.time} comes after the last stop and the walk out`);
+  assert.ok(toMin(fair.time) > ready, 'and after the arrival and its bag step');
+  assert.ok(toMin('21:00') - toMin(fair.time) >= L.planner.EXTRAS.MIN_OPEN, 'with enough of it left');
 });
 
 // Developed by: LightAISolutions

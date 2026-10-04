@@ -37,7 +37,7 @@
     "extras": {
       "type": "array",
       "maxItems": 3,
-      "description": "Phase 11: evening extras near the last stop or the lodging — season events running that evening, then (on an early finish) saved places open then. Events first.",
+      "description": "Phase 11: evening extras near the last stop or the lodging — season events running that evening, then (on an early finish) saved places open then. Events first; C15: events chosen for this evening (chosen: true) before the others.",
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -48,7 +48,8 @@
           "name": { "type": "string", "minLength": 1, "maxLength": 120 },
           "time": { "$ref": "#/$defs/time" },
           "km": { "type": "number", "minimum": 0, "maximum": 100, "description": "Straight-line distance from the last stop or the lodging, whichever is nearer." },
-          "note": { "type": "string", "maxLength": 160 }
+          "note": { "type": "string", "maxLength": 160 },
+          "chosen": { "const": true, "description": "C15: a season event the owner chose for this evening in What's on (season_event.chosen_on); chosen events come first. Absent otherwise." }
         }
       }
     },

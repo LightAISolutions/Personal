@@ -1,0 +1,310 @@
+{
+ "about": "Invented data for the whatson branch (C15, TG-PHASE-15 WP-15b): an invented town (Quillmere), its trip, and boards every validator must accept or refuse alike. valid[0] is the pinned payloads test's whatson example. invalid: refused by the schema, the core and the pack (the last two in the same words). semantic: refused by the core and the pack in the same words; the JSON schema cannot say these rules (checkWhatson does).",
+ "valid": [
+  {
+   "v": 1,
+   "id": "wo-20270501-quillmere",
+   "trip": "quillmere-2027",
+   "place": {
+    "label": "Quillmere",
+    "slug": "quillmere"
+   },
+   "from": "2027-05-12",
+   "to": "2027-05-14",
+   "created_on": "2027-05-01",
+   "items": [
+    {
+     "id": "reed-and-rush-weavers-of-the-mere-0401",
+     "name": "Reed and Rush: Weavers of the Mere",
+     "kind": "exhibition",
+     "from": "2027-04-01",
+     "to": "2027-06-30",
+     "start": "10:00",
+     "end": "17:00",
+     "venue": {
+      "name": "Quillmere Town Gallery",
+      "area": "Old Quay"
+     },
+     "why": "Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.",
+     "price": "free",
+     "url": "https://whatson.example.org/reed-and-rush",
+     "confidence": "confirmed",
+     "labels": [
+      "free",
+      "rain_ok"
+     ]
+    },
+    {
+     "id": "thursday-quay-market-0506",
+     "name": "Thursday Quay Market",
+     "kind": "market",
+     "from": "2027-05-06",
+     "to": "2027-05-27",
+     "days": [
+      "2027-05-06",
+      "2027-05-13",
+      "2027-05-20",
+      "2027-05-27"
+     ],
+     "start": "08:00",
+     "end": "13:00",
+     "venue": {
+      "name": "Old Quay",
+      "area": "Old Quay"
+     },
+     "why": "Growers and bakers along the water; good for a picnic lunch.",
+     "food": "Two vegetarian stalls: pies and pickled greens.",
+     "url": "https://whatson.example.org/quay-market",
+     "confidence": "confirmed",
+     "labels": [
+      "veg_food"
+     ]
+    },
+    {
+     "id": "lantern-walk-on-the-mere-0513",
+     "name": "Lantern Walk on the Mere",
+     "kind": "light_up",
+     "from": "2027-05-13",
+     "to": "2027-05-14",
+     "start": "19:30",
+     "end": "22:00",
+     "venue": {
+      "name": "Mere Boardwalk",
+      "area": "North Shore",
+      "place_id": "QmereBoardwalk01"
+     },
+     "why": "Paper lanterns along the boardwalk at dusk; flat and easy, about an hour.",
+     "food": "Vegetarian noodles at the boathouse stall.",
+     "price": "free",
+     "booking": "No booking; arrive before 19:15.",
+     "url": "https://whatson.example.org/lantern-walk",
+     "confidence": "likely",
+     "labels": [
+      "evening",
+      "free",
+      "crowded"
+     ]
+    },
+    {
+     "id": "quillmere-founders-day-0514",
+     "name": "Quillmere Founders' Day",
+     "kind": "holiday",
+     "from": "2027-05-14",
+     "to": "2027-05-14",
+     "why": "A town holiday: shops shut at noon and the ferry runs its Sunday timetable.",
+     "url": "https://whatson.example.org/founders-day",
+     "confidence": "confirmed"
+    }
+   ],
+   "sources": [
+    {
+     "title": "Quillmere what's on",
+     "url": "https://whatson.example.org/quillmere"
+    },
+    {
+     "title": "Mere Boardwalk events",
+     "url": "https://boardwalk.example.net/events"
+    }
+   ],
+   "left_out": [
+    {
+     "name": "Spring Regatta",
+     "reason": "outside_dates"
+    },
+    {
+     "name": "Night Ferry Concert",
+     "reason": "sold_out"
+    }
+   ]
+  },
+  {
+   "id": "wo-20270510-fernby-cross",
+   "trip": null,
+   "place": {
+    "label": "Fernby Cross",
+    "slug": "fernby-cross"
+   },
+   "from": "2027-05-10",
+   "to": "2027-05-10",
+   "created_on": "2027-05-10",
+   "items": [],
+   "sources": [],
+   "left_out": []
+  },
+  {
+   "v": 1,
+   "id": "wo-20270505-quillmere",
+   "trip": "quillmere-2027",
+   "place": {
+    "label": "Quillmere",
+    "slug": "quillmere"
+   },
+   "from": "2027-05-12",
+   "to": "2027-05-14",
+   "created_on": "2027-05-05",
+   "items": [
+    {
+     "id": "reed-and-rush-weavers-of-the-mere-0401",
+     "name": "Reed and Rush: Weavers of the Mere",
+     "kind": "exhibition",
+     "from": "2027-04-01",
+     "to": "2027-06-30",
+     "start": "10:00",
+     "end": "17:00",
+     "venue": {
+      "name": "Quillmere Town Gallery",
+      "area": "Old Quay"
+     },
+     "why": "Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.",
+     "price": "free",
+     "url": "https://whatson.example.org/reed-and-rush",
+     "confidence": "confirmed",
+     "labels": [
+      "free",
+      "rain_ok"
+     ]
+    },
+    {
+     "id": "thursday-quay-market-0506",
+     "name": "Thursday Quay Market",
+     "kind": "market",
+     "from": "2027-05-06",
+     "to": "2027-05-27",
+     "days": [
+      "2027-05-06",
+      "2027-05-13",
+      "2027-05-20",
+      "2027-05-27"
+     ],
+     "start": "08:00",
+     "end": "13:00",
+     "venue": {
+      "name": "Old Quay",
+      "area": "Old Quay"
+     },
+     "why": "Growers and bakers along the water; good for a picnic lunch.",
+     "food": "Two vegetarian stalls: pies and pickled greens.",
+     "url": "https://whatson.example.org/quay-market",
+     "confidence": "confirmed",
+     "labels": [
+      "veg_food"
+     ]
+    },
+    {
+     "id": "lantern-walk-on-the-mere-0513",
+     "name": "Lantern Walk on the Mere",
+     "kind": "light_up",
+     "from": "2027-05-13",
+     "to": "2027-05-14",
+     "start": "19:30",
+     "end": "22:00",
+     "venue": {
+      "name": "Mere Boardwalk",
+      "area": "North Shore",
+      "place_id": "QmereBoardwalk01"
+     },
+     "why": "Paper lanterns along the boardwalk at dusk; flat and easy, about an hour.",
+     "food": "Vegetarian noodles at the boathouse stall.",
+     "price": "free",
+     "booking": "No booking; arrive before 19:15.",
+     "url": "https://whatson.example.org/lantern-walk",
+     "confidence": "likely",
+     "labels": [
+      "evening",
+      "free",
+      "crowded"
+     ]
+    },
+    {
+     "id": "quillmere-founders-day-0514",
+     "name": "Quillmere Founders' Day",
+     "kind": "holiday",
+     "from": "2027-05-14",
+     "to": "2027-05-14",
+     "why": "A town holiday: shops shut at noon and the ferry runs its Sunday timetable.",
+     "url": "https://whatson.example.org/founders-day",
+     "confidence": "confirmed"
+    }
+   ],
+   "sources": [
+    {
+     "title": "Quillmere what's on",
+     "url": "https://whatson.example.org/quillmere"
+    },
+    {
+     "title": "Mere Boardwalk events",
+     "url": "https://boardwalk.example.net/events"
+    }
+   ],
+   "left_out": [
+    {
+     "name": "Spring Regatta",
+     "reason": "outside_dates"
+    },
+    {
+     "name": "Night Ferry Concert",
+     "reason": "sold_out"
+    }
+   ],
+   "kind": "whatson",
+   "auto": true,
+   "more": 3
+  }
+ ],
+ "invalid": [
+  "not an object",
+  null,
+  [],
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}]},
+  {"v":1,"id":"wo-20270501-quillmere","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":2,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[],"kind":"scout"},
+  {"v":1,"id":"wo-2027051-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"Quillmere 2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"12 May 2027","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[],"auto":false},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[],"more":51},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[],"more":1.5},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[],"rating":4.6},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Plain page","url":"http://whatson.example.org/"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[{"name":"Boat race","reason":"boring"}]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"thursday-quay-market-0506","name":"Thursday Quay Market","kind":"market","from":"2027-05-06","to":"2027-05-27","days":["2027-05-06","2027-05-13","2027-05-20","2027-05-27"],"start":"08:00","end":"13:00","venue":{"name":"Old Quay","area":"Old Quay"},"why":"Growers and bakers along the water; good for a picnic lunch.","food":"Two vegetarian stalls: pies and pickled greens.","confidence":"confirmed","labels":["veg_food"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"lantern-walk-on-the-mere-0513","name":"Lantern Walk on the Mere","kind":"light_up","from":"2027-05-13","to":"2027-05-14","start":"19:30","end":"22:00","venue":{"name":"Mere Boardwalk","area":"North Shore","place_id":"QmereBoardwalk01"},"why":"Paper lanterns along the boardwalk at dusk; flat and easy, about an hour.","food":"Vegetarian noodles at the boathouse stall.","price":"free","booking":"No booking; arrive before 19:15.","url":"https://whatson.example.org/lantern-walk","labels":["evening","free","crowded"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"concert","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"maybe","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"7pm","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["cheap"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok","evening","crowded","booking"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Gallery","place_id":"bad id!"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"Not_A_Slug","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"thursday-quay-market-0506","name":"Thursday Quay Market","kind":"market","from":"2027-05-06","to":"2027-05-27","days":["2027-05-06","2027-05-13","2027-05-20","2027-05-27"],"start":"08:00","end":"13:00","venue":{"name":"Old Quay","area":"Old Quay"},"why":"Growers and bakers along the water; good for a picnic lunch.","food":"Two vegetarian stalls: pies and pickled greens.","url":"https://whatson.example.org/quay-market","confidence":"confirmed","labels":["veg_food"],"userRatingCount":12}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"lantern-walk-on-the-mere-0513","name":"Lantern Walk on the Mere","kind":"light_up","from":"2027-05-13","to":"2027-05-14","start":"19:30","end":"22:00","venue":{"name":"Mere Boardwalk","formatted_address":"1 Shore Road"},"why":"Paper lanterns along the boardwalk at dusk; flat and easy, about an hour.","food":"Vegetarian noodles at the boathouse stall.","price":"free","booking":"No booking; arrive before 19:15.","url":"https://whatson.example.org/lantern-walk","confidence":"likely","labels":["evening","free","crowded"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"],"food":"fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"ftp://whatson.example.org/x","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]}
+ ],
+ "semantic": [
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-15","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-01","to":"2027-06-01","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-02-30","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-03-01","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"thursday-quay-market-0506","name":"Thursday Quay Market","kind":"market","from":"2027-05-06","to":"2027-05-27","days":["2027-05-13","2027-06-03"],"start":"08:00","end":"13:00","venue":{"name":"Old Quay","area":"Old Quay"},"why":"Growers and bakers along the water; good for a picnic lunch.","food":"Two vegetarian stalls: pies and pickled greens.","url":"https://whatson.example.org/quay-market","confidence":"confirmed","labels":["veg_food"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"thursday-quay-market-0506","name":"Thursday Quay Market","kind":"market","from":"2027-05-06","to":"2027-05-27","days":["2027-05-20","2027-05-13"],"start":"08:00","end":"13:00","venue":{"name":"Old Quay","area":"Old Quay"},"why":"Growers and bakers along the water; good for a picnic lunch.","food":"Two vegetarian stalls: pies and pickled greens.","url":"https://whatson.example.org/quay-market","confidence":"confirmed","labels":["veg_food"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"thursday-quay-market-0506","name":"Thursday Quay Market","kind":"market","from":"2027-05-06","to":"2027-05-27","days":["2027-05-13","2027-05-13"],"start":"08:00","end":"13:00","venue":{"name":"Old Quay","area":"Old Quay"},"why":"Growers and bakers along the water; good for a picnic lunch.","food":"Two vegetarian stalls: pies and pickled greens.","url":"https://whatson.example.org/quay-market","confidence":"confirmed","labels":["veg_food"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"thursday-quay-market-0506","name":"Thursday Quay Market","kind":"market","from":"2027-05-06","to":"2027-05-27","days":["2027-05-06","2027-05-20"],"start":"08:00","end":"13:00","venue":{"name":"Old Quay","area":"Old Quay"},"why":"Growers and bakers along the water; good for a picnic lunch.","food":"Two vegetarian stalls: pies and pickled greens.","url":"https://whatson.example.org/quay-market","confidence":"confirmed","labels":["veg_food"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","free"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-02-29","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"}],"left_out":[]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]},{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Thursday Quay Market","kind":"market","from":"2027-05-06","to":"2027-05-27","days":["2027-05-06","2027-05-13","2027-05-20","2027-05-27"],"start":"08:00","end":"13:00","venue":{"name":"Old Quay","area":"Old Quay"},"why":"Growers and bakers along the water; good for a picnic lunch.","food":"Two vegetarian stalls: pies and pickled greens.","url":"https://whatson.example.org/quay-market","confidence":"confirmed","labels":["veg_food"]},{"id":"lantern-walk-on-the-mere-0513","name":"Lantern Walk on the Mere","kind":"light_up","from":"2027-05-13","to":"2027-05-14","start":"19:30","end":"22:00","venue":{"name":"Mere Boardwalk","area":"North Shore","place_id":"QmereBoardwalk01"},"why":"Paper lanterns along the boardwalk at dusk; flat and easy, about an hour.","food":"Vegetarian noodles at the boathouse stall.","price":"free","booking":"No booking; arrive before 19:15.","url":"https://whatson.example.org/lantern-walk","confidence":"likely","labels":["evening","free","crowded"]},{"id":"quillmere-founders-day-0514","name":"Quillmere Founders' Day","kind":"holiday","from":"2027-05-14","to":"2027-05-14","why":"A town holiday: shops shut at noon and the ferry runs its Sunday timetable.","url":"https://whatson.example.org/founders-day","confidence":"confirmed"}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"},{"title":"Mere Boardwalk events","url":"https://boardwalk.example.net/events"}],"left_out":[{"name":"Spring Regatta","reason":"outside_dates"},{"name":"Night Ferry Concert","reason":"sold_out"}]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]},{"id":"lantern-walk-on-the-mere-0513","name":"Lantern Walk on the Mere","kind":"light_up","from":"2027-05-13","to":"2027-05-14","start":"19:30","end":"22:00","venue":{"name":"Mere Boardwalk","area":"North Shore","place_id":"QmereBoardwalk01"},"why":"Paper lanterns along the boardwalk at dusk; flat and easy, about an hour.","food":"Vegetarian noodles at the boathouse stall.","price":"free","booking":"No booking; arrive before 19:15.","url":"https://whatson.example.org/lantern-walk","confidence":"likely","labels":["evening","free","crowded"]},{"id":"thursday-quay-market-0506","name":"Thursday Quay Market","kind":"market","from":"2027-05-06","to":"2027-05-27","days":["2027-05-06","2027-05-13","2027-05-20","2027-05-27"],"start":"08:00","end":"13:00","venue":{"name":"Old Quay","area":"Old Quay"},"why":"Growers and bakers along the water; good for a picnic lunch.","food":"Two vegetarian stalls: pies and pickled greens.","url":"https://whatson.example.org/quay-market","confidence":"confirmed","labels":["veg_food"]},{"id":"quillmere-founders-day-0514","name":"Quillmere Founders' Day","kind":"holiday","from":"2027-05-14","to":"2027-05-14","why":"A town holiday: shops shut at noon and the ferry runs its Sunday timetable.","url":"https://whatson.example.org/founders-day","confidence":"confirmed"}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"},{"title":"Mere Boardwalk events","url":"https://boardwalk.example.net/events"}],"left_out":[{"name":"Spring Regatta","reason":"outside_dates"},{"name":"Night Ferry Concert","reason":"sold_out"}]},
+  {"v":1,"id":"wo-20270501-quillmere","trip":"quillmere-2027","place":{"label":"Quillmere","slug":"quillmere"},"from":"2027-05-12","to":"2027-05-14","created_on":"2027-05-01","items":[{"id":"reed-and-rush-weavers-of-the-mere-0401","name":"Reed and Rush: Weavers of the Mere","kind":"exhibition","from":"2027-04-01","to":"2027-06-30","start":"10:00","end":"17:00","venue":{"name":"Quillmere Town Gallery","area":"Old Quay"},"why":"Baskets, mats and boats woven from the mere's own reeds; a quiet hour indoors if it rains.","price":"free","url":"https://whatson.example.org/reed-and-rush","confidence":"confirmed","labels":["free","rain_ok"]},{"id":"thursday-quay-market-0506","name":"Thursday Quay Market","kind":"market","from":"2027-05-06","to":"2027-05-27","days":["2027-05-06","2027-05-13","2027-05-20","2027-05-27"],"start":"08:00","end":"13:00","venue":{"name":"Old Quay","area":"Old Quay"},"why":"Growers and bakers along the water; good for a picnic lunch.","food":"Two vegetarian stalls: pies and pickled greens.","url":"https://whatson.example.org/quay-market","confidence":"confirmed","labels":["veg_food"]},{"id":"lantern-walk-on-the-mere-0513","name":"Lantern Walk on the Mere","kind":"light_up","from":"2027-05-13","to":"2027-05-14","start":"19:30","end":"22:00","venue":{"name":"Mere Boardwalk","area":"North Shore","place_id":"QmereBoardwalk01"},"why":"Paper lanterns along the boardwalk at dusk; flat and easy, about an hour.","food":"Vegetarian noodles at the boathouse stall.","price":"free","booking":"No booking; arrive before 19:15.","url":"https://whatson.example.org/lantern-walk","confidence":"likely","labels":["evening","free","crowded"]},{"id":"quillmere-founders-day-0514","name":"Quillmere Founders' Day","kind":"holiday","from":"2027-06-01","to":"2027-06-01","why":"A town holiday: shops shut at noon and the ferry runs its Sunday timetable.","url":"https://whatson.example.org/founders-day","confidence":"confirmed"}],"sources":[{"title":"Quillmere what's on","url":"https://whatson.example.org/quillmere"},{"title":"Mere Boardwalk events","url":"https://boardwalk.example.net/events"}],"left_out":[{"name":"Spring Regatta","reason":"outside_dates"},{"name":"Night Ferry Concert","reason":"sold_out"}]}
+ ],
+ "trip": {"slug":"quillmere-2027","title":"Quillmere","destination":"Quillmere","start":"2027-05-12","end":"2027-05-14","status":"planned"}
+}

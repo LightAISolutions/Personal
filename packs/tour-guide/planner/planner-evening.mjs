@@ -13,8 +13,15 @@
  * restaurants and cafes are left to dinner.
  * Phase 13 (A12): no extra starts before the day's start plus its start step (`evening.ready`, the bag step on a moving
  * day): an event under way by then is offered from that time while at least EXTRAS.MIN_OPEN minutes of it are left.
+ * Phase 15 (C15, WP-15b, change E): the same rule at the finish — an event under way before the later of the day's
+ * finish plus EXTRAS.AFTER_MIN and `ready` is offered from that time while at least EXTRAS.MIN_OPEN minutes of it are
+ * left, else not at all (a 10:00–17:30 opening is no longer offered "that evening" at 10:00).
+ * Chosen events (What's on, `season_event.chosen_on`): a chosen event is considered only on its `chosen_on`; an evening
+ * choice (isEveningChoice) comes first within EXTRAS.CHOSEN_RADIUS_KM with `chosen: true`, and past it the day gets an
+ * info warning instead; a daytime choice is never an extra (the private side pins it to its day).
  *   sunsetFor(day, timeZone) → 'HH:MM' | null
- *   eveningExtras({ evening, date, season, places, snapshots, exclude, used }) → extras
+ *   isEveningChoice(event) → boolean
+ *   eveningExtras({ evening, date, season, places, snapshots, exclude, used, later, warnings }) → extras
  *   applyExtras(dayPlan, extras)
  */
 import { haversineKm, isLoc } from './planner-geo.mjs';
@@ -25,7 +32,7 @@ import { sunsetLocal } from './planner-sun.mjs';
 import { refineCategory } from './planner-category.mjs';
 import { BACK_EARLY_NOTE } from './planner-day.mjs';
 
-export const EXTRAS = Object.freeze({ RADIUS_KM: 2, MAX: 3, EARLY_MIN: 60, EVENING_FROM: 17 * 60, START_FROM: 16 * 60, MIN_OPEN: 30, AFTER_MIN: 15 });
+export const EXTRAS = Object.freeze({ RADIUS_KM: 2, MAX: 3, EARLY_MIN: 60, EVENING_FROM: 17 * 60, START_FROM: 16 * 60, MIN_OPEN: 30, AFTER_MIN: 15, CHOSEN_RADIUS_KM: 10 });
 const NOT_EVENING = new Set(['holiday', 'closure']);
 const FOOD = new Set(['restaurant', 'cafe']);
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
@@ -45,6 +52,17 @@ export function runsThatEvening(e, date) {
   return e.kind === 'light_up';
 }
 
+/**
+ * C15: a chosen event the owner meant for an evening — it runs that evening on its `chosen_on` and, when it has a start,
+ * starts at or after EXTRAS.START_FROM. Every other chosen event is a daytime choice.
+ */
+export function isEveningChoice(e) {
+  if (!e || typeof e.chosen_on !== 'string' || !runsThatEvening(e, e.chosen_on)) return false;
+  return !TIME_RE.test(e.start || '') || toMin(e.start) >= EXTRAS.START_FROM;
+}
+
+const WARN_MAX = 40;   // the day plan's warnings cap (tour-guide-day-plan.schema.json)
+
 function eventLoc(e, placesById, snapshots) {
   if (isLoc(e)) return { lat: e.lat, lng: e.lng };
   const p = e.place ? placesById.get(e.place) : null;
@@ -54,38 +72,51 @@ function eventLoc(e, placesById, snapshots) {
 }
 
 /**
- * eveningExtras({ evening, date, season, places, snapshots, exclude, used }) → [{ kind, ref, name, time?, km, note? }]
+ * eveningExtras({ evening, date, season, places, snapshots, exclude, used, later, warnings }) → [{ kind, ref, name, time?, km, note?, chosen? }]
  * `places` are the plan's places (final statuses); `exclude`: slugs not to offer (stops, dinners, rejected); `used`:
- * saved places already offered on another day (updated).
+ * saved places already offered on another day (updated); `warnings`: the day plan's warnings (C15: a far chosen evening
+ * event adds an info line; optional).
  */
-export function eveningExtras({ evening: ev, date, season, places = [], snapshots, exclude = new Set(), used = new Set(), later = new Set() }) {
+export function eveningExtras({ evening: ev, date, season, places = [], snapshots, exclude = new Set(), used = new Set(), later = new Set(), warnings = null }) {
   if (!ev || ev.ends) return [];
   const origins = [ev.last && ev.last.cand.loc ? ev.last.cand.loc : null, ev.lodging].filter(isLoc);
   const dist = (loc) => Math.min(...origins.map((o) => haversineKm(o, loc)));
   const byId = new Map(places.map((p) => [p.id, p]));
   // Phase 13 (A12): nothing starts before the day's start plus its start step (`ready`; the bag step on a moving day).
   const ready = Number.isFinite(ev.ready) ? ev.ready : -Infinity;
-  const events = (season && Array.isArray(season.events) ? season.events : []).filter((e) => runsThatEvening(e, date)).map((e) => {
+  // C15 (change E): nor before the stops finish (plus the walk-out step) — the same rule, applied to the finish.
+  const from = Math.max(Number.isFinite(ev.finish) ? ev.finish + EXTRAS.AFTER_MIN : -Infinity, ready);
+  const chosen = [], events = [];
+  for (const e of season && Array.isArray(season.events) ? season.events : []) {
+    const isChosen = e && typeof e.chosen_on === 'string';
+    if (isChosen ? e.chosen_on !== date || !isEveningChoice(e) : !runsThatEvening(e, date)) continue;   // a chosen event: its day only
     const loc = eventLoc(e, byId, snapshots);
-    if (!loc) return null;
+    if (!loc) continue;
     const km = dist(loc);
-    if (km > EXTRAS.RADIUS_KM) return null;
+    if (km > (isChosen ? EXTRAS.CHOSEN_RADIUS_KM : EXTRAS.RADIUS_KM)) {
+      if (isChosen && Array.isArray(warnings) && warnings.length < WARN_MAX) {
+        warnings.push({ severity: 'info', code: 'other', text: `${String(e.name).slice(0, 120)}, chosen for this evening, is about ${Math.round(km)} km from where the day ends` });
+      }
+      continue;
+    }
     const x = { kind: 'event', ref: e.id, name: String(e.name).slice(0, 120), km: km1(km) };
     if (TIME_RE.test(e.start || '')) {
       const s = toMin(e.start);
-      if (s < ready) {   // under way before you arrive: offered from your arrival while enough of it is left, else not at all
+      if (s < from) {   // under way before you can get there: offered from then while enough of it is left, else not at all
         const t = TIME_RE.test(e.end || '') ? toMin(e.end) : null;
         const end = t === null ? null : t < s ? t + 1440 : t;
-        if (end === null || end - ready < EXTRAS.MIN_OPEN) return null;
-        x.time = hm(ready);
+        if (end === null || end - from < EXTRAS.MIN_OPEN) continue;
+        x.time = hm(from);
       } else x.time = e.start;
     }
     if (typeof e.note === 'string' && e.note.trim()) x.note = e.note.trim().slice(0, 160);
-    return x;
-  }).filter(Boolean).sort((a, b) => a.km - b.km || a.ref.localeCompare(b.ref));
-  const out = events.slice(0, EXTRAS.MAX);
+    if (isChosen) { x.chosen = true; chosen.push(x); } else events.push(x);
+  }
+  const byKm = (a, b) => a.km - b.km || a.ref.localeCompare(b.ref);
+  chosen.sort(byKm);
+  events.sort(byKm);
+  const out = chosen.concat(events).slice(0, EXTRAS.MAX);
   if (out.length < EXTRAS.MAX && ev.dayEnd - ev.finish >= EXTRAS.EARLY_MIN) {
-    const from = Math.max(ev.finish + EXTRAS.AFTER_MIN, ready);
     const saved = [];
     for (const p of places) {
       if (!(p.status === 'saved-for-later' || later.has(p.id)) || exclude.has(p.id) || used.has(p.id) || FOOD.has(refineCategory(p))) continue;
