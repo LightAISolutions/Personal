@@ -3,11 +3,20 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 71/100`
+`Sections: 72/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.71r] — 2026-10-04 05:18:49 PM EST
+
+> **Prompt:** "… 13. Quiet: Approve 14. Menu check: Approve … 19. Day trip: Approve · note: I have not finalized my entire trip yet, so I may use this function for a different city. 20. What's on: Approve · note: I have not finalized my entire trip yet, so I may use this function for a different city. …" *(excerpts of the owner's answers on the project's morning review; this push records that the owner merged the private side of Phases 15 and 16, one pull request for the four commands)*
+
+### Changed
+- `helpers/decisions/TG-PHASE-16.md` §6 and §7: the private repo's side (WP-16p) built and stacked onto the private repo's PR #27, then merged by the owner: the `quiet` and `menu` skills, the routing, plans that apply `state.json` → `menu_checks` in memory only; the menu skill's refusal rules (no facts on the place yet is the expected skip; any other refusal, and an `unknown` check, each send the owner one reply); the coordinator's review fix (the menu skill stamps its envelopes before its memory commit, so its log line names their ids); no framework requests
+- `helpers/decisions/TG-PHASE-15.md` §6: the private repo's side (WP-15p) merged by the owner on the same pull request
+- `helpers/BUILD-STATE.md` rows 15 and 16, the Phase 15 and Phase 16 logs and Next; README timestamp
 
 ## [v01.70r] — 2026-10-04 09:23:02 AM EST
 
