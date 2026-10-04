@@ -8,7 +8,8 @@
 {{/ENVELOPE}}{{^ENVELOPE}} *   no envelope of its own (--no-envelope): the branch answers with envelopes that exist (`reply`, …)
 {{/ENVELOPE}}{{^TAB}} *   no tab of its own (--no-tab): TODO say here which existing tab or store keeps this branch's data
 {{/TAB}} * {{#APP}}App operations: gas/{{APP_FILE}}.{{/APP}}{{^APP}}No app operations (--no-app).{{/APP}} Pack side: packs/{{PACK}}/{{NAME}}/. Tests: tests/pack_{{PACK}}_{{NAME}}.test.js.
- * Still written by hand: the behaviour, the judgment step (the private skill) and the real fields{{#ENVELOPE}} (the schema, both
+ * Still written by hand: the behaviour, the judgment step (the private skill), the command's line in the app's Commands tab
+ * (TG_CMD_GUIDE, gas/45_commands_app.js; until then it shows under More) and the real fields{{#ENVELOPE}} (the schema, both
  * validators, the fixture){{/ENVELOPE}}. Other pack files' names are touched only inside functions, at run time.
  * The @branch line below tells `new-branch.mjs --check {{NAME}}` what this branch declares ("-" = not needed); keep it in step.
  */

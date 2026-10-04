@@ -49,12 +49,20 @@ function registerAction(type, def) {
   }
   return _regPut('action', type, def, 'Action');
 }
+var _HB_COMMAND_HELP = {};   // '/cmd' -> its help line as registered ('' when none)
 /** registerCommand('/cmd', fn(ctx), helpLine); ctx = {chatId, from, text, args, argv, message, reply(html, opts)} */
 function registerCommand(cmd, fn, helpLine) {
   if (!/^\/[a-z0-9_]{1,31}$/.test(cmd || '')) throw new Error('registerCommand: bad command "' + cmd + '"');
   _regPut('command', cmd, _regFn(fn, 'registerCommand'), 'Command');
+  _HB_COMMAND_HELP[cmd] = helpLine ? String(helpLine) : '';
   if (helpLine) HB_REGISTRY.help.push(cmd + ' — ' + helpLine);
   return fn;
+}
+/** listCommands() → [{ cmd, help }] for every registered command, sorted by name — what the bot answers right now (a Mini App's command list reads it). */
+function listCommands() {
+  return Object.keys(HB_REGISTRY.command).sort().map(function (c) {
+    return { cmd: c, help: Object.prototype.hasOwnProperty.call(_HB_COMMAND_HELP, c) ? _HB_COMMAND_HELP[c] : '' };
+  });
 }
 /** registerCallback('prefix', fn(ctx)); ctx = {chatId, from, data, parts, messageId, callbackQuery, answer(text, alert), edit(html, keyboard)} */
 function registerCallback(prefix, fn) {
