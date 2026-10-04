@@ -22,10 +22,16 @@ export const RAIL = Object.freeze({
   TRANSFER_MIN: 5,
   INTERCITY_KM: 40,
   INTERCITY_DETOUR: 1.15,
-  REGIONAL_KMH: 75,
+  REGIONAL_KMH: 75, // the pre-Phase-13 figure for 40–150 km rides; kept exported for reference, no longer used (A9)
   SHINKANSEN_KM: 150,
   SHINKANSEN_KMH: 170,
-  INTERCITY_EXTRA_MIN: 15
+  INTERCITY_EXTRA_MIN: 15,
+  // Phase 13 (A9): a ride between INTERCITY_KM and SHINKANSEN_KM runs on a conventional line (a limited express or a
+  // local train, no high-speed line): a slower average over a longer track, and a longer wait for a less frequent train
+  // and a likely change. ~85 km straight → ~122 min. Figures and their source: helpers/decisions/WP-13b.md.
+  CONVENTIONAL_KMH: 60,
+  CONVENTIONAL_DETOUR: 1.2,
+  CONVENTIONAL_EXTRA_MIN: 20
 });
 export const STATION_TYPES = Object.freeze(['train_station', 'subway_station', 'light_rail_station']);
 
@@ -36,8 +42,8 @@ export const walkMinutes = (km) => Math.max(1, Math.ceil((km * 1000 * RAIL.WALK_
 /** Ride minutes (wait included) between two stations a straight-line `km` apart. */
 export function rideMinutes(km) {
   if (km <= RAIL.INTERCITY_KM) return Math.ceil(RAIL.WAIT_MIN + km * RAIL.RIDE_DETOUR * RAIL.CITY_MIN_PER_KM + (km > RAIL.TRANSFER_KM ? RAIL.TRANSFER_MIN : 0));
-  const kmh = km > RAIL.SHINKANSEN_KM ? RAIL.SHINKANSEN_KMH : RAIL.REGIONAL_KMH;
-  return Math.ceil(RAIL.INTERCITY_EXTRA_MIN + ((km * RAIL.INTERCITY_DETOUR) / kmh) * 60);
+  if (km > RAIL.SHINKANSEN_KM) return Math.ceil(RAIL.INTERCITY_EXTRA_MIN + ((km * RAIL.INTERCITY_DETOUR) / RAIL.SHINKANSEN_KMH) * 60);
+  return Math.ceil(RAIL.CONVENTIONAL_EXTRA_MIN + ((km * RAIL.CONVENTIONAL_DETOUR) / RAIL.CONVENTIONAL_KMH) * 60);   // A9: a conventional line
 }
 
 /**

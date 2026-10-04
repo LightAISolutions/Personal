@@ -10,28 +10,47 @@ const clean = (s) => String(s ?? '').replace(/[\u0000-\u001f\u007f]/g, ' ').repl
 const clip = (s, max = TEXT_MAX) => (s.length > max ? s.slice(0, max).trim() : s);
 
 /**
- * parseScoutText(text) → { what, where }. Accepts "matcha in Kyoto", "matcha, Kyoto", "matcha @ Kyoto",
- * "matcha near Gion, Kyoto" and a leading "/scout". The earliest separator wins, except " in ", where the LAST one is
- * used ("tea ceremony in a temple in Kyoto" → where "Kyoto"). `where` is '' when there is no separator. Both ≤ 80.
+ * parseScoutText(text) → { what, where, city, area } — the one grammar for the owner's words (TG-SCOUT.md §9; the core's
+ * `tgScoutParse` only words its acknowledgement). A leading "/scout" (or "/scout@bot") and trailing ?/./! are dropped.
+ * The separator is chosen in this order, as the core does:
+ *   1. the LAST " in "      "tea ceremony in a temple in Wrenmouth" → what "tea ceremony in a temple", city "Wrenmouth";
+ *                           "ramen near the station in Wrenmouth"   → what "ramen", area "the station", city "Wrenmouth"
+ *   2. the first " near "   "matcha near Old Harbour, Wrenmouth" → city = the last comma part ("Wrenmouth"), area = the rest ("Old Harbour");
+ *                           "matcha near Old Harbour" (no comma) → area "Old Harbour", city '' (the caller falls back to the trip)
+ *   3. the first "@"        "matcha @ Wrenmouth" → city "Wrenmouth"
+ *   4. the first ","        "matcha, Wrenmouth"  → city "Wrenmouth"
+ *   none                    "matcha" → where, city and area ''
+ * `where` is the place as written ("Old Harbour, Wrenmouth"; "the station, Wrenmouth" for the near…in form), kept for older callers.
+ * Every field ≤ 80 characters. The text is data: cut and cleaned, never interpreted.
  */
 export function parseScoutText(text) {
-  let s = clean(text).replace(/^\/scout(@[A-Za-z0-9_]+)?(\s+|$)/i, '').replace(/[?.!]+$/, '').trim();
-  const cuts = [];
+  const s = clean(text).replace(/^\/scout(@[A-Za-z0-9_]+)?(\s+|$)/i, '').replace(/[?.!]+$/, '').trim();
   const lower = s.toLowerCase();
+  let what = s, where = '', city = '', area = '', m;
   const lastIn = lower.lastIndexOf(' in ');
-  if (lastIn > 0) cuts.push([lastIn, 4]);
-  const near = lower.indexOf(' near ');
-  if (near > 0) cuts.push([near, 6]);
-  const at = s.indexOf('@');
-  if (at > 0) cuts.push([at, 1]);
-  const comma = s.indexOf(',');
-  if (comma > 0) cuts.push([comma, 1]);
-  if (!cuts.length) return { what: clip(s), where: '' };
-  cuts.sort((a, b) => a[0] - b[0]);
-  const [pos, len] = cuts[0];
-  const what = clean(s.slice(0, pos)), where = clean(s.slice(pos + len)).replace(/^[,@\s]+/, '');
-  return { what: clip(what), where: clip(where) };
+  const nearSplit = (place) => {
+    const parts = place.split(',').map((x) => clean(x)).filter(Boolean);
+    return parts.length >= 2 ? { area: parts.slice(0, -1).join(', '), city: parts[parts.length - 1] } : { area: parts.join(''), city: '' };
+  };
+  if (lastIn > 0) {
+    what = clean(s.slice(0, lastIn));
+    city = clean(s.slice(lastIn + 4)).replace(/^[,@\s]+/, '');
+    const near = /^(.+?)\s+near\s+(.+)$/i.exec(what);
+    if (near && city) { what = clean(near[1]); area = clean(near[2]); }
+    where = area ? `${area}, ${city}` : city;
+  } else if ((m = /^(.+?)\s+near\s+(.+)$/i.exec(s))) {
+    what = clean(m[1]); where = clean(m[2]);
+    ({ area, city } = nearSplit(where));
+  } else if ((m = /^(.+?)\s*@\s*(.+)$/.exec(s)) || (m = /^(.+?)\s*,\s*(.+)$/.exec(s))) {
+    what = clean(m[1]); where = clean(m[2]).replace(/^[,@\s]+/, ''); city = where;
+  }
+  return { what: clip(what), where: clip(where), city: clip(city), area: clip(area) };
 }
+
+const hasWordIn = (text, list) => {
+  const t = ' ' + String(text ?? '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ') + ' ';
+  return list.some((w) => t.includes(' ' + w + ' '));
+};
 
 /** slugOf(what) → a lower-case ASCII slug ≤ 40 chars ('' when nothing Latin survives, e.g. a CJK query). */
 export function slugOf(what, max = SLUG_MAX) {
@@ -64,10 +83,10 @@ export const FOOD_WORDS = Object.freeze(['matcha', 'coffee', 'espresso', 'tea', 
 /** Food words that read as a drink or a sweet: their extra search uses "cafe", the rest "restaurant". */
 export const CAFE_WORDS = Object.freeze(['matcha', 'coffee', 'espresso', 'tea', 'cafe', 'café', 'bakery', 'bread', 'pastry', 'pastries', 'cake', 'dessert', 'desserts', 'sweets', 'wagashi', 'mochi', 'ice cream', 'gelato', 'parfait', 'yuzu', 'chocolate', 'donut', 'doughnut', 'croissant', 'brunch', 'breakfast']);
 
-const hasWord = (text, list) => {
-  const t = ' ' + String(text ?? '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ') + ' ';
-  return list.some((w) => t.includes(' ' + w + ' '));
-};
+const hasWord = hasWordIn;
+
+/** isCafeTopic(what) → true when the query names a drink or a sweet (a CAFE_WORDS word, "ice cream" included). */
+export const isCafeTopic = (what) => hasWord(what, CAFE_WORDS);
 
 /** guessGroup(what) → 'food' | 'activities' from a small word list (activity words win; default 'activities'). */
 export function guessGroup(what) {

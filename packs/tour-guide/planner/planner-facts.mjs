@@ -9,16 +9,27 @@
  * When the place's own hours disagree with Google's (ownHoursConflict), the day plan carries an info warning.
  *   placeFacts(place) → normalised facts or null (malformed fields are ignored, never fatal)
  *   factsHours(hours, facts, date, snapshot, name) → { hours, conflict }   hours as hoursOn() returns them
+ *   placeCheckNote(place) → the stop's check line text: the place's opening_note, else its facts.irregular_note, else null
+ * Phase 13 (WP-13b, B7; Contract C13 `facts.irregular`, `facts.irregular_note`): a place whose own site says it opens on
+ * irregular or posted days (`facts.irregular`, or the Place's `opening_days: "irregular"`) keeps its own closed weekdays
+ * only when they leave a weekday open (research that wrote all seven closes nothing), turns a date Google calls closed or
+ * unknown into 'irregular' with Google's known windows (as hoursOn does), and never raises a closed-day conflict.
  */
 import { weekdayOf, hm } from './planner-time.mjs';
 import { knownWindows } from './planner-hours.mjs';
 import { factsConflict, CLOSE_TOLERANCE_MINUTES as FACTS_CLOSE_TOLERANCE } from '../facts/index.mjs';
 
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const NOTE_MAX = 160;
+const noteOf = (s) => (typeof s === 'string' && s.trim() ? s.trim().slice(0, NOTE_MAX) : null);
 const tmin = (s) => (TIME_RE.test(String(s || '')) ? +s.slice(0, 2) * 60 + +s.slice(3) : null);
 export const MENU_FITS = Object.freeze(['yes', 'partly', 'no', 'unknown']);
 
-/** placeFacts(place) → { last_entry, close, closed_weekdays, visit, booking, menu_fits, last_entry_text } or null. */
+/**
+ * placeFacts(place) → { last_entry, close, closed_weekdays, visit, booking, menu_fits, last_entry_text, menu_checked,
+ * irregular, irregular_note } or null. `irregular` is true for `facts.irregular` or the Place's `opening_days: "irregular"`.
+ */
 export function placeFacts(place) {
   const f = place && place.facts;
   if (!f || typeof f !== 'object') return null;
@@ -29,9 +40,25 @@ export function placeFacts(place) {
   const out = {
     last_entry: tmin(f.last_entry), close: tmin(f.close), closed_weekdays: cw, visit,
     booking: f.booking && typeof f.booking === 'object' ? f.booking : null, menu_fits: fits,
-    last_entry_text: TIME_RE.test(String(f.last_entry || '')) ? f.last_entry : null
+    last_entry_text: TIME_RE.test(String(f.last_entry || '')) ? f.last_entry : null,
+    menu_checked: f.menu && DATE_RE.test(String(f.menu.checked || '')) ? f.menu.checked : null,
+    irregular: f.irregular === true || place.opening_days === 'irregular',
+    irregular_note: noteOf(f.irregular_note)
   };
   return out;
+}
+
+/** placeCheckNote(place) → the stop's check line (≤ 160): the place's `opening_note`, then `facts.irregular_note`, else null. */
+export function placeCheckNote(place) {
+  if (!place || typeof place !== 'object') return null;
+  return noteOf(place.opening_note) || noteOf(place.facts && typeof place.facts === 'object' ? place.facts.irregular_note : null);
+}
+
+/** closedWeekdaysOf(facts) → the own closed weekdays the schedule honours: none when an irregular place lists all seven. */
+export function closedWeekdaysOf(facts) {
+  const cw = facts && facts.closed_weekdays;
+  if (!cw) return null;
+  return facts.irregular && cw.length >= 7 ? null : cw;
 }
 
 /** Own and Google closing times this close (minutes) are the same time: WP-11b's facts/facts-check.mjs value. */
@@ -55,6 +82,7 @@ export function ownHoursConflict(facts, hours, date, name = 'This place') {
   const clock = (m) => (m >= 1440 ? '24:00' : hm(m));
   const own = {
     ...(facts.closed_weekdays ? { closed_weekdays: facts.closed_weekdays } : {}),
+    ...(facts.irregular ? { irregular: true } : {}),
     ...(facts.close !== null ? { close: hm(facts.close) } : {}),
     ...(facts.last_entry !== null ? { last_entry: hm(facts.last_entry) } : {})
   };
@@ -75,13 +103,18 @@ export function factsHours(hours, facts, date, snapshot, name = 'This place') {
   const conflict = ownHoursConflict(facts, hours, date, name);
   const w = weekdayOf(date);
   let h = { status: hours.status, windows: hours.windows.map((x) => ({ ...x })) }, changed = false;
-  if (facts.closed_weekdays) {
-    if (facts.closed_weekdays.includes(w)) return { hours: { status: 'closed', windows: [], own: true }, conflict };
-    if (h.status === 'closed') {   // its own site lists the weekday as open: Google's known hours for another weekday
+  const closed = closedWeekdaysOf(facts);
+  if (closed) {
+    if (closed.includes(w)) return { hours: { status: 'closed', windows: [], own: true }, conflict };
+    if (h.status === 'closed' && !facts.irregular) {   // its own site lists the weekday as open: Google's known hours for another weekday
       const ws = knownWindows(snapshot);
       h = { status: ws.length ? 'open' : 'unknown', windows: ws };
       changed = true;
     }
+  }
+  if (facts.irregular && (h.status === 'closed' || h.status === 'unknown')) {   // B7: its days are posted, never "closed"
+    h = { status: 'irregular', windows: knownWindows(snapshot) };
+    changed = true;
   }
   const close = facts.close, last = facts.last_entry;
   if (close === null && last === null) return { hours: changed ? { ...h, own: true } : hours, conflict };
@@ -102,6 +135,9 @@ export function factsHours(hours, facts, date, snapshot, name = 'This place') {
     ws = ws.filter((x) => x.open <= last);
     const at = ws.find((x) => x.open <= last && last <= x.close) || ws[ws.length - 1];
     if (at) at.last = Math.min(last, at.close);
+  }
+  if (!ws.length && h.status === 'irregular') {   // its own close cut every known window: irregular, bounded by its own times
+    return { hours: { status: 'irregular', windows: [], bounds: [{ open: 0, close: close !== null ? close : 1440, ...(last !== null ? { last } : {}) }], own: true }, conflict };
   }
   const status = ws.length ? (h.status === 'always' ? 'open' : h.status) : 'closed';
   return { hours: { status, windows: ws, own: true }, conflict };

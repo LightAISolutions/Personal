@@ -355,17 +355,19 @@ function tgPlanResearchNew(state) {
   var end = a.dates ? a.dates.end : dates ? dates.end : trip.end || '';
   var lodg = conf.filter(function (f) { return f.kind === 'lodging'; }).map(function (f) { return f.text; });
   if (a.lodging) lodg.push(a.lodging);
-  var lodging = lodg.join('; ') || tgCmdLodgingText(trip) || '';
+  // WP-13c: dated stays win; the flow's own lodging words go with them but never overwrite them.
+  var stayed = typeof tgLgStays === 'function' && tgLgStays(trip).length > 0;
+  var lodging = stayed ? [tgCmdLodgingText(trip)].concat(lodg).join('; ') : lodg.join('; ') || tgCmdLodgingText(trip) || '';
   var booked = [];
   conf.forEach(function (f) { if (TG_PLAN_BOOKED_KINDS.indexOf(f.kind) >= 0) booked.push(TG_PLAN_FACT_LABEL[f.kind] + ': ' + f.text); });
   TG_PLAN_BOOKED_KINDS.forEach(function (k) { if (a[k]) booked.push(TG_PLAN_FACT_LABEL[k] + ': ' + a[k]); });
   var patch = { slug: state.trip };
   if (start) { patch.start = start; patch.end = end || start; }
-  if (lodg.length) patch.lodging = { text: truncate(lodg.join('; '), 500) };
+  if (lodg.length && !stayed) patch.lodging = { text: truncate(lodg.join('; '), 500), set_at: nowIso() };
   tgTripUpsert(patch);
   var payload = { trip: state.trip, scope: 'new', destination: state.dest };
   if (start) { payload.start_date = start; payload.end_date = end || start; }
-  if (lodging) payload.lodging = truncate(lodging, 500);
+  if (lodging) payload.lodging = truncate(lodging, stayed ? 3000 : 500);   // 12 stays of 200 characters fit (WP-13c)
   if (booked.length) payload.booked = booked.slice(0, 20).map(function (b) { return truncate(b, 300); });
   if (state.seeds_pending.length) payload.seeds = state.seeds_pending.slice();
   state.seeds_pending = [];

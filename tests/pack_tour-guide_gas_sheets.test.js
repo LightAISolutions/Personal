@@ -43,7 +43,7 @@ test('ensureSheets creates the six pack tabs with the contract columns', () => {
   assert.deepEqual(head('DayPlans'), ['slug', 'date', 'theme', 'stops_json', 'legs_json', 'warnings_json', 'part', 'rain_json', 'meta_json']);
   assert.deepEqual(head('Later'), ['slug', 'place_slug', 'name', 'reason']);
   assert.deepEqual(head('Places'), ['slug', 'name', 'destination', 'area', 'category', 'tags', 'status', 'last_trip', 'last_researched',
-    'last_verified', 'note_line', 'maps_url', 'history_json']);
+    'last_verified', 'note_line', 'maps_url', 'history_json', 'scouted']);   // scouted: WP-13c item 8 (C13), the new last column
   assert.deepEqual(head('Choices'), ['trip', 'run', 'kind', 'key', 'value', 'text', 'updated_at']);
   assert.deepEqual(head('Shortlist'), ['trip', 'run', 'round', 'group', 'n', 'slug', 'name', 'gem', 'payload_json']);
 });

@@ -43,7 +43,7 @@ test('ride and walk models: city, transfer, regional and shinkansen bands', asyn
   assert.equal(walkMinutes(0.8), Math.ceil((800 * RAIL.WALK_DETOUR) / RAIL.WALK_M_PER_MIN));
   assert.equal(rideMinutes(3), Math.ceil(RAIL.WAIT_MIN + 3 * RAIL.RIDE_DETOUR * RAIL.CITY_MIN_PER_KM));
   assert.equal(rideMinutes(8), Math.ceil(RAIL.WAIT_MIN + 8 * RAIL.RIDE_DETOUR * RAIL.CITY_MIN_PER_KM + RAIL.TRANSFER_MIN), 'a longer city ride allows one change');
-  assert.ok(rideMinutes(100) < 120 && rideMinutes(100) > 80, 'regional ~75 km/h');
+  assert.ok(rideMinutes(100) > 120 && rideMinutes(100) < 160, 'A9 (Phase 13): a conventional line, ~60 km/h on a longer track plus a longer wait (was "regional ~75 km/h", under 120)');
   assert.ok(rideMinutes(370) > 140 && rideMinutes(370) < 190, 'Tokyo–Kyoto by shinkansen lands near 2½–3 h');
 });
 

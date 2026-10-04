@@ -18,10 +18,17 @@
  * Phase 12 (WP-12a, Contract C12): every built day carries `leave_by` (its first leg's departure) and, when its lodgings
  * have an `area`, `areas` (planner-morning.mjs). replanDays(plan, [date], { ...input, from, visited, rain }) re-plans the
  * rest of one day from where you are (planner-restart.mjs); without `from` it re-plans exactly as before.
+ * Phase 13 (WP-13a): a hard end even an empty day cannot reach gives a day without stops and an `over_long_day`
+ * alert, never an error (planner-solve.mjs, planner-day.mjs); an inverted override is clamped with a warning
+ * (planner-input.mjs withOverride); a booking widens its day instead of going to Later, unless a hard end stops it, and a
+ * booking dated outside the trip says so (planner-assign.mjs); a hard-end day's last leg leaves as late as allowed
+ * (one more transit request, budgeted); evening extras start after the day's arrival (planner-evening.mjs); own facts
+ * older than FACTS_MAX_AGE_DAYS still apply, with a "facts are old" warning (oldFactsDate). Old fixtures plan as before
+ * except their hard-end days (A8).
  * `maps` is a Maps-kit client (createMapsClient); every unit it spends is counted by its ledger before sending.
  * Contract (entities, codes, warnings): helpers/packs/tour-guide/README.md. Design and limits: helpers/decisions/WP-3b.md.
  */
-import { prepare } from './planner-input.mjs';
+import { prepare, oldFactsDate, factsOldText } from './planner-input.mjs';
 import { assign } from './planner-assign.mjs';
 import { planDay } from './planner-day.mjs';
 import { budgetFor, PlanBudgetError, SKU } from './planner-budget.mjs';
@@ -45,9 +52,9 @@ import { coveredFor, isIndoor } from './planner-rain.mjs';
 
 export { PlanBudgetError, SKU, extraCallsFor } from './planner-budget.mjs';
 export { solveDay, WEIGHT, MAX_STOPS } from './planner-solve.mjs';
-export { hoursOn, earliestFit, unfitCode, knownWindows, irregularText, IRREGULAR_LINE_RE } from './planner-hours.mjs';
+export { hoursOn, earliestFit, unfitCode, knownWindows, irregularText, IRREGULAR_LINE_RE, HOLIDAY_CAVEAT_RE, lineWeekday, lineForWeekday, isIrregularLine, irregularWeekdays } from './planner-hours.mjs';
 export { assign, FAR_KM, CAP, dayCapacity } from './planner-assign.mjs';
-export { prepare, buildDays, lodgingForNight, modeFor, isWithheldDinner, PACE } from './planner-input.mjs';
+export { prepare, buildDays, lodgingForNight, modeFor, isWithheldDinner, PACE, withOverride, CLAMP_MINUTES, oldFactsDate, planToday } from './planner-input.mjs';
 export { localToIso, weekdayOf, dateRange, toMin, hm, dayDate } from './planner-time.mjs';
 export { DIDNT_FIT, NEXT_TIME, SAVED_BY_YOU } from './planner-later.mjs';
 export { withBusFallback, transitPrefs, railOnly, RAIL_MODES } from './planner-transit.mjs';
@@ -60,10 +67,10 @@ export { guardNote, guardNoteFields, noteConflict, clockOf, NOTE_RULES } from '.
 export { refineCategory, withRefinedCategory, minVisit, MIN_VISIT, COVERED_SIGHTS, MEAL_CATEGORIES, NEW_CATEGORIES } from './planner-category.mjs';
 export { rainSwaps, isIndoor, isCoveredSight, MAX_SWAPS, SWAP_KM, INDOOR_CATEGORIES, OUTDOOR_CATEGORIES } from './planner-rain.mjs';
 export { overrideFor, dayAnchors, bagsText, BAGS, BAG_KINDS, END_MARGIN, START_SLUG, END_SLUG, LODGING_SLUG } from './planner-anchors.mjs';
-export { placeFacts, factsHours, factsMinutes, ownHoursConflict, CLOSE_TOLERANCE_MINUTES, MENU_FITS } from './planner-facts.mjs';
+export { placeFacts, factsHours, factsMinutes, ownHoursConflict, CLOSE_TOLERANCE_MINUTES, MENU_FITS, placeCheckNote, closedWeekdaysOf } from './planner-facts.mjs';
 export { avoidsCrowds, crowdWindows, crowdSlotOf, CROWD_SLOT, CROWD_RULE_RE } from './planner-crowd.mjs';
 export { sunsetLocal, sunsetUtcMinutes, SUNSET_ZENITH } from './planner-sun.mjs';
-export { prepareDinners, addDinners, dinnerBooking, bookingFor, bookingRecordLine, DINNER } from './planner-dinner.mjs';
+export { prepareDinners, addDinners, dinnerBooking, bookingFor, bookingRecordLine, DINNER, dinnerMenu, MENU_RANK } from './planner-dinner.mjs';
 export { sunsetFor, eveningExtras, applyExtras, runsThatEvening, EXTRAS } from './planner-evening.mjs';
 export { schedWindows, legRecord, estimatedWarning, BACK_EARLY_NOTE, END_SPARE_NOTE } from './planner-day.mjs';
 export { checkDayChain } from './planner-chain.mjs';
@@ -105,9 +112,9 @@ function resolveChoices(places, raw, explicit) {
 /** Shared build: plan `dates` from `pool`, merge with `prior` (a previous Plan) when re-planning; `ch` = resolved choices. */
 async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [], sink = null, restart = null }) {
   const days = ctx.days.filter((d) => dates.includes(d.date)).map((d) => (restart && d.date === restart.date ? restart.day : d));   // C12: the rest of a re-planned day
-  const { byDate, later: unassigned } = assign({ days, cands: pool, rng: ctx.rng });
+  const { byDate, later: unassigned } = assign({ days, cands: pool, rng: ctx.rng, tripDates: ctx.days.map((d) => d.date) });   // Phase 13 (A13): a re-plan still knows the whole trip
   // Phase 11: the dinner pool (saved places that fit the diet), prepared before the budget so its legs are counted.
-  const dinnerPool = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch });
+  const dinnerPool = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch, today: ctx.today, diet: input.profile && input.profile.diet ? input.profile.diet : null });
   const budget = budgetFor({ days, byDate, ledger: input.maps.ledger || null, ...(dinnerPool.length ? { dinner: true } : {}) });
   if (!budget.within_ceiling && !input.allowOverBudget) throw new PlanBudgetError(budget);
   const built = [], evenings = [];
@@ -143,6 +150,14 @@ async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [],
     const { chosen, route_calls } = await addDinners({ built: evenings, pool: dinnerPool, used: new Set(keptDinners), exclude: stopIds, maps, trip: ctx.trip, pace: ctx.pace, ...(ctx.preferDinner && ctx.preferDinner.size ? { prefer: ctx.preferDinner } : {}), ...(rain ? { rain } : {}) });
     usage.route_calls += route_calls;
     for (const c of chosen) dinners.set(c.place.id, c.place);
+    // Phase 13 (A5): a dinner whose hours come from old own facts says so on its day.
+    for (const c of chosen) {
+      const raw = (input.dinners || []).find((p) => p && p.id === c.place.id) || {};
+      const rec = c.place.record || {};
+      const old = oldFactsDate(rec.facts || raw.facts, ctx.today, { visit: false });
+      const dp = built.find((d) => d.date === c.date);
+      if (old && dp && dp.warnings.length < 40) dp.warnings.push({ severity: 'info', code: 'other', text: factsOldText(c.place.name, old), place: c.place.id });
+    }
   }
   for (const c of withheld) if (!dinners.has(c.id) && !keptDinners.has(c.id)) dropped.push({ cand: c, code: 'day_full', reason: `kept for dinner, but no evening had room for ${c.name}`.slice(0, 300), from_date: null });
   const scheduled = new Set([...stopIds, ...keptDinners, ...dinners.keys()]);
@@ -288,7 +303,7 @@ export async function outlinePools(input) {
     capacity[day.date] = outlineCap(day, dayCapacity(day));
     days[day.date] = day;
   }
-  const dinnerPool = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch });
+  const dinnerPool = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch, today: ctx.today, diet: input.profile && input.profile.diet ? input.profile.diet : null });
   return { trip: ctx.trip, dates: ctx.days.map((d) => d.date), days, pools, anchors, capacity, unplaced: later, dinners: dinnerHomes(ctx, dinnerPool), dinner: dinnerPool.length > 0, withheld: ctx.withheld.map((c) => c.id), saved: ctx.saved.map((p) => p.id), today: ctx.today };
 }
 
@@ -325,7 +340,7 @@ export async function estimateBudget(input) {
   const ch = resolveChoices(input && input.places, input && input.choices, true);
   const ctx = await context(ch ? { ...input, places: ch.places } : input);
   const { byDate } = assign({ days: ctx.days, cands: ctx.cands, rng: ctx.rng });
-  const dinner = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch }).length > 0;
+  const dinner = prepareDinners(input.dinners, { snapshots: ctx.snapshots, dates: ctx.days.map((d) => d.date), places: ch ? ch.places : input.places, choices: ch, today: ctx.today, diet: input.profile && input.profile.diet ? input.profile.diet : null }).length > 0;
   return budgetFor({ days: ctx.days, byDate, ledger: input.maps.ledger || null, ...(dinner ? { dinner } : {}) });
 }
 

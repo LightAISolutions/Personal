@@ -4,7 +4,11 @@
  *   hoursOn(snapshot, date, { irregular? }) → { status: 'open' | 'always' | 'closed' | 'unknown' | 'irregular' | 'closed_business', windows: [{ open, close }] }
  * Phase 10 fix (e): a place whose opening days are irregular — its own record says so (`irregular: true`, from the Place's
  * `opening_days: "irregular"`), or Google's weekday text says the hours vary — is never 'closed' on a date: it is
- * 'irregular', with the hours Google knows for any weekday (IRREGULAR_WINDOWS_FROM) as its windows, or none.
+ * 'irregular', with the hours Google knows for any weekday (knownWindows) as its windows, or none.
+ * Phase 13 (WP-13b, A7): Google's wording counts for its own weekday only. A line saying the hours vary makes that weekday
+ * irregular; every other weekday keeps its own status, and a "Closed" line that carries only Google's holiday caveat
+ * ("Hours might differ") stays closed. Lines map to weekdays by the weekday name they start with, else by Google's order
+ * (Monday first) — lineForWeekday / irregularWeekdays.
  */
 import { weekdayOf } from './planner-time.mjs';
 
@@ -14,17 +18,54 @@ export const ALL_DAY = Object.freeze([{ open: 0, close: DAY_MIN }]);
 /** Google weekday text that means the opening days vary (not a fixed weekly pattern). */
 export const IRREGULAR_LINE_RE = /irregular|\bvar(?:y|ies|iable)\b|hours might differ|by appointment|seasonal|check (?:the )?(?:website|instagram|online)/i;
 
+/** Google's holiday caveat: on its own it never re-opens a weekday Google lists as closed. */
+export const HOLIDAY_CAVEAT_RE = /hours might differ/i;
+/** Weekday names a Google line may start with (0 = Sunday): English, and the Japanese forms (月曜日 …). */
+const WEEKDAY_LINE_RE = [
+  /^\s*sun(?:day)?\b|^\s*日曜/i, /^\s*mon(?:day)?\b|^\s*月曜/i, /^\s*tue(?:s|sday)?\b|^\s*火曜/i, /^\s*wed(?:nesday)?\b|^\s*水曜/i,
+  /^\s*thu(?:rs|rsday)?\b|^\s*木曜/i, /^\s*fri(?:day)?\b|^\s*金曜/i, /^\s*sat(?:urday)?\b|^\s*土曜/i
+];
+
 export function hoursOn(snapshot, date, opts = {}) {
   const base = weeklyHoursOn(snapshot, date);
   if (base.status === 'closed_business' || base.status === 'open' || base.status === 'always') return base;
-  if (!(opts.irregular || irregularText(snapshot))) return base;
+  if (!(opts.irregular || irregularWeekdays(snapshot).has(weekdayOf(date)))) return base;
   return { status: 'irregular', windows: knownWindows(snapshot) };
 }
 
-/** true when Google's weekday text says the hours vary. */
+/** true when Google's weekday text says the hours vary on any line (unchanged; hoursOn reads irregularWeekdays). */
 export function irregularText(snapshot) {
   const h = snapshot && snapshot.content && snapshot.content.hours;
   return !!(h && Array.isArray(h.weekday_descriptions) && h.weekday_descriptions.some((l) => IRREGULAR_LINE_RE.test(String(l))));
+}
+
+/** The weekday (0 = Sunday) a Google line starts with, or null. */
+export function lineWeekday(line) {
+  const i = WEEKDAY_LINE_RE.findIndex((re) => re.test(String(line)));
+  return i < 0 ? null : i;
+}
+/** lineForWeekday(lines, w) → Google's line for weekday `w` (0 = Sunday): the line named for it, else by position (Monday first). */
+export function lineForWeekday(lines, w) {
+  if (!Array.isArray(lines) || !lines.length) return '';
+  const named = lines.find((l) => lineWeekday(l) === w);
+  if (named !== undefined) return String(named);
+  const pos = lines[(w + 6) % 7];
+  return pos !== undefined && lineWeekday(pos) === null ? String(pos) : '';
+}
+/** isIrregularLine(line) → the line says that weekday's hours vary; a closed line with only the holiday caveat does not. */
+export function isIrregularLine(line) {
+  const l = String(line || '');
+  if (!IRREGULAR_LINE_RE.test(l)) return false;
+  if (!/closed/i.test(l)) return true;
+  return IRREGULAR_LINE_RE.test(l.replace(new RegExp(HOLIDAY_CAVEAT_RE.source, 'gi'), ''));
+}
+/** irregularWeekdays(snapshot) → Set of the weekdays (0 = Sunday) whose Google line says the hours vary. */
+export function irregularWeekdays(snapshot) {
+  const h = snapshot && snapshot.content && snapshot.content.hours;
+  const lines = h && Array.isArray(h.weekday_descriptions) ? h.weekday_descriptions : [];
+  const out = new Set();
+  for (let w = 0; w < 7; w++) if (isIrregularLine(lineForWeekday(lines, w))) out.add(w);
+  return out;
 }
 
 /** The opening windows of the first weekday (Monday first) Google has periods for — the hours "that are known". */
@@ -51,7 +92,7 @@ function weeklyHoursOn(snapshot, date) {
   const w = weekdayOf(date);
   if (!periods.length) {
     if (!lines.length) return { status: 'unknown', windows: [] };
-    const line = lines[(w + 6) % 7] || ''; // Google lists Monday first
+    const line = lineForWeekday(lines, w); // by its weekday name, else Google's order (Monday first)
     return /closed/i.test(line) ? { status: 'closed', windows: [] } : { status: 'unknown', windows: [] };
   }
   return periodWindows(periods, w);

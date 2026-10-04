@@ -56,17 +56,21 @@ test('out_of_season: single-bloom gardens drop in the wrong months on both hemis
     garden('NoLoc', 'Lavender Terrace', { location: null })
   ];
   const nov = g.screen(pool, OPTS);
-  assert.deepEqual(reasons(nov), { Rose: 'out_of_season:roses', Hydrangea: 'out_of_season:hydrangea', NoLoc: 'out_of_season:lavender' }, 'no location: the first anchor\'s latitude decides');
-  assert.deepEqual(keptIds(nov), ['Mixed', 'Moss', 'RoseCafe', 'SeedRose'], 'two blooms, no bloom, food and owner seeds stay');
+  assert.deepEqual(reasons(nov), { Hydrangea: 'out_of_season:hydrangea', NoLoc: 'out_of_season:lavender' }, 'no location: the first anchor\'s latitude decides (A6, Phase 13: roses stay in season through November)');
+  assert.deepEqual(keptIds(nov), ['Mixed', 'Moss', 'Rose', 'RoseCafe', 'SeedRose'], 'two blooms, no bloom, food and owner seeds stay (A6, Phase 13: the rose garden too in November)');
+  // A6 (Phase 13): December drops the rose garden, as November did before
+  const dec = g.screen(pool, { ...OPTS, trip_dates: ['2031-12-09', '2031-12-10'] });
+  assert.deepEqual(reasons(dec), { Rose: 'out_of_season:roses', Hydrangea: 'out_of_season:hydrangea', NoLoc: 'out_of_season:lavender' });
+  assert.deepEqual(keptIds(dec), ['Mixed', 'Moss', 'RoseCafe', 'SeedRose']);
   // June: the same gardens are in season
   assert.deepEqual(reasons(g.screen(pool, { ...OPTS, trip_dates: ['2031-06-10'] })), {});
   // the southern hemisphere's November is late spring: roses in, hydrangeas and lavender (Dec–Feb there) out
   const south = { lat: -35.3, lng: 149.1 };
   const southPool = pool.map((r) => ({ ...r, location: r.location === null ? null : kmNorth(1, south) }));
   assert.deepEqual(reasons(g.screen(southPool, { ...OPTS, anchors: [south] })), { Hydrangea: 'out_of_season:hydrangea', NoLoc: 'out_of_season:lavender' }, 'southern lavender flowers Dec–Feb');
-  // the trip's forecast wins: roses at their peak keep the rose garden in November
+  // the trip's forecast wins: roses at their peak keep the rose garden in December (A6, Phase 13: was November)
   const season = { checked: '2031-10-20', sources: [{ url: 'https://leaves.example.org/', title: 'Forecast', accessed: '2031-10-20' }], bloom: [{ kind: 'roses', status: 'peak', note: 'A late flush this year' }] };
-  assert.deepEqual(reasons(g.screen(pool, { ...OPTS, season })), { Hydrangea: 'out_of_season:hydrangea', NoLoc: 'out_of_season:lavender' });
+  assert.deepEqual(reasons(g.screen(pool, { ...OPTS, trip_dates: ['2031-12-09', '2031-12-10'], season })), { Hydrangea: 'out_of_season:hydrangea', NoLoc: 'out_of_season:lavender' });
   // no anchors and no location: nothing is known, nothing drops; the lat option is the fallback
   assert.ok(!reasons(g.screen([pool[6]], { ...OPTS, anchors: [] })).NoLoc);
   assert.equal(reasons(g.screen([pool[6]], { ...OPTS, anchors: [], lat: 40 })).NoLoc, 'out_of_season:lavender');

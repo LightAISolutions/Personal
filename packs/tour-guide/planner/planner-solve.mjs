@@ -6,7 +6,9 @@
  * outranks ten nice-to-haves), then the earliest return to the lodging. Lunch is mandatory on any day that runs past
  * the lunch window (a day back at the lodging by `lunch.close` eats there); a day that cannot fit lunch drops stops.
  * Stops end by `dayEnd`; only the return leg may spill, up to `maxSpill` minutes. Up to 12 stops (2^12·13·2 states).
- *   solveDay({ stops, travel, departAt, dayEnd, lunch, maxWait, maxSpill, buffer }) → { order, items, finish, hasLunch, value, states }
+ *   solveDay({ stops, travel, departAt, dayEnd, lunch, maxWait, maxSpill, buffer }) → { order, items, finish, hasLunch, value, states, overrun? }
+ *   (Phase 13, A1) when not even the empty day ends in time the result is empty with `overrun: true` (never a throw);
+ *   only a start that cannot reach its end at all (travel('S', 'E') = Infinity) still throws.
  *   stops[i] = { minutes, priority, windows: [{open, close}] ([] = no constraint), booking: minutes | null }
  *   (Phase 11) stops[i].waitAny = true lets a stop wait past `maxWait` like a booking: a crowd magnet's quiet slot.
  *   (WP-11e) stops[i].must = true (an outline anchor) is kept whenever it fits at all (MUST_WEIGHT).
@@ -78,7 +80,14 @@ export function solveDay({ stops, travel, departAt, dayEnd, lunch = null, maxWai
       }
     }
   }
-  if (!best) throw new Error('planner: no feasible day (even an empty day cannot return to the lodging in time)');
+  if (!best) {
+    // Phase 13 (A1): even the empty day misses its end (a departure too early to fit). The day comes back without stops
+    // (`overrun`); the caller times the start → end leg and raises the alert. Only a day whose start cannot reach its end
+    // at all still throws.
+    const back = travel('S', 'E');
+    if (!(back < Infinity)) throw new Error('planner: no feasible day (even an empty day cannot return to the lodging in time)');
+    return { order: [], items: [], finish: departAt + back, hasLunch: false, value: 0, states: N * W * 2, overrun: true };
+  }
   const items = [];
   for (let s = best.s; parent[s] !== -1; s = parent[s]) {
     const p = parent[s];

@@ -18,7 +18,7 @@ import { launch, pdfAvailable } from '../../../kits/brochure/lib/pdf.mjs';
 import { mapFigure } from '../../../kits/brochure/lib/mapframe.mjs';
 import { routeSketch } from '../../../kits/brochure/lib/sketch.mjs';
 import { openWindows } from '../gems/gems-hours.mjs';
-import { validatePayload, formatErrors, isDate, weekdayOf, fromMinutes } from '../schemas/index.mjs';
+import { validatePayload, formatErrors, isDate, weekdayOf, fromMinutes, addDays } from '../schemas/index.mjs';
 
 export { pdfAvailable };
 export const APP_PHOTO_MAX_PX = 360;
@@ -39,7 +39,7 @@ export const LABEL_TEXT = Object.freeze({
   queue: 'expect a queue', cash_only: 'cash only', chain: 'chain', new: 'new', seen_before: 'been before', far: 'far'
 });
 export const REASON_TEXT = Object.freeze({
-  off_topic: 'not really about it', diet: 'nothing vegetarian-safe', diet_unproven: 'no proof of a vegetarian option',
+  off_topic: 'not really about it', diet: 'nothing vegetarian-safe', diet_unproven: 'vegetarian not confirmed',
   low_rating: 'poorly rated', unproven: 'too few ratings and no local word', closed: 'closed', closed_on_trip: 'closed on every trip day',
   too_far: 'too far', duplicate: 'listed twice', other: 'other'
 });
@@ -63,16 +63,40 @@ export function reachText(r, from) {
 const dayLabel = (d) => `${DAY3[weekdayOf(d)]} ${Number(d.slice(8, 10))} ${MON3[Number(d.slice(5, 7)) - 1]}`;
 const hasHours = (h) => !!h && typeof h === 'object' && (Array.isArray(h.periods) || (h.by_date && typeof h.by_date === 'object'));
 
-/** tripHours(hours, dates) → [{ date, label, text, closed }] or null when hours are unknown; ≤ 7 dates. */
+/**
+ * tripHours(hours, dates) → [{ date, label, text, closed }] for every date given (valid dates only, sorted, each once;
+ * no cap since TG-PHASE-13), or null when hours are unknown or no date is given.
+ */
 export function tripHours(hours, dates = []) {
-  if (!hasHours(hours) || !dates.length) return null;
-  return dates.filter(isDate).slice(0, 7).map((d) => {
+  const ds = [...new Set((Array.isArray(dates) ? dates : []).filter(isDate))].sort();
+  if (!hasHours(hours) || !ds.length) return null;
+  return ds.map((d) => {
     const w = openWindows(hours, d);
     if (w === null) return { date: d, label: dayLabel(d), text: 'hours unknown', closed: false };
     if (!w.length) return { date: d, label: dayLabel(d), text: 'closed', closed: true };
     return { date: d, label: dayLabel(d), text: w.map((x) => `${fromMinutes(x.open)}–${x.close >= 1440 ? '24:00' : fromMinutes(x.close)}`).join(', '), closed: false };
   });
 }
+/**
+ * hoursRows(hours, dates) → tripHours grouped for the card: consecutive calendar dates with the same hours share one
+ * row, [{ from, to, days, label, text, closed }] ('Thu 19 – Sat 21 Nov', 'Sat 31 Oct – Mon 2 Nov', or one day's
+ * label); null when tripHours is null.
+ */
+export function hoursRows(hours, dates = []) {
+  const rows = tripHours(hours, dates);
+  if (!rows) return null;
+  const out = [];
+  for (const r of rows) {
+    const last = out[out.length - 1];
+    if (last && last.text === r.text && addDays(last.to, 1) === r.date) { last.to = r.date; last.days += 1; continue; }
+    out.push({ from: r.date, to: r.date, days: 1, text: r.text, closed: r.closed });
+  }
+  for (const g of out) g.label = g.from === g.to ? dayLabel(g.from) : rangeLabel(g.from, g.to);
+  return out;
+}
+const rangeLabel = (a, b) => (a.slice(0, 7) === b.slice(0, 7)
+  ? `${DAY3[weekdayOf(a)]} ${Number(a.slice(8, 10))} – ${dayLabel(b)}`
+  : `${dayLabel(a)} – ${dayLabel(b)}`);
 /** openSummary(hours, dates) → 'all 4' | '3 of 4' | 'none' | '—' for the compare table. */
 export function openSummary(hours, dates = []) {
   const rows = tripHours(hours, dates);
@@ -190,7 +214,7 @@ function cardHtml(it, { g, payload, trip_dates, app }) {
   const photo = photoOk(g.photo, app);
   const cr = photo ? credits(g.photo) : [];
   const facts = [ratingText(g), priceText(g.price_level), reachText(it.reach, payload.from)].filter(Boolean).map(esc).join(' · ');
-  const hrs = tripHours(g.hours, trip_dates);
+  const hrs = hoursRows(g.hours, trip_dates);
   const hoursHtml = hrs ? `<div class="hours">${hrs.map((h) => `${esc(h.label)} <span${h.closed ? ' class="closed"' : ''}>${esc(h.text)}</span>`).join(' · ')}</div>`
     : (g.hours && Array.isArray(g.hours.weekdayDescriptions) && g.hours.weekdayDescriptions.length ? `<div class="hours">${esc(clip(g.hours.weekdayDescriptions.join('; '), 320))}</div>` : '');
   const bars = [['on topic', it.parts.topic], ['quality', it.parts.quality], ['fit', it.parts.fit], ['reach', it.parts.reach]]
@@ -220,15 +244,18 @@ function compareHtml(payload, google, trip_dates) {
 }
 
 /**
- * renderScoutBoard({ payload, google, map?, anchor?, locations, trip_dates?, options }) → { html }
+ * renderScoutBoard({ payload, google, map?, anchor?, locations, trip_dates?, city_dates?, options }) → { html }
  *   payload    a valid `scout` payload (validated here; throws when invalid)
  *   google     { <place_id>: { rating?, count?, price_level?, hours?, website?, address?, photo?: { data_uri, width?, attributions } } }
  *   map        { data_uri, width, height, view }  one Static Maps image fitted with fitView(); without it, a drawn sketch
  *   anchor     { label, lat, lng }  where reach is measured from (drawn as the house)
  *   locations  { <place_id>: { lat, lng } }   trip_dates  ['YYYY-MM-DD', …]
+ *   city_dates the dates the owner is in the searched city (TG-PHASE-13): when given (an array), the cards' hours and
+ *              "open on your days" use these dates instead of the trip's; every date is shown, and consecutive
+ *              dates with the same hours share a row
  *   options    { built_on?, page = 'letter', embedFonts = true, app = false, owner_tz? }
  */
-export function renderScoutBoard({ payload, google = {}, map = null, anchor = null, locations = {}, trip_dates = [], options = {} } = {}) {
+export function renderScoutBoard({ payload, google = {}, map = null, anchor = null, locations = {}, trip_dates = [], city_dates, options = {} } = {}) {
   const r = validatePayload('scout', payload);
   if (!r.ok) throw Object.assign(new Error('scout: renderScoutBoard needs a valid scout payload:\n' + formatErrors(r.errors)), { errors: r.errors });
   const app = options.app === true;
@@ -236,12 +263,14 @@ export function renderScoutBoard({ payload, google = {}, map = null, anchor = nu
   const fontCss = app || options.embedFonts === false ? '' : fontFaceCss({ embed: true }).css;
   const G = google && typeof google === 'object' ? google : {};
   const L = locations && typeof locations === 'object' ? locations : {};
-  const dates = (Array.isArray(trip_dates) ? trip_dates : []).filter(isDate);
+  const cityDays = Array.isArray(city_dates);
+  const dates = [...new Set((cityDays ? city_dates : Array.isArray(trip_dates) ? trip_dates : []).filter(isDate))].sort();
   const n = payload.items.length;
   const title = `${payload.query.charAt(0).toUpperCase()}${payload.query.slice(1)} in ${payload.place_label}`;
   const sub = [`${n} pick${n === 1 ? '' : 's'}, ranked for you`, payload.from ? `reach from ${payload.from}` : '', options.built_on && isDate(options.built_on) ? `built ${options.built_on}` : ''].filter(Boolean).map(esc).join(' · ');
   const cards = payload.items.map((it) => cardHtml(it, { g: G[it.place_id] || {}, payload, trip_dates: dates, app })).join('\n');
-  const left = payload.left_out.length ? `<section><h2>Left out</h2><ul class="left">${payload.left_out.map((l) => `<li>${esc(l.name)} — ${esc(REASON_TEXT[l.reason] || l.reason)}</li>`).join('')}</ul></section>` : '';
+  const reasonText = (r) => (r === 'closed_on_trip' && cityDays ? 'closed on every day you are there' : REASON_TEXT[r] || r);
+  const left = payload.left_out.length ? `<section><h2>Left out</h2><ul class="left">${payload.left_out.map((l) => `<li>${esc(l.name)} — ${esc(reasonText(l.reason))}</li>`).join('')}</ul></section>` : '';
   const more = payload.more ? `<div class="more">${esc(payload.more)} more ranked pick${payload.more === 1 ? '' : 's'} not shown.</div>` : '';
   const logo = existsSync(LOGO_PATH) ? readFileSync(LOGO_PATH, 'utf8').replace(/<\?xml[^>]*>|<!--[\s\S]*?-->/g, '').replace(/<script[\s\S]*?<\/script>/gi, '').trim() : '';
   const photoCredits = payload.items.filter((it) => photoOk((G[it.place_id] || {}).photo, app)).map((it) => `<li value="${esc(it.n)}">${esc(it.name)}: ${credits(G[it.place_id].photo).join(', ') || 'Google user'}</li>`).join('');

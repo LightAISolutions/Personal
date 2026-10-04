@@ -29,7 +29,8 @@
           "last_verified": { "$ref": "#/$defs/date_or_null" },
           "note_line": { "type": "string", "maxLength": 160 },
           "maps_url": { "type": "string", "maxLength": 2000, "pattern": "^https://\\S+$" },
-          "history_summary": { "type": "string", "maxLength": 120 }
+          "history_summary": { "type": "string", "maxLength": 120 },
+          "scouted": { "const": true, "description": "C13: a candidate Scout found that the owner has not chosen yet (absent otherwise)." }
         }
       }
     }

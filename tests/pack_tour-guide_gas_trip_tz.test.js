@@ -93,6 +93,9 @@ test('trip zone bookkeeping: tgTripSetTz refuses bad zones, tgTripUpsert throws 
   assert.equal(ctx.tgTripSetTz(TRIP, AWAY), false, 'unchanged');
   assert.equal(ctx.tgTripInProgress(ctx.tgTripGet(TRIP)), true, 'already 3 Mar in Auckland');
   assert.equal(ctx.tgTripToday(TRIP), '2027-03-03');
+  // A10: the owner is taken to be there once the first day starts (09:00 by default), not at the trip's midnight.
+  assert.equal(ctx.tgOwnerTz(), HOME, 'A10: 08:00 on the first day is before it starts');
+  ctx.__TEST_NOW = '2027-03-02T20:00:00Z';   // 09:00 Wed 3 Mar in Auckland
   assert.equal(ctx.tgOwnerTz(), AWAY);
   ctx.tgTripUpsert({ slug: 'other-trip', destination: 'Elsewhere', start: '2027-03-02', end: '2027-03-02', status: 'planned' });
   assert.equal(ctx.tgTripCurrent().slug, 'other-trip', 'start order: the home-zone trip in progress today comes first');

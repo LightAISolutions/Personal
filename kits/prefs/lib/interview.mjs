@@ -12,7 +12,7 @@
  */
 import { oneLine } from './util.mjs';
 import { checkValue } from './vocab.mjs';
-import { activeEntries } from './confirmed-prefs.mjs';
+import { activeEntries, profileTitle } from './confirmed-prefs.mjs';
 
 export const MAX_ANSWERS = 200;
 export const SUMMARY_MAX = 1200;
@@ -115,12 +115,14 @@ export function answerEvidence(a, day) {
 }
 
 /**
- * profileSummary(ledger, vocab, max = 1200) -> plain text (no HTML, no Markdown) for /profile: one line per dimension
- * with confirmed entries, in vocabulary order. Cut at a line boundary with a "+N more" line when it would not fit.
+ * profileSummary(ledger, vocab, max = 1200, {subject}?) -> plain text (no HTML, no Markdown) for /profile: one line per
+ * dimension with confirmed entries, in vocabulary order. Cut at a line boundary with a "+N more" line when it would not
+ * fit. `subject` names the person the profile is about in the count line, as in renderProfile.
  */
-export function profileSummary(ledger, vocab, max = SUMMARY_MAX) {
+export function profileSummary(ledger, vocab, max = SUMMARY_MAX, { subject = null } = {}) {
   const active = activeEntries(ledger, vocab);
-  const head = active.length ? `${vocab.title}: ${active.length} confirmed preference${active.length === 1 ? '' : 's'}.` : `${vocab.title}: no confirmed preferences yet.`;
+  const title = profileTitle(vocab, subject);
+  const head = active.length ? `${title}: ${active.length} confirmed preference${active.length === 1 ? '' : 's'}.` : `${title}: no confirmed preferences yet.`;
   const lines = [];
   for (const dim of vocab.dims.values()) {
     const rows = active.filter((e) => e.dimension === dim.id).sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0));

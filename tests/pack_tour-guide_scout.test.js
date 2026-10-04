@@ -55,15 +55,17 @@ async function world(over = {}) {
 
 test('parseScoutText: in / comma / @ / near, a leading /scout, no place, and clipping', async () => {
   const { parseScoutText } = await SC();
-  assert.deepEqual(parseScoutText('matcha in Kyoto'), { what: 'matcha', where: 'Kyoto' });
-  assert.deepEqual(parseScoutText('matcha, Kyoto'), { what: 'matcha', where: 'Kyoto' });
-  assert.deepEqual(parseScoutText('matcha @ Kyoto'), { what: 'matcha', where: 'Kyoto' });
-  assert.deepEqual(parseScoutText('matcha@Wrenmouth'), { what: 'matcha', where: 'Wrenmouth' });
-  assert.deepEqual(parseScoutText('matcha near Gion, Kyoto'), { what: 'matcha', where: 'Gion, Kyoto' });
-  assert.deepEqual(parseScoutText('/scout   yuzu   sweets  IN  Wrenmouth?'), { what: 'yuzu sweets', where: 'Wrenmouth' });
-  assert.deepEqual(parseScoutText('/scout@TourGuideBot tea ceremony in a temple in Wrenmouth'), { what: 'tea ceremony in a temple', where: 'Wrenmouth' });
-  assert.deepEqual(parseScoutText('yuzu'), { what: 'yuzu', where: '' });
-  assert.deepEqual(parseScoutText(''), { what: '', where: '' });
+  // TG-PHASE-13 fault 11: the result gains `city` and `area` (the one grammar); the cases below keep their what/where.
+  const city = (what, c) => ({ what, where: c, city: c, area: '' });
+  assert.deepEqual(parseScoutText('matcha in Wrenmouth'), city('matcha', 'Wrenmouth'));
+  assert.deepEqual(parseScoutText('matcha, Wrenmouth'), city('matcha', 'Wrenmouth'));
+  assert.deepEqual(parseScoutText('matcha @ Wrenmouth'), city('matcha', 'Wrenmouth'));
+  assert.deepEqual(parseScoutText('matcha@Wrenmouth'), city('matcha', 'Wrenmouth'));
+  assert.deepEqual(parseScoutText('matcha near Old Harbour, Wrenmouth'), { what: 'matcha', where: 'Old Harbour, Wrenmouth', city: 'Wrenmouth', area: 'Old Harbour' });
+  assert.deepEqual(parseScoutText('/scout   yuzu   sweets  IN  Wrenmouth?'), city('yuzu sweets', 'Wrenmouth'));
+  assert.deepEqual(parseScoutText('/scout@TourGuideBot tea ceremony in a temple in Wrenmouth'), city('tea ceremony in a temple', 'Wrenmouth'));
+  assert.deepEqual(parseScoutText('yuzu'), { what: 'yuzu', where: '', city: '', area: '' });
+  assert.deepEqual(parseScoutText(''), { what: '', where: '', city: '', area: '' });
   const long = parseScoutText('x'.repeat(200) + ' in ' + 'y'.repeat(200));
   assert.equal(long.what.length, 80);
   assert.equal(long.where.length, 80);
@@ -347,14 +349,15 @@ test('scoutPlaceFields: a new candidate place, an existing place kept and tagged
   const { sc, payload } = await payloadOf();
   const s = await S();
   const opts = { query: 'matcha', trip: 'wrenmouth-june-2027', scout_id: payload.scout_id, on: '2027-06-01', destination: 'wrenmouth' };
-  const fresh = sc.scoutPlaceFields(payload.items[0], opts);
+  // TG-PHASE-13 B9: a new place takes the judgment's own name, never Google's (here the own name equals the fixture's).
+  const fresh = sc.scoutPlaceFields(payload.items[0], { ...opts, own_name: 'Wren Matcha House' });
   assert.equal(fresh.changed, true);
   assert.deepEqual(fresh.entry, { trip: 'wrenmouth-june-2027', on: '2027-06-01', event: 'scouted', note: 'matcha #1' });
   assert.deepEqual(fresh.place, { v: 1, id: 'wren-matcha-house', place_id: 'FixtureWrenMatchaHouse', name: 'Wren Matcha House', category: 'cafe', tags: ['scout', 'matcha'],
     status: 'candidate', activity: 'Matcha parfait with red bean', priority: 2, why_fit: payload.items[0].why_you, destination: 'wrenmouth', source_trip: 'wrenmouth-june-2027',
     gem: true, history: [fresh.entry] });
   assert.ok(s.validate(fresh.place, 'place').ok);
-  const saltFresh = sc.scoutPlaceFields(payload.items[2], { ...opts, trip: undefined });
+  const saltFresh = sc.scoutPlaceFields(payload.items[2], { ...opts, trip: undefined, own_name: 'Saltmarsh Cafe' });   // B9: an own name
   assert.equal(saltFresh.place.activity, 'matcha', 'no try line → the query');
   assert.equal(saltFresh.entry.trip, payload.scout_id, 'no trip → the scout id');
   assert.equal(saltFresh.place.source_trip, undefined);

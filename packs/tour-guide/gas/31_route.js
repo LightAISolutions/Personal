@@ -104,6 +104,8 @@ function tgRouteResolve(place, trip) {
   if (!trip) return p;
   if (/^(the )?(hotel|lodging|inn|airbnb|home)$/i.test(p)) {
     var lod = trip.lodging; if (typeof lod === 'string') { var j = safeJsonParse(lod); lod = j.ok ? j.value : null; }
+    var tonight = typeof tgLgStayOn === 'function' ? tgLgStayOn(trip, tgTripToday(trip)) || tgLgStays(trip)[0] : null;   // WP-13c
+    if (tonight) return String(tonight.text);
     if (lod && lod.text) return String(lod.text);
   }
   var dest = String(trip.destination || '');

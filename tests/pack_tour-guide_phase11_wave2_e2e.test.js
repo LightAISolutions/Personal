@@ -388,7 +388,8 @@ test('one brochure for the chosen mix: the chosen days, the moving day\'s start 
   assert.deepEqual([d5.start.name, d5.start.time, d5.start.note, d5.bags.kind, d5.legs[0].from], ['Quillbay Station', '12:30', 'Morning train from Fernmoor.', 'hotel', 'day-start']);
   // The last day has no stop, so it is a Free days line — with its bag step, its free time and where and when it ends.
   const [free] = m.practical.find((s) => s.title === 'Free days').items;
-  assert.deepEqual([free.label, free.text], ['2027-11-14', 'Carry your bags today · Check out by 10:00. Free time before lunch; time to spare near Quillbay Station before 15:30. Ends 15:30 at Quillbay Station.']);
+  // A8 (Phase 13): the leg to the end leaves as late as allowed, so the spare time is free time before it, at the lodging.
+  assert.deepEqual([free.label, free.text], ['2027-11-14', 'Carry your bags today · Check out by 10:00. Free time before lunch; free time near Quillbay Inn before you leave for Quillbay Station. Ends 15:30 at Quillbay Station.']);
   assert.match(free.url, /^https:\/\/www\.google\.com\/maps\/.*query_place_id=FixtureJyQuillbayStation/);
   // Later: the versions not chosen, then the owner's own lists.
   assert.deepEqual(m.later.map((l) => [l.name, l.items.map((i) => i.place)]), [

@@ -7,7 +7,7 @@
  *   DayPlans   tgDigestStore · tgDigestDays · tgDigestDay        (one row per day; a cell over 50 000 chars continues
  *                                                                  in `part` 1, 2, … rows of the same day)
  *   Later      tgLaterList · tgLaterAdd
- *   Places     tgPlacesUpsert · tgPlacesSearch · tgPlacesGet · tgPlacesCounts   (own data only — never a Google field)
+ *   Places     tgPlacesUpsert · tgPlacesSearch · tgPlacesGet · tgPlacesCounts · tgPlacesScouted   (own data only — never a Google field)
  *   Choices    tgChoiceSet · tgChoiceList · tgChoiceClear       (the tap store for flows: fact · shortlist · review)
  *   Settings   tgProfileSummaryGet · tgProfileSummaryStore
  *   Shortlist  tgShortlistStore · tgShortlistItems · tgShortlistRunKey · tgShortlistLatest
@@ -27,13 +27,15 @@ var TG_GOOGLE_FIELDS = ['hours', 'opening_hours', 'regular_opening_hours', 'curr
   'national_phone_number', 'types', 'primary_type', 'editorial_summary', 'photos'];
 var TG_PLACE_OWN = ['slug', 'name', 'area', 'category', 'tags', 'status', 'last_trip', 'last_researched', 'last_verified',
   'note_line', 'maps_url', 'history_summary'];
+/** Optional place fields (C13): accepted only in their one allowed form (scouted: true), else refused like any other key. */
+var TG_PLACE_OPT = ['scouted'];
 
 registerSheet(TG_SHEETS.TRIPS, ['slug', 'title', 'destination', 'start', 'end', 'status', 'build_id', 'verified_on', 'drive_plan',
   'drive_brochure_html', 'drive_brochure_pdf', 'updated_at', 'lodging', 'review_offered_at', 'tz', 'country_code']);
 registerSheet(TG_SHEETS.DAYS, ['slug', 'date', 'theme', 'stops_json', 'legs_json', 'warnings_json', 'part', 'rain_json', 'meta_json']);
 registerSheet(TG_SHEETS.LATER, ['slug', 'place_slug', 'name', 'reason']);
 registerSheet(TG_SHEETS.PLACES, ['slug', 'name', 'destination', 'area', 'category', 'tags', 'status', 'last_trip', 'last_researched',
-  'last_verified', 'note_line', 'maps_url', 'history_json']);
+  'last_verified', 'note_line', 'maps_url', 'history_json', 'scouted']);   // scouted: C13 (WP-13c), last so old tabs only grow
 registerSheet(TG_SHEETS.CHOICES, ['trip', 'run', 'kind', 'key', 'value', 'text', 'updated_at']);
 registerSheet(TG_SHEETS.SHORTLIST, ['trip', 'run', 'round', 'group', 'n', 'slug', 'name', 'gem', 'payload_json']);
 
@@ -172,9 +174,29 @@ function tgTripSetTz(slug, tz) {
  * The zone the owner is in now: a trip in progress that has its own zone (the pinned trip first), else the home zone.
  * Used for "your time" and the 09:00 booking reminder.
  */
+/**
+ * The instant the trip's first day starts where the trip is (WP-13c, A10): the first day's own start point, else its own
+ * hours, else the trip's hours, else 09:00. NaN without a start date.
+ */
+function tgTripFirstStartMs(t) {
+  if (!t || !t.start) return NaN;
+  var hm = '09:00', ok = function (x) { return typeof TG_HHMM_RE !== 'undefined' && TG_HHMM_RE.test(String(x || '')); };
+  var d = typeof tgTripDay === 'function' ? tgTripDay(t.slug, t.start) : null, h = typeof tgTripHours === 'function' ? tgTripHours(t.slug) : {};
+  if (d && d.start && ok(d.start.time)) hm = d.start.time;
+  else if (d && ok(d.day_start)) hm = d.day_start;
+  else if (ok(h.day_start)) hm = h.day_start;
+  return msAtLocal(tgTripTz(t), t.start, Number(hm.slice(0, 2)), Number(hm.slice(3)));
+}
+/** True from the start of the trip's first day (tgTripFirstStartMs) through the end of its last day, where the trip is. */
+function tgTripOwnerThere(t) {
+  if (!t || !t.start) return false;
+  var start = tgTripFirstStartMs(t);
+  return isFinite(start) && nowMs() >= start && (t.end || t.start) >= tgTripToday(t);
+}
+/** The owner's zone: that of a trip under way (pinned first) from its first day's start (A10), else home. */
 function tgOwnerTz() {
   var pinned = settingGet(TG_SETTINGS.CURRENT_TRIP, '');
-  var live = tgTripList().filter(function (t) { return t.status !== 'done' && t.tz && isValidTz(t.tz) && tgTripInProgress(t); });
+  var live = tgTripList().filter(function (t) { return t.status !== 'done' && t.tz && isValidTz(t.tz) && tgTripOwnerThere(t); });
   live.sort(function (a, b) { return (b.slug === pinned) - (a.slug === pinned); });
   return live.length ? live[0].tz : getTz();
 }
@@ -316,14 +338,18 @@ function tgShPlaceOut(r) {
   if (!r) return null;
   var tags = tgShJson(r.tags, []);
   var hist = tgShJson(r.history_json, {});
-  return {
+  var out = {
     slug: tgShStr(r.slug), name: tgShStr(r.name), destination: tgShStr(r.destination), area: tgShStr(r.area),
     category: tgShStr(r.category), tags: Array.isArray(tags) ? tags.map(String) : [], status: tgShStr(r.status),
     last_trip: tgShStr(r.last_trip), last_researched: tgShDate(r.last_researched), last_verified: tgShDate(r.last_verified),
     note_line: tgShStr(r.note_line), maps_url: tgShStr(r.maps_url),
     history_summary: isPlainObject(hist) && hist.summary !== undefined ? String(hist.summary) : ''
   };
+  if (tgShScouted(r.scouted)) out.scouted = true;   // C13: only when marked, so an old row reads exactly as before
+  return out;
 }
+/** A Places cell marked scouted: true, 'true' or 'TRUE' (Sheets may turn the text into a boolean); anything else is not. */
+function tgShScouted(v) { return v === true || String(v === undefined || v === null ? '' : v).toLowerCase() === 'true'; }
 /** Google fields present on an object (top level), for refusal. */
 function tgGoogleFieldsIn(o) {
   if (!isPlainObject(o)) return [];
@@ -340,19 +366,23 @@ function tgPlacesUpsert(digest) {
   if (!isPlainObject(digest) || !Array.isArray(digest.places)) throw new Error('tgPlacesUpsert: { destination, places[] } required');
   var dest = tgShSlug(digest.destination, 'destination');
   var res = { destination: dest, added: 0, changed: 0, verified: 0, same: 0, refused: [], places: [] };
+  _tgEnsureCols(TG_SHEETS.PLACES, ['scouted']);   // a tab made before C13 gains the column (old rows read as not scouted)
   var existing = {};
   storeAll(TG_SHEETS.PLACES).forEach(function (r) { existing[tgShStr(r.slug)] = r; });
   digest.places.forEach(function (pl) {
     if (!isPlainObject(pl)) return;
     var slug = tgShSlug(pl.slug, 'place slug');
-    Object.keys(pl).forEach(function (k) { if (TG_PLACE_OWN.indexOf(k) < 0) res.refused.push({ slug: slug, field: k }); });
+    Object.keys(pl).forEach(function (k) {
+      if (TG_PLACE_OWN.indexOf(k) < 0 && !(k === 'scouted' && pl.scouted === true)) res.refused.push({ slug: slug, field: k });
+    });
     var tags = Array.isArray(pl.tags) ? pl.tags.map(function (t) { return truncate(tgShStr(t), 40); }).slice(0, 20) : [];
     var row = {
       slug: slug, name: truncate(tgShStr(pl.name), 120), destination: dest, area: truncate(tgShStr(pl.area), 120),
       category: tgShStr(pl.category), tags: toJson(tags), status: tgShStr(pl.status), last_trip: tgShStr(pl.last_trip),
       last_researched: tgShStr(pl.last_researched), last_verified: tgShStr(pl.last_verified),
       note_line: truncate(tgShStr(pl.note_line), 160), maps_url: tgShStr(pl.maps_url),
-      history_json: toJson({ summary: truncate(tgShStr(pl.history_summary), 120) })
+      history_json: toJson({ summary: truncate(tgShStr(pl.history_summary), 120) }),
+      scouted: pl.scouted === true ? 'true' : ''   // a place the digest no longer marks leaves the scouted group
     };
     var old = existing[slug], kind, changedFields = [];
     var stored;
@@ -360,7 +390,7 @@ function tgPlacesUpsert(digest) {
     else {
       var before = tgShPlaceOut(old), after = tgShPlaceOut(row);
       TG_PLACE_CONTENT.forEach(function (f) { if (toJson(before[f]) !== toJson(after[f])) changedFields.push(f); });
-      var datesMoved = ['last_researched', 'last_verified', 'history_summary'].some(function (f) { return before[f] !== after[f]; });
+      var datesMoved = ['last_researched', 'last_verified', 'history_summary', 'scouted'].some(function (f) { return before[f] !== after[f]; });
       kind = changedFields.length ? 'changed' : datesMoved ? 'verified' : 'same';
       res[kind]++;
       stored = kind === 'same' ? old : storeUpdate(TG_SHEETS.PLACES, old._row, row);
@@ -399,6 +429,14 @@ function tgPlacesSearch(query, opts) {
   });
   hits.sort(function (a, b) { return a.d - b.d || a.rank - b.rank || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0); });
   return hits.slice(0, limit).map(function (h) { return h.p; });
+}
+/** Places marked scouted (C13): candidates Scout found that the owner has not chosen yet, by destination then name. */
+function tgPlacesScouted() {
+  return storeAll(TG_SHEETS.PLACES).filter(function (r) { return tgShScouted(r.scouted); }).map(tgShPlaceOut).sort(function (a, b) {
+    if (a.destination !== b.destination) return a.destination < b.destination ? -1 : 1;
+    var x = tgShFold(a.name), y = tgShFold(b.name);
+    return x < y ? -1 : x > y ? 1 : 0;
+  });
 }
 /** { <destination slug>: number of places } */
 function tgPlacesCounts() {

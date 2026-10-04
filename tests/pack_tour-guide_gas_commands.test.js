@@ -357,7 +357,8 @@ test('requests: /replan, /notes, /brochure (resend or build), /lodging, pl:br an
   assert.match(last(state), /Where are you staying\?/);
   say(ctx, state, '/lodging Old Mill <Hostel>, 3 nights');
   assert.match(last(state), /🏨 Saved for Port Sorrel: Old Mill &lt;Hostel&gt;, 3 nights/);
-  assert.deepEqual(J(ctx.tgTripGet(TRIP).lodging), { text: 'Old Mill <Hostel>, 3 nights', nights: 3 });
+  // B4 (WP-13c): the undated form also records set_at, for C13's stale rule.
+  assert.deepEqual(J(ctx.tgTripGet(TRIP).lodging), { text: 'Old Mill <Hostel>, 3 nights', nights: 3, set_at: ctx.nowIso() });
   say(ctx, state, '/lodging');
   assert.match(last(state), /Staying: Old Mill &lt;Hostel&gt;, 3 nights/);
   say(ctx, state, '/trip');

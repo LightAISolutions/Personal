@@ -473,7 +473,8 @@ test('/lodging mid-trip: an offer to re-plan the days left; the tap opens one re
     '🔁 The plan still starts and ends those days at the old lodging: re-plan 2 days from Tue 9 Nov?');
   assert.deepEqual(m.reply_markup.inline_keyboard.map((row) => row.map((b) => [b.text, b.callback_data])), [
     [['🔁 Re-plan 2 days from Tue 9 Nov', 'lg:' + tk + ':20271109']], [['Keep the plan', 'lg:' + tk + ':k']]]);
-  assert.deepEqual(J(ctx.tgTripGet(TRIP).lodging), { text: 'Tarnwick Lamp Lodge, 2 nights', nights: 2 }, 'saved as before');
+  // B4 (WP-13c): the undated form also records set_at, for C13's stale rule.
+  assert.deepEqual(J(ctx.tgTripGet(TRIP).lodging), { text: 'Tarnwick Lamp Lodge, 2 nights', nights: 2, set_at: ctx.__TEST_NOW }, 'saved as before');
   assert.equal(W.reqOf(state, 'replan').length, 0, 'nothing is sent before the tap');
   W.tap(ctx, state, 'lg:' + tk + ':20271109', { messageId: 700 });
   const reqs = W.reqOf(state, 'replan');

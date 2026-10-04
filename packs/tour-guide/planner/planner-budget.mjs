@@ -11,6 +11,7 @@
  * stop's lodging) and adds one route for the bag leg (`hotel`: start → the night's lodging; `locker`: start → the end
  * when they differ) with its honest-leg extras. With `dinner: true` (a dinner pool was given) every day that can have a
  * dinner (no `end` override) adds the two dinner legs — `dinner_calls` 2 plus their own extras (extraCallsFor(mode, 2)).
+ * Phase 13 (A8): a TRANSIT day with an `end` override re-times its last leg at its later departure — `late_leg_calls` 1.
  */
 import { estimateUsd } from '../../../kits/maps/index.mjs';
 import { pointKey, LEG_EXTRA } from './planner-legs.mjs';
@@ -47,7 +48,8 @@ export function budgetFor({ days, byDate, ledger = null, dinner = false }) {
     const bag = bagLegs(day);
     const d = { matrix_elements: points > 1 ? points * points : 0, route_calls: stops.length + 1 + bag, extra_calls: stops.length || bag ? extraCallsFor(day.mode, stops.length + 1 + bag) : 0, pro_calls: day.mode !== 'TRANSIT' && stops.length >= 2 ? 1 : 0 };
     if (dinner && !day.end) { d.dinner_calls = 2; d.extra_calls += extraCallsFor(day.mode, 2); }
-    skus[SKU.matrix] += d.matrix_elements; skus[SKU.routes] += d.route_calls + (d.dinner_calls || 0) + d.extra_calls; skus[SKU.pro] += d.pro_calls;
+    if (day.end && day.mode === 'TRANSIT') d.late_leg_calls = 1;   // Phase 13 (A8): the leg to the end, asked again at its later departure
+    skus[SKU.matrix] += d.matrix_elements; skus[SKU.routes] += d.route_calls + (d.dinner_calls || 0) + (d.late_leg_calls || 0) + d.extra_calls; skus[SKU.pro] += d.pro_calls;
     per_day[day.date] = d;
   }
   const used = {};

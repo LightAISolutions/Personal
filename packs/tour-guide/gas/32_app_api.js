@@ -248,9 +248,11 @@ function tgAppTrip(args) {
   return t;
 }
 function tgAppPlaceOut(p) {
-  return { slug: p.slug, name: p.name, destination: p.destination, area: p.area, category: p.category, tags: p.tags.slice(),
+  var out = { slug: p.slug, name: p.name, destination: p.destination, area: p.area, category: p.category, tags: p.tags.slice(),
     status: p.status, last_trip: p.last_trip, last_researched: p.last_researched, last_verified: p.last_verified,
     note_line: p.note_line, maps_url: tgAppMaps(p.maps_url), history_summary: p.history_summary };
+  if (p.scouted === true) out.scouted = true;   // C13: the Places screen's scouted group; absent on every other place
+  return out;
 }
 
 /* ==================== operations: home, shortlist ==================== */
