@@ -164,9 +164,10 @@ test('(e) a place whose own record says its opening days are irregular is kept w
 
 test('(e) Google text that says the hours vary counts as irregular; unknown hours get check_on_day too', async () => {
   const { hoursOn, CHECK_IRREGULAR_TEXT, CHECK_UNKNOWN_TEXT } = { ...(await planner()), ...(await import('../packs/tour-guide/planner/planner-day.mjs')) };
-  const vary = (s) => (s.place_id === 'FixtureMiniCafe09' ? { ...s, content: { ...s.content, hours: { periods: [], weekday_descriptions: ['Monday: Closed', 'Tuesday: Closed', 'Wednesday: Closed', 'Thursday: Closed', 'Friday: Closed', 'Saturday: Hours vary', 'Sunday: Closed'] } } } : s);
+  const vary = (s) => (s.place_id === 'FixtureMiniCafe09' ? { ...s, content: { ...s.content, hours: { periods: [], weekday_descriptions: ['Monday: Hours vary', 'Tuesday: Closed', 'Wednesday: Closed', 'Thursday: Closed', 'Friday: Closed', 'Saturday: Hours vary', 'Sunday: Closed'] } } } : s);   // A7 (Phase 13): the varying line is Monday's own; a Saturday line no longer re-opens Monday
   const snap = vary(W.world().snapshots.find((x) => x.place_id === 'FixtureMiniCafe09'));
   assert.equal(hoursOn(snap, '2027-06-07').status, 'irregular');
+  assert.equal(hoursOn(snap, '2027-06-08').status, 'closed', 'A7 (Phase 13): Tuesday\'s "Closed" line stays closed');
   const plan = await oneDay({ keep: ['saturday-cafe', 'hill-viewpoint'], snap: vary });
   const by = Object.fromEntries(plan.days[0].stops.map((x) => [x.place, x]));
   assert.equal(by['saturday-cafe'].check_on_day, CHECK_IRREGULAR_TEXT);

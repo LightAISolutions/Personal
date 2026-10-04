@@ -102,6 +102,7 @@ export function checkPlace(p) {
   });
   if (p.facts) checkFacts(p.facts, '/facts', errs);
   if (p.facts && p.facts.access) checkAccess(p.facts.access, '/facts/access', errs);   // C12
+  if (p.facts && typeof p.facts.irregular_note === 'string' && !p.facts.irregular_note.trim()) e('/facts/irregular_note', 'must have visible text');   // C13
   return errs;
 }
 

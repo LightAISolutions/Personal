@@ -100,7 +100,7 @@ test('eventsOn and bloomOn: the day\'s events by start time (optionally by kind)
 
 test('outOfSeason: single-bloom gardens by hemisphere, the trip\'s forecast wins, unknowns keep the place', async () => {
   const s = await S();
-  const nov = ['2031-11-18', '2031-11-24'];
+  const nov = ['2031-11-18', '2031-11-24'], dec = ['2031-12-08', '2031-12-12'];   // A6 (Phase 13): roses run to November, so December shows "out"
   const north = { lat: 40.1, lng: 10.2 }, south = { lat: -35.2, lng: 149.1 }, tropics = { lat: 10, lng: 100 };
   const rose = (location) => ({ name: 'Saltmere Rose Garden', category: 'garden', location });
   const hyd = (location) => ({ name: 'Ajisai Hollow', types: ['park'], location });
@@ -109,8 +109,9 @@ test('outOfSeason: single-bloom gardens by hemisphere, the trip\'s forecast wins
   assert.equal(s.bloomKindOf({ name: 'Plum and Cherry Garden', category: 'garden' }), null, 'two blooms: not mainly one');
   assert.equal(s.bloomKindOf({ name: 'Rose Street Bakery', category: 'cafe' }), null, 'not a garden or park');
   assert.equal(s.bloomKindOf({ name: 'Upper Terrace', category: 'garden', tags: ['lavender'] }), 'lavender', 'tags count');
-  // northern November: roses and hydrangeas are out; the same gardens in the southern spring are in
-  assert.equal(s.outOfSeason(rose(north), { dates: nov }), true);
+  // northern November: hydrangeas are out, roses still in (A6, Phase 13); northern December: roses out too
+  assert.equal(s.outOfSeason(rose(north), { dates: nov }), false, 'A6 (Phase 13): the autumn flush runs into November');
+  assert.equal(s.outOfSeason(rose(north), { dates: dec }), true, 'A6 (Phase 13): was November');
   assert.equal(s.outOfSeason(hyd(north), { dates: nov }), true);
   assert.equal(s.outOfSeason(rose(south), { dates: nov }), false, 'November is late spring in the south');
   assert.equal(s.outOfSeason(hyd(south), { dates: nov }), true, 'southern hydrangeas flower Dec–Feb');
@@ -118,14 +119,14 @@ test('outOfSeason: single-bloom gardens by hemisphere, the trip\'s forecast wins
   assert.equal(s.outOfSeason(rose(north), { dates: ['2031-06-04'] }), false);
   assert.equal(s.outOfSeason(rose(north), { dates: ['2031-04-28', '2031-05-02'] }), false, 'one date in season is enough');
   // the forecast speaks for its bloom: peak keeps, past drops even in the usual months
-  assert.equal(s.outOfSeason(rose(north), { dates: nov, season: { bloom: [{ kind: 'roses', status: 'peak', note: 'A late flush' }] } }), false);
-  assert.equal(s.outOfSeason(rose(north), { dates: nov, season: { bloom: [{ kind: 'roses', from: '2031-11-20', to: '2031-11-30', note: 'x' }] } }), false, 'a window over a trip date keeps');
+  assert.equal(s.outOfSeason(rose(north), { dates: dec, season: { bloom: [{ kind: 'roses', status: 'peak', note: 'A late flush' }] } }), false, 'A6 (Phase 13): December, was November');
+  assert.equal(s.outOfSeason(rose(north), { dates: dec, season: { bloom: [{ kind: 'roses', from: '2031-12-10', to: '2031-12-20', note: 'x' }] } }), false, 'a window over a trip date keeps (A6, Phase 13: December, was November)');
   assert.equal(s.outOfSeason(rose(north), { dates: ['2031-06-04'], season: { bloom: [{ kind: 'roses', status: 'past', note: 'Over early' }] } }), true);
   assert.equal(s.outOfSeason(rose(north), { dates: nov, season: SEASON }), true, 'the fixture says roses are past');
-  assert.equal(s.outOfSeason(rose(north), { dates: nov, season: { bloom: [{ kind: 'cherry', status: 'peak', note: 'x' }] } }), true, 'another bloom says nothing about roses');
+  assert.equal(s.outOfSeason(rose(north), { dates: dec, season: { bloom: [{ kind: 'cherry', status: 'peak', note: 'x' }] } }), true, 'another bloom says nothing about roses (A6, Phase 13: December, was November)');
   // unknowns never drop: no latitude, the tropics; the lat option is the fallback
   assert.equal(s.outOfSeason(rose(null), { dates: nov }), false);
-  assert.equal(s.outOfSeason(rose(null), { dates: nov, lat: 40 }), true);
+  assert.equal(s.outOfSeason(rose(null), { dates: dec, lat: 40 }), true, 'A6 (Phase 13): December, was November');
   assert.equal(s.outOfSeason(rose(tropics), { dates: nov }), false);
   assert.equal(s.outOfSeason({ name: 'Harbour Park', category: 'park', location: north }, { dates: nov }), false);
   assert.deepEqual(s.usualMonths('lotus', -30), [12, 1, 2]);

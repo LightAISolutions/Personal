@@ -115,6 +115,8 @@
         },
         "payment": { "type": "string", "minLength": 1, "maxLength": 80 },
         "gate_name": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "irregular": { "const": true, "description": "C13: the place's own site says it opens on irregular or posted days." },
+        "irregular_note": { "type": "string", "minLength": 1, "maxLength": 160, "description": "C13: its own words about those days, shown as the stop's check line." },
         "local_name": { "type": "string", "minLength": 1, "maxLength": 80, "description": "C12: the place's name in the local script, as its own site writes it." },
         "address": { "type": "string", "minLength": 1, "maxLength": 160, "description": "C12: the address as the place publishes it (the local script allowed)." },
         "access": { "$ref": "#/$defs/access", "description": "C12: how the place's own site says to reach it by train." },

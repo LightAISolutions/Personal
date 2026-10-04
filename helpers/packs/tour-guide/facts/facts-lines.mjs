@@ -51,8 +51,13 @@ function factsLineOf(f, stale) {
   if (f.last_entry) c.push(`Last entry ${f.last_entry}${f.last_entry_note ? ` (${f.last_entry_note})` : ''}`);
   if (f.close) c.push(f.last_entry ? `closes ${f.close}` : `Closes ${f.close}`);
   if (f.visit_minutes) c.push(visitRange(f.visit_minutes));
-  if (f.closed_weekdays) c.push(closedDays(f.closed_weekdays));
+  if (f.closed_weekdays && !(f.irregular === true && f.closed_weekdays.length >= 7)) c.push(closedDays(f.closed_weekdays));
   if (f.gate_name) c.push(`enter at ${f.gate_name}`);
+  // C13 (B7): only a place whose own site says its days vary gets this clause, so an old place's line is unchanged
+  if (f.irregular === true) {
+    if (c.length) c[0] = c[0][0].toLowerCase() + c[0].slice(1);
+    c.unshift(typeof f.irregular_note === 'string' && f.irregular_note.trim() ? `Opening days vary: ${f.irregular_note.trim()}` : 'Opening days vary');
+  }
   if (!c.length) return '';
   const src = stale ? `official site, checked ${monthYear(f.checked)}` : 'official site';
   c[0] = c[0][0].toUpperCase() + c[0].slice(1);
@@ -84,13 +89,14 @@ function priceLineOf(f, diet) {
 }
 
 /**
- * factsLines(facts, { now, diet }) — `now` (a Date, timestamp or YYYY-MM-DD) marks stale facts with their check month;
+ * factsLines(facts, { now, diet, timeZone? }) — `now` (a Date, timestamp or YYYY-MM-DD; its day in `timeZone` when given,
+ * Phase 13 A15) marks stale facts with their check month;
  * `diet` (a string or a list, e.g. 'vegetarian') adds the menu's fit to the price line. menu_checked is the menu check date.
  */
-export function factsLines(facts, { now, diet } = {}) {
+export function factsLines(facts, { now, diet, timeZone } = {}) {
   const out = {};
   if (!facts || typeof facts !== 'object') return out;
-  const stale = now != null ? factsStale(facts, now).facts : false;
+  const stale = now != null ? factsStale(facts, now, timeZone).facts : false;
   const fl = factsLineOf(facts, stale), bl = bookingLineOf(facts.booking), pl = priceLineOf(facts, diet);
   if (fl) out.facts_line = fl;
   if (bl) out.booking_line = bl;
@@ -100,13 +106,13 @@ export function factsLines(facts, { now, diet } = {}) {
 }
 
 /** menuLine(facts, { now, diet }) → 'Menu checked 2 Apr 2027: partly fits vegetarian — ask for the set without fish stock' (stale: '(may have changed)'). */
-export function menuLine(facts, { now, diet } = {}) {
+export function menuLine(facts, { now, diet, timeZone } = {}) {
   const m = facts && facts.menu;
   if (!m) return '';
   const d = dietWords(diet);
   const fit = { yes: d ? `fits ${d}` : 'fits the diet', partly: d ? `partly fits ${d}` : 'partly fits the diet', no: d ? `does not fit ${d}` : 'does not fit the diet', unknown: 'fit not known' }[m.fits];
   const when = `${+m.checked.slice(8, 10)} ${monthYear(m.checked)}`;
-  const stale = now != null && factsStale(facts, now).menu ? ' (may have changed)' : '';
+  const stale = now != null && factsStale(facts, now, timeZone).menu ? ' (may have changed)' : '';
   return fitLine([`Menu checked ${when}${stale}: ${fit}`, m.note || ''], ' — ');
 }
 

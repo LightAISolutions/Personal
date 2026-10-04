@@ -6,6 +6,8 @@
  *   outOfSeason(place, { season, date | dates, lat }) → true when that bloom is out on every date given
  * Usual bloom months (BLOOM_MONTHS_NORTH, shifted six months south of the equator) are broad on purpose: a garden is only
  * dropped when it is clearly out of season. The trip's own forecast (`season.bloom`) wins over the usual months.
+ * Phase 13 (A6): roses run to November, and a cherry place that names an autumn-flowering cherry is in season from
+ * October to December as well as in spring (autumnCherry).
  * Unknowns are never the bad case: no latitude, a tropical latitude, or a name that names two blooms keeps the place.
  */
 import { isDate } from '../schemas/tour-guide-dates.mjs';
@@ -16,11 +18,17 @@ export const BLOOM_MONTHS_NORTH = Object.freeze({
   cherry: Object.freeze([3, 4, 5]),
   wisteria: Object.freeze([4, 5]),
   iris: Object.freeze([5, 6]),
-  roses: Object.freeze([5, 6, 7, 8, 9, 10]),
+  roses: Object.freeze([5, 6, 7, 8, 9, 10, 11]),   // Phase 13 (A6): the autumn flush runs into November
   hydrangea: Object.freeze([6, 7, 8]),
   lotus: Object.freeze([6, 7, 8]),
   lavender: Object.freeze([6, 7, 8])
 });
+/**
+ * Phase 13 (A6): an autumn-flowering cherry (Prunus × subhirtella 'Autumnalis', shikizakura, jugatsuzakura, fuyuzakura,
+ * kofukuzakura) also flowers from October to December. A cherry garden or park that names one is in season then too.
+ */
+export const AUTUMN_CHERRY_MONTHS_NORTH = Object.freeze([10, 11, 12]);
+export const AUTUMN_CHERRY_WORDS = /\bautumn[- ]?(?:flowering[- ])?cherr(?:y|ies)\b|\bautumnalis\b|\bfall[- ]?(?:flowering|blooming)[- ]cherr(?:y|ies)\b|\b(?:shiki|jugatsu|j[uū]gatsu|fuyu|kofuku)[- ]?zakura\b|四季桜|十月桜|冬桜|子福桜|しきざくら|じゅうがつざくら|ふゆざくら/i;
 /** Between these latitudes the temperate calendar does not hold; outOfSeason never drops there. */
 export const TROPICS_LAT = 23.5;
 /** Name and tag words that say a garden is mainly one bloom (Latin words are matched whole; Japanese terms anywhere). */
@@ -75,20 +83,29 @@ export function bloomOn(season, date) {
   return line;
 }
 
+const placeText = (place) => [place.name, ...(Array.isArray(place.tags) ? place.tags : [])].filter(Boolean).join(' ');
+
+/** autumnCherry(place) → true when the place's name or tags name an autumn-flowering cherry (A6). */
+export function autumnCherry(place) {
+  return !!place && typeof place === 'object' && AUTUMN_CHERRY_WORDS.test(placeText(place));
+}
+
 /** bloomKindOf(place) → the single bloom a garden or park's name or tags name, else null (two blooms: null). */
 export function bloomKindOf(place) {
   if (!place || typeof place !== 'object') return null;
   const types = [place.primary_type, ...(place.types || [])].filter(Boolean);
   const gardenish = GARDEN_CATEGORIES.has(place.category) || types.some((t) => GARDEN_TYPES.has(t));
   if (!gardenish) return null;
-  const text = [place.name, ...(Array.isArray(place.tags) ? place.tags : [])].filter(Boolean).join(' ');
+  const text = placeText(place);
   const hits = Object.keys(BLOOM_WORDS).filter((k) => BLOOM_WORDS[k].test(text));
   return hits.length === 1 ? hits[0] : null;
 }
 
 /** usualMonths(kind, lat) → the months that bloom is usually out at that latitude (south: shifted six months), null in the tropics or unknown. */
 export function usualMonths(kind, lat) {
-  const north = BLOOM_MONTHS_NORTH[kind];
+  return usualMonthsOf(BLOOM_MONTHS_NORTH[kind], lat);
+}
+function usualMonthsOf(north, lat) {
   if (!north || !Number.isFinite(lat) || Math.abs(lat) < TROPICS_LAT) return null;
   return lat > 0 ? north.slice() : north.map((m) => ((m + 5) % 12) + 1);
 }
@@ -118,8 +135,9 @@ export function outOfSeason(place, { season, date, dates, lat } = {}) {
   const said = forecastSays(season, kind, list);
   if (said !== null) return !said;
   const at = Number.isFinite(place.location && place.location.lat) ? place.location.lat : Number.isFinite(place.lat) ? place.lat : lat;
-  const months = usualMonths(kind, at);
+  let months = usualMonths(kind, at);
   if (!months) return false;
+  if (kind === 'cherry' && autumnCherry(place)) months = months.concat(usualMonthsOf(AUTUMN_CHERRY_MONTHS_NORTH, at));   // A6
   return list.every((d) => !months.includes(+d.slice(5, 7)));
 }
 

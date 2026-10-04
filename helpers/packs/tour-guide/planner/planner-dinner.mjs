@@ -20,6 +20,12 @@
  *   addDinners({ built, pool, used, exclude, maps, trip, pace, prefer? }) → { chosen: [{ date, place }], route_calls } (dayPlans updated in place)
  * WP-11e: `prefer` (Map date → place slug, the outline's dinner anchors) ranks that place first on its date and keeps it
  * off every other date.
+ * Phase 13 (WP-13b, A4 and A5 menus): within each of the owner's ranks, places sort by their menu (dinnerMenu) before
+ * distance — a current `yes`, then a current `partly`, then a menu that is `unknown`, missing, or checked more than
+ * MENU_MAX_AGE_DAYS before the plan's day (`today`) — nearest first within each. The meal's note says why the third
+ * group is there: "<name> · menu not checked for <diet>" or "<name> · menu last checked <date>". Without `today` the
+ * age is not judged (the order of unchecked menus still holds).
+ *   prepareDinners(list, { snapshots, dates, places, choices, today?, diet? }) → pool (each with menu_rank, menu_caveat)
  */
 import { hoursOn, earliestFit } from './planner-hours.mjs';
 import { haversineKm, isLoc } from './planner-geo.mjs';
@@ -31,15 +37,36 @@ import { transitPrefs } from './planner-transit.mjs';
 import { localToIso, hm } from './planner-time.mjs';
 import { DINNER_EARLIEST } from './planner-input.mjs';
 import { legRecord, estimatedWarning, BACK_EARLY_NOTE, FREE_MIN } from './planner-day.mjs';
+import { MENU_MAX_AGE_DAYS } from '../facts/facts-check.mjs';
+import { dietWords } from '../facts/facts-lines.mjs';
+import { isDate, daysBetween } from '../schemas/tour-guide-dates.mjs';
 
 export const DINNER = Object.freeze({ RADIUS_KM: 1.5, HOME_KM: 5, LATEST_END: 23 * 60, MAX_WAIT: 60, FRESHEN_MIN: 15 });
 /** Straight-line pre-selection speeds (km/h, with the 1.3 route factor); a dinner hop within 1.5 km is a walk unless driving. */
 const EST = Object.freeze({ WALK_KMH: 4.5, DRIVE_KMH: 30, DRIVE_OVERHEAD_MIN: 5, ROUTE_FACTOR: 1.3 });
+/** A pool entry's menu group (an entry made before Phase 13 has none: the menu decides as dinnerMenu would without a plan day). */
+const menuRank = (c) => (Number.isInteger(c.menu_rank) ? c.menu_rank : dinnerMenu(c.facts).rank);
 const estMinutes = (a, b, mode) => {
   const km = haversineKm(a, b) * EST.ROUTE_FACTOR;
   return mode === 'DRIVE' ? Math.ceil((km / EST.DRIVE_KMH) * 60) + EST.DRIVE_OVERHEAD_MIN : Math.ceil((km / EST.WALK_KMH) * 60);
 };
 const RANK = Object.freeze({ PICK: 0, LATER: 1, OTHER: 2 });
+/** A4/A5: the menu groups inside each rank. */
+export const MENU_RANK = Object.freeze({ YES: 0, PARTLY: 1, UNCHECKED: 2 });
+
+/**
+ * dinnerMenu(facts, { today?, diet? }) → { rank, caveat } — facts as placeFacts() returns them (menu_fits, menu_checked).
+ * rank: MENU_RANK.YES for a current `yes`, PARTLY for a current `partly`, UNCHECKED for `unknown`, no menu, or a check
+ * more than MENU_MAX_AGE_DAYS before `today` (not judged without `today`). caveat: the note's tail for UNCHECKED.
+ */
+export function dinnerMenu(facts, { today = null, diet = null } = {}) {
+  const fits = facts ? facts.menu_fits : null, checked = facts ? facts.menu_checked : null;
+  if (fits !== 'yes' && fits !== 'partly') return { rank: MENU_RANK.UNCHECKED, caveat: `menu not checked for ${dietWords(diet) || 'your diet'}` };
+  if (isDate(today) && (!isDate(checked) || daysBetween(checked, today) > MENU_MAX_AGE_DAYS)) {
+    return { rank: MENU_RANK.UNCHECKED, caveat: isDate(checked) ? `menu last checked ${checked}` : `menu not checked for ${dietWords(diet) || 'your diet'}` };
+  }
+  return { rank: fits === 'yes' ? MENU_RANK.YES : MENU_RANK.PARTLY, caveat: null };
+}
 
 /** The windows dinner may use on a date: open (or always-open) hours only. */
 function dinnerWindows(h) {
@@ -49,13 +76,14 @@ function dinnerWindows(h) {
 }
 
 /**
- * prepareDinners(list, { snapshots, dates, places, choices }) → [{ id, place_id, name, loc, point, hours, facts, rank, record }]
+ * prepareDinners(list, { snapshots, dates, places, choices, today?, diet? }) → [{ id, place_id, name, loc, point, hours, facts, rank,
+ * menu_rank, menu_caveat, record }] — `today` the plan's day (YYYY-MM-DD in the trip's zone), `diet` the profile's diet.
  * `places` are the planner's (choice-applied) places: a dinner place that is also there takes its status from them,
  * except 'scheduled', which the planner wrote itself (C12: on a re-plan `places` are plan.places, where the owner's
  * chosen dinner reads 'scheduled'); the list's own status counts then.
  * `choices` = applyChoices' result (or null), whose `picks`, `keep` and `skip` are Sets: skip and later are left out, picks rank first.
  */
-export function prepareDinners(list, { snapshots, dates, places = [], choices = null }) {
+export function prepareDinners(list, { snapshots, dates, places = [], choices = null, today = null, diet = null }) {
   if (!Array.isArray(list)) return [];
   const byId = new Map(places.map((p) => [p.id, p]));
   const picks = choices ? choices.picks : new Set(), keep = choices ? choices.keep : new Set(), skip = choices ? choices.skip : new Set();
@@ -73,7 +101,8 @@ export function prepareDinners(list, { snapshots, dates, places = [], choices = 
     const hours = Object.fromEntries(dates.map((d) => [d, factsHours(hoursOn(snap, d, { irregular: p.opening_days === 'irregular' }), facts, d, snap, p.name).hours]));
     const rank = status === 'chosen' || picks.has(p.id) ? RANK.PICK : status === 'saved-for-later' ? RANK.LATER : RANK.OTHER;
     const loc = snap.location;
-    out.push({ id: p.id, place_id: p.place_id, name: p.name, loc, point: { placeId: p.place_id, lat: loc.lat, lng: loc.lng, name: p.name, id: p.id }, hours, facts, rank, record: p });
+    const menu = dinnerMenu(facts, { today, diet });
+    out.push({ id: p.id, place_id: p.place_id, name: p.name, loc, point: { placeId: p.place_id, lat: loc.lat, lng: loc.lng, name: p.name, id: p.id }, hours, facts, rank, menu_rank: menu.rank, menu_caveat: menu.caveat, record: p });
   }
   return out;
 }
@@ -140,7 +169,7 @@ export async function addDinners({ built, pool, used, exclude, maps, trip, pace,
     const area = day.outline && day.outline.area;
     const reach = (c) => (mine(c) === 0 || (area && haversineKm(c.loc, area) <= area.radius_km) ? DINNER.HOME_KM : DINNER.RADIUS_KM);
     const options = pool.filter((c) => !used.has(c.id) && !exclude.has(c.id) && near(c) <= reach(c) && (!preferred.has(c.id) || preferred.get(c.id) === date))
-      .sort((a, b) => mine(a) - mine(b) || wet(a) - wet(b) || a.rank - b.rank || near(a) - near(b) || a.id.localeCompare(b.id));
+      .sort((a, b) => mine(a) - mine(b) || wet(a) - wet(b) || a.rank - b.rank || menuRank(a) - menuRank(b) || near(a) - near(b) || a.id.localeCompare(b.id));
     let pick = null, plan = null;
     for (const c of options) { plan = dryRun(c, ev, date, pace.dinner, mode, reach(c)); if (plan) { pick = c; break; } }
     if (!pick) continue;
@@ -186,7 +215,8 @@ async function timeDinner({ pick, plan, ev, day, dayPlan, maps, trip, len }) {
     if (start - ready >= FREE_MIN) dayPlan.free.push({ start: hm(ready), end: hm(start), note: `free time near ${pick.name} before dinner` });
   } else dayPlan.legs.push(legOut, legBack);
   const fits = pick.facts && pick.facts.menu_fits;
-  const meal = { kind: 'dinner', start: hm(start), end: hm(end), at: pick.id, note: fits === 'partly' ? `${pick.name} · the menu partly fits your diet` : pick.name };
+  const note = pick.menu_caveat ? `${pick.name} · ${pick.menu_caveat}` : fits === 'partly' ? `${pick.name} · the menu partly fits your diet` : pick.name;   // A4/A5
+  const meal = { kind: 'dinner', start: hm(start), end: hm(end), at: pick.id, note: note.slice(0, 300) };
   const booking = dinnerBooking(trip, date, pick.id, pick.facts);
   if (booking) meal.booking = booking;
   const i = dayPlan.meals.findIndex((m) => m.kind === 'dinner');
