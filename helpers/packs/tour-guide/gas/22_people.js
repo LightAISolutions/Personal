@@ -6,7 +6,7 @@
  *   tgTripHours(trip) → { day_start?, day_end? } · tgTripHoursSet(trip, start, end)   (Settings tg_trip_hours)
  *   tgTripDays(trip) · tgTripDay(trip, date) · tgTripDaySet(trip, date, patch) · tgTripDayClear(trip, date)
  *     (Settings tg_trip_days: the /dates per-day forms — start, end, hours, bags; WP-11c)
- *   tgTripUpdateOf(trip) → { start_date?, end_date?, day_start?, day_end?, travelers?, day_overrides? } | null — what the owner set here,
+ *   tgTripUpdateOf(trip) → { start_date?, end_date?, day_start?, day_end?, travelers?, day_overrides?, lodging? } | null — what the owner set here,
  *     carried by every research / plan / replan request so the routine writes it into trips/<slug>.md before it works
  *     (the owner never needs a pull request to change a date). Names and slugs stay in the core and the private repo.
  */
@@ -138,6 +138,8 @@ function tgTripUpdateOf(trip) {
   if (TG_HHMM_RE.test(String(h.day_start || '')) && TG_HHMM_RE.test(String(h.day_end || ''))) { out.day_start = h.day_start; out.day_end = h.day_end; }
   if (set) out.travelers = ppl.map(function (s) { var p = tgPerson(s); return { slug: s, name: p ? p.name : s }; });
   if (isPlainObject(_tgPeopleJson(TG_TRIP_DAYS_KEY, {})[t.slug])) out.day_overrides = tgTripDays(t.slug);   // C11
+  var stays = typeof tgLgTripUpdate === 'function' ? tgLgTripUpdate(t) : null;   // C13: the whole list once a dated stay is set
+  if (stays) out.lodging = stays;
   return Object.keys(out).length ? out : null;
 }
 

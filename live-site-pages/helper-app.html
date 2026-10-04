@@ -1072,8 +1072,13 @@
           clear(results);
           var rows = list(b.rows);
           results.appendChild(el('p', { class: 'meta', text: rows.length ? rows.length + ' of ' + num(b.total) + ' places' : 'Nothing matches.' }));
-          rows.forEach(function (p) {
-            p = obj(p); var slug = str(p.slug, 64);
+          // Scouted candidates the owner has not chosen yet form their own group after the others (C13).
+          rows = rows.map(obj);
+          var scouted = rows.filter(function (p) { return p.scouted === true; });
+          rows = rows.filter(function (p) { return p.scouted !== true; }).concat(scouted);
+          rows.forEach(function (p, i) {
+            if (p.scouted === true && (!i || rows[i - 1].scouted !== true)) results.appendChild(el('h3', { id: 'scouted-group', text: '🔎 Scouted, not chosen yet' }));
+            var slug = str(p.slug, 64);
             var acts = el('div', { class: 'row place-actions' }, [
               el('button', { type: 'button', text: '📝', 'aria-label': 'Notes', on: { click: function () { call('places.get', { slug: slug }, function (r) { var pl = obj(r.place); showPlace(pl); }); } } }),
               el('button', { type: 'button', text: '➕', 'aria-label': 'Check for the next trip', 'aria-pressed': picked[slug] ? 'true' : 'false', on: { click: function (ev) { picked[slug] = !picked[slug]; ev.currentTarget.setAttribute('aria-pressed', picked[slug] ? 'true' : 'false'); haptic(); refreshMain(); } } }),

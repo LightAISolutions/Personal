@@ -24,6 +24,8 @@ var TG_BK = {
   DAILY_HOUR: 9,           // the daily reminder, local hour in the owner's current zone
   DAILY_LATE_HOURS: 3,     // a daily reminder not sent by 12:00 waits for tomorrow (no evening nag after a late arrival)
   DAILY_SETTING: 'tg_bk_daily',   // Settings: the local date (YYYY-MM-DD) of the last daily reminder
+  DAILY_AT_SETTING: 'tg_bk_daily_at',   // Settings: the instant (ISO) of the last daily reminder (WP-13c, A10)
+  DAILY_GAP_HOURS: 12,     // a daily reminder never goes out within this long of the previous one (a zone change)
   PER_MESSAGE: 10,         // reminder lines per message (3 buttons each)
   KEY_HEX: 10
 };
@@ -248,7 +250,7 @@ function tgBkCard(header, entries, now) {
     lines.push(tgBkLine(x.b, x.trip, now, tz, { n: many ? i + 1 : 0, tripName: true }));
     if (x.b.status === 'todo' && !_tgBkSnoozed(x.b, now)) rows.push(tgBkButtons(x.b, many ? i + 1 : 0));
   });
-  return { html: tgClip(lines.join('\n'), LIMITS.TG_MAX_CHARS), keyboard: rows.length ? tgKeyboard(rows) : { inline_keyboard: [] } };
+  return { html: tgHtmlClip(lines.join('\n'), LIMITS.TG_MAX_CHARS), keyboard: rows.length ? tgKeyboard(rows) : { inline_keyboard: [] } };
 }
 /** Todo records whose window is open now and that are not snoozed — what the daily reminder lists. */
 function tgBkReminderList(now) {
@@ -258,8 +260,12 @@ function tgBkReminderList(now) {
 function tgBkDailyDue(now) {
   var tz = tgOwnerTz(), today = isoDateIn(tz, new Date(now));
   var at = msAtLocal(tz, today, TG_BK.DAILY_HOUR, 0);
-  if (String(settingGet(TG_BK.DAILY_SETTING, '')).slice(0, 10) !== today && now <= at + TG_BK.DAILY_LATE_HOURS * 3600000) return at;
-  return msAtLocal(tz, isoDateAdd(today, 1), TG_BK.DAILY_HOUR, 0);
+  // A10: a day whose 09:00 comes within 12 h of the last reminder (the owner's zone just moved ahead) waits for the next.
+  var last = Date.parse(String(settingGet(TG_BK.DAILY_AT_SETTING, '') || '')), floor = isFinite(last) ? last + TG_BK.DAILY_GAP_HOURS * 3600000 : -Infinity;
+  if (String(settingGet(TG_BK.DAILY_SETTING, '')).slice(0, 10) !== today && now <= at + TG_BK.DAILY_LATE_HOURS * 3600000 && at >= floor) return at;
+  var d = isoDateAdd(today, 1), next = msAtLocal(tz, d, TG_BK.DAILY_HOUR, 0);
+  for (var i = 0; i < 3 && next < floor; i++) { d = isoDateAdd(d, 1); next = msAtLocal(tz, d, TG_BK.DAILY_HOUR, 0); }
+  return next;
 }
 /**
  * Send the daily reminder (opts.force: /bookings now, whatever was sent today). Marks the local day as done only when
@@ -275,6 +281,7 @@ function tgBkSendDaily(now, opts) {
     if (r && r.ok) { messages++; chunk.forEach(function (x) { storeUpdate(TG_BK_SHEET, x.b._row, { last_reminded: iso }); }); } else ok = false;
   }
   if (ok) settingSet(TG_BK.DAILY_SETTING, isoDateIn(tz, new Date(now)), 'last daily booking reminder');
+  if (messages) settingSet(TG_BK.DAILY_AT_SETTING, iso, 'when the last daily booking reminder went (A10: 12 h apart)');
   var text = '';
   if (!list.length) {
     var next = tgBkOpenList().map(function (x) { return { x: x, o: tgBkMs(x.b.rec.opens_at) }; }).filter(function (y) { return y.o > now; })

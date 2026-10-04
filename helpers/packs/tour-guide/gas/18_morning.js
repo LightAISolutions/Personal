@@ -127,6 +127,8 @@ function tgMorningMessages(trip, day, total, wx, rehearsal) {
   var areas = (Array.isArray(day.areas) ? day.areas : []).filter(_tgMorningStr).map(tgEscape);
   lines.push('☀️ <b>' + tgCmdDate(day.date) + ' · Day ' + tgEscape(day.n) + (total ? ' of ' + total : '') + '</b>' + (areas.length ? ' · ' + areas.join(' → ') : ''));
   if (_tgMorningStr(day.theme)) lines.push('<i>' + tgEscape(day.theme) + '</i>');
+  var staleLg = typeof tgLgStaleLine === 'function' ? tgLgStaleLine(trip) : '';   // C13
+  if (staleLg) lines.push(staleLg);
   if (day.late) lines.push('⏰ <i>Running ' + tgEscape(day.late.minutes) + ' min late since ' + tgEscape(day.late.from) + '</i>');
   if (stops.length && tgCmdDayClock(day.leave_by)) lines.push('🚪 <b>Leave by ' + tgEscape(day.leave_by) + '</b>');
   (wx && wx.lines || []).forEach(function (l) { lines.push(l); });

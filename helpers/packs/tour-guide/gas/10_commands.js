@@ -2,7 +2,7 @@
  * Tour Guide pack — instant commands and the shared chat helpers (WP-5a; plan §5.9 command table, §5.10).
  * Lane A (answered from the pack tabs through WP-5b's storage API, no routine): /profile, /trip, /today, /day, /later,
  * /place, /places. Requests (Lane C, through tgOpenKindRequest with exactly the TG-PHASE-4B §5 fields): /replan, /notes,
- * /brochure (a resend when the PDF id is stored), /lodging (stored on the trip, sent with the next research round; with a plan, an offer to re-plan the days it touches — 26_lodging.js), /dates
+ * /brochure (a resend when the PDF id is stored), /lodging (dated stays or one undated place, stored on the trip and sent as trip_update.lodging and the research line; with a plan, an offer to re-plan the days it touches — 26_lodging.js), /dates
  * (dates and day hours, sent as trip_update with the next research, plan or replan request).
  * Renderer `core_start` (the interview offer after /start when no profile summary is cached).
  * Callbacks: `dy` (a day), `lt` (promote a Later item onto a day → replan), `rs` (swap a rainy-day option in → replan),
@@ -162,6 +162,8 @@ function tgCmdDayMessages(trip, day, total) {
   if (typeof tgLateView === 'function') day = tgLateView(trip, day);   // WP-12b: today's "running late" overlay, when stored
   var tk = tgCmdTripKey(trip.slug);
   var lines = ['<b>Day ' + day.n + (total ? ' of ' + total : '') + ' · ' + tgCmdDate(day.date) + '</b>' + (day.theme ? ' — ' + tgEscape(day.theme) : '')];
+  var staleLg = typeof tgLgStaleLine === 'function' ? tgLgStaleLine(trip) : '';   // C13
+  if (staleLg) lines.push(staleLg);
   if (day.late) lines.push('⏰ <i>Running ' + tgEscape(day.late.minutes) + ' min late since ' + tgEscape(day.late.from) + '</i>');
   var legs = Array.isArray(day.legs) ? day.legs : [];
   // Each leg shows once, before what it leads to: a C11 day can reach the lodging more than once (station → hotel with the
@@ -388,10 +390,14 @@ function tgCmdTripMessages(trip) {
     var n = tgCmdDaysBetween(trip.start, trip.end || trip.start);
     lines.push(tgCmdDate(trip.start) + (trip.end && trip.end !== trip.start ? ' → ' + tgCmdDate(trip.end) : '') + (n !== null ? ' (' + (n + 1) + ' day' + (n ? 's' : '') + ')' : ''));
   }
-  if (trip.lodging && trip.lodging.text) lines.push('Staying: ' + tgEscape(truncate(trip.lodging.text, 200)));
+  var stays = tgLgStays(trip);
+  if (stays.length) { lines.push('Staying:'); stays.forEach(function (x) { lines.push('🏨 ' + tgLgStayLine(x)); }); }
+  else if (trip.lodging && trip.lodging.text) lines.push('Staying: ' + tgEscape(truncate(trip.lodging.text, 200)));
   if (trip.verified_on) lines.push('<i>Checked on ' + tgEscape(trip.verified_on) + '</i>');
   if (days.length) {
     lines.push('');
+    var staleLg = typeof tgLgStaleLine === 'function' ? tgLgStaleLine(trip) : '';   // C13
+    if (staleLg) lines.push(staleLg);
     days.forEach(function (d) {
       var k = (d.stops || []).length;
       lines.push('<b>' + d.n + '.</b> ' + tgCmdDate(d.date) + (d.theme ? ' — ' + tgEscape(d.theme) : '') + ' <i>(' + k + ' stop' + (k === 1 ? '' : 's') + ')</i>');
@@ -554,7 +560,12 @@ registerCommand('/places', function (ctx) {
   if (!ctx.args) {
     var counts = tgPlacesCounts(), dests = Object.keys(counts).sort();
     if (!dests.length) { ctx.reply('📚 No places yet — they arrive with research rounds and plans.'); return; }
-    var lines = ['📚 <b>Places I know</b>'].concat(dests.map(function (d) { return tgEscape(d) + ' — ' + counts[d]; }));
+    var scouted = tgPlacesScouted(), per = {};
+    scouted.forEach(function (p) { var d = p.destination || '(none)'; per[d] = (per[d] || 0) + 1; });
+    var lines = ['📚 <b>Places I know</b>'].concat(dests.map(function (d) {
+      return tgEscape(d) + ' — ' + counts[d] + (per[d] ? ' · 🔎 ' + per[d] + ' scouted' : '');
+    }));
+    if (scouted.length) lines = lines.concat(tgCmdScoutedGroup(scouted));
     lines.push('', 'Search: <code>/places &lt;name, tag or area&gt;</code>');
     var app = tgCmdAppRows();
     tgCmdSendAll(ctx.chatId, tgCmdMessages(lines, app.length ? tgKeyboard(app) : undefined));
@@ -562,16 +573,32 @@ registerCommand('/places', function (ctx) {
   }
   var hits = tgPlacesSearch(ctx.args, { limit: 8 });
   if (!hits.length) { ctx.reply('No place matches “' + tgEscape(truncate(ctx.args, 60)) + '”.'); return; }
+  // C13: scouted candidates form their own group after the others (the numbers and buttons follow that order).
+  hits = hits.filter(function (p) { return !p.scouted; }).concat(hits.filter(function (p) { return p.scouted; }));
   var keys = tgCmdPlaceKeys(hits.map(function (p) { return p.slug; }));
   var lines2 = ['📚 <b>' + hits.length + ' match' + (hits.length === 1 ? '' : 'es') + '</b> — 📝 full note · ➕ add to the current trip · 🔁 fresh check'];
   var rows = [];
   hits.forEach(function (p, i) {
+    if (p.scouted && (!i || !hits[i - 1].scouted)) lines2.push(TG_CMD_SCOUTED_HEAD);
     lines2.push(tgCmdPlaceLine(p, i));
     rows.push([{ text: '📝 ' + (i + 1), data: cbEncode('ps', keys[i], 'n') }, { text: '➕ ' + (i + 1), data: cbEncode('ps', keys[i], 'a') },
       { text: '🔁 ' + (i + 1), data: cbEncode('ps', keys[i], 'c') }]);
   });
   tgCmdSendAll(ctx.chatId, tgCmdMessages(lines2, tgKeyboard(rows.concat(tgCmdAppRows()))));
 }, 'the places repository: /places [name, tag or area]');
+/** The scouted group (C13, WP-13c): its header, then one line per candidate, at most TG_CMD_SCOUTED_MAX of them. */
+var TG_CMD_SCOUTED_HEAD = '🔎 <b>Scouted, not chosen yet</b>';
+var TG_CMD_SCOUTED_MAX = 20;
+function tgCmdScoutedGroup(list) {
+  var lines = ['', TG_CMD_SCOUTED_HEAD];
+  list.slice(0, TG_CMD_SCOUTED_MAX).forEach(function (p) {
+    var bits = [tgEscape(p.destination || '(none)')];
+    if (p.area) bits.push(tgEscape(truncate(p.area, 60)));
+    lines.push('• ' + tgCmdHref(p.maps_url, p.name) + ' · ' + bits.join(' · '));
+  });
+  if (list.length > TG_CMD_SCOUTED_MAX) lines.push('… and ' + (list.length - TG_CMD_SCOUTED_MAX) + ' more — <code>/places &lt;name&gt;</code> finds them.');
+  return lines;
+}
 /** The /places message's app button (WP-9b): [] without APP_SHELL_URL, so the message is unchanged. */
 function tgCmdAppRows() {
   if (!getProp(PROP.APP_SHELL_URL)) return [];
@@ -651,20 +678,8 @@ registerCommand('/brochure', function (ctx) {
 
 registerCommand('/lodging', function (ctx) {
   var trip = tgCmdCurrent(ctx);
-  if (!trip) return;
-  if (!ctx.args) {
-    ctx.reply(trip.lodging && trip.lodging.text ? 'Staying: ' + tgEscape(trip.lodging.text) + '\nChange it with <code>/lodging &lt;where&gt;</code>.' : 'Where are you staying? <code>/lodging &lt;name, area or address&gt;</code>');
-    return;
-  }
-  var text = ctx.args.replace(/\s+/g, ' ').trim(), lodging = { text: text };
-  if (text.length > 300) { ctx.reply('🏨 Please keep it under 300 characters (that was ' + text.length + ') — nothing was saved.'); return; }   // WP-6a G
-  var n = /(\d{1,2})\s*nights?\b/i.exec(text);
-  if (n) lodging.nights = parseInt(n[1], 10);
-  tgTripUpsert({ slug: trip.slug, lodging: lodging });
-  var offer = typeof tgLgOffer === 'function' ? tgLgOffer(tgTripGet(trip.slug)) : null;   // WP-12r: re-plan the days it touches
-  ctx.reply('🏨 Saved for ' + tgCmdTitle(trip) + ': ' + tgEscape(text) + '\nIt goes with the next research round.' + (offer ? '\n' + offer.line : ''),
-    offer ? { keyboard: offer.keyboard } : undefined);
-}, 'where you are staying on the current trip: /lodging <text>');
+  if (trip) tgLgCmd(ctx, trip);   // every form lives in 26_lodging.js (WP-13c: dated stays)
+}, 'where you stay on the current trip: /lodging <name> <first night> to <check-out> · /lodging remove <first night> · /lodging clear · /lodging <text> (one place, no dates)');
 
 /**
  * /dates — the current trip's dates and day hours, set from the chat (Phase 8, pilot finding 3): stored on the trip row
@@ -699,7 +714,7 @@ registerCommand('/dates', function (ctx) {
     var st = ('0' + hm[1]).slice(-2) + ':' + hm[2], en = ('0' + hm[3]).slice(-2) + ':' + hm[4];
     if (!TG_HHMM_RE.test(st) || !TG_HHMM_RE.test(en)) { ctx.reply('Those are not clock times. ' + help); return; }
     var mins = function (t) { return Number(t.slice(0, 2)) * 60 + Number(t.slice(3)); };
-    if (mins(en) - mins(st) < 120) { ctx.reply('The day must end at least two hours after it starts — nothing was saved.'); return; }
+    if (mins(en) - mins(st) < 120) { ctx.reply('The day must end at least two hours after it starts — nothing was saved.' + tgCmdDatesHint('', null, st, en, 'end')); return; }
     tgTripHoursSet(trip.slug, st, en);
     ctx.reply('🕘 Saved: days of ' + tgCmdTitle(trip) + ' run ' + st + '–' + en + '. The next plan or <code>/replan</code> uses them.');
     return;
@@ -718,6 +733,26 @@ var TG_CMD_BAGS_TEXT = { hotel: 'bags to the hotel', locker: 'bags in a locker',
 var TG_CMD_DATES_NEXT = ' The next plan or <code>/replan</code> uses it.';
 function tgCmdHm(h, m) { var t = ('0' + h).slice(-2) + ':' + m; return TG_HHMM_RE.test(t) ? t : ''; }
 function tgCmdHmMin(t) { return Number(t.slice(0, 2)) * 60 + Number(t.slice(3)); }
+function tgCmdHmOf(m) { return ('0' + Math.floor(m / 60)).slice(-2) + ':' + ('0' + (m % 60)).slice(-2); }
+/**
+ * How to make a too-short day valid (WP-13c, A2): ' To keep the end at E, start earlier: <code>/dates <date> hours S' E</code>.'
+ * keep 'end' moves the start (three hours before the end, else two; when the end is before 02:00 the end moves instead);
+ * keep 'start' moves the end (three hours on, at most 23:59; when that cannot make two hours the start moves instead).
+ * A start or end point of the day is moved by its own command with its own words; the date is filled in ('' = trip-wide).
+ */
+function tgCmdDatesHint(date, day, st, en, keep) {
+  var S = tgCmdHmMin(st), E = tgCmdHmMin(en), pre = '/dates ' + (date ? date + ' ' : ''), cmd;
+  if (keep === 'end' && E < 120) keep = 'start';
+  if (keep === 'start' && S + 120 > 1439) keep = 'end';
+  if (keep === 'end') {
+    var ns = tgCmdHmOf(E >= 180 ? E - 180 : E - 120);
+    cmd = day && day.start ? pre + 'start ' + day.start.text + ' ' + ns : pre + 'hours ' + ns + ' ' + en;
+    return ' To keep the end at ' + en + ', start earlier: <code>' + tgEscape(cmd) + '</code>.';
+  }
+  var ne = tgCmdHmOf(Math.min(1439, S + 180));
+  cmd = day && day.end ? pre + 'end ' + day.end.text + ' ' + ne : pre + 'hours ' + st + ' ' + ne;
+  return ' To keep the start at ' + st + ', end later: <code>' + tgEscape(cmd) + '</code>.';
+}
 /** One stored day → '· Thu 10 Jun: start Reed Station 12:10 · end Gull Inn 21:00 · 09:30–19:00 · bags to the hotel (note)'. */
 function tgCmdDatesDayLine(d) {
   var bits = [];
@@ -769,15 +804,18 @@ function tgCmdDatesDay(ctx, trip, date, verb, rest, help) {
   Object.keys(patch).forEach(function (k) { if (patch[k] === null) delete after[k]; else after[k] = patch[k]; });
   var span = tgCmdDatesSpan(trip, after);
   if (span.start && span.end && tgCmdHmMin(span.end) - tgCmdHmMin(span.start) < 120) {
-    ctx.reply('The day must end at least two hours after it starts (' + span.start + '–' + span.end + ' on ' + day + ') — nothing was saved.');
+    ctx.reply('The day must end at least two hours after it starts (' + span.start + '–' + span.end + ' on ' + day + ') — nothing was saved.' +
+      tgCmdDatesHint(date, after, span.start, span.end, verb === 'start' ? 'start' : 'end'));   // A2: how to make it valid
     return;
   }
   tgTripDaySet(trip.slug, date, patch);
   ctx.reply(said + TG_CMD_DATES_NEXT);
 }
 
-/** The lodging line a research request carries: the owner's /lodging words (+ nights). */
+/** The lodging line a research request carries: every stay with its nights (WP-13c), else the owner's /lodging words (+ nights). */
 function tgCmdLodgingText(trip) {
+  var stays = typeof tgLgStays === 'function' ? tgLgStays(trip) : [];
+  if (stays.length) return tgLgSummary(stays);
   var l = trip && trip.lodging;
   if (!l || !l.text) return '';
   return l.nights && !/nights?/i.test(l.text) ? l.text + ' (' + l.nights + ' nights)' : String(l.text);

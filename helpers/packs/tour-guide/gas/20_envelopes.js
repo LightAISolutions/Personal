@@ -285,13 +285,15 @@ var TG_ENV_STOP_C12 = ['visited', 'local_name', 'address', 'payment', 'close'];
 var TG_ENV_DINNER_C12 = ['local_name', 'address', 'payment', 'price_line'];
 var TG_ENV_DAY_C11 = ['sunset', 'start', 'end', 'bags', 'dinner', 'extras'];
 var TG_ENV_STOP_C11 = ['last_entry', 'minutes_source', 'crowd_slot', 'facts_line', 'booking_line', 'price_line', 'menu_checked'];
+var TG_ENV_RE_LFP = /^lfp1:[0-9a-f]{8}$/;   // C13: the lodging fingerprint a plan was built for
 function tgEnvValidatePlanDigest(p) {
   var errs = [];
-  if (!tgEnvObj(errs, 'payload', p, ['trip', 'build_id', 'verified_on', 'days', 'later', 'drive'], ['v', 'kind', 'tz', 'part', 'parts', 'country_code'])) return errs;
+  if (!tgEnvObj(errs, 'payload', p, ['trip', 'build_id', 'verified_on', 'days', 'later', 'drive'], ['v', 'kind', 'tz', 'part', 'parts', 'country_code', 'lodging_fp'])) return errs;
   tgEnvHead(errs, p, 'plan_digest');
   if (p.trip !== undefined) tgEnvSlug(errs, 'trip', p.trip);
   if (p.tz !== undefined) tgEnvTz(errs, 'tz', p.tz);                                         // C10
   if (p.country_code !== undefined) tgEnvStr(errs, 'country_code', p.country_code, 2, 2, TG_ENV_RE_CC);   // C12
+  if (p.lodging_fp !== undefined) tgEnvStr(errs, 'lodging_fp', p.lodging_fp, 13, 13, TG_ENV_RE_LFP);     // C13
   if (p.part !== undefined) tgEnvInt(errs, 'part', p.part, 1, TG_ENV_PARTS_MAX);             // C11
   if (p.parts !== undefined) tgEnvInt(errs, 'parts', p.parts, 1, TG_ENV_PARTS_MAX);
   if ((p.part === undefined) !== (p.parts === undefined)) errs.push('part and parts go together');
@@ -447,7 +449,8 @@ function tgEnvValidatePlacesDigest(p) {
     p.places.forEach(function (pl, i) {
       var at = 'places[' + i + ']';
       tgGoogleFieldsIn(pl).forEach(function (k) { errs.push(at + ': Google field "' + k + '" refused (own data only)'); });
-      if (!tgEnvObj(errs, at, pl, TG_PLACE_OWN)) return;
+      if (!tgEnvObj(errs, at, pl, TG_PLACE_OWN, TG_PLACE_OPT)) return;
+      if (pl.scouted !== undefined && pl.scouted !== true) errs.push(at + '.scouted: must be true when present (C13)');
       if (pl.slug !== undefined) tgEnvSlug(errs, at + '.slug', pl.slug);
       if (pl.name !== undefined) tgEnvStr(errs, at + '.name', pl.name, 1, 120);
       if (pl.area !== undefined) tgEnvStr(errs, at + '.area', pl.area, 0, 120);
@@ -587,6 +590,7 @@ registerEnvelopeHandler('plan_digest', {
       st = tgDigestStore(p);
       _safe('tg_parts_supersede', function () { return tgPartsSupersede(p.trip, String(p.build_id)); });
     }
+    _safe('tg_lodging_digest', function () { return tgLgOnDigest(p, env.in_reply_to); });   // C13 (26_lodging.js)
     var to = tgEnvDeliver('plan_digest', env,'🗓 Plan for <b>' + tgEscape(p.trip) + '</b> stored: ' + st.days + ' day(s), ' + st.later + ' saved for later. /trip shows it.');
     return { trip: p.trip, days: st.days, later: st.later, to: to };
   }

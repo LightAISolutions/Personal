@@ -63,7 +63,7 @@ function tgAppOpScoutBoard(args) {
 function tgAppOpScoutNew(args) {
   var query = tgAppStr(args, 'query', { required: true, max: TG_SCOUT.QUERY_MAX });
   var where = tgAppStr(args, 'where', { max: TG_SCOUT.WHERE_MAX });
-  var r = tgScoutOpen(query, where, { text: '/scout ' + query + (where ? ' in ' + where : '') + ' (app)' });
+  var r = tgScoutOpen(query, where, {});   // the request text reads `/scout <what> in <where>`, no suffix (WP-13c item 7)
   if (!r.ok) return r.why === 'no_place' ? tgAppNo(400, 'no_place') : tgAppNo(400, r.why === 'too_long' ? 'too_long' : 'missing_arg', { field: r.field || 'query' });
   return tgAppOk({ request_id: r.id, routine: r.routine, fired: r.fired, query: r.query, where: r.where, trip: r.trip });
 }

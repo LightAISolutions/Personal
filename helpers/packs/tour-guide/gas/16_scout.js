@@ -31,7 +31,9 @@ registerSheet(TG_SCOUT.SHEET, ['id', 'created_on', 'query', 'destination', 'plac
 
 /* ==================== asking ==================== */
 
-/** 'matcha in Kyoto' → { what, where }; also "matcha near Gion, Kyoto", "matcha @ Kyoto", "matcha, Kyoto"; where '' when absent. */
+/** 'matcha in Kyoto' → { what, where }; also "matcha near Gion, Kyoto", "matcha @ Kyoto", "matcha, Kyoto"; where '' when absent.
+ *  Only words the acknowledgement and fills the request's old fields (query, where, destination, trip) for the current
+ *  pin: the request's `text` is the owner's words as typed and the engine's parse of it is the one that counts. */
 function tgScoutParse(text) {
   var s = String(text || '').replace(/\s+/g, ' ').trim(), i = s.toLowerCase().lastIndexOf(' in '), m;
   if (i > 0) return { what: s.slice(0, i).trim(), where: s.slice(i + 4).trim() };
@@ -44,7 +46,8 @@ function tgScoutSameDest(trip, where) {
   return !!(a && b && (a === b || b.indexOf(a) >= 0 || a.indexOf(b) >= 0));
 }
 /**
- * Open a `scout` request: what (≤ 80) and where (≤ 80, blank = the current trip's destination). opts = { chat?, text? }.
+ * Open a `scout` request: what (≤ 80) and where (≤ 80, blank = the current trip's destination). opts = { chat?, text? }:
+ * text is the owner's words as typed; without it (the app) the request reads `/scout <what> in <where>`, where resolved.
  * → { ok: true, id, routine, fired, query, where, trip } | { ok: false, why: 'missing_query' | 'too_long' | 'no_place', field? }
  */
 function tgScoutOpen(what, where, opts) {
@@ -71,7 +74,8 @@ var TG_SCOUT_USAGE = '🔎 What should I look for, and where? <code>/scout match
 registerCommand('/scout', function (ctx) {
   if (!String(ctx.args || '').trim()) { ctx.reply(TG_SCOUT_USAGE); return; }
   var q = tgScoutParse(ctx.args);
-  var r = tgScoutOpen(q.what, q.where, { chat: ctx.chat, text: '/scout ' + truncate(ctx.args, 200) });
+  // The request carries the owner's words as typed; the engine's parse of them is the one that counts (WP-13c item 7).
+  var r = tgScoutOpen(q.what, q.where, { chat: ctx.chat, text: String(ctx.text || '') });
   if (r.ok) return;
   if (r.why === 'too_long') ctx.reply('🔎 Please keep ' + (r.field === 'where' ? 'the place' : 'what to look for') + ' under ' + TG_SCOUT.QUERY_MAX + ' characters — nothing was asked.');
   else if (r.why === 'no_place') ctx.reply('🔎 Where should I look? There is no current trip to search. <code>/scout ' + tgEscape(truncate(q.what, 60)) + ' in &lt;city&gt;</code>');
@@ -168,7 +172,8 @@ function tgScoutMessages(rec) {
   var items = rec.items || [], left = rec.left_out || [], n = items.length, trip = tgScoutTargetTrip(rec);
   var lines = ['🔎 <b>' + tgEscape(tgScoutTitle(rec)) + '</b> — ' + (n ? n + ' pick' + (n === 1 ? '' : 's') + ', ranked for you' : 'nothing worth the trip this time')];
   items.forEach(function (it) {
-    var labels = it.labels || [], marks = (labels.indexOf('gem') >= 0 ? ' 💎' : '') + (labels.indexOf('veg_verified') >= 0 || labels.indexOf('veg_likely') >= 0 ? ' 🌱' : '');
+    var labels = it.labels || [], marks = (labels.indexOf('gem') >= 0 ? ' 💎' : '') + (labels.indexOf('veg_verified') >= 0 || labels.indexOf('veg_likely') >= 0 ? ' 🌱' : '') +
+      (labels.indexOf('seen_before') >= 0 ? ' 🔁' : '');   // 🔁 already in your places
     var bits = [it.area ? tgEscape(it.area) : '', tgScoutReach(it.reach)].filter(Boolean);
     lines.push('<b>' + it.n + '.</b> ' + tgCmdHref(it.maps_url, it.name) + marks + (bits.length ? ' · ' + bits.join(' · ') : '') + (it.why_you ? ' — <i>' + tgEscape(it.why_you) + '</i>' : ''));
   });

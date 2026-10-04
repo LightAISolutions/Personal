@@ -26,6 +26,7 @@ function tgPartsTop(p) {
     parts: p.parts };
   // C12: the country joins the top fields only when sent, so a part staged by the previous build compares unchanged.
   if (p.country_code !== undefined) top.country_code = p.country_code;
+  if (p.lodging_fp !== undefined) top.lodging_fp = p.lodging_fp;   // C13, the same way
   return toJson(top);
 }
 function tgPartsRows(trip) { return storeFind(TG_PARTS_SHEET, function (r) { return tgShStr(r.trip) === trip; }); }
