@@ -12,6 +12,7 @@
  */
 import { buildDays, isIndoor, isCoveredSight, hoursOn, isWithheldDinner, AREA_KM, WEIGHT, FAR_KM } from '../planner/index.mjs';
 import { haversineKm, centroid, isLoc } from '../planner/planner-geo.mjs';
+import { placeFacts } from '../planner/planner-facts.mjs';
 import { clip, LIMITS } from './journey-text.mjs';
 
 export const CLUSTER_KM = Object.freeze({ WALK: 1, TRANSIT: 3, DRIVE: 15 });
@@ -42,8 +43,10 @@ export function journeyCandidates({ trip, places, snapshots, season = trip.seaso
     const s = snaps.get(p.place_id);
     if (!s || !isLoc(s.location)) continue;
     const open = {};
+    const pf = placeFacts(p);
+    const irregular = p.opening_days === 'irregular' || !!(pf && pf.irregular);   // Phase 13 (B7): facts can say the opening days vary
     for (const date of dates) {
-      const h = hoursOn(s, date, { irregular: p.opening_days === 'irregular' });
+      const h = hoursOn(s, date, { irregular });
       open[date] = h.status !== 'closed' && h.status !== 'closed_business' && !closures.some((e) => e.place === p.id && inRange(e, date));
     }
     out.push({ id: p.id, name: p.name, loc: s.location, category: p.category, priority: [1, 2, 3].includes(p.priority) ? p.priority : 3, pick: p.status === 'chosen', covered: isIndoor(p) === true || isCoveredSight(p), booking: p.booking || null, open });
