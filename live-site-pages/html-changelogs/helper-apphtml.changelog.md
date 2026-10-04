@@ -3,11 +3,16 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 10/50`
+`Sections: 11/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.11w] — 2026-10-03 11:09:33 PM EST — v01.64r
+
+### Added
+- The Places screen now lists places that Scout found but you have not chosen yet in their own group at the end, "🔎 Scouted, not chosen yet", so they no longer mix with the places you picked yourself
 
 ## [v01.10w] — 2026-10-03 08:05:52 PM EST — v01.61r
 

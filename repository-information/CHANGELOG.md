@@ -3,11 +3,34 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 64/100`
+`Sections: 65/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.64r] — 2026-10-03 11:09:33 PM EST
+
+> **Prompt:** "Why is this thread idle? What about the [trip] fixes?" *(the destination is redacted; this push is the framework side of the fix package the owner approved on the project's morning review — its items 1–6 and 8, Phase 13)*
+
+### Added
+- **Dated stays and Contract C13** (`helpers/packs/tour-guide/gas/26_lodging.js`, `helpers/SPEC.md`): `/lodging <name> <from> to <to>` adds, replaces and removes dated stays (1–12, sorted, no overlaps; the check-out date ends a stay) and `/lodging` lists them; every request that carries a trip update sends them as `trip_update.lodging` with the core's fingerprint `lodging_fp` (`lfp1:` + FNV-1a over the normalised stays). A plan built for other lodging shows "⚠️ This plan was built for different lodging. `/lodging` offers to re-plan the days that changed or to keep the plan." in `/trip`, the day card and the morning message while a stored day is still to come. The offer re-plans every stored day from the earliest night any change touched since the plan arrived; Keep the plan stops the line until the stays change again; a one-day `/replan` keeps the line; no lodging at all shows none
+- **Scouted candidates as their own group** in `/places` and the app's Places screen, "🔎 Scouted, not chosen yet" (`scouted: true` on the places digest, a new last column in the Places tab; `live-site-pages/helper-app.html`, app v01.11w)
+- **A companion's profile names them**: the prefs kit takes an optional subject on `apply` and `interview` and a new `refresh` command (`helpers/kits/prefs/`), used in the profile's heading, its opening line and the `/profile` count line; a kit-made profile is renamed on its next apply or refresh, a hand-edited one is still refused
+- **Probe P** (`pack_tour-guide_p13_probe`): a four-day trip with two stays and a departure too early to fit, a booking at a day's edge, a place whose opening days vary and a menu never checked, through the planner, a two-part digest and the core, then a stay change and its re-plans, and Scout's request text
+- Tests: `pack_tour-guide_p13_{coord,parity,probe}`, `pack_tour-guide_p13a_{facts_age,old_fixtures,timing,trip_breakers}`, `pack_tour-guide_p13b_{dinner,hours,rail_season}`, `pack_tour-guide_p13c_{dates,html,lodging,parity,reminders,scout,scouted,stale}` with `pack_tour-guide_p13c_world.js`, `pack_tour-guide_p13d_scout`, `kit_prefs_subject`; the invented Scout cases in `fixtures/p13d-scout/`. 978 tests, 977 pass, 1 skipped (the Maps live smoke)
+
+### Fixed
+- **The planner's trip-breakers** (`helpers/packs/tour-guide/planner/`): a departure day the plan cannot reach comes back without stops, with the `over_long_day` alert and its `/dates` fix, instead of failing the whole plan; an override whose end is not after its start is clamped with a warning; a booking at the edge of its day keeps its time and widens the day with an info line instead of going to Later; a booking dated outside the trip says so in Later instead of "closed on every day"; on a day with a hard end the last leg leaves as late as allowed, after free time near the last place; evening extras never start before the day's start
+- **Hours and facts**: Google's "hours might differ" counts only for its own weekday; a place whose own site says its opening days vary is planned, with its own words as the stop's check line, and the journey no longer reads it as closed (`journey/journey-areas.mjs`); own facts checked more than 90 days before the plan's day add "facts are old" and a check line; fact dates use the local day
+- **The vegetarian gaps**: dinners rank by their menu within each of the owner's ranks, and a menu never checked, unknown or older than 30 days says "menu not checked for <the diet>" on the day card and in the morning message (the planner now passes the day and the party's diet at all three dinner calls); under a hidden-stock diet rule Google's vegetarian flag alone no longer passes a Scout meal topic
+- **Messages** (`helpers/packs/tour-guide/gas/`): a long line is cut only in its visible text, so a day card with many map links stays valid HTML; on a trip in a zone ahead of home the travel day gets one booking reminder, not two; a moving day's morning message shows the day's own start line instead of "Leave by"; a departure day's morning keeps its trains, end and alert before "Free day."; every `/dates` refusal about a day's length ends with one valid command; the pack's validator and the core's mirror agree on every free-text length bound
+- **Scout** (`helpers/packs/tour-guide/scout/`, the core's Scout files): chat requests carry the owner's words as typed and the app writes "/scout <what> in <where>"; the ranked line marks a place seen before with 🔁; the board's hours cover every date the owner spends in that city; "<topic> near <area>, <city>" belongs to the city; a new place keeps its own name
+- The shared test digest (`helpers/tests/harness/tour-guide-digest.js`) passes a stop's `check_on_day`, so the tests see the line the private digest builder already sends
+
+### Changed
+- **Season and rail**: roses run to November and autumn-flowering cherries from October to December (`season/season-bloom.mjs`); rail estimates between 40 and 150 km assume a conventional line (`planner/planner-rail.mjs`), so several between-town legs are longer
+- Docs: `helpers/SPEC.md` (stays), the pack README (the day's shape, the stays row and paragraph, Scout's inputs, the new tests), `helpers/decisions/TG-SCOUT.md` §9, the prefs kit README; decisions and status for WP-13a–d, `helpers/decisions/TG-PHASE-13.md`, `helpers/prompts/TG-PHASE-13.md`; `helpers/BUILD-STATE.md` row 13, the Phase 13 log and Next; README tree, the app's version line and timestamp
 
 ## [v01.63r] — 2026-10-03 08:24:00 PM EST
 
