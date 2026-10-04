@@ -3,11 +3,27 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 68/100`
+`Sections: 69/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.68r] — 2026-10-04 04:30:06 AM EST
+
+> **Prompt:** "… 11. Save this place: Approve · note: Instead of forwarding a Google Maps share link to the bot, I'd like to give Tour Guides access to my existing Google lists to organize, maintain, and integrate with Tour Guide's Places. … 19. Day trip: Approve · note: I have not finalized my entire trip yet, so I may use this function for a different city. 20. What's on: Approve · note: I have not finalized my entire trip yet, so I may use this function for a different city. …" *(excerpts of the owner's answers on the project's morning review; this push lets a routine fetch the owner's Takeout export from Drive (item 11, Phase 14's WP-14f) and adds the brief for Day trip and What's on (items 19 and 20, which the owner chose to build before the trip))*
+
+### Added
+- **The Takeout fetch** (Contract C14, WP-14f; `gas/28_lists.js`, `helpers/packs/tour-guide/lists/lists-fetch.mjs`): the core's `?route=takeout` (POST, authenticated like `?route=upload` by the `upload_key` of an open or just-answered `lists` or `research` request) lists the owner's newest Google Takeout exports (at most three, newest first) in the `Takeout` folder at the top of Drive and its direct subfolders, and hands one part's exact bytes to the routine; it never changes Drive. A part over 10 MB or an export over 30 MB is marked too large, one request may download at most 10 parts, and every refusal is audited. `lists-fetch.mjs` (no dependencies; curl, so the environment's proxy applies) writes the newest export's parts into a scratch folder, checks every size, removes what it wrote when a part fails and never prints the key; `--newer-than <stamp>` skips an export already read (exit 0 fetched, 2 nothing newer, 1 a failure). The Drive connector would have handed an archive over as base64 text to copy by hand, where one wrong character corrupts a zip
+- **An export in parts**: `readSavedExports(parts)` reads one export that Takeout split into several files (a `.zip` and a `.tgz` alike), merging lists by name in part order, with the limits holding for the export as a whole
+- **Automatic pickup**: once a `lists` request has been answered, a daily check opens one `lists` request when a newer export lands in Drive (never while one is open); `/lists auto on|off`; `/lists` shows the newest export's day and size and whether new exports are read automatically
+- **Compare's cut before the lookups**: `compareCut` is exported from the Scout engine, so a routine can cut a long list to ten places (those in the asked place first, then the most recently saved) before it spends Maps lookups; `rankScout`'s `already_cut` adds the places cut that way to `more`
+- **The brief for Phase 15** (`helpers/prompts/TG-PHASE-15.md`): Day trip (`/daytrip`, a ranked board of day trips from any base) and What's on (`/whatson`, what is on in any city on given dates, official pages first), Contract C15 (the `daytrip` and `whatson` envelopes and request kinds, chosen events and kept day trips in the plan), and a rail fix so that a 15–40 km ride no longer costs more than a 41 km one
+- Tests: `pack_tour-guide_lists_{takeout,fetch,parts}`, `pack_tour-guide_compare_cut`; the harness's `putTakeout` puts a binary file into the mock Drive. 1108 tests, 1107 pass, 1 skipped (the Maps live smoke); in a copy laid out like helpers-dist, 1095 pass, 13 skipped
+
+### Changed
+- `/lists sync` looks for an export in Drive first: without one it sends the steps to make one instead of opening a request that would find nothing; with one, the request carries the export's stamp
+- Docs: `helpers/SPEC.md` §3 and §6 (the `takeout` route) and §16 (the WP-14f paths); the pack README (`28_lists.js`, Lists) and `lists/README.md` ("Fetching the export", parts, the daily check); `helpers/decisions/TG-SCOUT.md` §11 (`compareCut`, `already_cut`); decisions and status for WP-14f, `helpers/decisions/TG-PHASE-14.md` §12; `helpers/BUILD-STATE.md` rows 14 and 15, the Phase 14 and Phase 15 logs and Next; the README tree and timestamp
 
 ## [v01.67r] — 2026-10-04 03:32:45 AM EST
 

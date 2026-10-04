@@ -89,8 +89,11 @@ const iter = (arr) => { let i = 0; return { hasNext: () => i < arr.length, next:
 class DFile {
   constructor(parent, name, content, mime) { Object.assign(this, { id: nid('file'), parent, name, content: String(content ?? ''), mime: mime || 'text/plain', trashed: false, created: new Date(driveNow()), updated: new Date(driveNow()) }); }
   getId() { return this.id; } getName() { return this.name; } setName(n) { this.name = n; return this; }
-  getBlob() { const c = this.content; return { getDataAsString: () => c, getBytes: () => Array.from(Buffer.from(c, 'utf8')), getContentType: () => this.mime }; }
-  getSize() { return Buffer.byteLength(this.content, 'utf8'); } getMimeType() { return this.mime; }
+  getBlob() {
+    if (this.bytes) { const b = this.bytes; return { getDataAsString: () => b.toString('utf8'), getBytes: () => Array.from(b, (x) => (x > 127 ? x - 256 : x)), getContentType: () => this.mime }; }   // WP-14f: exact binary bytes, signed like Apps Script's byte[]
+    const c = this.content; return { getDataAsString: () => c, getBytes: () => Array.from(Buffer.from(c, 'utf8')), getContentType: () => this.mime };
+  }
+  getSize() { return this.bytes ? this.bytes.length : Buffer.byteLength(this.content, 'utf8'); } getMimeType() { return this.mime; }
   setContent(c) { this.content = String(c); this.updated = new Date(driveNow()); return this; }
   moveTo(folder) { if (this.parent) this.parent.files = this.parent.files.filter((f) => f !== this); this.parent = folder; folder.files.push(this); return this; }
   setTrashed(b) { this.trashed = !!b; return this; } isTrashed() { return this.trashed; }
@@ -294,6 +297,18 @@ function bootstrap(ctx, state, overrides = {}) {
   ctx.getMailboxFolders();
   return state;
 }
+/**
+ * WP-14f: put a binary file (a Takeout archive part) into the mock Drive: putTakeout(state, name, bytes, { folder?
+ * ('Takeout' — a path from My Drive's root), trashed?, created? (ISO or Date) }) → the file. getBlob().getBytes() returns
+ * exactly `bytes` (signed, as Apps Script does) and getSize() their length.
+ */
+function putTakeout(state, name, bytes, o = {}) {
+  const f = state.drive.ensureFolder(o.folder === undefined ? 'Takeout' : o.folder).createFile(name, '', name.toLowerCase().endsWith('.zip') ? 'application/zip' : 'application/x-gzip');
+  f.bytes = Buffer.from(bytes);
+  if (o.created) f.created = new Date(o.created);
+  if (o.trashed) f.setTrashed(true);
+  return f;
+}
 /** Make the inbound routine (or `name`) fireable: URL + token properties. */
 function configureRoutine(ctx, state, name) {
   const n = (name || ctx.HELPER.inbound_routine).toUpperCase();
@@ -370,6 +385,6 @@ function appPost(ctx, state, route, body = {}, o = {}) {
   return JSON.parse(out.content);
 }
 
-module.exports = { HELPERS_ROOT, loadGas, createMocks, listGasFiles, bootstrap, configureRoutine, tgUpdate, postEvent, getEvent, envelope, putEnvelope, fireTriggers, formatDate, initData, appPost };
+module.exports = { HELPERS_ROOT, loadGas, createMocks, listGasFiles, bootstrap, configureRoutine, putTakeout, tgUpdate, postEvent, getEvent, envelope, putEnvelope, fireTriggers, formatDate, initData, appPost };
 
 // Developed by: LightAISolutions

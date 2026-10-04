@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-04 03:32:45 AM EST` · Repo version: `v01.67r`
+Last updated: `2026-10-04 04:30:06 AM EST` · Repo version: `v01.68r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -297,6 +297,7 @@ Last updated: `2026-10-04 03:32:45 AM EST` · Repo version: `v01.67r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-14c.md">WP-14c.md</a> — WP-14c veg card and brochure PDF: phrases, the party rule, the fingerprint, send-or-silent, the morning line, the PDF op: decisions
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-14d.md">WP-14d.md</a> — WP-14d the owner's saved Google Maps lists: the Takeout reader, link forms, the merge and the resolution rule, destinations, notes, the commands
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-14e.md">WP-14e.md</a> — WP-14e compare and one Discover routine: the command, compare mode, flags, the cap, the board and card, the discovery kinds
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-14f.md">WP-14f.md</a> — WP-14f the Takeout fetch: the route, its key and refusals, where exports are looked for, the daily check, the client, exports in parts, compare's cut
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-S-engine.md">WP-S-engine.md</a> — WP-S engine decisions: weights, screens, the gem rule, payload and board choices
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/WP-S-gas.md">WP-S-gas.md</a> — WP-S core decisions: /scout, the Scouts tab, the ➕ callback, the app operations
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/decisions/hidden-gems-proposal.md">hidden-gems-proposal.md</a> — Hidden gems: the sweep idea evaluated against other methods, the Gem Funnel recommendation, costs, plan changes implied, decisions 22–26 (answered by the owner)
@@ -614,8 +615,9 @@ Last updated: `2026-10-04 03:32:45 AM EST` · Repo version: `v01.67r`
 │   │       │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/lists/fixtures/lists-export.json">lists-export.json</a> — The files of an invented Saved export, packed into a .tgz and a .zip by the tests
 │   │       │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/lists/fixtures/lists-sample.json">lists-sample.json</a> — An invented trip for the branch's test
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/lists/index.mjs">index.mjs</a> — Lists exports
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/lists/lists-fetch.mjs">lists-fetch.mjs</a> — The routine's Takeout fetch through ?route=takeout: takeoutUrl, listTakeout, fetchTakeout, the CLI (curl; never prints the key)
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/lists/lists-merge.mjs">lists-merge.mjs</a> — mergeLists, recordResolution, lookupFor, acceptResult, destinationFor, listNotesFor, listedPlace, applyListTags
-│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/lists/lists-read.mjs">lists-read.mjs</a> — readSavedExport: .tgz, .zip or .csv; RFC 4180; limits, partial and truncated
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/lists/lists-read.mjs">lists-read.mjs</a> — readSavedExport: .tgz, .zip or .csv; RFC 4180; limits, partial and truncated; readSavedExports for an export in parts
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/lists/lists-url.mjs">lists-url.mjs</a> — parseMapsUrl: CID, place id, pin, name, query or short link; never followed
 │   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/lists/README.md">README.md</a> — Contract: the export, link forms, the merge, the resolution rule, limits, the owner's export steps
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/planner">planner/</a>        — Day planner + exact solver (WP-3b): matrix → order → real legs → DayPlan
@@ -720,7 +722,8 @@ Last updated: `2026-10-04 03:32:45 AM EST` · Repo version: `v01.67r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-11.md">TG-PHASE-11.md</a> — Phase 11 kickoff: usefulness pass step 2 — real starts, dinners and evenings, researched place facts, season and local favourites, a brochure pass, then outlines and day versions to compare (Opus 5.5 · high)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-12.md">TG-PHASE-12.md</a> — Phase 12 kickoff: usefulness pass step 3 — the morning message, running late, re-plans from where you are, the evening check-in, a rehearsal before the trip (Opus 5.5 · high)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-13.md">TG-PHASE-13.md</a> — Phase 13 kickoff: the morning review's fix package — the planner's trip-breakers, real dated stays (C13), the vegetarian gaps, hours and rail, messages, Scout's faults (Opus 5.5 · high, no Fable)
-│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-14.md">TG-PHASE-14.md</a> — Phase 14 kickoff: branches before the trip — the scaffold, Scout's ranking, the veg card and PDF, the owner's lists, compare, one Discover routine (Opus 5.5 · high, no Fable)
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-14.md">TG-PHASE-14.md</a> — Phase 14 kickoff: branches before the trip — the scaffold, Scout's ranking, the veg card and PDF, the owner's lists, compare, one Discover routine (Opus 5.5 · high, no Fable)
+│   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/prompts/TG-PHASE-15.md">TG-PHASE-15.md</a> — Phase 15 kickoff: Day trip and What's on before the trip — Contract C15, the rail fix for 15–40 km rides, chosen events and day trips in the plan (Opus 5.5 · high, no Fable)
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/README.md">README.md</a>               — Framework overview, "how to add a helper", the public/private rules
 │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/SPEC.md">SPEC.md</a>                 — Framework contract v1 — envelope, mailbox, wake route, manifest, registries, properties, sheet, limits, ownership map
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/status">status/</a>                 — One status file per work package
@@ -775,6 +778,7 @@ Last updated: `2026-10-04 03:32:45 AM EST` · Repo version: `v01.67r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-14c.md">WP-14c.md</a> — WP-14c progress, checks and requests
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-14d.md">WP-14d.md</a> — WP-14d progress, checks and requests
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-14e.md">WP-14e.md</a> — WP-14e progress, checks and requests
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-14f.md">WP-14f.md</a> — WP-14f progress, checks and requests
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-S-engine.md">WP-S-engine.md</a> — WP-S engine progress, checks and requests
 │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/status/WP-S-gas.md">WP-S-gas.md</a> — WP-S core progress, checks and requests
 │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/templates">templates/</a>              — Skeletons copied by tools/new-helper.mjs
@@ -865,6 +869,7 @@ Last updated: `2026-10-04 03:32:45 AM EST` · Repo version: `v01.67r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_c12_contracts.test.js">pack_tour-guide_c12_contracts.test.js</a> — Tour Guide pack: every C12 field at its bounds, one past them refused, older records still valid
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_choices.test.js">pack_tour-guide_choices.test.js</a> — Tour Guide pack: owner choices on planTrip, statuses, "Saved by you"
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_compare.test.js">pack_tour-guide_compare.test.js</a> — Tour Guide pack: /compare names or one list, in a place; the usage line; the real lists module
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_compare_cut.test.js">pack_tour-guide_compare_cut.test.js</a> — Tour Guide pack: compareCut on bare records before the lookups; already_cut added to more
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_engines_redteam.test.js">pack_tour-guide_engines_redteam.test.js</a> — Gems, planner, estimator, later list and schemas red-team: forged records, one-publisher floods, words-only `gem_line`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_estimator.test.js">pack_tour-guide_estimator.test.js</a> — Tour Guide pack: estimates, calibration taps, bounds
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_facts.test.js">pack_tour-guide_facts.test.js</a> — Tour Guide pack: place facts (normalize, lines, staleness, conflicts)
@@ -896,6 +901,9 @@ Last updated: `2026-10-04 03:32:45 AM EST` · Repo version: `v01.67r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_later.test.js">pack_tour-guide_later.test.js</a> — Tour Guide pack: Later lists, promote / demote
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_lists.test.js">pack_tour-guide_lists.test.js</a> — Tour Guide pack: /lists, /list, /lists sync, the Places tab's lists column, /places, the app's list filter
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_lists_engine.test.js">pack_tour-guide_lists_engine.test.js</a> — Tour Guide pack: the Takeout reader, link forms, the merge, the resolution rule, destinations, notes
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_lists_fetch.test.js">pack_tour-guide_lists_fetch.test.js</a> — Tour Guide pack: the Takeout fetch client — list, fetch, sizes, refusals, the CLI's exits; the key never shows
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_lists_parts.test.js">pack_tour-guide_lists_parts.test.js</a> — Tour Guide pack: readSavedExports — one export in parts (a zip and a tgz), the limits across parts
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_lists_takeout.test.js">pack_tour-guide_lists_takeout.test.js</a> — Tour Guide pack: ?route=takeout, the daily check, /lists sync and /lists auto, the /lists lines; Drive never changed
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_note_table.js">pack_tour-guide_note_table.js</a> — The note guard's shared table (module and GAS port agree on it)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_payloads.test.js">pack_tour-guide_payloads.test.js</a> — Tour Guide pack: the seven payload schemas and validatePayload
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_p13_coord.test.js">pack_tour-guide_p13_coord.test.js</a> — Tour Guide pack: Phase 13 coordinator wiring — opening days that vary are not read as closed when the journey clusters

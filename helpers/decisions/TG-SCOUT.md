@@ -261,6 +261,8 @@ the same card, board and Scout screen, and has the same ➕ buttons. Defaults an
 - The cap is 10 places (`COMPARE_MAX`). A longer list is cut before ranking: places in `where` (else the trip's
   destination) first, then the most recently listed (ISO `listed_on`, newest first; undated last), then pool order.
   `more` counts the rest.
+- WP-14f: the cut is exported as `compareCut(records, { in_where, listed_on })`, so a routine can cut a long list on
+  the bare records before its lookups; `rankScout`'s `already_cut` (a non-negative integer, else 0) is added to `more`.
 - A name the driver could not find is passed in `not_found`. It leads the left-out list with reason `not_found` and
   `place_id: null`.
 - The group is `opts.group`, else the pool's majority (food when more than half the places are food). The diet screens

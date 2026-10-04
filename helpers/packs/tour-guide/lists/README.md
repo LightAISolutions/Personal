@@ -9,12 +9,14 @@ those tags in step on each later export. It **never writes to Google's lists**.
 | Part | Where |
 |---|---|
 | The engine: reader, link parser, merge, resolution rule, destination, notes (pure, `node:zlib` only) | `lists/*.mjs`, exported from `lists/index.mjs` |
-| The chat: `/lists`, `/lists sync`, `/list <name>`, `tgListNames()`; kind `lists` → `RESEARCH` | `gas/28_lists.js` |
+| The chat: `/lists`, `/lists sync`, `/lists auto`, `/list <name>`, `tgListNames()`; kind `lists` → `RESEARCH` | `gas/28_lists.js` |
+| The Takeout fetch (WP-14f): `?route=takeout` and the daily job `tg_lists_takeout` | `gas/28_lists.js` |
+| The fetch client: the newest export's parts, byte for byte, into a scratch directory (not exported from `index.mjs`) | `lists/lists-fetch.mjs` |
 | Where the lists live: the Places tab's `lists` column (absent keeps it, `[]` clears it) | `gas/21_sheets.js` |
 | The app: `places.search { list }` and its `lists` facet; the Places screen's list filter | `gas/32_app_api.js`, `live-site-pages/helper-app.html` |
 | The place file: `lists`, `list_notes`, `cid`, the `listed` history event | `schemas/tour-guide-place.schema.json`, `checkPlace` |
 | Invented fixtures (the town of Quillmere) | `lists/fixtures/` |
-| Tests | `helpers/tests/pack_tour-guide_lists_engine.test.js`, `helpers/tests/pack_tour-guide_lists.test.js` |
+| Tests | `helpers/tests/pack_tour-guide_lists_engine.test.js`, `helpers/tests/pack_tour-guide_lists.test.js`; WP-14f: `pack_tour-guide_lists_takeout.test.js` (the route, the daily job, the chat), `pack_tour-guide_lists_fetch.test.js` (the client), `pack_tour-guide_lists_parts.test.js` (`readSavedExports`) |
 
 ## The export
 
@@ -38,6 +40,13 @@ skipped: [{ file, reason }], partial }`.
 - **`partial`** is true when anything that might have been a list was not read whole: a limit was reached, the archive
   is damaged (whatever could be read is kept), an entry is encrypted or uses another compression, or a `Saved/` CSV lacks
   Title or URL. A list cut by a limit carries `truncated: true`. The merge uses both flags (below).
+- **An export in parts** (WP-14f). Takeout splits a large export into `takeout-<stamp>-001.zip`, `-002.zip`, ….
+  `readSavedExports([{ bytes, file }, …], { limits? })` reads them in the order given (part order) and returns the same
+  shape. A list merges into the list of the same name from an earlier part: its items are appended in part order and
+  it is `truncated` when any part's list was. `skipped` is every part's, concatenated; `partial` is true when any part
+  was partial. The lists, items-in-a-list and items-in-all limits hold for the export as a whole (a merged list counts
+  once); the unpacked-size limit holds for each part. Once the lists or items-in-all limit is reached, later parts are
+  not read and are named in `skipped`. One part gives exactly `readSavedExport`'s result.
 
 ## Link forms
 
@@ -119,8 +128,14 @@ Every unresolved item is named to the owner with its reason and held in the inde
 - `/lists` — one line per list with how many stored places are on it, then "Last read from an export: <date>" (the day
   the last `lists` request was answered, in the owner's zone, from the core's Requests record) or "Not read from an export
   yet.", then "/list <name> to see one · /lists sync to read a newer export". Never opens a request.
-- `/lists sync` — opens a `lists` request `{ trip? }` (the current trip when there is one), routed to `RESEARCH`. The
-  routine reads the newest export in Drive and answers with a `places_digest` whose places carry `lists`, and a `reply`.
+  WP-14f adds "Newest export in Drive: <date>, <size>" (with "— too large to read" when flagged), or a one-line how-to
+  when there is none; and, once a `lists` request has been answered, whether new exports are read automatically.
+- `/lists sync` — opens a `lists` request `{ trip?, takeout? }` (the current trip when there is one), routed to
+  `RESEARCH`. The routine reads the newest export in Drive and answers with a `places_digest` whose places carry `lists`,
+  and a `reply`. WP-14f: with no export in Drive it sends the export steps instead and opens nothing; with one, the
+  request carries its stamp as `takeout` and the export counts as seen by the daily job. When Drive cannot be read the
+  request still opens, without a stamp.
+- `/lists auto on|off` — whether the daily job reads a new export by itself (setting `lists_auto`; on by default).
 - `/list <name>` — the list whose folded name equals the text, else the one it starts, else the one it is part of
   ("Which list? …" when more than one fits). Its places grouped by destination, each with status and note line; at most
   40, then "… and N more — open Places in the app", with the app row when the app is set up.
@@ -129,8 +144,39 @@ Every unresolved item is named to the owner with its reason and held in the inde
   changed set counts as a change. `/places` search results show "📋 <lists>". The app's `places.search` takes `list`
   (a folded exact name, ≤ 80 characters) and returns a `lists` facet; rows carry `lists` only when the place has some.
   The Places screen shows a list filter beside the tag filter when the facet has names.
-- There is **no timer** in the core: the private side looks for a newer export when trip research runs, and on
-  `/lists sync`.
+- **The daily job** `tg_lists_takeout` (WP-14f) opens one automatic `lists` request `{ trip?, takeout, auto: true }`
+  when a newer export than the last one seen is in Drive — only after a `lists` request has been answered at least once,
+  never while a `lists` request is open, and not after `/lists auto off`. The ack reads "📋 A new saved-lists export is
+  in Drive — reading it…". The private side still also looks for a newer export when trip research runs.
+
+## Fetching the export
+
+The routine fetches the export through the core, not the Drive connector: the connector hands an archive over as base64
+text to copy by hand, and one wrong character corrupts a zip. The core reads Drive; it never writes there.
+
+**The route** `POST ?route=takeout`, body `{ req, key, op, name? }` (text/plain JSON). `key` is the request's upload key
+(`payload.upload_key`, as for `?route=upload`) and the request must be kind `lists` or `research`, not older than 24
+hours, and open or answered less than 60 minutes ago.
+- `op: "list"` → `{ ok: true, exports: [{ stamp, created, bytes, parts: [{ name, bytes }], too_large }] }`: at most 3
+  exports, newest first, from the `Takeout` folder in My Drive's root and its direct subfolders. A part's name is
+  `takeout-<stamp>[-<n>]-<part>.zip|.tgz`; parts of one export share the stamp (and the middle number when there is
+  one). Trashed files and other names are not listed. `too_large` when any part is over 10 MB or the export over 30 MB.
+- `op: "get"`, `name` → `{ ok: true, name, bytes, created, data }`, `data` the part's exact bytes in base64. Audited.
+- Refusals, `{ ok: false, reason }` in this order: `not_set_up` 503, `bad_request_id` 400, `bad_key` 403,
+  `unknown_request` 404, `wrong_kind` 403, `request_too_old` 403, `request_closed` 403, `bad_op` 400; then for a get
+  `unknown_file` 404, `too_large` 413 (a part over 10 MB), `too_many_gets` 429 (more than 10 gets for one request).
+
+**The client** `lists/lists-fetch.mjs` (plain Node, curl, so the environment's proxy applies):
+
+    node vendor/helpers/packs/tour-guide/lists/lists-fetch.mjs --wake-url <state.json wake_url> \
+         --key-from <the saved req_<id>.json> --out <scratch dir outside the repo> [--newer-than <stamp>] [--list]
+
+It prints one JSON line: `{ ok: true, stamp, created, files, bytes }` (exit 0); `{ ok: true, none: true, reason }` with
+`no_export` or `not_newer` (exit 2); `{ ok: false, reason }` (exit 1) — the core's refusal, `too_large`, `not_deployed`
+(a core without the route), `bad_answer`, `size_mismatch` or `network`. Parts are written under their Drive names and
+checked against their listed sizes; a failure part-way removes what it wrote. The key is read from the saved request
+file and never printed. Then `readSavedExports(files.map((f) => ({ file: basename(f), bytes: read(f) })))`.
+`fetchTakeout`, `listTakeout` and `takeoutUrl` are exported for a caller that passes its own `run`.
 
 ## Limits
 

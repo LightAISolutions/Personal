@@ -4,6 +4,7 @@
  *
  *   readSavedExport(bytes, { file, limits? }) → { lists: [{ name, items: [{ title, url, note, address }], truncated? }],
  *                                                  skipped: [{ file, reason }], partial }
+ *   readSavedExports([{ bytes, file }], { limits? }) → the same shape, for one export Takeout split into parts (WP-14f)
  *   parseCsv(text) → string[][]   (RFC 4180)
  *
  * A .tgz (gunzip, then the tar blocks), a .zip (the central directory; stored and deflated entries) or a bare .csv. In
@@ -182,37 +183,76 @@ function zipData(buf, e, max) {
  * `skipped`. The format is read from the bytes (gzip, zip), else from the name; anything else is treated as one CSV.
  */
 export function readSavedExport(bytes, opts = {}) {
-  const lim = { ...LIMITS, ...(opts.limits || {}) };
-  const file = String(opts.file || 'export');
-  const buf = Buffer.isBuffer(bytes) ? bytes : Buffer.from(bytes instanceof Uint8Array ? bytes : String(bytes ?? ''));
+  const st = readState(opts);
+  readInto(st, bytes, String(opts.file || 'export'));
+  return readDone(st);
+}
+
+/**
+ * readSavedExports(parts, { limits }) — one export that Takeout split into parts ([{ bytes, file }], in part order) →
+ * the same shape as readSavedExport. A list merges into the list of the same name read from an earlier part (its items
+ * appended in part order, `truncated` when any part's list was); within one part lists behave exactly as in
+ * readSavedExport, so one part gives exactly its result. The lists, items-in-all and items-in-a-list limits hold for the
+ * whole export (a merged list counts once against `lists`); the unpacked-size limit holds for each part. Once the lists
+ * or items-in-all limit is reached, later parts are not read and are named in `skipped`. `skipped` is concatenated and
+ * `partial` is true when any part was partial.
+ */
+export function readSavedExports(parts, opts = {}) {
+  const st = readState(opts);
+  for (const p of Array.isArray(parts) ? parts : []) {
+    const file = String((p && p.file) || 'export');
+    if (st.stopped) { st.skip(file, `${st.stopped}: not read`, true); continue; }
+    readInto(st, p ? p.bytes : null, file);
+    st.prior = new Map();
+    for (const l of st.res.lists) if (!st.prior.has(l.name)) st.prior.set(l.name, l);
+  }
+  return readDone(st);
+}
+
+/** The state a read accumulates in: the result, the limits, the items read, why reading stopped, earlier parts' lists. */
+function readState(opts) {
   const res = { lists: [], skipped: [], partial: false };
-  const skip = (f, reason, partial) => { res.skipped.push({ file: f, reason }); if (partial) res.partial = true; };
-  let total = 0, stopped = false;
+  return { res, lim: { ...LIMITS, ...(opts.limits || {}) }, total: 0, stopped: '', prior: null,
+    skip: (f, reason, partial) => { res.skipped.push({ file: f, reason }); if (partial) res.partial = true; } };
+}
+function readDone(st) {
+  st.res.lists.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+  return st.res;
+}
+
+/** Read one archive (or bare CSV) into the state. The lists and items-in-all limits stop the whole read; the size limit this part. */
+function readInto(st, bytes, file) {
+  const { res, lim, skip } = st;
+  const buf = Buffer.isBuffer(bytes) ? bytes : Buffer.from(bytes instanceof Uint8Array ? bytes : String(bytes ?? ''));
+  let partStopped = false;
+  const halted = () => partStopped || !!st.stopped;
 
   const take = (name, text, inSaved) => {
-    if (stopped) return;
-    if (res.lists.length >= lim.lists) { skip(name, `over the limit of ${lim.lists} lists: not read`, true); stopped = true; return; }
-    const left = lim.items - total;
-    const r = csvItems(text, Math.min(lim.items_per_list, left));
+    if (halted()) return;
+    const into = st.prior && st.prior.has(listName(name)) ? st.prior.get(listName(name)) : null;
+    if (!into && res.lists.length >= lim.lists) { skip(name, `over the limit of ${lim.lists} lists: not read`, true); st.stopped = `over the limit of ${lim.lists} lists`; return; }
+    const left = lim.items - st.total, room = lim.items_per_list - (into ? into.items.length : 0);
+    const r = csvItems(text, Math.max(0, Math.min(room, left)));
     if (r.error) { skip(name, inSaved ? r.error : `not a saved list (${r.error})`, inSaved); return; }
-    const list = { name: listName(name), items: r.items };
-    total += r.items.length;
+    const list = into || { name: listName(name), items: [] };
+    for (const it of r.items) list.items.push(it);
+    st.total += r.items.length;
     if (r.truncated) {
       list.truncated = true;
       res.partial = true;
-      skip(name, left <= lim.items_per_list && r.items.length === left
+      skip(name, left <= room && r.items.length === left
         ? `over the limit of ${lim.items} items in all: ${r.items.length} read from this list, the rest not read`
-        : `over the limit of ${lim.items_per_list} items in a list: the first ${r.items.length} read`, true);
-      if (total >= lim.items) stopped = true;
+        : `over the limit of ${lim.items_per_list} items in a list: the first ${list.items.length} read`, true);
+      if (st.total >= lim.items) st.stopped = `over the limit of ${lim.items} items in all`;
     }
-    res.lists.push(list);
+    if (!into) res.lists.push(list);
   };
 
   const gz = buf.length >= 2 && buf[0] === 0x1f && buf[1] === 0x8b;
   const pk = buf.length >= 4 && buf.readUInt32LE(0) === 0x04034b50;
   if (gz || /\.(tgz|tar\.gz)$/i.test(file)) {
     const u = gunzipBounded(buf, lim.bytes);
-    if (!u.data) { skip(file, 'not a readable .tgz archive', true); return res; }
+    if (!u.data) { skip(file, 'not a readable .tgz archive', true); return; }
     if (u.damaged) skip(file, 'the archive is damaged: what could be read was read', true);
     if (u.over) skip(file, `over the limit of ${Math.round(lim.bytes / 1048576 * 100) / 100} MB unpacked: the rest not read`, true);
     for (const e of untar(u.data)) {
@@ -221,27 +261,25 @@ export function readSavedExport(bytes, opts = {}) {
     }
   } else if (pk || /\.zip$/i.test(file)) {
     const dir = zipDirectory(buf);
-    if (!dir) { skip(file, 'not a readable .zip archive', true); return res; }
+    if (!dir) { skip(file, 'not a readable .zip archive', true); return; }
     let unpacked = 0;
     for (const e of dir) {
       if (e.name.endsWith('/')) continue;
       if (!isCsv(e.name)) { skip(e.name, 'not a CSV'); continue; }
       const inSaved = underSaved(e.name);
-      if (stopped) break;
+      if (halted()) break;
       if (e.flags & 1) { skip(e.name, 'encrypted: not read', inSaved); continue; }
       if (e.method !== 0 && e.method !== 8) { skip(e.name, `compression method ${e.method} not supported`, inSaved); continue; }
-      if (unpacked + e.usize > lim.bytes) { skip(e.name, `over the limit of ${Math.round(lim.bytes / 1048576 * 100) / 100} MB unpacked: not read`, true); stopped = true; break; }
+      if (unpacked + e.usize > lim.bytes) { skip(e.name, `over the limit of ${Math.round(lim.bytes / 1048576 * 100) / 100} MB unpacked: not read`, true); partStopped = true; break; }
       let data;
       try { data = zipData(buf, e, lim.bytes - unpacked); } catch (err) { skip(e.name, err instanceof RangeError ? 'over the unpacked limit: not read' : String(err.message || 'damaged entry'), true); continue; }
       unpacked += data.length;
       take(e.name, UTF8.decode(data), inSaved);
     }
   } else {
-    if (buf.length > lim.bytes) { skip(file, `over the limit of ${Math.round(lim.bytes / 1048576 * 100) / 100} MB unpacked: not read`, true); return res; }
+    if (buf.length > lim.bytes) { skip(file, `over the limit of ${Math.round(lim.bytes / 1048576 * 100) / 100} MB unpacked: not read`, true); return; }
     take(file.split(/[\\/]/).pop(), UTF8.decode(buf), true);
   }
-  res.lists.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-  return res;
 }
 
 // Developed by: LightAISolutions
