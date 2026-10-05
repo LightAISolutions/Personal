@@ -5,6 +5,7 @@
  *                        run: 'now' | 'form' | 'type', tpl?, parts?, confirm? }] }] }], tips, count }
  *   commands.context → what the form pickers offer: trips, the current trip's days, place names, saved lists, sections
  *   commands.run     → { text, nonce? }: runs the command as if typed (core runOwnerCommand); the answer comes in the chat;
+ *                      `request: { id, kind }` when it asked a routine something (Phase 17d progress bar);
  *                      a form with an app screen also returns opens: { screen, wait?, base?, trip? } (tgCmdOpens, Phase 17c)
  * The list itself is the core's registry (listCommands(), 02_registry.js): a command shows only when the bot answers it, so
  * the tab never offers one that is not there, and every command it shows can be run (a form, or the app's "type the rest"
@@ -323,10 +324,14 @@ function tgAppOpCommandsRun(args) {
   var nonce = tgAppStr(args, 'nonce', { max: 40, re: TG_CMD_NONCE_RE });
   if (nonce && seenOnce('apprun:' + nonce)) return tgAppOk({ duplicate: true });
   var opens = tgCmdOpens(text);   // read before the handler runs, so the answer it makes is not in the baseline
+  HB_LAST_REQUEST = null;
   var r = runOwnerCommand(text, { via: 'app' });
   if (!r.ok) tgAppRefuse(TG_CMD_RUN_STATUS[r.reason] || 400, r.reason || 'bad_text');
   var out = { cmd: r.cmd, message_id: r.message_id };
   if (opens) out.opens = opens;
+  // Phase 17d: a command that asked a routine something says which request, so the app can show its progress bar
+  // (requests.status, 49_requests_app.js) and say when the answer came — on a screen or only in the chat.
+  if (HB_LAST_REQUEST && HB_LAST_REQUEST.id) out.request = { id: String(HB_LAST_REQUEST.id), kind: String(HB_LAST_REQUEST.kind || '') };
   return tgAppOk(out);
 }
 

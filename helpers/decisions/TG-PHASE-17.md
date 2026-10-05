@@ -99,7 +99,33 @@ shell; the live bot gets it from the normal deploy, no private-repo side): **17a
 - **Bare `/quiet` and `/menu` open nothing** (their answer lists coming stops in the chat); `/brochure` and `/places`
   keep the Sent page because their answer is a file or a chat list.
 
-## 7 Next
-- The live check with the owner: the 17a–17c try-this lists on the real bot; results recorded here.
+## 7 Step 17d — a progress bar for anything asked (v01.85r, app v01.21w)
+The owner asked (5 Oct, a screenshot of the Scout screen waiting): "How long will it take to finish this task? Can you
+either give an ETA or a progress bar that shows live progress?" The same screenshot's scout had failed in the chat twice.
+- **The scout failure** was a framework bug: Google's `reviews[].publishTime` has nanoseconds, the gem record's ISO check
+  allowed milliseconds, so every result was rejected. Fixed in `gems/gems-record.mjs` (up to nine fraction digits, stored
+  as milliseconds). It reaches the private repo with its next re-pin of the helpers.
+- **What can be measured.** A routine's run is invisible to the core until its answer lands, so the bar cannot report
+  real steps. It reports time: elapsed since the ask, and an estimate measured from the Requests tab — the median time
+  from asking to answer over the last nine answered requests of the same kind (`gas/49_requests_app.js`, app op
+  `requests.status`). Until two of a kind have been answered, a default per kind is shown as a "first guess".
+- **The bar** (`#watch`): the ask's name, a bar that fills by elapsed ÷ estimate up to 95%, and a line
+  "M:SS · about N min left · usually ~N min". Past the estimate it says "taking longer than usual"; a routine that could
+  not be started says so and that it is picked up on its next run. The bar ends by opening the answer, or by saying the
+  answer was only a chat message, or that it did not come through (failed or expired) — before 17d a failed ask left the
+  screen waiting.
+- **Where it shows:** after every form ask (Scout, Day trips, What's on, Quiet, both Menu checks) and after any command
+  run from the app that opened a request (`commands.run` now returns `request: { id, kind }`).
+- Checked: `pack_tour-guide_requests_app`, the shell tests, and `shell_helper-app_17d.playwright.mjs` in light and dark.
+
+## 8 Defaults chosen in 17d
+- **Median of the last nine answered, two before it counts**; answers over two hours are left out of the estimate.
+- **Defaults per kind:** veg card 2 min, scout 4, menu 5, quiet 6, daybook 7, What's on 7, day trips 8, others 5.
+- **The bar stops at 95%** until the answer is seen; the estimate is rounded to 15 s.
+- **It watches up to three times the estimate**, never under 10 minutes or over 45; after that, "it will arrive in the chat".
+
+## 9 Next
+- The live check with the owner: the 17a–17c try-this lists on the real bot, then 17d: ask a scout from the Scout screen
+  and watch the bar (the first ones show "first guess"; after two answers, "usually"). Results recorded here.
 
 Developed by: LightAISolutions

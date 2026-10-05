@@ -38,6 +38,12 @@ test('fixture: 53 invented places, every record normalizes, duplicate ids and no
   const r = g.normalizeRecord({ place_id: 'FixtureGemX', name: 'N', reviews: [{ publish_time: '2027-01-01T00:00:00Z', rating: 5, text: 'SECRET TEXT' }], local_mentions: [{ ref: 'L002.3', language: 'PT-br', kind: 'local-language' }] });
   assert.deepEqual(r.reviews, [{ publish_time: '2027-01-01T00:00:00Z', rating: 5 }]);
   assert.equal(r.local_mentions[0].language, 'pt-br');
+  // Google's publishTime carries nanoseconds: accepted, and kept to milliseconds (the 5 Oct 2026 scout that saved nothing)
+  const ns = g.normalizeRecord({ place_id: 'FixtureGemX', name: 'N', reviews: [{ publish_time: '2026-09-28T03:14:15.123456789Z', rating: 4 }, { publish_time: '2026-09-29T01:02:03.5Z', rating: 5 }] });
+  assert.deepEqual(ns.reviews.map((x) => x.publish_time), ['2026-09-28T03:14:15.123Z', '2026-09-29T01:02:03.5Z']);
+  const nsRaw = g.fromSearchResult({ id: 'FixtureGemNano', displayName: { text: 'Nano Place' }, types: ['cafe'], reviews: [{ publishTime: '2026-09-28T03:14:15.987654321Z', rating: 5 }] }, { streams: ['taste'] });
+  assert.equal(nsRaw.reviews[0].publish_time, '2026-09-28T03:14:15.987Z');
+  assert.throws(() => g.normalizeRecord({ place_id: 'FixtureGemX', name: 'N', reviews: [{ publish_time: '2026-09-28T03:14:15.1234567890Z', rating: 4 }] }), /publish_time/);
   // a raw Places (New) search result maps to a record
   const fromRaw = g.fromSearchResult({ id: 'FixtureGemRaw', displayName: { text: 'Raw Place' }, types: ['cafe'], primaryType: 'cafe', rating: 4.5, userRatingCount: 80, businessStatus: 'OPERATIONAL', location: { latitude: 36.41, longitude: -33.8 }, regularOpeningHours: { periods: [{ open: { day: 0, hour: 0, minute: 0 } }] }, websiteUri: 'https://raw.example.com/', reviews: [{ publishTime: '2027-02-02T00:00:00Z', rating: 4, text: 'hidden', authorAttribution: { displayName: 'Reviewer' } }] }, { streams: ['taste'] });
   assert.equal(fromRaw.category, 'cafe');

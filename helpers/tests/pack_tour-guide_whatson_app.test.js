@@ -43,19 +43,23 @@ function slice(from, to) {
   assert.ok(a >= 0 && b > a, 'markers found: ' + from + ' … ' + to);
   return PAGE.slice(a, b);
 }
+// The progress bar after an ask (17d) is the commands17c shell test's; here it only records that the form started it.
+const WATCH_STUB = 'function watchAsk(screen, r, label) { __watched.push([screen, String((r || {}).request_id || \'\'), label]); }';
+
 const HELPERS = () => [slice('    /* ---------- DOM helpers', '    function setStatus('), slice('    function stateView(', '    /* ---------- theme')].join('\n');
 const WHATSON = () => slice('    /* ---------- what\'s on:', '    /* ---------- boot ----------');
 
 /** A VM context running the page's helpers and the What's on screen; call answers from `answer(op, args)` → { ok, body }. */
 function page(answer, S = {}, run = '') {
-  const st = { rendered: null, calls: [], status: [], opened: [] };
+  const st = { rendered: null, calls: [], watched: [], status: [], opened: [] };
   const box = {
+    __watched: st.watched,
     document: { title: '', createElement: (t) => new N(t), createTextNode: (t) => { const n = new N('#text'); n._text = String(t); return n; } },
     window: { open: (u) => st.opened.push(u) }, tg: null, S: Object.assign({ trip: TRIP, board: '', home: null }, S),
     render: (v) => { st.rendered = v; }, haptic() {}, setStatus: (t) => st.status.push(String(t || '')), setMain() {}, mainProgress() {},
     call: (op, args, ok, fail) => { st.calls.push(J([op, args])); const r = answer(op, args); if (r.ok) ok(Object.assign({ ok: true }, r.body)); else if (fail) fail(Object.assign({ ok: false }, r.body)); }
   };
-  vm.runInNewContext(HELPERS() + '\n' + slice('    var SCOUT_ID_RE', '    var TICKS') + '\n' + WHATSON() + '\n' + run, box);
+  vm.runInNewContext(HELPERS() + '\n' + slice('    var SCOUT_ID_RE', '    var TICKS') + '\n' + WHATSON() + '\n' + '\n' + WATCH_STUB + '\n' + run, box);
   return { box, st };
 }
 

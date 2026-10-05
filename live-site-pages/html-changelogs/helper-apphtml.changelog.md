@@ -3,11 +3,16 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 20/50`
+`Sections: 21/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.21w] — 2026-10-05 03:00:19 AM EST — v01.85r
+
+### Added
+- A progress bar for anything you ask from the app: it shows how long it has been running and about how many minutes are left, based on how long the same kind of answer took before. It says when an answer is taking longer than usual, opens the answer when it is ready, and tells you when the answer went only to the chat or did not come through
 
 ## [v01.20w] — 2026-10-05 12:05:03 AM EST — v01.79r
 

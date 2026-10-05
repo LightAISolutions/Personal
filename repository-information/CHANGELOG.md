@@ -3,11 +3,27 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 85/100`
+`Sections: 86/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.85r] — 2026-10-05 03:00:19 AM EST
+
+> **Prompt:** "How long will it take to finish this task? Can you either give an ETA or a progress bar that shows live progress?" *(with a screenshot of the Scout screen waiting on a scout)* — then "This is the result" *(the scout had failed twice in the chat on a date-format check)*
+
+### Fixed
+- **Scouts no longer fail on Google's review dates** (`helpers/packs/tour-guide/gems/gems-record.mjs`): Google's `reviews[].publishTime` carries nanoseconds (nine fraction digits) and the record's ISO check allowed three, so every scout's evidence was rejected; up to nine digits are now accepted and a stored `publish_time` keeps milliseconds
+
+### Added
+- **A progress bar for anything asked from the app** (`live-site-pages/helper-app.html` v01.21w): after a form or a command asks a routine (Scout, Day trips, What's on, Quiet, Menu check, the day view's buttons, `commands.run`), the bar shows elapsed time, "about N min left" and how the estimate was made ("usually ~N min" from past answers, else "first guess"); it fills to 95% until the answer lands, says "taking longer than usual" past the estimate, opens the answer when it lands, and says so when the answer came only to the chat, failed, or the routine could not start; it watches up to three times the estimate (10–45 minutes)
+- **App op `requests.status { id }`** (`helpers/packs/tour-guide/gas/49_requests_app.js`): a request's kind, status, whether its routine was started, elapsed seconds and an estimate — the median time from asking to answer over the last nine answered requests of that kind, else a default per kind until two have been answered
+- **`commands.run` names the request it opened** (`gas/45_commands_app.js`, core `openRequest` records it in `HB_LAST_REQUEST`): `request: { id, kind }`
+- Tests: `pack_tour-guide_requests_app`, the nanosecond dates in `pack_tour-guide_gems`, three progress-bar cases in `pack_tour-guide_commands17c_shell`, the forms starting the bar in the Quiet, Day trips, What's on and Menu shell tests, and the browser check `shell_helper-app_17d.playwright.mjs` (light and dark)
+
+### Changed
+- Docs: `helpers/decisions/TG-PHASE-17.md` (step 17d, its defaults, the try-this), the pack README (`49_requests_app.js`), `helpers/BUILD-STATE.md`
 
 ## [v01.84r] — 2026-10-05 02:51:52 AM EST
 

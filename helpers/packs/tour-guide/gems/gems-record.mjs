@@ -18,7 +18,10 @@ export const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
 export const LANGUAGE_RE = /^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$/;
 export const LEDGER_REF_RE = /^L\d{3,}(\.\d{1,3})?$/;
 export const TYPE_RE = /^[a-z][a-z0-9_]{0,63}$/;
-const ISO_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,3})?(Z|[+-]\d{2}:\d{2})$/;
+// Google's reviews[].publishTime carries nanoseconds (".123456789Z"), so up to nine fraction digits are accepted and a
+// stored publish_time keeps at most three (milliseconds).
+const ISO_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,9})?(Z|[+-]\d{2}:\d{2})$/;
+const isoMillis = (s) => s.replace(/(\.\d{3})\d+/, '$1');
 
 /** Pack categories a record may carry (`category`), with the Google types that imply each one. First match wins. */
 export const CATEGORY_TYPES = Object.freeze({
@@ -81,7 +84,7 @@ function normalizeReview(r, i) {
   if (!r || typeof r !== 'object') throw err(`reviews[${i}] must be an object`);
   if (!ISO_RE.test(String(r.publish_time))) throw err(`reviews[${i}].publish_time must be an ISO timestamp`);
   if (!(Number.isFinite(r.rating) && r.rating >= 1 && r.rating <= 5)) throw err(`reviews[${i}].rating must be 1–5`);
-  const out = { publish_time: String(r.publish_time), rating: r.rating };
+  const out = { publish_time: isoMillis(String(r.publish_time)), rating: r.rating };
   if (r.author != null) out.author = String(r.author).slice(0, 120);
   return out; // deliberately no `text`: review text never enters a record
 }

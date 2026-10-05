@@ -42,6 +42,9 @@ function slice(from, to) {
   assert.ok(a >= 0 && b > a, 'markers found: ' + from + ' … ' + to);
   return PAGE.slice(a, b);
 }
+// The progress bar after an ask (17d) is the commands17c shell test's; here it only records that the form started it.
+const WATCH_STUB = 'function watchAsk(screen, r, label) { __watched.push([screen, String((r || {}).request_id || \'\'), label]); }';
+
 const HELPERS = () => [slice('    /* ---------- DOM helpers', '    function setStatus('), slice('    function stateView(', '    /* ---------- theme'),
   slice('    var WD = [', '    /** A stop\'s time')].join('\n');
 const QUIET = () => slice('    var QUIET_ID_RE', '\n') + '\n' + slice('    /* ---------- quiet:', '    /* ---------- boot');
@@ -51,9 +54,10 @@ const QUIET = () => slice('    var QUIET_ID_RE', '\n') + '\n' + slice('    /* --
  * screen's ops) and api() (the day view's background quiet.day); `S` overrides the page state.
  */
 function page(answer, run, S = {}) {
-  const st = { rendered: null, calls: [], status: [], main: [], went: [] };
+  const st = { rendered: null, calls: [], watched: [], status: [], main: [], went: [] };
   const reply = (op, args) => { st.calls.push(J([op, args])); return answer(op, args); };
   const box = {
+    __watched: st.watched,
     document: { createElement: (t) => new N(t), createTextNode: (t) => { const n = new N('#text'); n._text = String(t); return n; } },
     window: { open() {} }, tg: null, S: Object.assign({ quiet: '', trip: '', core: CORE, home: null }, S),
     render: (v) => { st.rendered = v; }, go: (s) => { st.went.push(s); }, haptic() {}, mainProgress() {},
@@ -61,7 +65,7 @@ function page(answer, run, S = {}) {
     call: (op, args, ok, fail) => { const r = reply(op, args); if (r.ok) ok(Object.assign({ ok: true }, r.body)); else if (fail) fail(Object.assign({ ok: false }, r.body)); else st.rendered = 'refused:' + r.body.reason; },
     api: (op, args, cb) => { const r = reply(op, args); if (r.network) cb(new Error('network'), null); else cb(null, Object.assign({ ok: !!r.ok }, r.body)); }
   };
-  vm.runInNewContext(HELPERS() + '\n' + QUIET() + '\n' + run, box);
+  vm.runInNewContext(HELPERS() + '\n' + QUIET() + '\n' + '\n' + WATCH_STUB + '\n' + run, box);
   return { box, st };
 }
 
@@ -121,6 +125,7 @@ test('Quiet: the form asks with the words given; no place asks nothing; a refusa
   inputs[0].value = '  Lantern <b>Shrine</b> ';
   ask.click();
   assert.deepEqual(st.calls.pop(), ['quiet.new', { place: 'Lantern <b>Shrine</b>' }]);
+  assert.deepEqual(J(st.watched), [['quiet', 'r1', '🕊 Quieter than Lantern <b>Shrine</b>']], 'the ask starts the progress bar');
   assert.match(view.textContent, /🕊 Looking for places quieter than Lantern <b>Shrine<\/b> — the board arrives in the chat, then here\./, 'text, never markup');
   inputs[1].value = '5/13';
   ask.click();

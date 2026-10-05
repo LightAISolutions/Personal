@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.20w">
+  <meta name="build-version" content="v01.21w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -52,7 +52,13 @@
     nav#subnav button { font-size: 13px; padding: 0 12px; }
     nav[hidden], nav button[hidden], #watch[hidden] { display: none; }
     #watch { display: flex; align-items: center; gap: 8px; margin: 0 16px 10px; padding: 8px 12px; border-radius: 12px; background: var(--card); font-size: 14px; }
-    #watch .grow { flex: 1 1 auto; min-width: 0; }
+    #watch .grow { flex: 1 1 0; min-width: 0; }   /* basis 0: a long line wraps inside, the ✕ stays beside it */
+    /* 17d: the progress bar under a watched request — measured against how long this kind usually takes */
+    #watch { flex-wrap: wrap; }
+    #watch .wprog { flex: 1 1 100%; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+    #watch .wprog i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 3px; transition: width 0.9s linear; }
+    #watch .wmeta { flex: 1 1 100%; font-size: 12px; color: var(--hint); font-variant-numeric: tabular-nums; }
+    @media (prefers-reduced-motion: reduce) { #watch .wprog i { transition: none; } }
     main { padding: 16px 16px 112px; max-width: 640px; margin: 0 auto; }
     footer { position: fixed; left: 0; right: 0; bottom: 0; padding: 6px 16px calc(6px + env(safe-area-inset-bottom));
       display: flex; justify-content: space-between; font: 11px/1 var(--mono); color: var(--hint);
@@ -1347,6 +1353,7 @@
         call('scout.new', args, function (r) {
           mainProgress(false); haptic('ok'); what.value = '';
           clear(msg).appendChild(el('div', { class: 'note', text: '🔎 Scouting ' + str(r.query, 80) + ' in ' + str(r.where, 80) + ' — the ranked list arrives in the chat, then here.' }));
+          if (typeof watchAsk === 'function') watchAsk('scout', r, '🔎 Scouting ' + str(r.query, 40) + ' in ' + str(r.where, 40));
         }, function (err) { mainProgress(false); clear(msg).appendChild(el('div', { class: 'note', text: 'Not asked: ' + why(err) })); });
       };
       [what, where].forEach(function (i) { i.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); ask(); } }); });
@@ -1480,6 +1487,7 @@
           mainProgress(false); haptic('ok');
           clear(msg).appendChild(el('div', { class: 'note', text: '🚆 Looking for day trips from ' + (r.from ? str(r.from, 80) : 'where you stay') + ' · under ' + num(r.max_minutes) + ' min' +
             (r.date ? ' · on ' + daytripDate(r.date) : '') + ' — the board arrives in the chat, then here.' }));
+          if (typeof watchAsk === 'function') watchAsk('daytrip', r, '🚆 Day trips from ' + (r.from ? str(r.from, 40) : 'where you stay'));
         }, function (err) { mainProgress(false); clear(msg).appendChild(el('div', { class: 'note', text: 'Not asked: ' + daytripWhy(err) })); });
       };
       [from, date].forEach(function (i) { i.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); ask(); } }); });
@@ -1612,6 +1620,7 @@
           mainProgress(false); haptic('ok'); place.value = '';
           var q = obj(r.request), where = str(q.place, 80) || (q.trip ? 'the trip\'s cities' : '');
           clear(msg).appendChild(el('div', { class: 'note', text: '🗓 Looking up what is on in ' + where + ', ' + woWindow(q.from, q.to) + ' — the list arrives in the chat, then here.' }));
+          if (typeof watchAsk === 'function') watchAsk('whatson', r, '🗓 What’s on in ' + str(where, 40));
         }, function (err) { mainProgress(false); clear(msg).appendChild(el('div', { class: 'note', text: 'Not asked: ' + woWhy(err) })); });
       };
       place.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); ask(); } });
@@ -1745,7 +1754,7 @@
       var args = { place: place };
       if (slug) args.slug = slug;
       if (date) args.date = date;
-      call('quiet.new', args, function (r) { haptic('ok'); done(null, r); }, function (err) { done(err, null); });
+      call('quiet.new', args, function (r) { haptic('ok'); if (typeof watchAsk === 'function') watchAsk('quiet', r, '🕊 Quieter than ' + str(r.place, 40)); done(null, r); }, function (err) { done(err, null); });
     }
     function quietAsked(r) { return '🕊 Looking for places quieter than ' + str(r.place, 80) + (r.date ? ' · ' + quietDate(r.date) : '') + ' — the board arrives in the chat, then here.'; }
     /**
@@ -1884,7 +1893,7 @@
         if (!p) { clear(msg).appendChild(el('div', { class: 'note', text: 'Not asked: ' + MENU_WHY.no_place })); return; }
         if (d) args.date = d;
         mainProgress(true);
-        call('menu.new', args, function (r) { mainProgress(false); haptic('ok'); clear(msg).appendChild(el('div', { class: 'note', text: menuAsked(r) })); },
+        call('menu.new', args, function (r) { mainProgress(false); haptic('ok'); clear(msg).appendChild(el('div', { class: 'note', text: menuAsked(r) })); if (typeof watchAsk === 'function') watchAsk('menu', r, '🍽 Menu of ' + str(r.place, 40)); },
           function (err) { mainProgress(false); clear(msg).appendChild(el('div', { class: 'note', text: 'Not asked: ' + menuWhy(err) })); });
       };
       [place, date].forEach(function (i) { i.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); ask(); } }); });
@@ -1953,7 +1962,7 @@
         slot.appendChild(el('button', { class: 'pill', type: 'button', text: check ? '🍽 Menu: ' + (MENU_FITS_WORD[str(b.fits, 10)] || 'open the check') : '🍽 Check the menu', on: { click: function (ev) {
           if (check) { S.menu = check; go('menu'); return; }
           var btn = ev.currentTarget; btn.disabled = true;
-          call('menu.new', { place: str(dinner.name, 80), slug: slug, date: date }, function (r) { haptic('ok'); btn.textContent = '🍽 Reading the menu…'; setStatus(menuAsked(r)); },
+          call('menu.new', { place: str(dinner.name, 80), slug: slug, date: date }, function (r) { haptic('ok'); btn.textContent = '🍽 Reading the menu…'; setStatus(menuAsked(r)); if (typeof watchAsk === 'function') watchAsk('menu', r, '🍽 Menu of ' + str(r.place, 40)); },
             function (e2) { btn.disabled = false; setStatus('Not asked: ' + menuWhy(e2)); });
         } } }));
       });
@@ -2013,20 +2022,22 @@
           if (!body.ok) return say('Not sent: ' + (CMD_WHY[str(body.reason, 40)] || why(body)));
           haptic('ok'); setStatus(''); scRecord(text, !!opts.confirm);
           if (opts.after) return opts.after(text);   // a quiet run (a switch, Make current): the screen stays and refreshes
-          if (body.opens) return cmdOpenIn(text, body.opens, opts.back);   // 17c: the answer has a screen here
-          cmdSent(text, opts.back, !!opts.confirm);
+          var req = body.request ? obj(body.request) : null;   // 17d: it asked a routine — the bar follows it
+          if (body.opens) return cmdOpenIn(text, body.opens, opts.back, req);   // 17c: the answer has a screen here
+          cmdSent(text, opts.back, !!opts.confirm, req);
         });
       };
       if (!/^\/[A-Za-z0-9_]/.test(text)) return say(CMD_WHY[text ? 'not_command' : 'missing_arg']);
       if (opts.confirm) confirmThen('Run ' + str(text, 120) + '?', send); else send();
     }
-    function cmdSent(text, back, confirm) {
+    function cmdSent(text, back, confirm, req) {
       setMain('', null); S.back = null;
       var toChat = tg && tg.close ? el('button', { class: 'btn', type: 'button', text: 'Go to chat', on: { click: function () { try { tg.close(); } catch (e) { /* older clients */ } } } }) : null;
       var pin = scPinBtn(text, confirm, 'btn ghost');
       render(el('div', { class: 'state', 'data-sent': text }, [el('div', { class: 'big', text: '✅' }), el('h2', { text: 'Sent' }),
-        el('p', { text: 'The answer is in the chat, under “▶️ ' + str(text, 80) + '”.' }),
+        el('p', { text: 'The answer ' + (req && str(req.id, 64) ? 'comes' : 'is') + ' in the chat, under “▶️ ' + str(text, 80) + '”.' }),
         el('div', { class: 'row center' }, [toChat, el('button', { class: 'btn ghost', type: 'button', text: back ? 'Back' : 'All commands', on: { click: back || function () { showCommands(); } } }), pin])]));
+      if (req && str(req.id, 64)) cmdWatch(text, '', [], '', req);   // a routine answers it: the bar shows how far along it is
     }
 
     /* 17c (item 8): an answer opens in its own screen. commands.run says which: { screen, wait?, base?, trip? }. A slow answer (a
@@ -2035,49 +2046,121 @@
      * through Open on the bar. The chat gets every answer too, so leaving the app loses nothing. */
     var WATCH = { scout: ['scout.list', 'scouts', 'scout'], daytrip: ['daytrip.list', 'boards', 'daytrip'], whatson: ['whatson.list', 'boards', 'board'],
       quiet: ['quiet.list', 'boards', 'quiet'], menu: ['menu.list', 'items', 'menu'] };
-    var WATCH_EVERY = 10000, WATCH_FOR = 600000, watchRun = 0;
+    var WATCH_EVERY = 10000, WATCH_FOR = 600000, WATCH_MAX = 2700000, watchRun = 0, watchClock = null;
+    /** A later look; a host without timers (the shell tests' bare vm) simply never looks again. */
+    function watchLater(fn, ms) { return typeof setTimeout === 'function' ? setTimeout(fn, ms) : null; }
     function openFresh() { ['scout', 'daytrip', 'board', 'quiet', 'menu'].forEach(function (k) { S[k] = ''; }); }
-    function cmdOpenIn(text, o, back) {
+    function cmdOpenIn(text, o, back, req) {
       o = obj(o); var screen = str(o.screen, 20), trip = str(o.trip, 64);
-      if (screen !== 'vegcard' && !Object.prototype.hasOwnProperty.call(WATCH, screen) && ['today', 'compare'].indexOf(screen) < 0) return cmdSent(text, back, false);
+      if (screen !== 'vegcard' && !Object.prototype.hasOwnProperty.call(WATCH, screen) && ['today', 'compare'].indexOf(screen) < 0) return cmdSent(text, back, false, req);
       openFresh();
       if (screen === 'vegcard') { if (trip) S.trip = trip; if (o.wait) cmdSent(text, back, false); else go('vegcard'); }
       else go(screen);
-      if (o.wait) cmdWatch(text, screen, list(o.base).map(function (x) { return str(x, 64); }), trip);
+      if (o.wait) cmdWatch(text, screen, list(o.base).map(function (x) { return str(x, 64); }), trip, req);
     }
-    function watchBar(text, open) {
+    /* 17d: the bar shows how far along the request is. The routine's run is not visible from here, so it is measured: the time
+     * since asking against how long this kind usually takes (requests.status — the median of the last answers), filling to 95 %
+     * until the answer is in and saying so when it runs late. It also says when the answer came only to the chat (a "could not"
+     * reply makes no new board) and when the request failed, instead of waiting on. */
+    function watchMins(sec) { sec = Math.max(0, Math.round(num(sec))); return sec < 60 ? 'under a minute' : 'about ' + Math.max(1, Math.round(sec / 60)) + ' min'; }
+    function watchClockText(sec) { sec = Math.max(0, Math.floor(num(sec))); var r = sec % 60; return Math.floor(sec / 60) + ':' + (r < 10 ? '0' : '') + r; }
+    function watchElapsed(p) { return num(p.elapsed) + (p.done ? 0 : Math.max(0, (Date.now() - num(p.at)) / 1000)); }
+    function watchPct(p) { return !p.known || !p.started ? 0 : p.done ? 100 : Math.min(95, Math.round(watchElapsed(p) / Math.max(1, num(p.eta)) * 95)); }
+    function watchMeta(p) {
+      if (!p.known) return 'Checking how long this usually takes…';
+      if (!p.started) return 'Saved, but the routine could not start' + (p.problem ? ' (' + p.problem + ')' : '') + ' — it picks this up on its next run.';
+      var e = watchElapsed(p), usual = (p.from === 'history' ? 'usually ' : 'first guess ') + watchMins(p.eta).replace('about ', '~');
+      return watchClockText(e) + ' · ' + (e < num(p.eta) ? watchMins(num(p.eta) - e) + ' left · ' + usual : 'taking longer than usual (' + usual + ')');
+    }
+    function watchTicker(fn) {
+      if (watchClock !== null && typeof clearInterval === 'function') clearInterval(watchClock);
+      watchClock = fn && typeof setInterval === 'function' ? setInterval(fn, 1000) : null;
+    }
+    function watchBar(text, open, prog) {
       var bar = typeof $ === 'function' ? $('watch') : null;
       if (!bar) return;
-      clear(bar); bar.hidden = !text;
+      watchTicker(null); clear(bar); bar.hidden = !text;
       if (!text) return;
       bar.appendChild(el('span', { class: 'grow', text: text }));
       if (open) bar.appendChild(el('button', { class: 'btn small', type: 'button', text: 'Open', 'data-watch-open': '1', on: { click: open } }));
       bar.appendChild(el('button', { class: 'linkbtn', type: 'button', text: '✕', 'aria-label': 'Hide', on: { click: function () { if (!open) watchRun++; watchBar(''); } } }));
+      if (!prog) return;
+      var fill = el('i', {}), meter = el('div', { class: 'wprog', role: 'progressbar', 'aria-label': 'Progress', 'aria-valuemin': '0', 'aria-valuemax': '100' }, [fill]);
+      var meta = el('div', { class: 'wmeta', 'data-watch-meta': '1' });
+      bar.appendChild(meter); bar.appendChild(meta);
+      var paint = function () {
+        var pct = watchPct(prog);
+        fill.setAttribute('style', 'width:' + pct + '%'); meter.setAttribute('aria-valuenow', String(pct));
+        meta.textContent = watchMeta(prog);
+      };
+      paint();
+      prog.paint = paint;
+      if (prog.known && prog.started && !prog.done) watchTicker(paint);
     }
-    function cmdWatch(text, screen, base, trip) {
-      var run = ++watchRun, until = Date.now() + WATCH_FOR, w = WATCH[screen] || null, from = S.screen, said = str(text, 60);
-      watchBar('Working on “' + said + '” — it opens here when it’s ready. The chat gets it too.', null);
-      var tick = function () {
-        if (run !== watchRun) return;
-        if (Date.now() > until) { watchRun++; return watchBar('Still working on “' + said + '” — it will arrive in the chat.', null); }
-        if (S.busy) return setTimeout(tick, WATCH_EVERY);
+    /**
+     * Watch one asked thing. screen: where its answer shows (WATCH, or the veg card) — '' for a request with no screen of its
+     * own; base: the ids the screen held before (null: read them now); req: { id } of the request (commands.run's `request`,
+     * or an app form's request_id) — with it the bar shows progress and ends when the request is answered or failed.
+     */
+    function cmdWatch(text, screen, base, trip, req, label) {
+      var run = ++watchRun, t0 = Date.now(), w = WATCH[screen] || null, from = S.screen, said = str(text, 60);
+      var listed = !!w || screen === 'vegcard', rid = req ? str(obj(req).id, 64) : '', answeredSeen = 0;
+      var prog = rid ? { known: false, started: true, eta: 0, elapsed: 0, at: Date.now(), from: '', problem: '', done: false } : null;
+      var title = label ? str(label, 90) : 'Working on “' + said + '”';
+      var waiting = function () { return title + (listed ? ' — it opens here when it’s ready.' : ' — the answer comes in the chat.') + (prog ? '' : ' The chat gets it too.'); };
+      var limit = function () { return Math.min(WATCH_MAX, Math.max(WATCH_FOR, prog && prog.known ? num(prog.eta) * 3000 : 0)); };
+      var finish = function (msg) { watchRun++; if (prog) { prog.done = true; } watchBar(msg, null, null); };
+      watchBar(waiting(), null, prog);
+      var status = function (next) {
+        if (!rid) return next(null);
+        api('requests.status', { id: rid }, function (err, b) {
+          if (run !== watchRun) return;
+          if (!err && b && b.ok) {
+            prog.known = true; prog.started = b.started !== false; prog.problem = str(b.fire_problem, 40);
+            prog.eta = Math.max(15, num(b.eta_sec)); prog.from = str(b.eta_from, 10); prog.elapsed = num(b.elapsed_sec); prog.at = Date.now();
+            if (!prog.paint || (prog.started && !watchClock)) watchBar(waiting(), null, prog); else prog.paint();
+          }
+          next(!err && b && b.ok ? str(b.status, 10) : null);
+        });
+      };
+      var look = function (st) {
+        if (st === 'failed' || st === 'expired') return finish('“' + str(label || said, 60) + '” did not come through — the chat says why.');
+        if (!listed) {
+          if (st === 'answered') { if (typeof haptic === 'function') haptic('ok'); return finish('Answered — it’s in the chat.'); }
+          return watchLater(tick, WATCH_EVERY);
+        }
         api(w ? w[0] : 'vegcard.get', w ? {} : { slug: trip }, function (err, body) {
           if (run !== watchRun) return;
           var hit = null;
           if (!err && body && body.ok) {
+            if (base === null) { base = w ? list(body[w[1]]).map(obj).map(function (x) { return str(x.id, 64); }).filter(Boolean) : [str(body.received_at)]; return watchLater(tick, WATCH_EVERY); }
             if (w) hit = list(body[w[1]]).map(obj).filter(function (x) { return str(x.id, 64) && base.indexOf(str(x.id, 64)) < 0; })[0] || null;
             else if (str(body.received_at) && base.indexOf(str(body.received_at)) < 0) hit = {};
           }
-          if (!hit) return setTimeout(tick, WATCH_EVERY);
-          watchRun++;
+          if (!hit) {
+            // answered, and still nothing new here after a second look: the answer was a message only (e.g. "could not build it")
+            if (st === 'answered' && ++answeredSeen >= 2) return finish('Answered in the chat — nothing new to show here.');
+            return watchLater(tick, st === 'answered' ? 3000 : WATCH_EVERY);
+          }
+          watchRun++; if (prog) prog.done = true;
           var open = function () { watchBar(''); openFresh(); if (w) S[w[2]] = str(hit.id, 64); else S.trip = trip; go(screen); };
           if (typeof haptic === 'function') haptic('ok');
-          if (S.screen === from && !(w && S[w[2]])) return open();   // still where the run left you: open it
-          watchBar('Your answer to “' + said + '” is ready.', open);
+          // still where the run left you (for an app form: still on the answer's own screen) and not inside another item: open it
+          if (S.screen === from && (!label || S.screen === screen) && !(w && S[w[2]])) return open();
+          watchBar('Your answer to “' + str(label || said, 60) + '” is ready.', open);
         });
       };
-      setTimeout(tick, WATCH_EVERY);
+      var tick = function () {
+        if (run !== watchRun) return;
+        if (Date.now() - t0 > limit()) return finish('Still working on “' + str(label || said, 60) + '” — it will arrive in the chat.');
+        if (S.busy) return watchLater(tick, WATCH_EVERY);
+        status(look);
+      };
+      if (rid || base === null) status(function (st) { if (base === null && listed) return look(st); watchLater(tick, WATCH_EVERY); });
+      else watchLater(tick, WATCH_EVERY);
     }
+    /** An app form asked a routine (scout.new, daytrip.new, …): watch its answer onto that screen, with the progress bar. */
+    function watchAsk(screen, r, label) { var id = str(obj(r).request_id, 64); if (id) cmdWatch('', screen, null, '', { id: id }, label); }
 
     /* 17c (item 6): the Today tab — the current trip's day today with its buttons open; before the trip the first day, after it a
      * word that it is over. The forms it opens come back here. */

@@ -43,6 +43,9 @@ function slice(from, to) {
   assert.ok(a >= 0 && b > a, 'markers found: ' + from + ' … ' + to);
   return PAGE.slice(a, b);
 }
+// The progress bar after an ask (17d) is the commands17c shell test's; here it only records that the form started it.
+const WATCH_STUB = 'function watchAsk(screen, r, label) { __watched.push([screen, String((r || {}).request_id || \'\'), label]); }';
+
 const HELPERS = () => [slice('    /* ---------- DOM helpers', '    function setStatus('), slice('    function stateView(', '    /* ---------- theme')].join('\n');
 const DAYVIEW = () => slice('    /* ---------- a planned day, worded like the chat', '    /* ---------- brochure:');
 const MENU = () => slice('    var MENU_ID_RE', '\n') + '\n' + slice('    /* ---------- menu check:', '    /* ---------- boot');
@@ -52,8 +55,9 @@ const MENU = () => slice('    var MENU_ID_RE', '\n') + '\n' + slice('    /* ----
  * api() (the day view's background ask) only records and waits: `st.pending.shift()(err, body)` answers it later.
  */
 function page(answer, run, S = {}) {
-  const st = { rendered: null, calls: [], api: [], pending: [], status: [], main: [], went: [] };
+  const st = { rendered: null, calls: [], watched: [], api: [], pending: [], status: [], main: [], went: [] };
   const box = {
+    __watched: st.watched,
     document: { createElement: (t) => new N(t), createTextNode: (t) => { const n = new N('#text'); n._text = String(t); return n; } },
     window: { open() {} }, tg: null, S: Object.assign({ menu: '' }, S),
     render: (v) => { st.rendered = v; }, haptic() {}, mainProgress() {},
@@ -62,7 +66,7 @@ function page(answer, run, S = {}) {
     call: (op, args, ok, fail) => { st.calls.push(J([op, args])); const r = answer(op, args); if (r.ok) ok(Object.assign({ ok: true }, r.body)); else if (fail) fail(Object.assign({ ok: false }, r.body)); else st.rendered = 'refused:' + r.body.reason; },
     api: (op, args, cb) => { st.api.push(J([op, args])); st.pending.push(cb); }
   };
-  vm.runInNewContext(HELPERS() + '\n' + DAYVIEW() + '\n' + MENU() + '\n' + run, box);
+  vm.runInNewContext(HELPERS() + '\n' + DAYVIEW() + '\n' + MENU() + '\n' + '\n' + WATCH_STUB + '\n' + run, box);
   return { box, st };
 }
 

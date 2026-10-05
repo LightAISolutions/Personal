@@ -41,20 +41,24 @@ function slice(from, to) {
   assert.ok(a >= 0 && b > a, 'markers found: ' + from + ' … ' + to);
   return PAGE.slice(a, b);
 }
+// The progress bar after an ask (17d) is the commands17c shell test's; here it only records that the form started it.
+const WATCH_STUB = 'function watchAsk(screen, r, label) { __watched.push([screen, String((r || {}).request_id || \'\'), label]); }';
+
 const HELPERS = () => [slice('    /* ---------- DOM helpers', '    function setStatus('), slice('    function stateView(', '    /* ---------- theme')].join('\n');
 const DAYTRIP = () => slice('    var DAYTRIP_ID_RE', '\n') + '\n' + slice('    /* ---------- day trips:', '    /* ---------- boot');
 
 /** A VM running the page's helpers and the Day trips section; `answer(op, args)` → { ok, body }. */
 function page(answer, run) {
-  const st = { rendered: null, calls: [], status: [], main: [] };
+  const st = { rendered: null, calls: [], watched: [], status: [], main: [] };
   const box = {
+    __watched: st.watched,
     document: { createElement: (t) => new N(t), createTextNode: (t) => { const n = new N('#text'); n._text = String(t); return n; } },
     window: { open() {} }, tg: null, S: { daytrip: '' },
     render: (v) => { st.rendered = v; }, go() {}, haptic() {}, mainProgress() {},
     setStatus: (t) => { st.status.push(t); }, setMain: (t, fn) => { st.main.push([t, fn]); },
     call: (op, args, ok, fail) => { st.calls.push(J([op, args])); const r = answer(op, args); if (r.ok) ok(Object.assign({ ok: true }, r.body)); else if (fail) fail(Object.assign({ ok: false }, r.body)); else st.rendered = 'refused:' + r.body.reason; }
   };
-  vm.runInNewContext(HELPERS() + '\n' + DAYTRIP() + '\n' + run, box);
+  vm.runInNewContext(HELPERS() + '\n' + DAYTRIP() + '\n' + '\n' + WATCH_STUB + '\n' + run, box);
   return { box, st };
 }
 
