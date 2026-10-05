@@ -3,11 +3,18 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 82/100`
+`Sections: 83/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.82r] — 2026-10-05 02:24:42 AM EST
+
+> **Prompt:** "This is a day plan that Claude Chat made for our Universal Studio Japan on 11/19/26 that I think is well-made and useful. Evaluate this as a reference and try to make Tour Guide's brochures as useful as this." — then, on the thirteen-item plan: "I approve of your plan" *(the owner merged all three waves' private side)*
+
+### Changed
+- **Phase 18 recorded as merged in the private repo** (`helpers/BUILD-STATE.md`, `helpers/decisions/TG-PHASE-18.md` §7): the owner merged the private side of waves 1–3 (the brochure routine writes the briefing and makes the Day book for request kind `daybook`) as one PR; next the owner's first `/daybook` of the 19 Nov plan, compared side by side with the reference plan
 
 ## [v01.81r] — 2026-10-05 01:33:28 AM EST
 

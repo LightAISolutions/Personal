@@ -179,9 +179,11 @@ clock on the rail and the cards (`retimeText`), so one brochure never mixes the 
   `c18`, `clock`, `temp` from `state.json` `tour_guide.display`) is the private repo's PR #29, waiting on the owner.
 - **Wave 2 built** (v01.80r). Its private side (a context mode in the brochure driver; the routine writes the briefing
   by its skill's authoring rules; `--briefing`) is in the same PR #29.
-- **Wave 3 built** (v01.81r): the Day book and `/daybook`. Next: its private side, the brochure routine takes request
-  kind `daybook` (`options.book: 'day'`, `options.date`, a `book: "day"` briefing with `inside`) and replies with the
-  PDF; then the first Day book of the owner's 19 Nov plan, side by side with the reference plan.
+- **Wave 3 built** (v01.81r): the Day book and `/daybook`. Its private side (WP-18r: the brochure routine takes
+  request kind `daybook`, renders with `--book day --date`, writes `inside` for each stop of an hour or more and
+  replies with `daybook_pdf`; the core stores Drive ids on the trip only for kind `brochure`) went into PR #29.
+- **Merged** (v01.82r): the owner merged PR #29 with all three waves' private side on 5 Oct. Next: the owner's
+  `/daybook 2026-11-19`, compared side by side with the reference plan.
 
 
 Developed by: LightAISolutions
