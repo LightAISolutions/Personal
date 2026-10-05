@@ -65,9 +65,10 @@ test('the app page: the Commands tab is in the nav and go() reaches it', SKIP, (
   const box = { S: { screen: 'home' }, tg: null, flushDraft() {}, setMain() {}, $: () => ({ children: [] }) };
   [...new Set(goSrc.match(/\bshow[A-Z]\w*/g))].forEach((f) => { box[f] = () => shown.push(f); });
   vm.runInNewContext(slice('    var SCREENS = [', '    var TICKS') + goSrc, box);
-  assert.deepEqual(J(box.SCREENS.slice(-1)), [{ id: 'commands', label: 'Commands' }]);
+  assert.deepEqual(J(box.SCREENS.slice(-2)), [{ id: 'commands', label: 'Commands' }, { id: 'settings', label: 'Settings' }]);
   box.go('commands');
-  assert.deepEqual(shown, ['showCommands']);
+  box.go('settings');
+  assert.deepEqual(shown, ['showCommands', 'showSettings']);
 });
 
 test('Commands: every command of the answer, grouped, with its examples; the list is fetched once', SKIP, () => {

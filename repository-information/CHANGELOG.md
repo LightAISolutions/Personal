@@ -3,11 +3,27 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 76/100`
+`Sections: 77/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.76r] — 2026-10-04 10:33:32 PM EST
+
+> **Prompt:** "There are a lot of commands (40+) to use with Tour Guide. That's too many for me to comfortably memorize and use effectively. Think of a way to imbed them into the app in the forms of buttons, forms, and other methods. Recommend me an action plan to approve." — then, on the eight-item plan: "1-8" *(step 17b of the approved plan: items 3, 4 and 5)*
+
+### Added
+- **"What do you need?"** (`helpers/packs/tour-guide/gas/45_commands_app.js`, `live-site-pages/helper-app.html`): `TG_CMD_KEYWORDS`, plain search words for every guide command, sent by `commands.list` as each command's `keywords`; the app's box on Home (and the Commands tab's search) ranks commands by name, keyword and description, every word must hit, five at most on Home, and offers "Ask Tour Guide" (`/ask`) when nothing fits
+- **Recent and ★ Pinned shortcuts** (`live-site-pages/helper-app.html`): every command run from the app is kept with its count in Telegram's per-user `CloudStorage` (`cmd_recent`, `cmd_pins`; `localStorage` outside Telegram), twelve of each; ☆ Pin on the Sent screen; pins then the most used on Home and at the top of the Commands tab
+- **Buttons on cards** (`live-site-pages/helper-app.html`): the current trip (☀ Today, ⋯ More), another trip (Make current), a brochure day of the current trip (⋯ This day: Re-plan with the day filled in, Versions, Morning, Running late +15/+30/+60, Check-in, Route), a stop or a saved place (⋯: Route here and Compare forms with the name filled in, Quieter, Menu for food places, Notes); a form opened from a card goes back to it
+- **Settings** (`helpers/packs/tour-guide/gas/46_settings_app.js`, new): app op `settings.get` (read only; never the API key's value); the app's Settings screen whose switches run their commands through the bot and read back, a morning time box (05:00–11:59), the profile, and a folded Helper health panel with the `/status` numbers and its buttons (Expire asks first)
+- **`coreStatusCounts()`** (`helpers/core/11_commands_builtin.js`): the `/status` numbers as data, shared by `/status` and the health panel; the `home` op also returns `current_trip` (`32_app_api.js`)
+- Tests: `pack_tour-guide_settings_app` (defaults, read-back after each command, smart without and with a key, the profile), `pack_tour-guide_commands17b_shell` (the page's own functions against the real bundle: search ranking and the ask fallback, Recent, Pinned and its caps, the Commands tab, trip, day and place buttons, Settings switches and the health panel), keywords for every guide command in `pack_tour-guide_commands_app`, the Settings screen in the nav test; `shell_helper-app_shortcuts.playwright.mjs` (Home, a brochure day and Settings in the browser, light and dark)
+
+### Changed
+- App v01.18w (`live-site-pages/helper-app.html`); the Places screen and the day cards call the new buttons only when present, so older test slices still run
+- Docs: `helpers/decisions/TG-PHASE-17.md` (§3 step 17b, §4 its defaults), `helpers/SPEC.md` (`coreStatusCounts`), the pack README (`45_commands_app.js`, `46_settings_app.js`), `helpers/BUILD-STATE.md` (row 17, the Phase 17 log)
 
 ## [v01.75r] — 2026-10-04 10:09:28 PM EST
 

@@ -41,9 +41,36 @@ shell; the live bot gets it from the normal deploy, no private-repo side): **17a
 - Left as is: `/lodging remove 6/10` typed with M/D saves "remove 6/10" as a stay name (a pre-existing quirk; the app sends
   ISO and is not affected). A candidate for the tuning after the trip.
 
-## 3 Next
-- **17b**: an intent search ("running late", "rain", "veg") with Recent and ⭐ Pinned actions in Telegram's per-user storage;
-  action buttons on trip, day and place cards; a Settings screen (`settings.get`) with a folded Helper health panel.
+## 3 Step 17b — search, shortcuts, card buttons, Settings (v01.76r, app v01.18w)
+- **"What do you need?" (item 3).** A box on Home (and the Commands tab's search) matches plain words against each command:
+  its name, its `keywords` (`TG_CMD_KEYWORDS` in `gas/45_commands_app.js`, one line per guide command; a test makes sure
+  every guide command has one) and what it does. Every word typed must hit; the name counts most, then a keyword, then the
+  description. Home shows the five best with their Run / Fill in buttons; nothing fitting offers "Ask Tour Guide: “…”",
+  which runs `/ask` with the words. "running late" finds `/late`, "rain" `/replan`, "veg" `/vegcard`.
+- **Recent and ★ Pinned.** Every command run from the app is kept in Telegram's per-user storage (`CloudStorage`, so it
+  follows the owner to another device; `localStorage` outside Telegram) as `cmd_recent` (with a count) and `cmd_pins`
+  (☆ Pin on the Sent screen). Home shows pins first, then the most used; the Commands tab starts with both when nothing is
+  searched. A command that asks first keeps asking from a shortcut.
+- **Buttons on cards (item 4).** The current trip's card: ☀ Today and ⋯ More (Dates, Stay, Bookings, Notes, Later, What's
+  on, Day trips, Re-pick). Another trip's card: Make current (`/trip`), since commands act on the current trip. A brochure
+  day of the current trip: ⋯ This day (Re-plan with the day filled in, Versions, Morning, Running late +15/+30/+60,
+  Check-in, Route); a day of another trip says to make it current first. A stop or a saved place: ⋯ (Route here and
+  Compare open their forms with the name filled in; Quieter; Menu for food places; Notes). A form opened from a card goes
+  back to that card.
+- **Settings (item 5).** App op `settings.get` (`gas/46_settings_app.js`, read only): Smart answers, Outlines and day
+  versions, the morning message and its time, What's on weekly, Saved lists, the profile. Each switch sends its command
+  through the bot (`/journey on`, `/morning at 07:30`, …), so the chat keeps a record, then reads the settings again. A
+  folded **Helper health** shows the `/status` numbers (core `coreStatusCounts()`, shared with `/status`) with Re-send
+  pending, Read the mailbox now, Expire stale proposals, Ping, Status and Chat id.
+
+## 4 Defaults chosen in 17b
+- **Twelve of each** shortcut, commands of 200 characters or fewer; junk read back from storage is dropped.
+- **Smart answers stays a disabled switch** until the API key is set (the key's value is never sent to the app).
+- **Morning time 05:00–11:59**, checked in the app before anything is sent.
+- **Expire stale proposals asks first**, like `/expire` in the forms.
+- **Quieter and Menu without a date** on the Places screen (no day there); on a brochure stop they carry the day.
+
+## 5 Next
 - **17c**: five tabs (Home, Today, Discover, Places, More) with old deep links kept; answers that have an app screen open
   there; a live check with the owner.
 

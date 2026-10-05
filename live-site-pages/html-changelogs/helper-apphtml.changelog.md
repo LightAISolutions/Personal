@@ -3,11 +3,19 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 17/50`
+`Sections: 18/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.18w] — 2026-10-04 10:33:32 PM EST — v01.76r
+
+### Added
+- A "What do you need?" box on the home screen: type plain words such as "running late", "rain" or "veg" and the matching commands appear with their Run and Fill in buttons; when nothing fits, one tap asks Tour Guide instead
+- Your shortcuts: the commands you use most and the ones you pin with ☆ Pin appear on the home screen and at the top of the Commands screen, on every device you use
+- Buttons on your trip, on each day of the brochure and on each stop and saved place: today's plan, re-plan a day, running late, the evening check-in, a route, a quieter alternative, a menu check and more, without typing a command
+- A Settings screen: switch the morning message, its time, outlines and day versions, smart answers and the automatic checks on or off, and see how the helper is doing
 
 ## [v01.17w] — 2026-10-04 10:02:37 PM EST — v01.74r
 

@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.17w">
+  <meta name="build-version" content="v01.18w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -187,6 +187,26 @@
     .preview.empty { font-family: inherit; color: var(--hint); }
     .cmdform .legend { margin-top: 18px; }
     .row.center { justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+    /* ── 17b: shortcuts, the "what do you need?" box, action rows on cards, Settings ── */
+    .shortcuts { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
+    .shortcuts .pill { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .acts[hidden] { display: none; }
+    .acts .pill { font-size: 12px; }
+    .need { margin: 0 0 10px; }
+    .need .cmd:last-child { border-bottom: 0; }
+    .set { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .set .grow { min-width: 0; }
+    .set .meta { margin-top: 2px; }
+    .toggle { flex: 0 0 auto; min-width: 64px; min-height: 44px; border-radius: 22px; border: 1px solid var(--line); background: var(--section); color: var(--fg); font-size: 14px; }
+    .toggle[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+    .toggle:disabled { opacity: 0.5; }
+    .set input[type=time] { width: auto; min-width: 110px; }
+    .health { margin-top: 18px; }
+    .health summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 600; }
+    .health dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 8px 0; font-size: 14px; }
+    .health dt { color: var(--hint); }
+    .health dd { margin: 0; font-family: var(--mono); overflow-wrap: anywhere; }
 
     .reveal { animation: rise 0.35s ease both; }
     .reveal:nth-child(2) { animation-delay: 0.04s; } .reveal:nth-child(3) { animation-delay: 0.08s; }
@@ -208,13 +228,13 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.17w';
+    var APP_VERSION = 'v01.18w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'compare', label: 'Compare' }, { id: 'facts', label: 'Facts' },
       { id: 'interview', label: 'Interview' }, { id: 'brochure', label: 'Brochure' }, { id: 'places', label: 'Places' },
       { id: 'scout', label: 'Scout' }, { id: 'daytrip', label: 'Day trips' }, { id: 'whatson', label: 'What\'s on' },
-      { id: 'quiet', label: 'Quiet' }, { id: 'menu', label: 'Menu' }, { id: 'commands', label: 'Commands' }
+      { id: 'quiet', label: 'Quiet' }, { id: 'menu', label: 'Menu' }, { id: 'commands', label: 'Commands' }, { id: 'settings', label: 'Settings' }
     ];
     var SCOUT_ID_RE = /^sc-\d{8}-[a-z0-9-]{1,40}$/;
     var DAYTRIP_ID_RE = /^dt-\d{8}-[a-z0-9-]{1,40}$/;
@@ -223,7 +243,7 @@
     var MENU_ID_RE = /^mn-\d{8}-[a-z0-9-]{1,40}$/;
     var TICKS = [{ v: 'w', text: '✅ Want' }, { v: 'l', text: '🔖 Later' }, { v: 's', text: '❌ Skip' }];
     var tg = (window.Telegram && window.Telegram.WebApp) || null;
-    var S = { core: '', screen: 'home', commands: null, trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', scout: '', daytrip: '', board: '', menu: '', jy: null, base: '', mix: {}, busy: false, back: null, cmdQ: '', cmdCtx: null, cmdNonce: {} };
+    var S = { core: '', screen: 'home', commands: null, trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', scout: '', daytrip: '', board: '', menu: '', jy: null, base: '', mix: {}, busy: false, back: null, cmdQ: '', cmdCtx: null, cmdCtxWait: null, cmdNonce: {}, recent: [], pins: [] };
     var $ = function (id) { return document.getElementById(id); };
     var main = $('main');
 
@@ -357,7 +377,7 @@
       setMain('', null); S.back = null;   // a sub-screen (a command's form) sets S.back; the BackButton then returns there first
       Array.prototype.forEach.call($('nav').children, function (b) { if (b.getAttribute('data-screen') === screen) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
       try { if (tg && tg.BackButton) { if (screen === 'home') tg.BackButton.hide(); else tg.BackButton.show(); } } catch (e) { /* older clients */ }
-      ({ home: showHome, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout, vegcard: showVegCard, daytrip: showDaytrip, whatson: showWhatson, quiet: showQuiet, menu: function () { showMenu(); }, commands: function () { showCommands(); } })[screen]();
+      ({ home: showHome, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout, vegcard: showVegCard, daytrip: showDaytrip, whatson: showWhatson, quiet: showQuiet, menu: function () { showMenu(); }, commands: function () { showCommands(); }, settings: function () { showSettings(); } })[screen]();
     }
     function buildNav() {
       var nav = clear($('nav'));
@@ -380,6 +400,9 @@
           el('h2', { text: trips.length ? 'Your trips' : 'Nothing planned yet' }),
           el('p', { class: 'lede', text: trips.length ? num(b.trips_total) + ' trip' + (num(b.trips_total) === 1 ? '' : 's') + ' on file' : 'Send /plan <destination> to the bot to start one.' })
         ]);
+        var cmds17 = typeof needBox === 'function';   // 17b: "What do you need?" finds the command, or asks Tour Guide; then the shortcuts
+        if (cmds17) { view.appendChild(needBox()); var sc = scBox(3, function () { go('home'); }); if (sc) view.appendChild(sc); }
+        var curTrip = str(b.current_trip || obj(b.people).trip, 64);
         if (round) {
           var rs = str(round.stage, 20), open = !rs || rs === 'choose';   // past `choose` the round is closed: the chat has moved on
           var cmp = rs === 'outline' || rs === 'versions';                // outlines or day versions are waiting to be compared
@@ -403,7 +426,8 @@
               el('div', { class: 'row' }, [
                 t.has_brochure ? el('button', { class: 'btn ghost', type: 'button', text: '📄', 'aria-label': 'Brochure', on: { click: function () { go('brochure', str(t.slug, 64)); } } }) : null,
                 t.has_vegcard === true ? el('button', { class: 'btn ghost', type: 'button', text: '🥗', 'aria-label': 'Veg card', title: 'Veg card', on: { click: function () { go('vegcard', str(t.slug, 64)); } } }) : null,
-                el('button', { class: 'btn ghost', type: 'button', text: 'Plan', on: { click: function () { go('brochure', str(t.slug, 64)); } } })])])
+                el('button', { class: 'btn ghost', type: 'button', text: 'Plan', on: { click: function () { go('brochure', str(t.slug, 64)); } } })])]),
+            cmds17 ? tripActs(t, str(t.slug, 64) === curTrip) : null
           ]));
         });
         view.appendChild(el('h3', { text: 'Places on file' }));
@@ -1008,10 +1032,16 @@
       var card = el('div', { class: 'card reveal', 'data-day': str(i + 1) }, [el('div', { class: 'meta', text: 'DAY ' + (i + 1) + ' · ' + str(d.date, 10) }), el('div', { class: 'name', text: str(d.theme, 100) })]);
       var fresh = has(d, DAY_NEW) || stops.some(function (s) { return has(s, STOP_NEW); }) || legs.some(function (l) { return has(l, LEG_NEW); });
       if (!fresh) {   // an older day: as the app always showed it
-        stops.forEach(function (s) { card.appendChild(el('div', { class: 'row between', style: 'margin-top:6px' }, [el('div', { class: 'grow' }, [el('div', { text: str(s.n, 4) + '. ' + str(s.name, 80) }), el('div', { class: 'meta', text: [str(s.arrive, 5) && str(s.arrive, 5) + '–' + str(s.depart, 5), s.minutes ? num(s.minutes) + ' min' : '', str(s.note_line, 120)].filter(Boolean).join(' · ') })]), linkBtn('Map ↗', s.maps_url, 'pill')])); });
+        stops.forEach(function (s) {
+          var pa = stopActs(s, d, trip);
+          card.appendChild(el('div', { class: 'row between', style: 'margin-top:6px' }, [el('div', { class: 'grow' }, [el('div', { text: str(s.n, 4) + '. ' + str(s.name, 80) }), el('div', { class: 'meta', text: [str(s.arrive, 5) && str(s.arrive, 5) + '–' + str(s.depart, 5), s.minutes ? num(s.minutes) + ' min' : '', str(s.note_line, 120)].filter(Boolean).join(' · ') })]),
+            el('div', { class: 'row' }, [linkBtn('Map ↗', s.maps_url, 'pill'), pa ? pa.toggle : null])]));
+          if (pa) card.appendChild(pa.box);
+        });
         list(d.warnings).forEach(function (w) { card.appendChild(el('div', { class: 'note', text: '⚠️ ' + str(w, 200) })); });
         list(d.rain).forEach(function (r) { r = obj(r); card.appendChild(el('div', { class: 'meta', text: '☔ If it rains: ' + str(r.name, 60) + ' instead of ' + str(r.instead_of, 60) })); });
         if (typeof quietDayRow === 'function') quietDayRow(card, d);   // C16 (WP-16a): the day's 🕊 buttons, filled in the background
+        if (typeof dayActions === 'function') dayActions(card, d, trip);   // 17b: the day's command buttons
         return card;
       }
       // Each leg shows once, before what it leads to (a day can reach the lodging more than once).
@@ -1030,8 +1060,11 @@
         var l = legWhere(function (x) { return x.to === s.slug; });
         if (l) add(legLine(l, ''));
         var t = stopTime(s), facts = [s.minutes ? minutes(s.minutes) : '', clock(s.last_entry) ? 'last entry ' + s.last_entry : ''].filter(Boolean).join(' · ');
+        var pa = stopActs(s, d, trip);
         add(el('div', { class: 'row between stop', 'data-stop': str(s.slug, 64) }, [el('div', { class: 'grow' }, [
-          el('div', { class: 'name', text: str(s.n, 4) + '. ' + (t ? t + ' ' : '') + str(s.name, 80) }), facts ? el('div', { class: 'meta', text: facts }) : null]), linkBtn('Map ↗', s.maps_url, 'pill')]));
+          el('div', { class: 'name', text: str(s.n, 4) + '. ' + (t ? t + ' ' : '') + str(s.name, 80) }), facts ? el('div', { class: 'meta', text: facts }) : null]),
+          el('div', { class: 'row' }, [linkBtn('Map ↗', s.maps_url, 'pill'), pa ? pa.toggle : null])]));
+        if (pa) add(pa.box);
         if (s.note_line) add(el('div', { class: 'sub', text: str(s.note_line, 240) }));
         if (s.check_on_day) add(el('div', { class: 'sub', text: '🕑 ' + str(s.check_on_day, 200) }));
         if (s.booking_line) add(el('div', { class: 'sub', text: '🎟 ' + str(s.booking_line, 200) }));
@@ -1074,7 +1107,13 @@
         add(line(['☔ ', linkText(str(r.name, 80), r.maps_url), ' instead of ' + str(r.instead_of, 80) + (typeof r.km === 'number' ? ', ' + r.km + ' km away' : '')]));
       });
       if (typeof quietDayRow === 'function') quietDayRow(card, d);   // C16 (WP-16a): the day's 🕊 buttons, filled in the background
+      if (typeof dayActions === 'function') dayActions(card, d, trip);   // 17b: the day's command buttons
       return card;
+    }
+    /** A stop's ⋯ (17b): null where the commands block is not loaded or the stop has no usable name. */
+    function stopActs(s, d, trip) {
+      if (typeof placeActs !== 'function') return null;
+      return placeActs(obj(s).name, str(obj(d).date, 10), { back: trip ? function () { go('brochure', trip); } : null, food: FOOD_RE.test(str(obj(s).category, 40) + ' ' + str(obj(s).kind, 20)) });
     }
 
     /* ---------- brochure: the trip digest, then the HTML in a sandboxed frame ---------- */
@@ -1205,7 +1244,10 @@
               el('button', { type: 'button', text: '➕', 'aria-label': 'Check for the next trip', 'aria-pressed': picked[slug] ? 'true' : 'false', on: { click: function (ev) { picked[slug] = !picked[slug]; ev.currentTarget.setAttribute('aria-pressed', picked[slug] ? 'true' : 'false'); haptic(); refreshMain(); } } }),
               linkBtn('🗺', p.maps_url, '')
             ]);
+            var pa = typeof placeActs !== 'function' ? null : placeActs(p.name, '', { back: function () { go('places'); }, food: FOOD_RE.test(str(p.category, 40)) });   // 17b: Route here, Compare, Quieter, Menu
+            if (pa) { pa.toggle.className = ''; pa.toggle.setAttribute('aria-label', 'More for this place'); acts.appendChild(pa.toggle); }
             results.appendChild(el('div', { class: 'card reveal' }, [el('div', { class: 'row between' }, [el('div', { class: 'grow' }, [el('div', { class: 'name', text: str(p.name, 80) }), el('div', { class: 'meta', text: [str(p.destination, 40), str(p.area, 40), str(p.category, 30), str(p.status, 20)].filter(Boolean).join(' · ') })]), acts]),
+              pa ? pa.box : null,
               p.note_line ? el('div', { class: 'why', text: str(p.note_line, 200) }) : null,
               list(p.tags).length ? el('div', {}, list(p.tags).slice(0, 8).map(function (t) { return el('span', { class: 'pill', text: str(t, 24) }); })) : null]));
           });
@@ -1891,18 +1933,25 @@
       try { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(t).then(function () { done(true); }, fallback); return; } } catch (e) { /* no clipboard API */ }
       fallback();
     }
-    // Each query word must start the command's name or be a whole word of its description or examples ("date" finds "dates",
-    // "late" does not find "later").
-    function cmdMatches(c, q) {
-      if (!q) return true;
-      var name = str(c.cmd).toLowerCase().replace(/^\//, ''), words = {};
-      [c.does].concat(list(c.forms).map(function (f) { f = obj(f); return str(f.text) + ' ' + str(f.means); })).join(' ').toLowerCase()
-        .split(/[^a-z0-9\u00c0-\uffff]+/).forEach(function (w) { if (w) words[w] = true; });
-      return q.split(/\s+/).every(function (w) {
-        w = w.replace(/^\//, '');
-        return !w || name.indexOf(w) === 0 || words[w] || words[w + 's'] || words[w + 'es'] || (/s$/.test(w) && words[w.replace(/e?s$/, '')]);
-      });
+    // Each query word must start the command's name or be a whole word of its keywords, description or examples ("date" finds
+    // "dates", "late" does not find "later"). The keywords are the plain words a traveller would type ("running late", "rain").
+    function cmdWords(text) { var words = {}; str(text, 4000).toLowerCase().split(/[^a-z0-9\u00c0-\uffff]+/).forEach(function (w) { if (w) words[w] = true; }); return words; }
+    function cmdHit(words, w) { return !!(words[w] || words[w + 's'] || words[w + 'es'] || (/s$/.test(w) && words[w.replace(/e?s$/, '')])); }
+    /** 0 when a query word finds nothing; otherwise a rank: the name counts most, then the keywords, then the description. */
+    function cmdScore(c, q) {
+      var qs = str(q, 60).toLowerCase().split(/\s+/).map(function (w) { return w.replace(/^\//, ''); }).filter(Boolean);
+      if (!qs.length) return 1;
+      var name = str(c.cmd).toLowerCase().replace(/^\//, ''), kw = cmdWords(c.keywords), does = cmdWords(c.does);
+      var rest = cmdWords(list(c.forms).map(function (f) { f = obj(f); return str(f.text) + ' ' + str(f.means); }).join(' '));
+      var score = 0;
+      for (var i = 0; i < qs.length; i++) {
+        var w = qs[i], s = name === w ? 6 : name.indexOf(w) === 0 ? 4 : cmdHit(kw, w) ? 3 : cmdHit(does, w) ? 2 : cmdHit(rest, w) ? 1 : 0;
+        if (!s) return 0;
+        score += s;
+      }
+      return score;
     }
+    function cmdMatches(c, q) { return !q || cmdScore(c, q) > 0; }
     /* Running a command: the bot posts "▶️ /cmd … · from the app" in the chat and the answer threads under it (commands.run).
      * One nonce per command text until it is answered, so a retry after a lost connection never runs it twice. */
     var CMD_WHY = { not_command: 'That is not a command — it has to start with /.', unknown_command: 'The bot does not know that command.',
@@ -1925,18 +1974,21 @@
           if (st === 429) return render(stateView('⏳', 'Daily limit reached — use the chat', 'The app is paused until tomorrow; the bot still answers.'));
           delete S.cmdNonce[text];
           if (!body.ok) return say('Not sent: ' + (CMD_WHY[str(body.reason, 40)] || why(body)));
-          haptic('ok'); setStatus(''); cmdSent(text, opts.back);
+          haptic('ok'); setStatus(''); scRecord(text, !!opts.confirm);
+          if (opts.after) return opts.after(text);   // a quiet run (a switch, Make current): the screen stays and refreshes
+          cmdSent(text, opts.back, !!opts.confirm);
         });
       };
       if (!/^\/[A-Za-z0-9_]/.test(text)) return say(CMD_WHY[text ? 'not_command' : 'missing_arg']);
       if (opts.confirm) confirmThen('Run ' + str(text, 120) + '?', send); else send();
     }
-    function cmdSent(text, back) {
+    function cmdSent(text, back, confirm) {
       setMain('', null); S.back = null;
       var toChat = tg && tg.close ? el('button', { class: 'btn', type: 'button', text: 'Go to chat', on: { click: function () { try { tg.close(); } catch (e) { /* older clients */ } } } }) : null;
+      var pin = scPinBtn(text, confirm, 'btn ghost');
       render(el('div', { class: 'state', 'data-sent': text }, [el('div', { class: 'big', text: '✅' }), el('h2', { text: 'Sent' }),
         el('p', { text: 'The answer is in the chat, under “▶️ ' + str(text, 80) + '”.' }),
-        el('div', { class: 'row center' }, [toChat, el('button', { class: 'btn ghost', type: 'button', text: back ? 'Back' : 'All commands', on: { click: back || function () { showCommands(); } } })])]));
+        el('div', { class: 'row center' }, [toChat, el('button', { class: 'btn ghost', type: 'button', text: back ? 'Back' : 'All commands', on: { click: back || function () { showCommands(); } } }), pin])]));
     }
 
     /* The list: each example copies on tap; beside it Run (a ready-made form), Fill in (a form with fields) or Edit; under each
@@ -1951,13 +2003,13 @@
         });
       } } }, [el('span', { class: 'ftext', text: text }), means ? el('span', { class: 'fmeans', text: means }) : null]);
     }
-    function cmdOwn(c, text) {
+    function cmdOwn(c, text, back) {
       var cmd = str(c.cmd, 40), box = el('div', { class: 'own' });
       var open = function (value) {
         var input = el('input', { type: 'text', maxlength: '500', 'aria-label': 'Type a ' + cmd + ' command', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false' });
         input.value = value; clear(box);
-        var run = el('button', { class: 'btn small', type: 'button', text: 'Run', 'data-own-run': cmd, on: { click: function (ev) { cmdRun(input.value, { btn: ev.currentTarget }); } } });
-        input.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') cmdRun(input.value, { btn: run }); });
+        var run = el('button', { class: 'btn small', type: 'button', text: 'Run', 'data-own-run': cmd, on: { click: function (ev) { cmdRun(input.value, { btn: ev.currentTarget, back: back }); } } });
+        input.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') cmdRun(input.value, { btn: run, back: back }); });
         box.appendChild(input); box.appendChild(run);
         try { input.focus(); } catch (e) { /* not focusable here */ }
       };
@@ -1965,16 +2017,16 @@
       box.openWith = open;
       return box;
     }
-    function cmdRow(c) {
+    function cmdRow(c, back) {   // back: where Back goes after a run or a form (default: all commands)
       var cmd = str(c.cmd, 40), runnable = c.runnable !== false, tpls = {}, forms = list(c.forms).map(obj).slice(0, 6);
-      var own = runnable ? cmdOwn(c) : null;
+      var own = runnable ? cmdOwn(c, '', back) : null;
       var row = el('div', { class: 'cmd', 'data-cmd': cmd }, [el('div', { class: 'cname', text: cmd }), c.does ? el('div', { class: 'does', text: str(c.does, 400) }) : null]);
       forms.forEach(function (f) {
         var text = str(f.text, 200), act = null;
-        if (runnable && f.run === 'now') act = el('button', { class: 'btn small', type: 'button', text: 'Run', 'data-run': text, on: { click: function (ev) { cmdRun(text, { confirm: !!f.confirm, btn: ev.currentTarget }); } } });
+        if (runnable && f.run === 'now') act = el('button', { class: 'btn small', type: 'button', text: 'Run', 'data-run': text, on: { click: function (ev) { cmdRun(text, { confirm: !!f.confirm, btn: ev.currentTarget, back: back }); } } });
         else if (runnable && f.run === 'form' && !tpls[str(f.tpl)]) {
           tpls[str(f.tpl)] = true;
-          act = el('button', { class: 'btn small', type: 'button', text: 'Fill in', 'data-fill': text, on: { click: function () { showCmdForm(c, f); } } });
+          act = el('button', { class: 'btn small', type: 'button', text: 'Fill in', 'data-fill': text, on: { click: function () { showCmdForm(c, f, back ? { back: back, backLabel: 'Back' } : null); } } });
         } else if (runnable && f.run === 'type') act = el('button', { class: 'btn small ghost', type: 'button', text: 'Edit', 'data-edit': text, on: { click: function () { own.openWith(text); } } });
         row.appendChild(el('div', { class: 'frow' }, [cmdForm(f), act]));
       });
@@ -1983,6 +2035,11 @@
     }
     function cmdList(box, data, q) {
       clear(box); var n = 0;
+      if (!q) {   // the owner's own shortcuts first: ★ Pinned, then Recent
+        var pins = scBox(0);
+        if (pins) { box.appendChild(el('h3', { text: 'Pinned' })); box.appendChild(pins); }
+        scRecentList(box);
+      }
       list(data.groups).map(obj).forEach(function (g) {
         var rows = list(g.commands).map(obj).filter(function (c) { return /^\/[a-z0-9_]{1,31}$/.test(str(c.cmd, 40)) && cmdMatches(c, q); });
         if (!rows.length) return;
@@ -2042,12 +2099,15 @@
       if (isNaN(d.getTime())) return str(iso, 10);
       return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getUTCMonth()];
     }
-    function cmdContext(done) {   // commands.context, kept a minute; a failure leaves the pickers as plain boxes
+    function cmdContext(done) {   // commands.context, kept a minute; a failure leaves the pickers as plain boxes; callers that ask while it loads share one call
       if (S.cmdCtx && Date.now() - S.cmdCtx.at < 60000) return done(S.cmdCtx.data);
+      if (S.cmdCtxWait) { S.cmdCtxWait.push(done); return; }
+      S.cmdCtxWait = [done];
       api('commands.context', {}, function (err, body) {
-        var data = !err && body && body.ok ? body : {};
+        var data = !err && body && body.ok ? body : {}, wait = S.cmdCtxWait || [];
         if (!err && body && body.ok) S.cmdCtx = { at: Date.now(), data: data };
-        done(data);
+        S.cmdCtxWait = null;
+        wait.forEach(function (fn) { fn(data); });
       });
     }
     var cmdFieldSeq = 0;
@@ -2122,14 +2182,18 @@
       };
       return { node: wrap, check: check };
     }
-    function showCmdForm(c, f) {
-      c = obj(c); f = obj(f);
+    /** opts: { preset: { field: value } filled in first, back: where Back goes (default: all commands), backLabel }. */
+    function showCmdForm(c, f, opts) {
+      c = obj(c); f = obj(f); opts = obj(opts);
       var cmd = str(c.cmd, 40), parts = list(f.parts), fields = obj(c.fields), specs = cmdFieldNames(parts), values = {};
-      S.back = function () { showCommands(); };
+      var back = typeof opts.back === 'function' ? opts.back : function () { showCommands(); }, from = S.screen, again = function () { showCmdForm(c, f, opts); };
+      S.back = back;
       render(stateView('', 'Loading…'));
       cmdContext(function (cx) {
-        if (S.screen !== 'commands') return;
+        if (S.screen !== from) return;   // the owner moved on while the pickers loaded
         if (specs.some(function (sp) { return sp.name === 'trip'; }) && cx.trip && str(obj(cx.trip).slug)) values.trip = str(obj(cx.trip).slug);
+        var preset = obj(opts.preset);
+        specs.forEach(function (sp) { if (preset[sp.name] !== undefined && str(preset[sp.name], 300)) values[sp.name] = str(preset[sp.name], 300); });
         var say = el('p', { class: 'meta', role: 'status' }), preview = el('div', { class: 'preview', 'aria-live': 'polite' });
         var pickers = [], runBtn = el('button', { class: 'btn wide', type: 'button', text: 'Run', 'data-form-run': cmd });
         var state = function () {   // → { text, wrong }
@@ -2148,14 +2212,14 @@
         var run = function () {
           var st2 = state();
           if (!st2.text) { haptic(); say.textContent = st2.wrong.join(' · '); return; }
-          cmdRun(st2.text, { confirm: !!f.confirm, btn: runBtn, say: function (t) { say.textContent = t; }, back: function () { showCmdForm(c, f); } });
+          cmdRun(st2.text, { confirm: !!f.confirm, btn: runBtn, say: function (t) { say.textContent = t; }, back: again });
         };
         runBtn.addEventListener('click', run);
         var others = list(c.forms).map(obj).filter(function (o) { return o !== f && (o.run === 'now' || (o.run === 'form' && str(o.tpl) !== str(f.tpl))); });
         var seen = {};
         others = others.filter(function (o) { var k = o.run + str(o.tpl || o.text); if (seen[k]) return false; seen[k] = true; return true; });
         var view = el('div', { class: 'cmdform', 'data-form-cmd': cmd }, [
-          el('button', { class: 'linkbtn', type: 'button', text: '‹ All commands', on: { click: function () { showCommands(); } } }),
+          el('button', { class: 'linkbtn', type: 'button', text: '‹ ' + (str(opts.backLabel, 40) || 'All commands'), 'data-form-back': '1', on: { click: function () { back(); } } }),
           el('h2', { text: cmd }), c.does ? el('p', { class: 'lede', text: str(c.does, 400) }) : null,
           f.means ? el('p', { class: 'meta', text: 'This form: ' + str(f.means, 120) + ' · e.g. ' + str(f.text, 120) }) : null]);
         specs.forEach(function (sp) { var p = cmdPicker(sp, obj(fields[sp.name]), values, cx, set); pickers.push(p); view.appendChild(p.node); });
@@ -2166,7 +2230,7 @@
           view.appendChild(el('h3', { text: 'Other ways to use ' + cmd }));
           others.slice(0, 6).forEach(function (o) {
             view.appendChild(el('button', { class: 'form', type: 'button', 'data-other': str(o.text, 200), on: { click: function (ev) {
-              if (o.run === 'form') showCmdForm(c, o); else cmdRun(str(o.text, 200), { confirm: !!o.confirm, btn: ev.currentTarget, say: function (t) { say.textContent = t; }, back: function () { showCmdForm(c, f); } });
+              if (o.run === 'form') showCmdForm(c, o, { back: back, backLabel: opts.backLabel }); else cmdRun(str(o.text, 200), { confirm: !!o.confirm, btn: ev.currentTarget, say: function (t) { say.textContent = t; }, back: again });
             } } }, [el('span', { class: 'ftext', text: (o.run === 'form' ? '✎ ' : '▶ ') + str(o.text, 120) }), o.means ? el('span', { class: 'fmeans', text: str(o.means, 120) }) : null]));
           });
         }
@@ -2176,6 +2240,253 @@
       });
     }
 
+    /* ---------- shortcuts: ⭐ Pinned and Recent, in Telegram's per-user storage ----------
+     * cmd_recent: [{ t, n, at, c }] the last 12 commands run from the app (text, times run, last run, asks first); cmd_pins: up
+     * to 12 the owner pinned. Telegram CloudStorage keeps both across the owner's devices (a value is at most 4096 characters);
+     * without it the browser's own storage; without either, this visit only. */
+    var SC_MAX = 12;
+    function scClean(v) {
+      var a; try { a = JSON.parse(v || '[]'); } catch (e) { a = []; }
+      return list(a).map(obj).filter(function (x) { return typeof x.t === 'string' && x.t.length <= 200 && /^\/[A-Za-z0-9_]/.test(x.t); }).slice(0, SC_MAX)
+        .map(function (x) { return { t: x.t, n: Math.max(1, Math.round(num(x.n))), at: Math.round(num(x.at)), c: x.c === true }; });
+    }
+    function scLoad(done) {
+      var fin = function (r, p) { S.recent = scClean(r); S.pins = scClean(p); if (done) done(); };
+      try {
+        if (tg && tg.CloudStorage && tg.CloudStorage.getItems) return tg.CloudStorage.getItems(['cmd_recent', 'cmd_pins'], function (err, v) { v = !err && v ? v : {}; fin(v.cmd_recent, v.cmd_pins); });
+      } catch (e) { /* an older client: the browser's storage below */ }
+      var ls = null; try { ls = window.localStorage; } catch (e) { ls = null; }
+      try { fin(ls ? ls.getItem('cmd_recent') : '', ls ? ls.getItem('cmd_pins') : ''); } catch (e) { fin('', ''); }
+    }
+    function scSave(key, arr) {
+      var v = JSON.stringify(arr);
+      while (v.length > 4000 && arr.length) { arr = arr.slice(0, -1); v = JSON.stringify(arr); }
+      try { if (tg && tg.CloudStorage) { tg.CloudStorage.setItem(key, v, function () {}); return; } } catch (e) { /* an older client */ }
+      try { window.localStorage.setItem(key, v); } catch (e) { /* a private window: this visit only */ }
+    }
+    function scRecord(text, confirm) {
+      if (!text || text.length > 200) return;
+      var hit = null;
+      S.recent = list(S.recent).filter(function (x) { if (x.t === text) { hit = x; return false; } return true; });
+      S.recent.unshift({ t: text, n: hit ? hit.n + 1 : 1, at: Date.now(), c: !!confirm || (hit ? hit.c : false) });
+      S.recent = S.recent.slice(0, SC_MAX); scSave('cmd_recent', S.recent);
+    }
+    function scPinned(text) { return list(S.pins).some(function (x) { return x.t === text; }); }
+    function scPin(text, confirm, on) {
+      if (on && !scPinned(text) && list(S.pins).length >= SC_MAX) { setStatus('Up to ' + SC_MAX + ' pins — unpin one first.'); return false; }
+      S.pins = list(S.pins).filter(function (x) { return x.t !== text; });
+      if (on) S.pins.push({ t: text, n: 1, at: Date.now(), c: !!confirm });
+      scSave('cmd_pins', S.pins); return true;
+    }
+    function scPinBtn(text, confirm, cls) {
+      if (!text || text.length > 200) return null;
+      var b = el('button', { class: cls || 'pill', type: 'button', 'data-pin': text });
+      var label = function () { var on = scPinned(text); b.textContent = on ? '★ Pinned' : '☆ Pin'; b.setAttribute('aria-pressed', on ? 'true' : 'false'); };
+      label();
+      b.addEventListener('click', function () { if (scPin(text, confirm, !scPinned(text))) { haptic(); label(); } });
+      return b;
+    }
+    /** ★ pinned first, then up to `few` of the most-used recent ones not pinned; a tap runs one. null when there are none. */
+    function scBox(few, back) {
+      var used = list(S.recent).filter(function (x) { return !scPinned(x.t); }).slice().sort(function (a, b) { return b.n - a.n || b.at - a.at; }).slice(0, few);
+      var all2 = list(S.pins).concat(used);
+      if (!all2.length) return null;
+      return el('div', { class: 'shortcuts', 'data-shortcuts': '1' }, all2.map(function (x) {
+        return el('button', { class: 'pill', type: 'button', 'data-sc': x.t, title: x.t, text: (scPinned(x.t) ? '★ ' : '↻ ') + str(x.t, 48), on: { click: function (ev) { cmdRun(x.t, { confirm: x.c, btn: ev.currentTarget, back: back }); } } });
+      }));
+    }
+    function scRecentList(box) {
+      var rec = list(S.recent).slice(0, 8);
+      if (!rec.length) return;
+      box.appendChild(el('h3', { text: 'Recent' }));
+      rec.forEach(function (x) {
+        box.appendChild(el('div', { class: 'frow', 'data-recent': x.t }, [
+          el('button', { class: 'form', type: 'button', on: { click: function (ev) { cmdRun(x.t, { confirm: x.c, btn: ev.currentTarget }); } } },
+            [el('span', { class: 'ftext', text: x.t }), el('span', { class: 'fmeans', text: (x.n > 1 ? 'run ' + x.n + ' times · ' : '') + 'tap to run again' })]),
+          scPinBtn(x.t, x.c, 'btn small ghost')]));
+      });
+    }
+
+    /* ---------- "What do you need?": Home's box; the best five commands for the words typed, then Ask Tour Guide ---------- */
+    function cmdData(done, fail) {
+      if (S.commands) return done(S.commands);
+      api('commands.list', {}, function (err, b) { if (!err && b && b.ok) { S.commands = b; return done(b); } if (fail) fail(); });
+    }
+    function cmdBest(data, q, max) {
+      var hits = [];
+      list(data.groups).map(obj).forEach(function (g) { list(g.commands).map(obj).forEach(function (c) {
+        if (!/^\/[a-z0-9_]{1,31}$/.test(str(c.cmd, 40))) return;
+        var sc = cmdScore(c, q); if (sc) hits.push({ c: c, s: sc, i: hits.length });
+      }); });
+      hits.sort(function (a, b) { return b.s - a.s || a.i - b.i; });
+      return hits.slice(0, max).map(function (h) { return h.c; });
+    }
+    function needBox() {
+      var input = el('input', { type: 'search', placeholder: 'What do you need? running late, rain, veg…', maxlength: '60', 'aria-label': 'What do you need' });
+      var out = el('div', { class: 'need', 'data-need': '1' }), timer = null, back = function () { go('home'); };
+      var draw = function () {
+        var raw = str(input.value, 60).trim(), q = raw.toLowerCase();
+        clear(out);
+        if (q.length < 2) return;
+        cmdData(function (data) {
+          if (str(input.value, 60).trim() !== raw) return;   // typed on while the list loaded
+          clear(out);
+          var best = cmdBest(data, q, 5);
+          best.forEach(function (c) { out.appendChild(cmdRow(c, back)); });
+          out.appendChild(el('button', { class: 'btn ghost wide', type: 'button', 'data-ask': raw, text: (best.length ? 'Or ask Tour Guide: “' : 'No command fits — ask Tour Guide: “') + raw + '”',
+            on: { click: function (ev) { cmdRun('/ask ' + raw, { btn: ev.currentTarget, back: back }); } } }));
+        }, function () { out.appendChild(el('p', { class: 'meta', text: 'Commands are not available right now — try again.' })); });
+      };
+      input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(draw, 200); });
+      input.drawNow = draw;
+      return el('div', { class: 'stack' }, [input, out]);
+    }
+
+    /* ---------- action buttons on cards: a pill runs a command or opens its form with the card's values filled in ---------- */
+    /** cmd's form whose template is tpl (else its first form), preset values filled in; Back returns to the caller's screen. */
+    function cmdOpen(cmd, tpl, preset, back) {
+      cmdData(function (data) {
+        var c = null;
+        list(data.groups).forEach(function (g) { list(obj(g).commands).forEach(function (x) { if (str(obj(x).cmd) === cmd) c = obj(x); }); });
+        var forms = c ? list(c.forms).map(obj).filter(function (f) { return f.run === 'form'; }) : [];
+        var f = forms.filter(function (x) { return str(x.tpl) === tpl; })[0] || forms[0];
+        if (!c || !f || c.runnable === false) return setStatus('The bot does not offer ' + cmd + ' right now.');
+        showCmdForm(c, f, { preset: preset, back: back, backLabel: 'Back' });
+      }, function () { setStatus('Commands are not available — no connection.'); });
+    }
+    /** spec: { text, confirm?, after? } runs the text; { form: [cmd, tpl], preset? } opens the form. */
+    function actPill(label, spec, back) {
+      return el('button', { class: 'pill', type: 'button', text: label, 'data-act': spec.form ? spec.form[0] : spec.text, on: { click: function (ev) {
+        if (spec.form) return cmdOpen(spec.form[0], spec.form[1], spec.preset, back);
+        cmdRun(spec.text, { confirm: !!spec.confirm, btn: ev.currentTarget, back: back, after: spec.after });
+      } } });
+    }
+    /** A toggle pill and the folded row of pills it opens. */
+    function foldActs(label, pills) {
+      var box = el('div', { class: 'acts', 'data-fold': label }, pills.filter(Boolean));
+      box.hidden = true;
+      var t = el('button', { class: 'pill', type: 'button', text: label, 'aria-expanded': 'false', 'data-toggle': label, on: { click: function () {
+        box.hidden = !box.hidden; t.setAttribute('aria-expanded', box.hidden ? 'false' : 'true');
+      } } });
+      return { toggle: t, box: box };
+    }
+    /** A trip card's buttons. Commands act on the current trip, so another trip offers "Make current" (/trip) first. */
+    function tripActs(t, current) {
+      t = obj(t); var slug = str(t.slug, 64), back = function () { go('home'); };
+      if (!/^[a-z0-9][a-z0-9-]{0,63}$/.test(slug) || !S.core) return null;
+      if (!current) return el('div', { class: 'acts', 'data-trip-acts': slug }, [actPill('Make current', { text: '/trip ' + slug, after: function () { S.cmdCtx = null; S.trip = slug; setStatus('Now on ' + tripLabel(t) + '.'); showHome(); } }, back)]);
+      var f = foldActs('⋯ More', [
+        actPill('📅 Dates', { form: ['/dates', '/dates {start}[ {end}]'] }, back),
+        actPill('🛏 Stay', { form: ['/lodging', '/lodging {name} {first} to {out}'] }, back),
+        actPill('🎟 Bookings', { text: '/bookings' }, back),
+        actPill('📝 Notes', { text: '/notes' }, back),
+        actPill('🔖 Later', { text: '/later' }, back),
+        actPill('🎭 What\'s on', { text: '/whatson' }, back),
+        actPill('🚆 Day trips', { form: ['/daytrip', '/daytrip[ from {from}][ under {under} min][ on {date}]'] }, back),
+        actPill('↺ Re-pick', { text: '/repick', confirm: true }, back)]);
+      return el('div', { 'data-trip-acts': slug }, [el('div', { class: 'acts' }, [actPill('☀ Today', { text: '/today' }, back), f.toggle]), f.box]);
+    }
+    /** A brochure day's buttons, for a day of the current trip: Re-plan, Versions, Morning, Running late, Check-in, Route.
+     *  Another trip's day offers to make that trip current. Drawn when commands.context answers (once for all days). */
+    function dayActions(card, d, trip) {
+      var date = str(obj(d).date, 10);
+      if (!trip || !/^\d{4}-\d{2}-\d{2}$/.test(date) || !S.core) return;
+      var box = el('div', { 'data-day-acts': date }), back = function () { go('brochure', trip); };
+      card.appendChild(box);
+      cmdContext(function (cx) {
+        if (str(obj(cx.trip).slug, 64) !== trip) {
+          if (!cx.trip && !list(cx.trips).length) return;   // no context: no buttons rather than wrong ones
+          box.appendChild(el('div', { class: 'acts' }, [actPill('Make this trip current to change its days', { text: '/trip ' + trip,
+            after: function () { S.cmdCtx = null; setStatus('Now on this trip.'); go('brochure', trip); } }, back)]));
+          return;
+        }
+        var late = foldActs('⏱ Running late', [15, 30, 60].map(function (m) { return actPill('+' + m + ' min', { text: '/late ' + m + ' ' + date }, back); }));
+        var f = foldActs('⋯ This day', [
+          actPill('↻ Re-plan', { form: ['/replan', '/replan {day}[ {why}]'], preset: { day: date } }, back),
+          actPill('⇄ Versions', { text: '/versions ' + date }, back),
+          actPill('☀ Morning', { text: '/morning ' + date }, back),
+          late.toggle,
+          actPill('🌙 Check-in', { text: '/checkin ' + date }, back),
+          actPill('🧭 Route', { form: ['/route', '/route {from} → {to}[ {mode}]'] }, back)]);
+        f.box.appendChild(late.box);
+        box.appendChild(el('div', { class: 'acts' }, [f.toggle])); box.appendChild(f.box);
+      });
+    }
+    var FOOD_RE = /restaurant|food|cafe|café|bar|bakery|izakaya|ramen|noodle|sushi|dinner|lunch|breakfast|eat/i;
+    /** A stop's or a place's "⋯": Route here, Compare, Quieter, Menu (a place to eat), its notes. */
+    function placeActs(name, date, opts) {
+      name = str(name, 120); opts = obj(opts);
+      if (!name || /[\u0000-\u001f→]/.test(name) || !S.core) return null;
+      var back = opts.back || null, on = /^\d{4}-\d{2}-\d{2}$/.test(str(date)) ? ' on ' + date : '';
+      return foldActs('⋯', [
+        actPill('🧭 Route here', { form: ['/route', '/route {from} → {to}[ {mode}]'], preset: { to: name } }, back),
+        actPill('⚖ Compare', { form: ['/compare', '/compare {places}[ in {where}]'], preset: { places: name } }, back),
+        actPill('🕊 Quieter', { text: '/quiet ' + name + on }, back),
+        opts.food ? actPill('🍽 Menu', { text: '/menu ' + name + on }, back) : null,
+        actPill('📍 Notes', { text: '/place ' + name }, back)]);
+    }
+
+    /* ---------- settings: the owner's switches and the helper's health (settings.get); a switch runs its command ---------- */
+    function showSettings() {
+      S.back = null; setMain('', null);
+      render(stateView('', 'Loading…'));
+      call('settings.get', {}, function (b) { drawSettings(b, ''); },
+        function (err) { render(stateView('⚙️', 'Settings not available', why(err) + ' /status in the chat shows the same.', homeBtn())); });
+    }
+    function drawSettings(b, msg) {
+      b = obj(b);
+      var back = function () { go('settings'); };
+      var say = el('p', { class: 'meta', role: 'status', 'data-settings-say': '1', text: str(msg, 200) });
+      var reload = function (text) { call('settings.get', {}, function (r) { if (S.screen === 'settings') drawSettings(r, 'Done: ' + text + ' — the bot answered in the chat.'); }); };
+      var flip = function (text, btn) { cmdRun(text, { btn: btn, say: function (t) { say.textContent = t; }, after: reload }); };
+      var sw = function (label, sub, on, cmdOn, cmdOff, disabled) {
+        var t = el('button', { class: 'toggle', type: 'button', 'aria-pressed': on ? 'true' : 'false', 'aria-label': label, 'data-switch': cmdOn, text: on ? 'On' : 'Off' });
+        if (disabled) t.disabled = true;
+        t.addEventListener('click', function () { flip(on ? cmdOff : cmdOn, t); });
+        return el('div', { class: 'set' }, [el('div', { class: 'grow' }, [el('div', { class: 'name', text: label }), sub ? el('div', { class: 'meta', text: sub }) : null]), t]);
+      };
+      var view = el('div', { class: 'settings' }, [el('h2', { text: 'Settings' }),
+        el('p', { class: 'lede', text: 'Each switch sends its command through the bot, so the chat keeps a record of every change.' }), say]);
+      var sm = b.smart ? obj(b.smart) : null;
+      if (sm) {
+        var today = obj(sm.today), wanted = sm.wanted === 'on';
+        view.appendChild(el('h3', { text: 'Answers' }));
+        view.appendChild(sw('Smart answers', sm.key_set !== true ? 'Needs a Claude API key in the helper first; answers stay free.'
+          : wanted ? 'Claude API, paid per use · today ' + num(today.answered) + ' answered, $' + num(today.usd).toFixed(2) : 'Off: free answers from the routines.',
+          wanted, '/smart on', '/smart off', sm.key_set !== true && !wanted));
+      }
+      view.appendChild(el('h3', { text: 'Planning' }));
+      view.appendChild(sw('Outlines and day versions', 'Before a plan: 2–3 outlines to compare, or versions of each day on a short trip.', b.journey === true, '/journey on', '/journey off'));
+      var m = b.morning ? obj(b.morning) : null;
+      if (m) {
+        view.appendChild(sw('Morning message', 'On each travel day at ' + str(m.at, 5) + ', the day ahead in the chat.', m.on !== false, '/morning on', '/morning off'));
+        var at = el('input', { type: 'time', min: '05:00', max: '11:59', 'aria-label': 'Morning message time' });
+        at.value = str(m.at, 5);
+        var save = el('button', { class: 'btn small ghost', type: 'button', text: 'Set', 'data-morning-at': '1' });
+        save.addEventListener('click', function () {
+          var v = str(at.value, 5);
+          if (!/^\d{2}:\d{2}$/.test(v) || v < '05:00' || v > '11:59') { say.textContent = 'Pick a time from 05:00 to 11:59.'; return; }
+          flip('/morning at ' + v, save);
+        });
+        view.appendChild(el('div', { class: 'set' }, [el('div', { class: 'grow' }, [el('div', { class: 'name', text: 'Morning message time' }), el('div', { class: 'meta', text: '05:00–11:59, your time' })]), el('div', { class: 'row' }, [at, save])]));
+      }
+      if (typeof b.whatson_auto === 'boolean' || typeof b.lists_auto === 'boolean') view.appendChild(el('h3', { text: 'Automatic checks' }));
+      if (typeof b.whatson_auto === 'boolean') view.appendChild(sw('What\'s on, weekly', 'Events on your coming trip dates, checked once a week.', b.whatson_auto, '/whatson auto on', '/whatson auto off'));
+      if (typeof b.lists_auto === 'boolean') view.appendChild(sw('Saved lists', 'New Google Maps list exports are read on their own.', b.lists_auto, '/lists auto on', '/lists auto off'));
+      var pr = obj(b.profile);
+      view.appendChild(el('h3', { text: 'Your profile' }));
+      view.appendChild(el('div', { class: 'set' }, [el('div', { class: 'grow meta', text: pr.has === true ? 'Updated ' + str(pr.updated, 20) + (num(pr.dimensions) ? ' · ' + num(pr.dimensions) + ' things known' : '') : 'No interview answers yet' }),
+        el('div', { class: 'row' }, [actPill('Show in chat', { text: '/profile' }, back), el('button', { class: 'btn small ghost', type: 'button', text: 'Interview', on: { click: function () { S.person = ''; go('interview'); } } })])]));
+      var st = obj(b.status), dl = el('dl', {});
+      [['Helper', str(st.helper, 40) + ' v' + str(st.version, 20) + ' · core v' + str(st.core_version, 20)], ['Waiting in the queue', num(st.queue)], ['Pending actions', num(st.pending)],
+        ['Open requests', num(st.open_requests)], ['Last sweep', str(st.last_sweep_local, 40) || 'never'], ['Wakes today', num(st.wakes_today)],
+        ['Routine runs today', num(st.routine_fires_today)], ['Triggers', num(st.triggers)]]
+        .forEach(function (r) { dl.appendChild(el('dt', { text: r[0] })); dl.appendChild(el('dd', { text: String(r[1]) })); });
+      var hb = function (label, text, confirm) { return actPill(label, { text: text, confirm: confirm }, back); };
+      view.appendChild(el('details', { class: 'health', 'data-health': '1' }, [el('summary', { text: 'Helper health' }), dl,
+        el('div', { class: 'acts' }, [hb('Re-send pending', '/pending'), hb('Read the mailbox now', '/wake'), hb('Expire stale proposals', '/expire', true), hb('Ping', '/ping'), hb('Status', '/status'), hb('Chat id', '/id')])]));
+      render(view);
+    }
     /* ---------- boot ---------- */
     /* ---------- size: full height everywhere, full screen on the web clients ----------
      * expand() gives the full height on every client. On web.telegram.org (k and a) a Mini App is a floating, resizable window
@@ -2214,7 +2525,9 @@
       var fromUrl = readParams();
       resolveCore(fromUrl, function () {
         if (!S.core) { render(stateView('🔗', 'No helper address', 'Open the app from the bot\'s menu button or one of its buttons — the link carries the address.')); return; }
-        $('chrome').classList.remove('hidden'); buildNav(); go(S.screen);
+        $('chrome').classList.remove('hidden'); buildNav();
+        var started = false, start = function () { if (!started) { started = true; go(S.screen); } };
+        scLoad(start); setTimeout(start, 1500);   // the shortcuts first, so Home and Commands draw them; never wait long for them
       });
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
