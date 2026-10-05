@@ -6,6 +6,7 @@
  * breakfast at the lodging, a first leg from it, a check-on-the-day line, and ends at a train with two fallbacks.
  * options: c18 true, the vegetarian diet from the C11 sample.
  * sampleInputC18() → { trip, plan, places, notes, snapshots, estimates, options } (fresh objects on every call).
+ * C18_BRIEFING — the matching written briefing (wave 2, WP-18d): options.briefing.
  */
 import { sampleInputC11 } from './brochure-map-sample-c11.mjs';
 
@@ -42,5 +43,48 @@ export function sampleInputC18() {
   s.options = { ...s.options, c18: true };
   return s;
 }
+
+/**
+ * C18_BRIEFING — an invented written briefing for the sample's two days (Contract C18 wave 2, WP-18d), for tests and
+ * screenshots: pass it as options.briefing with options.c18. Every food place has a card, so the merge warns nothing.
+ * Frozen at the top level only; clone it before changing it.
+ */
+export const C18_BRIEFING = Object.freeze({
+  v: 1, build_id: 'fixture-build-0001',
+  days: {
+    '2027-05-13': {
+      lead: 'Two fixed points: the 10:00 museum entry and the 19:00 table at Juniper Table. The afternoon between them is yours.',
+      key_times: [{ label: 'Train in', time: '08:55' }, { label: 'Museum entry', time: '10:00' }, { label: 'Dinner', time: '19:00' }, { label: 'Sunset', time: '20:12' }],
+      contents: 'The museum, the market, a free afternoon',
+      food: [
+        { name: 'Slate Museum café', place: 'slate-museum', dish: 'Barley scone and tea', price: '€5', fits: 'after the museum, about 12:00' },
+        { name: 'Copper Market', place: 'copper-market', dish: 'Grilled halloumi flatbread', price: '€8', fits: 'lunch, 13:00–13:45', caveat: 'Cash only; the east arcade stalls close at 14:00.' },
+        { name: 'Juniper Table', place: 'juniper-table', dish: 'The tasting menu, two courses meat-free on request', price: '€38', fits: 'dinner, 19:00', caveat: 'Booked; be there by 18:55.' }
+      ],
+      if_then: [
+        { if: 'The train is late', then: 'Leave the bags for later and go straight to the museum on Tram 3.' },
+        { if: 'It rains in the afternoon', then: 'Weaver Gallery is 3 minutes from Quayside Rooms and open until 19:00.' }
+      ],
+      bail_out: 'After the market, take Tram 3 back to Quayside Rooms and rest; keep only the 19:00 dinner.',
+      why: ['The museum takes the morning because it is the only timed entry.', 'Lunch is at the market, so the afternoon starts on the tram home.'],
+      kit: {
+        weather: { high_c: 21, low_c: 11, rain_pct: 30, note: 'Showers pass quickly.' },
+        items: ['A light layer for the evening', 'Cash for the market'],
+        closures: ['Banks closed for Founders Day; trams run a Sunday timetable'],
+        not_missing: ['The river lantern walk starts at 20:30, after dinner']
+      }
+    },
+    '2027-05-14': {
+      theme: 'Lark Hill and the train out',
+      lead: 'A short walk up Lark Hill before checkout, then a free afternoon; leave Quayside Rooms by 16:30 for the 17:30 train.',
+      key_times: [{ label: 'Breakfast', time: '08:00' }, { label: 'Check out', time: '11:00' }, { label: 'Leave', time: '16:30' }, { label: 'Train', time: '17:30' }],
+      contents: 'Lark Hill, then the train',
+      if_then: [{ if: 'The hill path is closed for wind', then: 'Walk the old quay instead and keep the same times.' }],
+      bail_out: 'Skip the afternoon and wait at the station; the next train is at 18:10.',
+      why: ['Lark Hill goes first, before the wind picks up and before checkout.'],
+      kit: { weather: { high_c: 20, low_c: 12 }, items: ['Bags packed before breakfast'] }
+    }
+  }
+});
 
 // Developed by: LightAISolutions

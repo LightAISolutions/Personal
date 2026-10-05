@@ -569,4 +569,23 @@ export function checkDayVersions(p) {
   return errs;
 }
 
+/**
+ * Briefing (Contract C18 wave 2): every date key a calendar date, each day's key times in time order, a weather low not
+ * above its high. (brochure-map's merge is tolerant on top of this: it drops and clips what this would refuse.)
+ */
+export function checkBriefing(b) {
+  const errs = [];
+  const mins = (t) => +t.slice(0, 2) * 60 + +t.slice(3);
+  for (const [date, d] of Object.entries(b.days || {})) {
+    const base = `/days/${date}`;
+    if (!isDate(date)) errs.push({ path: base, message: 'not a calendar date' });
+    (d.key_times || []).forEach((k, j, all) => {
+      if (j && mins(k.time) < mins(all[j - 1].time)) errs.push({ path: `${base}/key_times/${j}/time`, message: 'earlier than the tile before (key times go in time order)' });
+    });
+    const w = d.kit && d.kit.weather;
+    if (w && w.low_c > w.high_c) errs.push({ path: `${base}/kit/weather/low_c`, message: 'the low is above the high' });
+  }
+  return errs;
+}
+
 // Developed by: LightAISolutions

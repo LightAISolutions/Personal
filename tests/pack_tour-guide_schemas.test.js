@@ -47,7 +47,8 @@ test('every kind has a schema file in the validator subset (only #/$defs refs) a
     'booking', 'shortlist', 'trip-facts', 'plan-digest', 'profile-summary', 'prefs-review', 'places-digest', 'bookings', 'scout', 'outline', 'day-versions',
     'veg-card',   // C14 (TG-PHASE-14 WP-14c): the veg card's payload kind
     'daytrip', 'whatson',   // C15 (TG-PHASE-15 skeleton): the day-trip and what's-on boards' payload kinds
-    'quiet', 'menu']);   // C16 (TG-PHASE-16 skeleton): the quiet board's and the menu check's payload kinds
+    'quiet', 'menu',   // C16 (TG-PHASE-16 skeleton): the quiet board's and the menu check's payload kinds
+    'briefing']);   // C18 wave 2 (TG-PHASE-18 WP-18d): the written briefing (not an envelope payload)
   for (const kind of s.listKinds()) {
     const schema = s.loadSchema(kind);
     assert.equal(schema.$schema, 'https://json-schema.org/draft/2020-12/schema', kind);

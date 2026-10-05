@@ -12,6 +12,10 @@
  *     departure and the planner's free-window titles and options (brochure-map-c18.mjs). They are computed from data
  *     every plan already has, so they are gated: without `c18` the model is byte-identical to before. options.clock
  *     ('12h'|'24h') and options.temp ('c'|'f'|'both') become trip.clock / trip.temp only when given.
+ *     Contract C18 wave 2 (WP-18d): options.briefing (schemas/tour-guide-briefing.schema.json), only with options.c18,
+ *     is merged per date into the days — lead, key-time tiles, the glance row, food, if-then, bail-out, why, day kit
+ *     (brochure-map-briefing.mjs); what it drops, clips or caps comes back in renderPlan's warnings.
+ *   buildModel(args) → { model, warnings }
  *   renderPlan(args, { page?, embedFonts? }) → { html, model, warnings }
  *   renderPlanPdf(args, outPath, { page?, shotsDir? }) → { html, model, warnings, pdf, pages, available }   (no PDF when pdfAvailable() is false)
  * Pure: never mutates its input, never calls the network.
@@ -26,7 +30,8 @@ import { tripPractical, dayRoutes, freeDays, verifySections, PRACTICAL_LIMITS } 
 import { bookingsSection } from './brochure-map-bookings.mjs';
 import { buildAttribution } from './brochure-map-attribution.mjs';
 import { seasonModel, factsSourceRows, seasonSourceRows } from './brochure-map-facts.mjs';
-import { addC18, tripDisplay } from './brochure-map-c18.mjs';
+import { addC18, tripDisplay, clockFor } from './brochure-map-c18.mjs';
+import { mergeBriefing } from './brochure-map-briefing.mjs';
 
 export { placeCard, closedDays, hoursLine, hoursToday, categoryLabel } from './brochure-map-cards.mjs';
 export { mapDay, freeDay, legMode, MODE_MAP } from './brochure-map-days.mjs';
@@ -34,6 +39,7 @@ export { mapLater } from './brochure-map-later.mjs';
 export { buildAttribution, mergeSources, sourceKey } from './brochure-map-attribution.mjs';
 export { cardFacts, seasonModel, stopLines, IMPL as FACTS_IMPL } from './brochure-map-facts.mjs';
 export { addC18, tripDisplay, tipOf, takesCashOnly, clockFor, PREP, DEPART, C18_CAPS } from './brochure-map-c18.mjs';
+export { mergeBriefing, BRIEF_KEYS } from './brochure-map-briefing.mjs';
 export { pdfAvailable };
 
 const LOCALE = /^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$/;
@@ -52,7 +58,9 @@ function lodgingEntry(l) {
 }
 
 /** toBrochureModel(args) → brochure model v1 (see the file header). Throws on a stop whose place is unknown. */
-export function toBrochureModel({ trip, plan, places, notes = [], snapshots = [], estimates = [], options = {} } = {}) {
+export function toBrochureModel(args) { return buildModel(args).model; }
+/** buildModel(args) → { model, warnings } — the model and the mapping's own warnings (today: the briefing merge's). */
+export function buildModel({ trip, plan, places, notes = [], snapshots = [], estimates = [], options = {} } = {}) {
   if (!trip || !plan || !Array.isArray(plan.days)) throw new Error('brochure-map: needs { trip, plan } with plan.days');
   const showGoogle = options.show_google_content !== false;
   const placeList = Array.isArray(places) ? places : (plan.places || []);
@@ -110,6 +118,12 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
     routes.push({ n: bDays.length, date: d.date, url: d.day_url });
   }
   if (!bDays.length) throw new Error('brochure-map: the plan has no day with a stop; the brochure needs at least one');
+  // C18 wave 2: the written briefing, merged per date into the mapped days (brochure-map-briefing.mjs).
+  const warnings = [];
+  if (options.briefing !== undefined && options.briefing !== null) {
+    if (c18) warnings.push(...mergeBriefing(bDays, options.briefing, { cards, buildId: plan.build_id, ck: clockFor(options.clock, locale) }));
+    else warnings.push('briefing: ignored — it needs options.c18');
+  }
 
   const builtOn = options.built_on || plan.built_on;
   const verifiedOn = options.verified_on || days.map((d) => d.verified_on).filter((v) => DATE.test(String(v || ''))).sort().pop() || builtOn;
@@ -145,14 +159,18 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
     extra: [...order.flatMap((s) => factsSourceRows(placesBySlug.get(s).facts)), ...seasonSourceRows(trip.season)]
   });
   const season = seasonModel(trip.season, { start_date: trip.start_date, end_date: trip.end_date, cards });
-  return compact({ version: 1, trip: tripOut, season, days: bDays, places: cards, later: mapLater(plan.later, { cards }), practical: practical.slice(0, PRACTICAL_LIMITS.sections), attribution });
+  const model = compact({ version: 1, trip: tripOut, season, days: bDays, places: cards, later: mapLater(plan.later, { cards }), practical: practical.slice(0, PRACTICAL_LIMITS.sections), attribution });
+  return { model, warnings };
 }
 
-/** renderPlan(args, renderOptions) → { html, model, warnings } — model is the brochure model (not the kit's prepared one). */
+/**
+ * renderPlan(args, renderOptions) → { html, model, warnings } — model is the brochure model (not the kit's prepared
+ * one); warnings are the kit's, then the mapping's ("briefing: …" drops and clips).
+ */
 export function renderPlan(args, renderOptions = {}) {
-  const model = toBrochureModel(args);
+  const { model, warnings } = buildModel(args);
   const r = renderHtml(model, renderOptions);
-  return { html: r.html, model, warnings: r.warnings };
+  return { html: r.html, model, warnings: r.warnings.concat(warnings) };
 }
 /** renderPlanPdf(args, outPath, opts) → also writes the PDF when Playwright and Chromium are present (else pdf: null). */
 export async function renderPlanPdf(args, outPath, opts = {}) {

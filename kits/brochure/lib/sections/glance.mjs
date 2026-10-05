@@ -1,7 +1,7 @@
 /**
  * Brochure kit — "the trip at a glance": the intro in two columns, one column per day with its stops and meals,
  * and a map of the whole trip with every day's route in its own hue (a real Google map when the build fetched one,
- * otherwise a drawn sketch).
+ * otherwise a drawn sketch). C18 wave 2: a day's `contents` line names its column and key line instead of its theme.
  */
 import { esc, join, clip } from '../escape.mjs';
 import { shortDate, longDate, duration } from '../format.mjs';
@@ -19,7 +19,7 @@ function dayColumn(d, i, locale) {
   });
   const s = d.stats;
   const foot = join([s.walkMin ? estMark(`${duration(s.walkMin)} on foot`, s.walkEstimated) : '', s.transitMin ? estMark(`${duration(s.transitMin)} in transit`, s.transitEstimated) : '', s.driveMin ? `${duration(s.driveMin)} by road` : '', d.lodging ? `night at ${esc(d.lodging.name)}` : ''], ' · ');
-  return `<div class="gday" style="${hueStyle(i)}"><div class="gday-head"><span class="gday-n">${d.index}</span><span class="gday-date">${esc(shortDate(d.date, locale))}</span></div><p class="gday-theme">${esc(d.theme)}</p><ul class="gday-stops">${rows.join('')}</ul>${foot ? `<p class="gday-foot">${foot}</p>` : ''}</div>`;
+  return `<div class="gday" style="${hueStyle(i)}"><div class="gday-head"><span class="gday-n">${d.index}</span><span class="gday-date">${esc(shortDate(d.date, locale))}</span></div><p class="gday-theme">${esc(d.contents || d.theme)}</p><ul class="gday-stops">${rows.join('')}</ul>${foot ? `<p class="gday-foot">${foot}</p>` : ''}</div>`;
 }
 function tripSketch(m) {
   const { points, pairs } = tripSequence(m, hueOf);
@@ -38,7 +38,7 @@ export function glance(ctx) {
   const t = m.trip;
   const paras = String(t.intro || '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
   const cols = Math.min(4, Math.max(1, m.days.length));
-  const keys = m.days.map((d, i) => `<p class="keyline" style="${hueStyle(i)}"><span class="swatch"></span><span><b>Day ${d.index}</b> · ${esc(d.theme)}</span></p>`).join('');
+  const keys = m.days.map((d, i) => `<p class="keyline" style="${hueStyle(i)}"><span class="swatch"></span><span><b>Day ${d.index}</b> · ${esc(d.contents || d.theme)}</span></p>`).join('');
   const sk = tripSketch(m);
   const meta = t.verified_on ? `Details checked ${esc(longDate(t.verified_on, locale))}` : '';
   return `<section class="sec sec-glance" data-pg="section" data-folio="At a glance">

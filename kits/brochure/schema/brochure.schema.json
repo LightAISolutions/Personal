@@ -140,7 +140,61 @@
         "extras": { "type": "array", "maxItems": 3, "items": { "$ref": "#/$defs/extra" }, "description": "Optional evening extras: season events near the route, and saved places for an early finish." },
         "checklist": { "$ref": "#/$defs/checklist" },
         "prep": { "$ref": "#/$defs/prep" },
-        "departure": { "$ref": "#/$defs/departure" }
+        "departure": { "$ref": "#/$defs/departure" },
+        "lead": { "type": "string", "maxLength": 240, "description": "Contract C18 wave 2: the answer first — what the day is and the one thing to get right. Replaces the summary line under the title." },
+        "key_times": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/keyTime" }, "description": "Contract C18 wave 2: tiles under the lead, in time order." },
+        "contents": { "type": "string", "maxLength": 80, "description": "Contract C18 wave 2: the day's row on the glance page, named after its decision (else the theme)." },
+        "food": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/foodItem" }, "description": "Contract C18 wave 2: 'Food on your route'." },
+        "if_then": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/ifThen" }, "description": "Contract C18 wave 2: 'If this, then that'." },
+        "bail_out": { "type": "string", "maxLength": 240, "description": "Contract C18 wave 2: how to cut the day short (the last line of 'If this, then that')." },
+        "why": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/line" }, "description": "Contract C18 wave 2: 'Why this plan', the choices made, in plain words." },
+        "kit": { "$ref": "#/$defs/dayKit" }
+      }
+    },
+    "keyTime": {
+      "type": "object", "additionalProperties": false, "required": ["label", "time"],
+      "description": "Contract C18 wave 2: a key-time tile (label over the time).",
+      "properties": {
+        "label": { "type": "string", "minLength": 1, "maxLength": 30 },
+        "time": { "$ref": "#/$defs/time" }
+      }
+    },
+    "foodItem": {
+      "type": "object", "additionalProperties": false, "required": ["name", "dish", "fits"],
+      "description": "Contract C18 wave 2: a dish on the day's route that fits the travellers' diet.",
+      "properties": {
+        "name": { "$ref": "#/$defs/line", "minLength": 1 },
+        "place": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$", "description": "Key into `places`; the name links to its card when it has one." },
+        "dish": { "$ref": "#/$defs/line", "minLength": 1 },
+        "price": { "type": "string", "maxLength": 60 },
+        "fits": { "$ref": "#/$defs/line", "minLength": 1, "description": "Where it fits in the day, e.g. 'lunch, 12:00–13:00'." },
+        "caveat": { "$ref": "#/$defs/line", "description": "Queue, cash, closes early." }
+      }
+    },
+    "ifThen": {
+      "type": "object", "additionalProperties": false, "required": ["if", "then"],
+      "description": "Contract C18 wave 2: what to do when the day goes wrong.",
+      "properties": {
+        "if": { "$ref": "#/$defs/line", "minLength": 1 },
+        "then": { "$ref": "#/$defs/line", "minLength": 1 }
+      }
+    },
+    "dayKit": {
+      "type": "object", "additionalProperties": false,
+      "description": "Contract C18 wave 2: the day survival kit — weather (temperatures in trip.temp), sunset from day.sunset, what to bring, closures, what is not missing.",
+      "properties": {
+        "weather": {
+          "type": "object", "additionalProperties": false, "required": ["high_c", "low_c"],
+          "properties": {
+            "high_c": { "type": "number", "minimum": -60, "maximum": 60 },
+            "low_c": { "type": "number", "minimum": -60, "maximum": 60 },
+            "rain_pct": { "type": "integer", "minimum": 0, "maximum": 100 },
+            "note": { "$ref": "#/$defs/line" }
+          }
+        },
+        "items": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/line" } },
+        "closures": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/line" } },
+        "not_missing": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/line" } }
       }
     },
     "dayPoint": {
