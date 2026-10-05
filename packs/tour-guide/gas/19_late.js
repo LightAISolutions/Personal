@@ -280,7 +280,7 @@ registerCommand('/late', function (ctx) {
   var mins = parseInt(m[1], 10);
   if (!(mins >= TG_LATE.MIN && mins <= TG_LATE.MAX)) { ctx.reply('Between ' + TG_LATE.MIN + ' and ' + TG_LATE.MAX + ' minutes, please.'); return; }
   var date = m[2] ? tgCmdPlanDate(trip, m[2]) : tgTripToday(trip);
-  if (!date) { ctx.reply('That day is not in the plan of ' + tgCmdTitle(trip) + '. /trip shows its days.'); return; }
+  if (!date) { ctx.reply(tgCmdNotInPlan(trip)); return; }
   if (!m[2] && !tgDigestDay(trip.slug, date)) { ctx.reply('No plan for today in ' + tgCmdTitle(trip) + '. To rehearse a day: <code>/late 30 &lt;day N&gt;</code>.'); return; }
   tgLateRun(ctx.chatId, trip, date, mins);
 }, 'running late: /late <minutes> moves the rest of today later; /late 30 <day N> rehearses another day');
