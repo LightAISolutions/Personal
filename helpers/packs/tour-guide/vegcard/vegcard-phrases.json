@@ -1,8 +1,15 @@
 {
   "v": 1,
-  "about": "Tour Guide veg card phrase table (TG-PHASE-14 WP-14c). Every line on a card comes from here; Japanese in the polite desu/masu form, with the explicit list of what is not eaten. {items} is filled by joining item phrases with ja.join or en.join. A {one, many} value picks by party size.",
+  "about": "Tour Guide veg card phrase table (TG-PHASE-14 WP-14c). Every line on a card comes from here; Japanese in the polite desu/masu form, with the explicit list of what is not eaten. {items} is filled by joining item phrases with ja.join or en.join. A {one, many} value picks by party size. A per-person card (party.members) says each limit for the person who has it: {who} is filled from `who` (\"I\", \"my companion\"…), and a {one, many} value then picks by how many that line speaks for.",
   "countries": { "JP": "ja" },
   "join": { "ja": "・", "en": ", " },
+  "who": {
+    "self": { "ja": "私は", "en": "I", "label": "Me" },
+    "companion": { "ja": "連れは", "en": "My companion", "label": "My companion" },
+    "companions_all": { "ja": "連れは全員", "en": "All my companions", "label": "All my companions" },
+    "companion_one_of": { "ja": "連れの一人は", "en": "One of my companions", "label": "One of my companions" },
+    "companions_some": { "ja": "連れのうち{k}人は", "en": "{k} of my companions", "label": "{k} of my companions" }
+  },
   "lines": {
     "intro.vegetarian": {
       "ja": { "one": "私はベジタリアンです。肉・魚・魚介類は食べられません。", "many": "私たちはベジタリアンです。肉・魚・魚介類は食べられません。" },
@@ -13,13 +20,24 @@
       "en": { "one": "I am vegan. I do not eat meat, fish, seafood, eggs or dairy.", "many": "We are vegan. We do not eat meat, fish, seafood, eggs or dairy." }
     },
     "intro.limits": {
-      "ja": { "one": "私は次のものが食べられません。", "many": "私たちは次のものが食べられません。" },
-      "en": { "one": "I cannot eat the following.", "many": "We cannot eat the following." }
+      "ja": { "one": "私は次のものを口にできません。", "many": "私たちは次のものを口にできません。" },
+      "en": { "one": "I cannot have the following.", "many": "We cannot have the following." }
     },
     "avoid.stock": { "ja": "かつおだしや煮干しなど、魚のだしも食べられません。", "en": "That includes fish stock (dashi made from bonito or dried sardines)." },
     "avoid.flakes": { "ja": "かつお節も使わないでください。", "en": "Please no bonito flakes (katsuobushi) either." },
     "avoid.sauces": { "ja": "魚醤、オイスターソース、肉のスープ（ガラスープ・ブイヨン）、ラード、ゼラチンもだめです。", "en": "No fish sauce, oyster sauce, meat broth, lard or gelatin." },
-    "avoid.also": { "ja": "{items}も食べられません。", "en": { "one": "I also cannot eat {items}.", "many": "We also cannot eat {items}." } },
+    "avoid.also": { "ja": "{items}も口にできません。", "en": { "one": "I also cannot have {items}.", "many": "We also cannot have {items}." } },
+    "member.vegetarian": {
+      "ja": "{who}ベジタリアンです。肉・魚・魚介類は食べられません。",
+      "en": { "one": "{who} is vegetarian and does not eat meat, fish or seafood.", "many": "{who} are vegetarian and do not eat meat, fish or seafood." }
+    },
+    "member.vegan": {
+      "ja": "{who}ヴィーガン（完全菜食）です。肉・魚・魚介類・卵・乳製品は食べられません。",
+      "en": { "one": "{who} is vegan and does not eat meat, fish, seafood, eggs or dairy.", "many": "{who} are vegan and do not eat meat, fish, seafood, eggs or dairy." }
+    },
+    "member.limits": { "ja": "{who}{items}を口にできません。", "en": "{who} cannot have {items}." },
+    "member.also": { "ja": "{who}{items}も口にできません。", "en": "{who} also cannot have {items}." },
+    "member.following": { "ja": "{who}次のものを口にできません。", "en": "{who} cannot have the following." },
     "ok.base": { "ja": "{items}は大丈夫です。", "en": "{items} are fine." },
     "ok.stock": { "ja": "昆布や椎茸のだしなら大丈夫です。", "en": "Kelp (kombu) or shiitake stock is fine." },
     "ask.dashi": { "ja": "この料理に、だしや魚は入っていますか？", "en": "Does this dish contain dashi or fish?" },

@@ -54,6 +54,8 @@ Every line comes from the pack's phrase table; the only owner words on the card 
 
 **The card's fingerprint.** `vcf1:` and the lower-case 8-hex FNV-1a (32-bit, the same function as C13's `lodging_fp`) of the UTF-8 string `v1|<lang or ->|<diet or ->|<one or many>|<the extra avoid keys, sorted, joined by ,>|<english_only lower-cased, sorted, joined by ,>`. Only the engine computes it. The core stores it, and the routine sends the card with `dedupe_key` `vegcard:<trip>:<fp>`, so an unchanged card is dropped as a duplicate.
 
+*Amended in v01.75r:* a per-person card (`party.members`, below) appends `|m:` and its groups' signatures to that string; a one-voice card's string is unchanged (`helpers/decisions/WP-14c.md`, "Per-person attribution").
+
 **Wave 2** has its own table in the Wave 2 section: a `lists` request kind, `lists`, `list_notes` and `cid` on a place file, `lists` on a `places_digest` place, a `compare` request kind, and `mode`, `source`, item `flags` and the `not_found` reason on a `scout` payload, so compare reuses Scout's envelope, store, chat card and app screen.
 
 ## Step 0 — Orient (every WP)
@@ -205,6 +207,8 @@ Narrow edits elsewhere:
 The diet:
 - comes from `partyDiet` (the strictest member);
 - `size` 1 is "I", and more is "we".
+
+*Amended in v01.75r:* with `party.members` (one `dietOf()` per traveller, owner first) each limit is said for the person who has it ("I", "my companion"…); the card is one voice only when everyone says the same, or only the owner has limits (`helpers/decisions/WP-14c.md`, "Per-person attribution").
 
 The sections, in order, each built from the table:
 1. `intro`: the diet's opening line, or, for a party with limits but no diet, "I/We cannot eat the following".

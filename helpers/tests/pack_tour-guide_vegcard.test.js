@@ -1,7 +1,8 @@
 'use strict';
 // packs/tour-guide/vegcard — the veg card engine (TG-PHASE-14 WP-14c, Contract C14): the phrase table covers every
-// cannot-eat value the prefs kit can produce, the four composition cases, the fingerprint, escaping, bounds and the
-// pack validator. Invented parties only (vegcard/vegcard-fixture-party.json).
+// cannot-eat value the prefs kit can produce, the four composition cases, the per-person card (party.members: each
+// limit said for the person who has it), the fingerprint, escaping, bounds and the pack validator. Invented parties
+// only (vegcard/vegcard-fixture-party.json).
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -15,10 +16,12 @@ const S = () => import('../packs/tour-guide/schemas/index.mjs');
 const read = (...p) => JSON.parse(fs.readFileSync(path.join(...p), 'utf8'));
 const FIX = read(PACK, 'vegcard', 'vegcard-fixture-party.json');
 const clone = (x) => JSON.parse(JSON.stringify(x));
-async function cardFor(name) {
+/** The fixture's card: the merged party as before, or with `members` the per-person card. */
+async function cardFor(name, { members = false } = {}) {
   const [{ vegCard }, { partyDiet }] = await Promise.all([V(), P()]);
   const f = FIX[name];
-  return vegCard({ party: { ...partyDiet(f.members), size: f.members.length }, country: f.country, trip: f.trip });
+  const party = { ...partyDiet(f.members), size: f.members.length, ...(members ? { members: f.members } : {}) };
+  return vegCard({ party, country: f.country, trip: f.trip });
 }
 const sec = (card, id) => card.sections.find((s) => s.id === id);
 const en = (card, id) => (sec(card, id) ? sec(card, id).lines.map((l) => l.en) : []);
@@ -71,8 +74,8 @@ test('a vegetarian party of two with nuts: "we", the three avoid lines plus an "
   assert.deepEqual(c.sections.map((s) => s.id), ['intro', 'avoid', 'ok', 'ask', 'thanks']);
   assert.deepEqual(ja(c, 'intro'), ['私たちはベジタリアンです。肉・魚・魚介類は食べられません。']);
   assert.equal(ja(c, 'avoid').length, 4);
-  assert.equal(ja(c, 'avoid')[3], 'ナッツ類も食べられません。');
-  assert.equal(en(c, 'avoid')[3], 'We also cannot eat nuts.');
+  assert.equal(ja(c, 'avoid')[3], 'ナッツ類も口にできません。');
+  assert.equal(en(c, 'avoid')[3], 'We also cannot have nuts.');
   assert.equal(ja(c, 'ok')[0], '野菜・豆腐・ご飯・麺・卵・乳製品は大丈夫です。');
   assert.equal(ja(c, 'ok')[1], '昆布や椎茸のだしなら大丈夫です。');
   assert.deepEqual(en(c, 'ask'), ['Does this dish contain dashi or fish?', 'Could you make it without fish stock?', 'Which dishes have no meat and no fish?']);
@@ -90,12 +93,12 @@ test('a vegan party: no eggs or dairy among the fine items, the vegan question, 
   assert.equal(ja(c, 'ask')[2], '肉・魚・卵・乳製品を使っていない料理はありますか？');
 });
 
-test('a shellfish-only party: "we cannot eat the following", one line per limit, the contains question, no ok and no which', async () => {
+test('a shellfish-only party: "we cannot have the following", one line per limit, the contains question, no ok and no which', async () => {
   const c = await cardFor('shellfish_trio');
   assert.equal(c.diet, null);
   assert.equal(c.party, 3);
   assert.deepEqual(c.sections.map((s) => s.id), ['intro', 'avoid', 'ask', 'thanks']);
-  assert.deepEqual(ja(c, 'intro'), ['私たちは次のものが食べられません。']);
+  assert.deepEqual(ja(c, 'intro'), ['私たちは次のものを口にできません。']);
   assert.deepEqual(ja(c, 'avoid'), ['エビ・カニ・貝類']);
   assert.deepEqual(ja(c, 'ask'), ['この料理にエビ・カニ・貝類は入っていますか？'], 'no ask.without: shellfish is not fish or seafood');
   const { vegCard } = await V();
@@ -204,6 +207,118 @@ test('the pack validator refuses what C14 refuses, and schemas/index.mjs knows v
   refuse((p) => { p.kind = 'veg_card'; }, /kind/);
   refuse((p) => { delete p.trip; }, /trip/);
   refuse((p) => { p.sections = Array.from({ length: 5 }, (_, i) => ({ id: ['intro', 'avoid', 'ok', 'ask', 'thanks'][i], lines: Array.from({ length: 12 }, () => ({ local: '漢'.repeat(150), en: 'e'.repeat(150) })) })); }, /under 8000/);
+});
+
+test('per person: a vegetarian owner is "I", the companion\'s limit is "my companion", asked about in every dish', async () => {
+  const { validateVegCardPayload, vegCardTelegram, vegCardHtml } = await V();
+  const c = await cardFor('vegetarian_owner_eggs_companion', { members: true });
+  assert.deepEqual(validateVegCardPayload(c), []);
+  assert.equal(c.diet, 'vegetarian');
+  assert.equal(c.party, 2);
+  assert.deepEqual(ja(c, 'intro'), ['私はベジタリアンです。肉・魚・魚介類は食べられません。']);
+  assert.deepEqual(en(c, 'intro'), ['I am vegetarian. I do not eat meat, fish or seafood.']);
+  assert.equal(ja(c, 'avoid').length, 4);
+  assert.equal(ja(c, 'avoid')[3], '連れは卵を口にできません。');
+  assert.equal(en(c, 'avoid')[3], 'My companion cannot have eggs.');
+  assert.ok(c.sections.every((s) => s.lines.every((l) => !l.local.startsWith('私たち') && !/\bwe\b/i.test(l.en))), 'no line speaks for both');
+  assert.equal(ja(c, 'ok')[0], '野菜・豆腐・ご飯・麺・乳製品は大丈夫です。', 'never looser for anyone: no eggs among the fine items');
+  assert.deepEqual(en(c, 'ask'), ['Does this dish contain dashi or fish?', 'Could you make it without fish stock?', 'Which dishes have no meat and no fish?',
+    'Does this dish contain eggs?']);
+  assert.equal(ja(c, 'ask')[3], 'この料理に卵は入っていますか？');
+  assert.match(vegCardTelegram(c), /<b>連れは卵を口にできません。<\/b>\n<i>My companion cannot have eggs\.<\/i>/);
+  assert.match(vegCardHtml(c), /連れは卵/);
+  const merged = await cardFor('vegetarian_owner_eggs_companion');
+  assert.deepEqual(ja(merged, 'intro'), ['私たちはベジタリアンです。肉・魚・魚介類は食べられません。'], 'without members: one voice, as before');
+  assert.equal(en(merged, 'avoid')[3], 'We also cannot have eggs.');
+  assert.notEqual(c.fp, merged.fp, 'the per-person card is a new card');
+  const nuts = await cardFor('vegetarian_pair_nuts', { members: true });
+  assert.equal(ja(nuts, 'intro')[0], '私はベジタリアンです。肉・魚・魚介類は食べられません。');
+  assert.equal(ja(nuts, 'avoid')[3], '連れはナッツ類を口にできません。');
+  assert.equal(en(nuts, 'avoid')[3], 'My companion cannot have nuts.');
+  assert.equal(en(nuts, 'ask')[3], 'Does this dish contain nuts?');
+});
+
+test('per person: a companion who keeps the diet opens; the owner\'s own limit is "I"; a diet everyone keeps is "we"', async () => {
+  const { vegCard } = await V();
+  const card = (members, size = members.length) => vegCard({ party: { size, members }, country: 'JP', trip: 'x' });
+  const c = card([{ dietary: ['nuts'], diet: null }, { dietary: ['meat and fish'], diet: 'vegetarian' }]);
+  assert.deepEqual(ja(c, 'intro'), ['連れはベジタリアンです。肉・魚・魚介類は食べられません。']);
+  assert.deepEqual(en(c, 'intro'), ['My companion is vegetarian and does not eat meat, fish or seafood.']);
+  assert.ok(ja(c, 'avoid').includes('私はナッツ類を口にできません。') && en(c, 'avoid').includes('I cannot have nuts.'));
+  const both = card([{ dietary: ['meat and fish'], diet: 'vegetarian' }, { dietary: ['vegetarian', 'nuts'], diet: 'vegetarian' }]);
+  assert.deepEqual(en(both, 'intro'), ['We are vegetarian. We do not eat meat, fish or seafood.'], 'both keep the diet: said once');
+  assert.equal(en(both, 'avoid')[3], 'My companion also cannot have nuts.');
+  assert.equal(ja(both, 'avoid')[3], '連れはナッツ類も口にできません。');
+  const vegan = card([{ dietary: ['meat and fish'] }, { dietary: ['vegan'] }, { dietary: ['animal products'] }, { dietary: ['wheat'] }]);
+  assert.equal(vegan.diet, 'vegan', 'the strictest diet holds for ok and the questions');
+  assert.equal(en(vegan, 'intro')[0], 'I am vegetarian. I do not eat meat, fish or seafood.');
+  assert.ok(en(vegan, 'avoid').includes('2 of my companions are vegan and do not eat meat, fish, seafood, eggs or dairy.'), 'two say the same: one line, plural');
+  assert.ok(ja(vegan, 'avoid').includes('連れのうち2人はヴィーガン（完全菜食）です。肉・魚・魚介類・卵・乳製品は食べられません。'));
+  assert.ok(en(vegan, 'avoid').includes('One of my companions cannot have wheat (gluten).'));
+  assert.equal(ja(vegan, 'ok')[0], '野菜・豆腐・ご飯は大丈夫です。', 'no eggs or dairy (vegan), no noodles (gluten)');
+  assert.deepEqual(en(vegan, 'ask').slice(2), ['Which dishes have no meat, fish, eggs or dairy?', 'Does this dish contain wheat (gluten)?']);
+  const all = card([{ dietary: [] }, { dietary: ['nuts'] }, { dietary: ['nuts'] }]);
+  assert.deepEqual(en(all, 'intro'), ['All my companions cannot have nuts.']);
+  assert.deepEqual(ja(all, 'intro'), ['連れは全員ナッツ類を口にできません。']);
+  const fish = card([{ dietary: ['meat and fish'] }, { dietary: ['fish', 'nuts'] }]);
+  assert.deepEqual(en(fish, 'ask').slice(3), ['Does this dish contain nuts?'], 'a limit the diet\'s questions already ask is not asked again');
+  assert.equal(en(fish, 'avoid')[3], 'My companion cannot have fish, nuts.');
+});
+
+test('one voice when it says the same: identical members are the old card byte for byte; only the owner with limits is "I"', async () => {
+  const [{ vegCard, vegCardFp }, { partyDiet }] = await Promise.all([V(), P()]);
+  const legacy = (members, size = members.length) => vegCard({ party: { ...partyDiet(members), size }, country: 'JP', trip: 'x' });
+  const card = (members, size = members.length) => vegCard({ party: { ...partyDiet(members), size, members }, country: 'JP', trip: 'x' });
+  const same = [{ dietary: ['meat and fish'], diet: 'vegetarian' }, { dietary: ['vegetarian'], diet: 'vegetarian' }];
+  assert.deepEqual(card(same), legacy(same), 'everyone the same: "we", same card, same fingerprint');
+  assert.deepEqual(card(FIX.vegan_solo.members), legacy(FIX.vegan_solo.members), 'a party of one is unchanged');
+  const three = Array.from({ length: 3 }, () => ({ dietary: ['meat and fish', 'alcohol'], diet: 'vegetarian' }));
+  assert.deepEqual(card(three), legacy(three));
+  assert.equal(en(card(three), 'avoid')[3], 'We also cannot have alcohol, including cooking sake and mirin.', 'drunk, not eaten: "cannot have"');
+  assert.equal(ja(card(three), 'avoid')[3], 'アルコール（料理酒・みりんを含む）も口にできません。');
+  const trio = await cardFor('shellfish_trio', { members: true });
+  assert.equal(trio.party, 3);
+  assert.deepEqual(en(trio, 'intro'), ['I cannot have the following.'], 'the companions have no limit: the owner speaks alone');
+  assert.deepEqual(en(trio, 'avoid'), ['Shellfish (shrimp, crab, clams)']);
+  assert.equal(trio.fp, vegCardFp({ lang: 'ja', diet: null, size: 1, avoid: ['shellfish'], english_only: [] }));
+  const lone = card([{ dietary: ['meat and fish'], diet: 'vegetarian' }], 2);
+  assert.equal(lone.party, 2, 'a companion with no profile yet still counts');
+  assert.deepEqual(en(lone, 'intro'), ['I am vegetarian. I do not eat meat, fish or seafood.'], 'and is not spoken for');
+  assert.equal(card([{}, { dietary: [] }]), null, 'nobody has a limit: nothing to say');
+  assert.equal(vegCard({ party: { size: 3, members: [null, { dietary: ['nuts'] }] }, country: 'JP', trip: 'x' }).party, 3);
+});
+
+test('per person: words with no phrase say whose they are; too long to say per person falls back to the merged card', async () => {
+  const [{ vegCard, validateVegCardPayload }, { partyDiet }] = await Promise.all([V(), P()]);
+  const c = vegCard({ party: { size: 2, members: [{ dietary: ['meat and fish', 'lupin beans'] }, { dietary: ['durian', 'x'.repeat(60)] }] }, country: 'FR', trip: 'x' });
+  assert.deepEqual(validateVegCardPayload(c), []);
+  assert.deepEqual(c.english_only, ['Me: lupin beans', 'My companion: durian', `My companion: ${'x'.repeat(46)}`], 'labelled, clipped to 60');
+  assert.equal(en(c, 'avoid')[3], 'My companion cannot have the following.');
+  const items = ['pork', 'beef', 'chicken', 'fish', 'seafood', 'shellfish', 'eggs', 'dairy', 'nuts', 'gluten', 'alcohol'];
+  const twelve = [{ dietary: ['meat and fish'], diet: 'vegetarian' }, ...items.map((v) => ({ dietary: [v], diet: null }))];
+  const merged = vegCard({ party: { ...partyDiet(twelve), size: 12 }, country: 'JP', trip: 'x' });
+  assert.deepEqual(vegCard({ party: { ...partyDiet(twelve), size: 12, members: twelve }, country: 'JP', trip: 'x' }), merged,
+    'eleven different limits would need more than 12 lines: the merged card, stricter for each, never looser');
+  assert.equal(merged.sections.find((s) => s.id === 'intro').lines[0].en, 'We are vegetarian. We do not eat meat, fish or seafood.');
+  const thirteen = [...twelve, { dietary: ['nuts'] }];
+  const over = vegCard({ party: { size: 13, members: thirteen }, country: 'JP', trip: 'x' });
+  assert.equal(over.party, 12);
+  assert.deepEqual(over, vegCard({ party: { ...partyDiet(thirteen), size: 12 }, country: 'JP', trip: 'x' }), 'more than 12 travellers: merged');
+});
+
+test('the per-person fingerprint adds the groups, sorted: who has a limit changes it, the companions\' order does not', async () => {
+  const { vegCard, vegCardFp, fnv1a } = await V();
+  const fp = (members) => vegCard({ party: { size: members.length, members }, country: 'JP', trip: 'x' }).fp;
+  const veg = { dietary: ['meat and fish'], diet: 'vegetarian' };
+  const a = fp([veg, { dietary: ['eggs'] }]);
+  assert.equal(a, 'vcf1:' + fnv1a('v1|ja|vegetarian|many|eggs||m:c1/1:-:eggs:;o:vegetarian::'));
+  assert.equal(vegCardFp({ lang: 'ja', diet: 'vegetarian', size: 2, avoid: ['eggs'], members: ['o:vegetarian::', 'c1/1:-:eggs:'] }), a);
+  assert.notEqual(fp([{ dietary: ['meat and fish', 'eggs'] }, veg]), a, 'the eggs moved to the owner');
+  assert.notEqual(fp([{ dietary: ['eggs'] }, veg]), a, 'the diet moved to the companion');
+  const ab = [veg, { dietary: ['nuts'] }, { dietary: ['eggs'] }];
+  assert.equal(fp(ab), fp([ab[0], ab[2], ab[1]]), 'the same people in another order');
+  assert.equal(vegCardFp({ lang: 'ja', diet: 'vegetarian', size: 2, avoid: ['nuts'] }), vegCardFp({ lang: 'ja', diet: 'vegetarian', size: 2, avoid: ['nuts'], members: [] }),
+    'no members: the C14 string as it was');
 });
 
 // Developed by: LightAISolutions

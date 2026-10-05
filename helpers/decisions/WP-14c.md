@@ -3,8 +3,9 @@
 Every default picked while building WP-14c (TG-PHASE-14.md "WP-14c", Contract C14), with its reason.
 
 ## The phrase table
-- **The Japanese is the brief's, character for character.** The coordinator's task message overrode the brief's "check
-  and record changes": the phrases are the content and are copied exactly. Two lines I would suggest, not applied:
+- **The Japanese is the brief's, character for character** (two lines changed later, recorded under "Per-person
+  attribution"). The coordinator's task message overrode the brief's "check and record changes": the phrases are the
+  content and are copied exactly. Two lines I would suggest, not applied:
   - `avoid.stock` 「煮干し」 → 「煮干しだし」 (the line already says 魚のだし, so it reads fine as is);
   - `avoid.sauces` 「…もだめです」 → 「…も食べられません」 (one register for every "cannot eat" line; だめです is polite enough
     at a counter).
@@ -33,6 +34,41 @@ Every default picked while building WP-14c (TG-PHASE-14.md "WP-14c", Contract C1
 ## The fingerprint
 - Exactly C14: `vcf1:` + FNV-1a 32-bit (lower-case hex) over the UTF-8 of
   `v1|lang or -|diet or -|one/many|extra avoid keys sorted|english_only lower-cased sorted`.
+
+## Per-person attribution (v01.75r)
+- **Why:** an owner-reported card merged two travellers' profiles into one voice ("we are …", "we also cannot …")
+  although their limits differed. A server reading it would serve the wrong person the wrong thing. The card now says
+  each limit for the person who has it.
+- **Contract:** `party.members` = [owner, ...companions], each `dietOf()`'s `{ dietary, diet }`. With it `members`
+  replaces `dietary` and `diet`; the size is the larger of `party.size` and the member count, and a companion with no
+  entry says nothing. Without it the card is exactly as before. No schema, validator or core change: `diet` is the
+  strictest, `party` the size.
+- **One voice when that is true:** everyone says the same (signature: diet, extra limits, words) → the card as it was,
+  "we", byte for byte and with the same fingerprint (a test checks). Only the owner has limits → "I", with `party` the
+  real size and the solo card's fingerprint (the card says the same). Nobody says anything → `null`.
+- **Groups:** the owner alone; companions who say the same thing as one group, in order of first appearance; a
+  traveller with nothing to say is left out. Names: "I"; "my companion" (one companion travels); "all my companions";
+  "one of my companions"; "N of my companions" (私は / 連れは / 連れは全員 / 連れの一人は / 連れのうちN人は). 連れ, not
+  同行者: it is what a person says at a counter; 同行者 reads like a form.
+- **Diet:** the card's diet is the strictest. When every traveller keeps it, "we" say it once. Else the owner opens when
+  they keep a diet (a milder one too: the card is the owner's), otherwise the first group with the strictest; every
+  other group says its diet ("my companion is vegetarian and does not eat meat, fish or seafood") before its limits
+  ("…also cannot have…"). A group with no diet says "… cannot have …", or "… cannot have the following" when its only
+  words are English-only. The owner never says a member line ("I is…" cannot occur).
+- **ok and ask hold for everyone:** the strictest diet's lines minus every extra limit (never looser for anyone), plus
+  one "Does this dish contain …?" for the extra limits the diet's questions do not ask (the first three).
+- The fish-stock lines (`avoid.stock`, `avoid.flakes`, `avoid.sauces`) stay right after the intro, unchanged: they
+  read for whoever opened.
+- **English-only words** carry whose they are ("Me: …", "My companion: …"), clipped to 60 after the label.
+- **Bounds:** a per-person card that would break C14 (a section over 12 lines, more than 12 English-only words, the
+  8 000-character payload) or a party over 12 is the merged card instead: everyone's values in one voice, stricter for
+  each, never looser.
+- **Fingerprint:** a per-person card appends `|m:` and its groups' signatures (`o:` or `c<k>/<n>:`, then diet, extra
+  limits and words), sorted and joined by `;`: moving a limit to another person changes it, the companions' order does
+  not. One-voice fingerprints are unchanged, so an unchanged party is stored silently, not re-sent.
+- **Two lines reworded:** `intro.limits` and `avoid.also` say 口にできません / "cannot have" instead of 食べられません /
+  "cannot eat": alcohol is drunk, not eaten. The new member lines use the same verb; the diet intros keep
+  食べられません (they list foods).
 
 ## Rendering
 - `vegCardTelegram`: header in bold; for an English-only card an italic line "No local-language phrases for this country

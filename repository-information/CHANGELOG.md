@@ -3,11 +3,26 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 75/100`
+`Sections: 76/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.75r] — 2026-10-04 10:09:28 PM EST
+
+> **Prompt:** "This is what the vegcard looks like" *(with a screenshot of the card that reached the chat after v01.73r: it spoke for both travellers in one voice although their limits differed)*
+
+### Fixed
+- **The veg card spoke for every traveller in one voice** (`helpers/packs/tour-guide/vegcard/vegcard.mjs`, `vegcard-phrases.json`): the routine passed the party's merged diet, so a card for two travellers whose limits differed said "we are …" and "we also cannot …", and a server reading it could serve the wrong person the wrong thing. With `party.members` (one `dietOf()` result per traveller, owner first) each limit is now said for the person who has it: "I" for the owner; companions who say the same thing speak as one group ("my companion", "all my companions", "one of my companions", "2 of my companions"); a traveller with nothing to say is left out. The card stays one voice only when that is true: everyone says the same (the card and its fingerprint exactly as before) or only the owner has limits ("I", with the solo card's fingerprint). `ok` and the questions hold for everyone: the strictest diet's lines minus every extra limit, plus one "Does this dish contain …?" for the extra limits the diet's questions do not ask. A card past C14's bounds (a section over 12 lines, more than 12 English-only words, more than 12 travellers, the 8 000-character payload) is the merged card instead, stricter for each, never looser. Without `members` nothing changes
+- **One verb for every limit** (`vegcard-phrases.json`): `intro.limits` and `avoid.also` now say 口にできません / "cannot have", since a limit can be drunk (alcohol), not only eaten; the new per-person lines use the same verb, the diet intros keep 食べられません (they list foods)
+
+### Added
+- **Per-person lines** (`vegcard-phrases.json`): the `who` names (私は / 連れは / 連れは全員 / 連れの一人は / 連れのうちN人は, "I", "My companion", "All my companions", "One of my companions", "N of my companions") and the `member.*` lines (a companion's diet, "also cannot have", "cannot have", "cannot have the following"). English-only words carry whose they are ("Me: …", "My companion: …"). On a per-person card the fingerprint appends `|m:` and its groups' signatures, sorted: moving a limit to another person changes it, the companions' order does not
+- Tests: `pack_tour-guide_vegcard` (a vegetarian owner with a companion's limit; a companion who keeps the diet opens and the owner's own limit is "I"; a diet everyone keeps is "we"; identical members give the old card byte for byte, the reworded "also cannot have" included; only the owner with limits is "I"; words with no phrase say whose they are; too long per person falls back to the merged card; the per-person fingerprint), with a new invented party in `vegcard-fixture-party.json`. 1315 tests, 1314 pass, 1 skipped (the Maps live smoke); bundle and boundary checks clean
+
+### Changed
+- Docs: `helpers/decisions/WP-14c.md` ("Per-person attribution"), `helpers/prompts/TG-PHASE-14.md` (two amendment notes), `helpers/decisions/TG-PHASE-14.md` §11 (the retry reached the chat), the vegcard README and `index.mjs` example (the routine passes `members`), `helpers/BUILD-STATE.md` (row 14, the live fixes log, Next); README timestamp
 
 ## [v01.74r] — 2026-10-04 10:02:37 PM EST
 
