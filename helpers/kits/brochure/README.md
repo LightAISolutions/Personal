@@ -109,8 +109,9 @@ a model without them renders byte for byte as before (pinned in `tests/kit_broch
 makes `usesC18(model)` true; their own styles (the `C18B` block of `lib/css.mjs`) are added only when
 `usesC18Brief(model)` is true, so a wave-1 model and every older model render byte for byte as before (pinned in
 `tests/kit_brochure_c18b.test.js`). Sample: `fixtures/sample-trip-c18b.json`. The caps are constants in
-`BRIEF_CAPS.brochure` (`lib/model.mjs`); the schema holds the same numbers, and `briefCaps(book)` is the hook for
-wave 3's Day book to bring its own row (semanticErrors() checks each book against its own caps).
+`BRIEF_CAPS` (`lib/model.mjs`), one row per book: `briefCaps(book)` returns it, the schema holds the largest of each
+(food and if-then 10, the Day book's), and semanticErrors() checks each book against its own caps. The caps below are
+the brochure's.
 
 | Field | Cap | Where it shows |
 |---|---|---|
@@ -128,13 +129,34 @@ and kit sit beside it at the top of the rail column, food and if-then are full-w
 `data-pg="block"`, so the paginator moves them whole). On a phone the order is head, lead and tiles, why, kit,
 aside, legend, rail, food (as stacked cards), if-then (one column with "→").
 
+**Day book — Contract C18 wave 3 (Phase 18 WP-18e).** `book: "day"` (top level; `"brochure"` or absent is the
+brochure) makes the model a single-day booklet: the day's own cover (the day's number, weekday and date in the corner,
+"Day book" in the eyebrow, the day's theme as the title over the trip's, and Date · Day runs · Night · Travelling),
+the day spread, that day's place cards ("Numbers match the timeline") and the sources. The trip-wide sections — the
+glance page, season, Later lists and practical pages — are never printed; a `season`, `later` or `practical` in the
+model is left out with one `day book: … left out` warning each. The document title is "<trip title> — Day book,
+<long date>". Sample: `fixtures/sample-day-book.json` (invented, Saturday 15 May 2027, day 3 of 4); pinned and
+printed in `tests/kit_brochure_daybook.test.js`.
+
+| Field | Rule | Where it shows |
+|---|---|---|
+| `book` | `"brochure"` \| `"day"` | a Day book has exactly one day (semantic check) |
+| `days[].number` | 1–31; Day book only | the day's number in the whole trip (its numeral, hue and the cards' "Day N"); without it the day is Day 1 |
+| `days[].food`, `days[].if_then` | 10 each in a Day book (`BRIEF_CAPS.day`), 6 in a brochure | as in wave 2, all rows printed |
+| `stops[].inside` `[{time?, text ≤ 160}]` | 1–10 steps; Day book only; given times in order and within the stop's arrive – depart | "Inside, in order" under the stop's row: a numbered list, the time (in the trip's clock) or an empty cell, then the step |
+
+Its styles (the `C18D` block of `lib/css.mjs`, after `C18B`) are added only to a Day book, so every brochure renders
+byte for byte as before. Food and if-then stay unsplittable blocks: at 10 rows each still fits a page.
+
 Semantic checks beyond the schema (`lib/model.mjs`): every place key resolves, days fall inside the trip and are not
 duplicated, stops are in clock order and do not depart before they arrive, meal/free blocks end after they start; for
 C11, a `day-start` / `day-end` leg needs the day's start / end, extras and season events name known places, and the
 bag step, season events and blooms end after they start; for C12, `here` may only start a leg (it is reserved while
 no place is keyed `here`); for C18, prep steps are in time order, a departure's leave-by is not after it, and a day's
 free options name known places, walk 0–120 min and are not offered twice; for C18 wave 2, key times are in time
-order, a food `place` is a known key, the weather's low is not above its high, and the lists keep the book's caps.
+order, a food `place` is a known key, the weather's low is not above its high, and the lists keep the book's caps;
+for the Day book (wave 3), one day only, `number` and `inside` only with `book: "day"`, and inside steps in time order
+within their stop.
 `prepare()` then derives what the sections render: numbered days with a merged timeline (stops, legs, meals, free
 time in clock order), per-day statistics, hours for the day from the weekday lines, the cards in order of first
 appearance, and page cross-references. Images: `src` is a path relative to the model file or a `data:image/…` URI;

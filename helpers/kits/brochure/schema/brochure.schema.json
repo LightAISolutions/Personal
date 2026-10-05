@@ -8,6 +8,7 @@
   "required": ["version", "trip", "days", "places"],
   "properties": {
     "version": { "const": 1 },
+    "book": { "type": "string", "enum": ["brochure", "day"], "description": "Contract C18 wave 3: which book this model makes. brochure (the default when absent): the whole trip. day: the Day book, a single-day booklet with that day's cover, its spread and its place cards; it holds exactly one day and allows the Day book's caps (food and if-then up to 10, stops[].inside)." },
     "trip": { "$ref": "#/$defs/trip" },
     "days": { "type": "array", "minItems": 1, "maxItems": 31, "items": { "$ref": "#/$defs/day" } },
     "places": { "type": "object", "description": "Keyed by the place's local id (the key stops refer to).", "propertyNames": { "pattern": "^[A-Za-z0-9_-]{1,64}$" }, "additionalProperties": { "$ref": "#/$defs/place" }, "maxProperties": 200 },
@@ -121,6 +122,7 @@
       "type": "object", "additionalProperties": false, "required": ["date", "stops"],
       "properties": {
         "date": { "$ref": "#/$defs/date" },
+        "number": { "type": "integer", "minimum": 1, "maximum": 31, "description": "Contract C18 wave 3, Day book only: the day's number in the whole trip (its numeral, colour and the cards' 'Day N'). Defaults to 1." },
         "theme": { "$ref": "#/$defs/short", "description": "The day's headline, e.g. 'Old town and the quays'." },
         "summary": { "$ref": "#/$defs/text" },
         "lodging": { "$ref": "#/$defs/short", "description": "Name of the night's lodging (matched against trip.lodging by name for the route sketch)." },
@@ -144,8 +146,8 @@
         "lead": { "type": "string", "maxLength": 240, "description": "Contract C18 wave 2: the answer first — what the day is and the one thing to get right. Replaces the summary line under the title." },
         "key_times": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/keyTime" }, "description": "Contract C18 wave 2: tiles under the lead, in time order." },
         "contents": { "type": "string", "maxLength": 80, "description": "Contract C18 wave 2: the day's row on the glance page, named after its decision (else the theme)." },
-        "food": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/foodItem" }, "description": "Contract C18 wave 2: 'Food on your route'." },
-        "if_then": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/ifThen" }, "description": "Contract C18 wave 2: 'If this, then that'." },
+        "food": { "type": "array", "maxItems": 10, "items": { "$ref": "#/$defs/foodItem" }, "description": "Contract C18 wave 2: 'Food on your route'. At most 6 in a brochure and 10 in a Day book (checked per book)." },
+        "if_then": { "type": "array", "maxItems": 10, "items": { "$ref": "#/$defs/ifThen" }, "description": "Contract C18 wave 2: 'If this, then that'. At most 6 in a brochure and 10 in a Day book (checked per book)." },
         "bail_out": { "type": "string", "maxLength": 240, "description": "Contract C18 wave 2: how to cut the day short (the last line of 'If this, then that')." },
         "why": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/line" }, "description": "Contract C18 wave 2: 'Why this plan', the choices made, in plain words." },
         "kit": { "$ref": "#/$defs/dayKit" }
@@ -250,7 +252,15 @@
         "booking_line": { "$ref": "#/$defs/short", "description": "The place's booking rule in one line (shown when the stop is not already booked)." },
         "visited": { "type": "boolean", "const": true, "description": "Contract C12: the stop was already done when the day was re-planned from the current time; shown as done (a tick, muted), still in its place. Visited stops come first." },
         "fixed": { "$ref": "#/$defs/fixed" },
-        "tip": { "$ref": "#/$defs/line", "description": "Contract C18: a field note under the row ('Cash only', 'Enter by the north gate')." }
+        "tip": { "$ref": "#/$defs/line", "description": "Contract C18: a field note under the row ('Cash only', 'Enter by the north gate')." },
+        "inside": { "type": "array", "minItems": 1, "maxItems": 10, "items": { "$ref": "#/$defs/insideStep" }, "description": "Contract C18 wave 3, Day book only: the order inside a big stop (a park, a large museum), shown under the row as a short numbered list. Times are optional, in order and within the stop's arrive – depart." }
+      }
+    },
+    "insideStep": {
+      "type": "object", "additionalProperties": false, "required": ["text"],
+      "properties": {
+        "time": { "$ref": "#/$defs/time" },
+        "text": { "type": "string", "minLength": 1, "maxLength": 160 }
       }
     },
     "leg": {

@@ -571,11 +571,31 @@ export function checkDayVersions(p) {
 
 /**
  * Briefing (Contract C18 wave 2): every date key a calendar date, each day's key times in time order, a weather low not
- * above its high. (brochure-map's merge is tolerant on top of this: it drops and clips what this would refuse.)
+ * above its high. Contract C18 wave 3, per book (the kit's BRIEF_CAPS; the schema holds the largest): a brochure
+ * briefing has at most 6 food and 6 if-then lines and no `inside`; a Day book briefing (`book: "day"`) has exactly one
+ * date and its inside steps' times in order. (brochure-map's merge is tolerant on top of this: it drops and clips what
+ * this would refuse.)
  */
+export const BRIEFING_BOOK_CAPS = Object.freeze({ brochure: Object.freeze({ food: 6, if_then: 6 }), day: Object.freeze({ food: 10, if_then: 10 }) });
 export function checkBriefing(b) {
   const errs = [];
   const mins = (t) => +t.slice(0, 2) * 60 + +t.slice(3);
+  const dayBook = b.book === 'day', caps = BRIEFING_BOOK_CAPS[dayBook ? 'day' : 'brochure'];
+  const dates = Object.keys(b.days || {});
+  if (dayBook && dates.length !== 1) errs.push({ path: '/days', message: `a Day book briefing has exactly one date (got ${dates.length})` });
+  for (const [date, d] of Object.entries(b.days || {})) {
+    const base0 = `/days/${date}`;
+    for (const k of ['food', 'if_then']) if ((d[k] || []).length > caps[k]) errs.push({ path: `${base0}/${k}`, message: `at most ${caps[k]} items in a ${dayBook ? 'Day book' : 'brochure'} briefing` });
+    if (d.inside !== undefined && !dayBook) errs.push({ path: `${base0}/inside`, message: 'inside is for the Day book (book: "day")' });
+    for (const [slug, steps] of Object.entries((dayBook && d.inside) || {})) {
+      let last = -1;
+      steps.forEach((s, j) => {
+        if (!s.time) return;
+        if (mins(s.time) < last) errs.push({ path: `${base0}/inside/${slug}/${j}/time`, message: 'earlier than the step before (steps go in time order)' });
+        last = mins(s.time);
+      });
+    }
+  }
   for (const [date, d] of Object.entries(b.days || {})) {
     const base = `/days/${date}`;
     if (!isDate(date)) errs.push({ path: base, message: 'not a calendar date' });

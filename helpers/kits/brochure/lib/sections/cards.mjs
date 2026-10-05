@@ -80,7 +80,7 @@ export function cards(ctx) {
   };
   const items = m.cards.map((c) => card({ ...c, ...pic(c.place) }, m));
   return `<section class="sec sec-cards" data-pg="section" data-folio="The places">
-${secHead(`<b>${m.cards.length}</b> places · in order of appearance`, 'The places', 'Numbers match the day timelines')}
+${secHead(`<b>${m.cards.length}</b> places · in order of appearance`, 'The places', m.book === 'day' ? 'Numbers match the timeline' : 'Numbers match the day timelines')}
 <div class="cards" data-pg="cols">${items.join('\n')}</div>
 </section>`;
 }

@@ -144,6 +144,36 @@ clock on the rail and the cards (`retimeText`), so one brochure never mixes the 
   keeps its name without the link; weather with the low above the high, or a rain chance outside 0–100, is dropped;
   `theme` replaces the plan's theme; an empty kit is left out. `buildModel(args)` returns `{ model, warnings }`.
 
+**WP-18e (wave 3, the Day book).**
+- Kit: `book: "day"` at the top of the model; a Day book holds exactly one day. Its sections are a cover of its own (the
+  day's number, weekday and date in the corner, "Day book" in the eyebrow, the day's theme over the trip's title, and
+  Date · Day runs · Night · Travelling), the day spread, that day's cards and the sources. The glance page, season,
+  Later lists and practical pages are never printed; a model that carries them gets one "day book: … left out" warning
+  each. The title reads "<trip> — Day book, <long date>".
+- `days[].number` (1–31, Day book only) keeps the day's place in the trip — its numeral, hue and the cards' "Day N" —
+  so day 3's book still says Day 3. Without it the day is Day 1.
+- `stops[].inside` (`[≤ 10 { time?, text ≤ 160 }]`, Day book only) prints as "Inside, in order" under the stop's row: a
+  numbered list, time in the trip's clock or an empty cell, then the step. Given times are in order and within the
+  stop's arrive – depart (semantic checks).
+- Caps: `BRIEF_CAPS.day` raises food and if-then to 10 and adds `inside: 10`; the brochure row has `inside: 0`. The
+  schema's food and if-then maxItems are now 10 (the largest row); a brochure is still held at 6 by semanticErrors().
+  Food and if-then stay unsplittable blocks: at 10 rows each they still fit a page.
+- Styles: a `C18D` block after `C18B`, added only to a Day book, so every older model is byte for byte as before
+  (pinned, with the wave-2 fixture and pack samples, in `kit_brochure_daybook.test.js`).
+- Pack: brochure-map `options.book: 'day'` with `options.date` builds the Day book (C18 implied). The day's number is
+  its position among the days with stops; only the places the day refers to and their sources are kept. A bad book, no
+  date, a date not in the plan and a free day throw; a lone `options.date` is a warning.
+- Briefing: `book` (`brochure` | `day`) and, per date, `inside` keyed by the stop's place slug. Merge: a briefing
+  written for the other book still merges, at the build's caps, with a warning; `inside` outside a Day book is dropped
+  with a warning; a slug that is not a stop of the day is dropped; a step's bad, out-of-order or out-of-span time is
+  removed from the step and the step kept. Checks: a Day book briefing has one date; per-book caps (6 or 10);
+  `inside` only in a Day book, its times in order.
+- GAS: `/daybook <date>` (the date words of /replan: `YYYY-MM-DD`, `day N`, `N`, `today`, `tomorrow`) opens request
+  kind `daybook` `{ trip, date, build_id? }` for BROCHURE. Bare `/daybook` is today's while today is a day of the plan,
+  else the usage line; a date outside the plan or a free day gets a plain reply and no request. The reply's
+  `drive_file_ids` go to the chat as any reply's do; the Day book is not stored on the trip, so it never replaces the
+  brochure. Guide entry (group trip, two forms with `{ tpl }`, no `opens`/`wait`) and keywords added.
+
 ## 7 Status
 - **Wave 1 built** (v01.79r, app v01.20w). Its private side (the plan skill passes `c18`; the brochure build passes
   `c18`, `clock`, `temp` from `state.json` `tour_guide.display`) is the private repo's PR #29, waiting on the owner.
