@@ -44,12 +44,12 @@ const SRC = () => [slice('    /* ---------- DOM helpers', '    function setStatu
 function page(opts = {}) {
   const { ctx, state } = opts.world || W.fresh(W.at(W.DATES[1], '13:00'));
   const store = Object.assign({}, opts.cloud || {});
-  const st = { rendered: null, ops: [], status: [], confirms: [], gone: [], homes: 0, store };
+  const st = { rendered: null, ops: [], status: [], confirms: [], gone: [], homes: 0, store, timers: [] };
   const backend = (op, args) => { st.ops.push(J([op, args])); return H.appPost(ctx, state, 'app', { op, args: args || {} }); };
   const cloud = { getItems: (keys, cb) => { const o = {}; keys.forEach((k) => { if (store[k] !== undefined) o[k] = store[k]; }); cb(null, o); }, setItem: (k, v, cb) => { store[k] = v; if (cb) cb(null, true); } };
   const box = {
     document: { createElement: (t) => new N(t), createTextNode: (t) => { const n = new N('#text'); n._text = String(t); return n; }, body: new N('body') },
-    navigator: {}, window: { open() {}, scrollTo() {} }, tg: opts.noCloud ? null : { CloudStorage: cloud }, setTimeout: (f) => { f(); return 0; }, clearTimeout() {},
+    navigator: {}, window: { open() {}, scrollTo() {} }, tg: opts.noCloud ? null : { CloudStorage: cloud }, setTimeout: (f, ms) => { if (ms >= 5000) st.timers.push(f); else f(); return 0; }, clearTimeout() {},   // a watcher's 10 s poll waits for the test to run it
     S: { commands: null, screen: opts.screen || 'home', cmdCtx: null, cmdNonce: {}, recent: [], pins: [], busy: false },
     render: (v) => { st.rendered = v; }, setStatus: (t) => st.status.push(t), go: (s, t) => st.gone.push([s, t === undefined ? null : t]),
     showHome: () => { st.homes++; }, tripLabel: (t) => String((t && (t.title || t.slug)) || ''),

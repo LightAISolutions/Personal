@@ -129,7 +129,8 @@ async function open(browser, { scheme = 'light', telegram = true, initData = tru
 }
 const shot = (page, name) => page.screenshot({ path: path.join(OUT, name + '.png') });
 const text = (page) => page.evaluate(() => document.body.innerText);
-const nav = async (page, screen) => { await page.click(`nav button[data-screen="${screen}"]`); await page.waitForTimeout(500); };
+// 17c: five tabs; every screen keeps a button in the second row (#subnav), hidden outside Discover and More, so click it in the page
+const nav = async (page, screen) => { await page.evaluate((s) => document.querySelector(`#subnav button[data-screen="${s}"]`).click(), screen); await page.waitForTimeout(500); };
 
 const browser = await chromium.launch({ headless: true });
 try {
@@ -375,7 +376,7 @@ try {
     const h = await open(browser, { mode: 'planning' }); const ht = await text(h.page);
     check(ht.includes('CLOSED') && ht.includes('building the days') && !(await h.page.$('text=Choose')), 'a closed round shows its stage and no Choose button');
     await h.page.click('text="View"'); await h.page.waitForTimeout(300); check((await text(h.page)).includes('Round 1 is closed') && !(await h.page.evaluate(() => window.__tg.main.visible)), 'the closed round is read-only');
-    await h.page.click('text=Facts'); await h.page.waitForTimeout(300); check((await text(h.page)).includes('Nothing to confirm') && !(await text(h.page)).includes('That did not work'), 'no open facts is a quiet state, not an error'); await shot(h.page, 'state-round-closed'); await h.ctx.close();
+    await nav(h.page, 'facts'); check((await text(h.page)).includes('Nothing to confirm') && !(await text(h.page)).includes('That did not work'), 'no open facts is a quiet state, not an error'); await shot(h.page, 'state-round-closed'); await h.ctx.close();
     const d = await open(browser, { mode: 429 }); check((await text(d.page)).includes('Daily limit reached'), '429 state'); await shot(d.page, 'state-429'); await d.ctx.close();
     const e = await open(browser, { url: PAGE_ORIGIN + '/helper-app.html' }); check((await text(e.page)).includes('No helper address') && e.calls.length === 0, 'no core and nothing stored → explanatory line'); await e.ctx.close();
     const f = await open(browser, { url: PAGE_ORIGIN + '/helper-app.html?core=' + encodeURIComponent('https://evil.example.invalid/exec') }); check((await text(f.page)).includes('No helper address') && f.calls.length === 0 && f.foreign.length === 0, 'a core outside script.google.com is ignored'); await f.ctx.close();

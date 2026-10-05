@@ -118,7 +118,8 @@ test('every form says how the app runs it; every template parses, uses only desc
     e.forms.forEach((f) => {
       const [text, , o = {}] = f;
       const label = e.cmd + ' "' + text + '"';
-      assert.ok(Object.keys(o).every((k) => ['tpl', 'fixed', 'confirm'].includes(k)), label + ': options');
+      assert.ok(Object.keys(o).every((k) => ['tpl', 'fixed', 'confirm', 'opens', 'wait'].includes(k)), label + ': options');
+      assert.ok(!o.wait || !!o.opens, label + ': wait without opens');
       if (text === e.cmd) { assert.ok(!o.tpl && !o.fixed, label + ': the bare command needs no options'); return; }
       assert.ok(!!o.tpl !== !!o.fixed, label + ': a form with words after the command says { tpl } or { fixed: true }');
       if (!o.tpl) return;
@@ -263,4 +264,40 @@ test('every guide command has search keywords, and commands.list carries them fo
   const listed = app(ctx, state, 'commands.list').groups.flatMap((g) => g.commands);
   listed.forEach((c) => assert.equal(typeof c.keywords, 'string', c.cmd));
   assert.match(listed.find((c) => c.cmd === '/late').keywords, /running late/, 'the plain words a traveller would type');
+});
+
+test('every form that opens an app screen names a known screen, and waits only where the run op can read what was there before', () => {
+  const { ctx, state } = fresh();
+  const screens = J(ctx.TG_CMD_OPENS_SCREENS), based = Object.keys(ctx.TG_CMD_OPENS_BASE);
+  const forms = app(ctx, state, 'commands.list').groups.flatMap((g) => g.commands).flatMap((c) => (c.forms || []).map((f) => ({ cmd: c.cmd, f })));
+  const opening = forms.filter((x) => x.f.opens);
+  assert.ok(opening.length >= 15, 'the answer screens are wired');
+  opening.forEach(({ cmd, f }) => {
+    assert.ok(screens.includes(f.opens), cmd + ' opens ' + f.opens);
+    if (f.wait) assert.ok(based.includes(f.opens), cmd + ' waits on ' + f.opens + ' with no baseline');
+  });
+  forms.filter((x) => !x.f.opens).forEach(({ cmd, f }) => assert.equal(f.wait, undefined, cmd + ': wait without opens'));
+  const of = (cmd) => forms.filter((x) => x.cmd === cmd).map((x) => x.f.opens || null);
+  assert.ok(of('/scout').every((o) => o === 'scout'));
+  assert.ok(of('/today').every((o) => o === 'today'));
+  assert.ok(of('/whatson').includes(null), '/whatson auto on|off is a switch, not an answer');
+});
+
+test('commands.run says which screen the answer opens in and what was already there, so the app opens the new one', () => {
+  const { ctx, state } = W.fresh(W.at(W.DATES[1], '13:00'));
+  const p = J(JSON.parse(fs.readFileSync(path.join(H.HELPERS_ROOT, 'packs', 'tour-guide', 'quiet', 'fixtures', 'quiet-sample.json'), 'utf8')).valid[0]);
+  p.id = 'qt-20270611-tide-hall'; p.trip = W.TRIP; p.created_on = W.DATES[1]; p.date = W.DATES[1];
+  p.magnet = { ...p.magnet, name: 'Tide Hall', slug: 'tide-hall', place_id: 'FixtureLbTide01' };
+  delete p.magnet.source;
+  assert.equal(W.deliver(ctx, state, 'quiet', p).processed, 1);
+  const q = app(ctx, state, 'commands.run', { text: '/quiet Kite Museum' });
+  assert.equal(q.ok, true);
+  assert.deepEqual(J(q.opens), { screen: 'quiet', wait: true, base: ['qt-20270611-tide-hall'] });
+  const s = app(ctx, state, 'commands.run', { text: '/scout ramen in Lark Bay' });
+  assert.deepEqual(J(s.opens), { screen: 'scout', wait: true, base: [] });
+  assert.deepEqual(J(app(ctx, state, 'commands.run', { text: '/today' }).opens), { screen: 'today' });
+  assert.equal(app(ctx, state, 'commands.run', { text: '/whatson auto off' }).opens, undefined, 'a switch opens nothing');
+  assert.equal(app(ctx, state, 'commands.run', { text: '/ping' }).opens, undefined);
+  const v = app(ctx, state, 'commands.run', { text: '/vegcard rebuild' });
+  assert.deepEqual([v.opens.screen, v.opens.wait, v.opens.trip], ['vegcard', true, W.TRIP], 'the veg card is the current trip\'s');
 });

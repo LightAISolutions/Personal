@@ -147,7 +147,7 @@ try {
   for (const scheme of ['light', 'dark']) {
     console.log('outlines compared · ' + scheme);
     const { page, ctx, calls, foreign, errors } = await open(browser, { scheme, mode: 'outline' });
-    check(await page.evaluate(() => document.querySelector('nav button[aria-current="page"]').getAttribute('data-screen')) === 'compare', 'compare_<trip> opens the Compare screen');
+    check(await page.evaluate(() => document.querySelector('#subnav button[aria-current="page"]').getAttribute('data-screen')) === 'compare', 'compare_<trip> opens the Compare screen');
     check(calls[0].op === 'journey.get' && calls[0].args.slug === SLUG, 'journey.get asks for the trip');
     check(await page.$$eval('.cmp .hd', (h) => h.map((x) => x.textContent).join('')) === 'ABC', 'one column per outline');
     check(await page.$$eval('.cmp .cell', (c) => c.length) === 9, 'a cell per day per outline');
@@ -266,7 +266,7 @@ try {
     await page.evaluate(() => window.__tg.main.fn()); await page.waitForTimeout(400);
     check((await text(page)).includes('Outlines of the trip come next'), 'Done on a dated trip points at Compare');
     await page.click('text=Open Compare'); await page.waitForTimeout(400);
-    check(await page.evaluate(() => document.querySelector('nav button[aria-current="page"]').getAttribute('data-screen')) === 'compare', 'Open Compare goes to the Compare screen');
+    check(await page.evaluate(() => document.querySelector('#subnav button[aria-current="page"]').getAttribute('data-screen')) === 'compare', 'Open Compare goes to the Compare screen');
     await ctx.close();
   }
 
