@@ -269,7 +269,7 @@ function tgAppOpHome() {
   var cur = tgTripCurrent(), ptrip = cur ? cur.slug : '';
   return tgAppOk({ display_name: tgAppS(HELPER.display_name || 'Helper').slice(0, 40),   // the shell's masthead and tab title
     trips: trips, trips_total: snap.trips_total, choice_round: cr, pending_facts: pending,
-    profile_summary: snap.profile_summary, places: snap.places,
+    profile_summary: snap.profile_summary, places: snap.places, current_trip: ptrip,   // the trip commands act on (/trip switches it)
     people: { trip: ptrip, items: tgAppPeopleOut(ptrip), max: TG_PEOPLE_MAX } });   // who comes on the current trip
 }
 

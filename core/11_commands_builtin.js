@@ -85,15 +85,23 @@ registerCommand('/help', function (ctx) {
 }, 'this list');
 registerCommand('/ping', function (ctx) { ctx.reply('pong · ' + tgEscape(fmtLocal()) + ' · ' + tgEscape(HELPER.name) + ' v' + tgEscape(HELPER.version) + ' · core v' + CORE_VERSION); }, 'liveness check');
 registerCommand('/id', function (ctx) { ctx.reply('chat <code>' + tgEscape(ctx.chatId) + '</code> · user <code>' + tgEscape(ctx.from.id) + '</code>'); }, 'show chat/user id');
+/** The /status counts as data (the app's health panel shows the same numbers): last_sweep is the stored ISO time, '' when none. */
+function coreStatusCounts() {
+  return { helper: String(HELPER.name), version: String(HELPER.version), core_version: String(CORE_VERSION), queue: queueDepth(),
+    pending: listPendingActions().length, open_requests: openRequestCount(), last_sweep: String(settingGet('last_sweep', '') || ''),
+    last_sweep_local: fmtLocalIso(settingGet('last_sweep', '')), wakes_today: settingDailyCount('wakes'),
+    routine_fires_today: settingDailyCount('routine_fires'), triggers: listTriggers().length };
+}
 registerCommand('/status', function (ctx) {
-  ctx.reply('<b>Status</b> ' + tgEscape(HELPER.name) + ' v' + tgEscape(HELPER.version) +
-    '\nQueue: ' + queueDepth() + ' waiting' +
-    '\nPending actions: ' + listPendingActions().length +
-    '\nOpen requests: ' + openRequestCount() +
-    '\nLast sweep: ' + tgEscape(fmtLocalIso(settingGet('last_sweep', ''))) +
-    '\nWakes today: ' + settingDailyCount('wakes') +
-    '\nRoutine fires today: ' + settingDailyCount('routine_fires') +
-    '\nOne-off triggers: ' + listTriggers().length + statusExtras());
+  var c = coreStatusCounts();
+  ctx.reply('<b>Status</b> ' + tgEscape(c.helper) + ' v' + tgEscape(c.version) +
+    '\nQueue: ' + c.queue + ' waiting' +
+    '\nPending actions: ' + c.pending +
+    '\nOpen requests: ' + c.open_requests +
+    '\nLast sweep: ' + tgEscape(c.last_sweep_local) +
+    '\nWakes today: ' + c.wakes_today +
+    '\nRoutine fires today: ' + c.routine_fires_today +
+    '\nOne-off triggers: ' + c.triggers + statusExtras());
 }, 'queue / pending / requests / sweep counts');
 /**
  * A pack may add lines to /status by registering the renderer 'core_status': fn() → '' | html (already escaped; one

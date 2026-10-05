@@ -1,7 +1,7 @@
 /**
  * Tour Guide Commands in the app (the Commands tab): every command the bot answers, grouped by purpose, each with what it
  * does, the forms it takes and how the app runs each form, added to TG_APP_OPS (32_app_api.js) from this file:
- *   commands.list    → { groups: [{ id, title, about, commands: [{ cmd, does, help, runnable, fields, forms: [{ text, means,
+ *   commands.list    → { groups: [{ id, title, about, commands: [{ cmd, does, help, keywords, runnable, fields, forms: [{ text, means,
  *                        run: 'now' | 'form' | 'type', tpl?, parts?, confirm? }] }] }], tips, count }
  *   commands.context → what the form pickers offer: trips, the current trip's days, place names, saved lists, sections
  *   commands.run     → { text, nonce? }: runs the command as if typed (core runOwnerCommand); the answer comes in the chat
@@ -181,6 +181,47 @@ var TG_CMD_TIPS = [
   { title: 'Re-plan from here', text: '📍 on the morning message rebuilds the rest of today from the stop you are at, from a location you share once, or rain-first.' }
 ];
 
+/*
+ * What you might type when you want each command ("running late", "rain", "dinner"): the app's "What do you want to do?"
+ * search matches these words as well as the description and the examples. Lower case, plain words; the test requires a
+ * line for every guide entry.
+ */
+var TG_CMD_KEYWORDS = {
+  '/start': 'begin pair connect setup', '/help': 'help commands list what can you do',
+  '/interview': 'questions preferences profile about me taste diet companion who travels',
+  '/profile': 'profile preferences what you know about me summary diet',
+  '/plan': 'new trip start trip destination go to visit holiday vacation itinerary',
+  '/seed': 'add places must see want to visit include ideas', '/repick': 'choose again shortlist change picks reopen redo choices',
+  '/journey': 'outlines versions compare options before plan setting switch',
+  '/outline': 'outlines trip shape compare options which route', '/versions': 'versions of a day options alternatives compare day',
+  '/dates': 'dates when change dates start end hours bags luggage day start time arrival',
+  '/lodging': 'hotel stay lodging accommodation airbnb where we sleep night check in out',
+  '/trip': 'trip overview switch trip current trip summary', '/today': 'today now plan today what is today schedule',
+  '/day': 'day schedule itinerary show day plan of a day',
+  '/replan': 'replan change day rebuild rain weather tired swap redo day different',
+  '/later': 'later saved for later backlog unused places someday', '/brochure': 'brochure pdf document print guide booklet',
+  '/notes': 'notes personal notes write ups descriptions why go',
+  '/bookings': 'bookings reservations tickets reserve book ahead deadlines reminders',
+  '/vegcard': 'vegetarian card diet allergy food restrictions translation show waiter staff',
+  '/morning': 'morning message daily brief wake up alarm forecast weather today summary time',
+  '/late': 'late running late delay behind schedule slow push back',
+  '/checkin': 'evening rate ratings review today feedback thumbs',
+  '/route': 'directions route how to get there travel time transit walk train subway drive navigate',
+  '/scout': 'find best search food activity coffee ramen tea dessert shopping ideas recommend',
+  '/scouts': 'past scouts earlier searches results', '/compare': 'compare choose between which one better versus options',
+  '/daytrip': 'day trip excursion out of town nearby towns side trip',
+  '/daytrips': 'past day trips earlier boards', '/whatson': 'events festival concert exhibition whats on happening tonight things to do',
+  '/quiet': 'quiet crowd crowded busy less busy alternative calm peaceful',
+  '/menu': 'menu dinner restaurant food vegetarian eat lunch dishes fits diet',
+  '/places': 'places search repository saved researched find place', '/place': 'place details one place info',
+  '/lists': 'google maps lists saved lists takeout import', '/list': 'one saved list google maps list',
+  '/review': 'review after trip rate trip ratings feedback memories',
+  '/ask': 'ask question help me anything request', '/smart': 'smart quick answers api mode fast answers cost setting',
+  '/cancel': 'cancel stop abort quit conversation', '/status': 'status health queue counts working',
+  '/pending': 'pending proposals waiting approvals', '/wake': 'check now refresh sweep mailbox wake update',
+  '/expire': 'clear old proposals expire cleanup', '/ping': 'ping alive test working version', '/id': 'id chat id user id'
+};
+
 /* ==================== ops ==================== */
 
 var TG_CMD_CTX_DAYS_MAX = 31;     // commands.context: the current trip's dates offered as days
@@ -218,11 +259,11 @@ function tgAppOpCommands() {
   TG_CMD_GUIDE.forEach(function (e) {
     described[e.cmd] = true;
     if (!Object.prototype.hasOwnProperty.call(help, e.cmd) || !byGroup[e.group]) return;
-    byGroup[e.group].commands.push({ cmd: e.cmd, does: e.does, help: help[e.cmd], runnable: runnable(e.cmd), fields: tgCmdFieldsOut(e.fields),
+    byGroup[e.group].commands.push({ cmd: e.cmd, does: e.does, help: help[e.cmd], keywords: TG_CMD_KEYWORDS[e.cmd] || '', runnable: runnable(e.cmd), fields: tgCmdFieldsOut(e.fields),
       forms: e.forms.map(function (f) { return tgCmdFormOut(f, e.cmd); }) });
   });
   var more = live.filter(function (c) { return !described[c.cmd]; }).map(function (c) {
-    return { cmd: c.cmd, does: c.help, help: c.help, runnable: runnable(c.cmd), fields: {}, forms: [{ text: c.cmd, means: '', run: 'now' }] };
+    return { cmd: c.cmd, does: c.help, help: c.help, keywords: '', runnable: runnable(c.cmd), fields: {}, forms: [{ text: c.cmd, means: '', run: 'now' }] };
   });
   if (more.length) groups.push({ id: 'more', title: 'More', about: 'Commands the bot answers that have no description here yet; /help has their hint.', commands: more });
   return tgAppOk({ groups: groups.filter(function (g) { return g.commands.length; }), tips: TG_CMD_TIPS, count: live.length });

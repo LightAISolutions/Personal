@@ -87,7 +87,7 @@ test('commands.list follows the registry: a command without an entry shows under
   const r = app(ctx, state, 'commands.list');
   const more = r.groups.find((g) => g.id === 'more');
   assert.deepEqual(more.commands.map((c) => c.cmd), [...SKELETON, '/zzdemo'].sort());
-  assert.deepEqual(more.commands.find((c) => c.cmd === '/zzdemo'), { cmd: '/zzdemo', does: 'a demo hint', help: 'a demo hint', runnable: true, fields: {}, forms: [{ text: '/zzdemo', means: '', run: 'now' }] });
+  assert.deepEqual(more.commands.find((c) => c.cmd === '/zzdemo'), { cmd: '/zzdemo', does: 'a demo hint', help: 'a demo hint', keywords: '', runnable: true, fields: {}, forms: [{ text: '/zzdemo', means: '', run: 'now' }] });
   assert.ok(!r.groups.flatMap((g) => g.commands).some((c) => c.cmd === '/whatson'));
 });
 
@@ -252,3 +252,15 @@ test('the "/" menu: the guide\'s order, the registered hints, no /start, set for
   assert.equal(state.fetch.telegram('setMyCommands')[1].json.commands.slice(-1)[0].command, 'zzdemo');
 });
 // Developed by: LightAISolutions
+
+test('every guide command has search keywords, and commands.list carries them for the app\'s search box', () => {
+  const { ctx, state } = fresh();
+  const kw = J(ctx.TG_CMD_KEYWORDS);
+  const guide = J(ctx.TG_CMD_GUIDE).map((e) => e.cmd);
+  assert.deepEqual(guide.filter((c) => !kw[c]), [], 'guide commands without keywords');
+  assert.deepEqual(Object.keys(kw).filter((c) => !guide.includes(c)), [], 'keywords for a command with no guide entry');
+  Object.entries(kw).forEach(([c, k]) => assert.ok(/^[a-z0-9' -]{3,200}$/.test(k), c + ': lower-case words, at most 200 characters'));
+  const listed = app(ctx, state, 'commands.list').groups.flatMap((g) => g.commands);
+  listed.forEach((c) => assert.equal(typeof c.keywords, 'string', c.cmd));
+  assert.match(listed.find((c) => c.cmd === '/late').keywords, /running late/, 'the plain words a traveller would type');
+});
