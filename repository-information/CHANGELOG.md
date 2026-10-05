@@ -3,11 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 78/100`
+`Sections: 79/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.78r] — 2026-10-04 11:31:26 PM EST
+
+> **Prompt:** "This is what the vegcard looks like" *(with a screenshot of the card that reached the chat; this push records that the owner merged the private side of the per-person card)*
+
+### Changed
+- `helpers/BUILD-STATE.md` row 14, the Live fixes log and Next, `helpers/decisions/TG-PHASE-14.md` §11 and `helpers/decisions/WP-14c.md` ("Per-person attribution"): the private repo's side of the per-person veg card (the re-pin to v01.75r; `loadProfile`'s `members` passed to `vegCard`) merged by the owner as the private repo's PR #28
+- README timestamp
 
 ## [v01.77r] — 2026-10-04 11:04:42 PM EST
 

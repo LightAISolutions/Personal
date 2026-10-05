@@ -69,6 +69,9 @@ Every default picked while building WP-14c (TG-PHASE-14.md "WP-14c", Contract C1
 - **Two lines reworded:** `intro.limits` and `avoid.also` say 口にできません / "cannot have" instead of 食べられません /
   "cannot eat": alcohol is drunk, not eaten. The new member lines use the same verb; the diet intros keep
   食べられません (they list foods).
+- **The private side** (its PR #28, merged 2026-10-05) builds `members` in `loadProfile`: each traveller's own `dietOf()`, owner
+  first, a companion without a profile as `{ dietary: [], diet: null }`, and a trip override added to everyone as it is
+  to the merged diet.
 
 ## Rendering
 - `vegCardTelegram`: header in bold; for an English-only card an italic line "No local-language phrases for this country
