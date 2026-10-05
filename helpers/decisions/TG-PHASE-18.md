@@ -126,9 +126,29 @@ driver passes `c18`, `clock`, `temp`, and later the briefing). Coordinator and b
 **Integration.** With `clock: "24h"`, Google's 12-hour hours text ("9:30 AM – 5:00 PM") is rewritten to the 24-hour
 clock on the rail and the cards (`retimeText`), so one brochure never mixes the two.
 
+**WP-18d (wave 2, the briefing).**
+- Placement: the lead replaces the summary under the day title, with the key-time tiles under it. "Why this plan" and
+  the day kit sit at the top of the rail column, beside the aside, not inside it: the aside cannot split and is nearly a
+  page on busy days, and a full-width kit made it taller than a page. Food, then if-then with the bail-out as its last
+  row, are full-width blocks after the rail. On a phone: head, why, kit, aside, rail, food (cards), if-then (one column).
+  The glance page uses `contents` in place of the theme.
+- Day kit: every list optional, empty groups left out; the sunset follows the evening rule (none when the day ends at a
+  departure before sunset); temperatures follow `trip.temp`. A food caveat prints on its own small row; the If / Then
+  head row is left out when there is only a bail-out.
+- Caps live in the kit as `BRIEF_CAPS`, with `briefCaps(book)` for the Day book's own caps; a test keeps the kit and the
+  pack schema in step.
+- Merge (lenient where the pack schema is strict; every drop or clip is a "briefing: …" warning): the briefing is ignored
+  unless it is v1 with `days`, its `build_id` is the plan's and `options.c18` is set; dates that are not brochure days
+  (free days too) and unknown keys are dropped; times in texts follow the clock, then texts are clipped with "…";
+  unusable list entries go before the caps; key times keep the first 4 valid, sorted by time; a food place with no card
+  keeps its name without the link; weather with the low above the high, or a rain chance outside 0–100, is dropped;
+  `theme` replaces the plan's theme; an empty kit is left out. `buildModel(args)` returns `{ model, warnings }`.
+
 ## 7 Status
-- **Wave 1 built** (v01.79r, app v01.20w). Next: the private side (the routine passes `c18`, `clock`, `temp` from
-  `state.json` `tour_guide.display`, and the plan skill passes `c18` to the planner), then a rebuild the owner can see.
+- **Wave 1 built** (v01.79r, app v01.20w). Its private side (the plan skill passes `c18`; the brochure build passes
+  `c18`, `clock`, `temp` from `state.json` `tour_guide.display`) is the private repo's PR #29, waiting on the owner.
+- **Wave 2 built** (v01.80r). Next: its private side, the brochure routine writes the briefing (schema
+  `tour-guide-briefing`) and the build passes it as `options.briefing`; then wave 3, the Day book.
 
 
 Developed by: LightAISolutions

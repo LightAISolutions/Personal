@@ -3,11 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 80/100`
+`Sections: 81/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.80r] — 2026-10-05 12:50:31 AM EST
+
+> **Prompt:** "This is a day plan that Claude Chat made for our Universal Studio Japan on 11/19/26 that I think is well-made and useful. Evaluate this as a reference and try to make Tour Guide's brochures as useful as this." — then, on the thirteen-item plan: "I approve of your plan" *(wave 2 of the approved plan: items 1, 7, 8, 10 and 11)*
+
+### Added
+- **Contract C18, wave 2: the written briefing** (`helpers/decisions/TG-PHASE-18.md` §3, §6): items that need judgment, written by the private brochure routine as one briefing per build and passed to brochure-map as `options.briefing`
+- **The kit renders the briefing** (`helpers/kits/brochure/`): an answer-first lead under the day title with up to four key-time tiles, the contents row named after the day's decision, "Why this plan" and the day kit (weather in the trip's temperature setting, sunset, what to bring, closures, not missing) beside the map column, then "Food on your route" (dish, where it fits, price, caveat) and "If this, then that" with a "Cutting the day short" row after the timeline; a phone order of its own; caps in `BRIEF_CAPS` with a `briefCaps(book)` hook for the Day book; semantic checks; its stylesheet only when the fields are present, so older models render byte for byte (pinned by hash); an invented fixture `fixtures/sample-trip-c18b.json`
+- **The briefing in the pack** (`helpers/packs/tour-guide/`): schema `tour-guide-briefing` and `checkBriefing`; `brochure-map-briefing.mjs` merges it day by day behind `options.c18`, follows the clock inside its texts, drops what does not fit with a "briefing: …" warning (another build's briefing, dates that are not brochure days, unknown keys, food at a place with no card loses its link) and clips the rest; `buildModel` returns the model with its warnings; an invented sample briefing in `brochure-map-sample-c18.mjs`
+- Tests: `kit_brochure_c18b`, `pack_tour-guide_c18b_briefing`; `briefing` in the schema kinds list
+
+### Changed
+- Docs: the kit README (Contract C18 wave 2), the pack README (C18 waves 1 and 2, `buildModel`, the `briefing` kind), `helpers/BUILD-STATE.md` (row 18, the Phase 18 log, the status line)
 
 ## [v01.79r] — 2026-10-05 12:06:57 AM EST
 

@@ -2,7 +2,7 @@
 
 A GitHub Pages deployment framework with automatic version polling, auto-refresh, and Google Apps Script (GAS) embedding support.
 
-Last updated: `2026-10-05 12:06:57 AM EST` · Repo version: `v01.79r`
+Last updated: `2026-10-05 12:50:31 AM EST` · Repo version: `v01.80r`
 
 **Live site:** [lightaisolutions.github.io/Personal](https://lightaisolutions.github.io/Personal/)
 
@@ -346,7 +346,8 @@ Last updated: `2026-10-05 12:06:57 AM EST` · Repo version: `v01.79r`
 │   │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/assets/google-maps-logo.svg">google-maps-logo.svg</a> — Google Maps attribution logo
 │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/brochure/fixtures">fixtures/</a>       — Invented sample trip
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/fixtures/sample-trip.json">sample-trip.json</a> — Invented 3-day trip on reserved domains (the sample brochure)
-│   │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/fixtures/sample-trip-c18.json">sample-trip-c18.json</a> — The invented sample with every Contract C18 field
+│   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/fixtures/sample-trip-c18.json">sample-trip-c18.json</a> — The invented sample with every Contract C18 field
+│   │   │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/fixtures/sample-trip-c18b.json">sample-trip-c18b.json</a> — The invented sample with every Contract C18 wave 2 (briefing) field
 │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/index.mjs">index.mjs</a>       — Library exports + CLI (validate, render, build, sample)
 │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/kits/brochure/lib">lib/</a>            — Implementation, one concern per file
 │   │   │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/kits/brochure/lib/art.mjs">art.mjs</a>     — Decorative contour art and ornaments generated from data
@@ -467,6 +468,7 @@ Last updated: `2026-10-05 12:06:57 AM EST` · Repo version: `v01.79r`
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/brochure-map">brochure-map/</a>   — Plan → brochure model (WP-3c): the kit renders, this maps
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/brochure-map/brochure-map-attribution.mjs">brochure-map-attribution.mjs</a> — Google Maps attribution and other-sources block
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/brochure-map/brochure-map-bookings.mjs">brochure-map-bookings.mjs</a> — The "Bookings" practical section: both times, still to book first, booked after
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/brochure-map/brochure-map-briefing.mjs">brochure-map-briefing.mjs</a> — Contract C18 wave 2: merges the routine-written briefing into the days, with its drop and clip rules
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/brochure-map/brochure-map-c18.mjs">brochure-map-c18.mjs</a> — Contract C18 values: fixed times, tips, checklist, morning countdown, departure, free windows
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/brochure-map/brochure-map-cards.mjs">brochure-map-cards.mjs</a> — Place cards: notes, hours today, one credited review
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/brochure-map/brochure-map-days.mjs">brochure-map-days.mjs</a> — Day spreads: stops, legs, meals, free time, warnings
@@ -477,7 +479,7 @@ Last updated: `2026-10-05 12:06:57 AM EST` · Repo version: `v01.79r`
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/brochure-map/brochure-map-sample-c11.mjs">brochure-map-sample-c11.mjs</a> — The invented sample with every C11 field filled (tests and screenshots)
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/brochure-map/brochure-map-sample-c18.mjs">brochure-map-sample-c18.mjs</a> — The invented C18 sample input
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/brochure-map/brochure-map-text.mjs">brochure-map-text.mjs</a> — Text helpers: clipping, joining, wall-clock labels
-│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/brochure-map/index.mjs">index.mjs</a>       — toBrochureModel, renderPlan, renderPlanPdf
+│   │       │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/brochure-map/index.mjs">index.mjs</a>       — buildModel, toBrochureModel, renderPlan, renderPlanPdf
 │   │       ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/compare">compare/</a> — Compare: two to four places or one list side by side with Scout's scores and warnings (WP-14e)
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/tree/main/helpers/packs/tour-guide/compare/fixtures">fixtures/</a> — Invented data for the branch's test
 │   │       │   │   └── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/compare/fixtures/compare-sample.json">compare-sample.json</a> — An invented trip
@@ -708,6 +710,7 @@ Last updated: `2026-10-05 12:06:57 AM EST` · Repo version: `v01.79r`
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/index.mjs">index.mjs</a>       — validate(entity, kind) → { ok, errors }
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-booking.schema.json">tour-guide-booking.schema.json</a> — One booking record: rule, opens at, book by, status
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-bookings.schema.json">tour-guide-bookings.schema.json</a> — bookings payload: the full list for one trip
+│   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-briefing.schema.json">tour-guide-briefing.schema.json</a> — The written briefing a brochure build passes in (C18 wave 2)
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-calibration.schema.json">tour-guide-calibration.schema.json</a> — Calibration state
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-checks.mjs">tour-guide-checks.mjs</a> — Cross-field checks the schema cannot express
 │   │       │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/packs/tour-guide/schemas/tour-guide-dates.mjs">tour-guide-dates.mjs</a> — Date and time-of-day validation
@@ -906,6 +909,7 @@ Last updated: `2026-10-05 12:06:57 AM EST` · Repo version: `v01.79r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_c11.test.js">kit_brochure_c11.test.js</a> — Brochure kit: every C11 field, strict keys, old plans byte for byte
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_c12.test.js">kit_brochure_c12.test.js</a> — Brochure kit: the C12 fields (visited stops as done, "from where you were" with no origin and no coordinates anywhere) and the phone clock beside a stop badge (Chromium)
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_c18.test.js">kit_brochure_c18.test.js</a> — Contract C18 in the kit: schema, checks, clock and temperature, every block, byte-identical older models
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_c18b.test.js">kit_brochure_c18b.test.js</a> — Contract C18 wave 2 in the kit: lead, key times, food, if-then, why, day kit; older models byte for byte
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_cli.test.js">kit_brochure_cli.test.js</a> — Brochure kit: CLI exit codes, build without Playwright
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_directions.test.js">kit_brochure_directions.test.js</a> — Brochure kit: Google Maps directions links per leg
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/kit_brochure_google_images.test.js">kit_brochure_google_images.test.js</a> — Brochure kit: Google maps, photos, projection and overlay
@@ -952,6 +956,7 @@ Last updated: `2026-10-05 12:06:57 AM EST` · Repo version: `v01.79r`
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_c18_planner_free.test.js">pack_tour-guide_c18_planner_free.test.js</a> — The planner's free-window options
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_c18_planner_plan.test.js">pack_tour-guide_c18_planner_plan.test.js</a> — Free options inside a whole plan
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_c18_brochure_map.test.js">pack_tour-guide_c18_brochure_map.test.js</a> — brochure-map's C18 values
+│   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_c18b_briefing.test.js">pack_tour-guide_c18b_briefing.test.js</a> — The briefing schema and its merge into the brochure model
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_daytrip.test.js">pack_tour-guide_daytrip.test.js</a> — Tour Guide pack: /daytrip and its words (parity with the engine), the routing, the validators agree on every fixture
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_daytrip_app.test.js">pack_tour-guide_daytrip_app.test.js</a> — Tour Guide pack: the app's Day trips screen
 │   │   ├── <a href="https://github.com/LightAISolutions/Personal/blob/main/helpers/tests/pack_tour-guide_daytrip_engine.test.js">pack_tour-guide_daytrip_engine.test.js</a> — Tour Guide pack: the Day trip engine — words, the reach part, every screen, the score, the payload, the outline entry
