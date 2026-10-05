@@ -90,11 +90,27 @@ styles are added only when `usesC11(model)` is true, and each piece of markup on
 | `stops[].visited` | `true` only: the stop was done before the re-plan (visited stops come first) | the rail row muted with a hollow badge and a "✓ visited" tag, still numbered in order; a tick on the glance list |
 | `legs[].from: "here"` | where the traveller was when the day was re-planned from a shared location; it has no coordinates | "from where you were"; the kit's own link for that leg has no origin (Google starts from the viewer's location) |
 
+**Contract C18 fields (Phase 18 wave 1, all optional).** Their styles are added only when `usesC18(model)` is true;
+a model without them renders byte for byte as before (pinned in `tests/kit_brochure_c18.test.js`). Sample:
+`fixtures/sample-trip-c18.json`. One-line texts are at most 160 characters.
+
+| Field | What it is | Where it shows |
+|---|---|---|
+| `trip.clock` | `24h` or `12h`; absent: the locale's own clock (12 h for en-US/CA/AU/NZ/PH) | every time in the brochure (carried as the locale's `-u-hc-` extension) |
+| `trip.temp` | `c` (default), `f` or `both` | the season page's temperature figures (the planner's own prose is left as written) |
+| `days[].checklist` | `must` ≤ 6, `carry` ≤ 8, `constraints` ≤ 6 lines | "Today's checklist" after the day header, groups Must / Carry / Limits (empty groups omitted) |
+| `days[].prep` | `night_before` ≤ 6 lines, `steps` ≤ 6 `{time, text}` in time order | "Night before · This morning" beside the checklist |
+| `days[].departure` | `to`, `at` (required), `by` (leave-by, ≤ `at`), `scenarios` ≤ 2 `{label, steps ≤ 5, spare_min}`, `fallbacks` ≤ 4, `note` | a "Getting out" box on the rail, before the first row at or after the leave-by time (at the latest before the day's end) |
+| `fixed` on stops, meals, `start`, `end` | `true` only: the time cannot slide | the time bold with a "fixed" tag (never an "about" time); one legend line on each day that has one |
+| `tip` on stops and meals | one line | "Tip" line under the row |
+| `free[].title`, `free[].options` ≤ 4 `{name, place, km, walk_min, open, note, url}` | the window's name and what is nearby | "Title · length — note" and one line per option (walk or distance, open status, link, card reference) |
+
 Semantic checks beyond the schema (`lib/model.mjs`): every place key resolves, days fall inside the trip and are not
 duplicated, stops are in clock order and do not depart before they arrive, meal/free blocks end after they start; for
 C11, a `day-start` / `day-end` leg needs the day's start / end, extras and season events name known places, and the
 bag step, season events and blooms end after they start; for C12, `here` may only start a leg (it is reserved while
-no place is keyed `here`).
+no place is keyed `here`); for C18, prep steps are in time order, a departure's leave-by is not after it, and a day's
+free options name known places, walk 0–120 min and are not offered twice.
 `prepare()` then derives what the sections render: numbered days with a merged timeline (stops, legs, meals, free
 time in clock order), per-day statistics, hours for the day from the weekday lines, the cards in order of first
 appearance, and page cross-references. Images: `src` is a path relative to the model file or a `data:image/…` URI;

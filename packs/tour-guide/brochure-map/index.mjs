@@ -8,6 +8,10 @@
  *     freshness limits "check again" (without it, the build date); options.diet (e.g. 'vegetarian') words the menu line.
  *     Contract C11: trip.day_overrides, trip.season (the season page after the overview), place.facts and place.flags,
  *     and the DayPlan's start/end/bags/sunset/extras, dinner booking and stop facts map through brochure-map-facts.mjs.
+ *     Contract C18 (Phase 18, WP-18b): options.c18 === true adds each day's fixed marks, field tips, checklist, prep,
+ *     departure and the planner's free-window titles and options (brochure-map-c18.mjs). They are computed from data
+ *     every plan already has, so they are gated: without `c18` the model is byte-identical to before. options.clock
+ *     ('12h'|'24h') and options.temp ('c'|'f'|'both') become trip.clock / trip.temp only when given.
  *   renderPlan(args, { page?, embedFonts? }) → { html, model, warnings }
  *   renderPlanPdf(args, outPath, { page?, shotsDir? }) → { html, model, warnings, pdf, pages, available }   (no PDF when pdfAvailable() is false)
  * Pure: never mutates its input, never calls the network.
@@ -22,12 +26,14 @@ import { tripPractical, dayRoutes, freeDays, verifySections, PRACTICAL_LIMITS } 
 import { bookingsSection } from './brochure-map-bookings.mjs';
 import { buildAttribution } from './brochure-map-attribution.mjs';
 import { seasonModel, factsSourceRows, seasonSourceRows } from './brochure-map-facts.mjs';
+import { addC18, tripDisplay } from './brochure-map-c18.mjs';
 
 export { placeCard, closedDays, hoursLine, hoursToday, categoryLabel } from './brochure-map-cards.mjs';
 export { mapDay, freeDay, legMode, MODE_MAP } from './brochure-map-days.mjs';
 export { mapLater } from './brochure-map-later.mjs';
 export { buildAttribution, mergeSources, sourceKey } from './brochure-map-attribution.mjs';
 export { cardFacts, seasonModel, stopLines, IMPL as FACTS_IMPL } from './brochure-map-facts.mjs';
+export { addC18, tripDisplay, tipOf, takesCashOnly, clockFor, PREP, DEPART, C18_CAPS } from './brochure-map-c18.mjs';
 export { pdfAvailable };
 
 const LOCALE = /^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$/;
@@ -94,9 +100,13 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
   for (const d of days) for (const slug of [...(d.stops || []).map((s) => s.place), ...(d.meals || []).filter((x) => x.kind === 'dinner').map((x) => x.at)]) if (slug && !firstDay.has(slug)) firstDay.set(slug, d.date);
   const bookings = Array.isArray(trip.bookings) ? trip.bookings : [];
   const bDays = [], free = [], routes = [];
+  // C18: only on request (see the file header); a free option scheduled on any day of the plan is never offered.
+  const c18 = options.c18 === true ? { placesBySlug, cards, lodgingName, bookings, firstDay, diet: factsOptions.diet, locale, clock: options.clock, scheduled: new Set(days.flatMap((d) => [...(d.stops || []).map((s) => s.place), ...(d.meals || []).filter((x) => x.kind === 'dinner' && x.at && x.at !== 'lodging').map((x) => x.at)])) } : null;
   for (const d of days) {
     if (!(d.stops || []).length) { const f = freeDay(d, overrides.get(d.date)); free.push({ date: d.date, note: f.text, url: f.url }); continue; }
-    bDays.push(mapDay(d, { placesBySlug, cards, lodgingName, override: overrides.get(d.date), season: trip.season, factsOptions, bookings, firstDay }));
+    const day = mapDay(d, { placesBySlug, cards, lodgingName, override: overrides.get(d.date), season: trip.season, factsOptions, bookings, firstDay });
+    if (c18) addC18(day, d, { ...c18, override: overrides.get(d.date) });
+    bDays.push(day);
     routes.push({ n: bDays.length, date: d.date, url: d.day_url });
   }
   if (!bDays.length) throw new Error('brochure-map: the plan has no day with a stop; the brochure needs at least one');
@@ -112,7 +122,8 @@ export function toBrochureModel({ trip, plan, places, notes = [], snapshots = []
     lodging: (trip.lodging || []).slice(0, 12).map(lodgingEntry),
     build_id: plan.build_id ? String(plan.build_id).slice(0, 64) : undefined,
     built_on: DATE.test(String(builtOn || '')) ? builtOn : undefined,
-    verified_on: DATE.test(String(verifiedOn || '')) ? verifiedOn : undefined
+    verified_on: DATE.test(String(verifiedOn || '')) ? verifiedOn : undefined,
+    ...tripDisplay(options)
   });
 
   const practical = tripPractical(trip.practical);

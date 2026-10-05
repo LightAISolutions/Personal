@@ -4,7 +4,7 @@
  * page's blocks (`.pblock`), so it reads as part of the same book; long event lists continue in further blocks.
  */
 import { esc, clip, join } from '../escape.mjs';
-import { shortDate, longDate, dateRange } from '../format.mjs';
+import { shortDate, longDate, dateRange, temperature } from '../format.mjs';
 import { secHead, link, clockPlain } from './common.mjs';
 
 export const EVENT_KIND = { light_up: 'Evening light-up', special_opening: 'Special opening', festival: 'Festival', market: 'Market', exhibition: 'Exhibition', performance: 'Performance', holiday: 'Public holiday', closure: 'Closed' };   // C15: + exhibition, performance
@@ -17,10 +17,11 @@ export function dayRange(from, to, locale) {
   const fmt = (s, o) => { try { return new Intl.DateTimeFormat(locale, { timeZone: 'UTC', ...o }).formatRange(new Date(from + 'T00:00:00Z'), new Date(s + 'T00:00:00Z')); } catch { return ''; } };
   return fmt(to, { month: 'short', day: 'numeric' }) || `${shortDate(from, locale)} – ${shortDate(to, locale)}`;
 }
-const temp = (c) => `${Math.round(c)} °C`;
+/** A temperature in the trip's unit (Contract C18 `trip.temp`: c, f or both; °C by default). */
+export const temp = (c, unit = 'c') => temperature(c, unit);
 
-function weatherBlock(w) {
-  const rows = [Number.isFinite(w.high_c) ? ['Highs', `about ${temp(w.high_c)}`] : null, Number.isFinite(w.low_c) ? ['Lows', `about ${temp(w.low_c)}`] : null, Number.isInteger(w.rain_days) ? ['Rain', `on about ${w.rain_days} ${w.rain_days === 1 ? 'day' : 'days'} a month`] : null].filter(Boolean);
+function weatherBlock(w, unit) {
+  const rows = [Number.isFinite(w.high_c) ? ['Highs', `about ${temp(w.high_c, unit)}`] : null, Number.isFinite(w.low_c) ? ['Lows', `about ${temp(w.low_c, unit)}`] : null, Number.isInteger(w.rain_days) ? ['Rain', `on about ${w.rain_days} ${w.rain_days === 1 ? 'day' : 'days'} a month`] : null].filter(Boolean);
   return `<div class="pblock season-weather"><h3>Weather</h3><p>${esc(clip(w.text, 220))}</p>${rows.length ? `<dl>${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>` : ''}</div>`;
 }
 function bloomBlock(list, locale) {
@@ -54,7 +55,7 @@ export function season(ctx) {
   const { m, locale } = ctx;
   const s = m.season;
   if (!s) return '';
-  const blocks = [s.weather ? weatherBlock(s.weather) : '', (s.bloom || []).length ? bloomBlock(s.bloom, locale) : '', ...eventBlocks(s.events || [], locale), sourcesBlock(s.sources || [], s.checked, locale)].filter(Boolean);
+  const blocks = [s.weather ? weatherBlock(s.weather, m.temp) : '', (s.bloom || []).length ? bloomBlock(s.bloom, locale) : '', ...eventBlocks(s.events || [], locale), sourcesBlock(s.sources || [], s.checked, locale)].filter(Boolean);
   return `<section class="sec sec-season" data-pg="section" data-folio="${esc(clip(s.title || 'The season', 60))}">
 ${secHead(`<b>${esc(m.trip.destination || m.trip.title)}</b> · ${esc(dateRange(m.trip.start_date, m.trip.end_date, locale))}`, clip(s.title || 'The season', 80), `Checked ${esc(longDate(s.checked, locale))}`)}
 ${s.lead ? `<p class="lede season-lead" data-pg="block">${esc(clip(s.lead, 240))}</p>` : ''}

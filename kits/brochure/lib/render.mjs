@@ -6,7 +6,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { prepare, usesC11, usesC12 } from './model.mjs';
+import { prepare, usesC11, usesC12, usesC18 } from './model.mjs';
 import { stylesheet } from './css.mjs';
 import { pageSpec } from './tokens.mjs';
 import { fontFaceCss } from './fonts.mjs';
@@ -45,7 +45,7 @@ export function renderHtml(input, { page = undefined, baseDir = process.cwd(), e
 <meta name="brochure-page" content="${spec.key}">
 <meta name="color-scheme" content="light">
 <title>${esc(title)}</title>
-<style>${stylesheet({ page: spec, fontCss: fonts.css, c11: usesC11(m), c12: usesC12(m) })}</style>
+<style>${stylesheet({ page: spec, fontCss: fonts.css, c11: usesC11(m), c12: usesC12(m), c18: usesC18(m) })}</style>
 </head>
 <body><main class="doc">
 ${body}

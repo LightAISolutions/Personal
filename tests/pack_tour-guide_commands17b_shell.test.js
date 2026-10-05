@@ -225,6 +225,25 @@ test('Settings: the switches read the real settings; a switch runs its command a
   assert.match(morningRow.textContent, /07:45/, 'the morning row reads back the new time');
 });
 
+test('Settings: the Display rows show the brochure units; a choice runs /units and reads back', SKIP, () => {
+  const { st, box, runs } = page({ screen: 'settings' });
+  box.showSettings();
+  const row = () => byAttr(st.rendered, 'data-units-row')[0];
+  const pick = (cmd) => byAttr(st.rendered, 'data-units', cmd)[0];
+  assert.match(row().textContent, /24-hour clock · °C and °F/, 'the defaults');
+  assert.equal(pick('/units 24h').getAttribute('aria-pressed'), 'true');
+  assert.equal(pick('/units both').getAttribute('aria-pressed'), 'true');
+  pick('/units 24h').fire('click');
+  assert.deepEqual(runs(), [], 'the current value sends nothing');
+  pick('/units 12h').fire('click');
+  pick('/units f').fire('click');
+  assert.deepEqual(runs(), ['/units 12h', '/units f']);
+  assert.match(row().textContent, /12-hour clock · °F/, 'read back after the run');
+  assert.equal(pick('/units 12h').getAttribute('aria-pressed'), 'true');
+  assert.equal(pick('/units f').getAttribute('aria-pressed'), 'true');
+  assert.equal(pick('/units c').getAttribute('aria-pressed'), 'false');
+});
+
 test('Settings: the folded Helper health shows the /status numbers and its buttons; Expire asks first', SKIP, () => {
   const { st, box, runs, ctx } = page({ screen: 'settings' });
   box.showSettings();

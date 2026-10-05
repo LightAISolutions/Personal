@@ -25,11 +25,15 @@ export function clockPlain(m, locale) {
   const c = clock(typeof m === 'number' ? minsToHm(m) : m, locale);
   return c.suffix ? `${c.text} ${c.suffix}` : c.text;
 }
-/** The timeline's left column: start on the first line, end (or a duration) muted beneath. */
-export function timeCell(start, end, locale, below = '') {
+/**
+ * The timeline's left column: start on the first line, end (or a duration) muted beneath. `fixed` (Contract C18): the
+ * time cannot slide — set bold, with a small "fixed" tag under it.
+ */
+export function timeCell(start, end, locale, below = '', fixed = false) {
   const t = start === null || start === undefined ? '' : `<span class="t">${clockHtml(start, locale)}</span>`;
   const t2 = below || (end !== null && end !== undefined && end !== start ? `– ${clockPlain(end, locale)}` : '');
-  return `<div class="ti-time">${t}${t2 ? `<span class="t2">${t2}</span>` : ''}</div>`;
+  const fx = fixed && t ? '<span class="fx-tag">fixed</span>' : '';
+  return `<div class="ti-time${fx ? ' is-fixed' : ''}">${t}${t2 ? `<span class="t2">${t2}</span>` : ''}${fx}</div>`;
 }
 /** Reference to a place card: a link on screen, replaced by 'p. N' by the paginator. */
 export const pageRef = (placeId, label = 'see card') => `<a class="pref" href="#place-${attr(placeId)}" data-pageref="${attr(placeId)}">${label}</a>`;

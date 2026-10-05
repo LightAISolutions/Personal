@@ -566,7 +566,8 @@ var TG_SNAPSHOT_TRIPS = 20;
 /**
  * Small on purpose: trips with their status (open ones first, at most 20), the open choice round (the latest shortlist
  * of a trip in `choosing`, with the owner's want / later / skip tap counts so far), the date of the cached profile
- * summary and how many places the repository holds per destination.
+ * summary and how many places the repository holds per destination. display: the brochure units (/units, 47_units.js),
+ * always present with the defaults applied.
  */
 function tgSnapshot() {
   var trips = tgTripList();
@@ -592,7 +593,8 @@ function tgSnapshot() {
     trips: shown, trips_total: trips.length, choice_round: round,
     profile_summary: prof ? { updated: tgShDate(prof.updated || prof.received_at) } : null,
     places: tgPlacesCounts(),
-    bookings: typeof tgBkSnapshot === 'function' ? tgBkSnapshot() : {}
+    bookings: typeof tgBkSnapshot === 'function' ? tgBkSnapshot() : {},
+    display: typeof tgUnits === 'function' ? tgUnits() : { clock: '24h', temp: 'both' }
   };
 }
 registerSnapshotProvider('tour_guide', tgSnapshot);

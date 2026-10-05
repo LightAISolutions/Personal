@@ -1,0 +1,1534 @@
+{
+  "version": 1,
+  "trip": {
+    "title": "Vellmoor & the Tide Coast",
+    "subtitle": "Three days, with the times that matter",
+    "destination": "Vellmoor",
+    "country": "Ostenia",
+    "start_date": "2026-11-12",
+    "end_date": "2026-11-14",
+    "timezone": "Etc/GMT-1",
+    "locale": "en-US",
+    "travelers": [
+      "Jo",
+      "Sam"
+    ],
+    "prepared_for": "Jo & Sam",
+    "pace": "relaxed",
+    "day_start": "09:00",
+    "day_end": "21:30",
+    "intro": "Vellmoor is a small harbour city that turns its back on the wind: the old town climbs away from the quays in terraces, and almost everything you want is within a forty-minute walk. This plan keeps mornings for the things that need an early start, leaves the afternoons loose, and never books two timed entries on the same day.\n\nTides matter here. The sea baths and the Sallow Island ferry both run to the tide table, so the third day is built around it.",
+    "lodging": [
+      {
+        "name": "The Marram Inn",
+        "address": "4 Gull Steps, Rookwell, Vellmoor",
+        "from": "2026-11-11",
+        "to": "2026-11-14",
+        "lat": 47.3121,
+        "lng": -22.8134,
+        "check_in": "15:00",
+        "check_out": "11:00",
+        "maps_url": "https://maps.example.com/?q=The+Marram+Inn",
+        "note": "Breakfast 7:30–10:00 in the back room; ask for the harbour side if a room frees up."
+      }
+    ],
+    "build_id": "sample-0001",
+    "built_on": "2026-10-01",
+    "verified_on": "2026-10-01",
+    "clock": "24h",
+    "temp": "both"
+  },
+  "days": [
+    {
+      "date": "2026-11-12",
+      "theme": "Old town and the quays",
+      "summary": "A gentle first day on foot. The museum needs the early slot; after that everything is downhill towards the water, with the belfry as the one climb.",
+      "lodging": "The Marram Inn",
+      "stops": [
+        {
+          "place": "tide-museum",
+          "arrive": "09:30",
+          "depart": "11:30",
+          "activity": "Highlights: the tide engine, the chart room",
+          "minutes": 120,
+          "booked": "Timed entry 9:30, booked",
+          "note": "Start on the top floor and work down; the tide engine runs on the hour.",
+          "last_entry": "16:00",
+          "minutes_source": "official",
+          "crowd_slot": "opening",
+          "booking_line": "Book online the day before",
+          "fixed": true,
+          "tip": "Enter by the north door; the main hall opens at 9:30 sharp."
+        },
+        {
+          "place": "lantern-quay",
+          "arrive": "11:45",
+          "depart": "12:45",
+          "activity": "Market browse",
+          "minutes": 60,
+          "note": "Smoked-fish stalls at the east end; the cheese man closes at one.",
+          "minutes_source": "estimate",
+          "crowd_slot": "late",
+          "booking_line": "Tickets at the gate",
+          "tip": "Cash only at most stalls; the fish stall takes cards."
+        },
+        {
+          "place": "saint-aurel",
+          "arrive": "14:15",
+          "depart": "15:15",
+          "activity": "Belfry climb, 212 steps",
+          "minutes": 60,
+          "tip": "The belfry stair is narrow: bags stay at the foot."
+        },
+        {
+          "place": "rookwell",
+          "arrive": "15:30",
+          "depart": "17:00",
+          "activity": "Self-guided walk: Gull Steps, Tanners' Court, the almshouses",
+          "minutes": 90,
+          "note": "The route is on the place card; allow longer if the light is good."
+        }
+      ],
+      "legs": [
+        {
+          "from": "day-start",
+          "to": "lodging",
+          "mode": "walk",
+          "minutes": 10,
+          "distance_m": 700,
+          "depart_at": "07:30",
+          "arrive_at": "07:40"
+        },
+        {
+          "from": "lodging",
+          "to": "tide-museum",
+          "mode": "walk",
+          "minutes": 12,
+          "distance_m": 900,
+          "depart_at": "09:15",
+          "arrive_at": "09:27",
+          "maps_url": "https://maps.example.com/dir/?from=marram-inn&to=tide-museum&mode=walking"
+        },
+        {
+          "from": "tide-museum",
+          "to": "lantern-quay",
+          "mode": "walk",
+          "minutes": 9,
+          "distance_m": 650,
+          "depart_at": "11:33",
+          "arrive_at": "11:42",
+          "maps_url": "https://maps.example.com/dir/?from=tide-museum&to=lantern-quay&mode=walking"
+        },
+        {
+          "from": "lantern-quay",
+          "to": "quillet",
+          "mode": "walk",
+          "minutes": 4,
+          "distance_m": 300,
+          "depart_at": "12:50",
+          "arrive_at": "12:54",
+          "maps_url": "https://maps.example.com/dir/?from=lantern-quay&to=quillet&mode=walking"
+        },
+        {
+          "from": "quillet",
+          "to": "saint-aurel",
+          "mode": "walk",
+          "minutes": 11,
+          "distance_m": 800,
+          "depart_at": "14:02",
+          "arrive_at": "14:13",
+          "maps_url": "https://maps.example.com/dir/?from=quillet&to=saint-aurel&mode=walking"
+        },
+        {
+          "from": "saint-aurel",
+          "to": "rookwell",
+          "mode": "walk",
+          "minutes": 8,
+          "distance_m": 550,
+          "depart_at": "15:18",
+          "arrive_at": "15:26",
+          "maps_url": "https://maps.example.com/dir/?from=saint-aurel&to=rookwell&mode=walking"
+        },
+        {
+          "from": "rookwell",
+          "to": "lodging",
+          "mode": "walk",
+          "minutes": 6,
+          "distance_m": 400,
+          "depart_at": "17:00",
+          "arrive_at": "17:06",
+          "maps_url": "https://maps.example.com/dir/?from=rookwell&to=marram-inn&mode=walking"
+        },
+        {
+          "from": "lodging",
+          "to": "brine-house",
+          "mode": "walk",
+          "minutes": 14,
+          "distance_m": 1000,
+          "depart_at": "18:42",
+          "arrive_at": "18:56",
+          "maps_url": "https://maps.example.com/dir/?from=marram-inn&to=brine-house&mode=walking",
+          "note": "Along the sea wall if it is dry"
+        }
+      ],
+      "meals": [
+        {
+          "kind": "breakfast",
+          "start": "08:00",
+          "end": "08:45",
+          "name": "The Marram Inn, back room",
+          "note": "Included; the porridge is the thing to order."
+        },
+        {
+          "kind": "lunch",
+          "start": "13:00",
+          "end": "14:00",
+          "place": "quillet",
+          "note": "No booking needed before one."
+        },
+        {
+          "kind": "dinner",
+          "start": "19:00",
+          "place": "brine-house",
+          "note": "Booked for two under Sam.",
+          "booking": "Book 2 days ahead by phone",
+          "fixed": true,
+          "tip": "Ask for the window table; the kitchen closes at 21:30."
+        }
+      ],
+      "free": [
+        {
+          "start": "17:06",
+          "end": "18:40",
+          "title": "Harbour hour",
+          "note": "Back to the inn, or out again for the last light.",
+          "options": [
+            {
+              "name": "Sea wall benches",
+              "km": 0.3,
+              "walk_min": 4,
+              "open": "always open",
+              "note": "Sunset at 16:40; the lights start at 17:30."
+            },
+            {
+              "name": "The Ninefold Steps",
+              "place": "ninefold-steps",
+              "km": 0.7,
+              "walk_min": 9,
+              "open": "lit until 22:00",
+              "url": "https://maps.example.com/?q=Ninefold+Steps"
+            },
+            {
+              "name": "Corran Arcade",
+              "place": "corran-arcade",
+              "km": 1.1,
+              "walk_min": 14,
+              "open": "open until 19:00",
+              "note": "Covered, good if it rains."
+            },
+            {
+              "name": "Fennick & Daughters",
+              "place": "fennick",
+              "km": 0.4,
+              "walk_min": 6,
+              "open": "open until 18:00"
+            }
+          ]
+        }
+      ],
+      "warnings": [
+        {
+          "severity": "info",
+          "text": "Museum last entry 16:00; the chart room closes thirty minutes before the rest.",
+          "place": "tide-museum"
+        },
+        {
+          "severity": "warn",
+          "text": "The belfry's top flight is steep and unlit — skip it if the knee is complaining; the view from the bell loft is nearly as good.",
+          "place": "saint-aurel"
+        }
+      ],
+      "verified_on": "2026-10-01",
+      "start": {
+        "name": "Northgate Halt",
+        "time": "07:15",
+        "lat": 50.1,
+        "lng": -4.2,
+        "maps_url": "https://maps.example.com/northgate",
+        "note": "Off the sleeper train.",
+        "fixed": true
+      },
+      "bags": {
+        "kind": "locker",
+        "start": "07:20",
+        "end": "07:28",
+        "where": "Northgate Halt"
+      },
+      "sunset": "16:40",
+      "extras": [
+        {
+          "kind": "event",
+          "name": "Harbour lights",
+          "time": "17:30",
+          "km": 0.4,
+          "note": "Free, along the sea wall.",
+          "url": "https://events.example.org/lights"
+        },
+        {
+          "kind": "saved",
+          "name": "Corran Arcade",
+          "place": "corran-arcade",
+          "time": "18:00",
+          "km": 1.2
+        }
+      ],
+      "checklist": {
+        "must": [
+          "07:15 off the sleeper at Northgate Halt",
+          "09:30 timed entry, Museum of Tide & Trade",
+          "19:00 dinner booked at The Brine House"
+        ],
+        "carry": [
+          "Museum e-ticket (QR) on your phone",
+          "Cash for the Lantern Quay stalls",
+          "Locker token from Northgate Halt",
+          "A warm layer for the belfry"
+        ],
+        "constraints": [
+          "Vegetarian: lunch specials change daily, ask",
+          "Museum last entry 16:00",
+          "Belfry closes at dusk"
+        ]
+      },
+      "prep": {
+        "night_before": [
+          "Alarm for 06:45 on the sleeper",
+          "Download the museum e-ticket",
+          "Day bag packed; the rest goes in a locker"
+        ],
+        "steps": [
+          {
+            "time": "06:45",
+            "text": "Wake on the sleeper"
+          },
+          {
+            "time": "07:15",
+            "text": "Off at Northgate Halt"
+          },
+          {
+            "time": "07:28",
+            "text": "Bags in the locker, then walk to the inn"
+          },
+          {
+            "time": "08:00",
+            "text": "Breakfast at the inn"
+          },
+          {
+            "time": "09:15",
+            "text": "Leave for the museum (12 min walk)"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-11-13",
+      "theme": "Gardens, glass and the high road",
+      "summary": "Out to the terraces on the tram, a workshop you have already booked, and the viewpoint for the late light. Two bus rides; the day pass covers both.",
+      "lodging": "The Marram Inn",
+      "stops": [
+        {
+          "place": "hollin-terraces",
+          "arrive": "09:40",
+          "depart": "12:00",
+          "activity": "Upper terraces first, glasshouse last",
+          "minutes": 140,
+          "note": "The glasshouse warms up by eleven; save it for the end."
+        },
+        {
+          "place": "glass-foundry",
+          "arrive": "13:30",
+          "depart": "15:00",
+          "activity": "Blowing demonstration 13:45; your workshop slot 14:15",
+          "minutes": 90,
+          "booked": "Workshop 14:15, booked — reference in the confirmation e-mail",
+          "fixed": true,
+          "tip": "Closed-toe shoes in the workshop; long hair tied back."
+        },
+        {
+          "place": "mirrowdale",
+          "arrive": "15:45",
+          "depart": "16:45",
+          "activity": "Viewpoint and the short ridge loop",
+          "minutes": 60,
+          "note": "The loop is 25 minutes; the bench at the far end faces the islands."
+        }
+      ],
+      "legs": [
+        {
+          "from": "lodging",
+          "to": "cinder-lane",
+          "mode": "walk",
+          "minutes": 5,
+          "distance_m": 350,
+          "depart_at": "08:25",
+          "arrive_at": "08:30",
+          "maps_url": "https://maps.example.com/dir/?from=marram-inn&to=cinder-lane&mode=walking"
+        },
+        {
+          "from": "cinder-lane",
+          "to": "hollin-terraces",
+          "mode": "transit",
+          "minutes": 22,
+          "distance_m": 4100,
+          "depart_at": "09:12",
+          "arrive_at": "09:34",
+          "line": "Tram 4 toward Hollin Gate, 6 stops",
+          "maps_url": "https://maps.example.com/dir/?from=cinder-lane&to=hollin-terraces&mode=transit&time=0912"
+        },
+        {
+          "from": "hollin-terraces",
+          "to": "glass-foundry",
+          "mode": "walk",
+          "minutes": 14,
+          "distance_m": 1100,
+          "depart_at": "13:05",
+          "arrive_at": "13:19",
+          "maps_url": "https://maps.example.com/dir/?from=hollin-terraces&to=glass-foundry&mode=walking"
+        },
+        {
+          "from": "glass-foundry",
+          "to": "mirrowdale",
+          "mode": "transit",
+          "minutes": 28,
+          "distance_m": 6200,
+          "depart_at": "15:10",
+          "arrive_at": "15:38",
+          "line": "Bus 11 to Mirrowdale Top",
+          "maps_url": "https://maps.example.com/dir/?from=glass-foundry&to=mirrowdale&mode=transit&time=1510"
+        },
+        {
+          "from": "mirrowdale",
+          "to": "lodging",
+          "mode": "transit",
+          "minutes": 35,
+          "distance_m": 7400,
+          "depart_at": "16:50",
+          "arrive_at": "17:25",
+          "line": "Bus 11 to Quay Street, then 6 min on foot",
+          "maps_url": "https://maps.example.com/dir/?from=mirrowdale&to=marram-inn&mode=transit&time=1650"
+        }
+      ],
+      "meals": [
+        {
+          "kind": "coffee",
+          "start": "08:30",
+          "end": "09:05",
+          "place": "cinder-lane",
+          "note": "The cardamom bun; they sell out by ten."
+        },
+        {
+          "kind": "lunch",
+          "start": "12:00",
+          "end": "13:00",
+          "name": "Terrace Café, inside the gardens",
+          "note": "Soup and a tart; sit on the lower terrace out of the wind.",
+          "tip": "The Terrace Café takes cards only."
+        },
+        {
+          "kind": "dinner",
+          "start": "19:30",
+          "name": "Open — two ideas in the Later list",
+          "note": "Nothing booked. If it rains, stay near the inn."
+        }
+      ],
+      "free": [
+        {
+          "start": "17:25",
+          "end": "19:30",
+          "title": "Rest before dinner",
+          "note": "Rest. Or the bookshop today instead of Saturday.",
+          "options": [
+            {
+              "name": "Fennick & Daughters",
+              "place": "fennick",
+              "km": 0.5,
+              "open": "open until 18:00"
+            },
+            {
+              "name": "Harbour lights from the sea wall",
+              "km": 0.6,
+              "note": "Free, from 17:30."
+            }
+          ]
+        }
+      ],
+      "warnings": [
+        {
+          "severity": "warn",
+          "text": "The workshop needs closed shoes and long hair tied back; no loose scarves.",
+          "place": "glass-foundry"
+        },
+        {
+          "severity": "info",
+          "text": "Bus 11 runs every twenty minutes; the 15:10 is the one to catch for the light at the top."
+        }
+      ],
+      "verified_on": "2026-10-01",
+      "checklist": {
+        "must": [
+          "14:15 glass workshop (booked)"
+        ],
+        "carry": [
+          "Booking reference from the confirmation e-mail",
+          "Transit day ticket"
+        ]
+      }
+    },
+    {
+      "date": "2026-11-14",
+      "theme": "The island and the sea",
+      "summary": "Built around the tide: the 9:15 sailing out, the 13:15 back, then the sea baths while the water is highest. The bookshop closes the trip.",
+      "lodging": "The Marram Inn",
+      "stops": [
+        {
+          "place": "sallow-island",
+          "arrive": "10:00",
+          "depart": "12:30",
+          "activity": "Chapel, the lighthouse path, lunch by the chapel",
+          "minutes": 150,
+          "note": "The lighthouse path is 50 minutes there and back; the chapel key is at the kiosk.",
+          "fixed": true,
+          "tip": "Sit on the left going out: the chapel side."
+        },
+        {
+          "place": "harbour-baths",
+          "arrive": "14:30",
+          "depart": "15:45",
+          "activity": "Heated pool, cold plunge, the sauna if it is open",
+          "minutes": 75,
+          "note": "Towels for hire; bring the swimsuits in the day bag.",
+          "tip": "Bring your own towel; the hire desk shuts at 15:00."
+        },
+        {
+          "place": "fennick",
+          "arrive": "16:15",
+          "depart": "17:15",
+          "activity": "The travel room upstairs",
+          "minutes": 60,
+          "note": "They post abroad, so buy heavy."
+        }
+      ],
+      "legs": [
+        {
+          "from": "lodging",
+          "to": "sallow-island",
+          "mode": "ferry",
+          "minutes": 40,
+          "distance_m": 5200,
+          "depart_at": "09:15",
+          "arrive_at": "09:55",
+          "line": "Sallow Island ferry, 09:15 sailing from Lantern Quay (10 min on foot from the inn)",
+          "maps_url": "https://maps.example.com/dir/?from=marram-inn&to=sallow-island"
+        },
+        {
+          "from": "sallow-island",
+          "to": "harbour-baths",
+          "mode": "ferry",
+          "minutes": 50,
+          "distance_m": 5600,
+          "depart_at": "13:15",
+          "arrive_at": "14:05",
+          "line": "13:15 sailing back, then 12 min on foot along the sea wall",
+          "maps_url": "https://maps.example.com/dir/?from=sallow-island&to=harbour-baths"
+        },
+        {
+          "from": "harbour-baths",
+          "to": "fennick",
+          "mode": "walk",
+          "minutes": 12,
+          "distance_m": 850,
+          "depart_at": "15:55",
+          "arrive_at": "16:07",
+          "maps_url": "https://maps.example.com/dir/?from=harbour-baths&to=fennick&mode=walking"
+        },
+        {
+          "from": "fennick",
+          "to": "lodging",
+          "mode": "walk",
+          "minutes": 7,
+          "distance_m": 500,
+          "depart_at": "17:15",
+          "arrive_at": "17:22",
+          "maps_url": "https://maps.example.com/dir/?from=fennick&to=marram-inn&mode=walking"
+        },
+        {
+          "from": "lodging",
+          "to": "day-end",
+          "mode": "walk",
+          "minutes": 25,
+          "distance_m": 1900,
+          "depart_at": "17:55",
+          "arrive_at": "18:20"
+        }
+      ],
+      "meals": [
+        {
+          "kind": "breakfast",
+          "start": "07:45",
+          "end": "08:30",
+          "name": "The Marram Inn, back room",
+          "note": "Early, to make the sailing."
+        },
+        {
+          "kind": "lunch",
+          "start": "12:30",
+          "end": "13:05",
+          "name": "Island kiosk by the chapel",
+          "note": "Cash only; crab rolls and tea."
+        }
+      ],
+      "free": [
+        {
+          "start": "17:22",
+          "end": "17:55",
+          "title": "Last half hour",
+          "note": "Bags from reception; the drying room is off the back stairs.",
+          "options": [
+            {
+              "name": "Cinder Lane Bakery",
+              "place": "cinder-lane",
+              "km": 0.2,
+              "walk_min": 3,
+              "open": "open until 18:00",
+              "note": "Something for the train."
+            }
+          ]
+        }
+      ],
+      "warnings": [
+        {
+          "severity": "alert",
+          "text": "The ferry does not sail in a strong easterly. The office confirms by 08:00 on the day — the rainy-day list has the fallback.",
+          "place": "sallow-island"
+        },
+        {
+          "severity": "info",
+          "text": "Sea baths: last entry 16:30 in November; the sauna runs Saturdays only.",
+          "place": "harbour-baths"
+        }
+      ],
+      "verified_on": "2026-10-01",
+      "end": {
+        "name": "Northgate Halt",
+        "time": "18:42",
+        "fixed": true,
+        "note": "Platform 2, the 18:42 to Vellmoor Junction."
+      },
+      "sunset": "16:38",
+      "checklist": {
+        "must": [
+          "09:15 ferry to Sallow Island (timed)",
+          "11:00 check out of the inn",
+          "18:42 train from Northgate Halt"
+        ],
+        "carry": [
+          "Ferry return ticket",
+          "Rail pass on your phone",
+          "Swimsuit and towel",
+          "Cash for the island kiosk"
+        ],
+        "constraints": [
+          "Last ferry back 13:15",
+          "Bags at reception until 18:00"
+        ]
+      },
+      "prep": {
+        "night_before": [
+          "Pack everything but the day bag",
+          "Charge the phone: the rail pass lives on it"
+        ],
+        "steps": [
+          {
+            "time": "07:30",
+            "text": "Wake"
+          },
+          {
+            "time": "07:45",
+            "text": "Breakfast at the inn"
+          },
+          {
+            "time": "08:45",
+            "text": "Check out; bags at reception"
+          },
+          {
+            "time": "09:00",
+            "text": "Leave for the pier (5 min walk)"
+          }
+        ]
+      },
+      "departure": {
+        "to": "Northgate Halt",
+        "at": "18:42",
+        "by": "17:55",
+        "scenarios": [
+          {
+            "label": "Planned: walk the harbour front",
+            "steps": [
+              "Collect bags at reception by 17:50",
+              "Walk the harbour front, 25 min",
+              "Platform 2, the 18:42"
+            ],
+            "spare_min": 22
+          },
+          {
+            "label": "Latest safe: tram 4",
+            "steps": [
+              "Leave the inn by 18:12",
+              "Tram 4 from Gull Steps, 12 min",
+              "Platform 2, the 18:42"
+            ],
+            "spare_min": 15
+          }
+        ],
+        "fallbacks": [
+          "19:42 to Vellmoor Junction (same ticket)",
+          "21:05 last train, change at Orrin"
+        ],
+        "note": "Tickets are on the rail pass; no seat booking needed."
+      }
+    }
+  ],
+  "places": {
+    "tide-museum": {
+      "name": "Museum of Tide & Trade",
+      "category": "Museum",
+      "tagline": "Three floors on how a town lived by the sea.",
+      "address": "1 Chart House Row, Vellmoor",
+      "lat": 47.3168,
+      "lng": -22.8089,
+      "hours": [
+        "Monday: Closed",
+        "Tuesday: 9:30 AM – 5:00 PM",
+        "Wednesday: 9:30 AM – 5:00 PM",
+        "Thursday: 9:30 AM – 5:00 PM",
+        "Friday: 9:30 AM – 5:00 PM",
+        "Saturday: 10:00 AM – 6:00 PM",
+        "Sunday: 10:00 AM – 4:00 PM"
+      ],
+      "hours_today": "9:30 AM – 5:00 PM",
+      "closed_days": [
+        "Monday"
+      ],
+      "rating": 4.7,
+      "review_count": 1284,
+      "price_level": 2,
+      "website": "https://tide-museum.example.com/",
+      "maps_url": "https://maps.example.com/place/tide-museum",
+      "place_id": "sample-place-tide-museum",
+      "business_status": "OPERATIONAL",
+      "editorial": "Working tide engine, ship models and a chart room, in a former customs house on the quay.",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "You said the last museum you loved was the one with a working machine in it. This one has a tide engine the size of a room, and it runs on the hour.",
+        "what_to_do": "Top floor first (the chart room, quiet before eleven), then down to the engine for the 10:00 run. The ship models on the ground floor are skippable unless it is raining.",
+        "what_to_skip": "The temporary exhibition on the stairs — a fee on top and twenty minutes you will want at the quay.",
+        "best_time": "Opening time on a weekday. By noon the school groups arrive.",
+        "tickets": "Timed entry, booked for 9:30. The ticket is good for a second visit within seven days — useful if the island day is rained off.",
+        "accessibility": "Lift to every floor; the engine gallery has a rail and benches.",
+        "pairings": [
+          "lantern-quay",
+          "quillet"
+        ]
+      },
+      "reviews": [
+        {
+          "author": "Marit Olsén",
+          "author_url": "https://maps.example.com/contrib/marit-olsen",
+          "rating": 5,
+          "text": "Went for the tide engine and stayed two hours. Ask the attendant about the 1911 flood marks — they are not on any sign.",
+          "when": "2 months ago",
+          "url": "https://maps.example.com/reviews/tide-museum/1"
+        }
+      ],
+      "sources": [
+        {
+          "title": "Museum of Tide & Trade — plan your visit",
+          "url": "https://tide-museum.example.com/visit",
+          "accessed": "2026-09-29",
+          "supports": "visit length, timed entry, lift"
+        },
+        {
+          "title": "Ostenia Weekly — 'An hour with the tide engine'",
+          "url": "https://weekly.example.org/tide-engine",
+          "accessed": "2026-09-29",
+          "supports": "visit length, best time"
+        }
+      ],
+      "facts": {
+        "checked": "2026-10-01",
+        "visit": "about 60–90 min",
+        "last_entry": "4:00 pm",
+        "closed": "Mondays",
+        "booking": "Book online the day before",
+        "price": "€12 adult · includes the tide tower",
+        "payment": "Card only",
+        "gate": "North door",
+        "sources": [
+          {
+            "title": "Tide Museum — visit",
+            "url": "https://tide-museum.example.com/visit",
+            "accessed": "2026-10-01"
+          }
+        ]
+      },
+      "flags": [
+        "local_favourite"
+      ]
+    },
+    "lantern-quay": {
+      "name": "Lantern Quay Market",
+      "category": "Market",
+      "tagline": "Fish, cheese and whatever came off the boats.",
+      "address": "Lantern Quay, Vellmoor",
+      "lat": 47.3151,
+      "lng": -22.8041,
+      "hours": [
+        "Monday: 6:00 AM – 1:00 PM",
+        "Tuesday: 8:00 AM – 2:00 PM",
+        "Wednesday: 8:00 AM – 2:00 PM",
+        "Thursday: 8:00 AM – 2:00 PM",
+        "Friday: 8:00 AM – 2:00 PM",
+        "Saturday: 8:00 AM – 3:00 PM",
+        "Sunday: Closed"
+      ],
+      "hours_today": "8:00 AM – 2:00 PM",
+      "closed_days": [
+        "Sunday"
+      ],
+      "rating": 4.5,
+      "review_count": 2310,
+      "website": "https://lanternquay.example.com/",
+      "maps_url": "https://maps.example.com/place/lantern-quay",
+      "place_id": "sample-place-lantern-quay",
+      "business_status": "OPERATIONAL",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "Half of what you asked for was 'somewhere to eat standing up'. This is it.",
+        "what_to_do": "Walk the length once without buying, then back to the smoked-fish stalls at the east end. The cheese man (blue awning) closes at one.",
+        "what_to_skip": "The souvenir row by the car park.",
+        "best_time": "Before noon; the fish is gone by two.",
+        "accessibility": "Flat, cobbled; wide aisles.",
+        "pairings": [
+          "quillet",
+          "tide-museum"
+        ]
+      },
+      "sources": [
+        {
+          "title": "Lantern Quay traders' association — stall list",
+          "url": "https://lanternquay.example.com/stalls",
+          "accessed": "2026-09-29",
+          "supports": "stall hours"
+        }
+      ]
+    },
+    "quillet": {
+      "name": "Quillet's",
+      "category": "Lunch",
+      "tagline": "Soup, bread, one fish dish, done by two.",
+      "address": "9 Tanners' Court, Vellmoor",
+      "lat": 47.3141,
+      "lng": -22.8072,
+      "hours": [
+        "Monday: Closed",
+        "Tuesday: 11:30 AM – 2:30 PM",
+        "Wednesday: 11:30 AM – 2:30 PM",
+        "Thursday: 11:30 AM – 2:30 PM",
+        "Friday: 11:30 AM – 2:30 PM",
+        "Saturday: 11:30 AM – 3:00 PM",
+        "Sunday: Closed"
+      ],
+      "hours_today": "11:30 AM – 2:30 PM",
+      "closed_days": [
+        "Monday",
+        "Sunday"
+      ],
+      "rating": 4.6,
+      "review_count": 412,
+      "price_level": 2,
+      "maps_url": "https://maps.example.com/place/quillets",
+      "place_id": "sample-place-quillet",
+      "business_status": "OPERATIONAL",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "Vegetable-led, quiet, no music — the three things you listed.",
+        "what_to_do": "Whatever the soup is. Share the fish.",
+        "best_time": "Before one; no bookings."
+      }
+    },
+    "saint-aurel": {
+      "name": "Saint Aurel's Belfry",
+      "category": "Viewpoint",
+      "tagline": "212 steps to the best view of the harbour.",
+      "address": "Aurel Square, Vellmoor",
+      "lat": 47.3133,
+      "lng": -22.8098,
+      "hours": [
+        "Monday: 10:00 AM – 4:00 PM",
+        "Tuesday: 10:00 AM – 4:00 PM",
+        "Wednesday: 10:00 AM – 4:00 PM",
+        "Thursday: 10:00 AM – 4:00 PM",
+        "Friday: 10:00 AM – 4:00 PM",
+        "Saturday: 10:00 AM – 5:00 PM",
+        "Sunday: 12:00 – 4:00 PM"
+      ],
+      "hours_today": "10:00 AM – 4:00 PM",
+      "rating": 4.8,
+      "review_count": 3105,
+      "price_level": 1,
+      "website": "https://saint-aurel.example.org/belfry",
+      "maps_url": "https://maps.example.com/place/saint-aurel-belfry",
+      "place_id": "sample-place-saint-aurel",
+      "business_status": "OPERATIONAL",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "You climbed the tower in every city on the last trip. This is the one here.",
+        "what_to_do": "Pay at the door, climb to the bell loft (160 steps), decide there whether to do the last flight. Ten minutes at the top is enough; the walk down is the view.",
+        "what_to_skip": "The audio guide.",
+        "best_time": "Mid-afternoon in November — the sun is low over the islands by three.",
+        "tickets": "Cash or card at the door; no booking.",
+        "accessibility": "Steps only; the loft has a bench."
+      },
+      "sources": [
+        {
+          "title": "Saint Aurel's — belfry opening and safety notes",
+          "url": "https://saint-aurel.example.org/belfry/visiting",
+          "accessed": "2026-09-30",
+          "supports": "steps, hours, last flight"
+        }
+      ]
+    },
+    "rookwell": {
+      "name": "Rookwell Old Town walk",
+      "category": "Walk",
+      "tagline": "Steps, courts and almshouses — a loop of about 2 km.",
+      "address": "Start at Gull Steps, Rookwell, Vellmoor",
+      "lat": 47.3119,
+      "lng": -22.8121,
+      "rating": 4.6,
+      "review_count": 870,
+      "maps_url": "https://maps.example.com/place/rookwell-old-town",
+      "place_id": "sample-place-rookwell",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "No tickets, no queue, and it ends at your door.",
+        "what_to_do": "Gull Steps up, left along Tanners' Court, through the almshouse garden (gate is open until five), down Weaver's Lane to the sea wall, and back along it to the inn.",
+        "what_to_skip": "The 'historic' pub on Weaver's Lane — new in 2019.",
+        "best_time": "The last hour of daylight.",
+        "accessibility": "Steep steps at the start; the sea-wall half is flat.",
+        "pairings": [
+          "saint-aurel"
+        ]
+      },
+      "sources": [
+        {
+          "title": "Vellmoor Civic Society — Rookwell walk leaflet (PDF)",
+          "url": "https://civic.example.org/rookwell-walk.pdf",
+          "accessed": "2026-09-30",
+          "supports": "route, almshouse gate hours"
+        }
+      ]
+    },
+    "brine-house": {
+      "name": "The Brine House",
+      "category": "Dinner",
+      "tagline": "Fish from the quay, cooked plainly.",
+      "address": "22 Sea Wall, Vellmoor",
+      "lat": 47.3176,
+      "lng": -22.8023,
+      "hours": [
+        "Monday: Closed",
+        "Tuesday: Closed",
+        "Wednesday: 6:00 – 10:00 PM",
+        "Thursday: 6:00 – 10:00 PM",
+        "Friday: 6:00 – 11:00 PM",
+        "Saturday: 12:00 – 3:00 PM, 6:00 – 11:00 PM",
+        "Sunday: 12:00 – 4:00 PM"
+      ],
+      "hours_today": "6:00 – 10:00 PM",
+      "closed_days": [
+        "Monday",
+        "Tuesday"
+      ],
+      "rating": 4.4,
+      "review_count": 655,
+      "price_level": 3,
+      "website": "https://brinehouse.example.com/",
+      "maps_url": "https://maps.example.com/place/brine-house",
+      "place_id": "sample-place-brine-house",
+      "business_status": "OPERATIONAL",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "The one booking that was hard to get; it is the room, not just the food.",
+        "what_to_do": "Ask for the window table; order the day's fish and the burnt-butter potatoes.",
+        "tickets": "Booked, Thursday 19:00, two, under Sam.",
+        "best_time": "First sitting — quieter."
+      },
+      "facts": {
+        "checked": "2026-06-01",
+        "stale": true,
+        "price": "€30 set menu",
+        "menu": "Fits vegetarian",
+        "menu_fits": "yes",
+        "menu_checked": "2026-06-01",
+        "menu_stale": true
+      }
+    },
+    "cinder-lane": {
+      "name": "Cinder Lane Bakery",
+      "category": "Coffee",
+      "tagline": "Cardamom buns and a proper flat white.",
+      "address": "3 Cinder Lane, Vellmoor",
+      "lat": 47.3128,
+      "lng": -22.8151,
+      "hours": [
+        "Monday: 7:00 AM – 2:00 PM",
+        "Tuesday: 7:00 AM – 2:00 PM",
+        "Wednesday: 7:00 AM – 2:00 PM",
+        "Thursday: 7:00 AM – 2:00 PM",
+        "Friday: 7:00 AM – 2:00 PM",
+        "Saturday: 8:00 AM – 2:00 PM",
+        "Sunday: Closed"
+      ],
+      "hours_today": "7:00 AM – 2:00 PM",
+      "rating": 4.8,
+      "review_count": 1190,
+      "price_level": 1,
+      "maps_url": "https://maps.example.com/place/cinder-lane-bakery",
+      "place_id": "sample-place-cinder-lane",
+      "business_status": "OPERATIONAL",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "Your kind of breakfast: good coffee, one good thing, no fuss.",
+        "what_to_do": "Cardamom bun, flat white, the bench outside if it is dry.",
+        "best_time": "Before ten — the buns go."
+      }
+    },
+    "hollin-terraces": {
+      "name": "Hollin Botanical Terraces",
+      "category": "Gardens",
+      "tagline": "Seven terraces up the hill, a glasshouse at the top.",
+      "address": "Hollin Gate, Vellmoor",
+      "lat": 47.3312,
+      "lng": -22.7889,
+      "hours": [
+        "Monday: 9:00 AM – 4:30 PM",
+        "Tuesday: 9:00 AM – 4:30 PM",
+        "Wednesday: 9:00 AM – 4:30 PM",
+        "Thursday: 9:00 AM – 4:30 PM",
+        "Friday: 9:00 AM – 4:30 PM",
+        "Saturday: 9:00 AM – 5:00 PM",
+        "Sunday: 9:00 AM – 5:00 PM"
+      ],
+      "hours_today": "9:00 AM – 4:30 PM",
+      "rating": 4.7,
+      "review_count": 2044,
+      "price_level": 2,
+      "website": "https://hollin-terraces.example.org/",
+      "maps_url": "https://maps.example.com/place/hollin-terraces",
+      "place_id": "sample-place-hollin",
+      "business_status": "OPERATIONAL",
+      "editorial": "Hillside botanical garden with a Victorian glasshouse, a fern ravine and views over the harbour.",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "Gardens were the thing you rated highest after the last trip, and this one is on a hill, so it is also the view.",
+        "what_to_do": "Tram to the top gate, walk the terraces downhill: fern ravine, the winter borders (they are the point in November), glasshouse last when it has warmed.",
+        "what_to_skip": "The children's trail and the gift shop at the bottom gate.",
+        "best_time": "Opening time; the terraces are in sun until about one.",
+        "tickets": "At the gate, card. The day pass does not include it.",
+        "accessibility": "A buggy runs the main path every half hour; the ravine path is steps.",
+        "food": "Terrace Café on terrace three — soup, tarts, decent coffee."
+      },
+      "sources": [
+        {
+          "title": "Hollin Terraces — what's in flower in November",
+          "url": "https://hollin-terraces.example.org/november",
+          "accessed": "2026-09-29",
+          "supports": "winter borders, glasshouse timing"
+        },
+        {
+          "title": "Ostenia Rail & Tram — Tram 4 timetable",
+          "url": "https://transit.example.org/tram-4",
+          "accessed": "2026-09-30",
+          "supports": "tram frequency"
+        }
+      ]
+    },
+    "glass-foundry": {
+      "name": "The Glass Foundry",
+      "category": "Workshop",
+      "tagline": "A working hot shop; you blow a glass of your own.",
+      "address": "Foundry Yard, Hollin Road, Vellmoor",
+      "lat": 47.3256,
+      "lng": -22.7951,
+      "hours": [
+        "Monday: Closed",
+        "Tuesday: 10:00 AM – 5:00 PM",
+        "Wednesday: 10:00 AM – 5:00 PM",
+        "Thursday: 10:00 AM – 5:00 PM",
+        "Friday: 10:00 AM – 5:00 PM",
+        "Saturday: 10:00 AM – 5:00 PM",
+        "Sunday: Closed"
+      ],
+      "hours_today": "10:00 AM – 5:00 PM",
+      "closed_days": [
+        "Monday",
+        "Sunday"
+      ],
+      "rating": 4.9,
+      "review_count": 388,
+      "price_level": 3,
+      "website": "https://glassfoundry.example.com/workshops",
+      "maps_url": "https://maps.example.com/place/glass-foundry",
+      "place_id": "sample-place-foundry",
+      "business_status": "OPERATIONAL",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "You wanted one thing to make, not just see. The 45-minute slot makes a tumbler you collect the next morning — or they post it.",
+        "what_to_do": "Watch the 13:45 demonstration from the gallery, then your slot at 14:15. Collect Saturday after the baths, or pay the postage.",
+        "tickets": "Workshop booked for 14:15; the demonstration is free with it.",
+        "accessibility": "Ground floor, level access; the hot shop is loud and warm.",
+        "pairings": [
+          "hollin-terraces"
+        ]
+      },
+      "reviews": [
+        {
+          "author": "Tobias Rennick",
+          "author_url": "https://maps.example.com/contrib/tobias-rennick",
+          "rating": 5,
+          "text": "Forty-five minutes, two instructors, and I came away with something I actually use. Book ahead — they take four people a slot.",
+          "when": "a month ago",
+          "url": "https://maps.example.com/reviews/glass-foundry/7"
+        }
+      ],
+      "sources": [
+        {
+          "title": "The Glass Foundry — workshop FAQ",
+          "url": "https://glassfoundry.example.com/faq",
+          "accessed": "2026-09-29",
+          "supports": "slot length, collection, dress rules"
+        }
+      ]
+    },
+    "mirrowdale": {
+      "name": "Mirrowdale Viewpoint",
+      "category": "Viewpoint",
+      "tagline": "The whole coast from one bench.",
+      "address": "Mirrowdale Top, Vellmoor",
+      "lat": 47.3401,
+      "lng": -22.8302,
+      "rating": 4.8,
+      "review_count": 1522,
+      "maps_url": "https://maps.example.com/place/mirrowdale-viewpoint",
+      "place_id": "sample-place-mirrowdale",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "The late-light place. On a clear afternoon you can see the island you sail to on Saturday.",
+        "what_to_do": "Bench first, then the ridge loop (25 minutes, waymarked, muddy after rain). Back on the 16:50 bus.",
+        "best_time": "An hour before sunset (16:48 in mid-November).",
+        "accessibility": "The viewpoint is a short level path from the bus stop; the loop is not.",
+        "pairings": [
+          "glass-foundry"
+        ]
+      },
+      "sources": [
+        {
+          "title": "Ostenia Rail & Tram — Bus 11 timetable",
+          "url": "https://transit.example.org/bus-11",
+          "accessed": "2026-09-30",
+          "supports": "bus times"
+        }
+      ]
+    },
+    "sallow-island": {
+      "name": "Sallow Island",
+      "category": "Island",
+      "tagline": "A chapel, a lighthouse path and a kiosk — forty minutes out.",
+      "address": "Sallow Island, off Vellmoor",
+      "lat": 47.2862,
+      "lng": -22.8611,
+      "hours": [
+        "Monday: Closed",
+        "Tuesday: Closed",
+        "Wednesday: Sailings 9:15, 13:15",
+        "Thursday: Sailings 9:15, 13:15",
+        "Friday: Sailings 9:15, 13:15",
+        "Saturday: Sailings 9:15, 11:00, 13:15, 15:30",
+        "Sunday: Sailings 11:00, 15:30"
+      ],
+      "hours_today": "Sailings 9:15, 11:00, 13:15, 15:30",
+      "closed_days": [
+        "Monday",
+        "Tuesday"
+      ],
+      "rating": 4.7,
+      "review_count": 940,
+      "website": "https://sallow-ferry.example.com/",
+      "maps_url": "https://maps.example.com/place/sallow-island",
+      "place_id": "sample-place-sallow",
+      "business_status": "OPERATIONAL",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "You asked for one day that felt like being away from the city. This is the furthest the plan goes.",
+        "what_to_do": "Chapel first (key at the kiosk), the lighthouse path out and back (50 minutes), crab roll at the kiosk, the 13:15 home.",
+        "what_to_skip": "The 'seal trip' touts on the pier — the seals are on the rocks you walk past anyway.",
+        "best_time": "The morning sailing; the afternoon one is the busy one on Saturdays.",
+        "tickets": "Buy at the kiosk on Lantern Quay once the 08:00 confirmation is up.",
+        "accessibility": "The pier has a ramp; the lighthouse path is rough and not for wheels."
+      },
+      "sources": [
+        {
+          "title": "Sallow Island ferry — November sailings and weather policy",
+          "url": "https://sallow-ferry.example.com/sailings",
+          "accessed": "2026-09-30",
+          "supports": "sailing times, cancellation rule"
+        },
+        {
+          "title": "Ostenia Weekly — 'A day on Sallow'",
+          "url": "https://weekly.example.org/sallow-island",
+          "accessed": "2026-09-29",
+          "supports": "path length, chapel key"
+        }
+      ]
+    },
+    "harbour-baths": {
+      "name": "Harbour Baths",
+      "category": "Sea baths",
+      "tagline": "A heated sea-water pool on the quay, and a cold one.",
+      "address": "Sea Wall East, Vellmoor",
+      "lat": 47.3184,
+      "lng": -22.8008,
+      "hours": [
+        "Monday: 7:00 AM – 7:00 PM",
+        "Tuesday: 7:00 AM – 7:00 PM",
+        "Wednesday: 7:00 AM – 7:00 PM",
+        "Thursday: 7:00 AM – 7:00 PM",
+        "Friday: 7:00 AM – 7:00 PM",
+        "Saturday: 8:00 AM – 5:30 PM",
+        "Sunday: 8:00 AM – 5:30 PM"
+      ],
+      "hours_today": "8:00 AM – 5:30 PM",
+      "rating": 4.6,
+      "review_count": 1731,
+      "price_level": 2,
+      "website": "https://harbourbaths.example.com/",
+      "maps_url": "https://maps.example.com/place/harbour-baths",
+      "place_id": "sample-place-baths",
+      "business_status": "OPERATIONAL",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "A swim was on the list every time; this is the one that works in November.",
+        "what_to_do": "Heated pool, then the cold plunge if you dare, then the sauna (Saturdays). Seventy-five minutes is plenty.",
+        "tickets": "Walk in; towels for hire; lockers take a coin you get back.",
+        "best_time": "Early afternoon on Saturday, when the water is highest and the morning swimmers have gone.",
+        "accessibility": "Pool hoist available; ask at the desk.",
+        "pairings": [
+          "fennick",
+          "brine-house"
+        ]
+      },
+      "reviews": [
+        {
+          "author": "Ines Varga",
+          "author_url": "https://maps.example.com/contrib/ines-varga",
+          "rating": 4,
+          "text": "Warm pool, cold sea, hot sauna — in that order. Weekends get busy after three.",
+          "when": "3 weeks ago",
+          "url": "https://maps.example.com/reviews/harbour-baths/12"
+        }
+      ]
+    },
+    "fennick": {
+      "name": "Fennick & Daughters",
+      "category": "Bookshop",
+      "tagline": "Three floors; the travel room is at the top.",
+      "address": "17 Weaver's Lane, Vellmoor",
+      "lat": 47.3137,
+      "lng": -22.8109,
+      "hours": [
+        "Monday: 10:00 AM – 6:00 PM",
+        "Tuesday: 10:00 AM – 6:00 PM",
+        "Wednesday: 10:00 AM – 6:00 PM",
+        "Thursday: 10:00 AM – 6:00 PM",
+        "Friday: 10:00 AM – 7:00 PM",
+        "Saturday: 10:00 AM – 6:00 PM",
+        "Sunday: 12:00 – 5:00 PM"
+      ],
+      "hours_today": "10:00 AM – 6:00 PM",
+      "rating": 4.9,
+      "review_count": 503,
+      "website": "https://fennick.example.com/",
+      "maps_url": "https://maps.example.com/place/fennick-and-daughters",
+      "place_id": "sample-place-fennick",
+      "business_status": "OPERATIONAL",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "Every trip ends in a bookshop. This is the good one.",
+        "what_to_do": "Travel room upstairs; the local-history shelf by the window. They post abroad.",
+        "best_time": "Late afternoon, when the day is done."
+      }
+    },
+    "corran-arcade": {
+      "name": "Corran Arcade",
+      "category": "Covered market",
+      "tagline": "A glass-roofed arcade of makers' shops, across the river.",
+      "address": "Corran Bridge, Vellmoor",
+      "lat": 47.3058,
+      "lng": -22.7792,
+      "hours": [
+        "Monday: Closed",
+        "Tuesday: 10:00 AM – 5:00 PM",
+        "Wednesday: 10:00 AM – 5:00 PM",
+        "Thursday: 10:00 AM – 5:00 PM",
+        "Friday: 10:00 AM – 5:00 PM",
+        "Saturday: 10:00 AM – 5:00 PM",
+        "Sunday: 11:00 AM – 4:00 PM"
+      ],
+      "closed_days": [
+        "Monday"
+      ],
+      "rating": 4.5,
+      "review_count": 760,
+      "maps_url": "https://maps.example.com/place/corran-arcade",
+      "place_id": "sample-place-corran",
+      "business_status": "OPERATIONAL",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "Makers' shops under glass — a dry half day when the weather turns."
+      }
+    },
+    "ninefold-steps": {
+      "name": "The Ninefold Steps",
+      "category": "Landmark",
+      "tagline": "Nine flights of stone from the river to the old walls.",
+      "address": "Ninefold Lane, Vellmoor",
+      "lat": 47.3095,
+      "lng": -22.8012,
+      "rating": 4.4,
+      "review_count": 299,
+      "maps_url": "https://maps.example.com/place/ninefold-steps",
+      "place_id": "sample-place-ninefold",
+      "business_status": "CLOSED_TEMPORARILY",
+      "fetched_on": "2026-10-01",
+      "note": {
+        "why_you": "The classic walk up; closed for repairs this month."
+      }
+    }
+  },
+  "later": [
+    {
+      "name": "Next time",
+      "description": "Researched and liked, but they did not fit three days without rushing.",
+      "items": [
+        {
+          "place": "corran-arcade",
+          "reason": "Too far from the day-2 cluster; needs a half day of its own."
+        },
+        {
+          "place": "ninefold-steps",
+          "reason": "Closed for repairs until December."
+        },
+        {
+          "name": "The Monday fish auction at Lantern Quay",
+          "reason": "Mondays only, 6:00–7:30 — you leave on the Saturday."
+        },
+        {
+          "name": "Vellmoor Lantern Walk (first Friday of the month)",
+          "reason": "Wrong week; December's is the big one."
+        }
+      ]
+    },
+    {
+      "name": "Rainy-day options",
+      "description": "Each swaps straight into a day without re-planning the rest.",
+      "items": [
+        {
+          "place": "corran-arcade",
+          "reason": "Covered; swaps for the Mirrowdale viewpoint on day 2."
+        },
+        {
+          "name": "Tide Museum, second visit (chart-room talk Saturdays 11:00)",
+          "reason": "Swaps for the island if the ferry is cancelled; same ticket is valid for seven days."
+        },
+        {
+          "name": "The Brine House lunch sitting",
+          "reason": "Indoor fallback for the island kiosk."
+        }
+      ]
+    },
+    {
+      "name": "Dinner ideas for Friday",
+      "items": [
+        {
+          "name": "Hollowell's, Cinder Lane",
+          "reason": "Fish, no bookings — go before 18:30.",
+          "note": "Planned for Saturday; move it if Friday is wet."
+        },
+        {
+          "name": "Tanners' Court kitchen",
+          "reason": "Quiet, vegetable-led, books out Fridays — call in the morning."
+        }
+      ]
+    }
+  ],
+  "practical": [
+    {
+      "title": "Getting around",
+      "items": [
+        {
+          "label": "Day pass",
+          "text": "Tram and bus, 24 hours from first use, bought on the tram (card). Covers both bus 11 rides on Friday."
+        },
+        {
+          "label": "Ferry",
+          "text": "Sallow Island ferry from Lantern Quay; buy at the kiosk, cash or card. Sailings follow the tide — the November table is in the sources."
+        },
+        {
+          "label": "Walking",
+          "text": "Everything in the old town is on steps or cobbles; the sea wall is flat and lit until midnight."
+        }
+      ]
+    },
+    {
+      "title": "Money and tickets",
+      "items": [
+        {
+          "label": "Currency",
+          "text": "Ostenian crown. Cards almost everywhere; the island kiosk and the market stalls want cash."
+        },
+        {
+          "label": "Booked already",
+          "text": "Tide Museum timed entry (Thu 9:30), Glass Foundry workshop (Fri 14:15), The Brine House dinner (Thu 19:00)."
+        },
+        {
+          "label": "Not booked",
+          "text": "Harbour Baths (walk-in), ferry (buy on the day once the sailing is confirmed)."
+        }
+      ]
+    },
+    {
+      "title": "Weather in November",
+      "text": "Cool and changeable: 6–11 °C, wind off the sea most afternoons, light rain one day in three. A windproof layer matters more than an umbrella; the old town's lanes funnel the gusts."
+    },
+    {
+      "title": "If something goes wrong",
+      "items": [
+        {
+          "label": "Emergency",
+          "text": "Dial 118 for police, fire or ambulance anywhere in Ostenia."
+        },
+        {
+          "label": "Pharmacy",
+          "text": "Quay Street Pharmacy, open until 20:00 daily; the night rota is posted in its window."
+        },
+        {
+          "label": "The inn",
+          "text": "Front desk until 22:00; a night bell after that."
+        }
+      ]
+    },
+    {
+      "title": "A few words",
+      "items": [
+        {
+          "label": "Hello / thank you",
+          "text": "Hale / tenk"
+        },
+        {
+          "label": "The bill, please",
+          "text": "Rekna, tak"
+        },
+        {
+          "label": "High tide / low tide",
+          "text": "Flod / ebb — you will see both on the ferry board"
+        }
+      ]
+    },
+    {
+      "title": "Packing notes",
+      "text": "Swimsuits and a quick-dry towel for the baths; closed shoes for the foundry; a small cash float for the island; the museum ticket on your phone."
+    }
+  ],
+  "attribution": {
+    "generator": "Tour Guide · brochure-build (sample data)",
+    "sources": [
+      {
+        "title": "Vellmoor tide tables, November",
+        "url": "https://tides.example.com/vellmoor/2026-11",
+        "accessed": "2026-10-01",
+        "supports": "ferry and sea-baths timing"
+      },
+      {
+        "title": "Ostenia Rail & Tram — fares and passes",
+        "url": "https://transit.example.org/passes",
+        "accessed": "2026-10-01",
+        "supports": "day-pass price and validity"
+      },
+      {
+        "title": "Vellmoor Visitor Office — November opening times",
+        "url": "https://visit.example.com/vellmoor/opening-times",
+        "accessed": "2026-09-30",
+        "supports": "seasonal hours cross-check"
+      }
+    ],
+    "note": "Opening hours, ratings and review counts were read from Google Maps on the dates shown; everything else comes from the sources listed. Check anything that matters on the morning."
+  },
+  "season": {
+    "checked": "2026-10-02",
+    "lead": "Late autumn colour on the terraces.",
+    "weather": {
+      "text": "Cool and bright, with sea fog some mornings.",
+      "high_c": 12,
+      "low_c": 6,
+      "rain_days": 11
+    },
+    "bloom": [
+      {
+        "label": "Autumn leaves",
+        "from": "2026-11-01",
+        "to": "2026-11-20",
+        "status": "peak",
+        "note": "Best on the upper terraces.",
+        "url": "https://gardens.example.com/leaves"
+      }
+    ],
+    "events": [
+      {
+        "name": "Harbour lights",
+        "kind": "light_up",
+        "from": "2026-11-10",
+        "to": "2026-11-15",
+        "start": "17:00",
+        "end": "21:00",
+        "area": "Sea wall",
+        "url": "https://events.example.org/lights"
+      },
+      {
+        "name": "Foundry open night",
+        "kind": "special_opening",
+        "from": "2026-11-13",
+        "to": "2026-11-13",
+        "place": "glass-foundry",
+        "note": "Glass blowing until late."
+      }
+    ],
+    "sources": [
+      {
+        "title": "Coast weather",
+        "url": "https://weather.example.org/coast",
+        "accessed": "2026-10-02"
+      }
+    ]
+  }
+}
