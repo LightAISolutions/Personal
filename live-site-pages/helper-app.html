@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.19w">
+  <meta name="build-version" content="v01.20w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -238,7 +238,7 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.19w';
+    var APP_VERSION = 'v01.20w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'today', label: 'Today' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'compare', label: 'Compare' }, { id: 'facts', label: 'Facts' },
@@ -2589,6 +2589,22 @@
       if (typeof b.whatson_auto === 'boolean' || typeof b.lists_auto === 'boolean') view.appendChild(el('h3', { text: 'Automatic checks' }));
       if (typeof b.whatson_auto === 'boolean') view.appendChild(sw('What\'s on, weekly', 'Events on your coming trip dates, checked once a week.', b.whatson_auto, '/whatson auto on', '/whatson auto off'));
       if (typeof b.lists_auto === 'boolean') view.appendChild(sw('Saved lists', 'New Google Maps list exports are read on their own.', b.lists_auto, '/lists auto on', '/lists auto off'));
+      var dsp = b.display ? obj(b.display) : null;
+      if (dsp) {
+        var clock = dsp.clock === '12h' ? '12h' : '24h', temp = dsp.temp === 'c' || dsp.temp === 'f' ? dsp.temp : 'both';
+        var pick = function (label, val, cmd, cur) {
+          var t = el('button', { class: 'toggle', type: 'button', 'aria-pressed': val === cur ? 'true' : 'false', 'data-units': cmd, text: label });
+          t.addEventListener('click', function () { if (val !== cur) flip(cmd, t); });
+          return t;
+        };
+        view.appendChild(el('h3', { text: 'Display' }));
+        view.appendChild(el('div', { class: 'set', 'data-units-row': '1' }, [el('div', { class: 'grow' }, [el('div', { class: 'name', text: 'Brochures' }),
+          el('div', { class: 'meta', text: (clock === '12h' ? '12-hour' : '24-hour') + ' clock · ' + (temp === 'c' ? '°C' : temp === 'f' ? '°F' : '°C and °F') })])]));
+        view.appendChild(el('div', { class: 'set' }, [el('div', { class: 'grow' }, [el('div', { class: 'name', text: 'Clock' })]),
+          el('div', { class: 'row' }, [pick('24-hour', '24h', '/units 24h', clock), pick('12-hour', '12h', '/units 12h', clock)])]));
+        view.appendChild(el('div', { class: 'set' }, [el('div', { class: 'grow' }, [el('div', { class: 'name', text: 'Temperatures' })]),
+          el('div', { class: 'row' }, [pick('°C', 'c', '/units c', temp), pick('°F', 'f', '/units f', temp), pick('Both', 'both', '/units both', temp)])]));
+      }
       var pr = obj(b.profile);
       view.appendChild(el('h3', { text: 'Your profile' }));
       view.appendChild(el('div', { class: 'set' }, [el('div', { class: 'grow meta', text: pr.has === true ? 'Updated ' + str(pr.updated, 20) + (num(pr.dimensions) ? ' · ' + num(pr.dimensions) + ' things known' : '') : 'No interview answers yet' }),

@@ -53,7 +53,53 @@
         "lodging": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/lodging" } },
         "build_id": { "type": "string", "maxLength": 64 },
         "built_on": { "$ref": "#/$defs/date" },
-        "verified_on": { "$ref": "#/$defs/date" }
+        "verified_on": { "$ref": "#/$defs/date" },
+        "clock": { "type": "string", "enum": ["12h", "24h"], "description": "Contract C18: the clock every time in the brochure is shown in; absent = the locale's own clock." },
+        "temp": { "type": "string", "enum": ["c", "f", "both"], "description": "Contract C18: every temperature in °C (the default), °F, or both ('12 °C · 54 °F')." }
+      }
+    },
+    "line": { "type": "string", "maxLength": 160, "description": "Contract C18: a one-line text." },
+    "fixed": { "type": "boolean", "const": true, "description": "Contract C18: the time cannot slide (a booking, a timed entry, a train); printed bold with a small 'fixed' tag." },
+    "checklist": {
+      "type": "object", "additionalProperties": false,
+      "description": "Contract C18: 'Today's checklist', the first thing on the day after its header.",
+      "properties": {
+        "must": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/line" }, "description": "What must happen at a set time." },
+        "carry": { "type": "array", "maxItems": 8, "items": { "$ref": "#/$defs/line" }, "description": "What to have on you." },
+        "constraints": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/line" }, "description": "The limits that hold all day." }
+      }
+    },
+    "prep": {
+      "type": "object", "additionalProperties": false,
+      "description": "Contract C18: 'Night before · This morning', worked back from the first fixed time; step times in time order.",
+      "properties": {
+        "night_before": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/line" } },
+        "steps": { "type": "array", "maxItems": 6, "items": { "type": "object", "additionalProperties": false, "required": ["time", "text"], "properties": { "time": { "$ref": "#/$defs/time" }, "text": { "$ref": "#/$defs/line" } } } }
+      }
+    },
+    "departure": {
+      "type": "object", "additionalProperties": false, "required": ["to", "at"],
+      "description": "Contract C18: 'Getting out' at the end of a day that ends at a departure — `at` the departure time, `by` the leave-by time (by ≤ at).",
+      "properties": {
+        "to": { "$ref": "#/$defs/line" },
+        "at": { "$ref": "#/$defs/time" },
+        "by": { "$ref": "#/$defs/time" },
+        "scenarios": { "type": "array", "maxItems": 2, "items": { "type": "object", "additionalProperties": false, "required": ["label"], "properties": { "label": { "$ref": "#/$defs/line" }, "steps": { "type": "array", "maxItems": 5, "items": { "$ref": "#/$defs/line" } }, "spare_min": { "type": "integer", "minimum": 0, "maximum": 240 } } } },
+        "fallbacks": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/line" } },
+        "note": { "$ref": "#/$defs/line" }
+      }
+    },
+    "freeOption": {
+      "type": "object", "additionalProperties": false, "required": ["name"],
+      "description": "Contract C18: something near a free window.",
+      "properties": {
+        "name": { "$ref": "#/$defs/line" },
+        "place": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$", "description": "Key into `places`; linked to its card when it has one." },
+        "km": { "type": "number", "minimum": 0, "maximum": 100 },
+        "walk_min": { "type": "integer", "minimum": 0, "maximum": 120 },
+        "open": { "$ref": "#/$defs/line", "description": "Open status in the window, e.g. 'open until 18:00'." },
+        "note": { "$ref": "#/$defs/line" },
+        "url": { "$ref": "#/$defs/url" }
       }
     },
     "lodging": {
@@ -91,7 +137,10 @@
         "end": { "$ref": "#/$defs/dayPoint", "description": "Where and when the day really ends (a departure); legs name it `day-end`." },
         "bags": { "$ref": "#/$defs/bags" },
         "sunset": { "$ref": "#/$defs/time", "description": "Sunset at the night's lodging, in the trip's zone; opens the day's 'This evening' box." },
-        "extras": { "type": "array", "maxItems": 3, "items": { "$ref": "#/$defs/extra" }, "description": "Optional evening extras: season events near the route, and saved places for an early finish." }
+        "extras": { "type": "array", "maxItems": 3, "items": { "$ref": "#/$defs/extra" }, "description": "Optional evening extras: season events near the route, and saved places for an early finish." },
+        "checklist": { "$ref": "#/$defs/checklist" },
+        "prep": { "$ref": "#/$defs/prep" },
+        "departure": { "$ref": "#/$defs/departure" }
       }
     },
     "dayPoint": {
@@ -102,7 +151,8 @@
         "maps_url": { "$ref": "#/$defs/url" },
         "lat": { "type": "number", "minimum": -90, "maximum": 90 },
         "lng": { "type": "number", "minimum": -180, "maximum": 180 },
-        "note": { "$ref": "#/$defs/short" }
+        "note": { "$ref": "#/$defs/short" },
+        "fixed": { "$ref": "#/$defs/fixed" }
       }
     },
     "bags": {
@@ -144,7 +194,9 @@
         "minutes_source": { "type": "string", "enum": ["official", "research", "estimate"], "description": "Where the visit length comes from: the place's own site, other research, or a category default." },
         "crowd_slot": { "type": "string", "enum": ["opening", "late"], "description": "A busy place put at opening or late on purpose; shown as a crowd note." },
         "booking_line": { "$ref": "#/$defs/short", "description": "The place's booking rule in one line (shown when the stop is not already booked)." },
-        "visited": { "type": "boolean", "const": true, "description": "Contract C12: the stop was already done when the day was re-planned from the current time; shown as done (a tick, muted), still in its place. Visited stops come first." }
+        "visited": { "type": "boolean", "const": true, "description": "Contract C12: the stop was already done when the day was re-planned from the current time; shown as done (a tick, muted), still in its place. Visited stops come first." },
+        "fixed": { "$ref": "#/$defs/fixed" },
+        "tip": { "$ref": "#/$defs/line", "description": "Contract C18: a field note under the row ('Cash only', 'Enter by the north gate')." }
       }
     },
     "leg": {
@@ -178,12 +230,18 @@
         "name": { "$ref": "#/$defs/short", "description": "Free-text venue or suggestion when there is no place key." },
         "note": { "$ref": "#/$defs/short" },
         "maps_url": { "$ref": "#/$defs/url" },
-        "booking": { "$ref": "#/$defs/short", "description": "The meal's booking, or the place's booking rule, in one line." }
+        "booking": { "$ref": "#/$defs/short", "description": "The meal's booking, or the place's booking rule, in one line." },
+        "fixed": { "$ref": "#/$defs/fixed" },
+        "tip": { "$ref": "#/$defs/line", "description": "Contract C18: a field note under the row." }
       }
     },
     "freeBlock": {
       "type": "object", "additionalProperties": false, "required": ["start", "end"],
-      "properties": { "start": { "$ref": "#/$defs/time" }, "end": { "$ref": "#/$defs/time" }, "note": { "$ref": "#/$defs/short" } }
+      "properties": {
+        "start": { "$ref": "#/$defs/time" }, "end": { "$ref": "#/$defs/time" }, "note": { "$ref": "#/$defs/short" },
+        "title": { "type": "string", "maxLength": 60, "description": "Contract C18: the window's name." },
+        "options": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/freeOption" }, "description": "Contract C18: what is nearby, nearest first." }
+      }
     },
     "alternatives": {
       "type": "object", "additionalProperties": false, "required": ["items"],

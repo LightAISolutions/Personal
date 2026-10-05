@@ -4,7 +4,7 @@
  * otherwise the drawn route sketch), the night's lodging, any alternatives (e.g. "If it rains") and any warnings.
  */
 import { esc, attr, join, clip } from '../escape.mjs';
-import { longDate, shortDate, duration, distance } from '../format.mjs';
+import { longDate, shortDate, duration, distance, parseTime } from '../format.mjs';
 import { routeSketch, sketchLegend } from '../sketch.mjs';
 import { daySequence, mapFigure, mapCredit } from '../mapframe.mjs';
 import { icon, MODE_LABEL, MEAL_ICON } from '../icons.mjs';
@@ -41,11 +41,14 @@ export const DONE_TAG = '<span class="chip tag-done">✓ visited</span>';
 function stopRow(t, locale) {
   const name = `<h3 class="ti-name">${esc(t.place.name)}${t.booked ? `<span class="chip hue">booked</span>` : ''}${favTag(t.place)}${t.visited === true ? DONE_TAG : ''}</h3>`;
   const meta = metaLine([t.place.category ? esc(t.place.category) : '', visitText(t), hoursFrag(t), t.last_entry ? `last entry ${esc(clockPlain(t.last_entry, locale))}` : '', pageRef(t.place.id)]);
-  const when = t.time_style === 'about' && t.start !== null ? aboutCell(t.start, locale) : timeCell(t.start, t.end, locale);
+  // C18: a fixed time is exact by definition, so it never prints as an "about" time.
+  const when = t.time_style === 'about' && t.start !== null && t.fixed !== true ? aboutCell(t.start, locale) : timeCell(t.start, t.end, locale, '', t.fixed === true);
   const rule = t.booking_line && !t.booked ? `<p class="ti-meta ti-book">${icon('ticket', 12)} ${esc(clip(t.booking_line, 160))}</p>` : '';
   const crowd = CROWD_NOTE[t.crowd_slot] ? `<p class="ti-meta ti-crowd">${icon('clock', 12)} ${CROWD_NOTE[t.crowd_slot]}</p>` : '';
-  return `<div class="ti ti-stop${t.visited === true ? ' ti-done' : ''}" data-pg="block">${when}<div class="ti-mark"><span class="badge">${t.n}</span></div><div class="ti-body">${name}${t.activity ? `<p class="ti-act">${esc(t.activity)}</p>` : ''}${meta ? `<p class="ti-meta">${meta}</p>` : ''}${t.booked ? `<p class="ti-meta">${icon('ticket', 12)} ${esc(t.booked)}</p>` : ''}${rule}${crowd}${t.check_on_day ? `<p class="ti-meta ti-check">${icon('info', 12)} ${esc(t.check_on_day)}</p>` : ''}${t.note ? `<p class="ti-note">${esc(clip(t.note, 400))}</p>` : ''}</div></div>`;
+  return `<div class="ti ti-stop${t.visited === true ? ' ti-done' : ''}" data-pg="block">${when}<div class="ti-mark"><span class="badge">${t.n}</span></div><div class="ti-body">${name}${t.activity ? `<p class="ti-act">${esc(t.activity)}</p>` : ''}${meta ? `<p class="ti-meta">${meta}</p>` : ''}${t.booked ? `<p class="ti-meta">${icon('ticket', 12)} ${esc(t.booked)}</p>` : ''}${rule}${crowd}${t.check_on_day ? `<p class="ti-meta ti-check">${icon('info', 12)} ${esc(t.check_on_day)}</p>` : ''}${tipLine(t)}${t.note ? `<p class="ti-note">${esc(clip(t.note, 400))}</p>` : ''}</div></div>`;
 }
+/** Contract C18: a field note under a stop or meal row ("Cash only", "Enter by the north gate"). */
+export const tipLine = (t) => (t.tip ? `<p class="ti-meta ti-tip">${icon('pencil', 12)} <span class="tip-k">Tip</span> ${esc(clip(t.tip, 160))}</p>` : '');
 function legRow(t, locale, d) {
   const inn = d && d.start && d.lodging ? `to ${esc(clip(d.lodging.name, 80))}` : 'back to the inn'; // a moving day reaches its lodging; it does not go back
   const to = t.toPlace ? `to ${esc(t.toPlace.name)}` : t.toPoint ? `to ${esc(clip(t.toPoint.name, 80))}` : (t.to === 'lodging' ? inn : '');
@@ -64,7 +67,7 @@ function mealRow(t, locale) {
   if (t.booking || (facts && t.meal === 'dinner')) return mealCard(t, locale, facts || {});
   const name = t.place ? esc(t.place.name) : esc(t.name || '');
   const meta = t.place ? metaLine([t.place.category && t.place.category.toLowerCase() !== t.meal ? esc(t.place.category) : '', hoursFrag({ hours: t.place.hours_today, closedToday: false }), pageRef(t.place.id)]) : '';
-  return `<div class="ti ti-meal" data-pg="block">${timeCell(t.start, t.end, locale)}<div class="ti-mark"><span class="badge meal">${icon(MEAL_ICON[t.meal] || 'fork', 12)}</span></div><div class="ti-body"><h3 class="ti-name"><span class="ti-kind">${cap(t.meal)}</span>${name ? ` · ${name}` : ''}${favTag(t.place)}</h3>${meta ? `<p class="ti-meta">${meta}</p>` : ''}${t.note ? `<p class="ti-note">${esc(clip(t.note, 300))}</p>` : ''}</div></div>`;
+  return `<div class="ti ti-meal" data-pg="block">${timeCell(t.start, t.end, locale, '', t.fixed === true)}<div class="ti-mark"><span class="badge meal">${icon(MEAL_ICON[t.meal] || 'fork', 12)}</span></div><div class="ti-body"><h3 class="ti-name"><span class="ti-kind">${cap(t.meal)}</span>${name ? ` · ${name}` : ''}${favTag(t.place)}</h3>${meta ? `<p class="ti-meta">${meta}</p>` : ''}${tipLine(t)}${t.note ? `<p class="ti-note">${esc(clip(t.note, 300))}</p>` : ''}</div></div>`;
 }
 /** Contract C11: a meal at a researched place (dinner) as a small card — name, map link, booking, price, menu checked. */
 function mealCard(t, locale, f) {
@@ -80,7 +83,7 @@ function mealCard(t, locale, f) {
     f.price ? `<p class="ti-meta">${icon('coin', 12)} ${esc(clip(f.price, 160))}</p>` : '',
     f.menu || menu ? `<p class="ti-meta">${icon('check', 12)} ${join([f.menu ? esc(clip(f.menu, 160)) : '', menu], ' · ')}</p>` : ''
   ].join('');
-  return `<div class="ti ti-meal ti-dine" data-pg="block">${timeCell(t.start, t.end, locale)}<div class="ti-mark"><span class="badge meal">${icon(MEAL_ICON[t.meal] || 'fork', 12)}</span></div><div class="ti-body"><div class="dine-card"><h3 class="ti-name"><span class="ti-kind">${cap(t.meal)}</span>${name ? ` · ${name}` : ''}${favTag(p)}</h3>${meta ? `<p class="ti-meta">${meta}</p>` : ''}${lines}${t.note ? `<p class="ti-note">${esc(clip(t.note, 300))}</p>` : ''}</div></div></div>`;
+  return `<div class="ti ti-meal ti-dine" data-pg="block">${timeCell(t.start, t.end, locale, '', t.fixed === true)}<div class="ti-mark"><span class="badge meal">${icon(MEAL_ICON[t.meal] || 'fork', 12)}</span></div><div class="ti-body"><div class="dine-card"><h3 class="ti-name"><span class="ti-kind">${cap(t.meal)}</span>${name ? ` · ${name}` : ''}${favTag(p)}</h3>${meta ? `<p class="ti-meta">${meta}</p>` : ''}${lines}${tipLine(t)}${t.note ? `<p class="ti-note">${esc(clip(t.note, 300))}</p>` : ''}</div></div></div>`;
 }
 /** The bag step's words when the model gives none. */
 export const BAGS_TEXT = { hotel: (w) => `Leave your bags at ${w || 'the lodging'}`, locker: (w) => `Bags in a locker${w ? ` at ${w}` : ''}`, forward: () => 'Bags sent ahead', carry: () => 'Carry your bags today' };
@@ -91,7 +94,7 @@ function pointRow(t, locale) {
   const map = p.maps_url ? link(p.maps_url, 'map ↗') : '';
   const meta = join([p.note ? esc(clip(p.note, 160)) : '', map.startsWith('<a') ? map : ''], sep);
   const bags = t.bags ? `<p class="ti-meta ti-bags-line">${icon('bag', 12)} ${esc(bagsText(t.bags))}</p>` : '';
-  return `<div class="ti ti-point ti-${t.kind}" data-pg="block">${timeCell(t.start, null, locale)}<div class="ti-mark"><span class="pt">${icon(isStart ? 'pin' : 'arrow', 12)}</span></div><div class="ti-body"><h3 class="ti-name"><span class="ti-kind">${isStart ? 'Start' : 'End'}</span> · ${esc(clip(p.name, 120))}</h3>${meta ? `<p class="ti-meta">${meta}</p>` : ''}${bags}</div></div>`;
+  return `<div class="ti ti-point ti-${t.kind}" data-pg="block">${timeCell(t.start, null, locale, '', p.fixed === true)}<div class="ti-mark"><span class="pt">${icon(isStart ? 'pin' : 'arrow', 12)}</span></div><div class="ti-body"><h3 class="ti-name"><span class="ti-kind">${isStart ? 'Start' : 'End'}</span> · ${esc(clip(p.name, 120))}</h3>${meta ? `<p class="ti-meta">${meta}</p>` : ''}${bags}</div></div>`;
 }
 function bagsRow(t, locale) {
   return `<div class="ti ti-leg ti-bags" data-pg="block">${timeCell(t.start, t.end, locale)}<div class="ti-mark"><span>${icon('bag', 12)}</span></div><div class="ti-body"><b>Bags</b> · ${esc(bagsText(t.bags))}</div></div>`;
@@ -113,9 +116,43 @@ function eveningRow(ev, locale) {
     : `<b>Sunset</b> — the light goes at ${esc(clockPlain(ev.sunset, locale))}`;
   return `<div class="ti ti-evening${ev.extras.length ? '' : ' ti-sunset'}" data-pg="block">${timeCell(sun ? ev.sunset : null, null, locale, sun ? 'sunset' : '')}<div class="ti-mark"><span>${icon('sunset', 12)}</span></div><div class="ti-body">${body}</div></div>`;
 }
-function freeRow(t, locale) {
+function freeRow(t, locale, d) {
+  if (d && d.c18) return freeRowC18(t, locale);
   return `<div class="ti ti-free" data-pg="block">${timeCell(t.start, t.end, locale)}<div class="ti-mark"><span></span></div><div class="ti-body"><b>Free</b>${t.note ? ` — ${esc(clip(t.note, 300))}` : ''}</div></div>`;
 }
+/** Contract C18: a planned free window — its name and length, the note, then what is nearby (nearest first). */
+function freeRowC18(t, locale) {
+  const len = t.start !== null && t.end !== null ? duration(t.end - t.start) : '';
+  const head = `<b>${esc(clip(t.title || 'Free', 60))}</b>${len ? ` <span class="fr-len">· ${esc(len)}</span>` : ''}${t.note ? ` — ${esc(clip(t.note, 300))}` : ''}`;
+  const opts = (t.options || []).map((o) => {
+    const name = esc(clip(o.name, 120));
+    const facts = join([Number.isInteger(o.walk_min) ? `${o.walk_min} min walk` : Number.isFinite(o.km) ? `${kmText(o.km)} away` : '', o.open ? esc(clip(o.open, 160)) : '', o.hasCard ? pageRef(o.place.id) : ''], sep);
+    return `<li><span class="fo-n">${o.url ? link(o.url, name) : name}</span>${facts ? `<span class="fo-m">${facts}</span>` : ''}${o.note ? `<span class="fo-x">${esc(clip(o.note, 160))}</span>` : ''}</li>`;
+  });
+  return `<div class="ti ti-free ti-free2" data-pg="block">${timeCell(t.start, t.end, locale)}<div class="ti-mark"><span></span></div><div class="ti-body">${head}${opts.length ? `<ul class="free-opts">${opts.join('')}</ul>` : ''}</div></div>`;
+}
+/** Contract C18: 'Getting out' — leave-by and departure, up to two worked scenarios with their spare minutes, fallbacks. */
+function departRow(dep, locale) {
+  const by = dep.by ? parseTime(dep.by) : null, at = parseTime(dep.at);
+  const to = `<b>${esc(clip(dep.to, 120))}</b>`, departs = `departs <b>${esc(clockPlain(at, locale))}</b>`;
+  const lead = by !== null ? `Leave by <b>${esc(clockPlain(by, locale))}</b> for ${to}, ${departs}` : `For ${to}, ${departs}`;
+  const scen = (dep.scenarios || []).map((s) => `<div class="dep-s"><p class="dep-h"><b>${esc(clip(s.label, 120))}</b>${Number.isInteger(s.spare_min) ? ` <span class="spare">${s.spare_min} min spare</span>` : ''}</p>${(s.steps || []).length ? `<ol>${s.steps.map((x) => `<li>${esc(clip(x, 160))}</li>`).join('')}</ol>` : ''}</div>`);
+  const fb = (dep.fallbacks || []).length ? `<div class="dep-fb"><p class="dep-k">If you miss it</p><ul>${dep.fallbacks.map((x) => `<li>${esc(clip(x, 160))}</li>`).join('')}</ul></div>` : '';
+  const body = `<div class="depart"><p class="eyebrow">Getting out</p><p class="dep-lead">${lead}</p>${scen.length ? `<div class="dep-scen${scen.length > 1 ? ' two' : ''}">${scen.join('')}</div>` : ''}${fb}${dep.note ? `<p class="dep-note">${esc(clip(dep.note, 160))}</p>` : ''}</div>`;
+  return `<div class="ti ti-depart" data-pg="block">${timeCell(by ?? at, null, locale, by !== null ? 'leave by' : 'departs')}<div class="ti-mark"><span>${icon('clock', 12)}</span></div><div class="ti-body">${body}</div></div>`;
+}
+/** Contract C18: "Today's checklist" and "Night before · This morning" — one block under the day's header, side by side. */
+export const CHECK_GROUPS = [['must', 'Must'], ['carry', 'Carry'], ['constraints', 'Limits']];
+function brief(d, locale) {
+  const c = d.checklist || {}, groups = CHECK_GROUPS.filter(([k]) => (c[k] || []).length);
+  const check = groups.length ? `<div class="brief-box brief-check"><p class="eyebrow">Today's checklist</p><div class="ck-groups">${groups.map(([k, label]) => `<div class="ck-g ck-${k}"><p class="ck-h">${label}</p><ul>${c[k].map((x) => `<li>${esc(clip(x, 160))}</li>`).join('')}</ul></div>`).join('')}</div></div>` : '';
+  const p = d.prep || {}, night = p.night_before || [], steps = p.steps || [];
+  const title = join([night.length ? 'Night before' : '', steps.length ? 'This morning' : ''], ' · ');
+  const prep = title ? `<div class="brief-box brief-prep"><p class="eyebrow">${title}</p>${night.length ? `<ul class="prep-night">${night.map((x) => `<li>${esc(clip(x, 160))}</li>`).join('')}</ul>` : ''}${steps.length ? `<ol class="prep-steps">${steps.map((s) => `<li><b>${esc(clockPlain(s.time, locale))}</b><span>${esc(clip(s.text, 160))}</span></li>`).join('')}</ol>` : ''}</div>` : '';
+  return check || prep ? `<div class="day-brief${check && prep ? ' two' : ''}" data-pg="block">${check}${prep}</div>` : '';
+}
+export const FIXED_LEGEND = 'Bold times are fixed by a booking, a timed entry or a train; the rest can slide.';
+const anyFixed = (d) => d.timeline.some((t) => (t.kind === 'stop' || t.kind === 'meal') ? t.fixed === true : (t.kind === 'start' || t.kind === 'end') && t.point.fixed === true);
 const ROW = { stop: stopRow, leg: legRow, meal: mealRow, free: freeRow, start: pointRow, end: pointRow, bags: bagsRow };
 
 function daySketch(d, i, ctx) {
@@ -149,7 +186,7 @@ export function day(d, i, ctx) {
   const folio = `Day ${d.index} · ${shortDate(d.date, locale)}`;
   return `<section class="sec sec-day" data-pg="section" data-folio="${attr(folio)}" data-tab="${attr(`Day ${d.index}`)}" style="${hueStyle(i)}">
 <header class="day-head" data-pg="block" data-keep><div class="day-n">${d.index}</div><div class="day-titles"><p class="eyebrow">Day <b>${WORDS[d.index] || d.index}</b> · ${esc(longDate(d.date, locale))}</p><h2>${esc(d.theme)}</h2>${d.summary ? `<p class="day-summary">${esc(clip(d.summary, 400))}</p>` : ''}</div>${stats(d, locale)}</header>
-${aside(d, i, ctx)}
+${d.c18 ? c18Head(d, locale) : ''}${aside(d, i, ctx)}
 <div class="rail" data-pg="split" data-cont="${attr(`Day ${d.index}, continued`)}">${railRows(d, locale)}</div>
 </section>`;
 }
@@ -159,15 +196,33 @@ export function eveningAt(ev) {
   const t = ev.extras.map((x) => /^(\d{1,2}):(\d{2})$/.exec(x.time || '')).filter(Boolean).map((m) => +m[1] * 60 + +m[2]);
   return t.length ? Math.min(...t) : null;
 }
-/** The rail in clock order; the evening box goes in at its time (before the first row that starts later), else last. */
+/** Contract C18: the blocks between the day's header and its rail — the brief (checklist, prep) and the fixed-time legend. */
+function c18Head(d, locale) {
+  const b = brief(d, locale);
+  const legend = anyFixed(d) ? `<p class="fixed-legend" data-pg="block"><b>Bold</b> ${esc(FIXED_LEGEND.replace(/^Bold /, ''))}</p>` : '';
+  return (b ? b + '\n' : '') + (legend ? legend + '\n' : '');
+}
+/**
+ * The rail in clock order; the evening box goes in at its time (before the first row that starts later), else last.
+ * C18: 'Getting out' goes before the first row at or after its leave-by time (the walk out), at the latest before the end row.
+ */
 function railRows(d, locale) {
-  const rows = d.timeline.map((t) => (ROW[t.kind] || (() => ''))(t, locale, d));
-  if (d.evening) {
-    const when = eveningAt(d.evening);
-    const at = when === null ? -1 : d.timeline.findIndex((t) => t.start !== null && t.start > when);
-    rows.splice(at < 0 ? rows.length : at, 0, eveningRow(d.evening, locale));
+  const rows = d.timeline.map((t) => ({ t, html: (ROW[t.kind] || (() => ''))(t, locale, d) }));
+  const insertAt = (when, item) => {
+    const at = when === null ? -1 : rows.findIndex((r) => r.t && r.t.start !== null && r.t.start > when);
+    rows.splice(at < 0 ? rows.length : at, 0, item);
+  };
+  if (d.evening) insertAt(eveningAt(d.evening), { t: null, html: eveningRow(d.evening, locale) });
+  if (d.departure) {
+    const item = { t: null, html: departRow(d.departure, locale) };
+    // Before the first row that starts at or after the leave-by time (the walk out), and never after the end row.
+    const by = parseTime(d.departure.by || d.departure.at);
+    const end = rows.findIndex((r) => r.t && r.t.kind === 'end');
+    const at = by === null ? -1 : rows.findIndex((r) => r.t && r.t.start !== null && r.t.start >= by);
+    const idx = at >= 0 && (end < 0 || at <= end) ? at : end;
+    rows.splice(idx < 0 ? rows.length : idx, 0, item);
   }
-  return rows.join('\n');
+  return rows.map((r) => r.html).join('\n');
 }
 
 // Developed by: LightAISolutions

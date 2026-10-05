@@ -25,6 +25,9 @@
  * (one more transit request, budgeted); evening extras start after the day's arrival (planner-evening.mjs); own facts
  * older than FACTS_MAX_AGE_DAYS still apply, with a "facts are old" warning (oldFactsDate). Old fixtures plan as before
  * except their hard-end days (A8).
+ * Phase 18 (WP-18b, Contract C18): with `input.c18: true` each built day's free windows of at least 30 min get a `title`
+ * and nearby saved / Later / shortlisted places as `options` (planner-free.mjs; no Maps request). Without it the output
+ * is exactly what it was before Phase 18.
  * `maps` is a Maps-kit client (createMapsClient); every unit it spends is counted by its ledger before sending.
  * Contract (entities, codes, warnings): helpers/packs/tour-guide/README.md. Design and limits: helpers/decisions/WP-3b.md.
  */
@@ -49,6 +52,7 @@ import { DINNER } from './planner-dinner.mjs';
 import { withMorning } from './planner-morning.mjs';
 import { prepareRestart, mergeRestart, lateAgain, restartReason } from './planner-restart.mjs';
 import { coveredFor, isIndoor } from './planner-rain.mjs';
+import { freeOptions, applyFreeOptions } from './planner-free.mjs';
 
 export { PlanBudgetError, SKU, extraCallsFor } from './planner-budget.mjs';
 export { solveDay, WEIGHT, MAX_STOPS } from './planner-solve.mjs';
@@ -80,6 +84,7 @@ export { mergeLater } from './planner-later.mjs';
 export { leaveBy, dayAreas, withMorning } from './planner-morning.mjs';
 export { restartErrors, prepareRestart, mergeRestart, lateAgain, restartReason, HERE_SLUG, HERE_NAME, RESTART, PASSED_OVER_NOTE } from './planner-restart.mjs';
 export { RAIN, coveredFor, rainWeight } from './planner-rain.mjs';
+export { freeOptions, applyFreeOptions, freeTitle, freeWalkMinutes, FREE } from './planner-free.mjs';
 
 const fail = (m) => { throw new Error('planner: ' + m); };
 
@@ -94,6 +99,7 @@ async function context(input) {
   ctx.seed = Number.isInteger(input.seed) ? input.seed : 1;
   ctx.rng = createRng(ctx.seed);
   const t = ctx.trip;
+  ctx.c18 = input.c18 === true;   // C18 (WP-18b): free-window titles and options only when asked (old outputs stay byte-identical)
   ctx.evening = !!(t.season || (Array.isArray(t.day_overrides) && t.day_overrides.length) || Array.isArray(input.dinners));   // Phase 11 output only for Phase 11 input
   if (input.outline !== undefined && input.outline !== null) {   // WP-11e: only an input with an outline
     ctx.outline = normalizeOutline(input.outline, ctx.days.map((d) => d.date));
@@ -179,6 +185,7 @@ async function build(ctx, input, { dates, pool, prior, ch = null, withheld = [],
   const known = new Set(places.map((p) => p.id));
   for (const d of dinners.values()) if (!known.has(d.id)) { const { scheduled_hint, ...rest } = d.record; places.push({ ...rest, status: 'scheduled' }); }   // dinner places go into plan.places
   if (ctx.evening) addEvening(allDays, dates, evenings, { ctx, places, later, scheduled });
+  if (ctx.c18) addFree(evenings, { ctx, places, later });   // C18: titles and nearby options on the re-built days' free windows
   for (const d of built) withMorning(ctx.trip, d);   // C12: leave_by and areas on every built day (kept days stay as they were)
   const skus = { ...budget.skus };
   if (prior && prior.budget && prior.budget.skus) for (const [k, v] of Object.entries(prior.budget.skus)) skus[k] = (skus[k] || 0) + v;
@@ -205,6 +212,12 @@ function addEvening(allDays, dates, evenings, { ctx, places, later, scheduled })
     if (sunset) dayPlan.sunset = sunset;
     applyExtras(dayPlan, eveningExtras({ evening, date: day.date, season: ctx.trip.season, places, snapshots: ctx.snapshots, exclude, used, later: inLater, warnings: dayPlan.warnings }));
   }
+}
+
+/** C18 (WP-18b): each re-built day's free windows get a title and nearby saved / Later / shortlisted places (planner-free.mjs). */
+function addFree(evenings, { ctx, places, later }) {
+  const inLater = new Set(later.flatMap((l) => l.items.map((it) => it.place)));
+  for (const { dayPlan, day } of evenings) applyFreeOptions(dayPlan, freeOptions({ dayPlan, day, places, snapshots: ctx.snapshots, later: inLater }));
 }
 
 /**

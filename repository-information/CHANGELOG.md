@@ -3,11 +3,28 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 79/100`
+`Sections: 80/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.79r] — 2026-10-05 12:06:57 AM EST
+
+> **Prompt:** "This is a day plan that Claude Chat made for our Universal Studio Japan on 11/19/26 that I think is well-made and useful. Evaluate this as a reference and try to make Tour Guide's brochures as useful as this." — then, on the thirteen-item plan: "I approve of your plan"
+
+### Added
+- **Contract C18, wave 1** (`helpers/decisions/TG-PHASE-18.md`): brochures that read as instructions for the day — thirteen approved changes in three waves; wave 1 is items 2, 3, 4, 5, 6, 9 and 13
+- **The kit renders C18** (`helpers/kits/brochure/`): the day's brief (Today's checklist: Must · Carry · Limits; Night before · This morning), bold fixed times with a "fixed" tag and a legend, field-note tips on stops and meals, named free windows with their length and nearby options, a "Getting out" box worked back from the departure with two scenarios and fallbacks, the clock setting on every time (`withHourCycle`, `clock(…, hc)`) and the temperature setting on the season page (`temperature`); `usesC18`, its schema and semantic checks; the C18 stylesheet only on C18 models, so every older model renders byte for byte (pinned by hash, Letter and A4); `retimeText` puts Google's 12-hour hours on the 24-hour clock when that is set; an invented fixture `fixtures/sample-trip-c18.json`
+- **The planner's free options** (`helpers/packs/tour-guide/planner/planner-free.mjs`): a title and up to four nearby saved, Later or shortlisted places for each free window of 30 min or more (open, within 1.2 km, a round trip that fits), behind `input.c18`
+- **brochure-map's C18 values** (`helpers/packs/tour-guide/brochure-map/brochure-map-c18.mjs`): fixed items, tips, the checklist, the morning countdown, the departure and the free windows from data the plan already has, behind `options.c18`; `clock` and `temp` options; an invented sample `brochure-map-sample-c18.mjs`
+- **`/units`** (`helpers/packs/tour-guide/gas/47_units.js`): the brochure clock (24 h or 12 h) and temperatures (°C, °F or both), default 24 h and both; in `settings.get`, the snapshot (`tour_guide.display`), the commands guide with a form, and the app's Settings (Display)
+- Schemas: DayPlan `free[].title`, `free[].options`; trip `day_overrides[].fallbacks` (needs the override's `end`)
+- Tests: `kit_brochure_c18`, `pack_tour-guide_c18_planner_free`, `pack_tour-guide_c18_planner_plan`, `pack_tour-guide_c18_brochure_map`, `pack_tour-guide_units`, a Display test in `pack_tour-guide_commands17b_shell`
+
+### Changed
+- App v01.20w (`live-site-pages/helper-app.html`); the snapshot test expects `tour_guide.display`
+- Docs: the kit README (C18), the pack README (`46_settings_app.js`, `47_units.js`), `helpers/BUILD-STATE.md` (row 18, the Phase 18 log, the status line)
 
 ## [v01.78r] — 2026-10-04 11:31:26 PM EST
 

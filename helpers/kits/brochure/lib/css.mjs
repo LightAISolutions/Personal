@@ -7,10 +7,10 @@
 import { tokensCss, pageSpec } from './tokens.mjs';
 import { STACK } from './fonts.mjs';
 
-export function stylesheet({ page = pageSpec(), fontCss = '', c11 = false, c12 = false } = {}) {
-  // C11 (Phase 11) and C12 (Phase 12) rules are added only when the model uses those fields, so an older brochure's
-  // HTML does not grow rules it never uses.
-  return [fontCss, tokensCss(page), BASE, COVER, GLANCE, DAY, RAIL, CARDS, LATER, PRACTICAL, ATTRIBUTION, ...(c11 ? [C11] : []), ...(c12 ? [C12] : []), SCREEN, printFallback(page), PAGED].join('\n');
+export function stylesheet({ page = pageSpec(), fontCss = '', c11 = false, c12 = false, c18 = false } = {}) {
+  // C11 (Phase 11), C12 (Phase 12) and C18 (Phase 18) rules are added only when the model uses those fields, so an
+  // older brochure's HTML does not grow rules it never uses. C18 follows SCREEN: it extends the screen grid.
+  return [fontCss, tokensCss(page), BASE, COVER, GLANCE, DAY, RAIL, CARDS, LATER, PRACTICAL, ATTRIBUTION, ...(c11 ? [C11] : []), ...(c12 ? [C12] : []), SCREEN, ...(c18 ? [C18] : []), printFallback(page), PAGED].join('\n');
 }
 
 const BASE = `
@@ -321,6 +321,81 @@ html:not(.paged) .sec+.sec{border-top:1px solid var(--rule)}
   html:not(.paged) .src-row{grid-template-columns:1fr;gap:.2rem}
   html:not(.paged) .src-row .what{text-align:left}
 }
+`;
+/**
+ * Contract C18: the day as instructions — the brief under the header (checklist, night before and morning), fixed times
+ * in bold with a tag and one legend line, field notes on rows, named free windows with nearby options, 'Getting out'.
+ * Existing tokens and components only.
+ */
+const C18 = `
+.ti-time.is-fixed .t{font-weight:700;color:var(--ink)}
+.fx-tag{display:inline-block;margin-top:.18rem;font-size:var(--s-3);letter-spacing:.12em;text-transform:uppercase;color:var(--hue,var(--accent));border:1px solid var(--hue-soft,var(--rule));border-radius:2px;padding:.04em .32em .02em;line-height:1.2}
+.fixed-legend{font-size:var(--s-2);font-style:italic;color:var(--muted);margin:-.35rem 0 .7rem;line-height:1.35}
+.fixed-legend b{font-style:normal;font-weight:700;color:var(--ink2)}
+.ti-tip{color:var(--ink2)}
+.ti-tip .ic{color:var(--hue)}
+.tip-k{font-size:var(--s-3);letter-spacing:.12em;text-transform:uppercase;color:var(--hue);margin-right:.15rem}
+.day-brief{display:grid;grid-template-columns:minmax(0,1fr);gap:.9rem;margin-bottom:.95rem}
+.day-brief.two{grid-template-columns:minmax(0,1.7fr) minmax(0,1fr)}
+.brief-box{background:var(--cream);border-top:2px solid var(--hue);padding:.5rem .75rem .6rem;font-size:var(--s-1);line-height:1.35}
+.brief-box .eyebrow{margin-bottom:.3rem;color:var(--ink2)}
+.brief-box ul,.brief-box ol{display:grid;gap:.18rem}
+.ck-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr));gap:.3rem 1rem}
+.ck-h{font-size:var(--s-3);letter-spacing:.14em;text-transform:uppercase;color:var(--hue);margin-bottom:.15rem}
+.ck-g li,.prep-night li{position:relative;padding-left:.85rem}
+.ck-g li::before{content:"";position:absolute;left:0;top:.38em;width:.5em;height:.5em;border:1px solid var(--ink2);border-radius:1px;background:var(--paper)}
+.ck-constraints li::before{border-color:var(--alert);border-radius:50%}
+.prep-night li::before{content:"–";position:absolute;left:.1rem;color:var(--muted)}
+.prep-night{margin-bottom:.35rem;padding-bottom:.35rem;border-bottom:1px solid var(--cream2)}
+.prep-steps li{display:grid;grid-template-columns:3.3rem minmax(0,1fr);gap:.4rem;align-items:baseline}
+.prep-steps b{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.fr-len{font-style:normal;color:var(--ink2)}
+.ti-free2 .ti-body b{font-style:normal}
+.free-opts{margin-top:.25rem;display:grid;gap:.12rem;font-style:normal}
+.free-opts li{display:block;padding-left:.75rem;position:relative;color:var(--ink2);line-height:1.32}
+.free-opts li::before{content:"·";position:absolute;left:.15rem;color:var(--hue)}
+.fo-n a{color:var(--ink);border-bottom-color:var(--rule)}
+.fo-m{font-size:var(--s-2);color:var(--muted);margin-left:.45rem}
+.fo-m .sep{margin:0 .3em;color:var(--faint)}
+.fo-m .pref,.fo-n a:hover{color:var(--sea)}
+.fo-x{font-size:var(--s-2);font-style:italic;color:var(--muted);margin-left:.45rem}
+.ti-depart .ti-mark span{display:inline-flex;width:1.35rem;height:1.35rem;border-radius:50%;background:var(--paper);border:1.5px solid var(--hue);color:var(--hue);align-items:center;justify-content:center;box-shadow:0 0 0 3px var(--paper)}
+.ti-depart .ti-mark .ic{width:.8rem;height:.8rem}
+.ti-depart .ti-time .t{font-weight:700}
+.ti-depart .ti-time .t2{letter-spacing:.1em;text-transform:uppercase;font-size:var(--s-3)}
+.depart{border:1px solid var(--hair);border-left:2px solid var(--hue);padding:.5rem .75rem .55rem;font-size:var(--s-1);line-height:1.35}
+.depart .eyebrow{margin-bottom:.2rem}
+.dep-lead{font-size:var(--s0);line-height:1.3;margin-bottom:.35rem}
+.dep-lead b{font-weight:700}
+.dep-scen{display:grid;gap:.4rem .9rem}
+.dep-scen.two{grid-template-columns:repeat(auto-fit,minmax(10rem,1fr))}
+.dep-s{border-top:1px solid var(--hair);padding-top:.3rem}
+.dep-h{margin-bottom:.15rem}
+.dep-h b{font-weight:400;font-style:italic;color:var(--ink)}
+.spare{font-size:var(--s-3);letter-spacing:.1em;text-transform:uppercase;color:var(--moss);margin-left:.3rem;white-space:nowrap}
+.dep-s ol{list-style:decimal;padding-left:1.1rem;display:grid;gap:.1rem;color:var(--ink2)}
+.dep-fb{margin-top:.4rem;border-top:1px solid var(--hair);padding-top:.3rem}
+.dep-k{font-size:var(--s-3);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.1rem}
+.dep-fb li{color:var(--ink2)}
+.dep-note{margin-top:.35rem;font-style:italic;color:var(--muted);font-size:var(--s-2)}
+html:not(.paged) .sec-day{grid-template-areas:"head head" "brief brief" "legend legend" "rail aside"}
+html:not(.paged) .day-brief{grid-area:brief}
+html:not(.paged) .fixed-legend{grid-area:legend}
+@media (max-width:760px){
+  html:not(.paged) .sec-day{grid-template-areas:"head" "brief" "aside" "legend" "rail"}
+  html:not(.paged) .day-brief.two{grid-template-columns:1fr}
+  html:not(.paged) .fixed-legend{margin-top:.6rem}
+}
+html.paged .day-brief{margin-bottom:.7rem;gap:.8rem}
+html.paged .brief-box{font-size:var(--s-2);line-height:1.3;padding:.42rem .65rem .48rem}
+html.paged .brief-box .eyebrow{font-size:var(--s-3);margin-bottom:.2rem}
+html.paged .brief-box ul,html.paged .brief-box ol{gap:.1rem}
+html.paged .ck-groups{grid-template-columns:repeat(auto-fit,minmax(7rem,1fr));gap:.2rem .9rem}
+html.paged .prep-steps li{grid-template-columns:2.4rem minmax(0,1fr);gap:.35rem}
+html.paged .prep-night{margin-bottom:.25rem;padding-bottom:.25rem}
+html.paged .tight .day-brief{margin-bottom:.55rem;gap:.7rem}
+html.paged .tight .brief-box,html.paged .tight .depart{padding:.38rem .65rem .45rem}
+html.paged .tight .free-opts{margin-top:.15rem}
 `;
 /** Browser print without the paginator: page breaks by section, nothing split that should not be. */
 function printFallback(page) {

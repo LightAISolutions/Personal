@@ -3,11 +3,16 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 19/50`
+`Sections: 20/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.20w] — 2026-10-05 12:05:03 AM EST — v01.79r
+
+### Added
+- A Display section in Settings: choose how brochures show times (24-hour or 12-hour clock) and temperatures (°C, °F or both). Each choice is also sent to the chat, where /units shows or changes the same setting
 
 ## [v01.19w] — 2026-10-04 11:04:42 PM EST — v01.77r
 

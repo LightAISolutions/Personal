@@ -258,7 +258,8 @@ test('shortlist: one row per item, n resolves to slug, re-delivery replaces its 
 
 test('snapshot tour_guide: trips, the open choice round with tap counts, profile date, places per destination', () => {
   const { ctx } = fresh();
-  assert.deepEqual(J(ctx.buildSnapshot().tour_guide), { trips: [], trips_total: 0, choice_round: null, profile_summary: null, places: {}, bookings: {} });
+  assert.deepEqual(J(ctx.buildSnapshot().tour_guide), { trips: [], trips_total: 0, choice_round: null, profile_summary: null, places: {}, bookings: {},
+    display: { clock: '24h', temp: 'both' } });
   ctx.tgTripUpsert({ slug: 'port-sorrel-spring-2027', destination: 'Port Sorrel', start: '2027-05-12', end: '2027-05-14', status: 'choosing' });
   ctx.tgTripUpsert({ slug: 'past-trip', status: 'done', start: '2026-01-01' });
   ctx.tgShortlistStore(shortlist());

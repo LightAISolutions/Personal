@@ -165,6 +165,10 @@ var TG_CMD_GUIDE = [
     forms: [['/ask is the castle open on Mondays?', 'one question', { tpl: '/ask {q}' }]] },
   { cmd: '/smart', group: 'chat', does: 'Quick answers: with it on, plain questions about your plan are answered at once by the Claude API (paid per use). Off, everything goes to research (free, a few minutes).',
     forms: [['/smart', 'show the mode and today\'s cost'], ['/smart on', 'quick answers', { fixed: true }], ['/smart off', 'free answers', { fixed: true }]] },
+  { cmd: '/units', group: 'chat', does: 'How brochures show times and temperatures: a 24-hour or 12-hour clock, and °C, °F or both. Unset, it is 24-hour and both.',
+    fields: { unit: { kind: 'choice', label: 'Show', options: ['24h', '12h', 'c', 'f', 'both'], hint: 'a clock (24h, 12h) or temperatures (c, f, both)' } },
+    forms: [['/units', 'show the clock and temperatures'], ['/units 12h', 'set the clock or the temperatures', { tpl: '/units {unit}' }],
+      ['/units both', 'temperatures in °C and °F', { tpl: '/units {unit}' }]] },
   { cmd: '/cancel', group: 'chat', does: 'Stops the conversation in progress, such as an interview or a plan being set up.', forms: [['/cancel', 'stop it', { confirm: true }]] },
   { cmd: '/status', group: 'chat', does: 'How the helper is doing: waiting requests, pending questions, the last mailbox check and the answer mode.', forms: [['/status', 'the counts']] },
   { cmd: '/pending', group: 'chat', does: 'Sends again every proposal still waiting for your ✅ or ❌.', forms: [['/pending', 'the waiting proposals']] },
@@ -218,6 +222,7 @@ var TG_CMD_KEYWORDS = {
   '/lists': 'google maps lists saved lists takeout import', '/list': 'one saved list google maps list',
   '/review': 'review after trip rate trip ratings feedback memories',
   '/ask': 'ask question help me anything request', '/smart': 'smart quick answers api mode fast answers cost setting',
+  '/units': 'units clock 12 hour 24 hour am pm time format temperature celsius fahrenheit degrees brochure display setting',
   '/cancel': 'cancel stop abort quit conversation', '/status': 'status health queue counts working',
   '/pending': 'pending proposals waiting approvals', '/wake': 'check now refresh sweep mailbox wake update',
   '/expire': 'clear old proposals expire cleanup', '/ping': 'ping alive test working version', '/id': 'id chat id user id'

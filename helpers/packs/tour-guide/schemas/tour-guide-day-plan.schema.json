@@ -140,7 +140,28 @@
         "type": "object",
         "additionalProperties": false,
         "required": ["start", "end"],
-        "properties": { "start": { "$ref": "#/$defs/time" }, "end": { "$ref": "#/$defs/time" }, "note": { "type": "string", "maxLength": 300 } }
+        "properties": {
+          "start": { "$ref": "#/$defs/time" }, "end": { "$ref": "#/$defs/time" }, "note": { "type": "string", "maxLength": 300 },
+          "title": { "type": "string", "minLength": 1, "maxLength": 60, "description": "C18: the window's name (\"Free time near Slate Museum\", \"Before your 18:30 booking\"); on every window of at least 30 minutes the planner built (planner-free.mjs)." },
+          "options": {
+            "type": "array", "minItems": 1, "maxItems": 4,
+            "description": "C18: saved, Later and shortlisted places near where the window starts, open in it and with room for the walk there and back; nearest first, none twice in a day.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "ref", "name", "km", "walk_min", "open"],
+              "properties": {
+                "kind": { "enum": ["saved", "later", "shortlist"] },
+                "ref": { "$ref": "#/$defs/slug", "description": "The place's slug." },
+                "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+                "km": { "type": "number", "minimum": 0, "maximum": 100, "description": "Straight-line distance from the window's anchor." },
+                "walk_min": { "type": "integer", "minimum": 0, "maximum": 120, "description": "One way, from km × 1.25 at 4.8 km/h." },
+                "open": { "type": "string", "minLength": 1, "maxLength": 80, "description": "\"open all day\", \"open until 18:00\" or \"open 15:00–18:00\" (24-hour)." },
+                "note": { "type": "string", "maxLength": 160 }
+              }
+            }
+          }
+        }
       }
     },
     "warnings": {

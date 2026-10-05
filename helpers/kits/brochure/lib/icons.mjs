@@ -37,7 +37,9 @@ const PATHS = {
   bag: `<rect x="4" y="8" width="16" height="11" rx="2" ${S}/><path d="M9 8V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V8M8 8v11M16 8v11" ${S}/>`,
   sunset: `<path d="M7 16a5 5 0 0 1 10 0M3 16h18M5 20h14M12 4v4M9.5 6.5L12 4l2.5 2.5M5.2 10.7l1.4 1.4M18.8 10.7l-1.4 1.4" ${S}/>`,
   coin: `<circle cx="12" cy="12" r="8.5" ${S}/><circle cx="12" cy="12" r="5" ${S}/>`,
-  check: `<path d="M5 12.5l4.2 4.2L19 7" ${S}/>`
+  check: `<path d="M5 12.5l4.2 4.2L19 7" ${S}/>`,
+  // Contract C18 (Phase 18): a field note on a timeline row
+  pencil: `<path d="M4 20l1-4.2L16.2 4.6a1.9 1.9 0 0 1 2.7 0l.5.5a1.9 1.9 0 0 1 0 2.7L8.2 19zM14.5 6.3l3.2 3.2M4 20h5" ${S}/>`
 };
 export const MODE_LABEL = { walk: 'Walk', transit: 'Transit', train: 'Train', drive: 'Drive', taxi: 'Taxi', bike: 'Bike', ferry: 'Ferry', other: 'Travel' };
 export const MEAL_ICON = { breakfast: 'cup', coffee: 'cup', lunch: 'fork', snack: 'cup', dinner: 'fork', drinks: 'cup' };

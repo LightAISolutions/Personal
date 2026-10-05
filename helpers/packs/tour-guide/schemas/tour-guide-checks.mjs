@@ -54,6 +54,7 @@ export const MIN_OVERRIDE_DAY_MINUTES = 120;
 /**
  * checkDayOverrides(trip, errs) — C11 day_overrides: dates real, unique and inside the trip; each day at least 2 hours
  * from its start (start.time, else the override's day_start, else the trip's) to its end (end.time, else day_end, else the trip's).
+ * C18: `fallbacks` (other departures) only on an override with an `end`.
  */
 function checkDayOverrides(t, errs) {
   const seen = new Set();
@@ -63,6 +64,7 @@ function checkDayOverrides(t, errs) {
     if (seen.has(o.date)) errs.push({ path: p + '/date', message: `duplicate override for ${o.date}` });
     seen.add(o.date);
     if (o.date < t.start_date || o.date > t.end_date) errs.push({ path: p + '/date', message: 'not a trip date' });
+    if (o.fallbacks && !o.end) errs.push({ path: p + '/fallbacks', message: 'fallback departures need the day end (the planned departure)' });   // C18
     const start = toMinutes(o.start ? o.start.time : o.day_start || t.day_start);
     const end = toMinutes(o.end ? o.end.time : o.day_end || t.day_end);
     if (start !== null && end !== null && end - start < MIN_OVERRIDE_DAY_MINUTES) {
