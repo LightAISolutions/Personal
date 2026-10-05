@@ -177,8 +177,11 @@ clock on the rail and the cards (`retimeText`), so one brochure never mixes the 
 ## 7 Status
 - **Wave 1 built** (v01.79r, app v01.20w). Its private side (the plan skill passes `c18`; the brochure build passes
   `c18`, `clock`, `temp` from `state.json` `tour_guide.display`) is the private repo's PR #29, waiting on the owner.
-- **Wave 2 built** (v01.80r). Next: its private side, the brochure routine writes the briefing (schema
-  `tour-guide-briefing`) and the build passes it as `options.briefing`; then wave 3, the Day book.
+- **Wave 2 built** (v01.80r). Its private side (a context mode in the brochure driver; the routine writes the briefing
+  by its skill's authoring rules; `--briefing`) is in the same PR #29.
+- **Wave 3 built** (v01.81r): the Day book and `/daybook`. Next: its private side, the brochure routine takes request
+  kind `daybook` (`options.book: 'day'`, `options.date`, a `book: "day"` briefing with `inside`) and replies with the
+  PDF; then the first Day book of the owner's 19 Nov plan, side by side with the reference plan.
 
 
 Developed by: LightAISolutions

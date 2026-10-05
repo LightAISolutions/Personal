@@ -3,11 +3,25 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 81/100`
+`Sections: 82/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.81r] — 2026-10-05 01:33:28 AM EST
+
+> **Prompt:** "This is a day plan that Claude Chat made for our Universal Studio Japan on 11/19/26 that I think is well-made and useful. Evaluate this as a reference and try to make Tour Guide's brochures as useful as this." — then, on the thirteen-item plan: "I approve of your plan" *(wave 3 of the approved plan: item 12, the Day book)*
+
+### Added
+- **The Day book** (`helpers/decisions/TG-PHASE-18.md` §4, §6): one day of a plan in full depth as its own book
+- **The kit renders a Day book** (`helpers/kits/brochure/`): `book: "day"` prints a day cover, the day spread, an if-then page and only that day's place cards and sources; `days[].number` keeps the day's place in the trip; `stops[].inside` (up to 10 steps, "Inside, in order") under a big place; Day book caps (food and if-then up to 10) in `BRIEF_CAPS.day`, a brochure still held at 6; its stylesheet only in a Day book, so every older model renders byte for byte (pinned by hash); an invented fixture `fixtures/sample-day-book.json`
+- **The pack's Day book** (`helpers/packs/tour-guide/`): brochure-map `options.book = 'day'` with `options.date` keeps one day and the places it refers to; the briefing schema takes `book` and per-stop `inside` (keyed by the stop's place), merged at the book's caps; an invented sample `brochure-map-sample-daybook.mjs`
+- **`/daybook <date>`** (`helpers/packs/tour-guide/gas/48_daybook.js`): the date words `/replan` takes, bare for today; asks the brochure routine for that day's book (request kind `daybook`); a free day or a date outside the plan gets a plain answer; in the commands guide with keywords. The Day book never replaces the trip's brochure
+- Tests: `kit_brochure_daybook`, `pack_tour-guide_daybook`, `pack_tour-guide_daybook_gas`; the caps test in `kit_brochure_c18b` follows the larger schema cap
+
+### Changed
+- Docs: the kit README (Day book), the pack README (brochure-map, the briefing schema, `48_daybook.js`), `helpers/BUILD-STATE.md` (row 18, the Phase 18 log, the status line)
 
 ## [v01.80r] — 2026-10-05 12:50:31 AM EST
 
