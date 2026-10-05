@@ -73,6 +73,30 @@ Every default picked while building WP-14c (TG-PHASE-14.md "WP-14c", Contract C1
   first, a companion without a profile as `{ dietary: [], diet: null }`, and a trip override added to everyone as it is
   to the merged diet.
 
+## Mealtime preferences (v01.84r)
+- **Why:** the owner asked that the card also say each traveller's mealtime preferences, not only their limits.
+- **Contract:** a member may also carry `mealPrefsOf()`'s `{ spice, drinks }` (the travellers module reads `## Spice`
+  and the new `## Drinks`). Only an answer that changes what a kitchen or a server does makes a line; the phrase
+  table's `prefs` maps it: `spice: mild` → `spice.mild`, `drinks: no alcohol` → `drinks.none`. Medium, hot, light and
+  any say nothing.
+- **Lines:** one per preference, in table order (spice, then drinks), at the end of `avoid`, after every limit: "we"
+  when everyone in the party has it (私たちは…); else "I" for the owner (私は…) and one line for the companions who have
+  it, named as the limits name them (連れは… / 連れのうちN人は…). 辛いものが苦手です / "prefers mild food, not spicy";
+  お酒を飲みません / "does not drink alcohol". Neither asks the kitchen to cook differently: no alcohol here means drinks,
+  and food cooked with alcohol stays a Dietary limit (`alcohol`, "including cooking sake and mirin").
+- **Never a card alone:** a party with preferences and no limit has no card (`null`), as before. A card with no
+  `avoid` section gets one right after the intro.
+- **Bounds:** preference lines that would push a section past 12 lines, or the payload past 8 000 characters, are left
+  out, and the card and its fingerprint are as without them. A per-person card keeps its attribution: it never falls
+  back to the merged card for a preference.
+- **Fingerprint:** a card with preference lines appends `|p:` and their signatures (`<id>:all`, `<id>:o`,
+  `<id>:c<k>/<n>` or `<id>:o+c<k>/<n>`), sorted and joined by `;`. A card without any keeps its fingerprint, so an
+  unchanged party is stored silently, not re-sent.
+- **Vocabulary:** the travel preset gains `drinks` (one of: no alcohol · light · any). No interview question yet: the
+  value comes through the prefs kit from the owner's own words; a question in the interview bank and its core mirror is
+  a separate, later change.
+- No schema, validator or core change.
+
 ## Rendering
 - `vegCardTelegram`: header in bold; for an English-only card an italic line "No local-language phrases for this country
   yet — English only."; a blank line before each section; English-only lines in bold (no italic duplicate); the

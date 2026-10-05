@@ -80,6 +80,7 @@ The `travel` preset (`max_tokens` 3000):
 | `activities` | many | open — things to do, beyond `interests`' kinds of places |
 | `dietary` | many | open — `-` = cannot eat |
 | `spice` | one | mild · medium · hot |
+| `drinks` | one | no alcohol · light · any — alcoholic drinks with meals (food cooked with alcohol is a `dietary` limit) |
 | `meal_style` | many | street food · markets · cafes · sit-down · fine dining · cooking class · bars |
 | `lodging` | many | open — kinds of places to stay and what matters in them |
 | `companions` | one | solo · partner · family with kids · friends · group |

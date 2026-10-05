@@ -15,9 +15,9 @@ says what the party does not eat, with the polite phrasing a server expects and 
 ## How the routine uses it
 
 ```js
-import { partyDiet } from '../travellers/index.mjs';
+import { partyDiet, dietOf, mealPrefsOf } from '../travellers/index.mjs';
 import { vegCard, validateVegCardPayload } from './index.mjs';
-const members = [ownerDiet, ...companionDiets];   // dietOf() per traveller, owner first, {} for a companion with no profile
+const members = [owner, ...companions].map((md) => ({ ...dietOf(md), ...mealPrefsOf(md) }));   // owner first; {} for a companion with no profile
 const party = { ...partyDiet(members), size: 1 + companions.length, members };
 const card = vegCard({ party, country: trip.country, trip: trip.slug });
 // card === null → the party has no diet and no limit: write nothing.
@@ -40,6 +40,11 @@ The core stores the card in its `VegCards` tab (one row per trip) and sends it t
   diet ("my companion is vegetarian and…") and its own limits ("my companion cannot have eggs"; "…also
   cannot have…" after a diet). `ok` and the questions hold for everyone: the strictest diet's, minus
   every extra limit, plus one "Does this dish contain …?" for the extra limits the diet's questions do not ask.
+- **Mealtime preferences ride along.** A member's `mealPrefsOf()` values add one line per preference at the end of
+  `avoid`, after every limit: mild food (辛いものが苦手です / "prefers mild food, not spicy") and no alcohol
+  (お酒を飲みません / "does not drink alcohol": drinks only; food cooked with alcohol is the `alcohol` limit). "We" when
+  everyone has it, else "I" for the owner and one line for the companions who have it. They never make a card on
+  their own, and they are left out when they would break C14's bounds.
 - A card that would not fit C14's bounds per person (more than 12 lines in a section, 12 English-only words, 12
   travellers, or the 8 000-character payload) is the merged card instead: everyone's limits in one voice, stricter for
   each, never looser.
@@ -58,7 +63,8 @@ The core stores the card in its `VegCards` tab (one row per trip) and sends it t
 `vcf1:` and the FNV-1a (32-bit, lower-case hex) of
 `v1|<lang or ->|<diet or ->|<one or many>|<extra avoid keys, sorted>|<english_only, lower-cased, sorted>`, and on a
 per-person card `|m:` and its groups' signatures (`o` or `c<k>/<n>`, then diet, extra limits and words), sorted and
-joined by `;`: moving a limit from one person to another changes it, the companions' order does not. A one-voice card's
-fingerprint is the C14 string as it was. Only the engine computes it. The routine sends the card with `dedupe_key` `vegcard:<trip>:<fp>`.
+joined by `;`: moving a limit from one person to another changes it, the companions' order does not. A card with
+preference lines then appends `|p:` and their signatures (`spice.mild:c1/1`, `drinks.none:all`…), sorted and joined by
+`;`. A one-voice card without preferences keeps the C14 string as it was. Only the engine computes it. The routine sends the card with `dedupe_key` `vegcard:<trip>:<fp>`.
 
 Developed by: LightAISolutions

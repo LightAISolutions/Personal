@@ -5,8 +5,10 @@
  *     party   partyDiet(...)'s result plus `size` ({ dietary: [...], diet, size }): one voice for everyone, "I" or "we".
  *             With `members` — [owner, ...companions], each dietOf()'s { dietary, diet } — each limit is said for the
  *             person who has it ("I", "my companion", "one of my companions"…); `members` then replaces dietary and diet.
+ *             A member may also carry mealPrefsOf()'s { spice, drinks }: mild food or no alcohol adds a line for whoever
+ *             has it at the end of `avoid` ("my companion prefers mild food…"), on a card the limits make, never alone.
  *     country ISO 3166-1 alpha-2 or null.
- *   vegCardFp({ lang, diet, size, avoid, english_only, members? }) → 'vcf1:xxxxxxxx' (only the engine computes it).
+ *   vegCardFp({ lang, diet, size, avoid, english_only, members?, prefs? }) → 'vcf1:xxxxxxxx' (only the engine computes it).
  *   LANG_BY_COUNTRY → { JP: 'ja' }; any other country has no phrase table yet (English only, `local` null).
  * Every line comes from vegcard-phrases.json; the only owner words on a card are the english_only values.
  * Pure: no network, no clock.
@@ -29,6 +31,9 @@ const ITEM_KEYS = Object.keys(PHRASES.items);
 const ALIAS = new Map(ITEM_KEYS.flatMap((k) => PHRASES.items[k].aliases.map((a) => [a, k])));
 const DIET_VALUE = new Map(Object.entries(PHRASES.diet_values).flatMap(([d, vs]) => vs.map((v) => [v, d])));
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;   // the payload schemas' slug
+/** The preferences a line can say, in table order: { kind: 'spice', value: 'mild', id: 'spice.mild' }… */
+const PREFS = Object.entries(PHRASES.prefs).flatMap(([kind, vals]) => Object.entries(vals).map(([value, id]) => ({ kind, value, id })));
+const NO_PREFS = Object.freeze({ lines: [], sigs: [] });
 
 /** FNV-1a 32-bit over the UTF-8 bytes → 8 lower-case hex digits (the same function as C13's lodging_fp). */
 export function fnv1a(str) {
@@ -68,14 +73,16 @@ export function extraLimits(diet, avoid) {
 }
 
 /**
- * vegCardFp({ lang, diet, size, avoid, english_only, members }) → 'vcf1:' + FNV-1a of
- * 'v1|lang|diet|one-or-many|avoid,…|english_only,…', and for a per-person card '|m:' + its groups' signatures, sorted.
+ * vegCardFp({ lang, diet, size, avoid, english_only, members, prefs }) → 'vcf1:' + FNV-1a of
+ * 'v1|lang|diet|one-or-many|avoid,…|english_only,…', for a per-person card '|m:' + its groups' signatures, sorted, and
+ * for a card with preference lines '|p:' + their signatures, sorted. A card without either keeps the C14 string.
  */
-export function vegCardFp({ lang = null, diet = null, size = 1, avoid = [], english_only = [], members = null } = {}) {
+export function vegCardFp({ lang = null, diet = null, size = 1, avoid = [], english_only = [], members = null, prefs = null } = {}) {
   const keys = [...new Set((avoid || []).map(String))].sort();
   const eo = [...new Set((english_only || []).map((s) => norm(s).toLowerCase()))].sort();
   const m = Array.isArray(members) && members.length ? `|m:${members.map(String).sort().join(';')}` : '';
-  return 'vcf1:' + fnv1a(`v1|${lang || '-'}|${diet || '-'}|${many(size) ? 'many' : 'one'}|${keys.join(',')}|${eo.join(',')}${m}`);
+  const pr = Array.isArray(prefs) && prefs.length ? `|p:${prefs.map(String).sort().join(';')}` : '';
+  return 'vcf1:' + fnv1a(`v1|${lang || '-'}|${diet || '-'}|${many(size) ? 'many' : 'one'}|${keys.join(',')}|${eo.join(',')}${m}${pr}`);
 }
 
 const pick = (v, size) => (v && typeof v === 'object' ? v[many(size) ? 'many' : 'one'] : v);
@@ -220,12 +227,47 @@ function composeEach({ lang, size, people }) {
     sigs: groups.map((g) => `${g.owner ? 'o' : `c${g.k}/${n}`}:${sigOf(g.r)}`) };
 }
 
+/** The preference ids one traveller says ({ spice: 'mild' } → ['spice.mild']), in table order; any other value says nothing. */
+const prefsOf = (m) => (m && typeof m === 'object' ? PREFS.filter((x) => norm(m[x.kind]).toLowerCase() === x.value).map((x) => x.id) : []);
+
+/**
+ * The preference lines, one per preference in table order: "we" when everyone in the party has it, else "I" for the
+ * owner and one line for the companions who have it ("my companion", "2 of my companions"…). `prefs` = one prefsOf()
+ * list per traveller, owner first. → { lines, sigs }: '<id>:all', '<id>:o', '<id>:c<k>/<n>' or '<id>:o+c<k>/<n>'.
+ */
+function prefLines({ lang, size, prefs }) {
+  const n = size - 1;
+  const lines = [], sigs = [];
+  for (const { id } of PREFS) {
+    const has = prefs.flatMap((ids, i) => (ids.includes(id) ? [i] : []));
+    if (!has.length) continue;
+    if (has.length === size) { lines.push(line(`pref.${id}`, { lang, size })); sigs.push(`${id}:all`); continue; }
+    const owner = has[0] === 0;
+    const k = has.length - (owner ? 1 : 0);
+    if (owner) lines.push(line(`pref.${id}`, { lang, size: 1 }));
+    if (k) lines.push(line(`member.${id}`, { lang, size: k, who: whoOf({ owner: false, k }, n) }));
+    sigs.push(`${id}:${[owner ? 'o' : '', k ? `c${k}/${n}` : ''].filter(Boolean).join('+')}`);
+  }
+  return { lines, sigs };
+}
+
+/** The sections with `lines` at the end of `avoid` (a new `avoid` right after the intro when the card has none). */
+function withPrefs(sections, lines) {
+  const out = sections.map((s) => ({ ...s, lines: [...s.lines] }));
+  const avoid = out.find((s) => s.id === 'avoid');
+  if (avoid) avoid.lines.push(...lines);
+  else out.splice(out.findIndex((s) => s.id === 'intro') + 1, 0, { id: 'avoid', lines: [...lines] });
+  return out;
+}
+
 /**
  * vegCard({ party, country, trip }) → { v: 1, trip?, country, lang, diet, party, fp, sections, english_only } or null.
  * Without `party.members`: one voice, the diet the strictest of party.diet and what the cannot-eat values say. With
  * members: one voice when everyone says the same ("we") or only the owner has limits ("I"); else the per-person card,
- * or the merged card when that would not fit C14's bounds. Sections, in order: intro, avoid, ok (cards with a diet),
- * ask, thanks — empty ones left out. helpers/decisions/WP-14c.md records every default.
+ * or the merged card when that would not fit C14's bounds. The members' preference lines (prefLines) end `avoid` on
+ * whichever card that is, unless they would break C14's bounds; a party with preferences and no limit has no card.
+ * Sections, in order: intro, avoid, ok (cards with a diet), ask, thanks — empty ones left out.
+ * helpers/decisions/WP-14c.md records every default.
  */
 export function vegCard({ party = {}, country = null, trip } = {}) {
   const c = typeof country === 'string' && /^[A-Za-z]{2}$/.test(country.trim()) ? country.trim().toUpperCase() : null;
@@ -236,12 +278,14 @@ export function vegCard({ party = {}, country = null, trip } = {}) {
   let voice = size;   // a shared card's "I" (1) or "we"
   let one = null;     // a shared card's { diet, extra, english_only }
   let each = null;    // the per-person card
+  let pref = NO_PREFS;   // the members' preference lines
   if (!members) one = resolve(p.dietary, p.diet);
   else if (members.length > PARTY_MAX) { size = voice = PARTY_MAX; one = merged(members); }
   else {
     size = voice = Math.max(size, members.length);
     const people = Array.from({ length: size }, (_, i) => resolve(members[i] && members[i].dietary, members[i] && members[i].diet));
     if (!people.some(said)) return null;
+    pref = prefLines({ lang, size, prefs: Array.from({ length: size }, (_, i) => prefsOf(members[i])) });
     if (new Set(people.map(sigOf)).size === 1) one = people[0];                       // everyone says the same: "we"
     else if (!people.slice(1).some(said)) { one = people[0]; voice = 1; }            // only the owner has limits: "I"
     else each = composeEach({ lang, size, people });
@@ -251,14 +295,24 @@ export function vegCard({ party = {}, country = null, trip } = {}) {
     if (typeof trip === 'string' && SLUG_RE.test(trip)) out.trip = trip;
     return Object.assign(out, { country: c, lang, diet, party: size, fp, sections, english_only });
   };
+  const fits = (card) => card.english_only.length <= ENGLISH_ONLY_MAX && card.sections.every((s) => s.lines.length <= SECTION_LINES_MAX)
+    && JSON.stringify(card).length < PAYLOAD_MAX;
+  /** The card with the preference lines when it still fits C14's bounds, else the card (and fingerprint) without them. */
+  const finish = (sections, diet, fpOf, english_only) => {
+    if (pref.lines.length) {
+      const card = build(withPrefs(sections, pref.lines), diet, vegCardFp({ ...fpOf, prefs: pref.sigs }), english_only);
+      if (fits(card)) return card;
+    }
+    return build(sections, diet, vegCardFp(fpOf), english_only);
+  };
   if (each) {
-    const card = build(each.sections, each.diet, vegCardFp({ lang, diet: each.diet, size, avoid: each.extra, english_only: each.words, members: each.sigs }), each.english_only);
-    if (each.english_only.length <= ENGLISH_ONLY_MAX && card.sections.every((s) => s.lines.length <= SECTION_LINES_MAX) && JSON.stringify(card).length < PAYLOAD_MAX) return card;
+    const card = finish(each.sections, each.diet, { lang, diet: each.diet, size, avoid: each.extra, english_only: each.words, members: each.sigs }, each.english_only);
+    if (fits(card)) return card;
     one = merged(members);   // too long to say per person: the merged card
   }
   if (!said(one)) return null;
-  return build(composeShared({ lang, size: voice, diet: one.diet, extra: one.extra }), one.diet,
-    vegCardFp({ lang, diet: one.diet, size: voice, avoid: one.extra, english_only: one.english_only }), one.english_only);
+  return finish(composeShared({ lang, size: voice, diet: one.diet, extra: one.extra }), one.diet,
+    { lang, diet: one.diet, size: voice, avoid: one.extra, english_only: one.english_only }, one.english_only);
 }
 
 // Developed by: LightAISolutions

@@ -38,9 +38,10 @@ test('the travel vocabulary keeps its eight dimensions and gains the interview a
   assert.equal(v.max_tokens, 3000);
   const card = Object.fromEntries([...v.dims.values()].map((d) => [d.id, d.cardinality]));
   assert.deepEqual(card, { pace: 'one', interests: 'many', food: 'many', budget_band: 'one', mobility: 'many', crowds: 'one', day_rhythm: 'one',
-    must_avoid: 'many', climate: 'many', activities: 'many', dietary: 'many', spice: 'one', meal_style: 'many', lodging: 'many', companions: 'one',
+    must_avoid: 'many', climate: 'many', activities: 'many', dietary: 'many', spice: 'one', drinks: 'one', meal_style: 'many', lodging: 'many', companions: 'one',
     planning_style: 'one', free_time: 'one', transport: 'many', languages: 'many', gem_appetite: 'one', off_track_minutes: 'one', rough_edges: 'many' });
   assert.deepEqual(v.dims.get('climate').values, ['heat', 'cold', 'humidity', 'rain', 'altitude', 'wind', 'long sun exposure']);
+  assert.deepEqual(v.dims.get('drinks').values, ['no alcohol', 'light', 'any'], 'a no-alcohol traveller skips drinks; cooking with alcohol is a Dietary limit');
   assert.deepEqual(v.dims.get('climate').polarity_labels, { '+': 'fine with', '-': 'avoid' });
   assert.equal(v.dims.get('dietary').polarity_labels['-'], 'cannot eat');
   assert.equal(v.dims.get('transport').polarity_labels['-'], 'avoid');

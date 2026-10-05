@@ -1,8 +1,8 @@
 'use strict';
 // packs/tour-guide/vegcard — the veg card engine (TG-PHASE-14 WP-14c, Contract C14): the phrase table covers every
 // cannot-eat value the prefs kit can produce, the four composition cases, the per-person card (party.members: each
-// limit said for the person who has it), the fingerprint, escaping, bounds and the pack validator. Invented parties
-// only (vegcard/vegcard-fixture-party.json).
+// limit said for the person who has it), the members' preference lines (mild food, no alcohol), the fingerprint,
+// escaping, bounds and the pack validator. Invented parties only (vegcard/vegcard-fixture-party.json).
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -12,6 +12,7 @@ const H = require('./harness/gas-mocks');
 const PACK = path.join(H.HELPERS_ROOT, 'packs', 'tour-guide');
 const V = () => import('../packs/tour-guide/vegcard/index.mjs');
 const P = () => import('../packs/tour-guide/travellers/travellers-party.mjs');
+const T = () => import('../packs/tour-guide/travellers/index.mjs');
 const S = () => import('../packs/tour-guide/schemas/index.mjs');
 const read = (...p) => JSON.parse(fs.readFileSync(path.join(...p), 'utf8'));
 const FIX = read(PACK, 'vegcard', 'vegcard-fixture-party.json');
@@ -319,6 +320,68 @@ test('the per-person fingerprint adds the groups, sorted: who has a limit change
   assert.equal(fp(ab), fp([ab[0], ab[2], ab[1]]), 'the same people in another order');
   assert.equal(vegCardFp({ lang: 'ja', diet: 'vegetarian', size: 2, avoid: ['nuts'] }), vegCardFp({ lang: 'ja', diet: 'vegetarian', size: 2, avoid: ['nuts'], members: [] }),
     'no members: the C14 string as it was');
+});
+
+test('preferences: mealPrefsOf reads Spice and Drinks; mild food or no alcohol adds a line for whoever has it, at the end of avoid', async () => {
+  const [{ vegCard, validateVegCardPayload, vegCardTelegram }, { mealPrefsOf }] = await Promise.all([V(), T()]);
+  const md = '# Robin — Travel profile\n\n## Spice\n- mild — confirmed 2026-01-02 · evidence e_000000000001\n\n'
+    + '## Drinks\n- no alcohol — confirmed 2026-01-02 · evidence e_000000000002\n\n<!-- prefs-kit profile v1 · vocab travel · body sha256 0000000000000000 -->\n';
+  assert.deepEqual(mealPrefsOf(md), { spice: 'mild', drinks: 'no alcohol' });
+  assert.deepEqual(mealPrefsOf(''), { spice: null, drinks: null });
+  assert.deepEqual(mealPrefsOf('## Spice\n- hot — confirmed\n\n## Drinks\n- light — confirmed\n'), { spice: 'hot', drinks: 'light' });
+  const card = (members, size = members.length) => vegCard({ party: { size, members }, country: 'JP', trip: 'x' });
+  const veg = { dietary: ['meat and fish'], diet: 'vegetarian' };
+  const c = card([{ ...veg, spice: 'medium', drinks: 'no alcohol' }, { dietary: [], diet: null, spice: 'mild', drinks: 'any' }]);
+  assert.deepEqual(validateVegCardPayload(c), []);
+  assert.equal(c.party, 2);
+  assert.deepEqual(en(c, 'intro'), ['I am vegetarian. I do not eat meat, fish or seafood.'], 'only the owner has a limit: still "I"');
+  assert.deepEqual(en(c, 'avoid').slice(3), ['My companion prefers mild food, not spicy.', 'I do not drink alcohol.'], 'table order: spice, then drinks');
+  assert.deepEqual(ja(c, 'avoid').slice(3), ['連れは辛いものが苦手です。', '私はお酒を飲みません。']);
+  assert.match(vegCardTelegram(c), /<b>連れは辛いものが苦手です。<\/b>\n<i>My companion prefers mild food, not spicy\.<\/i>/);
+  const all = card([{ ...veg, spice: 'mild' }, { ...veg, spice: 'mild' }, { dietary: ['vegetarian'], diet: 'vegetarian', spice: 'mild' }]);
+  assert.deepEqual(en(all, 'avoid').slice(3), ['We prefer mild food, not spicy.'], 'everyone: one "we" line');
+  assert.deepEqual(ja(all, 'avoid').slice(3), ['私たちは辛いものが苦手です。']);
+  const some = card([veg, { drinks: 'no alcohol' }, { drinks: 'no alcohol' }, {}]);
+  assert.deepEqual(en(some, 'avoid').slice(3), ['2 of my companions do not drink alcohol.']);
+  assert.deepEqual(ja(some, 'avoid').slice(3), ['連れのうち2人はお酒を飲みません。']);
+  const pair = card([{ ...veg, drinks: 'no alcohol' }, { drinks: 'no alcohol' }, {}]);
+  assert.deepEqual(en(pair, 'avoid').slice(3), ['I do not drink alcohol.', 'One of my companions does not drink alcohol.'], 'not everyone: the owner, then the companions');
+  const each = card([veg, { dietary: ['eggs'], spice: 'mild' }]);
+  assert.deepEqual(en(each, 'avoid').slice(3), ['My companion cannot have eggs.', 'My companion prefers mild food, not spicy.'], 'after the limits on a per-person card');
+  const solo = card([{ ...veg, spice: 'mild', drinks: 'no alcohol' }]);
+  assert.deepEqual(en(solo, 'avoid').slice(3), ['I prefer mild food, not spicy.', 'I do not drink alcohol.']);
+  const limits = card([{ dietary: ['nuts'] }, { spice: 'mild' }]);
+  assert.deepEqual(limits.sections.map((x) => x.id), ['intro', 'avoid', 'ask', 'thanks']);
+  assert.deepEqual(en(limits, 'avoid'), ['Nuts', 'My companion prefers mild food, not spicy.']);
+  const words = card([{ dietary: ['lupin beans'] }, { drinks: 'no alcohol' }]);
+  assert.deepEqual(words.sections.map((x) => x.id), ['intro', 'avoid', 'thanks'], 'a card with no avoid section gets one after the intro');
+  assert.deepEqual(validateVegCardPayload(words), []);
+});
+
+test('preferences: never a card alone; other values say nothing; without them the card and fingerprint are as before; left out past the bounds', async () => {
+  const [{ vegCard, vegCardFp, fnv1a }, { partyDiet }] = await Promise.all([V(), P()]);
+  const card = (members, size = members.length) => vegCard({ party: { size, members }, country: 'JP', trip: 'x' });
+  const veg = { dietary: ['meat and fish'], diet: 'vegetarian' };
+  assert.equal(card([{ spice: 'mild', drinks: 'no alcohol' }, { spice: 'mild' }]), null, 'preferences alone make no card');
+  const plain = card([veg, {}]);
+  assert.deepEqual(card([{ ...veg, spice: 'hot', drinks: 'any' }, { spice: 'medium', drinks: 'light' }]), plain, 'only mild food and no alcohol say something');
+  assert.equal(plain.fp, vegCardFp({ lang: 'ja', diet: 'vegetarian', size: 1, avoid: [], english_only: [] }), 'the C14 string as it was');
+  const mild = card([veg, { spice: ' MILD ' }]);
+  assert.equal(mild.fp, 'vcf1:' + fnv1a('v1|ja|vegetarian|one|||p:spice.mild:c1/1'));
+  assert.equal(vegCardFp({ lang: 'ja', diet: 'vegetarian', size: 1, prefs: [] }), plain.fp, 'no preference lines: no |p:');
+  assert.notEqual(card([{ ...veg, spice: 'mild' }, {}]).fp, mild.fp, 'who has it changes it');
+  assert.equal(card([veg, { spice: 'mild' }, {}]).fp, card([veg, {}, { spice: 'mild' }]).fp, 'the companions\' order does not');
+  const legacy = vegCard({ party: { ...partyDiet([veg, { spice: 'mild' }]), size: 2 }, country: 'JP', trip: 'x' });
+  assert.ok(!en(legacy, 'avoid').some((l) => /mild/.test(l)), 'without members the card knows no preferences');
+  const ten = ['pork', 'beef', 'chicken', 'fish', 'shellfish', 'eggs', 'dairy', 'nuts', 'gluten', 'alcohol'];
+  const capped = card([{ dietary: ten, spice: 'mild', drinks: 'no alcohol' }, { spice: 'mild', drinks: 'no alcohol' }, {}]);
+  assert.deepEqual(capped, card([{ dietary: ten }, {}, {}]), 'four more lines would pass 12 in avoid: left out, card and fingerprint as without them');
+  const groups = [veg, { dietary: ['eggs'], spice: 'mild' }, { dietary: ['dairy'], drinks: 'no alcohol' }, { dietary: ['nuts'] }, { dietary: ['gluten'] },
+    { dietary: ['alcohol'] }, { dietary: ['lupin'] }, { dietary: ['durian'] }, { dietary: ['okra'] }];
+  const full = card(groups);
+  assert.deepEqual(en(full, 'intro'), ['I am vegetarian. I do not eat meat, fish or seafood.'], 'still the per-person card, not the merged one');
+  assert.equal(en(full, 'avoid').length, 11);
+  assert.ok(!en(full, 'avoid').some((l) => /mild|drink/.test(l)), 'the per-person limits come before the preferences');
 });
 
 // Developed by: LightAISolutions

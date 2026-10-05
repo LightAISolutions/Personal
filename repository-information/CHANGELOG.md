@@ -3,11 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 84/100`
+`Sections: 85/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.84r] — 2026-10-05 02:51:52 AM EST
+
+> **Prompt:** "This is what the rebuilt card looks like. It fixed my portion, but did not mention anything about *(the companion's)* preferences." *(with a screenshot of the rebuilt card)*
+
+### Added
+- **Mealtime preferences on the veg card** (`helpers/packs/tour-guide/vegcard/`, `helpers/decisions/WP-14c.md` "Mealtime preferences"): a member may also carry `{ spice, drinks }`; mild food and no alcoholic drinks add a line at the end of `avoid` for whoever has it ("we" when everyone does, else "I" and the companions as the limits name them), Japanese with English beneath; never a card alone; left out past C14's bounds, and a per-person card keeps its attribution; the fingerprint gains `|p:` only when such lines exist, so an unchanged party's card keeps its fingerprint
+- **`mealPrefsOf(markdown)`** (`helpers/packs/tour-guide/travellers/`): a profile's `## Spice` and `## Drinks` values, `null` when never answered
+- **A `drinks` dimension in the travel vocabulary** (`helpers/kits/prefs/presets/travel.vocab.json`): no alcohol · light · any, for alcoholic drinks with meals; food cooked with alcohol stays a Dietary limit; no interview question yet
+- Tests: the preference lines, their bounds and their fingerprint in `pack_tour-guide_vegcard`; the vocabulary in `kit_prefs_interview`
+
+### Changed
+- Docs: the vegcard README, the prefs kit README, `helpers/decisions/WP-14c.md`, `helpers/decisions/TG-PHASE-14.md` §11, `helpers/BUILD-STATE.md` (row 14, the live fixes log, Next)
 
 ## [v01.83r] — 2026-10-05 02:38:34 AM EST
 
