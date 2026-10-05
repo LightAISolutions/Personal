@@ -168,4 +168,70 @@ test('a watched answer that lands after you moved on waits on the bar with Open;
   st.timers.shift()();
   assert.equal(st.ops.length, n, 'a stopped watch reads nothing more');
 });
+
+/* ---- 17d: the progress bar (requests.status) ---- */
+const meta = (nodes) => byAttr(nodes.watch, 'data-watch-meta')[0];
+const meter = (nodes) => byAttr(nodes.watch, 'role', 'progressbar')[0];
+
+test('17d: a command that asks a routine shows a progress bar measured against how long that kind usually takes', SKIP, () => {
+  const { st, box, ctx, state, nodes } = page();
+  box.cmdRun('/quiet Kite Museum');
+  assert.ok(meter(nodes), 'a progress bar under the watch line');
+  assert.match(meta(nodes).textContent, /^0:0\d · about 6 min left · first guess ~6 min$/, 'a kind never answered before: its default');
+  assert.equal(st.ops.filter((o) => o[0] === 'requests.status').length, 1, 'read at once, not after the first 10 s');
+  const rid = st.ops.find((o) => o[0] === 'requests.status')[1].id;
+  ctx.__TEST_NOW = new Date(Date.parse(ctx.__TEST_NOW) + 400 * 1000).toISOString();   // past the usual time
+  st.timers.shift()();
+  assert.match(meta(nodes).textContent, /^6:4\d · taking longer than usual \(first guess ~6 min\)$/);
+  assert.equal(meter(nodes).getAttribute('aria-valuenow'), '95', 'it stops short until the answer is in');
+  assert.equal(W.deliver(ctx, state, 'quiet', board('qt-20270611-kite-museum', 'Kite Museum'), { in_reply_to: rid }).processed, 1);
+  st.timers.shift()();
+  assert.deepEqual([box.S.quiet, nodes.watch.hidden], ['qt-20270611-kite-museum', true], 'the answer opens; the bar goes');
+  // the next quiet board is measured against this one and an earlier answer: the median, from history
+  const r2 = H.appPost(ctx, state, 'app', { op: 'quiet.new', args: { place: 'Tide Hall' } });
+  ctx.__TEST_NOW = new Date(Date.parse(ctx.__TEST_NOW) + 200 * 1000).toISOString();
+  W.deliver(ctx, state, 'reply', { text: 'Tide Hall is already quiet.' }, { in_reply_to: r2.request_id });
+  const p2 = page({ world: { ctx, state } });
+  p2.box.cmdRun('/quiet Harbour Steps');
+  assert.match(meta(p2.nodes).textContent, /usually ~\d+ min$/, 'two answered quiet requests: the estimate comes from history');
+});
+
+test('17d: an app form watches its request; an answer that is only a message ends the bar instead of waiting on', SKIP, () => {
+  const { st, box, ctx, state, nodes } = page({ screen: 'scout' });
+  const r = H.appPost(ctx, state, 'app', { op: 'scout.new', args: { query: 'matcha', where: 'Lark Bay' } });
+  assert.equal(r.ok, true, r.reason);
+  box.watchAsk('scout', r, '🔎 Scouting matcha in Lark Bay');
+  assert.match(nodes.watch.textContent, /^🔎 Scouting matcha in Lark Bay — it opens here when it’s ready\./);
+  assert.match(meta(nodes).textContent, /first guess ~4 min$/);
+  assert.equal(st.ops.filter((o) => o[0] === 'scout.list').length, 1, 'what the list holds now is read first, so an old scout is never taken for it');
+  st.timers.shift()();
+  assert.equal(nodes.watch.hidden, false);
+  W.deliver(ctx, state, 'reply', { text: 'Could not build the board for matcha in Lark Bay.' }, { in_reply_to: r.request_id });
+  const looks = st.ops.filter((o) => o[0] === 'scout.list').length;
+  st.timers.shift()();   // answered, nothing new on the list: one more look 3 s later (the stub runs it at once), then it ends
+  assert.equal(st.ops.filter((o) => o[0] === 'scout.list').length, looks + 2);
+  assert.match(nodes.watch.textContent, /^Answered in the chat — nothing new to show here\./);
+  assert.equal(meter(nodes), undefined, 'no bar on a finished watch');
+  assert.equal(st.timers.length, 0, 'the watch ended');
+  assert.deepEqual(st.gone, [], 'it never moved the owner');
+});
+
+test('17d: a failed request ends the bar; a request with no screen of its own says when its answer is in the chat', SKIP, () => {
+  let p = page({ screen: 'scout' });
+  const r = H.appPost(p.ctx, p.state, 'app', { op: 'scout.new', args: { query: 'tea', where: 'Lark Bay' } });
+  p.box.watchAsk('scout', r, '🔎 Scouting tea in Lark Bay');
+  p.ctx.markRequestFailed(r.request_id, 'test');
+  p.st.timers.shift()();
+  assert.match(p.nodes.watch.textContent, /^“🔎 Scouting tea in Lark Bay” did not come through — the chat says why\./);
+  p = page();
+  const q = H.appPost(p.ctx, p.state, 'app', { op: 'scout.new', args: { query: 'tea', where: 'Lark Bay' } });
+  p.box.cmdSent('/scout tea in Lark Bay', null, false, { id: q.request_id });
+  assert.equal(p.st.rendered.getAttribute('data-sent'), '/scout tea in Lark Bay');
+  assert.match(p.st.rendered.textContent, /The answer comes in the chat/);
+  assert.match(p.nodes.watch.textContent, /— the answer comes in the chat\./);
+  W.deliver(p.ctx, p.state, 'reply', { text: 'Done.' }, { in_reply_to: q.request_id });
+  p.st.timers.shift()();
+  assert.match(p.nodes.watch.textContent, /^Answered — it’s in the chat\./);
+});
+
 // Developed by: LightAISolutions

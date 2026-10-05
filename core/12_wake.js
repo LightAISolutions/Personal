@@ -107,8 +107,12 @@ function openRequest(spec) {
   row = storeUpdate(SHEETS.REQUESTS, row._row, { fired: fr.ok ? 'yes' : String(fr.skipped || fr.error || ('http_' + fr.code)) });
   LIMITS.FALLBACK_SWEEP_MIN.forEach(function (m) { _safe('schedule_fallback', function () { scheduleOneOff('wakeTrigger', m); }); });
   audit('request_opened', id, { kind: kind, routine: routine, fired: row.fired });
+  HB_LAST_REQUEST = { id: id, kind: kind };
   return { id: id, row: row, fired: fr };
 }
+/** The request the current execution opened last ({ id, kind } | null): a caller that ran a command reads it to follow
+ *  the answer (the app's progress bar, packs/tour-guide/gas/45_commands_app.js). Reset it before running. */
+var HB_LAST_REQUEST = null;
 function getRequest(id) { return id ? storeGet(SHEETS.REQUESTS, id) : null; }
 function listOpenRequests() { return storeFind(SHEETS.REQUESTS, function (r) { return r.status === 'open'; }); }
 function openRequestCount() { return storeCount(SHEETS.REQUESTS, function (r) { return r.status === 'open'; }); }
