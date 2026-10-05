@@ -29,7 +29,7 @@ function tgDaybookDay(trip, args) {
   }
   if (!TG_DAYBOOK_DAY_RE.test(w)) return { error: TG_DAYBOOK_USAGE };
   var date = tgCmdPlanDate(trip, w);
-  if (!date) return { error: 'That day is not in the plan of ' + tgCmdTitle(trip) + '. /trip shows its days.' };
+  if (!date) return { error: tgCmdNotInPlan(trip) };
   var day = tgDigestDay(trip.slug, date);
   if (!day || !(day.stops || []).length) return { error: tgCmdDate(date) + ' is a free day with nothing planned, so there is no Day book for it.' };
   return { date: date, day: day };

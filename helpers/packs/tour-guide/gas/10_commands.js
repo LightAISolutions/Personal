@@ -71,6 +71,12 @@ function tgCmdCurrent(ctx) {
   return t;
 }
 function tgCmdTitle(trip) { return tgEscape(trip.title || trip.destination || trip.slug); }
+/** The reply for a day word outside the plan: names the trip's dates and the way to plan somewhere else. */
+function tgCmdNotInPlan(trip) {
+  var span = trip.start ? tgCmdDate(trip.start) + (trip.end && trip.end !== trip.start ? ' – ' + tgCmdDate(trip.end) : '') : '';
+  return 'That day is not in the plan of ' + tgCmdTitle(trip) + (span ? ', which covers ' + span : '') +
+    '. /trip shows its days; to plan another place, send <code>/plan &lt;where&gt;</code>.';
+}
 /** Send [{ html, keyboard? }] in order. */
 function tgCmdSendAll(chatId, messages) {
   var last = null;
@@ -663,7 +669,7 @@ registerCommand('/replan', function (ctx) {
   var m = /^(day\s*\d{1,2}|\d{4}-\d{2}-\d{2}|\d{1,2}|today|tomorrow)\b\s*([\s\S]*)$/i.exec(ctx.args || '');
   if (!m) { ctx.reply('Usage: <code>/replan &lt;date or day N&gt; &lt;what to change&gt;</code> — e.g. <code>/replan day 2 more time at the market</code>'); return; }
   var date = tgCmdPlanDate(trip, m[1]);
-  if (!date) { ctx.reply('That day is not in the plan of ' + tgCmdTitle(trip) + '. /trip shows its days.'); return; }
+  if (!date) { ctx.reply(tgCmdNotInPlan(trip)); return; }
   var why = truncate(String(m[2] || '').trim(), 300);
   var payload = { trip: trip.slug, dates: [date], deliverables: tgCmdDeliverables(trip) };
   if (why) payload.reason = why;

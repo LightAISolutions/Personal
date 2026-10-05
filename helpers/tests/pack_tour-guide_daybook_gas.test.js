@@ -69,7 +69,7 @@ test('/daybook: usage, a date outside the plan and a free day get a reply and no
   say(ctx, state, '/daybook please');
   assert.match(last(state), /^Usage: <code>\/daybook/);
   say(ctx, state, '/daybook 2027-06-01');
-  assert.equal(last(state), 'That day is not in the plan of Port Sorrel. /trip shows its days.');
+  assert.equal(last(state), 'That day is not in the plan of Port Sorrel, which covers Wed 12 May – Fri 14 May. /trip shows its days; to plan another place, send <code>/plan &lt;where&gt;</code>.');
   say(ctx, state, '/daybook 2027-05-13');
   assert.match(last(state), / is a free day with nothing planned, so there is no Day book for it\.$/);
   assert.equal(daybooks(state).length, 0);

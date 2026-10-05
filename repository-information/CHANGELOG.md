@@ -3,11 +3,18 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 83/100`
+`Sections: 84/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.83r] — 2026-10-05 02:38:34 AM EST
+
+> **Prompt:** *(the owner's screenshot: `/daybook 2026-11-19` answered "That day is not in the plan of Kyoto. /trip shows its days.")*
+
+### Changed
+- **A day outside the plan names the trip's dates** (`helpers/packs/tour-guide/gas/10_commands.js` `tgCmdNotInPlan`, used by `/daybook`, `/replan`, `/morning` and `/late`): the reply says which dates the current trip covers and that `/plan <where>` starts another place, instead of only pointing to `/trip`
 
 ## [v01.82r] — 2026-10-05 02:24:42 AM EST
 

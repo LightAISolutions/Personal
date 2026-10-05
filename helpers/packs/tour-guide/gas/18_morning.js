@@ -280,7 +280,7 @@ registerCommand('/morning', function (ctx) {
     return;
   }
   var today = tgTripToday(trip), date = a ? tgCmdPlanDate(trip, a) : (tgDigestDay(trip.slug, today) ? today : null);
-  if (!date) { ctx.reply(a ? 'That day is not in the plan of ' + tgCmdTitle(trip) + '. /trip shows its days.' : 'No plan for today in ' + tgCmdTitle(trip) + '. To rehearse a day: <code>/morning day 2</code>.'); return; }
+  if (!date) { ctx.reply(a ? tgCmdNotInPlan(trip) : 'No plan for today in ' + tgCmdTitle(trip) + '. To rehearse a day: <code>/morning day 2</code>.'); return; }
   var r = tgMorningSend(trip, date, { chatId: ctx.chatId, rehearsal: date !== today });
   if (r && !r.ok) ctx.reply('Part of the morning message did not go out — try <code>/morning</code> again.');
 }, 'the morning message: /morning sends today\'s now · /morning day N rehearses · /morning at HH:MM · /morning off|on');

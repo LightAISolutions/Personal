@@ -182,7 +182,9 @@ clock on the rail and the cards (`retimeText`), so one brochure never mixes the 
 - **Wave 3 built** (v01.81r): the Day book and `/daybook`. Its private side (WP-18r: the brochure routine takes
   request kind `daybook`, renders with `--book day --date`, writes `inside` for each stop of an hour or more and
   replies with `daybook_pdf`; the core stores Drive ids on the trip only for kind `brochure`) went into PR #29.
-- **Merged** (v01.82r): the owner merged PR #29 with all three waves' private side on 5 Oct. Next: the owner's
+- **Merged** (v01.82r): the owner merged PR #29 with all three waves' private side on 5 Oct.
+- **First try** (v01.83r): `/daybook 2026-11-19` found no 19 Nov in the current trip (the one-day Kyoto pilot); a day
+  outside the plan now names the trip's dates and points to `/plan`. Next: the owner plans the 19 Nov day, then
   `/daybook 2026-11-19`, compared side by side with the reference plan.
 
 
