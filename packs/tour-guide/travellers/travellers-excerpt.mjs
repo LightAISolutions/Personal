@@ -2,6 +2,7 @@
  * Tour Guide pack — the engine's `profile-excerpt` from the prefs kit's rendered travel profile (Phase 8, F12; moved here
  * from the private repo so the hard dietary limits have a public test).
  *   dietOf(markdown) → { dietary: [cannot-eat values], diet: 'vegetarian'|'vegan'|null, rule, avoid_types, drop_food }
+ *   mealPrefsOf(markdown) → { spice: 'mild'|'medium'|'hot'|null, drinks: 'no alcohol'|'light'|'any'|null } (## Spice, ## Drinks)
  *   profileExcerpt(markdown, overrides?) → { pace, interests, meals, avoid, dietary, day_rhythm?, diet?, diet_rule? }
  * Read from the sections ## Pace, ## Interests, ## Must avoid, ## Mobility, ## Early or late and ## Dietary; unknown → defaults.
  * `dietary` is always present (an empty list when nothing is ruled out): it is a hard limit, every food suggestion fits it.
@@ -56,6 +57,14 @@ export function dietOf(markdown) {
   const dietary = [...sec.matchAll(/^- cannot eat "?([^"—\n]+?)"?\s*(?:—|$)/gm)].map((x) => x[1].trim().toLowerCase());
   const diet = dietFromValues(dietary);
   return { dietary, diet, ...dietRule(diet) };
+}
+
+/** The table-side preferences of one profile: its ## Spice and ## Drinks values, null when never answered. */
+export function mealPrefsOf(markdown) {
+  const md = String(markdown || '');
+  const spice = /^- (mild|medium|hot)\s*(?:—|$)/m.exec(sectionOf(md, 'Spice'));
+  const drinks = /^- (no alcohol|light|any)\s*(?:—|$)/m.exec(sectionOf(md, 'Drinks'));
+  return { spice: spice ? spice[1] : null, drinks: drinks ? drinks[1] : null };
 }
 
 export function profileExcerpt(markdown, overrides = {}) {

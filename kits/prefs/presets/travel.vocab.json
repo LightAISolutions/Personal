@@ -23,6 +23,8 @@
     { "id": "dietary", "label": "Dietary", "cardinality": "many", "polarity_labels": { "+": "eats", "-": "cannot eat" }, "hint": "Hard dietary limits; polarity - means cannot eat",
       "examples": ["gluten", "dairy", "nuts", "shellfish", "pork", "beef", "meat", "eggs", "alcohol", "meat and fish", "animal products"] },
     { "id": "spice", "label": "Spice", "cardinality": "one", "values": ["mild", "medium", "hot"] },
+    { "id": "drinks", "label": "Drinks", "cardinality": "one", "values": ["no alcohol", "light", "any"],
+      "hint": "Alcoholic drinks with meals; no alcohol means the traveller skips them (food cooked with alcohol is a Dietary limit)" },
     { "id": "meal_style", "label": "Meal style", "cardinality": "many", "values": ["street food", "markets", "cafes", "sit-down", "fine dining", "cooking class", "bars"],
       "hint": "Ways of eating out" },
     { "id": "lodging", "label": "Lodging", "cardinality": "many", "hint": "Kinds of places to stay and what matters in them",

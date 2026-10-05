@@ -1,7 +1,8 @@
 {
   "v": 1,
-  "about": "Tour Guide veg card phrase table (TG-PHASE-14 WP-14c). Every line on a card comes from here; Japanese in the polite desu/masu form, with the explicit list of what is not eaten. {items} is filled by joining item phrases with ja.join or en.join. A {one, many} value picks by party size. A per-person card (party.members) says each limit for the person who has it: {who} is filled from `who` (\"I\", \"my companion\"…), and a {one, many} value then picks by how many that line speaks for.",
+  "about": "Tour Guide veg card phrase table (TG-PHASE-14 WP-14c). Every line on a card comes from here; Japanese in the polite desu/masu form, with the explicit list of what is not eaten. {items} is filled by joining item phrases with ja.join or en.join. A {one, many} value picks by party size. A per-person card (party.members) says each limit for the person who has it: {who} is filled from `who` (\"I\", \"my companion\"…), and a {one, many} value then picks by how many that line speaks for. `prefs` maps a member's mealPrefsOf() values to a preference line (pref.<id> for \"I\" or \"we\", member.<id> for companions), in table order; any other value says nothing.",
   "countries": { "JP": "ja" },
+  "prefs": { "spice": { "mild": "spice.mild" }, "drinks": { "no alcohol": "drinks.none" } },
   "join": { "ja": "・", "en": ", " },
   "who": {
     "self": { "ja": "私は", "en": "I", "label": "Me" },
@@ -38,6 +39,16 @@
     "member.limits": { "ja": "{who}{items}を口にできません。", "en": "{who} cannot have {items}." },
     "member.also": { "ja": "{who}{items}も口にできません。", "en": "{who} also cannot have {items}." },
     "member.following": { "ja": "{who}次のものを口にできません。", "en": "{who} cannot have the following." },
+    "pref.spice.mild": {
+      "ja": { "one": "私は辛いものが苦手です。", "many": "私たちは辛いものが苦手です。" },
+      "en": { "one": "I prefer mild food, not spicy.", "many": "We prefer mild food, not spicy." }
+    },
+    "member.spice.mild": { "ja": "{who}辛いものが苦手です。", "en": { "one": "{who} prefers mild food, not spicy.", "many": "{who} prefer mild food, not spicy." } },
+    "pref.drinks.none": {
+      "ja": { "one": "私はお酒を飲みません。", "many": "私たちはお酒を飲みません。" },
+      "en": { "one": "I do not drink alcohol.", "many": "We do not drink alcohol." }
+    },
+    "member.drinks.none": { "ja": "{who}お酒を飲みません。", "en": { "one": "{who} does not drink alcohol.", "many": "{who} do not drink alcohol." } },
     "ok.base": { "ja": "{items}は大丈夫です。", "en": "{items} are fine." },
     "ok.stock": { "ja": "昆布や椎茸のだしなら大丈夫です。", "en": "Kelp (kombu) or shiitake stock is fine." },
     "ask.dashi": { "ja": "この料理に、だしや魚は入っていますか？", "en": "Does this dish contain dashi or fish?" },
