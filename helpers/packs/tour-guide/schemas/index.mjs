@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { validate as validateSubset } from '../../../kits/brochure/lib/validate.mjs';
 import { checkTrip, checkPlace, checkSnapshot, checkEstimate, checkCalibration, checkLaterList, checkDayPlan, checkPlan,
   checkShortlist, checkTripFacts, checkPlanDigest, checkProfileSummary, checkPrefsReview, checkPlacesDigest,
-  checkBooking, checkBookings, checkScout, checkOutline, checkDayVersions } from './tour-guide-checks.mjs';
+  checkBooking, checkBookings, checkScout, checkOutline, checkDayVersions, checkBriefing } from './tour-guide-checks.mjs';
 import { checkVegCard } from '../vegcard/vegcard-payload.mjs';   // C14 (TG-PHASE-14 WP-14c): the veg card's own checks
 import { checkDaytrip } from '../daytrip/daytrip-payload.mjs';   // C15 (TG-PHASE-15 WP-15a): the day-trip board's own checks
 import { checkWhatson } from '../whatson/whatson-check.mjs';   // C15 (TG-PHASE-15 WP-15b): the What's on board's own checks
@@ -48,7 +48,9 @@ const KINDS = Object.freeze({
   'daytrip': checkDaytrip,
   'whatson': checkWhatson,
   'quiet': checkQuiet,
-  'menu': checkMenu
+  'menu': checkMenu,
+  // C18 wave 2 (TG-PHASE-18 WP-18d): the written briefing brochure-map merges per date (options.briefing); not a payload kind
+  'briefing': checkBriefing
 });
 /** Envelope type (helper.json envelope_types) → schema kind of its payload. */
 export const PAYLOAD_KINDS = Object.freeze({

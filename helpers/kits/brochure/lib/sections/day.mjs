@@ -4,7 +4,7 @@
  * otherwise the drawn route sketch), the night's lodging, any alternatives (e.g. "If it rains") and any warnings.
  */
 import { esc, attr, join, clip } from '../escape.mjs';
-import { longDate, shortDate, duration, distance, parseTime } from '../format.mjs';
+import { longDate, shortDate, duration, distance, parseTime, temperature } from '../format.mjs';
 import { routeSketch, sketchLegend } from '../sketch.mjs';
 import { daySequence, mapFigure, mapCredit } from '../mapframe.mjs';
 import { icon, MODE_LABEL, MEAL_ICON } from '../icons.mjs';
@@ -185,10 +185,10 @@ export function day(d, i, ctx) {
   const { locale } = ctx;
   const folio = `Day ${d.index} · ${shortDate(d.date, locale)}`;
   return `<section class="sec sec-day" data-pg="section" data-folio="${attr(folio)}" data-tab="${attr(`Day ${d.index}`)}" style="${hueStyle(i)}">
-<header class="day-head" data-pg="block" data-keep><div class="day-n">${d.index}</div><div class="day-titles"><p class="eyebrow">Day <b>${WORDS[d.index] || d.index}</b> · ${esc(longDate(d.date, locale))}</p><h2>${esc(d.theme)}</h2>${d.summary ? `<p class="day-summary">${esc(clip(d.summary, 400))}</p>` : ''}</div>${stats(d, locale)}</header>
-${d.c18 ? c18Head(d, locale) : ''}${aside(d, i, ctx)}
+<header class="day-head" data-pg="block" data-keep><div class="day-n">${d.index}</div><div class="day-titles"><p class="eyebrow">Day <b>${WORDS[d.index] || d.index}</b> · ${esc(longDate(d.date, locale))}</p><h2>${esc(d.theme)}</h2>${d.lead ? `<p class="day-lead">${esc(clip(d.lead, 240))}</p>` : d.summary ? `<p class="day-summary">${esc(clip(d.summary, 400))}</p>` : ''}${keyTimes(d, locale)}</div>${stats(d, locale)}</header>
+${d.c18 ? c18Head(d, locale) : ''}${aside(d, i, ctx)}${besideAside(d, locale, ctx.m.temp)}
 <div class="rail" data-pg="split" data-cont="${attr(`Day ${d.index}, continued`)}">${railRows(d, locale)}</div>
-</section>`;
+${dayTail(d, locale)}</section>`;
 }
 /** When the evening box happens: sunset, else the first extra's time (minutes after midnight); null when untimed. */
 export function eveningAt(ev) {
@@ -223,6 +223,67 @@ function railRows(d, locale) {
     rows.splice(idx < 0 ? rows.length : idx, 0, item);
   }
   return rows.map((r) => r.html).join('\n');
+}
+
+/*
+ * Contract C18 wave 2 — the written briefing. Every block below renders only when its field is present, so a day
+ * without them is unchanged byte for byte. Reading order: the lead (in place of the summary) and the key-time tiles in
+ * the header; "Why this plan" and then the day kit at the top of the rail column, beside the aside — not inside it and
+ * not above it: the aside is unsplittable and already near a page tall on a busy day, so anything that pushes it down
+ * or lengthens it overflows the sheet, while blocks beside it move to the next sheet when they must; food and if-then
+ * after the rail, at the end of the day.
+ */
+/** Up to four key-time tiles under the lead (or the summary): label over the bold time, in the trip's clock. */
+function keyTimes(d, locale) {
+  const tiles = (d.key_times || []).map((k) => `<li><span class="kt-l">${esc(clip(k.label, 30))}</span><b class="kt-t">${esc(clockPlain(k.time, locale))}</b></li>`).join('');
+  return tiles ? `<ul class="key-times">${tiles}</ul>` : '';
+}
+export const KIT_GROUPS = [['items', 'Bring'], ['closures', 'Closed'], ['not_missing', 'Not missing']];
+/** "Day kit": weather (high/low in trip.temp, rain chance, note) and sunset, then what to bring, closures, not missing. */
+function dayKit(d, locale, unit) {
+  const k = d.kit;
+  if (!k) return '';
+  const w = k.weather, sun = d.evening && d.evening.sunset !== null ? d.evening.sunset : null;
+  const wx = [
+    w ? `<p class="kit-w">High <b>${esc(temperature(w.high_c, unit))}</b> · low <b>${esc(temperature(w.low_c, unit))}</b></p>` : '',
+    w && Number.isInteger(w.rain_pct) ? `<p class="kit-w">Rain chance <b>${w.rain_pct}%</b></p>` : '',
+    w && w.note ? `<p class="kit-n">${esc(clip(w.note, 160))}</p>` : '',
+    sun !== null ? `<p class="kit-w kit-sun">Sunset <b>${esc(clockPlain(sun, locale))}</b></p>` : ''
+  ].join('');
+  const cols = [wx ? `<div class="kit-c kit-weather"><p class="kit-h">Weather</p>${wx}</div>` : '',
+    ...KIT_GROUPS.filter(([key]) => (k[key] || []).length).map(([key, label]) => `<div class="kit-c kit-${key.replace('_', '-')}"><p class="kit-h">${label}</p><ul>${k[key].map((x) => `<li>${esc(clip(x, 160))}</li>`).join('')}</ul></div>`)].filter(Boolean);
+  return cols.length ? `<div class="day-kit" data-pg="block"><p class="eyebrow">Day kit</p><div class="kit-cols">${cols.join('')}</div></div>` : '';
+}
+/** "Why this plan": the choices the planner made, a short bulleted box. */
+function whyBox(d) {
+  const why = d.why || [];
+  return why.length ? `<div class="why-box" data-pg="block"><p class="eyebrow">Why this plan</p><ul>${why.map((x) => `<li>${esc(clip(x, 160))}</li>`).join('')}</ul></div>` : '';
+}
+/** The blocks at the top of the rail column, beside the aside: "Why this plan", then the day kit ('' when neither). */
+function besideAside(d, locale, unit) {
+  return [whyBox(d), dayKit(d, locale, unit)].filter(Boolean).map((x) => '\n' + x).join('');
+}
+/** "Food on your route": Name · Dish · Fits · Price, the caveat as a small line under its row; a name with a card links to it. */
+function foodBlock(d) {
+  const rows = (d.food || []).map((f) => {
+    const ref = f.hasCard ? ` ${pageRef(f.place.id)}` : '';
+    const main = `<tr${f.caveat ? ' class="has-cav"' : ''}><td class="fd-n"><b>${esc(clip(f.name, 160))}</b>${ref}</td><td class="fd-d">${esc(clip(f.dish, 160))}</td><td class="fd-f">${esc(clip(f.fits, 160))}</td><td class="fd-p">${f.price ? esc(clip(f.price, 60)) : ''}</td></tr>`;
+    return main + (f.caveat ? `<tr class="fd-cav"><td colspan="4">${icon('info', 11)} ${esc(clip(f.caveat, 160))}</td></tr>` : '');
+  });
+  return rows.length ? `<div class="day-food" data-pg="block"><p class="eyebrow">Food on your route</p><table class="food-t"><thead><tr><th>Name</th><th>Dish</th><th>Fits</th><th>Price</th></tr></thead><tbody>${rows.join('')}</tbody></table></div>` : '';
+}
+/** "If this, then that": two columns, then the bail-out as a highlighted last line ("Cutting the day short"). */
+export const BAIL_LABEL = 'Cutting the day short';
+function ifThenBlock(d) {
+  const rows = (d.if_then || []).map((x) => `<div class="it-row"><dt>${esc(clip(x.if, 160))}</dt><dd>${esc(clip(x.then, 160))}</dd></div>`);
+  if (d.bail_out) rows.push(`<div class="it-row it-bail"><dt>${BAIL_LABEL}</dt><dd>${esc(clip(d.bail_out, 240))}</dd></div>`);
+  if (!rows.length) return '';
+  const head = (d.if_then || []).length ? '<div class="it-row it-head"><dt>If</dt><dd>Then</dd></div>' : '';
+  return `<div class="day-ifthen" data-pg="block"><p class="eyebrow">If this, then that</p><dl class="it-rows">${head}${rows.join('')}</dl></div>`;
+}
+/** The blocks after the rail (food, then if-then), each on its own line; '' for a day without them. */
+function dayTail(d) {
+  return [foodBlock(d), ifThenBlock(d)].filter(Boolean).map((x) => x + '\n').join('');
 }
 
 // Developed by: LightAISolutions

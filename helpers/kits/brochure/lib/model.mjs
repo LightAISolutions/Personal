@@ -50,7 +50,7 @@ export function semanticErrors(m) {
     (d.free || []).forEach((x, j) => { if (minutesBetween(x.start, x.end) === null) push(`${p}/free/${j}`, 'ends before it starts'); });
     (d.warnings || []).forEach((x, j) => { if (x.place && !key(x.place)) push(`${p}/warnings/${j}/place`, `unknown place "${x.place}"`); });
     ((d.alternatives && d.alternatives.items) || []).forEach((x, j) => { if (!key(x.place)) push(`${p}/alternatives/items/${j}/place`, `unknown place "${x.place}"`); });
-    c18DayErrors(d, p, key, push);
+    c18DayErrors(d, p, key, push, briefCaps(m.book));
   });
   (m.later || []).forEach((l, i) => l.items.forEach((it, j) => { if (it.place && !key(it.place)) push(`/later/${i}/items/${j}/place`, `unknown place "${it.place}"`); }));
   ((m.season && m.season.events) || []).forEach((x, j) => {
@@ -113,15 +113,30 @@ export function usesC11(m) {
  */
 export const C18_TRIP = ['clock', 'temp'];
 export const C18_DAY = ['checklist', 'prep', 'departure'];
+/** Contract C18 wave 2 (the written briefing): the day's lead, key times, contents line, food, if-then, bail-out, why, kit. */
+export const C18_BRIEF = ['lead', 'key_times', 'contents', 'food', 'if_then', 'bail_out', 'why', 'kit'];
+/**
+ * The briefing caps per book. The schema holds the brochure's; wave 3's Day book (`book: "day"`) adds its own row here
+ * (food and if-then up to 10) and raises the schema's maxItems to the largest row, and semanticErrors() keeps every
+ * other book at its own caps. Text caps are characters, list caps items.
+ */
+export const BRIEF_CAPS = Object.freeze({
+  brochure: Object.freeze({ key_times: 4, food: 6, if_then: 6, why: 4, kit_items: 6, kit_closures: 4, kit_not_missing: 4, lead: 240, contents: 80, bail_out: 240, label: 30, line: 160, price: 60, theme: 160 })
+});
+export const briefCaps = (book) => BRIEF_CAPS[book] || BRIEF_CAPS.brochure;
+/** True when any day carries a briefing field (wave 2): its styles are added only then. */
+export function usesC18Brief(m) {
+  return (m.days || []).some((d) => C18_BRIEF.some((k) => d[k] !== undefined));
+}
 export function usesC18(m) {
   const has = (o, keys) => Boolean(o) && keys.some((k) => o[k] !== undefined);
-  return has(m.trip, C18_TRIP)
+  return has(m.trip, C18_TRIP) || usesC18Brief(m)
     || (m.days || []).some((d) => has(d, C18_DAY) || has(d.start, ['fixed']) || has(d.end, ['fixed'])
       || (d.stops || []).some((s) => has(s, ['fixed', 'tip'])) || (d.meals || []).some((x) => has(x, ['fixed', 'tip']))
       || (d.free || []).some((x) => has(x, ['title', 'options'])));
 }
 /** C18 checks a schema cannot express: prep steps in time order, leave-by not after the departure, free options. */
-function c18DayErrors(d, p, key, push) {
+function c18DayErrors(d, p, key, push, caps = briefCaps()) {
   let last = -1;
   ((d.prep && d.prep.steps) || []).forEach((s, j) => {
     const t = parseTime(s.time);
@@ -139,6 +154,22 @@ function c18DayErrors(d, p, key, push) {
     if (names.has(n)) push(q + '/name', `"${o.name}" is offered twice on this day`);
     names.add(n);
   }));
+  c18BriefErrors(d, p, key, push, caps);
+}
+/** C18 wave 2 checks: key times in time order, a food place is a known key, the low not above the high, the book's caps. */
+function c18BriefErrors(d, p, key, push, caps) {
+  let last = -1;
+  (d.key_times || []).forEach((k, j) => {
+    const t = parseTime(k.time);
+    if (t !== null && t < last) push(`${p}/key_times/${j}/time`, 'earlier than the tile before (key times go in time order)');
+    if (t !== null) last = t;
+  });
+  (d.food || []).forEach((f, j) => { if (f.place && !key(f.place)) push(`${p}/food/${j}/place`, `unknown place "${f.place}"`); });
+  const w = d.kit && d.kit.weather;
+  if (w && Number.isFinite(w.high_c) && Number.isFinite(w.low_c) && w.low_c > w.high_c) push(`${p}/kit/weather/low_c`, 'the low is above the high');
+  const over = (list, cap, at) => { if (Array.isArray(list) && list.length > cap) push(at, `at most ${cap} items`); };
+  over(d.key_times, caps.key_times, `${p}/key_times`); over(d.food, caps.food, `${p}/food`); over(d.if_then, caps.if_then, `${p}/if_then`); over(d.why, caps.why, `${p}/why`);
+  if (d.kit) { over(d.kit.items, caps.kit_items, `${p}/kit/items`); over(d.kit.closures, caps.kit_closures, `${p}/kit/closures`); over(d.kit.not_missing, caps.kit_not_missing, `${p}/kit/not_missing`); }
 }
 /** prepare(model) → derived model; throws ModelError. The input is not mutated. */
 export function prepare(input) {
@@ -192,11 +223,13 @@ export function prepare(input) {
     const stats = { stops: stops.length, visitMin: stops.reduce((a, s) => a + s.minutes, 0), walkMin: sum((l) => l.mode === 'walk'), transitMin: sum((l) => l.transit), walkEstimated: legs.some((l) => l.mode === 'walk' && l.estimated), transitEstimated: legs.some((l) => l.transit && l.estimated), spareMin: Number.isInteger(d.spare_minutes) ? d.spare_minutes : null, driveMin: sum((l) => ['drive', 'taxi', 'bike'].includes(l.mode)), firstStart: starts.length ? Math.min(...starts) : null, lastEnd: ends.length ? Math.max(...ends) : null };
     for (const t of timeline) if ((t.kind === 'stop' || t.kind === 'meal') && t.place && !cardSeen.has(t.place.id)) { cardSeen.add(t.place.id); cardOrder.push({ place: t.place, day: i + 1, n: t.kind === 'stop' ? t.n : null, mealKind: t.kind === 'meal' ? t.meal : null }); }
     const alternatives = d.alternatives ? { title: d.alternatives.title || 'If it rains', items: d.alternatives.items.map((x) => ({ ...x, place: places[x.place] })) } : null;
-    return { ...d, c18, index: i + 1, weekday: WEEKDAYS[parseDate(d.date).getUTCDay()], lodging, stops, meals, free, legs, timeline, stats, warnings: d.warnings || [], alternatives, evening };
+    const food = d.food ? { food: d.food.map((f) => ({ ...f, place: f.place ? places[f.place] : null })) } : {};
+    return { ...d, ...food, c18, index: i + 1, weekday: WEEKDAYS[parseDate(d.date).getUTCDay()], lodging, stops, meals, free, legs, timeline, stats, warnings: d.warnings || [], alternatives, evening };
   });
   // An evening extra links to a place card only when that place has one (cards are for the stops and meals).
   for (const d of days) if (d.evening) for (const x of d.evening.extras) x.hasCard = Boolean(x.place && cardSeen.has(x.place.id));
   for (const d of days) for (const f of d.free) for (const o of f.options || []) o.hasCard = Boolean(o.place && cardSeen.has(o.place.id));
+  for (const d of days) for (const f of d.food || []) f.hasCard = Boolean(f.place && cardSeen.has(f.place.id));
   const later = (m.later || []).map((l) => ({ ...l, items: l.items.map((it) => ({ ...it, place: it.place ? places[it.place] : null })) }));
   const hasImg = (x) => Boolean(x && typeof x.src === 'string' && x.src.trim());
   const google = { maps: hasImg(m.trip.map_image) || days.some((d) => hasImg(d.map_image)), photos: Object.values(places).some((p) => hasImg(p.google_photo)) };

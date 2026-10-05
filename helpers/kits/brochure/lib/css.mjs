@@ -7,10 +7,10 @@
 import { tokensCss, pageSpec } from './tokens.mjs';
 import { STACK } from './fonts.mjs';
 
-export function stylesheet({ page = pageSpec(), fontCss = '', c11 = false, c12 = false, c18 = false } = {}) {
+export function stylesheet({ page = pageSpec(), fontCss = '', c11 = false, c12 = false, c18 = false, c18b = false } = {}) {
   // C11 (Phase 11), C12 (Phase 12) and C18 (Phase 18) rules are added only when the model uses those fields, so an
   // older brochure's HTML does not grow rules it never uses. C18 follows SCREEN: it extends the screen grid.
-  return [fontCss, tokensCss(page), BASE, COVER, GLANCE, DAY, RAIL, CARDS, LATER, PRACTICAL, ATTRIBUTION, ...(c11 ? [C11] : []), ...(c12 ? [C12] : []), SCREEN, ...(c18 ? [C18] : []), printFallback(page), PAGED].join('\n');
+  return [fontCss, tokensCss(page), BASE, COVER, GLANCE, DAY, RAIL, CARDS, LATER, PRACTICAL, ATTRIBUTION, ...(c11 ? [C11] : []), ...(c12 ? [C12] : []), SCREEN, ...(c18 ? [C18] : []), ...(c18 && c18b ? [C18B] : []), printFallback(page), PAGED].join('\n');
 }
 
 const BASE = `
@@ -396,6 +396,89 @@ html.paged .prep-night{margin-bottom:.25rem;padding-bottom:.25rem}
 html.paged .tight .day-brief{margin-bottom:.55rem;gap:.7rem}
 html.paged .tight .brief-box,html.paged .tight .depart{padding:.38rem .65rem .45rem}
 html.paged .tight .free-opts{margin-top:.15rem}
+`;
+/**
+ * Contract C18 wave 2: the written briefing — the lead and key-time tiles in the header, "Why this plan" and the day kit
+ * at the top of the rail column beside the aside, food and if-then after the rail. Added only when a day has a briefing
+ * field (usesC18Brief), after C18, so a wave-1 brochure keeps its bytes. Existing tokens and components only.
+ */
+const C18B = `
+.day-lead{font-size:var(--s0);line-height:1.38;color:var(--ink);max-width:32rem}
+.key-times{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.55rem}
+.key-times li{display:grid;min-width:4.4rem;padding:.26rem .55rem .3rem;border:1px solid var(--hue-soft);border-top:2px solid var(--hue);background:var(--paper);line-height:1.15}
+.kt-l{font-size:var(--s-3);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.kt-t{font-size:var(--s1);font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+.day-kit{display:flow-root;border:1px solid var(--hair);border-left:2px solid var(--hue);padding:.45rem .75rem .55rem;margin-bottom:.7rem;font-size:var(--s-1);line-height:1.35}
+.day-kit .eyebrow,.why-box .eyebrow,.day-food .eyebrow,.day-ifthen .eyebrow{margin-bottom:.25rem;color:var(--ink2)}
+.kit-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:.3rem 1rem}
+.kit-h{font-size:var(--s-3);letter-spacing:.14em;text-transform:uppercase;color:var(--hue);margin-bottom:.15rem}
+.kit-w b{font-weight:700;font-variant-numeric:tabular-nums}
+.kit-n{font-style:italic;color:var(--muted);font-size:var(--s-2)}
+.kit-c ul{display:grid;gap:.12rem}
+.kit-c li{position:relative;padding-left:.8rem}
+.kit-c li::before{content:"·";position:absolute;left:.15rem;color:var(--hue)}
+.kit-closures li::before{content:"×";color:var(--alert)}
+.kit-not-missing li::before{content:"✓";left:0;color:var(--moss)}
+.why-box{display:flow-root;background:var(--cream);border-left:2px solid var(--hue);padding:.45rem .75rem .5rem;margin:0 0 .6rem;font-size:var(--s-1);line-height:1.35}
+.why-box ul{display:grid;gap:.15rem}
+.why-box li{position:relative;padding-left:.9rem;color:var(--ink2)}
+.why-box li::before{content:"→";position:absolute;left:0;color:var(--hue);font-size:.9em}
+.day-food,.day-ifthen{display:flow-root;margin-top:.9rem;font-size:var(--s-1);line-height:1.35}
+.food-t{width:100%;border-collapse:collapse}
+.food-t th{text-align:left;font-weight:400;font-size:var(--s-3);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 .6rem .2rem 0;border-bottom:1px solid var(--ink)}
+.food-t th:last-child,.food-t .fd-p{text-align:right;padding-right:0}
+.food-t td{padding:.3rem .6rem .3rem 0;border-bottom:1px solid var(--hair);vertical-align:top}
+.food-t tr.has-cav td{border-bottom:0;padding-bottom:.05rem}
+.food-t .fd-cav td{font-size:var(--s-2);font-style:italic;color:var(--muted);padding-top:0}
+.fd-cav .ic{color:var(--hue);font-style:normal}
+.fd-n{color:var(--ink)}
+.fd-n b{font-weight:400}
+.fd-n .pref{font-size:var(--s-2);margin-left:.3rem;color:var(--sea)}
+.fd-d,.fd-f{color:var(--ink2)}
+.fd-p{white-space:nowrap;font-variant-numeric:tabular-nums}
+.it-rows{display:grid;margin:0}
+.it-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:.9rem;padding:.28rem 0;border-bottom:1px solid var(--hair)}
+.it-row dt{color:var(--ink)}
+.it-row dd{margin:0;color:var(--ink2)}
+.it-head{padding:0 0 .18rem;border-bottom:1px solid var(--ink)}
+.it-head dt,.it-head dd{font-size:var(--s-3);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.it-bail{margin-top:.35rem;padding:.4rem .6rem;background:var(--cream);border-bottom:0;border-left:2px solid var(--hue)}
+.it-bail dt{font-size:var(--s-3);letter-spacing:.12em;text-transform:uppercase;color:var(--hue);padding-top:.2em}
+.it-bail dd{color:var(--ink)}
+html:not(.paged) .sec-day{grid-template-areas:"head head" "brief brief" "legend legend" "why aside" "kit aside" "rail aside" "food aside" "ifthen aside"}
+html:not(.paged) .day-kit{grid-area:kit}
+html:not(.paged) .why-box{grid-area:why}
+html:not(.paged) .day-food{grid-area:food}
+html:not(.paged) .day-ifthen{grid-area:ifthen}
+@media (max-width:760px){
+  html:not(.paged) .sec-day{grid-template-areas:"head" "brief" "why" "kit" "aside" "legend" "rail" "food" "ifthen"}
+  html:not(.paged) .key-times li{min-width:0}
+  html:not(.paged) .kit-cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html:not(.paged) .food-t thead{display:none}
+  html:not(.paged) .food-t,html:not(.paged) .food-t tbody,html:not(.paged) .food-t tr{display:block}
+  html:not(.paged) .food-t tr{padding:.35rem 0;border-bottom:1px solid var(--hair)}
+  html:not(.paged) .food-t tr.has-cav{border-bottom:0;padding-bottom:0}
+  html:not(.paged) .food-t td{display:inline;border:0;padding:0;text-align:left}
+  html:not(.paged) .food-t .fd-n,html:not(.paged) .food-t .fd-cav td{display:block}
+  html:not(.paged) .food-t .fd-f::before,html:not(.paged) .food-t .fd-p:not(:empty)::before{content:" · ";color:var(--faint)}
+  html:not(.paged) .it-row{grid-template-columns:minmax(0,1fr);gap:.1rem}
+  html:not(.paged) .it-head{display:none}
+  html:not(.paged) .it-row:not(.it-bail) dd::before{content:"→ ";color:var(--hue)}
+}
+html.paged .key-times{margin-top:.45rem;gap:.35rem}
+html.paged .key-times li{padding:.16rem .5rem .2rem}
+html.paged .kt-t{font-size:var(--s0)}
+html.paged .day-kit{margin-bottom:.5rem;padding:.4rem .65rem .45rem;font-size:var(--s-2);line-height:1.3}
+html.paged .kit-cols{grid-template-columns:repeat(2,minmax(0,1fr));gap:.3rem .9rem}
+html.paged .day-kit .eyebrow,html.paged .why-box .eyebrow,html.paged .day-food .eyebrow,html.paged .day-ifthen .eyebrow{font-size:var(--s-3);margin-bottom:.2rem}
+html.paged .why-box{font-size:var(--s-2);line-height:1.3;padding:.38rem .65rem .42rem;margin-bottom:.45rem}
+html.paged .day-food,html.paged .day-ifthen{font-size:var(--s-2);line-height:1.3;margin-top:.7rem}
+html.paged .food-t td{padding:.22rem .55rem .22rem 0}
+html.paged .food-t td.fd-p{padding-right:0}
+html.paged .it-row:not(.it-bail){padding:.2rem 0}
+html.paged .it-bail{padding:.32rem .55rem}
+html.paged .tight .day-kit{margin-bottom:.55rem;padding:.34rem .65rem .4rem}
+html.paged .tight .day-food,html.paged .tight .day-ifthen{margin-top:.55rem}
 `;
 /** Browser print without the paginator: page breaks by section, nothing split that should not be. */
 function printFallback(page) {

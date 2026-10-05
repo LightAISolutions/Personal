@@ -105,12 +105,36 @@ a model without them renders byte for byte as before (pinned in `tests/kit_broch
 | `tip` on stops and meals | one line | "Tip" line under the row |
 | `free[].title`, `free[].options` ≤ 4 `{name, place, km, walk_min, open, note, url}` | the window's name and what is nearby | "Title · length — note" and one line per option (walk or distance, open status, link, card reference) |
 
+**Contract C18 wave 2 — the written briefing (Phase 18 WP-18d, all optional, per day).** Any of these fields also
+makes `usesC18(model)` true; their own styles (the `C18B` block of `lib/css.mjs`) are added only when
+`usesC18Brief(model)` is true, so a wave-1 model and every older model render byte for byte as before (pinned in
+`tests/kit_brochure_c18b.test.js`). Sample: `fixtures/sample-trip-c18b.json`. The caps are constants in
+`BRIEF_CAPS.brochure` (`lib/model.mjs`); the schema holds the same numbers, and `briefCaps(book)` is the hook for
+wave 3's Day book to bring its own row (semanticErrors() checks each book against its own caps).
+
+| Field | Cap | Where it shows |
+|---|---|---|
+| `lead` | 240 characters | replaces the summary line under the day's title |
+| `key_times` `{label ≤ 30, time}` | 4, in time order | a row of time tiles under the lead (times in the trip's clock) |
+| `contents` | 80 characters | the day's line on the at-a-glance page instead of its theme |
+| `why` | 4 lines of ≤ 160 | "Why this day works" box at the top of the rail column, beside the aside |
+| `kit` `{weather? {high_c, low_c, rain_pct 0–100, note?}, items ≤ 6, closures ≤ 4, not_missing ≤ 4}` | as listed | "Day kit" under the why box: high/low (in `trip.temp`), rain chance, note, the day's sunset (from the evening rule: none when the day ends at a departure before it), then groups Bring / Closed / Not missing (empty groups omitted) |
+| `food` `{name, place?, dish, price?, fits, caveat?}` | 6 | "Eating today" table after the rail: name (linked to the card when `place` is given), dish, price, where it fits; the caveat on its own small row |
+| `if_then` `{if, then}` | 6 | "If / Then" list after the food table |
+| `bail_out` | 240 characters | the last row of that list, "Cutting the day short" (the If / Then head row is left out when only the bail-out is given) |
+
+Placement: the aside is unsplittable and near a page high on busy days, so the briefing never goes inside it; why
+and kit sit beside it at the top of the rail column, food and if-then are full-width blocks after the rail (each a
+`data-pg="block"`, so the paginator moves them whole). On a phone the order is head, lead and tiles, why, kit,
+aside, legend, rail, food (as stacked cards), if-then (one column with "→").
+
 Semantic checks beyond the schema (`lib/model.mjs`): every place key resolves, days fall inside the trip and are not
 duplicated, stops are in clock order and do not depart before they arrive, meal/free blocks end after they start; for
 C11, a `day-start` / `day-end` leg needs the day's start / end, extras and season events name known places, and the
 bag step, season events and blooms end after they start; for C12, `here` may only start a leg (it is reserved while
 no place is keyed `here`); for C18, prep steps are in time order, a departure's leave-by is not after it, and a day's
-free options name known places, walk 0–120 min and are not offered twice.
+free options name known places, walk 0–120 min and are not offered twice; for C18 wave 2, key times are in time
+order, a food `place` is a known key, the weather's low is not above its high, and the lists keep the book's caps.
 `prepare()` then derives what the sections render: numbered days with a merged timeline (stops, legs, meals, free
 time in clock order), per-day statistics, hours for the day from the weekday lines, the cards in order of first
 appearance, and page cross-references. Images: `src` is a path relative to the model file or a `data:image/…` URI;

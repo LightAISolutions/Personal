@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tour-guide-briefing.schema.json",
+  "title": "Tour Guide briefing (Contract C18 wave 2: the written briefing per day)",
+  "description": "The words a brochure day is read by, written for one build of a plan: per date the lead, key-time tiles, the glance-page row, food on the route, if-then lines, the bail-out, why this plan, and the day kit. brochure-map merges it per date into the kit's day with options.briefing (only together with options.c18). Every object refuses unknown keys; the caps are the brochure kit's (kits/brochure/lib/model.mjs BRIEF_CAPS.brochure). schemas/index.mjs also checks: every date key a calendar date, key times in time order, a weather low not above its high.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["v", "days"],
+  "properties": {
+    "v": { "const": 1 },
+    "build_id": { "type": "string", "minLength": 1, "maxLength": 120, "description": "The plan build the briefing was written for; brochure-map ignores a briefing whose build_id is not the plan's." },
+    "days": {
+      "type": "object", "maxProperties": 31,
+      "propertyNames": { "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" },
+      "additionalProperties": { "$ref": "#/$defs/day" }
+    }
+  },
+  "$defs": {
+    "time": { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$", "description": "A wall-clock time HH:MM (24 h)." },
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+    "line": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "day": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "theme": { "type": "string", "minLength": 1, "maxLength": 160, "description": "Replaces the plan's theme as the day's headline." },
+        "lead": { "type": "string", "minLength": 1, "maxLength": 240, "description": "The answer first; replaces the summary line under the title." },
+        "key_times": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/keyTime" } },
+        "contents": { "type": "string", "minLength": 1, "maxLength": 80, "description": "The day's row on the glance page." },
+        "food": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/food" } },
+        "if_then": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/ifThen" } },
+        "bail_out": { "type": "string", "minLength": 1, "maxLength": 240 },
+        "why": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/line" } },
+        "kit": { "$ref": "#/$defs/kit" }
+      }
+    },
+    "keyTime": {
+      "type": "object", "additionalProperties": false, "required": ["label", "time"],
+      "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 30 }, "time": { "$ref": "#/$defs/time" } }
+    },
+    "food": {
+      "type": "object", "additionalProperties": false, "required": ["name", "dish", "fits"],
+      "properties": {
+        "name": { "$ref": "#/$defs/line" },
+        "place": { "$ref": "#/$defs/slug", "description": "A place of the plan; the name links to its card when the brochure has one." },
+        "dish": { "$ref": "#/$defs/line" },
+        "price": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "fits": { "$ref": "#/$defs/line" },
+        "caveat": { "$ref": "#/$defs/line" }
+      }
+    },
+    "ifThen": {
+      "type": "object", "additionalProperties": false, "required": ["if", "then"],
+      "properties": { "if": { "$ref": "#/$defs/line" }, "then": { "$ref": "#/$defs/line" } }
+    },
+    "kit": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "weather": {
+          "type": "object", "additionalProperties": false, "required": ["high_c", "low_c"],
+          "properties": {
+            "high_c": { "type": "number", "minimum": -60, "maximum": 60 },
+            "low_c": { "type": "number", "minimum": -60, "maximum": 60 },
+            "rain_pct": { "type": "integer", "minimum": 0, "maximum": 100 },
+            "note": { "$ref": "#/$defs/line" }
+          }
+        },
+        "items": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/line" } },
+        "closures": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/line" } },
+        "not_missing": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/line" } }
+      }
+    }
+  }
+}

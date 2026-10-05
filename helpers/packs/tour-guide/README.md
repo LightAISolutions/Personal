@@ -41,7 +41,7 @@ Input to `planTrip`: `trip`, `places`, `snapshots` (array or map by place id), `
 
 ## Schemas — `schemas/`
 One JSON Schema per entity, `schemas/tour-guide-<kind>.schema.json` (subset of 2020-12, the same one the brochure kit validates).
-Kinds: trip, place, google-snapshot, visit-estimate, place-note, calibration, day-plan, later-list, plan, profile-excerpt, booking, and the ten envelope payloads (see "Payloads" below): shortlist, trip-facts, plan-digest, profile-summary, prefs-review, places-digest, bookings, scout, outline, day-versions.
+Kinds: trip, place, google-snapshot, visit-estimate, place-note, calibration, day-plan, later-list, plan, profile-excerpt, booking, and the ten envelope payloads (see "Payloads" below): shortlist, trip-facts, plan-digest, profile-summary, prefs-review, places-digest, bookings, scout, outline, day-versions. Also `briefing` (Contract C18 wave 2: the written briefing brochure-map merges; its checks are real dates, key times in time order and a low not above the high).
 - `validate(entity, kind) → { ok, errors: [{ path, message }] }`. It runs the schema first. If that passes, it runs the semantic checks:
   - Trip: real calendar dates, ≤ 31 days, a valid IANA time zone, day_start < day_end, exactly one lodging per night.
   - Day plan: legs and stops chain lodging → … → lodging; times run in order (they may cross midnight); each leg's minutes match its clock times within 1; each stop sits inside its opening window; an estimated leg is TRANSIT or WALK and the day then carries exactly one `transit_estimated` warning; a leg's `flags` are listed once.
@@ -196,8 +196,10 @@ Place records may also carry `destination`, `history[]` (trip, date, event — `
 `packs/tour-guide/brochure-map/index.mjs` (library; no CLI, no network):
 
     toBrochureModel({ trip, plan, places?, notes?, snapshots?, estimates?,
-                      options: { generator?, built_on?, verified_on?, show_google_content = true, owner_tz?, now? } }) → brochure model
-    renderPlan(args, { page?, embedFonts? })           → { html, model, warnings }   (kit renderHtml)
+                      options: { generator?, built_on?, verified_on?, show_google_content = true, owner_tz?, now?,
+                                 c18?, clock?, temp?, briefing? } }) → brochure model
+    buildModel(args)                                   → { model, warnings }        (the mapping's own warnings)
+    renderPlan(args, { page?, embedFonts? })           → { html, model, warnings }   (kit renderHtml; kit warnings, then the mapping's)
     renderPlanPdf(args, outPath, { page?, shotsDir? }) → { …, pdf, pages, available } (PDF only when pdfAvailable())
 
 - Days: one brochure day per DayPlan with stops. Stops keep arrive/depart/minutes/activity/booked. Legs map
@@ -228,6 +230,24 @@ Place records may also carry `destination`, `history[]` (trip, date, event — `
 - `brochure-map-sample.mjs` → `sampleInput()`: an invented two-day trip for tests.
 - Phase 11 (Contract C11) fields: a day's real `start`/`end` and `bags` become timeline rows; a stop shows its `last_entry`, where its length comes from (`minutes_source`), its `booking_line` (only when not booked) and its `crowd_slot` note; a booked or researched dinner becomes a dinner card; `sunset` and the day's `extras` fill a "This evening" box; a place's `facts` become a facts block on its card with sources, the date checked and a stale mark; `local_favourite` is a tag; the trip's `season` becomes a season page after the overview. Every fact and season line goes through one adapter, `brochure-map-facts.mjs` (`cardFacts`, `stopLines`, `seasonModel`, `factsSourceRows`, `seasonSourceRows`), whose swap points (`IMPL`) are bound to `facts/` (`factsLines`, `menuLine`, `factsStale`) and `season/` (`eventsOn`, `bloomOn`); `toBrochureModel` takes `options.now` and `options.diet` (a string or a list) for staleness and the menu's fit. A plan without C11 fields renders the same HTML byte for byte.
 - `brochure-map-sample-c11.mjs` → `sampleInputC11()`, `C11_FACTS`, `c11Season()`: an invented trip carrying every C11 field.
+- Phase 18 (Contract C18 wave 1, `brochure-map-c18.mjs`): `options.c18: true` adds each day's fixed marks, field tips, checklist, prep, departure and the planner's free-window titles and options, all computed from data every plan already has; without `c18` the model is byte for byte as before. `options.clock` (`12h` | `24h`) and `options.temp` (`c` | `f` | `both`) become `trip.clock` / `trip.temp` only when given.
+- Phase 18 (Contract C18 wave 2, `brochure-map-briefing.mjs`): `options.briefing` — the written briefing, shape `schemas/tour-guide-briefing.schema.json` (`{ v: 1, build_id?, days: { "<date>": { theme?, lead?, key_times?, contents?, food?, if_then?, bail_out?, why?, kit? } } }`, kind `briefing`; not an envelope payload) — is merged per date into the days, and only with `options.c18` (otherwise one warning and no change). `mergeBriefing(days, briefing, { cards, buildId, ck })` is tolerant where the schema is strict, and every drop is a `briefing: …` warning:
+
+  | Rule | What happens |
+  |---|---|
+  | not an object, `v` ≠ 1 or no `days` | ignored whole |
+  | `build_id` given and not the plan's | ignored whole ("written for build X, the plan is build Y") |
+  | a date that is not a brochure day (not in the plan, or a free day) | dropped |
+  | an unknown key (day, entry, kit or weather) | dropped |
+  | a text | times inside it follow `options.clock`, then it is clipped to the kit's cap (`BRIEF_CAPS.brochure`) with "…" |
+  | a list | unusable entries dropped first, then the first N kept (4 key times, 6 food, 6 if-then, 4 why, kit 6 / 4 / 4) |
+  | `key_times` | an entry needs a label and an `H:MM`/`HH:MM` time (normalised to `HH:MM`); kept in time order |
+  | `food` | needs name, dish and fits; a `place` with no card in the brochure is dropped and the name kept as plain text |
+  | `kit.weather` | needs `high_c` and `low_c` in −60…60; a low above the high drops it; `rain_pct` outside 0–100 is dropped (rounded otherwise) |
+  | `theme` | replaces the plan's theme for that day; an empty kit is left out |
+
+  The merged model is always valid for the kit (schema and semantic checks). Where each block prints: `kits/brochure/README.md`, "Contract C18 wave 2".
+- `brochure-map-sample-c18.mjs` → `sampleInputC18()` and `C18_BRIEFING` (a briefing for both of its days, build `fixture-build-0001`): invented data for the C18 tests.
 Defaults and their reasons: `helpers/decisions/WP-3c.md`; the C11 pass: `helpers/decisions/WP-11d.md`.
 
 ## Gem Funnel — `gems/`
