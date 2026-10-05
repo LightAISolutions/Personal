@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.16w">
+  <meta name="build-version" content="v01.17w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -77,7 +77,7 @@
     .count { font: 600 36px/1 var(--serif); }
     .counts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
     .counts .card { margin: 0; text-align: center; }
-    input[type=text], input[type=search], textarea, select { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--section); }
+    input[type=text], input[type=search], input[type=number], input[type=date], input[type=time], textarea, select { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--section); }
     textarea { min-height: 72px; resize: vertical; }
     label.q { display: block; font-weight: 600; margin: 18px 0 8px; }
     .choices { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -170,6 +170,23 @@
     .form .fmeans { font-size: 13px; color: var(--hint); margin-top: 2px; }
     .form.copied { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
     .group-about { margin: -4px 0 4px; font-size: 14px; color: var(--hint); }
+    .frow { display: flex; align-items: stretch; gap: 8px; margin-top: 6px; }
+    .frow .form { flex: 1 1 auto; min-width: 0; margin-top: 0; }
+    .btn.small { flex: 0 0 auto; min-height: 44px; padding: 8px 14px; font-size: 14px; }
+    .btn:disabled { opacity: 0.5; }
+    .linkbtn { min-height: 44px; padding: 8px 0; border: 0; background: none; color: var(--link); font-size: 14px; text-align: left; }
+    .own { display: flex; gap: 8px; margin-top: 4px; }
+    .own input { flex: 1 1 auto; min-width: 0; font: 14px/1.3 var(--mono); }
+    .cmdform .field { margin-top: 4px; }
+    .cmdform label.q { margin: 16px 0 6px; }
+    .cmdform .optional { font-weight: 400; color: var(--hint); font-size: 13px; }
+    .fhint { margin: -2px 0 8px; font-size: 13px; color: var(--hint); }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .chips .pill[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+    .preview { margin: 0 0 4px; padding: 10px 12px; border-radius: 10px; background: var(--card); font: 14px/1.4 var(--mono); overflow-wrap: anywhere; }
+    .preview.empty { font-family: inherit; color: var(--hint); }
+    .cmdform .legend { margin-top: 18px; }
+    .row.center { justify-content: center; flex-wrap: wrap; margin-top: 12px; }
 
     .reveal { animation: rise 0.35s ease both; }
     .reveal:nth-child(2) { animation-delay: 0.04s; } .reveal:nth-child(3) { animation-delay: 0.08s; }
@@ -191,7 +208,7 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.16w';
+    var APP_VERSION = 'v01.17w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
       { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'compare', label: 'Compare' }, { id: 'facts', label: 'Facts' },
@@ -206,7 +223,7 @@
     var MENU_ID_RE = /^mn-\d{8}-[a-z0-9-]{1,40}$/;
     var TICKS = [{ v: 'w', text: '✅ Want' }, { v: 'l', text: '🔖 Later' }, { v: 's', text: '❌ Skip' }];
     var tg = (window.Telegram && window.Telegram.WebApp) || null;
-    var S = { core: '', screen: 'home', commands: null, trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', scout: '', daytrip: '', board: '', menu: '', jy: null, base: '', mix: {}, busy: false };
+    var S = { core: '', screen: 'home', commands: null, trip: '', home: null, shortlist: null, ticks: {}, places: null, bank: null, answers: {}, typed: {}, facts: null, factChoices: {}, factEdits: {}, person: '', scout: '', daytrip: '', board: '', menu: '', jy: null, base: '', mix: {}, busy: false, back: null, cmdQ: '', cmdCtx: null, cmdNonce: {} };
     var $ = function (id) { return document.getElementById(id); };
     var main = $('main');
 
@@ -337,7 +354,7 @@
     function go(screen, trip) {
       flushDraft();   // an unsent interview draft is written before the screen changes
       S.screen = screen; if (trip !== undefined) S.trip = trip;
-      setMain('', null);
+      setMain('', null); S.back = null;   // a sub-screen (a command's form) sets S.back; the BackButton then returns there first
       Array.prototype.forEach.call($('nav').children, function (b) { if (b.getAttribute('data-screen') === screen) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
       try { if (tg && tg.BackButton) { if (screen === 'home') tg.BackButton.hide(); else tg.BackButton.show(); } } catch (e) { /* older clients */ }
       ({ home: showHome, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout, vegcard: showVegCard, daytrip: showDaytrip, whatson: showWhatson, quiet: showQuiet, menu: function () { showMenu(); }, commands: function () { showCommands(); } })[screen]();
@@ -1886,6 +1903,44 @@
         return !w || name.indexOf(w) === 0 || words[w] || words[w + 's'] || words[w + 'es'] || (/s$/.test(w) && words[w.replace(/e?s$/, '')]);
       });
     }
+    /* Running a command: the bot posts "▶️ /cmd … · from the app" in the chat and the answer threads under it (commands.run).
+     * One nonce per command text until it is answered, so a retry after a lost connection never runs it twice. */
+    var CMD_WHY = { not_command: 'That is not a command — it has to start with /.', unknown_command: 'The bot does not know that command.',
+      chat_only: 'That one only works when typed in the chat.', send_failed: 'The bot could not post in the chat — try again.',
+      bad_text: 'That command is empty or has characters the chat cannot take.', too_long: 'That is too long for one command.', missing_arg: 'Type the command first.' };
+    function cmdNonce() { var s = 'r'; while (s.length < 17) s += Math.random().toString(36).slice(2); return s.slice(0, 17); }
+    function cmdRun(text, opts) {
+      opts = opts || {}; text = str(text, 500).replace(/\s+/g, ' ').trim();
+      var say = opts.say || setStatus;
+      var send = function () {
+        if (S.busy) return;
+        S.cmdNonce = S.cmdNonce || {};
+        var nonce = S.cmdNonce[text] || (S.cmdNonce[text] = cmdNonce());
+        if (opts.btn) opts.btn.disabled = true; mainProgress(true); say('Sending…');
+        api('commands.run', { text: text, nonce: nonce }, function (err, body) {
+          if (opts.btn) opts.btn.disabled = false; mainProgress(false);
+          if (err) return say('Not sent — no connection. Try again.');
+          var st = num(body.status);
+          if (st === 403) return render(stateView('🔒', 'This app only answers its owner', 'Open it from your own helper bot.'));
+          if (st === 429) return render(stateView('⏳', 'Daily limit reached — use the chat', 'The app is paused until tomorrow; the bot still answers.'));
+          delete S.cmdNonce[text];
+          if (!body.ok) return say('Not sent: ' + (CMD_WHY[str(body.reason, 40)] || why(body)));
+          haptic('ok'); setStatus(''); cmdSent(text, opts.back);
+        });
+      };
+      if (!/^\/[A-Za-z0-9_]/.test(text)) return say(CMD_WHY[text ? 'not_command' : 'missing_arg']);
+      if (opts.confirm) confirmThen('Run ' + str(text, 120) + '?', send); else send();
+    }
+    function cmdSent(text, back) {
+      setMain('', null); S.back = null;
+      var toChat = tg && tg.close ? el('button', { class: 'btn', type: 'button', text: 'Go to chat', on: { click: function () { try { tg.close(); } catch (e) { /* older clients */ } } } }) : null;
+      render(el('div', { class: 'state', 'data-sent': text }, [el('div', { class: 'big', text: '✅' }), el('h2', { text: 'Sent' }),
+        el('p', { text: 'The answer is in the chat, under “▶️ ' + str(text, 80) + '”.' }),
+        el('div', { class: 'row center' }, [toChat, el('button', { class: 'btn ghost', type: 'button', text: back ? 'Back' : 'All commands', on: { click: back || function () { showCommands(); } } })])]));
+    }
+
+    /* The list: each example copies on tap; beside it Run (a ready-made form), Fill in (a form with fields) or Edit; under each
+     * runnable command a box to type your own. Examples that share a template get one Fill in. */
     function cmdForm(f) {
       f = obj(f); var text = str(f.text, 200), means = str(f.means, 120);
       return el('button', { class: 'form', type: 'button', 'data-form': text, on: { click: function (ev) {
@@ -1896,6 +1951,36 @@
         });
       } } }, [el('span', { class: 'ftext', text: text }), means ? el('span', { class: 'fmeans', text: means }) : null]);
     }
+    function cmdOwn(c, text) {
+      var cmd = str(c.cmd, 40), box = el('div', { class: 'own' });
+      var open = function (value) {
+        var input = el('input', { type: 'text', maxlength: '500', 'aria-label': 'Type a ' + cmd + ' command', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false' });
+        input.value = value; clear(box);
+        var run = el('button', { class: 'btn small', type: 'button', text: 'Run', 'data-own-run': cmd, on: { click: function (ev) { cmdRun(input.value, { btn: ev.currentTarget }); } } });
+        input.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') cmdRun(input.value, { btn: run }); });
+        box.appendChild(input); box.appendChild(run);
+        try { input.focus(); } catch (e) { /* not focusable here */ }
+      };
+      box.appendChild(el('button', { class: 'linkbtn', type: 'button', text: '✎ Type your own…', 'data-own': cmd, on: { click: function () { open(text || cmd + ' '); } } }));
+      box.openWith = open;
+      return box;
+    }
+    function cmdRow(c) {
+      var cmd = str(c.cmd, 40), runnable = c.runnable !== false, tpls = {}, forms = list(c.forms).map(obj).slice(0, 6);
+      var own = runnable ? cmdOwn(c) : null;
+      var row = el('div', { class: 'cmd', 'data-cmd': cmd }, [el('div', { class: 'cname', text: cmd }), c.does ? el('div', { class: 'does', text: str(c.does, 400) }) : null]);
+      forms.forEach(function (f) {
+        var text = str(f.text, 200), act = null;
+        if (runnable && f.run === 'now') act = el('button', { class: 'btn small', type: 'button', text: 'Run', 'data-run': text, on: { click: function (ev) { cmdRun(text, { confirm: !!f.confirm, btn: ev.currentTarget }); } } });
+        else if (runnable && f.run === 'form' && !tpls[str(f.tpl)]) {
+          tpls[str(f.tpl)] = true;
+          act = el('button', { class: 'btn small', type: 'button', text: 'Fill in', 'data-fill': text, on: { click: function () { showCmdForm(c, f); } } });
+        } else if (runnable && f.run === 'type') act = el('button', { class: 'btn small ghost', type: 'button', text: 'Edit', 'data-edit': text, on: { click: function () { own.openWith(text); } } });
+        row.appendChild(el('div', { class: 'frow' }, [cmdForm(f), act]));
+      });
+      if (own) row.appendChild(own);
+      return row;
+    }
     function cmdList(box, data, q) {
       clear(box); var n = 0;
       list(data.groups).map(obj).forEach(function (g) {
@@ -1903,11 +1988,7 @@
         if (!rows.length) return;
         box.appendChild(el('h3', { text: str(g.title, 60) }));
         if (g.about) box.appendChild(el('p', { class: 'group-about', text: str(g.about, 200) }));
-        rows.forEach(function (c) {
-          n++;
-          box.appendChild(el('div', { class: 'cmd', 'data-cmd': str(c.cmd, 40) }, [el('div', { class: 'cname', text: str(c.cmd, 40) }),
-            c.does ? el('div', { class: 'does', text: str(c.does, 400) }) : null].concat(list(c.forms).slice(0, 6).map(cmdForm))));
-        });
+        rows.forEach(function (c) { n++; box.appendChild(cmdRow(c)); });
       });
       if (!n) { box.appendChild(el('p', { class: 'meta', text: 'No command matches “' + str(q, 60) + '”.' })); return; }
       var tips = list(data.tips).map(obj).filter(function (t) { return t.title && t.text; });
@@ -1916,20 +1997,183 @@
       tips.slice(0, 8).forEach(function (t) { box.appendChild(el('div', { class: 'note' }, [el('b', { text: str(t.title, 60) + '. ' }), str(t.text, 300)])); });
     }
     function showCommands() {
+      S.back = null; setMain('', null);
       var draw = function (data) {
         var count = Math.max(0, Math.round(num(data.count)));
         var find = el('input', { type: 'search', placeholder: 'Find a command: late, menu, dates…', maxlength: '60', 'aria-label': 'Find a command' });
         var box = el('div', {});
         var view = el('div', {}, [el('h2', { text: 'Commands' }),
-          el('p', { class: 'lede', text: 'Everything you can send in the chat' + (count ? ' — ' + count + ' commands' : '') + '. Tap an example to copy it, then paste it in the chat.' }), find, box]);
-        find.addEventListener('input', function () { cmdList(box, data, str(find.value, 60).trim().toLowerCase()); });
-        cmdList(box, data, '');
+          el('p', { class: 'lede', text: 'Everything you can send in the chat' + (count ? ' — ' + count + ' commands' : '') + '. Run sends one through the bot and the answer comes in the chat; Fill in asks for the details first. Tap an example to copy it.' }), find, box]);
+        find.value = str(S.cmdQ, 60);
+        find.addEventListener('input', function () { S.cmdQ = str(find.value, 60); cmdList(box, data, S.cmdQ.trim().toLowerCase()); });
+        cmdList(box, data, str(S.cmdQ, 60).trim().toLowerCase());
         render(view);
       };
       if (S.commands) return draw(S.commands);
       render(stateView('', 'Loading…'));
       call('commands.list', {}, function (b) { S.commands = b; draw(b); },
         function (err) { render(stateView('⌨️', 'Commands not available', why(err) + ' /help in the chat lists them.', homeBtn())); });
+    }
+    /* ---------- a command's form: drawn from its template (parts) and field kinds (fields), both from commands.list; the pickers
+     * are fed by commands.context (trips, the trip's days, place names, saved lists, interview sections). The preview shows the
+     * exact command Run sends, so the forms also teach the commands. Dates always go as YYYY-MM-DD, which every command reads. */
+    function cmdFill(parts, values) {   // the shell's copy of core cmdTemplateFill (18_command_forms.js): null when a required field is empty
+      var val = function (n) { return str(values[n]).replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim(); }, out = '', missing = false;
+      list(parts).map(obj).forEach(function (p) {
+        if (p.t !== undefined) { out += str(p.t); return; }
+        if (p.f) { var x = val(p.f); if (!x) missing = true; out += x; return; }
+        var seg = '', empty = false;
+        list(p.opt).map(obj).forEach(function (q) { if (q.t !== undefined) seg += str(q.t); else { var y = val(q.f); if (!y) empty = true; seg += y; } });
+        if (!empty) out += seg;
+      });
+      return missing ? null : out.replace(/\s+/g, ' ').trim();
+    }
+    function cmdFieldNames(parts) {   // → [{ name, required }] in template order
+      var out = [];
+      list(parts).map(obj).forEach(function (p) {
+        if (p.f) out.push({ name: str(p.f, 40), required: true });
+        else list(p.opt).map(obj).forEach(function (q) { if (q.f) out.push({ name: str(q.f, 40), required: false }); });
+      });
+      return out;
+    }
+    function isoAdd(iso, n) { var d = new Date(iso + 'T12:00:00Z'); if (isNaN(d.getTime())) return ''; d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+    function dayLabel(iso) {   // "Thu 10 Jun", the same on every client
+      var d = new Date(str(iso, 10) + 'T12:00:00Z');
+      if (isNaN(d.getTime())) return str(iso, 10);
+      return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getUTCMonth()];
+    }
+    function cmdContext(done) {   // commands.context, kept a minute; a failure leaves the pickers as plain boxes
+      if (S.cmdCtx && Date.now() - S.cmdCtx.at < 60000) return done(S.cmdCtx.data);
+      api('commands.context', {}, function (err, body) {
+        var data = !err && body && body.ok ? body : {};
+        if (!err && body && body.ok) S.cmdCtx = { at: Date.now(), data: data };
+        done(data);
+      });
+    }
+    var cmdFieldSeq = 0;
+    /** One field's picker → { node, check() → '' | what is wrong }; set(v) stores the value and redraws the preview. */
+    function cmdPicker(spec, f, values, cx, set) {
+      var name = spec.name, kind = str(f.kind, 10), label = str(f.label, 40) || name, cur = function () { return str(values[name]); };
+      var wrap = el('div', { class: 'field', 'data-field': name, 'data-kind': kind }, [el('label', { class: 'q', text: label }, [spec.required ? null : el('span', { class: 'optional', text: ' · optional' })])]);
+      if (f.hint) wrap.appendChild(el('div', { class: 'fhint', text: str(f.hint, 120) }));
+      var chipBox = null, input = null;
+      var chips = function (opts, allowOff) {   // opts [{ v, label }]
+        if (!opts.length) return;
+        chipBox = el('div', { class: 'chips' });
+        opts.forEach(function (o) {
+          chipBox.appendChild(el('button', { class: 'pill', type: 'button', 'data-v': o.v, 'aria-pressed': cur() === o.v ? 'true' : 'false', text: o.label, on: { click: function () {
+            var v = cur() === o.v && allowOff ? '' : o.v; set(name, v); if (input) input.value = v; mark();
+          } } }));
+        });
+        wrap.appendChild(chipBox);
+      };
+      var mark = function () { if (chipBox) Array.prototype.forEach.call(chipBox.children, m1); };
+      var m1 = function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-v') === cur() ? 'true' : 'false'); };
+      var box = function (attrs) {
+        input = el('input', attrs); input.value = cur();
+        input.addEventListener('input', function () { set(name, input.value); mark(); });
+        wrap.appendChild(input);
+      };
+      var days = list(cx.days).map(obj).filter(function (d) { return /^\d{4}-\d{2}-\d{2}$/.test(str(d.date)); });
+      var today = /^\d{4}-\d{2}-\d{2}$/.test(str(cx.today)) ? str(cx.today) : new Date().toISOString().slice(0, 10);
+      var dayChips = function () {
+        return days.map(function (d) { var iso = str(d.date); return { v: iso, label: 'Day ' + num(d.n) + ' · ' + dayLabel(iso) + (iso === today ? ' · today' : '') }; });
+      };
+      var aria = { 'aria-label': label };
+      if (kind === 'trip') {
+        var trips = list(cx.trips).map(obj).filter(function (t) { return /^[a-z0-9][a-z0-9-]{0,63}$/.test(str(t.slug)); });
+        if (trips.length) chips(trips.map(function (t) { return { v: str(t.slug), label: str(t.title, 40) || str(t.slug) }; }), !spec.required);
+        else box(Object.assign({ type: 'text', maxlength: '80', placeholder: 'the trip\'s name' }, aria));
+      } else if (kind === 'day') {
+        if (days.length) chips(dayChips(), !spec.required);
+        else { chips([{ v: today, label: 'Today' }, { v: isoAdd(today, 1), label: 'Tomorrow' }], !spec.required); box(Object.assign({ type: 'date' }, aria)); }
+      } else if (kind === 'date') {
+        chips(dayChips(), !spec.required); box(Object.assign({ type: 'date' }, aria));
+        if (days.length) { input.setAttribute('min', str(days[0].date)); }
+      } else if (kind === 'place') {
+        var dl = 'cmd-places-' + (++cmdFieldSeq), names = list(cx.places).map(function (x) { return str(x, 120); }).filter(Boolean);
+        box(Object.assign({ type: 'text', maxlength: String(num(f.max_len) || 120), autocomplete: 'off', list: dl, placeholder: names.length ? 'pick one or type a name' : 'a name, as on Google Maps' }, aria));
+        if (names.length) wrap.appendChild(el('datalist', { id: dl }, names.map(function (n) { return el('option', { value: n }); })));
+      } else if (kind === 'list') {
+        var lists = list(cx.lists).map(obj).filter(function (l) { return str(l.name); });
+        if (lists.length) chips(lists.map(function (l) { return { v: str(l.name, 80), label: str(l.name, 40) + (num(l.count) ? ' · ' + num(l.count) : '') }; }), !spec.required);
+        else box(Object.assign({ type: 'text', maxlength: '80', placeholder: 'the list\'s name' }, aria));
+      } else if (kind === 'number') {
+        chips(list(f.chips).map(function (n) { return { v: String(num(n)), label: String(num(n)) }; }), !spec.required);
+        box(Object.assign({ type: 'number', inputmode: 'numeric', min: String(num(f.min)), max: String(num(f.max)), placeholder: num(f.min) + '–' + num(f.max) }, aria));
+      } else if (kind === 'choice') {
+        var opts = str(f.from) === 'sections' ? list(cx.sections).map(obj).map(function (o) { return { v: str(o.value, 40), label: str(o.label, 40) || str(o.value, 40) }; })
+          : list(f.options).map(function (o) { o = typeof o === 'object' && o ? o : { value: o }; return { v: str(o.value, 40), label: str(o.label || o.value, 40) }; });
+        opts = opts.filter(function (o) { return o.v; });
+        if (opts.length) chips(opts, !spec.required); else box(Object.assign({ type: 'text', maxlength: '40' }, aria));
+      } else if (kind === 'time') {
+        box(Object.assign({ type: 'time' }, f.min ? { min: str(f.min, 5) } : {}, f.max ? { max: str(f.max, 5) } : {}, aria));
+      } else {
+        chips(list(f.chips).map(function (x) { return { v: str(x, 40), label: str(x, 40) }; }), !spec.required);
+        box(Object.assign({ type: 'text', maxlength: String(num(f.max_len) || 200), autocomplete: 'off' }, f.hint ? { placeholder: str(f.hint, 80) } : {}, aria));
+      }
+      var check = function () {
+        var v = cur().trim();
+        if (!v) return '';
+        if (kind === 'number' && (!/^\d{1,4}$/.test(v) || num(v) < num(f.min) || num(v) > num(f.max))) return label + ' must be ' + num(f.min) + '–' + num(f.max);
+        if (kind === 'time' && (!/^\d{1,2}:\d{2}$/.test(v) || (f.min && v < str(f.min)) || (f.max && v > str(f.max)))) return label + (f.min && f.max ? ' must be ' + str(f.min) + '–' + str(f.max) : ' must be a time');
+        if ((kind === 'date' || kind === 'day') && !/^\d{4}-\d{2}-\d{2}$/.test(v)) return label + ' must be a date';
+        return '';
+      };
+      return { node: wrap, check: check };
+    }
+    function showCmdForm(c, f) {
+      c = obj(c); f = obj(f);
+      var cmd = str(c.cmd, 40), parts = list(f.parts), fields = obj(c.fields), specs = cmdFieldNames(parts), values = {};
+      S.back = function () { showCommands(); };
+      render(stateView('', 'Loading…'));
+      cmdContext(function (cx) {
+        if (S.screen !== 'commands') return;
+        if (specs.some(function (sp) { return sp.name === 'trip'; }) && cx.trip && str(obj(cx.trip).slug)) values.trip = str(obj(cx.trip).slug);
+        var say = el('p', { class: 'meta', role: 'status' }), preview = el('div', { class: 'preview', 'aria-live': 'polite' });
+        var pickers = [], runBtn = el('button', { class: 'btn wide', type: 'button', text: 'Run', 'data-form-run': cmd });
+        var state = function () {   // → { text, wrong }
+          var wrong = pickers.map(function (p) { return p.check(); }).filter(Boolean);
+          var missing = specs.filter(function (sp) { return sp.required && !str(values[sp.name]).trim(); }).map(function (sp) { return str(obj(fields[sp.name]).label, 40) || sp.name; });
+          return { text: wrong.length ? null : cmdFill(parts, values), wrong: wrong.concat(missing.length ? ['Fill in: ' + missing.join(', ')] : []) };
+        };
+        var update = function () {
+          var st2 = state();
+          preview.textContent = st2.text || st2.wrong.join(' · ');
+          preview.className = 'preview' + (st2.text ? '' : ' empty');
+          runBtn.disabled = !st2.text; say.textContent = '';
+          try { if (tg && tg.MainButton) { if (st2.text) tg.MainButton.enable(); else tg.MainButton.disable(); } } catch (e) { /* older clients */ }
+        };
+        var set = function (n, v) { values[n] = v; update(); };
+        var run = function () {
+          var st2 = state();
+          if (!st2.text) { haptic(); say.textContent = st2.wrong.join(' · '); return; }
+          cmdRun(st2.text, { confirm: !!f.confirm, btn: runBtn, say: function (t) { say.textContent = t; }, back: function () { showCmdForm(c, f); } });
+        };
+        runBtn.addEventListener('click', run);
+        var others = list(c.forms).map(obj).filter(function (o) { return o !== f && (o.run === 'now' || (o.run === 'form' && str(o.tpl) !== str(f.tpl))); });
+        var seen = {};
+        others = others.filter(function (o) { var k = o.run + str(o.tpl || o.text); if (seen[k]) return false; seen[k] = true; return true; });
+        var view = el('div', { class: 'cmdform', 'data-form-cmd': cmd }, [
+          el('button', { class: 'linkbtn', type: 'button', text: '‹ All commands', on: { click: function () { showCommands(); } } }),
+          el('h2', { text: cmd }), c.does ? el('p', { class: 'lede', text: str(c.does, 400) }) : null,
+          f.means ? el('p', { class: 'meta', text: 'This form: ' + str(f.means, 120) + ' · e.g. ' + str(f.text, 120) }) : null]);
+        specs.forEach(function (sp) { var p = cmdPicker(sp, obj(fields[sp.name]), values, cx, set); pickers.push(p); view.appendChild(p.node); });
+        view.appendChild(el('div', { class: 'legend', text: 'Sends' })); view.appendChild(preview);
+        if (!(tg && tg.MainButton)) view.appendChild(runBtn);   // in Telegram the MainButton is the Run button
+        view.appendChild(say);
+        if (others.length) {
+          view.appendChild(el('h3', { text: 'Other ways to use ' + cmd }));
+          others.slice(0, 6).forEach(function (o) {
+            view.appendChild(el('button', { class: 'form', type: 'button', 'data-other': str(o.text, 200), on: { click: function (ev) {
+              if (o.run === 'form') showCmdForm(c, o); else cmdRun(str(o.text, 200), { confirm: !!o.confirm, btn: ev.currentTarget, say: function (t) { say.textContent = t; }, back: function () { showCmdForm(c, f); } });
+            } } }, [el('span', { class: 'ftext', text: (o.run === 'form' ? '✎ ' : '▶ ') + str(o.text, 120) }), o.means ? el('span', { class: 'fmeans', text: str(o.means, 120) }) : null]));
+          });
+        }
+        render(view);
+        setMain('Run', run);
+        update();
+      });
     }
 
     /* ---------- boot ---------- */
@@ -1966,7 +2210,7 @@
       $('full').addEventListener('click', toggleFull); applyFull();
       try { tg.onEvent('fullscreenChanged', applyFull); tg.onEvent('contentSafeAreaChanged', applyFull); tg.onEvent('fullscreenFailed', function () { applyFull(); setStatus('Full screen is not available here.'); }); } catch (e) { /* older clients */ }
       document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') flushDraft(); }); window.addEventListener('pagehide', flushDraft);
-      try { if (tg.MainButton) tg.MainButton.onClick(function () { if (mainBtn.fn && !S.busy) mainBtn.fn(); }); if (tg.BackButton) tg.BackButton.onClick(function () { go('home'); }); } catch (e) { /* older clients */ }
+      try { if (tg.MainButton) tg.MainButton.onClick(function () { if (mainBtn.fn && !S.busy) mainBtn.fn(); }); if (tg.BackButton) tg.BackButton.onClick(function () { var back = S.back; if (back) { S.back = null; back(); } else go('home'); }); } catch (e) { /* older clients */ }
       var fromUrl = readParams();
       resolveCore(fromUrl, function () {
         if (!S.core) { render(stateView('🔗', 'No helper address', 'Open the app from the bot\'s menu button or one of its buttons — the link carries the address.')); return; }

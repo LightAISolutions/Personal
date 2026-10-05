@@ -3,11 +3,19 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 16/50`
+`Sections: 17/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.17w] — 2026-10-04 10:02:37 PM EST — v01.74r
+
+### Added
+- Run commands straight from the Commands screen: each example has a Run button, and the answer still arrives in the chat, under a short "▶️ … · from the app" line
+- Forms for commands that need details: tap Fill in, pick the trip, the day, a number or an option from buttons, see the exact command it will send, then Run
+- Type your own: send any command in full from the app
+- Commands that change or remove something ask you first
 
 ## [v01.16w] — 2026-10-04 05:39:39 PM EST — v01.72r
 

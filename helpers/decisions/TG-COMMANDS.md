@@ -17,13 +17,17 @@ The owner asked for a Commands tab in the Tour Guide app that lists every comman
   search box (word match over the command, its description and its examples), and each example as a button that copies
   it to the clipboard ("paste it in the chat"); where copying is not available it says to type it. The answer is fetched
   once per app open.
+- **Since Phase 17a** (`decisions/TG-PHASE-17.md`) each example also has **Run** (or **Fill in** for a form with fields, or
+  **Edit**), which runs it through app op `commands.run` as if typed; the answer still comes in the chat, under an echo line.
+  Forms are drawn from each guide form's template (`tpl`) and its fields; `commands.context` feeds the pickers. The same
+  guide orders Telegram's "/" menu (renderer `command_menu`).
 
 ## Defaults chosen
 
 - Grouped by purpose (Get started, Plan a trip, Your trip and its days, On the day, Discover, Places and lists, After the
   trip, Ask and settings, Housekeeping) rather than alphabetically: the owner reads the tab to find what to send.
-- A tap copies rather than sends: a Mini App cannot post into the chat as the owner, and most forms need a place or
-  date filled in.
+- A tap copied rather than sent: a Mini App cannot post into the chat as the owner, and most forms need a place or
+  date filled in. Phase 17a kept Copy and added Run: the bot's own backend runs the command and posts the echo line itself.
 - Keeping it current: `tests/pack_tour-guide_commands_app.test.js` fails when a command is registered without a guide
   entry (or the reverse). A branch skeleton written by `tools/new-branch.mjs` (its header still says "Still written by
   hand") is the one exception: it shows under More until its guide line is written, and the template's header says so.

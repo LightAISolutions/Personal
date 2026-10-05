@@ -3,11 +3,25 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 74/100`
+`Sections: 75/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.74r] — 2026-10-04 10:02:37 PM EST
+
+> **Prompt:** "There are a lot of commands (40+) to use with Tour Guide. That's too many for me to comfortably memorize and use effectively. Think of a way to imbed them into the app in the forms of buttons, forms, and other methods. Recommend me an action plan to approve." — then, on the eight-item plan: "1-8"
+
+### Added
+- **Run any command from the app** (`helpers/core/10_router.js`, `helpers/packs/tour-guide/gas/45_commands_app.js`): core `runOwnerCommand(text, { via })` runs a registered command as if typed: it posts a silent "▶️ <code>text</code> · from the app" echo to the owner's chat and runs the handler with the echo as the message, so the answer threads under it (audited `owner_command_run`; `/start` stays chat-only; refusals `bad_text`, `not_command`, `unknown_command`, `chat_only`, `no_chat`, `send_failed`). App op `commands.run { text, nonce }`, a write op; a repeated nonce is answered `{ duplicate: true }` without running again
+- **Forms from the registry** (`helpers/core/18_command_forms.js`, new): one template grammar for every helper (`{field}` required, `[ … ]` optional), `cmdTemplateParse`, `cmdTemplateFill`, `cmdTemplateMatches` and the field kinds (`HB_FIELD_KINDS`: trip, day, date, place, list, number, choice, time, text). Every Tour Guide command's guide forms carry a template, fields and `confirm` where the command changes or drops something; `commands.list` gives each form `run: now | form | type` and each command its fields; new op `commands.context` feeds the pickers (trips, the current trip's days, places, saved lists, brochure sections)
+- **Telegram's "/" menu** (`helpers/core/11_commands_builtin.js`, `00_config.js`): `syncBotCommands()` registers the commands with `setMyCommands`, scoped to the owner's chat, in the pack's `command_menu` order, at setup (new step `bot_commands`) and on the first chat message after a deploy that changes the list (property `BOT_COMMANDS`)
+- **The app's Commands screen runs commands** (`live-site-pages/helper-app.html`, app v01.17w): Run, Fill in or Edit beside each example's Copy; a form with a picker per field, a live preview of the exact command and Telegram's main button to run it; Telegram's confirm popup first for commands that change or drop things; "✎ Type your own…"; a Sent screen with Go to chat
+- Tests: `core_command_forms` (the grammar, its refusals, fill, match), `pack_tour-guide_commands_app` (every template parses and every example fills its own template; run, refusals and the nonce; the context; the menu order with branch commands appended; the ISO dates the app sends answer exactly like a day number, M/D or "tomorrow" typed in the chat), `pack_tour-guide_commands_shell` (Run, confirm, refusal, nonce reuse after a network error, the Fill in form and its range check, Type your own), and the browser test `shell_helper-app_commands.playwright.mjs`. 1310 tests, 1309 pass, 1 skipped (the Maps live smoke); bundle and boundary checks clean
+
+### Changed
+- Docs: `helpers/decisions/TG-PHASE-17.md` (new: the 17a contract, the defaults chosen, 17b and 17c), `helpers/decisions/TG-COMMANDS.md` (Run beside Copy), `helpers/SPEC.md` (`runOwnerCommand`, `syncBotCommands`, the template functions), the pack README (`45_commands_app.js`), `helpers/BUILD-STATE.md` (row 17, its log, Next); README tree and timestamp
 
 ## [v01.73r] — 2026-10-04 06:13:44 PM EST
 
