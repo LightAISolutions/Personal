@@ -169,21 +169,13 @@ function handleTelegramMessage(msg) {
   // Strangers who find the bot get no reply; audit each sender once per DEDUPE_TTL_SEC (not once per message) so a
   // spammer cannot grow the AuditLog by the message.
   if (!_isOwner(from) || String(chatId) !== String(owner)) { if (!seenOnce('tgstranger:' + String(from.id || ''))) auditFail('tg_unauthorized', String(from.id || ''), { chat: chatId }); return null; }
+  syncBotCommandsOnce();   // the "/" menu follows the registry after a deploy (one check per run)
   var ctx = {
     chatId: chatId, from: from, text: text, message: msg,
     chat: { chat_id: chatId, message_id: msg.message_id, ts: msg.date ? new Date(msg.date * 1000).toISOString() : nowIso() },
     reply: function (html, opts) { return tgSend(chatId, html, opts); }
   };
-  if (/^\/[a-zA-Z0-9_]+/.test(text)) {
-    var mm = /^\/([a-zA-Z0-9_]+)(?:@\w+)?\s*([\s\S]*)$/.exec(text);
-    var cmd = '/' + mm[1].toLowerCase();
-    ctx.args = (mm[2] || '').trim();
-    ctx.argv = ctx.args ? ctx.args.split(/\s+/) : [];
-    var fn = getCommand(cmd);
-    if (!fn) { ctx.reply('Unknown command. Send /help.'); return null; }
-    try { return fn(ctx); }
-    catch (err) { auditFail('command_error', cmd, describeError(err)); ctx.reply('⚠️ ' + tgEscape(cmd) + ' failed: ' + tgEscape(truncate(describeError(err), 200))); return null; }
-  }
+  if (/^\/[a-zA-Z0-9_]+/.test(text)) return _runCommandText(ctx, text);
   // Free text (or media with a caption): the active flow has first claim (15_flows.js), then pack message handlers,
   // then the inbound routine via a request.
   // A shared location is never a flow's answer (flows ask for text or buttons): it goes to the pack handlers only.
@@ -210,6 +202,58 @@ function requestFromMessage(ctx, kind, text) {
   if (r.fired.ok) ctx.reply('🧠 Working on it…', { replyTo: ctx.chat.message_id, silent: true });
   else ctx.reply('⏳ Noted — the routine could not be fired right now (' + tgEscape(r.fired.skipped || r.fired.error || ('HTTP ' + r.fired.code)) + '). It will see the request on its next run.', { replyTo: ctx.chat.message_id });
   return r;
+}
+
+/** The command path of an owner message (typed, or run from the app): parse, look up, run under the router's error handling. */
+function _runCommandText(ctx, text) {
+  var mm = /^\/([a-zA-Z0-9_]+)(?:@\w+)?\s*([\s\S]*)$/.exec(text);
+  var cmd = '/' + mm[1].toLowerCase();
+  ctx.args = (mm[2] || '').trim();
+  ctx.argv = ctx.args ? ctx.args.split(/\s+/) : [];
+  var fn = getCommand(cmd);
+  if (!fn) { ctx.reply('Unknown command. Send /help.'); return null; }
+  try { return fn(ctx); }
+  catch (err) { auditFail('command_error', cmd, describeError(err)); ctx.reply('⚠️ ' + tgEscape(cmd) + ' failed: ' + tgEscape(truncate(describeError(err), 200))); return null; }
+}
+
+/* ---------------- running a command for the owner (a Mini App's Run button) ---------------- */
+/** Commands a Mini App may not run: /start pairs a chat and greets a person typing in it. */
+var HB_CHAT_ONLY_COMMANDS = ['/start'];
+var HB_RUN_TEXT_MAX = 500;
+/**
+ * runOwnerCommand(text, { via }) — runs one registered command exactly as if the owner had typed it in the chat. A Mini App
+ * cannot post into the chat as the owner, so the bot first posts an echo line into the owner chat ("▶️ /late 30 · from the
+ * app") and the command runs with that line as its message: its replies thread under it, and the chat shows what was asked.
+ * Same handler, same error handling and audit as a typed command; the caller holds the script lock (an app write op).
+ *   → { ok: true, cmd, message_id } · { ok: false, reason: 'no_chat' | 'bad_text' | 'not_command' | 'chat_only' |
+ *     'unknown_command' | 'send_failed', cmd? }
+ * Only commands: free text is refused (a question is /ask). One line, ≤ HB_RUN_TEXT_MAX characters, no control characters.
+ */
+function runOwnerCommand(text, opts) {
+  opts = opts || {};
+  var owner = tgOwnerChatId();
+  if (!owner) return { ok: false, reason: 'no_chat' };
+  text = typeof text === 'string' ? text.trim() : '';
+  if (!text || text.length > HB_RUN_TEXT_MAX || /[\u0000-\u001f\u007f]/.test(text)) return { ok: false, reason: 'bad_text' };
+  var mm = /^\/([a-zA-Z0-9_]{1,32})(?:@\w+)?(?:\s|$)/.exec(text);
+  if (!mm) return { ok: false, reason: 'not_command' };
+  var cmd = '/' + mm[1].toLowerCase();
+  if (HB_CHAT_ONLY_COMMANDS.indexOf(cmd) >= 0) return { ok: false, reason: 'chat_only', cmd: cmd };
+  if (!getCommand(cmd)) return { ok: false, reason: 'unknown_command', cmd: cmd };
+  var via = /^[a-z][a-z0-9_]{0,15}$/.test(String(opts.via || '')) ? String(opts.via) : 'app';
+  var echo = tgSend(owner, '▶️ <code>' + tgEscape(text) + '</code> · from the ' + tgEscape(via), { silent: true });
+  var mid = echo && echo.ok && echo.result ? echo.result.message_id : null;
+  if (!mid) return { ok: false, reason: 'send_failed', cmd: cmd };
+  var chatId = /^-?\d{1,20}$/.test(String(owner)) ? Number(owner) : owner, from = { id: chatId };
+  var msg = { message_id: mid, date: Math.floor(nowMs() / 1000), chat: { id: chatId, type: 'private' }, from: from, text: text, hb_via: via };
+  var ctx = {
+    chatId: chatId, from: from, text: text, message: msg, via: via,
+    chat: { chat_id: chatId, message_id: mid, ts: nowIso() },
+    reply: function (html, o) { return tgSend(chatId, html, o); }
+  };
+  audit('owner_command_run', cmd, { via: via, chars: text.length });
+  _runCommandText(ctx, text);
+  return { ok: true, cmd: cmd, message_id: mid };
 }
 
 function handleTelegramCallback(cq) {

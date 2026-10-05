@@ -18,6 +18,67 @@ function startExtras(chatId) {
     return out.html ? tgSend(chatId, String(out.html), out.keyboard ? { keyboard: out.keyboard } : undefined) : null;
   } catch (err) { auditFail('start_extras_error', '', describeError(err)); return null; }
 }
+/* ---------------- Telegram's own "/" menu (setMyCommands), from the registry ---------------- */
+var HB_MENU_MAX = 100;            // Telegram: at most 100 commands
+var HB_MENU_DESC_MAX = 256;       // Telegram: description 1–256 characters
+/**
+ * The commands Telegram lists when the owner types "/" in the chat: [{ command, description }] in menu order. A pack may
+ * order and describe them by registering the renderer 'command_menu': fn(listCommands()) → [{ cmd, description }]; the core
+ * keeps only registered commands with a non-empty description (cut to 256), once each, at most 100. Without the renderer,
+ * every command with a help line, sorted. Chat-only commands (/start) are left out: the menu is for what you send.
+ */
+function botCommandMenu() {
+  var live = listCommands(), known = {}, out = [], seen = {};
+  live.forEach(function (c) { known[c.cmd] = c.help; });
+  var rows = live.map(function (c) { return { cmd: c.cmd, description: c.help }; });
+  var r = getRenderer('command_menu');
+  if (r) {
+    try { var got = r(live); if (Array.isArray(got)) rows = got; }
+    catch (err) { auditFail('command_menu_error', '', describeError(err)); }
+  }
+  rows.forEach(function (x) {
+    if (!isPlainObject(x) || out.length >= HB_MENU_MAX) return;
+    var cmd = String(x.cmd || ''), d = String(x.description || '').replace(/\s+/g, ' ').trim();
+    if (!Object.prototype.hasOwnProperty.call(known, cmd) || seen[cmd] || HB_CHAT_ONLY_COMMANDS.indexOf(cmd) >= 0 || !d) return;
+    seen[cmd] = true;
+    out.push({ command: cmd.slice(1), description: truncate(d, HB_MENU_DESC_MAX) });
+  });
+  return out;
+}
+function _botMenuHash(menu) {
+  var s = toJson(menu), h = 5381;
+  for (var i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0;
+  return 'v1:' + h.toString(16) + ':' + s.length;
+}
+/**
+ * Sends the menu to Telegram for the owner's chat only (scope chat), so a stranger who finds the bot sees no list. Records
+ * its fingerprint (BOT_COMMANDS) when Telegram accepts it. → { ok, count, skipped? , description? }
+ */
+function syncBotCommands(force) {
+  var owner = tgOwnerChatId();
+  if (!owner) return { ok: false, count: 0, description: PROP.OWNER_CHAT_ID + ' not set' };
+  var menu = botCommandMenu(), hash = _botMenuHash(menu);
+  if (!force && getProp(PROP.BOT_COMMANDS) === hash) return { ok: true, count: menu.length, skipped: true };
+  var r = tgApi('setMyCommands', { commands: menu, scope: { type: 'chat', chat_id: owner } });
+  if (r && r.ok) { setProp(PROP.BOT_COMMANDS, hash); audit('bot_commands_set', String(menu.length), null); }
+  return { ok: !!(r && r.ok), count: menu.length, description: r && !r.ok ? String(r.description || '') : '' };
+}
+/** Once per run, on the first owner update: a deploy that added, renamed or re-described a command updates the menu. */
+var _HB_MENU_CHECKED = false;
+function syncBotCommandsOnce() {
+  if (_HB_MENU_CHECKED) return null;
+  _HB_MENU_CHECKED = true;
+  try { return syncBotCommands(false); } catch (err) { auditFail('bot_commands_error', '', describeError(err)); return null; }
+}
+registerSetupStep('bot_commands', {
+  label: 'Telegram "/" menu: list the commands',
+  description: 'Typing "/" in the chat shows every command with a one-line hint; also refreshed by itself after a deploy',
+  run: function () {
+    var r = syncBotCommands(true);
+    return r.ok ? 'menu set: ' + r.count + ' commands' : 'failed: ' + truncate(String(r.description || '?'), 200);
+  }
+});
+
 registerCommand('/help', function (ctx) {
   var lines = HB_REGISTRY.help.slice().sort();
   ctx.reply('<b>Commands</b>\n' + lines.map(tgEscape).join('\n') + '\n\nPlain text → a request the helper answers here.');
