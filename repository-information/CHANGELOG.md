@@ -3,11 +3,24 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 77/100`
+`Sections: 78/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.77r] — 2026-10-04 11:04:42 PM EST
+
+> **Prompt:** "There are a lot of commands (40+) to use with Tour Guide. That's too many for me to comfortably memorize and use effectively. Think of a way to imbed them into the app in the forms of buttons, forms, and other methods. Recommend me an action plan to approve." — then, on the eight-item plan: "1-8" *(step 17c of the approved plan: items 6 and 8)*
+
+### Added
+- **Answers that open in the app** (`helpers/packs/tour-guide/gas/45_commands_app.js`, `live-site-pages/helper-app.html`): guide forms name the screen their answer shows in (`opens`) and whether it comes later (`wait`), and `commands.list` passes both on; `commands.run` returns `opens: { screen, wait?, base?, trip? }` from `tgCmdOpens` (exact forms first, then templates; `base` is what the screen's list held before the run). The app opens that screen instead of the Sent page and, for a slow answer, shows a bar, reads the list every 10 s for up to 10 minutes and opens the first new item (at once if the owner is still there, otherwise through Open)
+- **Five tabs and Today** (`live-site-pages/helper-app.html`): Home, Today, Discover (Scout, Day trips, What's on, Quiet, Menu, Compare), Places, More (Settings, Interview, Commands), with a second row for Discover and More; every old `?screen=` link kept and `?screen=today` added; the Today tab shows the current trip's day today with its buttons open (the first day before the trip)
+- Tests: `pack_tour-guide_commands17c_shell` (the tabs and their second row, the deep links, Today on, before and after the trip, an answer watched until it lands, the bar's Open and ✕), `opens`/`wait` and the run op's `opens` in `pack_tour-guide_commands_app`; `shell_helper-app_17c.playwright.mjs` (the tabs, Today and a watched /quiet board in the browser, light and dark)
+
+### Changed
+- App v01.19w (`live-site-pages/helper-app.html`); the 17b shell test holds a watcher's 10 s timer instead of running it; the browser tests reach a screen through its second-row button (`shell_helper-app.playwright.mjs`, `shell_helper-app_compare.playwright.mjs`)
+- Docs: `helpers/decisions/TG-PHASE-17.md` (§5 step 17c, §6 its defaults, §7 next), the pack README (`45_commands_app.js`), `helpers/BUILD-STATE.md` (row 17, the Phase 17 log, the status line)
 
 ## [v01.76r] — 2026-10-04 10:33:32 PM EST
 

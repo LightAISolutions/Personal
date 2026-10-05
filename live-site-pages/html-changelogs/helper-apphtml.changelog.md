@@ -3,11 +3,18 @@
 All notable user-facing changes to this page are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Older sections are rotated to [helper-apphtml.changelog-archive.md](helper-apphtml.changelog-archive.md) when this file exceeds 50 version sections.
 
-`Sections: 18/50`
+`Sections: 19/50`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.19w] — 2026-10-04 11:04:42 PM EST — v01.77r
+
+### Added
+- Five tabs along the top: Home, Today, Discover, Places and More. Discover and More show their screens in a second row, so everything is two taps away
+- A Today tab: today's plan for your current trip with its buttons already open (re-plan, running late, check-in, route), or the first day before the trip starts
+- Answers open in the app: today's plan, outlines and day versions, scouts, day trips, What's on, quieter places, menu checks and the veg card open on their own screen instead of a "Sent" page. When an answer takes a while, a bar says it is working and the answer opens by itself when it is ready (the chat still gets it too)
 
 ## [v01.18w] — 2026-10-04 10:33:32 PM EST — v01.76r
 

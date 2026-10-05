@@ -4,7 +4,8 @@
  *   commands.list    → { groups: [{ id, title, about, commands: [{ cmd, does, help, keywords, runnable, fields, forms: [{ text, means,
  *                        run: 'now' | 'form' | 'type', tpl?, parts?, confirm? }] }] }], tips, count }
  *   commands.context → what the form pickers offer: trips, the current trip's days, place names, saved lists, sections
- *   commands.run     → { text, nonce? }: runs the command as if typed (core runOwnerCommand); the answer comes in the chat
+ *   commands.run     → { text, nonce? }: runs the command as if typed (core runOwnerCommand); the answer comes in the chat;
+ *                      a form with an app screen also returns opens: { screen, wait?, base?, trip? } (tgCmdOpens, Phase 17c)
  * The list itself is the core's registry (listCommands(), 02_registry.js): a command shows only when the bot answers it, so
  * the tab never offers one that is not there, and every command it shows can be run (a form, or the app's "type the rest"
  * box). TG_CMD_GUIDE adds the plain-words description, the example forms and the form templates (core/18_command_forms.js);
@@ -64,9 +65,9 @@ var TG_CMD_GUIDE = [
     forms: [['/journey', 'show whether it is on'], ['/journey on', 'compare outlines and day versions first', { fixed: true }], ['/journey off', 'go straight to the plan', { fixed: true }]] },
   { cmd: '/outline', group: 'plan', does: 'Shows the outlines of the trip side by side and lets you choose one, or mix days from several. The Compare tab shows the same.',
     fields: { pick: { kind: 'text', label: 'Your choice', hint: 'an outline letter, then any days from others: A 3B', max_len: 60 } },
-    forms: [['/outline', 'the newest outlines'], ['/outline A', 'choose outline A', { tpl: '/outline {pick}' }], ['/outline A 3B', 'outline A, but day 3 from B', { tpl: '/outline {pick}' }]] },
+    forms: [['/outline', 'the newest outlines', { opens: 'compare' }], ['/outline A', 'choose outline A', { tpl: '/outline {pick}', opens: 'compare' }], ['/outline A 3B', 'outline A, but day 3 from B', { tpl: '/outline {pick}', opens: 'compare' }]] },
   { cmd: '/versions', group: 'plan', does: 'Shows the versions of one day. On a day that is already planned, choosing a version replaces it.', fields: { day: TG_F.day },
-    forms: [['/versions', 'the days that have versions'], ['/versions 2', 'the versions of day 2', { tpl: '/versions {day}' }], ['/versions tomorrow', 'by date word or date', { tpl: '/versions {day}' }]] },
+    forms: [['/versions', 'the days that have versions', { opens: 'compare' }], ['/versions 2', 'the versions of day 2', { tpl: '/versions {day}', opens: 'compare' }], ['/versions tomorrow', 'by date word or date', { tpl: '/versions {day}', opens: 'compare' }]] },
   { cmd: '/dates', group: 'plan', does: 'Sets the trip\'s dates, the hours of each day and one day\'s own start, end, bags or weather town. The next plan or re-plan uses them.',
     fields: { start: { kind: 'date', label: 'First day' }, end: { kind: 'date', label: 'Last day', hint: 'leave empty for a one-day trip' },
       from: { kind: 'time', label: 'Days start' }, to: { kind: 'time', label: 'Days end' }, on: { kind: 'date', label: 'Which day' },
@@ -86,7 +87,7 @@ var TG_CMD_GUIDE = [
   { cmd: '/trip', group: 'trip', does: 'Shows the current trip: its dates, its days and buttons for each. Naming another trip makes it the current one.',
     fields: { trip: TG_F.trip },
     forms: [['/trip', 'the current trip'], ['/trip Lisbon', 'switch to another trip', { tpl: '/trip {trip}' }]] },
-  { cmd: '/today', group: 'trip', does: 'Shows today\'s plan, or how many days are left before the trip starts.', forms: [['/today', 'today\'s day card']] },
+  { cmd: '/today', group: 'trip', does: 'Shows today\'s plan, or how many days are left before the trip starts.', forms: [['/today', 'today\'s day card', { opens: 'today' }]] },
   { cmd: '/day', group: 'trip', does: 'Shows one day of the plan: times, places, travel between them, bookings and warnings.', fields: { day: TG_F.day },
     forms: [['/day 2', 'day 2', { tpl: '/day {day}' }], ['/day 2027-05-13', 'the day with that date', { tpl: '/day {day}' }]] },
   { cmd: '/replan', group: 'trip', does: 'Rebuilds one day, with your reason. The brochure is rebuilt too when the trip has one.',
@@ -100,7 +101,7 @@ var TG_CMD_GUIDE = [
   { cmd: '/bookings', group: 'trip', does: 'Lists the bookings still to make, nearest deadline first. Reminders come by themselves; ✅ Booked or Not needed stops them.',
     forms: [['/bookings', 'the open bookings'], ['/bookings now', 'today\'s reminder at once, with its buttons', { fixed: true }]] },
   { cmd: '/vegcard', group: 'trip', does: 'The party\'s "what we cannot eat" card in the local language and English, to show staff.',
-    forms: [['/vegcard', 'the card (it is made the first time)'], ['/vegcard rebuild', 'make it again', { fixed: true }]] },
+    forms: [['/vegcard', 'the card (it is made the first time)', { opens: 'vegcard' }], ['/vegcard rebuild', 'make it again', { fixed: true, opens: 'vegcard', wait: true }]] },
   // On the day
   { cmd: '/morning', group: 'day', does: 'The morning message: the whole day in one message that still reads offline, sent by itself each trip morning (07:00 unless you change it).',
     fields: { day: TG_F.day, time: { kind: 'time', label: 'Send it at', min: '05:00', max: '11:59' } },
@@ -120,29 +121,29 @@ var TG_CMD_GUIDE = [
   // Discover
   { cmd: '/scout', group: 'discover', does: 'Searches a whole place for one food or activity and answers with a ranked list. Every place lands in Places; ➕ saves one for later.',
     fields: { what: { kind: 'text', label: 'Looking for', hint: 'one food or activity', max_len: 80 }, where: TG_F.city },
-    forms: [['/scout pastries in Lyon', 'one thing, one place', { tpl: '/scout {what}[ in {where}]' }], ['/scout ramen', 'in the current trip\'s destination', { tpl: '/scout {what}[ in {where}]' }]] },
-  { cmd: '/scouts', group: 'discover', does: 'Your last 10 scouts, each with a button that shows its list again.', forms: [['/scouts', 'the last 10']] },
+    forms: [['/scout pastries in Lyon', 'one thing, one place', { tpl: '/scout {what}[ in {where}]', opens: 'scout', wait: true }], ['/scout ramen', 'in the current trip\'s destination', { tpl: '/scout {what}[ in {where}]', opens: 'scout', wait: true }]] },
+  { cmd: '/scouts', group: 'discover', does: 'Your last 10 scouts, each with a button that shows its list again.', forms: [['/scouts', 'the last 10', { opens: 'scout' }]] },
   { cmd: '/compare', group: 'discover', does: 'Puts two to four places, or one of your saved lists, side by side.',
     fields: { places: { kind: 'text', label: 'Places', hint: 'two to four names, separated by commas', max_len: 300 }, list: TG_F.list, where: TG_F.city },
-    forms: [['/compare Reed Mill, Pear Press', 'two to four places', { tpl: '/compare {places}[ in {where}]' }], ['/compare Coffee to try in Lyon', 'one of your lists', { tpl: '/compare {list}[ in {where}]' }],
-      ['/compare Reed Mill, Pear Press in Lyon', 'say where they are', { tpl: '/compare {places}[ in {where}]' }]] },
+    forms: [['/compare Reed Mill, Pear Press', 'two to four places', { tpl: '/compare {places}[ in {where}]', opens: 'scout', wait: true }], ['/compare Coffee to try in Lyon', 'one of your lists', { tpl: '/compare {list}[ in {where}]', opens: 'scout', wait: true }],
+      ['/compare Reed Mill, Pear Press in Lyon', 'say where they are', { tpl: '/compare {places}[ in {where}]', opens: 'scout', wait: true }]] },
   { cmd: '/daytrip', group: 'discover', does: 'Day trips worth the ride from a base, ranked, within the ride you name. Keep the ones you like; on a planned trip, put one on a day.',
     fields: { from: { kind: 'text', label: 'From', hint: 'where the trip stays when empty', max_len: 80 }, under: { kind: 'number', label: 'One way, at most (minutes)', min: 30, max: 180, chips: [60, 90, 120, 180] }, date: TG_F.date },
-    forms: [['/daytrip from Lyon under 90 min', 'from a place, one-way limit', { tpl: '/daytrip[ from {from}][ under {under} min][ on {date}]' }],
-      ['/daytrip from Lyon under 120 min on 5/14', 'for a date ("under 2 h" works too)', { tpl: '/daytrip[ from {from}][ under {under} min][ on {date}]' }], ['/daytrip', 'from where the current trip stays']] },
-  { cmd: '/daytrips', group: 'discover', does: 'Your last 10 day-trip boards, the trips you kept first.', forms: [['/daytrips', 'the last 10']] },
+    forms: [['/daytrip from Lyon under 90 min', 'from a place, one-way limit', { tpl: '/daytrip[ from {from}][ under {under} min][ on {date}]', opens: 'daytrip', wait: true }],
+      ['/daytrip from Lyon under 120 min on 5/14', 'for a date ("under 2 h" works too)', { tpl: '/daytrip[ from {from}][ under {under} min][ on {date}]', opens: 'daytrip', wait: true }], ['/daytrip', 'from where the current trip stays', { opens: 'daytrip', wait: true }]] },
+  { cmd: '/daytrips', group: 'discover', does: 'Your last 10 day-trip boards, the trips you kept first.', forms: [['/daytrips', 'the last 10', { opens: 'daytrip' }]] },
   { cmd: '/whatson', group: 'discover', does: 'What is on in a place (events, markets, festivals) for up to 31 days, grouped by date. Choose things for days and the plan carries them. Trips are also checked weekly; you hear only about new things.',
     fields: { where: { kind: 'text', label: 'Where', hint: 'the current trip\'s place when empty', max_len: 80 },
       when: { kind: 'text', label: 'When', hint: 'or dates like 12-14 may', chips: ['today', 'tomorrow', 'this weekend', 'this week', 'next week'], max_len: 40 } },
-    forms: [['/whatson', 'the current trip\'s place and dates'], ['/whatson Lyon this weekend', 'any place and dates', { tpl: '/whatson[ {where}][ {when}]' }],
-      ['/whatson last', 'the last boards', { fixed: true }], ['/whatson auto off', 'stop the weekly check', { fixed: true }], ['/whatson auto on', 'check trips weekly again', { fixed: true }]] },
+    forms: [['/whatson', 'the current trip\'s place and dates', { opens: 'whatson', wait: true }], ['/whatson Lyon this weekend', 'any place and dates', { tpl: '/whatson[ {where}][ {when}]', opens: 'whatson', wait: true }],
+      ['/whatson last', 'the last boards', { fixed: true, opens: 'whatson' }], ['/whatson auto off', 'stop the weekly check', { fixed: true }], ['/whatson auto on', 'check trips weekly again', { fixed: true }]] },
   { cmd: '/quiet', group: 'discover', does: 'For a crowded place you want to see anyway: up to 3 quieter places of the same kind nearby, and its quietest hours.',
     fields: { place: TG_F.place, date: TG_F.date },
-    forms: [['/quiet Harbour Museum', 'quieter alternatives', { tpl: '/quiet {place}[ on {date}]' }], ['/quiet Harbour Museum on 5/13', 'for a day of the trip', { tpl: '/quiet {place}[ on {date}]' }],
+    forms: [['/quiet Harbour Museum', 'quieter alternatives', { tpl: '/quiet {place}[ on {date}]', opens: 'quiet', wait: true }], ['/quiet Harbour Museum on 5/13', 'for a day of the trip', { tpl: '/quiet {place}[ on {date}]', opens: 'quiet', wait: true }],
       ['/quiet', 'buttons for the crowded stops ahead']] },
   { cmd: '/menu', group: 'discover', does: 'Reads a restaurant\'s own menu: the dishes your party can eat, what to ask about, and what does not fit.',
     fields: { place: { kind: 'place', label: 'Restaurant', max_len: 120 }, date: { kind: 'date', label: 'Dinner on' } },
-    forms: [['/menu Brindle Lantern', 'check a restaurant', { tpl: '/menu {place}[ on {date}]' }], ['/menu Brindle Lantern on 5/13', 'for a dinner on that day', { tpl: '/menu {place}[ on {date}]' }],
+    forms: [['/menu Brindle Lantern', 'check a restaurant', { tpl: '/menu {place}[ on {date}]', opens: 'menu', wait: true }], ['/menu Brindle Lantern on 5/13', 'for a dinner on that day', { tpl: '/menu {place}[ on {date}]', opens: 'menu', wait: true }],
       ['/menu', 'buttons for the planned dinners']] },
   // Places and lists
   { cmd: '/places', group: 'places', does: 'Everything Tour Guide knows, counted by destination, or searched. Each match has 📝 full note · ➕ add to the trip · 🔁 fresh check.',
@@ -238,6 +239,7 @@ function tgCmdFormOut(f, cmd) {
     else out.run = 'type';   // never in the shipped guide (the test parses every template); the app falls back to its box
   } else out.run = (f[0] === cmd || o.fixed) ? 'now' : 'type';
   if (o.confirm) out.confirm = true;
+  if (o.opens) { out.opens = o.opens; if (o.wait) out.wait = true; }
   return out;
 }
 function tgCmdFieldsOut(fields) {
@@ -312,9 +314,58 @@ function tgAppOpCommandsRun(args) {
   var text = tgAppStr(args, 'text', { required: true, max: HB_RUN_TEXT_MAX });
   var nonce = tgAppStr(args, 'nonce', { max: 40, re: TG_CMD_NONCE_RE });
   if (nonce && seenOnce('apprun:' + nonce)) return tgAppOk({ duplicate: true });
+  var opens = tgCmdOpens(text);   // read before the handler runs, so the answer it makes is not in the baseline
   var r = runOwnerCommand(text, { via: 'app' });
   if (!r.ok) tgAppRefuse(TG_CMD_RUN_STATUS[r.reason] || 400, r.reason || 'bad_text');
-  return tgAppOk({ cmd: r.cmd, message_id: r.message_id });
+  var out = { cmd: r.cmd, message_id: r.message_id };
+  if (opens) out.opens = opens;
+  return tgAppOk(out);
+}
+
+/**
+ * Answers that open in the app (Phase 17c, item 8). A guide form may carry `opens: '<screen>'` (the app screen that shows
+ * its answer) and `wait: true` (the answer is made later — a routine or a fetch — and lands on that screen as a new item).
+ * tgCmdOpens(text) finds the form a command text was written from (the exact forms first, then the templates, so
+ * '/whatson auto off' is not read as a place) → { screen, wait?, base?, trip? } | null. For a wait, `base` lists what the
+ * screen holds now (ids, or the veg card's received_at) and the app opens the first new one when it appears.
+ */
+var TG_CMD_OPENS_SCREENS = ['today', 'compare', 'vegcard', 'scout', 'daytrip', 'whatson', 'quiet', 'menu'];
+var TG_CMD_OPENS_MAX_BASE = 100;
+var TG_CMD_OPENS_BASE = {
+  scout: function () { return tgCmdOpensIds('scout.list', 'scouts'); },
+  daytrip: function () { return tgCmdOpensIds('daytrip.list', 'boards'); },
+  whatson: function () { return tgCmdOpensIds('whatson.list', 'boards'); },
+  quiet: function () { return tgCmdOpensIds('quiet.list', 'boards'); },
+  menu: function () { return tgCmdOpensIds('menu.list', 'items'); },
+  vegcard: function () {
+    var cur = tgTripCurrent();
+    if (!cur) return null;
+    var rec = tgVegCardGet(cur.slug);
+    return { base: rec ? [String(rec.received_at || '')] : [], trip: cur.slug };
+  }
+};
+function tgCmdOpensIds(op, key) {
+  var b = TG_APP_OPS[op].fn({}).body || {};
+  return { base: (Array.isArray(b[key]) ? b[key] : []).map(function (x) { return String((x && x.id) || ''); }).filter(Boolean).slice(0, TG_CMD_OPENS_MAX_BASE) };
+}
+function tgCmdOpens(text) {
+  var t = String(text || '').replace(/\s+/g, ' ').trim(), name = t.split(' ')[0].toLowerCase().replace(/@.*$/, '');
+  var e = TG_CMD_GUIDE.filter(function (g) { return g.cmd === name; })[0];
+  if (!e) return null;
+  var norm = name + t.slice(name.length).toLowerCase(), hit = null;
+  e.forms.forEach(function (f) { var o = f[2] || {}; if (!hit && !o.tpl && f[0].toLowerCase() === norm) hit = o; });
+  e.forms.forEach(function (f) {
+    var o = f[2] || {}, p;
+    if (!hit && o.tpl && (p = cmdTemplateParse(o.tpl)).ok && cmdTemplateMatches(p.parts, e.fields, t)) hit = o;
+  });
+  if (!hit || !hit.opens || TG_CMD_OPENS_SCREENS.indexOf(hit.opens) < 0) return null;
+  var out = { screen: hit.opens };
+  if (hit.wait && TG_CMD_OPENS_BASE[hit.opens]) {
+    var b = null;
+    try { b = TG_CMD_OPENS_BASE[hit.opens](); } catch (err) { b = null; }   // no baseline → the app opens the screen without waiting
+    if (b) { out.wait = true; out.base = b.base; if (b.trip) out.trip = b.trip; }
+  }
+  return out;
 }
 TG_APP_OPS['commands.list'] = { args: [], fn: tgAppOpCommands };
 TG_APP_OPS['commands.context'] = { args: [], fn: tgAppOpCommandsContext };

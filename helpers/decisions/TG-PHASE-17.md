@@ -70,8 +70,36 @@ shell; the live bot gets it from the normal deploy, no private-repo side): **17a
 - **Expire stale proposals asks first**, like `/expire` in the forms.
 - **Quieter and Menu without a date** on the Places screen (no day there); on a brochure stop they carry the day.
 
-## 5 Next
-- **17c**: five tabs (Home, Today, Discover, Places, More) with old deep links kept; answers that have an app screen open
-  there; a live check with the owner.
+## 5 Step 17c — five tabs, Today, answers that open in the app (v01.77r, app v01.19w)
+- **Five tabs (item 6).** Home, Today, Discover, Places, More, equal width. Discover (Scout, Day trips, What's on, Quiet,
+  Menu, Compare) and More (Settings, Interview, Commands) show their screens in a second row; a tab opens its first
+  screen as a fresh list. Shortlist, Facts, Brochure and the veg card sit under Home and are reached from its cards. Every
+  old `?screen=` link (and the chat's 📱 buttons) still opens its screen, with the right tab marked; `?screen=today` is new.
+- **Today.** The current trip's day today (`commands.context` for the trip and today in the trip's zone, `trip.digest`
+  for the day) with its ⋯ This day buttons already open; forms opened there come back to Today. Before the trip it
+  shows the first planned day ("Next · Day 1"); with no current trip (none planned, or the last one finished) it says so.
+  Below: 📄 Whole trip and ☀ Today in the chat.
+- **Answers that open in the app (item 8).** A guide form may name the screen its answer shows in (`opens`) and whether
+  the answer comes later (`wait`); `commands.list` passes both on. `commands.run` works out the screen from the text
+  typed (`tgCmdOpens`, exact forms first, then templates) and returns `opens: { screen, wait?, base?, trip? }`, where
+  `base` is what that screen's list held before the run (ids, or the veg card's `received_at`). The app then opens the
+  screen instead of the Sent page; for `wait` it shows a bar ("Working on “…” — it opens here when it's ready. The chat
+  gets it too."), reads the list every 10 s for up to 10 minutes and opens the first new item: at once if the owner is
+  still on that screen, otherwise the bar offers Open. ✕ stops watching. `/today` opens Today; `/outline` and `/versions`
+  Compare; `/scout`, `/compare` Scout; `/daytrip`, `/whatson`, `/quiet <place>`, `/menu <place>` their boards;
+  `/vegcard` the card (rebuild waits for the new one). Switches (`/whatson auto off`), Settings and Make current keep
+  their quiet refresh; everything else keeps the Sent page.
+
+## 6 Defaults chosen in 17c
+- **Discover opens Scout, More opens Settings**; the last screen used in a tab is not remembered.
+- **Places stays one screen**: its list and status filters already cover saved lists and Later.
+- **10 s polls for 10 minutes**, skipped while the app is busy; after that the bar says the answer will arrive in the chat.
+- **A watched answer never pulls the owner away**: it opens by itself only when the screen the run left is still showing
+  and nothing else was opened there.
+- **Bare `/quiet` and `/menu` open nothing** (their answer lists coming stops in the chat); `/brochure` and `/places`
+  keep the Sent page because their answer is a file or a chat list.
+
+## 7 Next
+- The live check with the owner: the 17a–17c try-this lists on the real bot; results recorded here.
 
 Developed by: LightAISolutions

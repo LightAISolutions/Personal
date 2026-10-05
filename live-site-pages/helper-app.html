@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://telegram.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' blob:; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex">
-  <meta name="build-version" content="v01.18w">
+  <meta name="build-version" content="v01.19w">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <title>Helper app</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -45,6 +45,14 @@
     nav button { flex: 0 0 auto; min-height: 44px; padding: 0 14px; border: 1px solid var(--line); border-radius: 22px;
       background: var(--card); color: var(--fg); font-size: 14px; }
     nav button[aria-current="page"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+    /* 17c: five equal tabs; Discover and More show their screens in a second row; a watched answer shows in #watch */
+    nav#nav { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; overflow: visible; padding: 6px 12px 8px; }
+    nav#nav button { min-width: 0; padding: 0 4px; border-radius: 12px; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    nav#subnav { padding: 0 16px 10px; }
+    nav#subnav button { font-size: 13px; padding: 0 12px; }
+    nav[hidden], nav button[hidden], #watch[hidden] { display: none; }
+    #watch { display: flex; align-items: center; gap: 8px; margin: 0 16px 10px; padding: 8px 12px; border-radius: 12px; background: var(--card); font-size: 14px; }
+    #watch .grow { flex: 1 1 auto; min-width: 0; }
     main { padding: 16px 16px 112px; max-width: 640px; margin: 0 auto; }
     footer { position: fixed; left: 0; right: 0; bottom: 0; padding: 6px 16px calc(6px + env(safe-area-inset-bottom));
       display: flex; justify-content: space-between; font: 11px/1 var(--mono); color: var(--hint);
@@ -218,7 +226,9 @@
 <body>
   <header id="chrome" class="hidden">
     <div class="masthead"><h1 id="title">Helper</h1><span class="side"><span class="kicker" id="kicker"></span><button id="full" class="full hidden" type="button" aria-label="Full screen" title="Full screen">⤢</button></span></div>
-    <nav id="nav" aria-label="Screens"></nav>
+    <nav id="nav" aria-label="Tabs"></nav>
+    <nav id="subnav" aria-label="Screens" hidden></nav>
+    <div id="watch" role="status" hidden></div>
   </header>
   <main id="main"></main>
   <footer><span id="status"></span><span id="appVer"></span></footer>
@@ -228,13 +238,20 @@
 // ══════════════
   (function () {
     'use strict';
-    var APP_VERSION = 'v01.18w';
+    var APP_VERSION = 'v01.19w';
     var CORE_HOST_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
     var SCREENS = [
-      { id: 'home', label: 'Home' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'compare', label: 'Compare' }, { id: 'facts', label: 'Facts' },
+      { id: 'home', label: 'Home' }, { id: 'today', label: 'Today' }, { id: 'shortlist', label: 'Shortlist' }, { id: 'compare', label: 'Compare' }, { id: 'facts', label: 'Facts' },
       { id: 'interview', label: 'Interview' }, { id: 'brochure', label: 'Brochure' }, { id: 'places', label: 'Places' },
       { id: 'scout', label: 'Scout' }, { id: 'daytrip', label: 'Day trips' }, { id: 'whatson', label: 'What\'s on' },
       { id: 'quiet', label: 'Quiet' }, { id: 'menu', label: 'Menu' }, { id: 'commands', label: 'Commands' }, { id: 'settings', label: 'Settings' }
+    ];
+    /* 17c (item 6): five tabs; a tab's first screen is where it opens; Discover and More list theirs in a second row (sub). Every
+     * screen keeps its ?screen= deep link; one not listed here (the veg card) belongs to Home. */
+    var TABS = [
+      { id: 'home', label: 'Home', screens: ['home', 'shortlist', 'facts', 'brochure', 'vegcard'] }, { id: 'today', label: 'Today', screens: ['today'] },
+      { id: 'discover', label: 'Discover', screens: ['scout', 'daytrip', 'whatson', 'quiet', 'menu', 'compare'], sub: true },
+      { id: 'places', label: 'Places', screens: ['places'] }, { id: 'more', label: 'More', screens: ['settings', 'interview', 'commands'], sub: true }
     ];
     var SCOUT_ID_RE = /^sc-\d{8}-[a-z0-9-]{1,40}$/;
     var DAYTRIP_ID_RE = /^dt-\d{8}-[a-z0-9-]{1,40}$/;
@@ -375,13 +392,33 @@
       flushDraft();   // an unsent interview draft is written before the screen changes
       S.screen = screen; if (trip !== undefined) S.trip = trip;
       setMain('', null); S.back = null;   // a sub-screen (a command's form) sets S.back; the BackButton then returns there first
-      Array.prototype.forEach.call($('nav').children, function (b) { if (b.getAttribute('data-screen') === screen) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+      // 17c: the tab holding the screen is current; the second row shows that tab's screens when it has one
+      var inTab = function (b) { return (' ' + (b.getAttribute('data-screens') || b.getAttribute('data-screen') || '') + ' ').indexOf(' ' + screen + ' ') >= 0; }, group = '';
+      Array.prototype.forEach.call($('nav').children, function (b) { if (inTab(b)) { b.setAttribute('aria-current', 'page'); group = b.getAttribute('data-sub') || ''; } else b.removeAttribute('aria-current'); });
+      var sub = $('subnav'), any = false;
+      if (sub) Array.prototype.forEach.call(sub.children, function (b) {
+        if (b.getAttribute('data-screen') === screen) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+        b.hidden = !group || b.getAttribute('data-group') !== group; if (!b.hidden) any = true;
+      });
+      if (sub) sub.hidden = !any;
       try { if (tg && tg.BackButton) { if (screen === 'home') tg.BackButton.hide(); else tg.BackButton.show(); } } catch (e) { /* older clients */ }
-      ({ home: showHome, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout, vegcard: showVegCard, daytrip: showDaytrip, whatson: showWhatson, quiet: showQuiet, menu: function () { showMenu(); }, commands: function () { showCommands(); }, settings: function () { showSettings(); } })[screen]();
+      ({ home: showHome, today: function () { showToday(); }, shortlist: showShortlist, compare: showCompare, facts: showFacts, interview: showInterview, brochure: showBrochure, places: showPlaces, scout: showScout, vegcard: showVegCard, daytrip: showDaytrip, whatson: showWhatson, quiet: showQuiet, menu: function () { showMenu(); }, commands: function () { showCommands(); }, settings: function () { showSettings(); } })[screen]();
     }
     function buildNav() {
-      var nav = clear($('nav'));
-      SCREENS.forEach(function (s) { nav.appendChild(el('button', { type: 'button', text: s.label, 'data-screen': s.id, on: { click: function () { if (s.id === 'interview') { S.person = ''; S.addPerson = false; } if (s.id === 'scout') S.scout = ''; if (s.id === 'daytrip') S.daytrip = ''; if (s.id === 'whatson') S.board = ''; if (s.id === 'quiet') S.quiet = ''; if (s.id === 'menu') S.menu = ''; go(s.id); } } })); });
+      // a tab or second-row button starts its screen fresh: the list, not the last scout, board or person opened
+      var navFresh = function (id) { if (id === 'interview') { S.person = ''; S.addPerson = false; } if (id === 'scout') S.scout = ''; if (id === 'daytrip') S.daytrip = ''; if (id === 'whatson') S.board = ''; if (id === 'quiet') S.quiet = ''; if (id === 'menu') S.menu = ''; };
+      var tabs = typeof TABS !== 'undefined' ? TABS : [], nav = clear($('nav'));
+      tabs.forEach(function (t) {
+        nav.appendChild(el('button', { type: 'button', text: t.label, 'data-tab': t.id, 'data-screens': t.screens.join(' '), 'data-sub': t.sub ? t.id : '', on: { click: function () {
+          var to = t.screens[0]; navFresh(to); go(to);
+        } } }));
+      });
+      var sub = $('subnav') || nav; if (sub !== nav) clear(sub);
+      var order = tabs.reduce(function (a, t) { return a.concat(t.screens); }, []), at = function (s) { var i = order.indexOf(s.id); return i < 0 ? order.length : i; };
+      SCREENS.slice().sort(function (a, b) { return at(a) - at(b); }).forEach(function (s) {
+        var g = tabs.filter(function (t) { return t.sub && t.screens.indexOf(s.id) >= 0; })[0];
+        sub.appendChild(el('button', { type: 'button', text: s.label, 'data-screen': s.id, 'data-group': g ? g.id : '', on: { click: function () { navFresh(s.id); go(s.id); } } }));
+      });
     }
     function tripLabel(t) { t = obj(t); return str(t.title || t.destination || t.slug, 60); }
     function tripName(slug) { var hit = (S.home ? list(S.home.trips) : []).filter(function (t) { return str(obj(t).slug) === str(slug); })[0]; return hit ? tripLabel(hit) : str(slug, 60); }
@@ -1026,14 +1063,14 @@
     }
     function anchorOk(a) { a = obj(a); return typeof a.name === 'string' && !!a.name; }
     /** The day as the chat words it; a day without any Phase 10/11 field keeps the earlier card. */
-    function dayCard(d, i, total, trip) {
+    function dayCard(d, i, total, trip, opts) {   // opts (17c): { back, open } — the Today tab returns its forms to itself and opens the day's buttons
       d = obj(d);
       var stops = list(d.stops).map(obj), legs = list(d.legs).map(obj);
       var card = el('div', { class: 'card reveal', 'data-day': str(i + 1) }, [el('div', { class: 'meta', text: 'DAY ' + (i + 1) + ' · ' + str(d.date, 10) }), el('div', { class: 'name', text: str(d.theme, 100) })]);
       var fresh = has(d, DAY_NEW) || stops.some(function (s) { return has(s, STOP_NEW); }) || legs.some(function (l) { return has(l, LEG_NEW); });
       if (!fresh) {   // an older day: as the app always showed it
         stops.forEach(function (s) {
-          var pa = stopActs(s, d, trip);
+          var pa = stopActs(s, d, trip, opts);
           card.appendChild(el('div', { class: 'row between', style: 'margin-top:6px' }, [el('div', { class: 'grow' }, [el('div', { text: str(s.n, 4) + '. ' + str(s.name, 80) }), el('div', { class: 'meta', text: [str(s.arrive, 5) && str(s.arrive, 5) + '–' + str(s.depart, 5), s.minutes ? num(s.minutes) + ' min' : '', str(s.note_line, 120)].filter(Boolean).join(' · ') })]),
             el('div', { class: 'row' }, [linkBtn('Map ↗', s.maps_url, 'pill'), pa ? pa.toggle : null])]));
           if (pa) card.appendChild(pa.box);
@@ -1041,7 +1078,7 @@
         list(d.warnings).forEach(function (w) { card.appendChild(el('div', { class: 'note', text: '⚠️ ' + str(w, 200) })); });
         list(d.rain).forEach(function (r) { r = obj(r); card.appendChild(el('div', { class: 'meta', text: '☔ If it rains: ' + str(r.name, 60) + ' instead of ' + str(r.instead_of, 60) })); });
         if (typeof quietDayRow === 'function') quietDayRow(card, d);   // C16 (WP-16a): the day's 🕊 buttons, filled in the background
-        if (typeof dayActions === 'function') dayActions(card, d, trip);   // 17b: the day's command buttons
+        if (typeof dayActions === 'function') dayActions(card, d, trip, opts);   // 17b: the day's command buttons
         return card;
       }
       // Each leg shows once, before what it leads to (a day can reach the lodging more than once).
@@ -1060,7 +1097,7 @@
         var l = legWhere(function (x) { return x.to === s.slug; });
         if (l) add(legLine(l, ''));
         var t = stopTime(s), facts = [s.minutes ? minutes(s.minutes) : '', clock(s.last_entry) ? 'last entry ' + s.last_entry : ''].filter(Boolean).join(' · ');
-        var pa = stopActs(s, d, trip);
+        var pa = stopActs(s, d, trip, opts);
         add(el('div', { class: 'row between stop', 'data-stop': str(s.slug, 64) }, [el('div', { class: 'grow' }, [
           el('div', { class: 'name', text: str(s.n, 4) + '. ' + (t ? t + ' ' : '') + str(s.name, 80) }), facts ? el('div', { class: 'meta', text: facts }) : null]),
           el('div', { class: 'row' }, [linkBtn('Map ↗', s.maps_url, 'pill'), pa ? pa.toggle : null])]));
@@ -1107,13 +1144,13 @@
         add(line(['☔ ', linkText(str(r.name, 80), r.maps_url), ' instead of ' + str(r.instead_of, 80) + (typeof r.km === 'number' ? ', ' + r.km + ' km away' : '')]));
       });
       if (typeof quietDayRow === 'function') quietDayRow(card, d);   // C16 (WP-16a): the day's 🕊 buttons, filled in the background
-      if (typeof dayActions === 'function') dayActions(card, d, trip);   // 17b: the day's command buttons
+      if (typeof dayActions === 'function') dayActions(card, d, trip, opts);   // 17b: the day's command buttons
       return card;
     }
     /** A stop's ⋯ (17b): null where the commands block is not loaded or the stop has no usable name. */
-    function stopActs(s, d, trip) {
+    function stopActs(s, d, trip, opts) {
       if (typeof placeActs !== 'function') return null;
-      return placeActs(obj(s).name, str(obj(d).date, 10), { back: trip ? function () { go('brochure', trip); } : null, food: FOOD_RE.test(str(obj(s).category, 40) + ' ' + str(obj(s).kind, 20)) });
+      return placeActs(obj(s).name, str(obj(d).date, 10), { back: obj(opts).back || (trip ? function () { go('brochure', trip); } : null), food: FOOD_RE.test(str(obj(s).category, 40) + ' ' + str(obj(s).kind, 20)) });
     }
 
     /* ---------- brochure: the trip digest, then the HTML in a sandboxed frame ---------- */
@@ -1976,6 +2013,7 @@
           if (!body.ok) return say('Not sent: ' + (CMD_WHY[str(body.reason, 40)] || why(body)));
           haptic('ok'); setStatus(''); scRecord(text, !!opts.confirm);
           if (opts.after) return opts.after(text);   // a quiet run (a switch, Make current): the screen stays and refreshes
+          if (body.opens) return cmdOpenIn(text, body.opens, opts.back);   // 17c: the answer has a screen here
           cmdSent(text, opts.back, !!opts.confirm);
         });
       };
@@ -1989,6 +2027,83 @@
       render(el('div', { class: 'state', 'data-sent': text }, [el('div', { class: 'big', text: '✅' }), el('h2', { text: 'Sent' }),
         el('p', { text: 'The answer is in the chat, under “▶️ ' + str(text, 80) + '”.' }),
         el('div', { class: 'row center' }, [toChat, el('button', { class: 'btn ghost', type: 'button', text: back ? 'Back' : 'All commands', on: { click: back || function () { showCommands(); } } }), pin])]));
+    }
+
+    /* 17c (item 8): an answer opens in its own screen. commands.run says which: { screen, wait?, base?, trip? }. A slow answer (a
+     * scout, a board, a menu, a rebuilt veg card) is watched: the screen's list is read every 10 s for up to 10 minutes and the
+     * first item not in `base` (what was there before the run) opens — at once while the screen is still showing, otherwise
+     * through Open on the bar. The chat gets every answer too, so leaving the app loses nothing. */
+    var WATCH = { scout: ['scout.list', 'scouts', 'scout'], daytrip: ['daytrip.list', 'boards', 'daytrip'], whatson: ['whatson.list', 'boards', 'board'],
+      quiet: ['quiet.list', 'boards', 'quiet'], menu: ['menu.list', 'items', 'menu'] };
+    var WATCH_EVERY = 10000, WATCH_FOR = 600000, watchRun = 0;
+    function openFresh() { ['scout', 'daytrip', 'board', 'quiet', 'menu'].forEach(function (k) { S[k] = ''; }); }
+    function cmdOpenIn(text, o, back) {
+      o = obj(o); var screen = str(o.screen, 20), trip = str(o.trip, 64);
+      if (screen !== 'vegcard' && !Object.prototype.hasOwnProperty.call(WATCH, screen) && ['today', 'compare'].indexOf(screen) < 0) return cmdSent(text, back, false);
+      openFresh();
+      if (screen === 'vegcard') { if (trip) S.trip = trip; if (o.wait) cmdSent(text, back, false); else go('vegcard'); }
+      else go(screen);
+      if (o.wait) cmdWatch(text, screen, list(o.base).map(function (x) { return str(x, 64); }), trip);
+    }
+    function watchBar(text, open) {
+      var bar = typeof $ === 'function' ? $('watch') : null;
+      if (!bar) return;
+      clear(bar); bar.hidden = !text;
+      if (!text) return;
+      bar.appendChild(el('span', { class: 'grow', text: text }));
+      if (open) bar.appendChild(el('button', { class: 'btn small', type: 'button', text: 'Open', 'data-watch-open': '1', on: { click: open } }));
+      bar.appendChild(el('button', { class: 'linkbtn', type: 'button', text: '✕', 'aria-label': 'Hide', on: { click: function () { if (!open) watchRun++; watchBar(''); } } }));
+    }
+    function cmdWatch(text, screen, base, trip) {
+      var run = ++watchRun, until = Date.now() + WATCH_FOR, w = WATCH[screen] || null, from = S.screen, said = str(text, 60);
+      watchBar('Working on “' + said + '” — it opens here when it’s ready. The chat gets it too.', null);
+      var tick = function () {
+        if (run !== watchRun) return;
+        if (Date.now() > until) { watchRun++; return watchBar('Still working on “' + said + '” — it will arrive in the chat.', null); }
+        if (S.busy) return setTimeout(tick, WATCH_EVERY);
+        api(w ? w[0] : 'vegcard.get', w ? {} : { slug: trip }, function (err, body) {
+          if (run !== watchRun) return;
+          var hit = null;
+          if (!err && body && body.ok) {
+            if (w) hit = list(body[w[1]]).map(obj).filter(function (x) { return str(x.id, 64) && base.indexOf(str(x.id, 64)) < 0; })[0] || null;
+            else if (str(body.received_at) && base.indexOf(str(body.received_at)) < 0) hit = {};
+          }
+          if (!hit) return setTimeout(tick, WATCH_EVERY);
+          watchRun++;
+          var open = function () { watchBar(''); openFresh(); if (w) S[w[2]] = str(hit.id, 64); else S.trip = trip; go(screen); };
+          if (typeof haptic === 'function') haptic('ok');
+          if (S.screen === from && !(w && S[w[2]])) return open();   // still where the run left you: open it
+          watchBar('Your answer to “' + said + '” is ready.', open);
+        });
+      };
+      setTimeout(tick, WATCH_EVERY);
+    }
+
+    /* 17c (item 6): the Today tab — the current trip's day today with its buttons open; before the trip the first day, after it a
+     * word that it is over. The forms it opens come back here. */
+    function showToday() {
+      render(stateView('', 'Loading…'));
+      var back = function () { go('today'); };
+      api('commands.context', {}, function (err, cx) {
+        if (err || !cx || !cx.ok) return render(stateView('📡', 'No connection', 'The helper did not answer. Check the network and try again.', el('button', { class: 'btn', type: 'button', text: 'Retry', on: { click: back } })));
+        var t = cx.trip ? obj(cx.trip) : null, today = str(cx.today, 10), slug = t ? str(t.slug, 64) : '';
+        if (!slug) return render(stateView('☀', 'No current trip', 'Plan one in the chat, or make a trip current from Home.', homeBtn()));
+        call('trip.digest', { slug: slug }, function (b) {
+          var days = list(b.days).map(obj), title = str(t.title, 60) || slug;
+          var i = -1, k;
+          for (k = 0; k < days.length; k++) if (str(days[k].date, 10) === today) { i = k; break; }
+          var next = -1;
+          if (i < 0) for (k = 0; k < days.length; k++) if (str(days[k].date, 10) > today) { next = k; break; }
+          var view = el('div', { 'data-today': today }, [el('h2', { text: i >= 0 ? 'Today · Day ' + (i + 1) : next >= 0 ? 'Next · Day ' + (next + 1) : title }),
+            el('p', { class: 'lede', text: i >= 0 ? title + ' · ' + today : next >= 0 ? title + ' starts ' + str(days[next].date, 10) + ' — here is its first planned day.' : days.length ? title + ' is over — every day is in the brochure.' : 'No days planned yet for ' + title + '.' })]);
+          var shown = i >= 0 ? i : next;
+          if (shown >= 0) view.appendChild(dayCard(days[shown], shown, days.length, slug, { back: back, open: true }));
+          view.appendChild(el('div', { class: 'row' }, [
+            el('button', { class: 'btn ghost', type: 'button', text: '📄 Whole trip', on: { click: function () { go('brochure', slug); } } }),
+            el('button', { class: 'btn ghost', type: 'button', text: '☀ Today in the chat', 'data-run': '/today', on: { click: function (ev) { cmdRun('/today', { btn: ev.currentTarget, back: back }); } } })]));
+          render(view);
+        });
+      });
     }
 
     /* The list: each example copies on tap; beside it Run (a ready-made form), Fill in (a form with fields) or Edit; under each
@@ -2388,10 +2503,10 @@
     }
     /** A brochure day's buttons, for a day of the current trip: Re-plan, Versions, Morning, Running late, Check-in, Route.
      *  Another trip's day offers to make that trip current. Drawn when commands.context answers (once for all days). */
-    function dayActions(card, d, trip) {
-      var date = str(obj(d).date, 10);
+    function dayActions(card, d, trip, opts) {
+      var date = str(obj(d).date, 10); opts = obj(opts);
       if (!trip || !/^\d{4}-\d{2}-\d{2}$/.test(date) || !S.core) return;
-      var box = el('div', { 'data-day-acts': date }), back = function () { go('brochure', trip); };
+      var box = el('div', { 'data-day-acts': date }), back = opts.back || function () { go('brochure', trip); };
       card.appendChild(box);
       cmdContext(function (cx) {
         if (str(obj(cx.trip).slug, 64) !== trip) {
@@ -2409,6 +2524,7 @@
           actPill('🌙 Check-in', { text: '/checkin ' + date }, back),
           actPill('🧭 Route', { form: ['/route', '/route {from} → {to}[ {mode}]'] }, back)]);
         f.box.appendChild(late.box);
+        if (opts.open) { f.box.hidden = false; f.toggle.setAttribute('aria-expanded', 'true'); }
         box.appendChild(el('div', { class: 'acts' }, [f.toggle])); box.appendChild(f.box);
       });
     }
