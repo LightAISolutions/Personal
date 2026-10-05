@@ -4,7 +4,8 @@
  *
  *   import { vegCard, vegCardTelegram, vegCardHtml, validateVegCardPayload } from '…/packs/tour-guide/vegcard/index.mjs';
  *   import { partyDiet } from '…/packs/tour-guide/travellers/index.mjs';
- *   const party = { ...partyDiet([ownerDiet, ...companionDiets]), size: 1 + companions.length };
+ *   const members = [ownerDiet, ...companionDiets];   // dietOf() per traveller, owner first: each limit said for its person
+ *   const party = { ...partyDiet(members), size: 1 + companions.length, members };
  *   const card = vegCard({ party, country: 'JP', trip: 'fernhollow-2027' });   // null → nothing to say, send nothing
  *   validateVegCardPayload(card);   // [] — then envelope.mjs veg_card … --pack tour-guide --dedupe-key vegcard:<trip>:<fp>
  */

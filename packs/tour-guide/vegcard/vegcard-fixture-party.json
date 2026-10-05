@@ -8,5 +8,8 @@
   "shellfish_trio": { "trip": "brackenford-2027", "country": "JP", "members": [
     { "dietary": ["shellfish"], "diet": null }, { "dietary": [], "diet": null }, { "dietary": [], "diet": null } ] },
   "no_table": { "trip": "larkspur-vale-2027", "country": "FR", "members": [
-    { "dietary": ["meat and fish", "lupin beans"], "diet": "vegetarian" } ] }
+    { "dietary": ["meat and fish", "lupin beans"], "diet": "vegetarian" } ] },
+  "vegetarian_owner_eggs_companion": { "trip": "mossgarth-2027", "country": "JP", "members": [
+    { "dietary": ["meat and fish"], "diet": "vegetarian" },
+    { "dietary": ["eggs"], "diet": null } ] }
 }
