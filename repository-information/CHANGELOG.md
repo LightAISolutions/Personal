@@ -3,11 +3,19 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), with project-specific versioning (`w` = website, `g` = Google Apps Script, `r` = repository). Older sections are rotated to [CHANGELOG-archive.md](CHANGELOG-archive.md) when this file exceeds 100 version sections.
 
-`Sections: 86/100`
+`Sections: 87/100`
 
 ## [Unreleased]
 
 *(No changes yet)*
+
+## [v01.86r] — 2026-10-05 03:13:39 AM EST
+
+> **Prompt:** "This is what the rebuilt card looks like. It fixed my portion, but did not mention anything about *(the companion's)* preferences." *(with a screenshot of the rebuilt card; this push records that the owner merged the private side of the card's mealtime preferences)*
+
+### Changed
+- `helpers/BUILD-STATE.md` row 14, the Live fixes log and Next, `helpers/decisions/TG-PHASE-14.md` §11 and `helpers/decisions/WP-14c.md` ("Mealtime preferences"): the private repo's side of the card's mealtime preferences (the re-pin to v01.84r; the members `loadProfile` builds carry `mealPrefsOf()`; the companion's profile change through the prefs kit) merged by the owner as the private repo's PR #31
+- README timestamp
 
 ## [v01.85r] — 2026-10-05 03:00:19 AM EST
 

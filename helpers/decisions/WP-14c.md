@@ -96,6 +96,8 @@ Every default picked while building WP-14c (TG-PHASE-14.md "WP-14c", Contract C1
   value comes through the prefs kit from the owner's own words; a question in the interview bank and its core mirror is
   a separate, later change.
 - No schema, validator or core change.
+- **The private side** (its PR #31, merged 2026-10-05) adds each traveller's `mealPrefsOf()` to the members `loadProfile`
+  builds, next to `dietOf()`; a companion without a profile has neither.
 
 ## Rendering
 - `vegCardTelegram`: header in bold; for an English-only card an italic line "No local-language phrases for this country
