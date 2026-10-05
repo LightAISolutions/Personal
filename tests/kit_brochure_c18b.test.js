@@ -105,8 +105,17 @@ test('the caps are constants (BRIEF_CAPS.brochure) and the kit schema says the s
   assert.equal(briefCaps('brochure'), caps);
   assert.equal(briefCaps('nonesuch'), caps, 'an unknown book uses the brochure caps');
   assert.equal(day.key_times.maxItems, caps.key_times);
-  assert.equal(day.food.maxItems, caps.food);
-  assert.equal(day.if_then.maxItems, caps.if_then);
+  // food and if_then: the schema allows the largest cap over the books (the Day book's 10); the per-book cap is semantic.
+  const most = (k) => Math.max(...Object.values(BRIEF_CAPS).map((c) => c[k]));
+  assert.equal(day.food.maxItems, most('food'));
+  assert.equal(day.if_then.maxItems, most('if_then'));
+  assert.equal(caps.food, 6);
+  assert.equal(caps.if_then, 6);
+  assert.equal(caps.inside, 0, 'no order inside a stop in a brochure');
+  const dc = briefCaps('day');
+  assert.ok(Object.isFrozen(dc));
+  assert.deepEqual([dc.food, dc.if_then, dc.inside], [10, 10, 10]);
+  for (const k of Object.keys(caps)) if (!['food', 'if_then', 'inside'].includes(k)) assert.equal(dc[k], caps[k], `day book ${k}`);
   assert.equal(day.why.maxItems, caps.why);
   assert.equal(day.lead.maxLength, caps.lead);
   assert.equal(day.contents.maxLength, caps.contents);
@@ -121,7 +130,7 @@ test('the caps are constants (BRIEF_CAPS.brochure) and the kit schema says the s
   const pack = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', 'packs', 'tour-guide', 'schemas', 'tour-guide-briefing.schema.json'), 'utf8'));
   const pd = pack.$defs.day.properties;
   assert.deepEqual([pd.key_times.maxItems, pd.food.maxItems, pd.if_then.maxItems, pd.why.maxItems, pd.lead.maxLength, pd.contents.maxLength, pd.bail_out.maxLength, pd.theme.maxLength],
-    [caps.key_times, caps.food, caps.if_then, caps.why, caps.lead, caps.contents, caps.bail_out, caps.theme], 'the pack briefing schema uses the same caps');
+    [caps.key_times, dc.food, dc.if_then, caps.why, caps.lead, caps.contents, caps.bail_out, caps.theme], 'the pack briefing schema uses the same caps (food, if_then at the largest)');
 });
 
 test('the schema refuses unknown keys and bad values in every wave-2 field', async () => {
@@ -142,12 +151,12 @@ test('the schema refuses unknown keys and bad values in every wave-2 field', asy
     [/\/days\/0\/key_times\/0\/label/, (m) => { m.days[0].key_times[0].label = ''; }],
     [/\/days\/0\/key_times\/0\/time/, (m) => { m.days[0].key_times[0].time = '7.15'; }],
     [/\/days\/0\/key_times\/0/, (m) => { delete m.days[0].key_times[0].time; }],
-    [/\/days\/0\/food$/, (m) => { m.days[0].food.push(...m.days[0].food.slice(0, 3)); }],
+    [/\/days\/0\/food$/, (m) => { m.days[0].food = Array(11).fill(m.days[0].food[0]); }],
     [/\/days\/0\/food\/0/, (m) => { delete m.days[0].food[0].dish; }],
     [/\/days\/0\/food\/0\/fits/, (m) => { m.days[0].food[0].fits = line; }],
     [/\/days\/0\/food\/0\/price/, (m) => { m.days[0].food[0].price = 'x'.repeat(61); }],
     [/\/days\/0\/food\/0\/place/, (m) => { m.days[0].food[0].place = 'not a key!'; }],
-    [/\/days\/0\/if_then$/, (m) => { m.days[0].if_then = Array(7).fill({ if: 'a', then: 'b' }); }],
+    [/\/days\/0\/if_then$/, (m) => { m.days[0].if_then = Array(11).fill({ if: 'a', then: 'b' }); }],
     [/\/days\/0\/if_then\/0/, (m) => { delete m.days[0].if_then[0].then; }],
     [/\/days\/0\/why$/, (m) => { m.days[0].why = Array(5).fill('Because.'); }],
     [/\/days\/0\/why\/0/, (m) => { m.days[0].why[0] = line; }],
@@ -170,7 +179,10 @@ test('semantic checks: key times in time order, a food place is a known place, t
   const cases = [
     [/^\/days\/0\/key_times\/2\/time$/, /time order/, (m) => { m.days[0].key_times[2].time = '08:00'; }],
     [/^\/days\/0\/food\/1\/place$/, /unknown place/, (m) => { m.days[0].food[1].place = 'nowhere'; }],
-    [/^\/days\/0\/kit\/weather\/low_c$/, /low is above the high/, (m) => { m.days[0].kit.weather.low_c = 14; }]
+    [/^\/days\/0\/kit\/weather\/low_c$/, /low is above the high/, (m) => { m.days[0].kit.weather.low_c = 14; }],
+    // The schema allows 10 (the Day book's cap); a brochure stays at 6.
+    [/^\/days\/0\/food$/, /at most 6 items/, (m) => { m.days[0].food = Array(7).fill(m.days[0].food[0]); }],
+    [/^\/days\/0\/if_then$/, /at most 6 items/, (m) => { m.days[0].if_then = Array(7).fill({ if: 'a', then: 'b' }); }]
   ];
   for (const [at, msg, edit] of cases) {
     const m = c18b(); edit(m);

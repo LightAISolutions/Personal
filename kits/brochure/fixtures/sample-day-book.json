@@ -1,0 +1,525 @@
+{
+  "version": 1,
+  "book": "day",
+  "trip": {
+    "title": "Harrowmere in four days",
+    "subtitle": "The gardens day, in one booklet",
+    "destination": "Harrowmere",
+    "country": "Brindalia",
+    "start_date": "2027-05-13",
+    "end_date": "2027-05-16",
+    "timezone": "Etc/GMT-2",
+    "locale": "en-US",
+    "travelers": [
+      "Traveller A",
+      "Traveller B",
+      "Traveller C"
+    ],
+    "prepared_for": "the Harrowmere sample family",
+    "pace": "normal",
+    "day_start": "08:00",
+    "day_end": "21:00",
+    "lodging": [
+      {
+        "name": "Quayside Rooms",
+        "address": "2 Ropewalk, Harrowmere",
+        "from": "2027-05-13",
+        "to": "2027-05-17",
+        "lat": 41.5021,
+        "lng": 12.3104,
+        "check_in": "15:00",
+        "check_out": "11:00",
+        "maps_url": "https://maps.example.com/?q=Quayside+Rooms",
+        "note": "Breakfast from 07:30 in the long room."
+      }
+    ],
+    "build_id": "fixture-build-0003",
+    "built_on": "2027-05-01",
+    "verified_on": "2027-05-01",
+    "clock": "24h",
+    "temp": "both"
+  },
+  "days": [
+    {
+      "date": "2027-05-15",
+      "number": 3,
+      "theme": "A whole day at Larkspur Pleasure Gardens",
+      "summary": "The long day of the trip: the gardens from opening to late afternoon, the Clockwork Pier on the way home, dinner two minutes from the door.",
+      "lodging": "Quayside Rooms",
+      "stops": [
+        {
+          "place": "larkspur-gardens",
+          "arrive": "09:30",
+          "depart": "16:30",
+          "minutes": 420,
+          "activity": "Rides, the hedge maze and the lake",
+          "booked": "Gate entry 09:30, booked",
+          "fixed": true,
+          "last_entry": "15:00",
+          "minutes_source": "official",
+          "crowd_slot": "opening",
+          "tip": "Use the east gate on the way out; the tram stop is right outside it.",
+          "inside": [
+            {
+              "time": "09:30",
+              "text": "Through Larkspur Gate; the ride board is on your left"
+            },
+            {
+              "time": "09:40",
+              "text": "The Gearwheel first, before the queue builds"
+            },
+            {
+              "time": "10:30",
+              "text": "Hedge maze: meet at the fountain if anyone gets lost"
+            },
+            {
+              "time": "11:30",
+              "text": "The Little Railway round the lake"
+            },
+            {
+              "time": "12:30",
+              "text": "Lunch at Bandstand Kitchen"
+            },
+            {
+              "time": "13:30",
+              "text": "Swan boats from the north jetty"
+            },
+            {
+              "time": "14:30",
+              "text": "Puppet theatre, the afternoon show"
+            },
+            {
+              "time": "15:30",
+              "text": "The Gearwheel again, or the glasshouse if it rains"
+            },
+            {
+              "text": "Out by the east gate for the tram"
+            }
+          ]
+        },
+        {
+          "place": "clockwork-pier",
+          "arrive": "17:00",
+          "depart": "18:15",
+          "minutes": 75,
+          "activity": "The automata, wound at 18:00",
+          "tip": "Seats along the west rail; the big clock is at the far end."
+        }
+      ],
+      "legs": [
+        {
+          "from": "lodging",
+          "to": "larkspur-gardens",
+          "mode": "transit",
+          "minutes": 27,
+          "distance_m": 3400,
+          "depart_at": "08:55",
+          "arrive_at": "09:22",
+          "line": "Tram 6 toward Larkspur Gate",
+          "maps_url": "https://maps.example.com/dir/?from=quayside-rooms&to=larkspur-gardens&mode=transit"
+        },
+        {
+          "from": "larkspur-gardens",
+          "to": "clockwork-pier",
+          "mode": "transit",
+          "minutes": 20,
+          "distance_m": 2600,
+          "depart_at": "16:35",
+          "arrive_at": "16:55",
+          "line": "Tram 6 toward Pier Road",
+          "maps_url": "https://maps.example.com/dir/?from=larkspur-gardens&to=clockwork-pier&mode=transit"
+        },
+        {
+          "from": "clockwork-pier",
+          "to": "lodging",
+          "mode": "walk",
+          "minutes": 15,
+          "distance_m": 1100,
+          "depart_at": "18:20",
+          "arrive_at": "18:35",
+          "maps_url": "https://maps.example.com/dir/?from=clockwork-pier&to=quayside-rooms&mode=walking"
+        },
+        {
+          "from": "lodging",
+          "to": "orchard-lamp",
+          "mode": "walk",
+          "minutes": 3,
+          "distance_m": 200,
+          "depart_at": "19:10",
+          "arrive_at": "19:13",
+          "maps_url": "https://maps.example.com/dir/?from=quayside-rooms&to=orchard-lamp&mode=walking"
+        }
+      ],
+      "meals": [
+        {
+          "kind": "breakfast",
+          "start": "07:45",
+          "end": "08:30",
+          "name": "Quayside Rooms, the long room",
+          "note": "Included; fill the water bottles here."
+        },
+        {
+          "kind": "lunch",
+          "start": "12:30",
+          "end": "13:15",
+          "place": "bandstand-kitchen",
+          "tip": "Order at the hatch, then take any table under the roof."
+        },
+        {
+          "kind": "dinner",
+          "start": "19:15",
+          "end": "20:45",
+          "place": "orchard-lamp",
+          "booking": "Booked for three at 19:15",
+          "fixed": true
+        }
+      ],
+      "free": [
+        {
+          "start": "18:35",
+          "end": "19:10",
+          "title": "Back at Quayside Rooms",
+          "note": "Shoes off for half an hour."
+        }
+      ],
+      "warnings": [
+        {
+          "severity": "info",
+          "text": "Last ride at Larkspur is at 17:30; the glasshouse closes at 16:00 on Saturdays.",
+          "place": "larkspur-gardens"
+        },
+        {
+          "severity": "warn",
+          "text": "The maze has no step-free route; the lake path goes round it.",
+          "place": "larkspur-gardens"
+        }
+      ],
+      "verified_on": "2027-05-01",
+      "sunset": "20:24",
+      "checklist": {
+        "must": [
+          "09:30 gate entry at Larkspur (QR on the phone)",
+          "19:15 table at The Orchard Lamp"
+        ],
+        "carry": [
+          "Gate tickets (QR) on the phone",
+          "Sun hats and water bottles",
+          "Coins for the swan boats",
+          "A light layer for the pier"
+        ],
+        "constraints": [
+          "Vegetarian: Bandstand Kitchen has one plate a day",
+          "Last ride 17:30"
+        ]
+      },
+      "prep": {
+        "night_before": [
+          "Download the gate tickets",
+          "Charge the phones; it is a long day of photos",
+          "Lay out hats and bottles"
+        ],
+        "steps": [
+          {
+            "time": "07:30",
+            "text": "Up"
+          },
+          {
+            "time": "07:45",
+            "text": "Breakfast in the long room"
+          },
+          {
+            "time": "08:50",
+            "text": "Leave for the tram (5 min walk)"
+          },
+          {
+            "time": "08:55",
+            "text": "Tram 6 toward Larkspur Gate"
+          }
+        ]
+      },
+      "lead": "One long day in one place: be at Larkspur Gate for the 09:30 entry, ride the Gearwheel before the queue, and leave by 16:30 for the pier and an early dinner.",
+      "key_times": [
+        {
+          "label": "Tram",
+          "time": "08:55"
+        },
+        {
+          "label": "Gate entry",
+          "time": "09:30"
+        },
+        {
+          "label": "Leave",
+          "time": "16:30"
+        },
+        {
+          "label": "Dinner",
+          "time": "19:15"
+        }
+      ],
+      "contents": "Larkspur from opening, then the pier",
+      "food": [
+        {
+          "name": "Gate Bakery",
+          "dish": "Cinnamon knot",
+          "price": "€3",
+          "fits": "on the way in, about 09:20"
+        },
+        {
+          "name": "Gearwheel kiosk",
+          "dish": "Hot chocolate",
+          "price": "€3",
+          "fits": "after the first ride, 10:15"
+        },
+        {
+          "name": "Maze Café",
+          "dish": "Lemon iced bun",
+          "price": "€3",
+          "fits": "at the maze exit, 11:15"
+        },
+        {
+          "name": "Bandstand Kitchen",
+          "place": "bandstand-kitchen",
+          "dish": "Vegetable pie and mash",
+          "price": "€11",
+          "fits": "lunch, 12:30–13:15",
+          "caveat": "One vegetarian plate a day; it goes by 13:30."
+        },
+        {
+          "name": "Lakeside Cart",
+          "dish": "Corn cob with butter",
+          "price": "€4",
+          "fits": "by the swan boats, 13:30"
+        },
+        {
+          "name": "Puppet theatre stall",
+          "dish": "Warm popcorn",
+          "price": "€3",
+          "fits": "the 14:30 show"
+        },
+        {
+          "name": "Clockwork Pier tearoom",
+          "place": "clockwork-pier",
+          "dish": "Tea and shortbread",
+          "price": "€5",
+          "fits": "at the pier, 17:00–18:15",
+          "caveat": "Card only."
+        },
+        {
+          "name": "The Orchard Lamp",
+          "place": "orchard-lamp",
+          "dish": "Cider-glazed roots, the meat-free main",
+          "price": "€19",
+          "fits": "dinner, 19:15"
+        }
+      ],
+      "if_then": [
+        {
+          "if": "The tram is late",
+          "then": "Walk the canal path from Ropewalk: 25 minutes, still in time for the 09:30 gate."
+        },
+        {
+          "if": "The Gearwheel queue is over 40 minutes",
+          "then": "Do the maze first and come back at 15:30."
+        },
+        {
+          "if": "Someone is lost in the maze",
+          "then": "Meet at the fountain in the middle; a keeper rings a bell every quarter hour."
+        },
+        {
+          "if": "It rains",
+          "then": "The glasshouse and the puppet theatre are under cover; swap the swan boats for the glasshouse."
+        },
+        {
+          "if": "The youngest is tired by 14:00",
+          "then": "Skip the puppet show; the swan boats are a sit-down."
+        },
+        {
+          "if": "Bandstand Kitchen is full",
+          "then": "The Lakeside Cart has hot food until 16:00; eat on the lake benches."
+        },
+        {
+          "if": "You leave the gardens late",
+          "then": "Skip the Clockwork Pier and take Tram 6 straight back to Quayside Rooms."
+        },
+        {
+          "if": "Dinner runs over",
+          "then": "The Orchard Lamp keeps the table until 21:30; Quayside Rooms is 2 minutes away."
+        }
+      ],
+      "bail_out": "Leave by the east gate whenever you like: Tram 6 every 10 minutes to Ropewalk; keep only the 19:15 dinner.",
+      "why": [
+        "The gate entry is timed, so the day starts there while everyone is fresh.",
+        "The Gearwheel goes first and again late, the two short-queue hours.",
+        "The pier is on the tram line home: an hour sitting down before dinner."
+      ],
+      "kit": {
+        "weather": {
+          "high_c": 22,
+          "low_c": 12,
+          "rain_pct": 20,
+          "note": "Sun until mid-afternoon; a breeze on the pier."
+        },
+        "items": [
+          "Sun hats",
+          "Water bottles (fountains by the bandstand)",
+          "Coins for the swan boats"
+        ],
+        "closures": [
+          "The glasshouse closes at 16:00 on Saturdays"
+        ],
+        "not_missing": [
+          "The automata are wound at 18:00 — you will be there"
+        ]
+      }
+    }
+  ],
+  "places": {
+    "larkspur-gardens": {
+      "name": "Larkspur Pleasure Gardens",
+      "category": "Pleasure garden",
+      "tagline": "Rides, a hedge maze and a lake, behind one long wall.",
+      "address": "Larkspur Gate, Harrowmere",
+      "lat": 41.5122,
+      "lng": 12.3301,
+      "hours": [
+        "Monday: 9:30 AM – 6:00 PM",
+        "Tuesday: 9:30 AM – 6:00 PM",
+        "Wednesday: 9:30 AM – 6:00 PM",
+        "Thursday: 9:30 AM – 6:00 PM",
+        "Friday: 9:30 AM – 6:00 PM",
+        "Saturday: 9:30 AM – 6:00 PM",
+        "Sunday: 9:30 AM – 6:00 PM"
+      ],
+      "hours_today": "9:30 AM – 6:00 PM",
+      "website": "https://larkspur-gardens.example.com/",
+      "maps_url": "https://maps.example.com/place/larkspur-gardens",
+      "fetched_on": "2027-04-20",
+      "note": {
+        "why_you": "You asked for one whole day that the youngest would talk about for a year. This is it: old rides, a real maze, and a lake with swan boats.",
+        "what_to_do": "The Gearwheel first while the queue is short, then the maze before the school groups. Lunch at the bandstand, the lake in the warm part of the afternoon.",
+        "what_to_skip": "The souvenir arcade by the gate — it is the same three things in every shop.",
+        "best_time": "The first hour after opening, and the last hour before closing.",
+        "tickets": "Day tickets with a timed gate entry; the swan boats are paid on the jetty.",
+        "accessibility": "Step-free paths everywhere but the maze; a lift to the Gearwheel platform."
+      },
+      "sources": [
+        {
+          "title": "Larkspur Pleasure Gardens — plan your day",
+          "url": "https://larkspur-gardens.example.com/visit",
+          "accessed": "2027-04-20",
+          "supports": "hours, gate entry, ride times"
+        },
+        {
+          "title": "Brindalia Weekly — a day at Larkspur",
+          "url": "https://weekly.example.org/larkspur",
+          "accessed": "2027-04-20",
+          "supports": "best time, queues"
+        }
+      ]
+    },
+    "bandstand-kitchen": {
+      "name": "Bandstand Kitchen",
+      "category": "Café",
+      "tagline": "Hot lunches under the bandstand roof.",
+      "address": "Inside Larkspur Pleasure Gardens",
+      "lat": 41.5131,
+      "lng": 12.3318,
+      "hours": [
+        "Monday: 11:00 AM – 4:00 PM",
+        "Tuesday: 11:00 AM – 4:00 PM",
+        "Wednesday: 11:00 AM – 4:00 PM",
+        "Thursday: 11:00 AM – 4:00 PM",
+        "Friday: 11:00 AM – 4:00 PM",
+        "Saturday: 11:00 AM – 4:00 PM",
+        "Sunday: 11:00 AM – 4:00 PM"
+      ],
+      "hours_today": "11:00 AM – 4:00 PM",
+      "maps_url": "https://maps.example.com/place/bandstand-kitchen",
+      "note": {
+        "why_you": "The only sit-down lunch inside the walls, and it has a vegetarian plate every day."
+      },
+      "sources": [
+        {
+          "title": "Bandstand Kitchen menu",
+          "url": "https://larkspur-gardens.example.com/eat",
+          "accessed": "2027-04-20",
+          "supports": "menu, hours"
+        }
+      ]
+    },
+    "clockwork-pier": {
+      "name": "Clockwork Pier",
+      "category": "Pier",
+      "tagline": "Automata in glass cases, wound on the hour.",
+      "address": "Pier Road, Harrowmere",
+      "lat": 41.5046,
+      "lng": 12.3168,
+      "hours": [
+        "Monday: Closed",
+        "Tuesday: 10:00 AM – 8:00 PM",
+        "Wednesday: 10:00 AM – 8:00 PM",
+        "Thursday: 10:00 AM – 8:00 PM",
+        "Friday: 10:00 AM – 8:00 PM",
+        "Saturday: 10:00 AM – 8:00 PM",
+        "Sunday: 10:00 AM – 8:00 PM"
+      ],
+      "hours_today": "10:00 AM – 8:00 PM",
+      "website": "https://clockwork-pier.example.com/",
+      "maps_url": "https://maps.example.com/place/clockwork-pier",
+      "note": {
+        "why_you": "An easy hour after a long day: you sit, the automata do the work.",
+        "best_time": "Just before the hour, when the keepers wind them."
+      },
+      "sources": [
+        {
+          "title": "Clockwork Pier — opening times",
+          "url": "https://clockwork-pier.example.com/times",
+          "accessed": "2027-04-20",
+          "supports": "hours"
+        }
+      ]
+    },
+    "orchard-lamp": {
+      "name": "The Orchard Lamp",
+      "category": "Restaurant",
+      "tagline": "A long table in an old cider barn.",
+      "address": "14 Ropewalk, Harrowmere",
+      "lat": 41.5027,
+      "lng": 12.3119,
+      "hours": [
+        "Monday: 6:00 PM – 10:00 PM",
+        "Tuesday: 6:00 PM – 10:00 PM",
+        "Wednesday: 6:00 PM – 10:00 PM",
+        "Thursday: 6:00 PM – 10:00 PM",
+        "Friday: 6:00 PM – 10:00 PM",
+        "Saturday: 6:00 PM – 10:00 PM",
+        "Sunday: Closed"
+      ],
+      "hours_today": "6:00 PM – 10:00 PM",
+      "maps_url": "https://maps.example.com/place/orchard-lamp",
+      "note": {
+        "why_you": "Two minutes from Quayside Rooms, so nobody has to walk far after a day on their feet.",
+        "tickets": "Booked for three at 19:15."
+      },
+      "sources": [
+        {
+          "title": "The Orchard Lamp — book a table",
+          "url": "https://orchard-lamp.example.com/book",
+          "accessed": "2027-04-20",
+          "supports": "booking, hours"
+        }
+      ]
+    }
+  },
+  "attribution": {
+    "generator": "tour-guide brochure kit (sample)",
+    "sources": [
+      {
+        "title": "Harrowmere tram timetable",
+        "url": "https://transit.example.org/harrowmere/timetable",
+        "accessed": "2027-04-20",
+        "supports": "tram times"
+      }
+    ]
+  }
+}

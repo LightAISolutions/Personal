@@ -7,10 +7,10 @@
 import { tokensCss, pageSpec } from './tokens.mjs';
 import { STACK } from './fonts.mjs';
 
-export function stylesheet({ page = pageSpec(), fontCss = '', c11 = false, c12 = false, c18 = false, c18b = false } = {}) {
+export function stylesheet({ page = pageSpec(), fontCss = '', c11 = false, c12 = false, c18 = false, c18b = false, c18d = false } = {}) {
   // C11 (Phase 11), C12 (Phase 12) and C18 (Phase 18) rules are added only when the model uses those fields, so an
   // older brochure's HTML does not grow rules it never uses. C18 follows SCREEN: it extends the screen grid.
-  return [fontCss, tokensCss(page), BASE, COVER, GLANCE, DAY, RAIL, CARDS, LATER, PRACTICAL, ATTRIBUTION, ...(c11 ? [C11] : []), ...(c12 ? [C12] : []), SCREEN, ...(c18 ? [C18] : []), ...(c18 && c18b ? [C18B] : []), printFallback(page), PAGED].join('\n');
+  return [fontCss, tokensCss(page), BASE, COVER, GLANCE, DAY, RAIL, CARDS, LATER, PRACTICAL, ATTRIBUTION, ...(c11 ? [C11] : []), ...(c12 ? [C12] : []), SCREEN, ...(c18 ? [C18] : []), ...(c18 && c18b ? [C18B] : []), ...(c18 && c18d ? [C18D] : []), printFallback(page), PAGED].join('\n');
 }
 
 const BASE = `
@@ -479,6 +479,32 @@ html.paged .it-row:not(.it-bail){padding:.2rem 0}
 html.paged .it-bail{padding:.32rem .55rem}
 html.paged .tight .day-kit{margin-bottom:.55rem;padding:.34rem .65rem .4rem}
 html.paged .tight .day-food,html.paged .tight .day-ifthen{margin-top:.55rem}
+`;
+/**
+ * Contract C18 wave 3: the Day book — the day cover's corner (the word "Day" over the number, in the day's hue) and the
+ * order inside a big stop, a compact numbered list under the row. Added only when `book` is "day", after C18 and C18B,
+ * so no brochure gains a rule. Existing tokens and components only.
+ */
+const C18D = `
+.sec-cover-day .cd-k{display:block;font-size:var(--s-3);letter-spacing:.16em;text-transform:uppercase;color:var(--hue)}
+.sec-cover-day .cover-days b{color:var(--hue)}
+.ti-inside{margin-top:.35rem;padding:.3rem .6rem .36rem;background:var(--cream);border-left:2px solid var(--hue);font-size:var(--s-1);line-height:1.32;max-width:30rem}
+.in-h{font-size:var(--s-3);letter-spacing:.12em;text-transform:uppercase;color:var(--hue);margin-bottom:.15rem}
+.in-list{list-style:none;counter-reset:in;display:grid;gap:.1rem}
+.in-list li{counter-increment:in;display:grid;grid-template-columns:1rem 3.7rem minmax(0,1fr);gap:.35rem;align-items:baseline}
+.in-list li::before{content:counter(in);font-size:var(--s-2);color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.in-t{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink2);white-space:nowrap}
+.in-t small{font-size:.72em;letter-spacing:.04em;margin-left:.1em;font-weight:400}
+.in-x{color:var(--ink)}
+@media (max-width:760px){
+  html:not(.paged) .in-list li{grid-template-columns:.9rem 3.3rem minmax(0,1fr);gap:.3rem}
+  html:not(.paged) .ti-inside{max-width:none}
+}
+html.paged .ti-inside{margin-top:.25rem;padding:.24rem .55rem .28rem;font-size:var(--s-2);line-height:1.28}
+html.paged .in-h{margin-bottom:.1rem}
+html.paged .in-list{gap:.04rem}
+html.paged .in-list li{grid-template-columns:.9rem 3.1rem minmax(0,1fr);gap:.3rem}
+html.paged .tight .ti-inside{margin-top:.18rem;padding:.2rem .55rem .24rem}
 `;
 /** Browser print without the paginator: page breaks by section, nothing split that should not be. */
 function printFallback(page) {

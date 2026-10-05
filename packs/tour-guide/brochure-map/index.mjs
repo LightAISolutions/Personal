@@ -107,9 +107,12 @@ export function buildModel({ trip, plan, places, notes = [], snapshots = [], est
   const firstDay = new Map();
   for (const d of days) for (const slug of [...(d.stops || []).map((s) => s.place), ...(d.meals || []).filter((x) => x.kind === 'dinner').map((x) => x.at)]) if (slug && !firstDay.has(slug)) firstDay.set(slug, d.date);
   const bookings = Array.isArray(trip.bookings) ? trip.bookings : [];
-  const bDays = [], free = [], routes = [];
+  let bDays = [];
+  const free = [], routes = [];
+  // C18 wave 3: the Day book (options.book 'day' + options.date) implies C18.
+  const book = dayBookOf(options);
   // C18: only on request (see the file header); a free option scheduled on any day of the plan is never offered.
-  const c18 = options.c18 === true ? { placesBySlug, cards, lodgingName, bookings, firstDay, diet: factsOptions.diet, locale, clock: options.clock, scheduled: new Set(days.flatMap((d) => [...(d.stops || []).map((s) => s.place), ...(d.meals || []).filter((x) => x.kind === 'dinner' && x.at && x.at !== 'lodging').map((x) => x.at)])) } : null;
+  const c18 = options.c18 === true || book ? { placesBySlug, cards, lodgingName, bookings, firstDay, diet: factsOptions.diet, locale, clock: options.clock, scheduled: new Set(days.flatMap((d) => [...(d.stops || []).map((s) => s.place), ...(d.meals || []).filter((x) => x.kind === 'dinner' && x.at && x.at !== 'lodging').map((x) => x.at)])) } : null;
   for (const d of days) {
     if (!(d.stops || []).length) { const f = freeDay(d, overrides.get(d.date)); free.push({ date: d.date, note: f.text, url: f.url }); continue; }
     const day = mapDay(d, { placesBySlug, cards, lodgingName, override: overrides.get(d.date), season: trip.season, factsOptions, bookings, firstDay });
@@ -118,27 +121,22 @@ export function buildModel({ trip, plan, places, notes = [], snapshots = [], est
     routes.push({ n: bDays.length, date: d.date, url: d.day_url });
   }
   if (!bDays.length) throw new Error('brochure-map: the plan has no day with a stop; the brochure needs at least one');
-  // C18 wave 2: the written briefing, merged per date into the mapped days (brochure-map-briefing.mjs).
   const warnings = [];
+  if (book) {
+    // The Day book keeps its day's number in the whole brochure (its position among the days with stops).
+    const at = bDays.findIndex((d) => d.date === book.date);
+    if (at < 0) throw new Error(free.some((f) => f.date === book.date) ? `brochure-map: ${book.date} is a free day with no stops; a Day book needs a planned day` : `brochure-map: ${book.date} is not a day of the plan`);
+    bDays = [{ ...bDays[at], number: at + 1 }];
+  } else if (options.date !== undefined) warnings.push('day book: options.date ignored — it needs options.book "day"');
+  // C18 wave 2: the written briefing, merged per date into the mapped days (brochure-map-briefing.mjs).
   if (options.briefing !== undefined && options.briefing !== null) {
-    if (c18) warnings.push(...mergeBriefing(bDays, options.briefing, { cards, buildId: plan.build_id, ck: clockFor(options.clock, locale) }));
+    if (c18) warnings.push(...mergeBriefing(bDays, options.briefing, { cards, buildId: plan.build_id, ck: clockFor(options.clock, locale), book: book ? 'day' : 'brochure' }));
     else warnings.push('briefing: ignored — it needs options.c18');
   }
+  if (book) return { model: dayBookModel({ day: bDays[0], cards, order, placesBySlug, notesByPlace, estimatesByPlace, options, tripOut: tripOutOf(trip, plan, days, options) }), warnings };
 
-  const builtOn = options.built_on || plan.built_on;
-  const verifiedOn = options.verified_on || days.map((d) => d.verified_on).filter((v) => DATE.test(String(v || ''))).sort().pop() || builtOn;
-  const tripOut = compact({
-    title: clip(trip.title, SHORT) || clip(trip.destination, SHORT), destination: clip(trip.destination, SHORT), country: clip(trip.country, SHORT),
-    start_date: trip.start_date, end_date: trip.end_date, timezone: trip.timezone ? String(trip.timezone).slice(0, 64) : undefined,
-    locale: LOCALE.test(String(trip.locale || '')) ? trip.locale : undefined,
-    travelers: (trip.travelers || []).map((t) => clip(t, SHORT)).filter(Boolean).slice(0, 12),
-    pace: trip.pace, day_start: trip.day_start, day_end: trip.day_end, intro: clip(trip.intro, TEXT),
-    lodging: (trip.lodging || []).slice(0, 12).map(lodgingEntry),
-    build_id: plan.build_id ? String(plan.build_id).slice(0, 64) : undefined,
-    built_on: DATE.test(String(builtOn || '')) ? builtOn : undefined,
-    verified_on: DATE.test(String(verifiedOn || '')) ? verifiedOn : undefined,
-    ...tripDisplay(options)
-  });
+  const tripOut = tripOutOf(trip, plan, days, options);
+  const verifiedOn = verifiedOf(plan, days, options);
 
   const practical = tripPractical(trip.practical);
   // Bookings first: deadlines are what the practical page is opened for before the trip, and the section cap never cuts them.
@@ -163,6 +161,65 @@ export function buildModel({ trip, plan, places, notes = [], snapshots = [], est
   return { model, warnings };
 }
 
+const builtOf = (plan, options) => options.built_on || plan.built_on;
+const verifiedOf = (plan, days, options) => options.verified_on || days.map((d) => d.verified_on).filter((v) => DATE.test(String(v || ''))).sort().pop() || builtOf(plan, options);
+/** The model's trip block (the brochure's and the Day book's). */
+function tripOutOf(trip, plan, days, options) {
+  const builtOn = builtOf(plan, options), verifiedOn = verifiedOf(plan, days, options);
+  return compact({
+    title: clip(trip.title, SHORT) || clip(trip.destination, SHORT), destination: clip(trip.destination, SHORT), country: clip(trip.country, SHORT),
+    start_date: trip.start_date, end_date: trip.end_date, timezone: trip.timezone ? String(trip.timezone).slice(0, 64) : undefined,
+    locale: LOCALE.test(String(trip.locale || '')) ? trip.locale : undefined,
+    travelers: (trip.travelers || []).map((t) => clip(t, SHORT)).filter(Boolean).slice(0, 12),
+    pace: trip.pace, day_start: trip.day_start, day_end: trip.day_end, intro: clip(trip.intro, TEXT),
+    lodging: (trip.lodging || []).slice(0, 12).map(lodgingEntry),
+    build_id: plan.build_id ? String(plan.build_id).slice(0, 64) : undefined,
+    built_on: DATE.test(String(builtOn || '')) ? builtOn : undefined,
+    verified_on: DATE.test(String(verifiedOn || '')) ? verifiedOn : undefined,
+    ...tripDisplay(options)
+  });
+}
+/**
+ * Contract C18 wave 3: options.book 'day' (with options.date, YYYY-MM-DD) asks for the Day book of that date → { date };
+ * absent or 'brochure' → null. Anything else, or a Day book without a date, throws.
+ */
+function dayBookOf(options) {
+  if (options.book === undefined || options.book === 'brochure') return null;
+  if (options.book !== 'day') throw new Error(`brochure-map: options.book must be "brochure" or "day" (got ${clip(String(options.book), 32)})`);
+  if (!DATE.test(String(options.date || ''))) throw new Error('brochure-map: a Day book (options.book "day") needs options.date, YYYY-MM-DD');
+  return { date: options.date };
+}
+/** The place slugs a mapped kit day refers to (stops, meals, legs, warnings, alternatives, evening extras, free options, food). */
+export function dayPlaceKeys(day) {
+  const keys = new Set();
+  const add = (k) => { if (typeof k === 'string' && k) keys.add(k); };
+  for (const s of day.stops || []) add(s.place);
+  for (const x of day.meals || []) add(x.place);
+  for (const l of day.legs || []) { add(l.from); add(l.to); }
+  for (const w of day.warnings || []) add(w.place);
+  for (const x of (day.alternatives && day.alternatives.items) || []) add(x.place);
+  for (const x of day.extras || []) add(x.place);
+  for (const f of day.free || []) for (const o of f.options || []) add(o.place);
+  for (const f of day.food || []) add(f.place);
+  return keys;
+}
+/**
+ * Contract C18 wave 3: the Day book's model — `book: "day"`, the one day (with its number), only the places it refers
+ * to (in the brochure's card order), and attribution for those places; no later lists, practical pages or season.
+ */
+function dayBookModel({ day, cards, order, placesBySlug, notesByPlace, estimatesByPlace, options, tripOut }) {
+  const keys = dayPlaceKeys(day);
+  const kept = order.filter((s) => keys.has(s) && cards[s]);
+  const places = Object.fromEntries(kept.map((s) => [s, cards[s]]));
+  const ids = new Set(kept.map((s) => placesBySlug.get(s).place_id));
+  const attribution = buildAttribution({
+    notes: [...notesByPlace.values()].filter((n) => ids.has(n.place_id)),
+    estimates: [...estimatesByPlace.values()].flat().filter((e) => ids.has(e.place_id)),
+    generator: options.generator, showGoogle: options.show_google_content !== false,
+    extra: kept.flatMap((s) => factsSourceRows(placesBySlug.get(s).facts))
+  });
+  return compact({ version: 1, book: 'day', trip: tripOut, days: [day], places, attribution });
+}
 /**
  * renderPlan(args, renderOptions) → { html, model, warnings } — model is the brochure model (not the kit's prepared
  * one); warnings are the kit's, then the mapping's ("briefing: …" drops and clips).

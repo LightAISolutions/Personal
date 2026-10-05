@@ -45,7 +45,16 @@ function stopRow(t, locale) {
   const when = t.time_style === 'about' && t.start !== null && t.fixed !== true ? aboutCell(t.start, locale) : timeCell(t.start, t.end, locale, '', t.fixed === true);
   const rule = t.booking_line && !t.booked ? `<p class="ti-meta ti-book">${icon('ticket', 12)} ${esc(clip(t.booking_line, 160))}</p>` : '';
   const crowd = CROWD_NOTE[t.crowd_slot] ? `<p class="ti-meta ti-crowd">${icon('clock', 12)} ${CROWD_NOTE[t.crowd_slot]}</p>` : '';
-  return `<div class="ti ti-stop${t.visited === true ? ' ti-done' : ''}" data-pg="block">${when}<div class="ti-mark"><span class="badge">${t.n}</span></div><div class="ti-body">${name}${t.activity ? `<p class="ti-act">${esc(t.activity)}</p>` : ''}${meta ? `<p class="ti-meta">${meta}</p>` : ''}${t.booked ? `<p class="ti-meta">${icon('ticket', 12)} ${esc(t.booked)}</p>` : ''}${rule}${crowd}${t.check_on_day ? `<p class="ti-meta ti-check">${icon('info', 12)} ${esc(t.check_on_day)}</p>` : ''}${tipLine(t)}${t.note ? `<p class="ti-note">${esc(clip(t.note, 400))}</p>` : ''}</div></div>`;
+  return `<div class="ti ti-stop${t.visited === true ? ' ti-done' : ''}" data-pg="block">${when}<div class="ti-mark"><span class="badge">${t.n}</span></div><div class="ti-body">${name}${t.activity ? `<p class="ti-act">${esc(t.activity)}</p>` : ''}${meta ? `<p class="ti-meta">${meta}</p>` : ''}${t.booked ? `<p class="ti-meta">${icon('ticket', 12)} ${esc(t.booked)}</p>` : ''}${rule}${crowd}${t.check_on_day ? `<p class="ti-meta ti-check">${icon('info', 12)} ${esc(t.check_on_day)}</p>` : ''}${tipLine(t)}${t.note ? `<p class="ti-note">${esc(clip(t.note, 400))}</p>` : ''}${insideList(t, locale)}</div></div>`;
+}
+/**
+ * Contract C18 wave 3 (Day book): the order inside a big stop — a compact numbered list under the row, each step with its
+ * time in the trip's clock when it has one. '' for a stop without it, so every other row is unchanged.
+ */
+export const INSIDE_LABEL = 'Inside, in order';
+export function insideList(t, locale) {
+  const steps = (t.inside || []).map((x) => `<li><span class="in-t">${x.time ? clockHtml(x.time, locale) : ''}</span><span class="in-x">${esc(clip(x.text, 160))}</span></li>`);
+  return steps.length ? `<div class="ti-inside"><p class="in-h">${INSIDE_LABEL}</p><ol class="in-list">${steps.join('')}</ol></div>` : '';
 }
 /** Contract C18: a field note under a stop or meal row ("Cash only", "Enter by the north gate"). */
 export const tipLine = (t) => (t.tip ? `<p class="ti-meta ti-tip">${icon('pencil', 12)} <span class="tip-k">Tip</span> ${esc(clip(t.tip, 160))}</p>` : '');
